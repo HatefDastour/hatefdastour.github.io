@@ -8,4 +8,4 @@ date: 2019-05-01
 location: "Calgary, Alberta"
 ---
 
-[More details](http://contacts.ucalgary.ca/info/math/courses/s18/MATH211?destination=profiles%2F1-6085569%2Fcourses)
+[More details](http://contacts.ucalgary.ca/info/math/courses/p19/MATH211?destination=profiles%2F1-6085569%2Fcourses)
