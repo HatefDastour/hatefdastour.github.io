@@ -4,6 +4,9 @@ permalink: /publications/
 author_profile: true
 ---
 
+* <b>[A fourth-order optimal finite difference scheme for the Helmholtz equation with PML](https://www.sciencedirect.com/science/article/pii/S0898122119302676)</b> <br>
+<b>Hatef Dastour</b>, and Wenyuan Liao. <i>Computers & Mathematics with Applications, Vol 6 (2019), pp 2147-2165.</i>
+
 * <b>[Efficient and accurate numerical simulation of acoustic wave propagation in a 2D heterogeneous media](https://www.sciencedirect.com/science/article/pii/S0096300317307610)</b> <br>
 Wenyuan Liao, Peng Yong, <b>Hatef Dastour</b>, and Jianping Huang. <i>Applied Mathematics and Computation, Vol 321 (2018), pp 385-40.</i>
 
