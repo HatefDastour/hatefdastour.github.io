@@ -3,11 +3,11 @@ title: "A Stable Numerical Solution of an Inverse Moving Boundary Problem of Hea
 collection: publications
 permalink: /publication/garshasbi2012stable2
 date: 2012
-venue: 'Journal of Advanced Research in Dynamical and Control Systems'
+venue: 'Advances in Mathematical Modeling'
 paperurl: 'https://www.sid.ir/En/Journal/ViewPaper.aspx?ID=362946'
 citation: 'Morteza Garshasbi, <b>Hatef Dastour</b>, and Mehdi Jalalvand, A Stable Numerical Solution of an Inverse Moving Boundary Problem of Heat Conduction Using Discrete Mollification Approach, <i>Advances in Mathematical Modeling</i> 2 (1) (2012) 47–60.'
 ---
 <b>Abstract:</b> 
-In this paper, we are mainly concerned with the numerical solution of a class of non-well posed semi-linear Cauchy problems for the heat equation. The noisy data are given at the boundary. A stable numerical method based on mollification scheme and marching method is developed to solve the proposed problem. The error of this method is analyzed and some numerical examples are investigated.
+In this paper the application of marching scheme and mollification approach to solve a one dimensional inverse moving boundary problem for the heat equation is investigated. The problem is considered with noisy data. A regularization method based on marching scheme and discrete mollification approach is developed to solve the proposed problem and the stability and convergence of numerical solution is proved. To show the ability and efficiency of the proposed method, some numerical experiments are investigated.
 
 [Download paper here](https://www.sid.ir/En/Journal/ViewPaper.aspx?ID=362946)
