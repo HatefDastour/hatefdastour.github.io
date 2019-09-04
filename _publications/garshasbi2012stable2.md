@@ -2,7 +2,7 @@
 title: "A Stable Numerical Solution of an Inverse Moving Boundary Problem of Heat Conduction Using Discrete Mollification Approach"
 collection: publications
 permalink: /publication/garshasbi2012stable2
-date: 2012
+date: 2012-06-01
 venue: 'Advances in Mathematical Modeling'
 paperurl: 'https://www.sid.ir/En/Journal/ViewPaper.aspx?ID=362946'
 citation: 'Morteza Garshasbi, <b>Hatef Dastour</b>, and Mehdi Jalalvand, A Stable Numerical Solution of an Inverse Moving Boundary Problem of Heat Conduction Using Discrete Mollification Approach, <i>Advances in Mathematical Modeling</i> 2 (1) (2012) 47–60.'
