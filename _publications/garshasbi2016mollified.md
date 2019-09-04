@@ -3,7 +3,7 @@ title: "A mollified marching solution of an inverse ablation-type moving boundar
 collection: publications
 permalink: /publication/garshasbi2016mollified
 date: 2016-04-01
-venue: 'Numerical Algorithms'
+venue: 'Computational and Applied Mathematics'
 paperurl: 'https://link.springer.com/article/10.1007/s40314-014-0180-5'
 citation: 'M. Garshasbi, <b>H. Dastour</b>,  A mollified marching solution of an inverse ablation-type moving boundary problem, <i>Computational and Applied Mathematics</i> 35 (1) (2016) 61–73.'
 ---
