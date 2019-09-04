@@ -11,30 +11,35 @@ redirect_from:
 
 Education
 ======
-* B.S. in GitHub, GitHub University, 2012
-* M.S. in Jekyll, GitHub University, 2014
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
+* B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
+* M.S. in Applied Mathematics, Damghan University, Iran, 2012
+* Ph.D in Mathematics and Statistics, University of Calgary, Canada, 2020(expected)
 
-Work experience
+Teaching
 ======
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+  <ul>{% for post in site.teaching %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+Research Experience
+======
+* Graduate Research Assistant, January 2016 to September 2016
+  * Department of Mathematics and Statistics, University of Calgary
+  * Supervisor: Dr. Wenyuan Liao
+
+* Research Assistant, February 2012 to May 2015
+  * School of Mathematics, Iran University of Science and Technology
+  * Supervisor: Dr. Morteza Garshasbi
   
-Skills
+* Graduate Research Assistant, October 2010 to August 2012
+  * School of Mathematics and Computer science, Damghan University
+  * Supervisor: Dr. Morteza Garshasbi
+  
+Computer Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Proficiency with computer programming including \textsc{Matlab}, Python, R, \linebreak Julia Programming, and others.
+* Proficiency with office applications, such as Microsoft Office, \LaTeX~editors, and more.
+* Proficiency with advanced graphical applications, such as Adobe Photoshop, 3D Studio Max, Blender, and more.
 
 Publications
 ======
@@ -48,12 +53,8 @@ Talks
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
   
-Teaching
+Awards
 ======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+* PIMS Doctoral Recruitment Scholarship, 2015--2016
+* Eric Milner Graduate Scholarship, 2016--2017
+* 2017 Alberta Innovates Graduate Student Scholarship, 2017--2019
