@@ -59,5 +59,4 @@ Awards
 * Eric Milner Graduate Scholarship, 2016--2017
 * 2017 Alberta Innovates Graduate Student Scholarship, 2017--2019
 
-
-See my ful CV here(https://github.com/HatefDastour/hatefdastour.github.io/blob/master/_pages/HatefDastour_CV.pdf)
+See my ful CV [here](/_pages/HatefDastour_CV.pdf).
