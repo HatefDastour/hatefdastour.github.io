@@ -2,7 +2,7 @@
 title: "Proportional Factors Estimation in an IHCP"
 collection: publications
 permalink: /publication/garshasbi2014proportional
-date: 2019-09-15
+date: 2014-06-01
 venue: 'Journal of Hyperstructures'
 paperurl: 'http://www.jhs-uma.com/index.php/JHSMS/article/view/128'
 citation: 'M. Garshasbi, <b>H. Dastour</b>,  Proportional factors estimation in an ihcp, <i>Journal of Hyperstructures</i> 3 (1) (2014) 53–67'
