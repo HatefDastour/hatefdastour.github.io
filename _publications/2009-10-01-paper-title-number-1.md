@@ -2,6 +2,7 @@
 title: "A fourth-order optimal finite difference scheme for the Helmholtz equation with PML"
 collection: publications
 permalink: /publication/2009-10-01-paper-title-number-1
+excerpt: ''
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S0898122119302676'
 citation: '<b>Hatef Dastour</b> and Wenyuan Liao. A fourth-order optimal finite difference scheme for the helmholtz equation with pml. <i>Computers & Mathematics with Applications</i>, 6(78):2147–2165, 2019.'
 ---
