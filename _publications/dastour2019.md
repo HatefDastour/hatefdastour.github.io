@@ -2,7 +2,6 @@
 title: "A fourth-order optimal finite difference scheme for the Helmholtz equation with PML"
 collection: publications
 permalink: /publication/dastour2019
-excerpt: 'A fourth-order optimal finite difference scheme for the Helmholtz equation with PML.'
 date: 2019-09-15
 venue: 'Computers & Mathematics with Applications'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S0898122119302676'
