@@ -4,4 +4,4 @@ excerpt: "MATH 391 : Numerical Analysis I"
 collection: portfolio
 ---
 
-* [Getting Started](/files/numerical_analysis/Getting_Started.ipynb).
+* [Getting Started](https://github.com/HatefDastour/Python/blob/master/Getting_Started.ipynb).
