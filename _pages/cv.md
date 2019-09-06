@@ -39,8 +39,8 @@ Research Experience
   
 Computer Skills
 ======
-* Proficiency with computer programming including $\textsc{Matlab}$, Python, R, Julia Programming, and others.
-* Proficiency with office applications, such as Microsoft Office, $\LaTeX~editors$, and more.
+* Proficiency with computer programming including MATLAB, Python, R, Julia Programming, and others.
+* Proficiency with office applications, such as Microsoft Office, \LaTeX editors, and more.
 * Proficiency with advanced graphical applications, such as Adobe Photoshop, 3D Studio Max, Blender, and more.
 
 Publications
