@@ -1,6 +1,6 @@
 ---
 title: "MATH 376"
-excerpt: "MATH 376 : Numerical Analysis I"
+excerpt: "MATH 376 - Differential Equations I"
 collection: portfolio
 ---
 
