@@ -9,4 +9,4 @@ tags:
   - Mathematics
 ---
 
-You can start your python learning using this [link](https://github.com/HatefDastour/Python/blob/master/Getting_Started.ipynb)
+You can start learning python using this [link](https://github.com/HatefDastour/Python/blob/master/Getting_Started.ipynb)
