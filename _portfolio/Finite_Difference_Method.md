@@ -5,5 +5,5 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Getting Started with Python](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
-* [The Acoustic wave equation in 1D (Time-Domain)](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/Finite_Difference_Method/FDTD_1D.ipynb)
+* [Getting Started with Python](https://github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
+* [The Acoustic wave equation in 1D (Time-Domain)](https://github.com/HatefDastour/Python/blob/master/Finite_Difference_Method/FDTD_1D.ipynb)
