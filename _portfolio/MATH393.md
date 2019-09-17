@@ -5,5 +5,5 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Getting Started with Python](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
-* [Numerical Solution of ODEs](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/MATH393/Numerical_Solution_of_ODEs.ipynb)
+* [Getting Started with Python](https://github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
+* [Numerical Solution of ODEs](https://github/HatefDastour/Python/blob/master/MATH393/Numerical_Solution_of_ODEs.ipynb)
