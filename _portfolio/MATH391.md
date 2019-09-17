@@ -5,10 +5,10 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Getting Started with Python](https://github.com/HatefDastour/Python/blob/master/Getting_Started.ipynb)
-* [Root-finding algorithms](https://github.com/HatefDastour/Python/blob/master/MATH391/Root_finding_algorithms.ipynb)
-* [Fixed-point iteration](https://github.com/HatefDastour/Python/blob/master/MATH391/Fixed_point_iteration.ipynb)
-* [Polynomial Interpolation](https://github.com/HatefDastour/Python/blob/master/MATH391/Polynomial_Interpolation.ipynb)
-* [Numerical Integration](https://github.com/HatefDastour/Python/blob/master/MATH391/Numerical_Integration.ipynb)
-* [Numerical Differentiation](https://github.com/HatefDastour/Python/blob/master/MATH391/Numerical_Differentiation.ipynb)
-* [Linear Systems](https://github.com/HatefDastour/Python/blob/master/MATH391/Linear_Systems.ipynb)
+* [Getting Started with Python](/files/Getting_Started.html)
+* [Root-finding algorithms](/files/MATH391/Root_finding_algorithms.html)
+* [Fixed-point iteration](/files/MATH391/Fixed_point_iteration.html)
+* [Polynomial Interpolation](/files/MATH391/Polynomial_Interpolation.html)
+* [Numerical Integration](/files/MATH391/Numerical_Integration.html)
+* [Numerical Differentiation](/files/MATH391/Numerical_Differentiation.html)
+* [Linear Systems](/files/MATH391/Linear_Systems.html)
