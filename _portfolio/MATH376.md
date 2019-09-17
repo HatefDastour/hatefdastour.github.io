@@ -6,7 +6,6 @@ collection: portfolio
 
 ## Table of contents
 
-* [Getting Started with Python](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
-* [Worksheet 01](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/MATH376/Worksheet_01.ipynb)
-* [Worksheet 02](https://nbviewer.jupyter.org/github/HatefDastour/Python/blob/master/MATH376/Worksheet_02.ipynb)
-
+* [Getting Started with Python](https://github/HatefDastour/Python/blob/master/Getting_Started.ipynb)
+* [Worksheet 01](https://github/HatefDastour/Python/blob/master/MATH376/Worksheet_01.ipynb)
+* [Worksheet 02](https://github/HatefDastour/Python/blob/master/MATH376/Worksheet_02.ipynb)
