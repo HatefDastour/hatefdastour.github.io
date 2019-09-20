@@ -3,6 +3,6 @@ title: "SQL"
 excerpt: "Basic SQL using Python"
 collection: portfolio
 ---
-## Under Construction
+## Table of contents
 
 * [Creating a Table in a SQL Database using Python](/files/SQL/SQL_Table.html)
