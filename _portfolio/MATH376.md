@@ -9,3 +9,4 @@ collection: portfolio
 * [Getting Started with Python](/files/Getting_Started.html)
 * [Worksheet 01](/files/MATH376/Worksheet_01.html)
 * [Worksheet 02](/files/MATH376/Worksheet_02.html)
+* [Worksheet 03](/files/MATH376/Worksheet_03.html)
