@@ -1,0 +1,11 @@
+---
+title: "A generalized optimal fourth-order finite difference scheme for a 2D Helmholtz equation with the perfectly matched layer boundary condition"
+collection: publications
+permalink: /dastour2019generalized
+date: 2019-08-20
+venue: 'arXiv preprint arXiv:1908.07403'
+paperurl: 'https://arxiv.org/abs/1908.07403'
+citation: '<b>H. Dastour</b> and W. Liao. A fourth-order optimal finite difference scheme for the Helmholtz equation with PML. <i>Computers & Mathematics with Applications</i>, 6(78):2147-2165, 2019.'
+---
+<b>Abstract:</b> 
+A crucial part of successful wave propagation related inverse problems is an efficient and accurate numerical scheme for solving the seismic wave equations. In particular, the numerical solution to a multi-dimensional Helmholtz equation can be troublesome when the perfectly matched layer (PML) boundary condition is implemented. In this paper, we present a general approach for constructing fourth-order finite difference schemes for the Helmholtz equation with PML in the two-dimensional domain based on point-weighting strategy. Particularly, we develop two optimal fourth-order finite difference schemes, optimal point-weighting 25p and optimal point-weighting 17p. It is shown that the two schemes are consistent with the Helmholtz equation with PML. Moreover, an error analysis for the numerical approximation of the exact wavenumber is provided. Based on minimizing the numerical dispersion, we implement the refined choice strategy for selecting optimal parameters and present refined point-weighting 25p and refined point-weighting 17p finite difference schemes. Furthermore, three numerical examples are provided to illustrate the accuracy and effectiveness of the new methods in reducing numerical dispersion.
