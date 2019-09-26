@@ -12,4 +12,4 @@ collection: portfolio
 * [Numerical Integration](/files/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/files/Numerical_Analysis/Numerical_Differentiation.html)
 * [Linear Systems](/files/Numerical_Analysis/Linear_Systems.html)
-* [Numerical Solution of ODEs](/files/MATH393/Numerical_Solution_of_ODEs.html)
+* [Numerical Solution of ODEs](/files/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
