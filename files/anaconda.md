@@ -20,4 +20,5 @@ Please follow the instruction [here](https://docs.anaconda.com/anaconda/install/
 ## Installing and updating packages
 
 - To list all of the packages in the active environment, use: ```conda list``` on Anaconda Prompt
-- To update a package, use ```python -m pip install -U package```. For example, to update *matplotlib* we can use ```python -m pip install -U matplotlib```
+- To update a package, use ```python -m pip install -U package```. For example, to update *matplotlib* we can use
+```python -m pip install -U matplotlib```
