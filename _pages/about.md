@@ -9,3 +9,5 @@ redirect_from:
 ---
 
 My name is Hatef Dastour, and I am a PhD student in Applied Mathematics at the [University of Calgary](http://www.ucalgary.ca/). My PhD research mainly consists of higher-order finite difference methods, adjoint state method, optimization methods, and regularization methods.
+
+<video src="https://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1" width="1280" height="720" controls preload></video>
