@@ -12,3 +12,4 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 * [Linear Regression (R - Notebook)](/files/Statistical_Learning/Linear_Regression_R.html)
 * [Logistic Regression](/files/Statistical_Learning/Logistic_Regression.html)
 * [Logistic Regression (R - Notebook)](/files/Statistical_Learning/Logistic_Regression_R.html)
+* [Linear Discriminant Analysis (LDA)](/files/Statistical_Learning/Linear_Discriminant_Analysis.html)
