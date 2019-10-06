@@ -13,4 +13,4 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 * [Logistic Regression](/files/Statistical_Learning/Logistic_Regression.html)
 * [Logistic Regression (R - Notebook)](/files/Statistical_Learning/Logistic_Regression_R.html)
 * [Linear Discriminant Analysis (LDA)](/files/Statistical_Learning/Linear_Discriminant_Analysis.html)
-* [A_ Comparison of Classification Methods (LDA, QDA, and KNN)](/files/Statistical_Learning/A_Comparison_of_Classification_Methods.html)
+* [A Comparison of Classification Methods (LDA, QDA, and KNN)](/files/Statistical_Learning/A_Comparison_of_Classification_Methods.html)
