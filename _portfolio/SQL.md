@@ -6,4 +6,4 @@ collection: portfolio
 ## Table of contents
 
 * [Getting Started with Python](/files/Getting_Started.html)
-* [Creating a Table in a SQL Database using Python](/files/SQL/SQL_Table.html)
+* [Working SQL Tables in Python](/files/SQL/Python_SQL_Tables.html.html)
