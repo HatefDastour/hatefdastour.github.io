@@ -1,6 +1,6 @@
 ---
 title: "SQL"
-excerpt: "Basic SQL using Python"
+excerpt: "SQL and Python"
 collection: portfolio
 ---
 ## Table of contents
