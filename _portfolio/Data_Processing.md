@@ -5,4 +5,4 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Image Processing using Robust PCA](/files/Image_Processing/IP_PCA.html)
+* [Image Processing using Robust PCA](/files/Data_Processing/IP_PCA.html)
