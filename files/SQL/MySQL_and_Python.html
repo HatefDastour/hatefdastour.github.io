@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>Python_SQL_Tables</title>
+<title>MySQL_and_Python</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13118,10 +13118,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
-<span class="kn">import</span> <span class="nn">pymysql</span>
-<span class="n">pymysql</span><span class="o">.</span><span class="n">install_as_MySQLdb</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">MySQLdb</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">mysql.connector</span>
+<span class="kn">from</span> <span class="nn">mysql.connector</span> <span class="k">import</span> <span class="n">Error</span>
+<span class="c1"># pip install mysql-connector</span>
 </pre></div>
 
     </div>
@@ -13132,19 +13132,17 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Python-SQL-Tables">Python-SQL Tables<a class="anchor-link" href="#Python-SQL-Tables">&#182;</a></h1><ul>
-<li><a href="#Connection">Connection</a></li>
-<li><a href="#Working-with-Tables-in-Python-SQL">Working with Tables in Python-SQL</a><ul>
-<li><a href="#Creating-a-Table">Creating-a-Table</a></li>
-<li><a href="#Inserting-a-table-row">Inserting a table row</a></li>
-<li><a href="#Inserting-multiple-table-rows">Inserting multiple table rows</a></li>
-<li><a href="#Reading-a-table">Reading a table</a></li>
+<ul>
+<li><a href="#Connecting-to-a-MySQL-Database">Connecting to a MySQL Database</a></li>
+<li><a href="#Tables">Tables</a><ul>
+<li><a href="#Creating-Tables">Creating Tables</a></li>
+<li><a href="#Inserting-Data">Inserting Data</a></li>
+<li><a href="#Select-From-a-Table">Select From a Table</a></li>
+<li><a href="#Where">Where</a></li>
+<li><a href="#Ordering">Ordering</a></li>
 <li><a href="#Copying-a-Table">Copying a Table</a></li>
-<li><a href="#Deleting-records-in-a-table">Deleting records in a table</a><ul>
-<li><a href="#Deleting-a-row">Deleting a row</a></li>
-<li><a href="#Deleting-whole-table">Deleting whole table</a></li>
-</ul>
-</li>
+<li><a href="#Deleting">Deleting</a></li>
+<li><a href="#Updating-data">Updating data</a></li>
 </ul>
 </li>
 </ul>
@@ -13155,7 +13153,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Connection">Connection<a class="anchor-link" href="#Connection">&#182;</a></h1><p>In doing so, we need the host, username, password and a database.</p>
+<h1 id="Connecting-to-a-MySQL-Database">Connecting to a MySQL Database<a class="anchor-link" href="#Connecting-to-a-MySQL-Database">&#182;</a></h1><p>You need to have <a href="https://dev.mysql.com/downloads/installer/">MySQL</a> installed. Then, we can use</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><code>connection = MySQLdb.connect (host = "localhost",
                               user = "my_user",
                               passwd = "my_pass",
@@ -13173,77 +13178,54 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Working-with-Tables-in-Python-SQL">Working with Tables in Python-SQL<a class="anchor-link" href="#Working-with-Tables-in-Python-SQL">&#182;</a></h1><h2 id="Creating-a-Table">Creating a Table<a class="anchor-link" href="#Creating-a-Table">&#182;</a></h2><p>We can create a new table in a using SQL with the following syntax,</p>
-<p><code>CREATE TABLE table_name (
-    column1 datatype,
-    column2 datatype,
-    column3 datatype,
-   ....
-);</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>However, we can use this syntax in Python as well. In doing so, we need to use <strong>sqlite3</strong> package.</p>
-<p>Let's create <code>mydatabase.db</code>, and enter the all-time top goal scorers of the premier from this <a href="https://www.premierleague.com/stats/top/players/goals?co=1&amp;se=-1&amp;co=1&amp;cl=-1&amp;iso=-1&amp;po=-1?se=-1">website</a>.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To creat <em>Players</em> table we can use the following SQL command</p>
-<p><code>CREATE TABLE Players ( 
-    Rank INTEGER PRIMARY KEY, 
-    First_Name VARCHAR(20), 
-    Last_Name VARCHAR(30), 
-    Nationality CHAR(10), 
-    Goals INTEGER,
-    Birth_Date DATE
-);</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In python, this can be done using</p>
+<p>Here we are connecting to <em>Football</em> database.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># creating *mydatabase.db* in the current directory</span>
-<span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+                                         <span class="n">database</span><span class="o">=</span><span class="s1">&#39;Football&#39;</span><span class="p">,</span>
+                                         <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+                                         <span class="n">password</span><span class="o">=</span><span class="s1">&#39;hd123&#39;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span> <span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+</pre></div>
 
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    </div>
+</div>
+</div>
 
-<span class="c1"># deleting table Players if it is available</span>
-<span class="c1"># disable this line if there is no such table as Players in the db file</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;DROP TABLE Players;&quot;&quot;&quot;</span><span class="p">)</span>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We could always create one using:</p>
+<p><code>cursor.execute("CREATE DATABASE database_name")</code></p>
 
-<span class="c1"># SQL table syntax</span>
-<span class="n">sql_command</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">CREATE TABLE Players ( </span>
-<span class="s2">    Rank INTEGER PRIMARY KEY, </span>
-<span class="s2">    First_Name VARCHAR(20), </span>
-<span class="s2">    Last_Name VARCHAR(30), </span>
-<span class="s2">    Nationality CHAR(10), </span>
-<span class="s2">    Goals INTEGER,</span>
-<span class="s2">    Birth_Date DATE</span>
-<span class="s2">    );&quot;&quot;&quot;</span>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To see all the databases we use <code>SHOW DATABASES</code> command</p>
 
-<span class="c1"># running that syntax</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SHOW DATABASES&quot;</span><span class="p">)</span>
+<span class="c1">## printing all</span>
+<span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13256,15 +13238,19 @@ connection.close()</code></p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;sqlite3.Cursor at 0x1f9a223f880&gt;</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(&#39;football&#39;,)
+(&#39;information_schema&#39;,)
+(&#39;mysql&#39;,)
+(&#39;performance_schema&#39;,)
+(&#39;sakila&#39;,)
+(&#39;sys&#39;,)
+(&#39;world&#39;,)
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -13274,9 +13260,8 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Inserting-a-table-row">Inserting a table row<a class="anchor-link" href="#Inserting-a-table-row">&#182;</a></h2><p>For example, to enter a row of a player data, we can use the following SQL syntax</p>
-<p><code>INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)
-    VALUES (Null, "Alan", "Shearer", "England", 260,"1970-08-13");</code></p>
+<h1 id="Tables">Tables<a class="anchor-link" href="#Tables">&#182;</a></h1><h2 id="Creating-Tables">Creating Tables<a class="anchor-link" href="#Creating-Tables">&#182;</a></h2><p>Please see this <a href="https://hatefdastour.github.io/files/SQL/Python_SQL_Tables.html"><em>Python-SQL Tables</em></a> for a detailed notes. Here, we provide a brief note on creating tables.</p>
+<p>For Example, we can create a table of <a href="https://www.premierleague.com/stats/top/players/goals?se=274">the Premier League 2018/2019 goal scorers</a>.</p>
 
 </div>
 </div>
@@ -13284,7 +13269,140 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In Python, this can be done as follows.</p>
+<table>
+<thead><tr>
+<th>Standing</th>
+<th>Name</th>
+<th>Club</th>
+<th>Nationality</th>
+<th>Goals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.</td>
+<td>Pierre-Emerick Aubameyang</td>
+<td>Arsenal</td>
+<td>Gabon</td>
+<td>22</td>
+</tr>
+<tr>
+<td>1.</td>
+<td>Sadio Mané</td>
+<td>Liverpool</td>
+<td>Senegal</td>
+<td>22</td>
+</tr>
+<tr>
+<td>1.</td>
+<td>Mohamed Salah</td>
+<td>Liverpool</td>
+<td>Egypt</td>
+<td>22</td>
+</tr>
+<tr>
+<td>4.</td>
+<td>Sergio Agüero</td>
+<td>Manchester City</td>
+<td>Argentina</td>
+<td>21</td>
+</tr>
+<tr>
+<td>5.</td>
+<td>Jamie Vardy</td>
+<td>Leicester City</td>
+<td>England</td>
+<td>18</td>
+</tr>
+<tr>
+<td>6.</td>
+<td>Harry Kane</td>
+<td>Tottenham Hotspur</td>
+<td>England</td>
+<td>17</td>
+</tr>
+<tr>
+<td>8.</td>
+<td>Eden Hazard</td>
+<td>Chelsea</td>
+<td>Belgium</td>
+<td>16</td>
+</tr>
+<tr>
+<td>9.</td>
+<td>Callum Wilson</td>
+<td>AFC Bournemouth</td>
+<td>England</td>
+<td>14</td>
+</tr>
+<tr>
+<td>10.</td>
+<td>Richarlison</td>
+<td>Everton</td>
+<td>Brazil</td>
+<td>13</td>
+</tr>
+<tr>
+<td>10.</td>
+<td>Raúl Jiménez</td>
+<td>Wolverhampton</td>
+<td>Mexico</td>
+<td>13</td>
+</tr>
+<tr>
+<td>10.</td>
+<td>Alexandre Lacazette</td>
+<td>Arsenal</td>
+<td>France</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#cursor.execute(&quot;DROP TABLE PL_Goals_second;&quot;)</span>
+<span class="c1">#cursor.execute(&quot;DROP TABLE PL_Goals;&quot;)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># creating a table (PL_Goals)</span>
+<span class="n">cm</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE PL_Goals</span>
+<span class="s2">( Standing int NOT NULL,</span>
+<span class="s2">  Name char(50) NOT NULL,</span>
+<span class="s2">  Club char(50),</span>
+<span class="s2">  Nationality char(50),</span>
+<span class="s2">  Goals int</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Inserting-Data">Inserting Data<a class="anchor-link" href="#Inserting-Data">&#182;</a></h2><p>We can use <strong>INSERT INTO</strong> for entering data into the created table.</p>
 
 </div>
 </div>
@@ -13294,15 +13412,23 @@ connection.close()</code></p>
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># entering a row</span>
-<span class="n">sql_command</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
-<span class="s2">    VALUES (Null, &quot;Alan&quot;, &quot;Shearer&quot;, &quot;England&quot;, 260,&quot;1970-08-13&quot;);&quot;&quot;&quot;</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
-
-<span class="c1"># Saving the changes</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="c1"># closing hte file</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Players_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Pierre-Emerick Aubameyang&quot;</span><span class="p">,</span><span class="s2">&quot;Arsenal&quot;</span><span class="p">,</span> <span class="s2">&quot;Gabon&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Sadio Mané&quot;</span><span class="p">,</span> <span class="s2">&quot;Liverpool&quot;</span><span class="p">,</span> <span class="s2">&quot;Senegal&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Mohamed Salah&quot;</span><span class="p">,</span> <span class="s2">&quot;Liverpool&quot;</span><span class="p">,</span> <span class="s2">&quot;Egypt&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Sergio Agüero&quot;</span><span class="p">,</span> <span class="s2">&quot;Manchester City&quot;</span><span class="p">,</span> <span class="s2">&quot;Argentina&quot;</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Jamie Vardy&quot;</span><span class="p">,</span> <span class="s2">&quot;Leicester City&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Harry Kane&quot;</span><span class="p">,</span> <span class="s2">&quot;Tottenham Hotspur&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;Eden Hazard&quot;</span><span class="p">,</span> <span class="s2">&quot;Chelsea&quot;</span><span class="p">,</span> <span class="s2">&quot;Belgium&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Callum Wilson&quot;</span><span class="p">,</span> <span class="s2">&quot;AFC Bournemouth&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Richarlison&quot;</span><span class="p">,</span> <span class="s2">&quot;Everton&quot;</span><span class="p">,</span> <span class="s2">&quot;Brazil&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Raúl Jiménez&quot;</span><span class="p">,</span> <span class="s2">&quot;Wolverhampton&quot;</span><span class="p">,</span> <span class="s2">&quot;Mexico&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Alexandre Lacazette&quot;</span><span class="p">,</span> <span class="s2">&quot;Arsenal&quot;</span><span class="p">,</span> <span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span>
+<span class="c1"># string format</span>
+<span class="n">format_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO PL_Goals (Standing, Name, Club, Nationality, Goals)</span>
+<span class="s2">                VALUES (</span><span class="si">{standing}</span><span class="s2">, &quot;</span><span class="si">{name}</span><span class="s2">&quot;, &quot;</span><span class="si">{club}</span><span class="s2">&quot;, &quot;</span><span class="si">{nationality}</span><span class="s2">&quot;, &quot;</span><span class="si">{goals}</span><span class="s2">&quot;);&quot;&quot;&quot;</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Players_data</span><span class="p">:</span>
+    <span class="n">sql_command</span> <span class="o">=</span> <span class="n">format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">standing</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">club</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nationality</span><span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">goals</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13313,7 +13439,7 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Inserting-multiple-table-rows">Inserting multiple table rows<a class="anchor-link" href="#Inserting-multiple-table-rows">&#182;</a></h2><p>As you noticed, entering table rows by the previous command is not convenient, especially for entering a large number of rows. Therefore, we can enter the data as follows instead.</p>
+<h2 id="Select-From-a-Table">Select From a Table<a class="anchor-link" href="#Select-From-a-Table">&#182;</a></h2><p>To select from a table in SQL, we can use the <strong>SELECT</strong> statement. Let's check what has been entered.</p>
 
 </div>
 </div>
@@ -13323,21 +13449,13 @@ connection.close()</code></p>
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="c1"># Data</span>
-<span class="n">Players_data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="s2">&quot;Wayne&quot;</span><span class="p">,</span> <span class="s2">&quot;Rooney&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="s2">&quot;1985-10-24&quot;</span><span class="p">),</span>
-               <span class="p">(</span><span class="s2">&quot;Andrew&quot;</span><span class="p">,</span> <span class="s2">&quot;Cole&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">187</span><span class="p">,</span> <span class="s2">&quot;1971-10-15&quot;</span><span class="p">),</span>
-               <span class="p">(</span><span class="s2">&quot;Frank&quot;</span><span class="p">,</span> <span class="s2">&quot;Lampard&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">177</span><span class="p">,</span> <span class="s2">&quot;1978-06-20&quot;</span><span class="p">)</span> <span class="p">]</span>
-<span class="c1"># string format</span>
-<span class="n">format_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
-<span class="s2">VALUES (NULL, &quot;</span><span class="si">{first}</span><span class="s2">&quot;, &quot;</span><span class="si">{last}</span><span class="s2">&quot;, &quot;</span><span class="si">{nationality}</span><span class="s2">&quot;, &quot;</span><span class="si">{goals}</span><span class="s2">&quot;, &quot;</span><span class="si">{birthdate}</span><span class="s2">&quot;);&quot;&quot;&quot;</span>
-<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Players_data</span><span class="p">:</span>
-    <span class="n">sql_command</span> <span class="o">=</span> <span class="n">format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">last</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nationality</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">goals</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">birthdate</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
-<span class="c1"># Saving</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Show_Table</span><span class="p">(</span><span class="n">Funname</span><span class="p">):</span>
+    <span class="n">S</span> <span class="o">=</span>   <span class="s2">&quot;SELECT * FROM </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Funname</span><span class="p">)</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+      <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13345,29 +13463,12 @@ connection.close()</code></p>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Reading-a-table">Reading a table<a class="anchor-link" href="#Reading-a-table">&#182;</a></h2><p>Let's see what we have entered in the table. We can use a <strong>for</strong> lop to print all entered rows.</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM Players&quot;</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All rows:&quot;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="k">del</span> <span class="n">row</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;PL_Goals&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13384,11 +13485,17 @@ connection.close()</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>All rows:
-(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
-(2, &#39;Wayne&#39;, &#39;Rooney&#39;, &#39;England&#39;, 208, &#39;1985-10-24&#39;)
-(3, &#39;Andrew&#39;, &#39;Cole&#39;, &#39;England&#39;, 187, &#39;1971-10-15&#39;)
-(4, &#39;Frank&#39;, &#39;Lampard&#39;, &#39;England&#39;, 177, &#39;1978-06-20&#39;)
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
 </pre>
 </div>
 </div>
@@ -13400,7 +13507,7 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Alternatively, we can print a row.</p>
+<p>We can also consider only one column. For exaxple,</p>
 
 </div>
 </div>
@@ -13410,10 +13517,9 @@ connection.close()</code></p>
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM Players&quot;</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One row:&quot;</span><span class="p">)</span>
-<span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> 
-<span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT Name FROM PL_Goals&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">names</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13430,8 +13536,17 @@ connection.close()</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>One row:
-(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
+<pre>(&#39;Pierre-Emerick Aubameyang&#39;,)
+(&#39;Sadio Mané&#39;,)
+(&#39;Mohamed Salah&#39;,)
+(&#39;Sergio Agüero&#39;,)
+(&#39;Jamie Vardy&#39;,)
+(&#39;Harry Kane&#39;,)
+(&#39;Eden Hazard&#39;,)
+(&#39;Callum Wilson&#39;,)
+(&#39;Richarlison&#39;,)
+(&#39;Raúl Jiménez&#39;,)
+(&#39;Alexandre Lacazette&#39;,)
 </pre>
 </div>
 </div>
@@ -13443,7 +13558,7 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We could also print all using a <strong>while</strong> loop as well</p>
+<h2 id="Where">Where<a class="anchor-link" href="#Where">&#182;</a></h2><p>This syntax is used to select data on some condition. For example, we can only select those rows in which <em>Standing=1</em></p>
 
 </div>
 </div>
@@ -13453,11 +13568,9 @@ connection.close()</code></p>
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM Players&quot;</span><span class="p">)</span>
-<span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-<span class="k">while</span> <span class="n">row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-  <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-  <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM PL_Goals WHERE Standing = 1&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13474,10 +13587,9 @@ connection.close()</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
-(2, &#39;Wayne&#39;, &#39;Rooney&#39;, &#39;England&#39;, 208, &#39;1985-10-24&#39;)
-(3, &#39;Andrew&#39;, &#39;Cole&#39;, &#39;England&#39;, 187, &#39;1971-10-15&#39;)
-(4, &#39;Frank&#39;, &#39;Lampard&#39;, &#39;England&#39;, 177, &#39;1978-06-20&#39;)
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
 </pre>
 </div>
 </div>
@@ -13489,7 +13601,7 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Moreover, we can define the following function for showing the table (for later uses).</p>
+<h2 id="Ordering">Ordering<a class="anchor-link" href="#Ordering">&#182;</a></h2><p><strong>ORDER BY</strong> is used to sort the result in <em>ascending</em> or <em>descending</em> order. For example, we can sort the data in ascending order.</p>
 
 </div>
 </div>
@@ -13499,83 +13611,9 @@ connection.close()</code></p>
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Show_Table</span><span class="p">():</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM Players&quot;</span><span class="p">)</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All rows:&quot;</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> 
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-    <span class="k">del</span> <span class="n">row</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Updating-a-table">Updating a table<a class="anchor-link" href="#Updating-a-table">&#182;</a></h3><p>Assume that we are going to enter the following row in our table.</p>
-<table>
-<thead><tr>
-<th>Last Name</th>
-<th>First Name</th>
-<th>Nationality</th>
-<th>Goals</th>
-<th>Birthdate</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Thierry</td>
-<td>Henry</td>
-<td>France</td>
-<td>175</td>
-<td>1977-08-17</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-
-<span class="n">Players_data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="s2">&quot;Thierry&quot;</span><span class="p">,</span> <span class="s2">&quot;Henry&quot;</span><span class="p">,</span> <span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;1977-08-17&quot;</span><span class="p">)]</span>
-               
-<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Players_data</span><span class="p">:</span>
-    <span class="n">format_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
-<span class="s2">    VALUES (NULL, &quot;</span><span class="si">{first}</span><span class="s2">&quot;, &quot;</span><span class="si">{last}</span><span class="s2">&quot;, &quot;</span><span class="si">{nationality}</span><span class="s2">&quot;, &quot;</span><span class="si">{goals}</span><span class="s2">&quot;, &quot;</span><span class="si">{birthdate}</span><span class="s2">&quot;);&quot;&quot;&quot;</span>
-
-    <span class="n">sql_command</span> <span class="o">=</span> <span class="n">format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">last</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nationality</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">goals</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">birthdate</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
-    
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM PL_Goals ORDER BY Name&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rows</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13592,12 +13630,17 @@ connection.close()</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>All rows:
-(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
-(2, &#39;Wayne&#39;, &#39;Rooney&#39;, &#39;England&#39;, 208, &#39;1985-10-24&#39;)
-(3, &#39;Andrew&#39;, &#39;Cole&#39;, &#39;England&#39;, 187, &#39;1971-10-15&#39;)
-(4, &#39;Frank&#39;, &#39;Lampard&#39;, &#39;England&#39;, 177, &#39;1978-06-20&#39;)
-(5, &#39;Thierry&#39;, &#39;Henry&#39;, &#39;France&#39;, 180, &#39;1977-08-17&#39;)
+<pre>(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
 </pre>
 </div>
 </div>
@@ -13609,69 +13652,19 @@ connection.close()</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>However, we entered another value by mistake for goal numbers.</p>
-<table>
-<thead><tr>
-<th>Last Name</th>
-<th>First Name</th>
-<th>Nationality</th>
-<th>Goals</th>
-<th>Birthdate</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Thierry</td>
-<td>Henry</td>
-<td>France</td>
-<td>180</td>
-<td>1977-08-17</td>
-</tr>
-</tbody>
-</table>
-<p>In this case, we can update the table as follows</p>
-<p><code>UPDATE Players
-SET goals =175
-WHERE Rank=5;</code></p>
+<p>Or in Sorting the data in descending order</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="c1"># entering a row</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;UPDATE Players</span>
-<span class="s2">    SET goals =175</span>
-<span class="s2">    WHERE Rank=5;&quot;&quot;&quot;</span><span class="p">)</span>
-   
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As a result, the table has been updated as follows,</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM PL_Goals ORDER BY Name DESC&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rows</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13688,12 +13681,17 @@ WHERE Rank=5;</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>All rows:
-(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
-(2, &#39;Wayne&#39;, &#39;Rooney&#39;, &#39;England&#39;, 208, &#39;1985-10-24&#39;)
-(3, &#39;Andrew&#39;, &#39;Cole&#39;, &#39;England&#39;, 187, &#39;1971-10-15&#39;)
-(4, &#39;Frank&#39;, &#39;Lampard&#39;, &#39;England&#39;, 177, &#39;1978-06-20&#39;)
-(5, &#39;Thierry&#39;, &#39;Henry&#39;, &#39;France&#39;, 175, &#39;1977-08-17&#39;)
+<pre>(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
 </pre>
 </div>
 </div>
@@ -13713,14 +13711,10 @@ WHERE Rank=5;</code></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE new_Players AS SELECT * FROM Players;&quot;</span><span class="p">)</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE cp_PL_Goals AS SELECT * FROM PL_Goals;&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13728,53 +13722,12 @@ WHERE Rank=5;</code></p>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Deleting-records-in-a-table">Deleting records in a table<a class="anchor-link" href="#Deleting-records-in-a-table">&#182;</a></h2><h3 id="Deleting-a-row">Deleting a row<a class="anchor-link" href="#Deleting-a-row">&#182;</a></h3><p>syntax
-<code>DELETE FROM table_name WHERE condition;</code></p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;DELETE FROM new_Players WHERE Last_Name=&quot;Henry&quot;;&quot;&quot;&quot;</span><span class="p">)</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Showing the <em>new_Player</em> table</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM new_Players&quot;</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All rows:&quot;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="k">del</span> <span class="n">row</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;cp_PL_Goals&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13791,11 +13744,17 @@ WHERE Rank=5;</code></p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>All rows:
-(1, &#39;Alan&#39;, &#39;Shearer&#39;, &#39;England&#39;, 260, &#39;1970-08-13&#39;)
-(2, &#39;Wayne&#39;, &#39;Rooney&#39;, &#39;England&#39;, 208, &#39;1985-10-24&#39;)
-(3, &#39;Andrew&#39;, &#39;Cole&#39;, &#39;England&#39;, 187, &#39;1971-10-15&#39;)
-(4, &#39;Frank&#39;, &#39;Lampard&#39;, &#39;England&#39;, 177, &#39;1978-06-20&#39;)
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
 </pre>
 </div>
 </div>
@@ -13807,16 +13766,215 @@ WHERE Rank=5;</code></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As can be seen, the last row is deleted.</p>
+<h2 id="Deleting">Deleting<a class="anchor-link" href="#Deleting">&#182;</a></h2><p>We can <strong>DELETE</strong> to delete the records from the table. For example, let's delete all data where Standing=10.</p>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM cp_PL_Goals WHERE Standing = 10&quot;</span><span class="p">)</span>
+<span class="c1"># saving</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Deleting-whole-table">Deleting whole table<a class="anchor-link" href="#Deleting-whole-table">&#182;</a></h3><p>syntax
-<code>DROP TABLE table_name;</code></p>
+<p>Thus,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;cp_PL_Goals&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that, we have two tables inside of <strong>Football</strong> database, i.e.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SHOW TABLES FROM Football&quot;</span><span class="p">)</span>
+<span class="c1">## printing all</span>
+<span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(&#39;cp_pl_goals&#39;,)
+(&#39;pl_goals&#39;,)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In case that we are interested in deleting <em>cp_PL_Goals</em> table, we can try</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE cp_PL_Goals;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It can be seen that</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SHOW TABLES FROM Football&quot;</span><span class="p">)</span>
+<span class="c1">## printing all</span>
+<span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(&#39;pl_goals&#39;,)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Updating-data">Updating data<a class="anchor-link" href="#Updating-data">&#182;</a></h2><p>First, let's add the following rows,</p>
+<table>
+<thead><tr>
+<th>Standing</th>
+<th>Player</th>
+<th>Club</th>
+<th>Nationality</th>
+<th>Goals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>Glenn Murray</td>
+<td>Brighton and Hove Albion</td>
+<td>England</td>
+<td>13</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Paul Pogba</td>
+<td>Manchester United</td>
+<td>France</td>
+<td>13</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Gylfi Sigurdsson</td>
+<td>Everton</td>
+<td>Iceland</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -13826,9 +13984,240 @@ WHERE Rank=5;</code></p>
 <div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mydatabase.db&quot;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE new_Players;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Players_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Glenn Murray&quot;</span><span class="p">,</span> <span class="s2">&quot;Brighton and Hove Albion&quot;</span><span class="p">,</span> <span class="s2">&quot;England&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Paul Pogba&quot;</span><span class="p">,</span> <span class="s2">&quot;Manchester United&quot;</span><span class="p">,</span> <span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Gylfi Sigurdsson&quot;</span><span class="p">,</span> <span class="s2">&quot;Everton&quot;</span><span class="p">,</span> <span class="s2">&quot;Iceland&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Players_data</span><span class="p">:</span>
+    <span class="n">sql_command</span> <span class="o">=</span> <span class="n">format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">standing</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">club</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">nationality</span><span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">goals</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_command</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;PL_Goals&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
+(10, &#39;Glenn Murray&#39;, &#39;Brighton and Hove Albion&#39;, &#39;England&#39;, 13)
+(10, &#39;Paul Pogba&#39;, &#39;Manchester United&#39;, &#39;France&#39;, 13)
+(10, &#39;Gylfi Sigurdsson&#39;, &#39;Everton&#39;, &#39;Iceland&#39;, 13)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, we can update any of rows! For example,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;UPDATE PL_Goals SET Standing =11 WHERE Goals=13;&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This gives,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;PL_Goals&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(11, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(11, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(11, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
+(11, &#39;Glenn Murray&#39;, &#39;Brighton and Hove Albion&#39;, &#39;England&#39;, 13)
+(11, &#39;Paul Pogba&#39;, &#39;Manchester United&#39;, &#39;France&#39;, 13)
+(11, &#39;Gylfi Sigurdsson&#39;, &#39;Everton&#39;, &#39;Iceland&#39;, 13)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To correct the information back, we can reverse the process by</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;UPDATE PL_Goals SET Standing =10 WHERE Goals=13;&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">Show_Table</span><span class="p">(</span><span class="s2">&quot;PL_Goals&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+(6, &#39;Harry Kane&#39;, &#39;Tottenham Hotspur&#39;, &#39;England&#39;, 17)
+(8, &#39;Eden Hazard&#39;, &#39;Chelsea&#39;, &#39;Belgium&#39;, 16)
+(9, &#39;Callum Wilson&#39;, &#39;AFC Bournemouth&#39;, &#39;England&#39;, 14)
+(10, &#39;Richarlison&#39;, &#39;Everton&#39;, &#39;Brazil&#39;, 13)
+(10, &#39;Raúl Jiménez&#39;, &#39;Wolverhampton&#39;, &#39;Mexico&#39;, 13)
+(10, &#39;Alexandre Lacazette&#39;, &#39;Arsenal&#39;, &#39;France&#39;, 13)
+(10, &#39;Glenn Murray&#39;, &#39;Brighton and Hove Albion&#39;, &#39;England&#39;, 13)
+(10, &#39;Paul Pogba&#39;, &#39;Manchester United&#39;, &#39;France&#39;, 13)
+(10, &#39;Gylfi Sigurdsson&#39;, &#39;Everton&#39;, &#39;Iceland&#39;, 13)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Limit">Limit<a class="anchor-link" href="#Limit">&#182;</a></h2><p>Wec can limit the number of records returned from a query by using Limit syntax:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM PL_Goals LIMIT 5&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(1, &#39;Pierre-Emerick Aubameyang&#39;, &#39;Arsenal&#39;, &#39;Gabon&#39;, 22)
+(1, &#39;Sadio Mané&#39;, &#39;Liverpool&#39;, &#39;Senegal&#39;, 22)
+(1, &#39;Mohamed Salah&#39;, &#39;Liverpool&#39;, &#39;Egypt&#39;, 22)
+(4, &#39;Sergio Agüero&#39;, &#39;Manchester City&#39;, &#39;Argentina&#39;, 21)
+(5, &#39;Jamie Vardy&#39;, &#39;Leicester City&#39;, &#39;England&#39;, 18)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># saving and closing the current connection</span>
 <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
