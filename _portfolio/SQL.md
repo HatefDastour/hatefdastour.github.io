@@ -5,6 +5,6 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Getting Started with Python](/files/Getting_Started.html)
-* [Working with SQL Tables in Python](/files/SQL/Python_SQL_Tables.html)
-* [SQL and Pandas](/files/SQL/SQL_Pandas.html)
+* [Python sqlite3](#/files/SQL/Python_sqlite3.html)
+* [SQL_Pandas](#/files/SQL/SQL_Pandas.html)
+* [MySQL and Python](#/files/SQL/MySQL_and_Python.html)
