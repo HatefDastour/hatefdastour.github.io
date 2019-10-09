@@ -14,6 +14,9 @@ collection: portfolio
 ### Preprocessing
 * [Preprocessing Data in Python](/files/Data_Processing/Preprocessing_Data_in_Python.html)
 
+###
+* [The Importance of Resampling and Regularization](/files/Data_Processing/Resampling_and_Regularization.html)
+
 ### Analyzing
 * [Getting Started with Python](/files/Getting_Started.html)
 * [Linear Regression](/files/Statistical_Learning/Linear_Regression.html)
