@@ -15,4 +15,4 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 * [Linear Discriminant Analysis (LDA)](/files/Statistical_Learning/Linear_Discriminant_Analysis.html)
 * [A Comparison of Classification Methods (LDA, QDA, and KNN)](/files/Statistical_Learning/A_Comparison_of_Classification_Methods.html)
 * [Resampling Methods (CV, Bootstrap,...)](/files/Statistical_Learning/Resampling_Methods.html)
-* [Linear Model Selection and_Regularization](/files/Linear_Model_Selection_and_Regularization.html)
+* [Linear Model Selection and_Regularization](/files/Statistical_Learning/Linear_Model_Selection_and_Regularization.html)
