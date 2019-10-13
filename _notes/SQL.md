@@ -1,7 +1,7 @@
 ---
 title: "SQL"
 excerpt: "SQL and Python"
-collection: portfolio
+collection: notes
 ---
 ## Table of contents
 

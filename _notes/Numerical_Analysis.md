@@ -1,7 +1,7 @@
 ---
 title: "Numerical Analysis"
 excerpt: "Numerical methods with Python"
-collection: portfolio
+collection: notes
 ---
 ## Table of contents
 

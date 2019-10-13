@@ -1,7 +1,7 @@
 ---
 title: "Finite Difference Method"
 excerpt: "Finite Difference Method for solving PDEs"
-collection: portfolio
+collection: notes
 ---
 ## Table of contents
 
