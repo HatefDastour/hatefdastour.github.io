@@ -18,4 +18,4 @@ collection: notes
 ### Regularization and Data Smoothing
 * [The Importance of Resampling and Regularization](/notes/Data_Processing/Resampling_and_Regularization.html)
 
-See also [Statistical Learning](https://hatefdastour.github.io/portfolio/Statistical_Learning/)
+See also [Statistical Learning](/notes/Statistical_Learning/) and [Portfolio](/portfolio/).
