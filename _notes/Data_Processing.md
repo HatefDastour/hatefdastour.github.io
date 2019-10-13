@@ -1,7 +1,7 @@
 ---
 title: "Data Processing"
 excerpt: "Some Data Processing Tools in Python"
-collection: mynotes
+collection: notes
 ---
 ## Table of contents
 
