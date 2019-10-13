@@ -7,7 +7,7 @@ collection: notes
 
 In each topic, please refer to [*An Introduction to Statistical Learning*](https://link.springer.com/book/10.1007/978-1-4614-7138-7) for full text.
 
-* [Getting Started with Python](/notes/Getting_Started.html)
+* [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Linear Regression](/notes/Statistical_Learning/Linear_Regression.html)
 * [Linear Regression (R - Notebook)](/notes/Statistical_Learning/Linear_Regression_R.html)
 * [Logistic Regression](/notes/Statistical_Learning/Logistic_Regression.html)

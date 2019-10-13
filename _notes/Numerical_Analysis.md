@@ -5,7 +5,7 @@ collection: notes
 ---
 ## Table of contents
 
-* [Getting Started with Python](/notes/Getting_Started.html)
+* [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Root-finding algorithms](/notes/Numerical_Analysis/Root_finding_algorithms.html)
 * [Fixed-point iteration](/notes/Numerical_Analysis/Fixed_point_iteration.html)
 * [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)

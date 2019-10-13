@@ -6,7 +6,7 @@ collection: notes
 ## Table of contents
 
 ### Python
-* [Getting Started with Python](/notes/Getting_Started.html)
+* [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 
 ### Image and Signal Processing
 * [Image Processing using Robust PCA](/notes/Data_Processing/IP_PCA.html)
