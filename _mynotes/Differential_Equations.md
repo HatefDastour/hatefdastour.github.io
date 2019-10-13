@@ -1,7 +1,7 @@
 ---
 title: "Differential Equations"
 excerpt: "Differential Equations using Python"
-collection: notes
+collection: mynotes
 ---
 
 ## Table of contents

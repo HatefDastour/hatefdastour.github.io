@@ -1,7 +1,7 @@
 ---
 title: "Statistical Learning"
 excerpt: "Statistical Learning with Python and R"
-collection: notes
+collection: mynotes
 ---
 ## Table of contents
 

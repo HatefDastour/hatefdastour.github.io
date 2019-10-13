@@ -1,7 +1,7 @@
 ---
 title: "Numerical Analysis"
 excerpt: "Numerical methods with Python"
-collection: notes
+collection: mynotes
 ---
 ## Table of contents
 

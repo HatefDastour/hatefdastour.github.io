@@ -1,7 +1,7 @@
 ---
 title: "SQL"
 excerpt: "SQL and Python"
-collection: notes
+collection: mynotes
 ---
 ## Table of contents
 
