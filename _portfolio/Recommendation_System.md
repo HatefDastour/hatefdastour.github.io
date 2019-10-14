@@ -1,6 +1,6 @@
 ---
 title: "Recommendation System"
-excerpt: "Recommendation System"
+excerpt: "Recommendation System for Movies, Music,..."
 collection: portfolio
 ---
 ## Table of contents
