@@ -8,3 +8,4 @@ collection: portfolio
 * [Movie Recommendation System](/portfolio/recommendation_system/Movie_Recommendation_System.html)
 * Movie Recommendation System using Kaggle Data
 	* [Movie Recommendation System using Kaggle Data (Preprocessing)](/portfolio/recommendation_system/Movie_Recommendation_system_Preprocessing.html)
+	* [Movie Recommendation System using Kaggle Data (Modeling)](/portfolio/recommendation_system/Movie_Recommendation_system_Modeling.html)
