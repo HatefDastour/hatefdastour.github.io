@@ -9,3 +9,6 @@ collection: portfolio
 * Starbucks Offer Personalizations
 	* [Starbucks Offer Personalizations (Preprocessing and Analyzing)](/portfolio/machine_learning/Starbucks_Offer_Personalizations_Preprocessing_and_Analyzing.html)
 	* [Starbucks Offer Personalizations (Modeling)](/portfolio/machine_learning/Starbucks_Offer_Personalizations_Modelling.html)
+* Airbnb Listings
+	* [Airbnb Listings (Preprocessing)](/portfolio/analyzing_modeling/Airbnb_Listings_Preprocessing.html)
+	* [Airbnb Listings (Analyzing and Modeling)](/portfolio/analyzing_modeling/Airbnb_Listings_Modeling.html)
