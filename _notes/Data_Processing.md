@@ -15,7 +15,8 @@ collection: notes
 ### Preprocessing
 * [Preprocessing Data in Python](/notes/Data_Processing/Preprocessing_Data_in_Python.html)
 
-### Regularization and Data Smoothing
+### Supervised Learning
 * [The Importance of Resampling and Regularization](/notes/Data_Processing/Resampling_and_Regularization.html)
+* [Supervised Learning Regression Models](/notes/Data_Processing/Supervised_Learning_Regression_Models.html)
 
 See also [Statistical Learning](/notes/Statistical_Learning/) and [Portfolio](/portfolio/).
