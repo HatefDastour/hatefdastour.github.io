@@ -15,7 +15,7 @@ Education
 ======
 * B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
 * M.S. in Applied Mathematics, Damghan University, Iran, 2012
-* Ph.D in Mathematics and Statistics, University of Calgary, Canada, January 2020 (expected)
+* Ph.D in Mathematics and Statistics, University of Calgary, Canada, December 2019
 
 Teaching
 ======
