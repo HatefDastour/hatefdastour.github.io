@@ -5,4 +5,4 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Black Friday Stacked Model](/portfolio/exploratory_data_analysis/statistical_modeling/black_friday_stacked_model.html)
+* [Black Friday Stacked Model](/portfolio/statistical_modeling/black_friday_stacked_model.html)
