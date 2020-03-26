@@ -1,6 +1,6 @@
 ---
-title: "Data Processing"
-excerpt: "Some Data Processing Tools in Python"
+title: "Data Science"
+excerpt: "Data Science Tools in Python"
 collection: notes
 ---
 ## Table of contents

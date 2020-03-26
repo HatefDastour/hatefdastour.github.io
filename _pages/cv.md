@@ -27,7 +27,7 @@ Research Experience
 ======
 * Graduate Research Assistant, January 2016 to September 2016
   * Department of Mathematics and Statistics, University of Calgary
-  * Supervisor: [Dr. Wenyuan Liao](http://contacts.ucalgary.ca/info/math/profiles/101-152848)
+  * Advisor: [Dr. Wenyuan Liao](http://contacts.ucalgary.ca/info/math/profiles/101-152848)
 
 * Research Assistant, February 2012 to May 2015
   * School of Mathematics, Iran University of Science and Technology
@@ -35,7 +35,7 @@ Research Experience
   
 * Graduate Research Assistant, October 2010 to August 2012
   * School of Mathematics and Computer science, Damghan University
-  * Supervisor: [Dr. Morteza Garshasbi](https://www.researchgate.net/profile/Morteza_Garshasbi)
+  * Advisor: [Dr. Morteza Garshasbi](https://www.researchgate.net/profile/Morteza_Garshasbi)
   
 Computer Skills
 ======
