@@ -13017,25 +13017,6 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
-<style type="text/css">
-    
-
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            /*preferredFont: "TeX",*/
-            /*availableFonts: ["TeX", "STIX"],*/
-            styles: {
-                scale: 100,
-                ".MathJax_Display": {
-                    "font-size": "100%",
-                }
-            }
-        }
-    });
-</script>
-    
-    </style>
 
 
 <style type="text/css">
@@ -13102,9 +13083,6 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
-
-<span class="c1"># Copy</span>
-<span class="kn">import</span> <span class="nn">copy</span> 
 
 <span class="c1"># Imputing Data</span>
 <span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
@@ -13200,7 +13178,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[&#39;ROLL_YEAR&#39;, &#39;ROLL_NUMBER&#39;, &#39;ADDRESS&#39;, &#39;ASSESSED_VALUE&#39;, &#39;ASSESSMENT_CLASS&#39;, &#39;ASSESSMENT_CLASS_DESCRIPTION&#39;, &#39;RE_ASSESSED_VALUE&#39;, &#39;NR_ASSESSED_VALUE&#39;, &#39;FL_ASSESSED_VALUE&#39;, &#39;COMM_CODE&#39;, &#39;COMM_NAME&#39;, &#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;location&#39;, &#39;UNIQUE_KEY&#39;]
+<pre>[&#39;ROLL_YEAR&#39;, &#39;ROLL_NUMBER&#39;, &#39;ADDRESS&#39;, &#39;ASSESSED_VALUE&#39;, &#39;ASSESSMENT_CLASS&#39;, &#39;ASSESSMENT_CLASS_DESCRIPTION&#39;, &#39;RE_ASSESSED_VALUE&#39;, &#39;NR_ASSESSED_VALUE&#39;, &#39;FL_ASSESSED_VALUE&#39;, &#39;COMM_CODE&#39;, &#39;COMM_NAME&#39;, &#39;LATITUDE&#39;, &#39;LONGITUDE&#39;, &#39;location&#39;, &#39;UNIQUE_KEY&#39;, &#39;YEAR_OF_CONSTRUCTION&#39;]
 </pre>
 </div>
 </div>
@@ -13214,7 +13192,26 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Number of NaN Values&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Data_info</span><span class="p">(</span><span class="n">Inp</span><span class="p">,</span> <span class="n">Only_NaN</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">Out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Inp</span><span class="o">.</span><span class="n">dtypes</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Data Type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Data Type&#39;</span><span class="p">])</span>
+    <span class="n">Out</span> <span class="o">=</span> <span class="n">Out</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Inp</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Number of NaN Values&#39;</span><span class="p">]),</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+    <span class="n">Out</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">Out</span><span class="p">[</span><span class="s1">&#39;Number of NaN Values&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">Inp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Only_NaN</span><span class="p">:</span>
+        <span class="n">Out</span> <span class="o">=</span> <span class="n">Out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">Out</span><span class="p">[</span><span class="s1">&#39;Number of NaN Values&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Out</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_info</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13227,7 +13224,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -13250,69 +13247,77 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Data Type</th>
       <th>Number of NaN Values</th>
+      <th>Percentage</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>ROLL_YEAR</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>ROLL_NUMBER</th>
-      <td>0</td>
-    </tr>
-    <tr>
       <th>ADDRESS</th>
+      <td>object</td>
       <td>186</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>ASSESSED_VALUE</th>
-      <td>1855</td>
-    </tr>
-    <tr>
-      <th>ASSESSMENT_CLASS</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>ASSESSMENT_CLASS_DESCRIPTION</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>RE_ASSESSED_VALUE</th>
-      <td>320420</td>
-    </tr>
-    <tr>
-      <th>NR_ASSESSED_VALUE</th>
-      <td>6448017</td>
-    </tr>
-    <tr>
-      <th>FL_ASSESSED_VALUE</th>
-      <td>6756853</td>
+      <td>float64</td>
+      <td>1860</td>
+      <td>0.03</td>
     </tr>
     <tr>
       <th>COMM_CODE</th>
+      <td>object</td>
       <td>2</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>COMM_NAME</th>
+      <td>object</td>
       <td>71</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>FL_ASSESSED_VALUE</th>
+      <td>float64</td>
+      <td>7302699</td>
+      <td>99.86</td>
     </tr>
     <tr>
       <th>LATITUDE</th>
-      <td>22279</td>
+      <td>float64</td>
+      <td>31464</td>
+      <td>0.43</td>
     </tr>
     <tr>
       <th>LONGITUDE</th>
-      <td>22279</td>
+      <td>float64</td>
+      <td>31464</td>
+      <td>0.43</td>
+    </tr>
+    <tr>
+      <th>NR_ASSESSED_VALUE</th>
+      <td>float64</td>
+      <td>6969645</td>
+      <td>95.31</td>
+    </tr>
+    <tr>
+      <th>RE_ASSESSED_VALUE</th>
+      <td>float64</td>
+      <td>344734</td>
+      <td>4.71</td>
+    </tr>
+    <tr>
+      <th>YEAR_OF_CONSTRUCTION</th>
+      <td>float64</td>
+      <td>6792235</td>
+      <td>92.88</td>
     </tr>
     <tr>
       <th>location</th>
-      <td>22279</td>
-    </tr>
-    <tr>
-      <th>UNIQUE_KEY</th>
-      <td>0</td>
+      <td>object</td>
+      <td>31464</td>
+      <td>0.43</td>
     </tr>
   </tbody>
 </table>
@@ -13342,15 +13347,15 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Search_Columns</span><span class="p">(</span><span class="n">Inp</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Search_Columns</span><span class="p">(</span><span class="n">Inp</span><span class="p">,</span> <span class="n">Columns</span> <span class="o">=</span> <span class="n">Columns_list</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Search for specific value (Inp) in the column list &#39;&#39;&#39;</span>
     <span class="n">mylist</span><span class="o">=</span><span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Columns_list</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">Columns_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Inp</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">mylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Columns_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Columns</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">Columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">Inp</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">mylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Columns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">mylist</span>
 </pre></div>
 
@@ -13362,14 +13367,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>First off, let's create a DataFrame from rows that <strong>Assessed Value</strong> is <strong>NaN</strong>.</p>
+<p>First off, let's create a DataFrame from rows that <strong>Assessed Value</strong>s are <strong>NaN</strong>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Search_Columns</span><span class="p">(</span><span class="s1">&#39;VALUE&#39;</span><span class="p">)</span>
@@ -13387,7 +13392,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -13418,35 +13423,35 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>517671</th>
+      <th>578475</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>528056</th>
+      <th>578476</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>528060</th>
+      <th>651608</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>528061</th>
+      <th>752796</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>528062</th>
+      <th>752797</th>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13473,7 +13478,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Null</span><span class="p">[</span><span class="n">Null</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
@@ -13489,7 +13494,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
@@ -13540,7 +13545,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ASSESSED_VALUE&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -13568,137 +13573,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Search_Columns</span><span class="p">(</span><span class="s1">&#39;COMM&#39;</span><span class="p">)</span>
 <span class="n">mylist1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;COMM_NAME&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>COMM_CODE</th>
-      <th>COMM_NAME</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1537788</th>
-      <td>12E</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1538036</th>
-      <td>12E</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1538125</th>
-      <td>12E</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1538263</th>
-      <td>12E</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1538386</th>
-      <td>12E</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>5785191</th>
-      <td>06B</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6113118</th>
-      <td>14U</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6114267</th>
-      <td>14U</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6121987</th>
-      <td>06B</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6131851</th>
-      <td>14U</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>71 rows × 2 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We can use the information on Community Name Column and fill Community Code column.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Temp</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">[</span><span class="n">Temp</span><span class="o">.</span><span class="n">COMM_CODE</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
-<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;COMM_CODE&#39;</span><span class="p">)</span>
-<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">[</span><span class="n">mylist</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">Temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13740,29 +13620,154 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
+      <th>1759602</th>
+      <td>12E</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1774800</th>
+      <td>12E</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1775521</th>
+      <td>12E</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1776273</th>
+      <td>12E</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1779952</th>
+      <td>12E</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6038643</th>
+      <td>06B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6359859</th>
+      <td>14U</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6365728</th>
+      <td>14U</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6368191</th>
+      <td>06B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6382838</th>
+      <td>14U</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>71 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can use the information on Community Name Column and fill Community Code column.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Temp</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">[</span><span class="n">Temp</span><span class="o">.</span><span class="n">COMM_CODE</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;COMM_CODE&#39;</span><span class="p">)</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">[</span><span class="n">mylist</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>COMM_CODE</th>
+      <th>COMM_NAME</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
       <th>0</th>
-      <td>CIA</td>
-      <td>CALGARY INTERNATIONAL AIRPORT</td>
+      <td>DIS</td>
+      <td>DISCOVERY RIDGE</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>SRI</td>
-      <td>SADDLE RIDGE INDUSTRIAL</td>
+      <td>BRI</td>
+      <td>BRIDLEWOOD</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>SAD</td>
-      <td>SADDLE RIDGE</td>
+      <td>BOW</td>
+      <td>BOWNESS</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>WSP</td>
-      <td>WEST SPRINGS</td>
+      <td>CPF</td>
+      <td>COPPERFIELD</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>MRT</td>
-      <td>MARTINDALE</td>
+      <td>CRA</td>
+      <td>CRANSTON</td>
     </tr>
   </tbody>
 </table>
@@ -13785,7 +13790,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Counter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -13835,103 +13840,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[12]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>COMM_CODE</th>
-      <th>COMM_NAME</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1537788</th>
-      <td>12E</td>
-      <td>12E</td>
-    </tr>
-    <tr>
-      <th>1538036</th>
-      <td>12E</td>
-      <td>12E</td>
-    </tr>
-    <tr>
-      <th>1538125</th>
-      <td>12E</td>
-      <td>12E</td>
-    </tr>
-    <tr>
-      <th>1538263</th>
-      <td>12E</td>
-      <td>12E</td>
-    </tr>
-    <tr>
-      <th>1538386</th>
-      <td>12E</td>
-      <td>12E</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>However,</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Search_Columns</span><span class="p">(</span><span class="s1">&#39;COMM&#39;</span><span class="p">)</span>
-<span class="n">mylist1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;COMM_NAME&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">Temp</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13973,14 +13885,29 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>4327764</th>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>1759602</th>
+      <td>12E</td>
+      <td>12E</td>
     </tr>
     <tr>
-      <th>4724088</th>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>1774800</th>
+      <td>12E</td>
+      <td>12E</td>
+    </tr>
+    <tr>
+      <th>1775521</th>
+      <td>12E</td>
+      <td>12E</td>
+    </tr>
+    <tr>
+      <th>1776273</th>
+      <td>12E</td>
+      <td>12E</td>
+    </tr>
+    <tr>
+      <th>1779952</th>
+      <td>12E</td>
+      <td>12E</td>
     </tr>
   </tbody>
 </table>
@@ -13996,7 +13923,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>and we label these rows as Others</p>
+<p>However,</p>
 
 </div>
 </div>
@@ -14006,8 +13933,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Other&#39;</span>
-<span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Other&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Search_Columns</span><span class="p">(</span><span class="s1">&#39;COMM&#39;</span><span class="p">)</span>
+<span class="n">mylist1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;COMM_NAME&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">Temp</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="s1">&#39;LATITUDE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span>
 </pre></div>
 
@@ -14050,12 +13978,89 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>4327764</th>
+      <th>4553192</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4972776</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>and we label these rows as Others</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Other&#39;</span>
+<span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Other&#39;</span>
+<span class="n">Data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mylist1</span><span class="p">,:][</span><span class="n">mylist</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>COMM_CODE</th>
+      <th>COMM_NAME</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4553192</th>
       <td>Other</td>
       <td>Other</td>
     </tr>
     <tr>
-      <th>4724088</th>
+      <th>4972776</th>
       <td>Other</td>
       <td>Other</td>
     </tr>
@@ -14080,7 +14085,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;COMM_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;COMM_NAME&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
@@ -14108,7 +14113,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -14131,14 +14136,14 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The number of missing values: 22277
+<pre>The number of missing values: 31457
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -14170,41 +14175,41 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>131</th>
-      <td>202016192</td>
-      <td>47V 142 89 ST SW</td>
+      <th>65</th>
+      <td>54009493</td>
+      <td>3030 3 AV NE</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>856</th>
-      <td>202500559</td>
-      <td>171V 214 SHERWOOD SQ NW</td>
+      <th>461</th>
+      <td>202745584</td>
+      <td>202 CENTRE ST SE</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>889</th>
-      <td>202506515</td>
-      <td>65 30 AV SW</td>
+      <th>1746</th>
+      <td>202651097</td>
+      <td>1217 CENTRE ST NW</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1693</th>
-      <td>202540308</td>
-      <td>417 20 WALGROVE WK SE</td>
+      <th>1812</th>
+      <td>202735593</td>
+      <td>363 SAGE HILL CI NW</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2250</th>
-      <td>202571543</td>
-      <td>2204 310 12 AV SW</td>
+      <th>16662</th>
+      <td>16109613</td>
+      <td>1705 RANCHLANDS WY NW</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -14230,7 +14235,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">imp</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;most_frequent&#39;</span><span class="p">)</span>
@@ -14296,7 +14301,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -14326,7 +14331,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Community_Boundaries</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;Calgary/Community_Boundaries.geojson&#39;</span><span class="p">)</span>
@@ -14345,7 +14350,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Community_Boundaries</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
@@ -14361,7 +14366,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[20]:</div>
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
@@ -14459,7 +14464,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Temp</span> <span class="o">=</span> <span class="n">Community_Boundaries</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
@@ -14500,13 +14505,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mylist</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">Comm_Code</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">Temp</span> <span class="o">=</span> <span class="n">Temp</span><span class="p">[</span><span class="n">Temp</span><span class="o">.</span><span class="n">Comm_Code</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">mylist</span><span class="p">)]</span>
 <span class="n">Temp1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span><span class="s1">&#39;Comm_Code&#39;</span><span class="p">)</span>
-<span class="n">Data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">Temp1</span><span class="p">)</span>  
+<span class="n">Data</span> <span class="o">=</span> <span class="n">Temp1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="k">del</span> <span class="n">Temp</span><span class="p">,</span> <span class="n">Temp1</span>
 </pre></div>
 
@@ -14524,200 +14529,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[23]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Roll_Year</th>
-      <th>Roll_Number</th>
-      <th>Address</th>
-      <th>Assessed_Value</th>
-      <th>Assessment_Class</th>
-      <th>Assessment_Class_Description</th>
-      <th>Re_Assessed_Value</th>
-      <th>Nr_Assessed_Value</th>
-      <th>Fl_Assessed_Value</th>
-      <th>Comm_Code</th>
-      <th>Comm_Name</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th>Location</th>
-      <th>Unique_Key</th>
-      <th>Comm_Structure</th>
-      <th>Sector</th>
-      <th>Class_Code</th>
-      <th>Srg</th>
-      <th>Class</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2019</td>
-      <td>2004505</td>
-      <td>3420 80 AV NE</td>
-      <td>963500.0</td>
-      <td>NR</td>
-      <td>Non-residential</td>
-      <td>NaN</td>
-      <td>963500.0</td>
-      <td>NaN</td>
-      <td>CIA</td>
-      <td>Calgary International Airport</td>
-      <td>51.125707</td>
-      <td>-113.985934</td>
-      <td>(51.1257068226041, -113.985933504339)</td>
-      <td>2019002004505</td>
-      <td>Other</td>
-      <td>Northeast</td>
-      <td>2</td>
-      <td>N/A</td>
-      <td>Industrial</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2019</td>
-      <td>200613560</td>
-      <td>8063 22  ST NE</td>
-      <td>3160000.0</td>
-      <td>NR</td>
-      <td>Non-residential</td>
-      <td>NaN</td>
-      <td>3160000.0</td>
-      <td>NaN</td>
-      <td>CIA</td>
-      <td>Calgary International Airport</td>
-      <td>51.123612</td>
-      <td>-114.011797</td>
-      <td>(51.1236116266249, -114.011796685429)</td>
-      <td>2019200613560</td>
-      <td>Other</td>
-      <td>Northeast</td>
-      <td>2</td>
-      <td>N/A</td>
-      <td>Industrial</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2019</td>
-      <td>200613578</td>
-      <td>24 AERO DR NE</td>
-      <td>11690000.0</td>
-      <td>NR</td>
-      <td>Non-residential</td>
-      <td>NaN</td>
-      <td>11690000.0</td>
-      <td>NaN</td>
-      <td>CIA</td>
-      <td>Calgary International Airport</td>
-      <td>51.123612</td>
-      <td>-114.011797</td>
-      <td>(51.1236116266249, -114.011796685429)</td>
-      <td>2019200613578</td>
-      <td>Other</td>
-      <td>Northeast</td>
-      <td>2</td>
-      <td>N/A</td>
-      <td>Industrial</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2019</td>
-      <td>200693448</td>
-      <td>37 AERO DR NE</td>
-      <td>11450000.0</td>
-      <td>NR</td>
-      <td>Non-residential</td>
-      <td>NaN</td>
-      <td>11450000.0</td>
-      <td>NaN</td>
-      <td>CIA</td>
-      <td>Calgary International Airport</td>
-      <td>51.123612</td>
-      <td>-114.011797</td>
-      <td>(51.1236116266249, -114.011796685429)</td>
-      <td>2019200693448</td>
-      <td>Other</td>
-      <td>Northeast</td>
-      <td>2</td>
-      <td>N/A</td>
-      <td>Industrial</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2019</td>
-      <td>200929172</td>
-      <td>1902 MCCALL LD NE</td>
-      <td>3010000.0</td>
-      <td>NR</td>
-      <td>Non-residential</td>
-      <td>NaN</td>
-      <td>3010000.0</td>
-      <td>NaN</td>
-      <td>CIA</td>
-      <td>Calgary International Airport</td>
-      <td>51.123612</td>
-      <td>-114.011797</td>
-      <td>(51.1236116266249, -114.011796685429)</td>
-      <td>2019200929172</td>
-      <td>Other</td>
-      <td>Northeast</td>
-      <td>2</td>
-      <td>N/A</td>
-      <td>Industrial</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Number of NaN Values&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -14753,89 +14568,250 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Number of NaN Values</th>
+      <th>Roll_Year</th>
+      <th>Roll_Number</th>
+      <th>Address</th>
+      <th>Assessed_Value</th>
+      <th>Assessment_Class</th>
+      <th>Assessment_Class_Description</th>
+      <th>Re_Assessed_Value</th>
+      <th>Nr_Assessed_Value</th>
+      <th>Fl_Assessed_Value</th>
+      <th>Comm_Code</th>
+      <th>...</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Location</th>
+      <th>Unique_Key</th>
+      <th>Year_Of_Construction</th>
+      <th>Comm_Structure</th>
+      <th>Sector</th>
+      <th>Class_Code</th>
+      <th>Srg</th>
+      <th>Class</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>Roll_Year</th>
-      <td>0</td>
+      <th>0</th>
+      <td>2019</td>
+      <td>200483568</td>
+      <td>326 DISCOVERY RIDGE WY SW</td>
+      <td>695000.0</td>
+      <td>RE</td>
+      <td>Residential</td>
+      <td>695000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>DIS</td>
+      <td>...</td>
+      <td>51.020122</td>
+      <td>-114.221170</td>
+      <td>(51.0201223055886, -114.221169735847)</td>
+      <td>2019200483568</td>
+      <td>NaN</td>
+      <td>2000S</td>
+      <td>West</td>
+      <td>1</td>
+      <td>Built-Out</td>
+      <td>Residential</td>
     </tr>
     <tr>
-      <th>Roll_Number</th>
-      <td>0</td>
+      <th>1</th>
+      <td>2019</td>
+      <td>200799187</td>
+      <td>524 10 DISCOVERY RIDGE CL SW</td>
+      <td>307500.0</td>
+      <td>RE</td>
+      <td>Residential</td>
+      <td>307500.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>DIS</td>
+      <td>...</td>
+      <td>51.012840</td>
+      <td>-114.214120</td>
+      <td>(51.0128402382281, -114.214119532073)</td>
+      <td>2019200799187</td>
+      <td>NaN</td>
+      <td>2000S</td>
+      <td>West</td>
+      <td>1</td>
+      <td>Built-Out</td>
+      <td>Residential</td>
     </tr>
+    <tr>
+      <th>2</th>
+      <td>2019</td>
+      <td>200932663</td>
+      <td>707V 20 DISCOVERY RIDGE CL SW</td>
+      <td>22000.0</td>
+      <td>RE</td>
+      <td>Residential</td>
+      <td>22000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>DIS</td>
+      <td>...</td>
+      <td>51.012063</td>
+      <td>-114.212059</td>
+      <td>(51.0120633983531, -114.212059076585)</td>
+      <td>2019200932663</td>
+      <td>NaN</td>
+      <td>2000S</td>
+      <td>West</td>
+      <td>1</td>
+      <td>Built-Out</td>
+      <td>Residential</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2019</td>
+      <td>200483857</td>
+      <td>283 DISCOVERY RIDGE WY SW</td>
+      <td>825500.0</td>
+      <td>RE</td>
+      <td>Residential</td>
+      <td>825500.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>DIS</td>
+      <td>...</td>
+      <td>51.019459</td>
+      <td>-114.219202</td>
+      <td>(51.0194594801033, -114.219201892146)</td>
+      <td>2019200483857</td>
+      <td>NaN</td>
+      <td>2000S</td>
+      <td>West</td>
+      <td>1</td>
+      <td>Built-Out</td>
+      <td>Residential</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2019</td>
+      <td>201017654</td>
+      <td>883V 30 DISCOVERY RIDGE CL SW</td>
+      <td>22000.0</td>
+      <td>RE</td>
+      <td>Residential</td>
+      <td>22000.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>DIS</td>
+      <td>...</td>
+      <td>51.012957</td>
+      <td>-114.213223</td>
+      <td>(51.0129565521349, -114.213223227739)</td>
+      <td>2019201017654</td>
+      <td>NaN</td>
+      <td>2000S</td>
+      <td>West</td>
+      <td>1</td>
+      <td>Built-Out</td>
+      <td>Residential</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data_info</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Data Type</th>
+      <th>Number of NaN Values</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
     <tr>
       <th>Address</th>
+      <td>object</td>
       <td>186</td>
-    </tr>
-    <tr>
-      <th>Assessed_Value</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Assessment_Class</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Assessment_Class_Description</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Re_Assessed_Value</th>
-      <td>313753</td>
-    </tr>
-    <tr>
-      <th>Nr_Assessed_Value</th>
-      <td>6431949</td>
-    </tr>
-    <tr>
-      <th>Fl_Assessed_Value</th>
-      <td>6739847</td>
-    </tr>
-    <tr>
-      <th>Comm_Code</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Comm_Name</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Latitude</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Longitude</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Location</th>
-      <td>22194</td>
-    </tr>
-    <tr>
-      <th>Unique_Key</th>
-      <td>0</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>Comm_Structure</th>
-      <td>108412</td>
+      <td>object</td>
+      <td>115945</td>
+      <td>1.59</td>
     </tr>
     <tr>
-      <th>Sector</th>
-      <td>0</td>
+      <th>Fl_Assessed_Value</th>
+      <td>float64</td>
+      <td>7285658</td>
+      <td>99.89</td>
     </tr>
     <tr>
-      <th>Class_Code</th>
-      <td>0</td>
+      <th>Location</th>
+      <td>object</td>
+      <td>31367</td>
+      <td>0.43</td>
     </tr>
     <tr>
-      <th>Srg</th>
-      <td>0</td>
+      <th>Nr_Assessed_Value</th>
+      <td>float64</td>
+      <td>6953543</td>
+      <td>95.34</td>
     </tr>
     <tr>
-      <th>Class</th>
-      <td>0</td>
+      <th>Re_Assessed_Value</th>
+      <td>float64</td>
+      <td>338018</td>
+      <td>4.63</td>
+    </tr>
+    <tr>
+      <th>Year_Of_Construction</th>
+      <td>float64</td>
+      <td>6772800</td>
+      <td>92.86</td>
     </tr>
   </tbody>
 </table>
@@ -14857,7 +14833,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Calgary/Property_Assessments_Clean.csv&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
