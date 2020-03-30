@@ -11,6 +11,6 @@ collection: notes
 * [Matrices](/notes/Linear_Algebra/Matrices.html)
 * [Determinants](/notes/Linear_Algebra/Determinants.html)
 * [Vectors_in_Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
-
-
-
+* [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
+* [Spectral Theory](/notes/Linear_Algebra/Spectral_Theory.html)
+* [Markov Matrices](/notes/Linear_Algebra/Markov_Matrices.html)
