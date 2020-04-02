@@ -40,8 +40,14 @@ Research Experience
 Computer Skills
 ======
 * Proficiency with computer programming including MATLAB, Python, R, Julia Programming, and others.
-* Proficiency with office applications, such as Microsoft Office, SQL, LaTeX editors, and more.
+
+* Proficiency with SQL Server Analysis Services (SSAS).
+
+* Proficiency with office applications, such as Microsoft Office, LaTeX editors, and more.
+
 * Proficiency with advanced graphical applications, such as Adobe Photoshop, 3D Studio Max, Blender, and more.
+
+* Proficiency with Linux command line .
 
 Publications
 ======
@@ -57,6 +63,10 @@ Talks
   
 Awards
 ======
-* PIMS Doctoral Recruitment Scholarship, 2015--2016
-* Eric Milner Graduate Scholarship, 2016--2017
-* Alberta Innovates Graduate Student Scholarship, 2017--2019
+* PIMS Doctoral Recruitment Scholarship. --2016
+
+* Eric Milner Graduate Scholarship. --2017
+
+* Alberta Innovates Graduate Student Scholarship. --2018
+
+* Alberta Innovates Graduate Student Scholarship. --2019
