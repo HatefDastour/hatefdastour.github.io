@@ -13,11 +13,12 @@ redirect_from:
 
 Education
 ======
-* B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
-* M.S. in Applied Mathematics, Damghan University, Iran, 2012
 * Ph.D in Mathematics and Statistics, University of Calgary, Canada, December 2019
+* M.S. in Applied Mathematics, Damghan University, Iran, 2012
+* B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
 
-Teaching
+
+Teaching Experience
 ======
   <ul>{% for post in site.teaching %}
     {% include archive-single-cv.html %}
