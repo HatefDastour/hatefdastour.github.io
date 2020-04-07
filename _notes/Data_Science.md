@@ -15,6 +15,9 @@ collection: notes
 ### Preprocessing
 * [Preprocessing Data in Python](/notes/Data_Science/Preprocessing_Data_in_Python.html)
 
+### Stacking
+* [Stacking Classifiers](/notes/Data_Science/Stacking_Classifiers.html)
+
 ### Supervised Learning
 * [The Importance of Resampling and Regularization](/notes/Data_Science/Resampling_and_Regularization.html)
 * [Supervised Learning Regression Models](/notes/Data_Science/Supervised_Learning_Regression_Models.html)
