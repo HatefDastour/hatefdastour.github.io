@@ -20,18 +20,16 @@ Education
 
 Working and Teaching Experience
 ======
-* Data Science Developer\
+* Data Science Developer<br/>
 StellarAlgo, Calgary, AB, Canada
 
-* Sessional Instructor\
-	<ul>{% for post in site.teaching %}
-	{% include archive-single-cv.html %}
-	{% endfor %}</ul>
-	
-* Graduate Teaching Assistant\
+* Sessional Instructor<br/>
 Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
+	* [MATH 211 - Linear Methods I - Summer 2018](https://hatefdastour.github.io/teaching/2018-summer-teaching-1)
+	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2)
+* Graduate Teaching Assistant
 
-* Self-employed Mathematics Tutor\
+* Self-employed Mathematics Tutor<br/>
 Tehran, Iran
 
 Research Experience
