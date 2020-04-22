@@ -18,11 +18,21 @@ Education
 * B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
 
 
-Teaching Experience
+Working and Teaching Experience
 ======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
+* Data Science Developer\
+StellarAlgo, Calgary, AB, Canada
+
+* Sessional Instructor\
+	<ul>{% for post in site.teaching %}
+	{% include archive-single-cv.html %}
+	{% endfor %}</ul>
+	
+* Graduate Teaching Assistant\
+Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
+
+* Self-employed Mathematics Tutor\
+Tehran, Iran
 
 Research Experience
 ======
