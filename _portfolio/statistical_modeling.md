@@ -12,3 +12,4 @@ collection: portfolio
 * [Pima Indians Diabetes Data Classification using Feature Importance](/portfolio/statistical_modeling/Pima_Indians_Diabetes_Data_Classification_Feature_Importance.html)
 * [Telco Customer Churn (Classification)](/portfolio/statistical_modeling/Telco_Customer_Churn_Classification.html)
 * [Pima Indians Diabetes Data Classification using Keras Artificial Neural Network (ANN)](/portfolio/statistical_modeling/Pima_Indians_Diabetes_Data_Classification_ANN.html)
+* [Daily Weather Data Analysis and Classification](/portfolio/statistical_modeling/Daily_Weather_Data_Analysis_and_Classification.html)
