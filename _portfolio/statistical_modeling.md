@@ -14,3 +14,4 @@ collection: portfolio
 * [Pima Indians Diabetes Data Classification using Keras Artificial Neural Network (ANN)](/portfolio/statistical_modeling/Pima_Indians_Diabetes_Data_Classification_ANN.html)
 * [Daily Weather Data Analysis and Classification](/portfolio/statistical_modeling/Daily_Weather_Data_Analysis_and_Classification.html)
 * [Daily Weather Data Analysis and Classification using Artificial Neural Network](/portfolio/statistical_modeling/Daily_Weather_Data_Analysis_and_Classification_using_ANN.html)
+* [Consumer Finance Complaints Analyzing and Modeling (using Keras Text Classification)](/portfolio/statistical_modeling/Consumer_Finance_Complaints_Analyzing_and_Modeling_(using_Keras_Text_Classification).html)
