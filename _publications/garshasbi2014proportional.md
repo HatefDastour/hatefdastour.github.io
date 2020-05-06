@@ -10,4 +10,4 @@ citation: 'M. Garshasbi and <b>H. Dastour</b>.  Proportional factors estimation 
 <b>Abstract:</b> 
 In this paper, a numerical scheme was developed based on mollification method and space marching scheme for solving an inverse heat conduction problem. The proposed inverse problem contains the estimation of two unknown functions at the boundaries named proportional factors. The temperature and heat flux measurements in an interior point are considered as overspecified data with the presence of noise. Convergence and stability of the solution for the proposed method are analyzed. To support the numerical achievements, some numerical examples are considered and discussed.
 
-[Download paper here](http://www.jhs-uma.com/index.php/JHSMS/article/view/128)
+[Paper URL](http://www.jhs-uma.com/index.php/JHSMS/article/view/128)
