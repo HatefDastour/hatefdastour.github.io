@@ -13017,6 +13017,19 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
+<style type="text/css">
+    /*This file contains any manual css for this page that needs to override the global styles.
+This is only required when different pages style the same element differently. This is just
+a hack to deal with our current css styles and no new styling should be added in this file.*/
+
+#ipython-main-app {
+    position: relative;
+}
+#jupyter-main-app {
+    position: relative;
+}
+
+    </style>
 
 
 <style type="text/css">
@@ -13081,30 +13094,46 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">copy</span>
 
-<span class="kn">import</span> <span class="nn">sklearn.linear_model</span> <span class="k">as</span> <span class="nn">skl_lm</span>
-<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="k">import</span> <span class="n">LinearDiscriminantAnalysis</span>
-<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="k">import</span> <span class="n">QuadraticDiscriminantAnalysis</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">precision_score</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">neighbors</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">LinearDiscriminantAnalysis</span>
+<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">QuadraticDiscriminantAnalysis</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">plot_confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">precision_score</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span><span class="p">,</span> <span class="n">neighbors</span>
 
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
 
-<span class="c1"># plots</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1"># Visualisation libraries</span>
 
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-white&#39;</span><span class="p">)</span>
+<span class="c1">## Text</span>
+<span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Fore</span><span class="p">,</span> <span class="n">Back</span><span class="p">,</span> <span class="n">Style</span>
+
+<span class="c1">## seaborn</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;font.size&quot;</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="s2">&quot;axes.titlesize&quot;</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="s2">&quot;axes.labelsize&quot;</span><span class="p">:</span><span class="mi">12</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1">## matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Ellipse</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">## plotly</span>
+<span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">iplot</span> 
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.offline</span> <span class="k">as</span> <span class="nn">py</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="c1"># Graphics in retina format </span>
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39; 
+
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 </pre></div>
@@ -13117,23 +13146,9 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Linear-Discriminant-Analysis">Linear Discriminant Analysis<a class="anchor-link" href="#Linear-Discriminant-Analysis">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We are interested in classifying an observation into one of $K$ classes, with $K\geq 2$. In other words, the qualitative response variable $Y$ can take $K$ possible distinct and unordered values. The probability that a given observation is associated with the $k$th category of the response variable $Y$ and the density function of X for an observation that comes from the kth class are represented by $pi_k$ and $f_k (x) = Pr(X = x|Y = k)$, respectively.</p>
+<h1 id="Linear-Discriminant-Analysis">Linear Discriminant Analysis<a class="anchor-link" href="#Linear-Discriminant-Analysis">&#182;</a></h1><p>We are interested in classifying an observation into one of $K$ classes, with $K\geq 2$. In other words, the qualitative response variable $Y$ can take $K$ possible distinct and unordered values. The probability that a given observation is associated with the $k$th category of the response variable $Y$ and the density function of X for an observation that comes from the kth class are represented by $pi_k$ and $f_k (x) = Pr(X = x|Y = k)$, respectively.</p>
 <p>As can be seen, $f_k (x)$ can be a large value if there is a high probability that an observation in the $k$th class has $X \approx x$, and $f_k (x)$ takes smaller values if it is very unlikely that an observation in the $k$th class has $X \approx x$. It follows from <em>Bayes’ theorem</em> that</p>
-$$Pr(Y = k|X = x) =\dfrac{\pi_k f_k (x)}{\sum_{j=1}^{K}\pi_j f_j (x)}$$
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Default-Example">Default Example<a class="anchor-link" href="#Default-Example">&#182;</a></h2>
+$$Pr(Y = k|X = x) =\dfrac{\pi_k f_k (x)}{\sum_{j=1}^{K}\pi_j f_j (x)}$$<h2 id="Default-Example">Default Example<a class="anchor-link" href="#Default-Example">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -13142,9 +13157,8 @@ $$Pr(Y = k|X = x) =\dfrac{\pi_k f_k (x)}{\sum_{j=1}^{K}\pi_j f_j (x)}$$
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Data/Default.csv&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Income&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Income&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Default</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Data/Default.csv&#39;</span><span class="p">)</span>
+<span class="n">Default</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13192,35 +13206,35 @@ $$Pr(Y = k|X = x) =\dfrac{\pi_k f_k (x)}{\sum_{j=1}^{K}\pi_j f_j (x)}$$
       <td>No</td>
       <td>No</td>
       <td>729.526495</td>
-      <td>44.361625</td>
+      <td>44361.62507</td>
     </tr>
     <tr>
       <th>1</th>
       <td>No</td>
       <td>Yes</td>
       <td>817.180407</td>
-      <td>12.106135</td>
+      <td>12106.13470</td>
     </tr>
     <tr>
       <th>2</th>
       <td>No</td>
       <td>No</td>
       <td>1073.549164</td>
-      <td>31.767139</td>
+      <td>31767.13895</td>
     </tr>
     <tr>
       <th>3</th>
       <td>No</td>
       <td>No</td>
       <td>529.250605</td>
-      <td>35.704494</td>
+      <td>35704.49394</td>
     </tr>
     <tr>
       <th>4</th>
       <td>No</td>
       <td>No</td>
       <td>785.655883</td>
-      <td>38.463496</td>
+      <td>38463.49588</td>
     </tr>
   </tbody>
 </table>
@@ -13250,10 +13264,10 @@ $$\text{Student}=\begin{cases}
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="n">df2</span><span class="p">[</span><span class="s1">&#39;Default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">factorize</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">df2</span><span class="p">[</span><span class="s1">&#39;Student&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Student</span><span class="o">.</span><span class="n">factorize</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">df2</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">Default</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">factorize</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Student&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Student</span><span class="o">.</span><span class="n">factorize</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13301,35 +13315,35 @@ $$\text{Student}=\begin{cases}
       <td>0</td>
       <td>0</td>
       <td>729.526495</td>
-      <td>44.361625</td>
+      <td>44361.62507</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0</td>
       <td>1</td>
       <td>817.180407</td>
-      <td>12.106135</td>
+      <td>12106.13470</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0</td>
       <td>0</td>
       <td>1073.549164</td>
-      <td>31.767139</td>
+      <td>31767.13895</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0</td>
       <td>0</td>
       <td>529.250605</td>
-      <td>35.704494</td>
+      <td>35704.49394</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0</td>
       <td>0</td>
       <td>785.655883</td>
-      <td>38.463496</td>
+      <td>38463.49588</td>
     </tr>
   </tbody>
 </table>
@@ -13356,9 +13370,9 @@ $$\text{Student}=\begin{cases}
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># X</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[[</span><span class="s1">&#39;Balance&#39;</span><span class="p">,</span> <span class="s1">&#39;Income&#39;</span><span class="p">,</span> <span class="s1">&#39;Student&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Balance&#39;</span><span class="p">,</span> <span class="s1">&#39;Income&#39;</span><span class="p">,</span> <span class="s1">&#39;Student&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 <span class="c1"># True Default</span>
-<span class="n">True_Default</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 
     </div>
@@ -13369,7 +13383,7 @@ $$\text{Student}=\begin{cases}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>LDA:</p>
+<p>We can do a Linear Discriminant Analysis using <a href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html"><strong>sklearn Linear Discriminant Analysis</strong></a>:</p>
 
 </div>
 </div>
@@ -13381,21 +13395,10 @@ $$\text{Student}=\begin{cases}
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">LDA</span> <span class="o">=</span> <span class="n">LinearDiscriminantAnalysis</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">)</span>
 <span class="c1"># Predicted Default</span>
-<span class="n">Predicted_Default</span> <span class="o">=</span> <span class="n">LDA</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">True_Default</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-</pre></div>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">LDA</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Dataframe</span>
-<span class="n">df_LDA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">:</span> <span class="n">True_Default</span><span class="p">,</span> <span class="s1">&#39;Predicted Default Status&#39;</span><span class="p">:</span> <span class="n">Predicted_Default</span><span class="p">})</span>
+<span class="c1"># Dataframe</span>
+<span class="n">df_LDA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;Predicted Default Status&#39;</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">})</span>
 <span class="c1"># replacing the dummy variables with &#39;Yes&#39; and &#39;No&#39;</span>
 <span class="n">df_LDA</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s1">&#39;Yes&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -13414,7 +13417,7 @@ $$\text{Student}=\begin{cases}
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -13479,7 +13482,7 @@ $$\text{Student}=\begin{cases}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
@@ -13500,7 +13503,7 @@ $$\text{Student}=\begin{cases}
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13568,51 +13571,11 @@ $$\text{Student}=\begin{cases}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>76.27627627627628</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>percent of individuals who default may well be unacceptable.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">True_Default</span><span class="p">,</span> <span class="n">Predicted_Default</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">]))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span> <span class="o">+</span> <span class="n">Fore</span><span class="o">.</span><span class="n">BLACK</span> <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">BRIGHT</span> <span class="o">+</span> <span class="s1">&#39;Error Rate&#39;</span>  <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">%.2f</span><span class="s1"> Percent&#39;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13629,15 +13592,7 @@ $$\text{Student}=\begin{cases}
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>              precision    recall  f1-score   support
-
-          No       0.97      1.00      0.99      9667
-         Yes       0.78      0.24      0.36       333
-
-    accuracy                           0.97     10000
-   macro avg       0.88      0.62      0.67     10000
-weighted avg       0.97      0.97      0.97     10000
-
+<pre><span class="ansi-black-intense-fg ansi-red-bg ansi-bold">Error Rate</span> = 76.28 Percent
 </pre>
 </div>
 </div>
@@ -13649,20 +13604,151 @@ weighted avg       0.97      0.97      0.97     10000
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <strong>sensitivity</strong>: the percentage of true defaulters that are identified = $24\%$</p>
-<p>The <strong>specificity</strong>: the percentage of non-defaulters that are identified = $97\%$</p>
+<p>percent of individuals who default may well be unacceptable.</p>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>No</th>
+      <td>0.97</td>
+      <td>1.00</td>
+      <td>0.99</td>
+      <td>9667.00</td>
+    </tr>
+    <tr>
+      <th>Yes</th>
+      <td>0.78</td>
+      <td>0.24</td>
+      <td>0.36</td>
+      <td>333.00</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.97</td>
+      <td>0.97</td>
+      <td>0.97</td>
+      <td>0.97</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.88</td>
+      <td>0.62</td>
+      <td>0.67</td>
+      <td>10000.00</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.97</td>
+      <td>0.97</td>
+      <td>0.97</td>
+      <td>10000.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The Bayes classifier works by assigning an observation to the class for which the posterior probability $p_k (X)$ is greatest. In the two-class case, this amounts to assigning an observation to the default class if</p>
-$$Pr(default = Yes|X = x) &gt; 0.5. $$<p>However, if we are concerned about incorrectly predicting the default status for individuals who default, then we can consider
-lowering this threshold.</p>
-$$Pr(default = Yes|X = x) &gt; \text{Decision probability} $$<p>For example, we can consider</p>
-$$Pr(default = Yes|X = x) &gt; 0.2. $$
+<p>The <strong>sensitivity</strong>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span> <span class="o">+</span> <span class="n">Fore</span><span class="o">.</span><span class="n">BLACK</span> <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">BRIGHT</span> <span class="o">+</span> <span class="s1">&#39;The percentage of non-defaulters that are identified&#39;</span>
+      <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">%.2f</span><span class="s1"> Percent&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">Results</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Results</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">),</span> <span class="s1">&#39;recall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-cyan-bg ansi-bold">The percentage of non-defaulters that are identified</span> = 97.24 Percent
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <strong>specificity</strong>:</p>
+
 </div>
 </div>
 </div>
@@ -13671,22 +13757,54 @@ $$Pr(default = Yes|X = x) &gt; 0.2. $$
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Decision_probability</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="n">Predicted_Default</span> <span class="o">=</span> <span class="n">LDA</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">True_Default</span><span class="p">)</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Back</span><span class="o">.</span><span class="n">CYAN</span> <span class="o">+</span> <span class="n">Fore</span><span class="o">.</span><span class="n">BLACK</span> <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">BRIGHT</span> <span class="o">+</span> <span class="s1">&#39;The percentage of true defaulters that are identified&#39;</span>
+      <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">%.2f</span><span class="s1"> Percent&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">Results</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Results</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="s1">&#39;Yes&#39;</span><span class="p">),</span> <span class="s1">&#39;recall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-cyan-bg ansi-bold">The percentage of true defaulters that are identified</span> = 23.72 Percent
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The Bayes classifier works by assigning an observation to the class for which the posterior probability $p_k (X)$ is greatest. In the two-class case, this amounts to assigning an observation to the default class if</p>
+$$\mbox{Pr (Default = Yes | X = x) }&gt; 0.5. $$<p>However, if we are concerned about incorrectly predicting the default status for individuals who default, then we can consider
+lowering this threshold.</p>
+$$\mbox{Pr (Default = Yes | X = x) &gt; Decision probability} $$<p>For example, we can consider</p>
+$$\mbox{Pr (Default = Yes | X = x) &gt; }0.2. $$
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_LDA</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">:</span> <span class="n">True_Default</span><span class="p">,</span>
-                      <span class="s1">&#39;Predicted Default Status&#39;</span><span class="p">:</span> <span class="n">Predicted_Default</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">Decision_probability</span><span class="p">})</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Decision_probability</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">LDA</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">df_LDA</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+                      <span class="s1">&#39;Predicted Default Status&#39;</span><span class="p">:</span> <span class="n">y_pred</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">Decision_probability</span><span class="p">})</span>
 <span class="n">df_LDA</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">:</span><span class="s1">&#39;No&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">Table</span><span class="o">=</span><span class="n">df_LDA</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Predicted Default Status&#39;</span><span class="p">,</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="s1">&#39;True Default Status&#39;</span><span class="p">)</span>
 <span class="n">Table</span>
@@ -13842,7 +13960,9 @@ $$Pr(default = Yes|X = x) &gt; 0.2. $$
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">True_Default</span><span class="p">,</span> <span class="n">Predicted_Default</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">Decision_probability</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">]))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span> <span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">Decision_probability</span><span class="p">,</span>
+                                             <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13858,18 +13978,73 @@ $$Pr(default = Yes|X = x) &gt; 0.2. $$
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>              precision    recall  f1-score   support
 
-          No       0.99      0.98      0.98      9667
-         Yes       0.45      0.58      0.51       333
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-    accuracy                           0.96     10000
-   macro avg       0.72      0.78      0.74     10000
-weighted avg       0.97      0.96      0.96     10000
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-</pre>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>No</th>
+      <td>0.99</td>
+      <td>0.98</td>
+      <td>0.98</td>
+      <td>9667.00</td>
+    </tr>
+    <tr>
+      <th>Yes</th>
+      <td>0.45</td>
+      <td>0.58</td>
+      <td>0.51</td>
+      <td>333.00</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.96</td>
+      <td>0.96</td>
+      <td>0.96</td>
+      <td>0.96</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.72</td>
+      <td>0.78</td>
+      <td>0.74</td>
+      <td>10000.00</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.97</td>
+      <td>0.96</td>
+      <td>0.96</td>
+      <td>10000.00</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+</div>
+
 </div>
 
 </div>
@@ -13890,7 +14065,8 @@ who default, LDA correctly predicts all but 140, or</p>
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">Back</span><span class="o">.</span><span class="n">RED</span> <span class="o">+</span> <span class="n">Fore</span><span class="o">.</span><span class="n">BLACK</span> <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">BRIGHT</span> <span class="o">+</span> <span class="s1">&#39;Error Rate&#39;</span>  <span class="o">+</span> <span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">%.2f</span><span class="s1"> Percent&#39;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Table</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13903,15 +14079,13 @@ who default, LDA correctly predicts all but 140, or</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>42.04204204204204</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-red-bg ansi-bold">Error Rate</span> = 42.04 Percent
+</pre>
 </div>
-
 </div>
 
 </div>
