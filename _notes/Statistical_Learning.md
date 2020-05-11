@@ -20,7 +20,7 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 * [K-Nearest Neighbors (KKN)](/notes/Statistical_Learning/K_Nearest_Neighbors.html)
 
 ### Chapter 5: Resampling Methods
-* [Resampling Methods (CV, Bootstrap,...)](/notes/Statistical_Learning/Resampling_Methods.html)
+* [Resampling Methods](/notes/Statistical_Learning/Resampling_Methods.html)
 
 ### Chapter 6: Linear Model Selection and Regularization
 * [Linear Model Selection and_Regularization](/notes/Statistical_Learning/Linear_Model_Selection_and_Regularization.html)
