@@ -7,11 +7,12 @@ collection: notes
 
 In each topic, please refer to [*An Introduction to Statistical Learning*](https://link.springer.com/book/10.1007/978-1-4614-7138-7) for full text.
 
-### Chapter 3: Linear Regression
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 
-### Chapter 4: Classification
+### Chapter 3: Linear Regression
 * [Linear Regression](/notes/Statistical_Learning/Linear_Regression.html)
+
+### Chapter 4: Classification
 * [Linear Regression (R - Notebook)](/notes/Statistical_Learning/Linear_Regression_R.html)
 * [Logistic Regression](/notes/Statistical_Learning/Logistic_Regression.html)
 * [Logistic Regression (R - Notebook)](/notes/Statistical_Learning/Logistic_Regression_R.html)
@@ -24,5 +25,9 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 
 ### Chapter 6: Linear Model Selection and Regularization
 * [Linear Model Selection and_Regularization](/notes/Statistical_Learning/Linear_Model_Selection_and_Regularization.html)
+
+### Chapter 7: Moving Beyond Linearity
+* [Moving Beyond Linearity](/notes/Statistical_Learning/Moving_Beyond_Linearity.html)
+
 
 See also [Data Science](/notes/Data_Science) and [Portfolio](/portfolio/).
