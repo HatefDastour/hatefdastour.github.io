@@ -29,5 +29,8 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 ### Chapter 7: Moving Beyond Linearity
 * [Moving Beyond Linearity](/notes/Statistical_Learning/Moving_Beyond_Linearity.html)
 
+### Chapter 8: Tree-Based Methods
+* [The Basics of Decision Trees](/notes/Statistical_Learning/The_Basics_of_Decision_Trees.html)
+* [Bagging, Random Forests, Boosting](/notes/Statistical_Learning/Bagging_Random_Forests_Boosting.html)
 
 See also [Data Science](/notes/Data_Science) and [Portfolio](/portfolio/).
