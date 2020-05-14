@@ -33,4 +33,7 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 * [The Basics of Decision Trees](/notes/Statistical_Learning/The_Basics_of_Decision_Trees.html)
 * [Bagging, Random Forests, Boosting](/notes/Statistical_Learning/Bagging_Random_Forests_Boosting.html)
 
+### Chapter 9: Support Vector Machines
+* [Support Vector Machines](/notes/Statistical_Learning/Support_Vector_Machines.html)
+
 See also [Data Science](/notes/Data_Science) and [Portfolio](/portfolio/).
