@@ -36,4 +36,7 @@ In each topic, please refer to [*An Introduction to Statistical Learning*](https
 ### Chapter 9: Support Vector Machines
 * [Support Vector Machines](/notes/Statistical_Learning/Support_Vector_Machines.html)
 
+### Chapter 10: Unsupervised Learning
+* [Unsupervised Learning](/notes/Statistical_Learning/Unsupervised_Learning.html)
+
 See also [Data Science](/notes/Data_Science) and [Portfolio](/portfolio/).
