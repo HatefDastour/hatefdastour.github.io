@@ -9,3 +9,4 @@ collection: portfolio
 * [Industrial Production (Electric and Gas Utilities)](/portfolio/interesting_problems_in_finance/Industrial_Production_(Electric_and_Gas_Utilities).html)
 * [Price Mercari Data using Bayesian Methods using PyMC3](/portfolio/interesting_problems_in_finance/Price_Mercari_Data_using_Bayesian_Methods_using_PyMC3.html)
 * [Price Mercari Data using Bayesian Methods using PyStan](/portfolio/interesting_problems_in_finance/Price_Mercari_Data_using_Bayesian_Methods_using_PyStan.html)
+* [Credit Card Fraud Detection using MLP](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_MLP.html)
