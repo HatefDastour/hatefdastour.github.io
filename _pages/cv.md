@@ -27,6 +27,7 @@ StellarAlgo, Calgary, AB, Canada
 Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
 	* [MATH 211 - Linear Methods I - Summer 2018](https://hatefdastour.github.io/teaching/2018-summer-teaching-1)
 	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2)
+	* [MATH 275 - Calculus for Engineers and Scientists - Fall 2017](http://contacts.ucalgary.ca/info/math/courses/f17/MATH275) (Through Instructor Training Program)
 * Graduate Teaching Assistant
 
 * Self-employed Mathematics Tutor<br/>
