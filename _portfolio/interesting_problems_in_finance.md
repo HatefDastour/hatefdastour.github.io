@@ -11,3 +11,4 @@ collection: portfolio
 * [Price Mercari Data using Bayesian Methods using PyStan](/portfolio/interesting_problems_in_finance/Price_Mercari_Data_using_Bayesian_Methods_using_PyStan.html)
 * [Credit Card Fraud Detection using MLP](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_MLP.html)
 * [Credit Card Fraud Detection using Artificial Neural Network](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_ANN.html)
+* [Credit Card Fraud Detection using Feature Importance](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
