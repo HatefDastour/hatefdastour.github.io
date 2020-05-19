@@ -12,3 +12,6 @@ collection: portfolio
 * [Credit Card Fraud Detection using MLP](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_MLP.html)
 * [Credit Card Fraud Detection using Artificial Neural Network](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_ANN.html)
 * [Credit Card Fraud Detection using Feature Importance](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
+* Statlog (German Credit Data) Dataset
+	* [EDA](/portfolio/interesting_problems_in_finance/Statlog_(German_Credit_Data)_Dataset_EDA.html)
+	* Modeling
