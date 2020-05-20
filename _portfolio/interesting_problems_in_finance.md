@@ -16,4 +16,5 @@ collection: portfolio
 	* [Modeling using Feature Importance](/portfolio/interesting_problems_in_finance/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
 * Statlog (German Credit Data) Dataset
 	* [EDA](/portfolio/interesting_problems_in_finance/Statlog_(German_Credit_Data)_Dataset_EDA.html)
-	* [Modeling using Feature Importance](/portfolio/interesting_problems_in_finance/Statlog_(German_Credit_Data)_Feature_Importance.html)
+	* [Modeling using Feature Importance](/portfolio/interesting_problems_in_finance/Statlog_(German_Credit_Data)_using_Feature_Importance.html)
+	* [Modeling using Keras](/portfolio/interesting_problems_in_finance/Statlog_(German_Credit_Data)_using_Keras.html)
