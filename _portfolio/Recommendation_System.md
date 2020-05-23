@@ -13,3 +13,4 @@ collection: portfolio
 	* [Analyzing](/portfolio/recommendation_system/IBM_HR_Analytics_Analyzing.html)
 	* [Modeling using Stacking Classifier](/portfolio/recommendation_system/IBM_HR_Analytics_Modeling.html)
 	* [Modeling using Artificial Neural Network](/portfolio/recommendation_system/IBM_HR_Analytics_using_ANN.html)
+* [Telco Customer Churn (Classification)](/portfolio/recommendation_system/Telco_Customer_Churn_Classification.html)
