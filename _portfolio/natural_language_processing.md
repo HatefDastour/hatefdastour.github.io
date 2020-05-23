@@ -15,4 +15,4 @@ collection: portfolio
 * Movie Reviews Comments classifications
 	* [Modeling using Natural Language Toolkit and Naive Bayes Classifier](/portfolio/natural_language_processing/Movie_Reviews_Comments_classifications_using_Modeling_using_NLTK.html)
 	* [Modeling using Natural Language Toolkit and Naive Bayes Classifier (Improved Model)](/portfolio/natural_language_processing/Movie_Reviews_Comments_classifications_using_Modeling_using_NLTK_Improved_Model.html)
-* [Consumer Finance Complaints Analyzing and Modeling (using Keras Text Classification)](/portfolio/recommendation_system/Consumer_Finance_Complaints_Analyzing_and_Modeling_(using_Keras_Text_Classification).html)
+* [Consumer Finance Complaints Analyzing and Modeling (using Keras Text Classification)](/portfolio/natural_language_processing/Consumer_Finance_Complaints_Analyzing_and_Modeling_(using_Keras_Text_Classification).html)
