@@ -18,5 +18,8 @@ collection: portfolio
 	* [Preprocessing](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_Preprocessing.html)
 	* [Classification using Feature Importance](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_using_Feature_Importance.html)
 	* [Classification using PyTorch Logistic Regression with GPU](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_with_PyTorch_Logistic_Regression.html)
+	* [Classification using PyTorch Artificial Neural Network with GPU](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_with_PyTorch_ANN.html)
+
+
 
 
