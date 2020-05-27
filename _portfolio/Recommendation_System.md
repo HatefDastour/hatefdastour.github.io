@@ -9,7 +9,7 @@ collection: portfolio
 * Starbucks Offer Personalizations
 	* [Preprocessing](/portfolio/recommendation_system/Starbucks_Offer_Personalizations_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/recommendation_system/Starbucks_Offer_Personalizations_EDA.html)
-	* [Modeling](/portfolio/recommendation_system/Starbucks_Offer_Personalizations_Modeling.html)
+	* [Modeling](/portfolio/recommendation_system/Starbucks_Offer_Personalizations_using_MultiOutputRFC.html)
 * IBM HR Analytics Employee Attrition and Performance
 	* [Exploratory Data Analysis](/portfolio/recommendation_system/IBM_HR_Analytics_EDA.html)
 	* [Modeling using Stacking Classifiers](/portfolio/recommendation_system/IBM_HR_Analytics_Modeling_using_Stacking_Classifiers.html)
