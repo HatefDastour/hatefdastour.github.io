@@ -14,7 +14,7 @@ collection: portfolio
 * IBM HR Analytics Employee Attrition and Performance
 	* [Exploratory Data Analysis](/portfolio/recommendation_system/IBM_HR_Analytics_EDA.html)
 	* [Modeling using Stacking Classifiers](/portfolio/recommendation_system/IBM_HR_Analytics_Modeling_using_Stacking_Classifiers.html)
-	* [Modeling using Keras Artificial Neural Network](/portfolio/recommendation_system/IBM_HR_Analytics_using_ANN.html)
+	* [Modeling using Keras Artificial Neural Network](/portfolio/recommendation_system/IBM_HR_Analytics_Modeling_using_ANN.html)
 * Telco Customer Churn
 	* [Exploratory Data Analysis](/portfolio/recommendation_system/Telco_Customer_Churn_EDA.html)
 	* [Preprocessing](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_Preprocessing.html)
