@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>FDTD_3D</title>
+<title>A_Fourth-Order_FDTD_for_the_3D_Wave_Equation</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13017,6 +13017,19 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
+<style type="text/css">
+    /*This file contains any manual css for this page that needs to override the global styles.
+This is only required when different pages style the same element differently. This is just
+a hack to deal with our current css styles and no new styling should be added in this file.*/
+
+#ipython-main-app {
+    position: relative;
+}
+#jupyter-main-app {
+    position: relative;
+}
+
+    </style>
 
 
 <style type="text/css">
@@ -13079,16 +13092,18 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="n">plot</span><span class="p">,</span><span class="n">show</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">LA</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">LA</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">csr_matrix</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">import</span> <span class="n">spsolve</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">import</span> <span class="n">spsolve_triangular</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">diags</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-white&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">diags</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">spsolve</span><span class="p">,</span> <span class="n">spsolve_triangular</span>
+
+<span class="c1"># Timer</span>
+<span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">default_timer</span> <span class="k">as</span> <span class="n">timer</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13099,29 +13114,11 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Acoustic-Wave-Equation-in-Time-Domain">Acoustic Wave Equation in Time Domain<a class="anchor-link" href="#Acoustic-Wave-Equation-in-Time-Domain">&#182;</a></h1><p>The elastic wave equation can be stated as follows,
-$$
+<h1 id="The-Wave-Equation-in-Time-Domain">The Wave Equation in Time Domain<a class="anchor-link" href="#The-Wave-Equation-in-Time-Domain">&#182;</a></h1><p>The wave equation in time domain can be stated as follows,
+\begin{equation}
 \frac{\partial^2 u}{\partial t^2}=c^2 \nabla^2 u+f,\qquad x\in \Omega \subset \mathbb{R}^d,~t\in(T_1,T_2]
-\qquad\qquad\qquad\qquad (1)
-$$
+\end{equation}
 where $\Delta$ is <em>the Laplacian</em>, $f$ is a <em>forcing function</em> (for example our source) and $c$ is <em>the wave velocity</em> at which the time and spatially varying wave $u$ propagates.</p>
-<ul>
-<li><a href="#Finite-Difference-Methods-for-the-Three-Dimensionals-Wave-Equation">Finite-Difference Methods for the Three Dimensional Wave Equation</a><ul>
-<li><a href="#Explicit-Scheme">Explicit Scheme</a></li>
-<li><a href="#Implicit-Scheme">Implicit Scheme</a></li>
-<li><a href="#A-Fourth-order-Scheme">A Fourth-order Scheme</a></li>
-</ul>
-</li>
-<li><a href="#Example-1">Example 1</a><ul>
-<li><a href="#The-Explicit-Scheme">The Explicit Scheme</a></li>
-<li><a href="#The-Implicit-Scheme">The Implicit Scheme</a></li>
-</ul>
-</li>
-<li><a href="#Example-2">Example 2</a><ul>
-<li><a href="#The-Fourth-order-Scheme">The Fourth-order Scheme</a></li>
-</ul>
-</li>
-</ul>
 
 </div>
 </div>
@@ -13129,7 +13126,7 @@ where $\Delta$ is <em>the Laplacian</em>, $f$ is a <em>forcing function</em> (fo
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Finite-Difference-Method-for-the-three-dimensional-wave-equation">The Finite-Difference Method for the three-dimensional wave equation<a class="anchor-link" href="#The-Finite-Difference-Method-for-the-three-dimensional-wave-equation">&#182;</a></h2><p>Let $I=(a,b)\times(c,d)\times(e,f)$ and $J=[a,b]\times[c,d]\times[e,f]$. A three-dimensional for of the wave equation presented in \eqref{eq1.02} can be found as follows,
+<h2 id="A-Fourth-Order-Finite-Difference-Method-for-the-Three-Dimensional-Wave-Equation-in-Time-Domain">A Fourth-Order Finite-Difference Method for the Three Dimensional Wave Equation in Time Domain<a class="anchor-link" href="#A-Fourth-Order-Finite-Difference-Method-for-the-Three-Dimensional-Wave-Equation-in-Time-Domain">&#182;</a></h2><p>Let $I=(a,b)\times(c,d)\times(e,f)$ and $J=[a,b]\times[c,d]\times[e,f]$. A three-dimensional form of the wave equation can be found as follows,
 \begin{align*}
 \begin{cases}
 \dfrac{\partial^2 u}{\partial t^2} = c^2(x,y,z) \Delta u +f(x,y,z,t),&amp;(x,y,z)\in I,~t\in(T_1,T_2],\\
@@ -13150,275 +13147,6 @@ u(x,y,f,t) = f_{f}(x,y,t),&amp;(x,y)\in [a,b]\times[c,d],~t \in[T_1,T_2].
 <li>$u_{i,j,k}^{n}= u(ih_x,jh_y,kh_z,n\tau)$ and $c_{i,j,k}=c(ih_x,jh_y,kh_z)$,</li>
 <li>$\lambda_x=\dfrac{\tau}{h_x}$, $\lambda_y=\dfrac{\tau}{h_y}$ and $\lambda_z=\dfrac{\tau}{h_z}$.</li>
 </ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Explicit-Scheme">Explicit Scheme<a class="anchor-link" href="#Explicit-Scheme">&#182;</a></h2><p>An explicit finite difference scheme for solving the problem (1) can be considered as follows,
-\begin{align*}
-\frac{1}{\tau^2} \delta_t^2 u_{i,j,k}^{n}&amp;= c_{i,j,k}^2\left(\frac{1}{h_x^2} \delta_x^2+\frac{1}{h_y^2} \delta_y^2+\frac{1}{h_z^2} \delta_z^2\right)u_{i,j,k}^{n}+f_{i,j,k}^n.
-\end{align*}
-To develop a numerical algorithm, we can rewrite this as follows,
-\begin{align*}
-u_{i,j,k}^{n+1}&amp;=c_{i,j,k}^2\left[\lambda_x^2\left(u_{i+1,j,k}^{n}+u_{i-1,j,k}^{n}\right)+\lambda_y^2\left(u_{i,j+1,k}^{n}+u_{i,j-1,k}^{n}\right)+\lambda_z^2\left(u_{i,j,k+1}^{n}+u_{i,j,k-1}^{n}\right)\right]
-\notag \\ &amp;
-+2\left(1-c_{i,j,k}^2\left(\lambda_x^2+\lambda_y^2+\lambda_z^2\right)\right)u_{i,j,k}^{n}-u_{i,j,k}^{n-1}+\tau^2f_{i,j,k}^n,
-\end{align*}</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Implicit-Scheme">Implicit Scheme<a class="anchor-link" href="#Implicit-Scheme">&#182;</a></h2><p>A general implicit finite difference form of the problem can be expressed as follows,
-\begin{align*}
-\frac{1}{\tau^2} \delta_t^2 u_{i,j,k}^{n}&amp;= c_{i,j,k}^2 \left(\frac{1}{h_x^2} \delta_x^2+\frac{1}{h_y^2} \delta_y^2 +\frac{1}{h_z^2} \delta_z^2 \right)
-\left[\alpha  u_{i,j,k}^{n+1}+\beta  u_{i,j,k}^{n} +\gamma u_{i,j,k}^{n-1}\right]+f_{i,j,k}^n,
-\qquad \qquad (2)
-\end{align*}
-where $\alpha,~\beta$ and $\gamma$ are constants such that $\alpha+\beta+\gamma=1$.</p>
-<p>The equation (2) can be expanded as follows,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k}\left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)\right)u_{i,j,k}^{n+1}&amp;=
-\left[c_{i,j,k}^2 \beta \left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)+2\right]u_{i,j,k}^{n}
-\notag \\ &amp;
- +\left[c_{i,j,k}^2\gamma \left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)-1\right]u_{i,j,k}^{n-1}
- +\tau^2f_{i,j,k}^n.
-\end{align*}
-Note that,
-\begin{align*}
-&amp;\left(1-\alpha c^2_{i,j,k}\left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)\right)u_{i,j,k}^{n}
--\left(1-\alpha c^2_{i,j,k} \lambda_x^2 \delta_x^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)u_{i,j,k}^{n}=
-\notag \\ &amp;
-\alpha^2 c^4_{i,j,k} \left(\lambda_x^2 \lambda_y^2 \delta_x^2\delta_y^2+\lambda_x^2 \lambda_z^2 \delta_x^2\delta_z^2
-+\lambda_y^2 \lambda_z^2 \delta_y^2\delta_z^2\right)u_{i,j,k}^{n}
--\alpha^3 c^6_{i,j,k} \lambda_x^2 \lambda_y^2 \lambda_z^2 \delta_x^2\delta_y^2\delta_z^2 u_{i,j,k}^{n}\approx O(h^4),
-\qquad \qquad (3).
-\end{align*}</p>
-<p>Furthermore, for simplicity, consider
-\begin{align*}
-\mathbf{F}_{i,j,k}^{n}&amp;= \left[c_{i,j,k}^2 \beta \left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)+2\right]u_{i,j,k}^{n}
- +\left[c_{i,j,k}^2\gamma \left(\lambda_x^2 \delta_x^2 +\lambda_y^2 \delta_y^2 +\lambda_z^2 \delta_z^2 \right)-1\right]u_{i,j,k}^{n-1}
-+\tau^2f_{i,j,k}^n.
-\end{align*}</p>
-<p>As a result,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_x^2 \delta_x^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)u_{i,j,k}^{n+1}=\mathbf{F}_{i,j,k}^{n}.
-\end{align*}</p>
-<h3 id="ADI-Algorithm">ADI Algorithm<a class="anchor-link" href="#ADI-Algorithm">&#182;</a></h3><ul>
-<li>Approximate $\mathbf{X}_{i,j,k}$ from the following equation for $1\leq i\leq N_x$, $1\leq j\leq N_y$ and $1\leq k\leq N_z$,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_x^2 \delta_x^2\right)\mathbf{X}_{i,j,k}=\mathbf{F}_{i,j,k}^{n},
-\end{align*}</li>
-<li>Estimate $\mathbf{Y}_{i,j,k}$ from the following system for $1\leq i\leq N_x$, $1\leq j\leq N_y$ and $1\leq k\leq N_z$,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\mathbf{Y}_{i,j,k}=\mathbf{X}_{i,j,k},
-\end{align*}</li>
-<li>Approximate all $u_{i,j,k}^{n+1}$ for the current time step from the following system,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)u_{i,j,k}^{n+1}=\mathbf{Y}_{i,j,k}.
-\end{align*}</li>
-</ul>
-<p>The first time step after the initial time level is needed for proceeding the introduced algorithm and $u(x,y,z,T_1+\tau)$ is approximated by means of Taylor series,
-\begin{align*}
-u(x,y,z,T_1+\tau)&amp;=
-g(x,y,z)+s(x,y,z)\tau+\frac{1}{2}[c^2(x,y,z) \Delta g(x,y,z)+f(x,y,z,T_1)]\tau^2
-\notag\\ &amp;
-+\frac{1}{6} [c^2(x,y,z) \Delta s(x,y,z)+f_t(x,y,z,T_1)]\tau^3
-\notag\\ &amp;
-+\frac{1}{24}[c^2(x,y,z) \Delta [c^2(x,y,z) \Delta g(x,y,z)+f(x,y,z,T_1)] +f_{tt}(x,y,z,T_1)]\tau^4
-+\mathcal{O}(\tau^5)
-\end{align*}</p>
-<p>To numerical algorithm based,, first, for current time step, fix $n$ and solve the following system for $i=1,2,\ldots,N_x-1$, $j=1,2,\ldots,N_y-1$ and $k=1,2,\ldots,N_z-1$,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_x^2 \delta_x^2\right)\mathbf{X}_{i,j,k}=\mathbf{F}_{i,j,k}^{n},
-\qquad \qquad (4)
-\end{align*}
-In other words,
-\begin{align*}\label{eq1C1.11}
--\alpha c_{i,j,k}^2 \lambda_x^2 \left(\mathbf{X}_{i-1,j,k}+\mathbf{X}_{i+1,j,k}\right)+\left(1 +2 \alpha c_{i,j,k}^2 \lambda_x^2\right) \mathbf{X}_{i,j,k} =\mathbf{F}_{i,j,k}^{n}.
-\end{align*}
-In matrix form:
-$$
-A_{j,k}=\begin{bmatrix}
-1 +2 \alpha c_{1,j,k}^2\lambda_x^2    &amp;   -\alpha c_{1,j,k}^2\lambda_x^2         &amp; 0                      &amp; \dots                   &amp;  \dots         &amp;0
-\\
--\alpha c_{2,j,k}^2\lambda_x^2             &amp;1 +2 \alpha c_{2,j,k}^2\lambda_x^2   &amp; -\alpha c_{2,j,k}^2\lambda_x^2           &amp; 0                   &amp;  \vdots         &amp;\vdots
-\\
-0                       &amp;-\alpha c_{3,j,k}^2\lambda_x^2             &amp;1 +2 \alpha c_{3,j,k}^2\lambda_x^2   &amp; -\alpha c_{3,j,k}^2\lambda_x^2              &amp;0         &amp;\vdots
-\\
-0                       &amp;0            &amp; \ddots                 &amp; \ddots              &amp;\ddots         &amp;\vdots
-\\
-\vdots                        &amp;\vdots           &amp; -\alpha c_{N_x-3,j,k}^2\lambda_x^2            &amp; 1 +2 \alpha c_{N_x-3,j,k}^2\lambda_x^2        &amp;-\alpha c_{N_x-3,j,k}^2\lambda_x^2 &amp; 0
-\\
-\vdots                  &amp;\vdots                      &amp; 0                 &amp; -\alpha c_{N_x-2,j,k}^2\lambda_x^2            &amp; 1 +2 \alpha c_{N_x-2,j,k}^2\lambda_x^2        &amp;-\alpha c^2_{N_x-2,j,k}\lambda_x^2
-\\
-0                       &amp;0                      &amp; \dots                 &amp; 0               &amp; -\alpha c_{N_x-1,j,k}^2\lambda_x^2    &amp;  1 +2 \alpha c_{N_x-1,j,k}^2\lambda_x^2
-\end{bmatrix},
-$$
-$$
-\mathbf{X}_{j,k}=\begin{bmatrix}
-\mathbf{X}_{1,j,k} \\
-\mathbf{X}_{2,j,k}\\
-\vdots\\
-\mathbf{X}_{N_x-2,j,k}\\
-\mathbf{X}_{N_x-1,j,k}
-\end{bmatrix},~
-\mathbf{b}_{j,k}^{n}=
-\begin{bmatrix}
-\alpha c^2_{1,j,k} \lambda_x^2 \mathbf{X}_{0,j,k}\\
-0\\
-\vdots\\
-0\\
-\alpha c^2_{N_x-1,j,k}\lambda_x^2 \mathbf{X}_{N_x,j,k},
-\end{bmatrix},
-\mathbf{F}_{j,k}^{n}=
-\begin{bmatrix}
-\mathbf{F}_{1,j,k}^{n}\\
-\mathbf{F}_{2,j,k}^{n}\\
-\vdots\\
-\mathbf{F}_{N_x-2,j,k}^{n}\\
-\mathbf{F}_{N_x-1,j,k}^{n}
-\end{bmatrix}.
-$$
-where $\mathbf{X}_{0,j,k}$ and $\mathbf{X}_{N_x,j,k}$ for $1\leq j\leq N_x-1$ and $1\leq j\leq N_y-1$ can be stated as follows,
-\begin{align*}
-\label{eq1C1.12}
-\mathbf{X}_{0,j,k}&amp;=
-\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)f_{a,j,k}^{n+1},
-\\
-\label{eq1C1.13}
-\mathbf{X}_{N_x,j,k}&amp;=\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)f_{a,j,k}^{n+1}.
-\end{align*}
-and, $f_{a,j,k}^{n}\approx f_{a}(jh_y,kh_z,n\tau)$ and $f_{b,j,k}^{n}\approx f_{b}(jh_y,kh_z,n\tau)$.</p>
-<p>Therefore,
-\begin{equation*}
-\label{eq1C1.14}\mathbf{X}_{j,k}=A_j^{-1}\left(\mathbf{F}_{j,k}^{n}+\mathbf{b}_j^n\right).
-\end{equation*}</p>
-<p>Next, we need to solve the following system,
-\begin{align*}
-\left(1-\alpha c^2_{i,j,k} \lambda_y^2 \delta_y^2\right)\mathbf{Y}_{i,j,k}=\mathbf{X}_{i,j,k}.
-\end{align*}
-This can be expanded as follows,
-\begin{align*}
--\alpha c_{i,j,k}^2 \lambda_y^2 \left(\mathbf{Y}_{i,j-1,k}+\mathbf{Y}_{i,j+1,k}\right)+\left(1 +2 \alpha c_{i,j,k}^2\lambda_y^2\right)\mathbf{Y}_{i,j,k}=\mathbf{X}_{i,j,k}.
-\end{align*}
-Hence,
-\begin{equation*}
-\label{eq1C2.13}\mathbf{Y}_{i,k}=A_{i,k}^{-1}\left(\mathbf{X}_{i,k}+\mathbf{b}_{i,k}^n\right),
-\end{equation*}
-where
-\begin{equation*}\label{eq1C2.14}
-A_{i,k}=\begin{bmatrix}
-1 +2 \alpha c_{i,1,k}^2\lambda_y^2    &amp;   -\alpha c_{i,1,k}^2\lambda_y^2         &amp; 0                      &amp; \dots                   &amp;  \dots         &amp;0
-\\
--\alpha c_{i,2,k}^2\lambda_y^2             &amp;1 +2 \alpha c_{i,2,k}^2\lambda_y^2   &amp; -\alpha c_{i,2,k}^2\lambda_y^2           &amp; 0                   &amp;  \vdots         &amp;\vdots
-\\
-0                       &amp;-\alpha c_{i,3,k}^2\lambda_y^2             &amp;1 +2 \alpha c_{i,3,k}^2\lambda_y^2   &amp; -\alpha c_{i,3,k}^2\lambda_y^2              &amp;0         &amp;\vdots
-\\
-0                       &amp;0            &amp; \ddots                 &amp; \ddots              &amp;\ddots         &amp;\vdots
-\\
-\vdots                        &amp;\vdots           &amp; -\alpha c_{i,N_y-3,k}^2\lambda_y^2            &amp; 1 +2 \alpha c_{i,N_y-3,k}^2\lambda_y^2        &amp;-\alpha c_{i,N_y-3,k}^2\lambda_y^2 &amp; 0
-\\
-\vdots                  &amp;\vdots                      &amp; 0                 &amp; -\alpha c_{i,N_y-2,k}^2\lambda_y^2            &amp; 1 +2 \alpha c_{i,N_y-2,k}^2\lambda_y^2        &amp;-\alpha c^2_{i,N_y-2,k}\lambda_y^2
-\\
-0                       &amp;0                      &amp; \dots                 &amp; 0               &amp; -\alpha c_{i,N_y-1,k}^2\lambda_y^2    &amp;  1 +2 \alpha c_{i,N_y-1,k}^2\lambda_y^2
-\end{bmatrix},
-\end{equation*}
-and
-\begin{equation*}\label{eq1C2.15}
-\mathbf{b}_{i,k}^{n}=
-\begin{bmatrix}
-\alpha c^2_{i,1,k}\lambda_y^2 \mathbf{Y}_{i,0,k}\\
-0\\
-\vdots\\
-0\\
-\alpha c^2_{i,N_y-1,k}\lambda_y^2 \mathbf{Y}_{i,N_y,k}
-\end{bmatrix},~
-\mathbf{X}_{i,k}=\begin{bmatrix}
-\mathbf{X}_{i,1,k} \\
-\mathbf{X}_{i,2,k}\\
-\vdots\\
-\mathbf{X}_{i,N_y-1,k}\\
-\mathbf{X}_{i,N_y,k}
-\end{bmatrix}
-\text{ and }
-\mathbf{Y}_{i,k}=\begin{bmatrix}
-\mathbf{Y}_{i,1,k} \\
-\mathbf{Y}_{i,2,k}\\
-\vdots\\
-\mathbf{Y}_{i,N_y-2,k}\\
-\mathbf{Y}_{i,N_y-1,k}
-\end{bmatrix}.
-\end{equation*}
-Moreover, $\mathbf{Y}_{i,0,k}$ and $\mathbf{Y}_{i,N_y,k}$ can be approximated as follows,
-\begin{align*}
-\label{eq1C1.17}\mathbf{Y}_{i,0,k}&amp;=-\alpha c_{i,0,k}^2 \lambda_z^2 \left(f_{c,i,k-1}^{n+1}+f_{c,i,k+1}^{n+1}\right)+\left(1 +2 \alpha c_{i,0,k}^2\lambda_z^2\right)f_{c,i,k}^{n+1},\\
-\label{eq1C1.18}\mathbf{Y}_{i,N_y,k}&amp;=-\alpha c_{i,N_y,k}^2 \lambda_z^2 \left(f_{d,i,k-1}^{n+1}+f_{d,i,k+1}^{n+1}\right)+\left(1 +2 \alpha c_{i,N_y,k}^2\lambda_z^2\right)f_{d,i,k}^{n+1},
-\end{align*}
-where $f_{c,i,k}^{n}\approx f_{c}(ih_x,kh_z,n\tau)$ and $f_{d,i,k}^{n}\approx f_{d}(ih_x,kh_z,n\tau)$.</p>
-<p>Finally, we need to solve the following system for $u_{i,j,k}^{n}$ for each $i=1,2,\ldots,N_x-1$, $j=1,2,\ldots,N_y-1$ and $k=1,2,\ldots,N_z-1$,
-\begin{align*}
-\label{eq1C1.19}\left(1-\alpha c^2_{i,j,k} \lambda_z^2 \delta_z^2\right)u_{i,j,k}^{n+1}=\mathbf{Y}_{i,j,k}.
-\end{align*}
-In other words,
-\begin{align*}
-\label{eq1C1.20}-\alpha c_{i,j,k}^2 \lambda_z^2 \left(u_{i,j,k-1}^{n+1}+u_{i,j,k+1}^{n+1}\right)+\left(1 +2 \alpha c_{i,j,k}^2\lambda_z^2\right)u_{i,j,k}^{n+1}=\mathbf{Y}_{i,j,k}.
-\end{align*}
-Hence,
-\begin{equation*}
-\label{eq1C1.21}u_{i,j}^{n+1}=A_{i,j}^{-1}\left(\mathbf{Y}_{i,j,k}+\mathbf{b}_{i,j}^n\right),
-\end{equation*}
-where
-\begin{equation*}\label{eq1C1.22}
-A_{i,j}=\begin{bmatrix}
-1 +2 \alpha c_{i,j,1}^2\lambda_z^2    &amp;   -\alpha c_{i,j,1}^2\lambda_z^2         &amp; 0                      &amp; \dots                   &amp;  \dots         &amp;0
-\\
--\alpha c_{i,j,2}^2\lambda_z^2             &amp;1 +2 \alpha c_{i,j,2}^2\lambda_z^2   &amp; -\alpha c_{i,j,2}^2\lambda_z^2           &amp; 0                   &amp;  \vdots         &amp;\vdots
-\\
-0                       &amp;-\alpha c_{i,j,3}^2\lambda_z^2             &amp;1 +2 \alpha c_{i,j,3}^2\lambda_z^2   &amp; -\alpha c_{i,j,3}^2\lambda_z^2              &amp;0         &amp;\vdots
-\\
-0                       &amp;0            &amp; \ddots                 &amp; \ddots              &amp;\ddots         &amp;\vdots
-\\
-\vdots                        &amp;\vdots           &amp; -\alpha c_{i,j,N_z-3}^2\lambda_z^2            &amp; 1 +2 \alpha c_{i,j,N_z-3}^2\lambda_z^2        &amp;-\alpha c_{i,j,N_z-3}^2\lambda_z^2 &amp; 0
-\\
-\vdots                  &amp;\vdots                      &amp; 0                 &amp; -\alpha c_{i,j,N_z-2}^2\lambda_z^2            &amp; 1 +2 \alpha c_{i,j,N_z-2}^2\lambda_z^2        &amp;-\alpha c^2_{i,j,N_z-2}\lambda_y^2
-\\
-0                       &amp;0                      &amp; \dots                 &amp; 0               &amp; -\alpha c_{i,j,N_z-1}^2\lambda_z^2    &amp;  1 +2 \alpha c_{i,j,N_z-1}^2\lambda_y^2
-\end{bmatrix},
-\end{equation*}
-and
-\begin{equation*}
-\mathbf{b}_{i,j}^{n}=
-\begin{bmatrix}
-\alpha c^2_{i,j,1}\lambda_z^2 f_{e,i,j}^{n+1}\\
-0\\
-\vdots\\
-0\\
-\alpha c^2_{i,j,N_z-1}\lambda_z^2 f_{f,i,j}^{n+1}
-\end{bmatrix}
-\text{ and }
-\mathbf{u}_{i,j}^{n+1}=\begin{bmatrix}
-u_{i,j,1}^{n+1} \\
-u_{i,j,2}^{n+1}\\
-\vdots\\
-u_{i,j,N_z-2}^{n+1}\\
-u_{i,j,N_z-1}^{n+1}
-\end{bmatrix},
-\end{equation*}</p>
-<p>Note that $f_{e,i,j}^{n}\approx f_{e}(ih_x,jh_y,n\tau)$ and $f_{f,i,j}^{n}\approx f_{e}(ih_x,jh_y,n\tau)$.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>For Stability and convergence analyses, see this <a href="https://hatefdastour.github.io/notes/FDTD/Stability_and_Convergence_FDTD_2nd_3D.pdf">file</a>.</p>
 
 </div>
 </div>
@@ -13688,786 +13416,7 @@ u_{i,j,N_z-1}^{n+1}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-1">Example 1<a class="anchor-link" href="#Example-1">&#182;</a></h2><p>Consider the following problem,
-\begin{align*}
-\begin{cases}
-\dfrac{\partial^2 u}{\partial t^2} = \frac{1}{3}e^{x+y+z} \Delta u +e^{-t-x-y-z}-e^{-t},&amp;(x,y,z)\in I,~t\in(0,1],\\
-u(x,y,z,0)=g(x,y,z),&amp;(x,y,z)\in J,\\
-\dfrac{\partial }{\partial t}u(x,y,z,1) = s(x,y,z),&amp;(x,y,z)\in J,\\
-u(0,y,z,t) = e^{-t-y-z},&amp;(y,z)\in [0,1]\times[0,1],~t \in[0,1],\\
-u(1,y,z,t) = e^{-t-y-z-1},&amp;(y,z)\in [0,1]\times[0,1],~t \in[0,1],\\
-u(x,0,z,t) = e^{-t-x-z},&amp;(x,z)\in [0,1]\times[0,1],~t \in[0,1],\\
-u(x,1,z,t) = e^{-t-x-z-1},&amp;(x,z)\in [0,1]\times[0,1],~t \in[0,1],\\
-u(x,y,0,t) = e^{-t-x-y},&amp;(x,y)\in [0,1]\times[0,1],~t \in[0,1],\\
-u(x,y,1,t) = e^{-t-x-y-1},&amp;(x,y)\in [0,1]\times[0,1],~t \in[0,1].
-\end{cases}
-\end{align*}</p>
-<p>The exact solution corresponding to the problem can be found as follows,
-$$
-u(x,t)=e^{-t-x-y-z}
-$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-Explicit-Scheme">The Explicit Scheme<a class="anchor-link" href="#The-Explicit-Scheme">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">Nt</span><span class="p">):</span>
-    <span class="c1"># N = the number of mesh points for space</span>
-    <span class="c1"># Nt = the number of mesh points for time</span>
-    <span class="n">Nx</span><span class="o">=</span><span class="n">N</span>
-    <span class="n">Ny</span><span class="o">=</span><span class="n">N</span>
-    <span class="n">Nz</span><span class="o">=</span><span class="n">N</span>
-    <span class="c1"># (x,y,z) \in [a_1,a_2]*[b_1,b_2]*[c_1,c_2]</span>
-    <span class="n">a1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">a2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">b1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">b2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">c1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">c2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="c1"># t \in [T_1,T_2]</span>
-    <span class="n">T1</span><span class="o">=</span><span class="mi">0</span>
-    <span class="n">T2</span><span class="o">=</span><span class="mi">1</span>
-    <span class="c1"># Delta x, Delta y, Delta z and Delta t</span>
-    <span class="n">hx</span> <span class="o">=</span><span class="p">(</span><span class="n">a2</span><span class="o">-</span><span class="n">a1</span><span class="p">)</span><span class="o">/</span><span class="n">Nx</span>
-    <span class="n">hy</span> <span class="o">=</span><span class="p">(</span><span class="n">b2</span><span class="o">-</span><span class="n">b1</span><span class="p">)</span><span class="o">/</span><span class="n">Ny</span>
-    <span class="n">hz</span> <span class="o">=</span><span class="p">(</span><span class="n">c2</span><span class="o">-</span><span class="n">c1</span><span class="p">)</span><span class="o">/</span><span class="n">Nz</span>
-    <span class="n">ht</span> <span class="o">=</span><span class="p">(</span><span class="n">T2</span><span class="o">-</span><span class="n">T1</span><span class="p">)</span><span class="o">/</span><span class="n">Nt</span>
-    <span class="c1"># \lambda_x, \lambda_y and \lambda_z</span>
-    <span class="n">lx2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">ly2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">lz2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="c1"># Initial and Boundary Conditions</span>
-    <span class="n">C2</span> <span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span>
-    <span class="n">fa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">fb</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">fc</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">fd</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">fe</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">ff</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="c1"># the exact solution</span>
-    <span class="n">Ue</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="c1"># Null Matrices</span>
-    <span class="n">CC</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">Uexact</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">u0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">u1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="c1"># x, y, z and t</span>
-    <span class="n">xx</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">yy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">zz</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">tt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">Nt</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">CC</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">C2</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-            <span class="n">Uexact</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ue</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">T2</span><span class="p">)</span>
-            <span class="n">u0</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-
-    <span class="c1"># indeces</span>
-    <span class="n">mid</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nx</span><span class="p">))</span>
-    <span class="n">midp</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">]</span>
-    <span class="n">midm</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">]</span>
-    <span class="c1"># Computing the solution at the first time step</span>
-    <span class="n">GG</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">ht</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">2</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">3</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">24</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">4</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">GG</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">fe</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">Nz</span><span class="p">]</span><span class="o">=</span><span class="n">ff</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">u1</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[</span><span class="n">Nx</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fb</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fc</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">Ny</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="c1"># for loop (n&gt;2)</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nt</span><span class="p">):</span>
-        <span class="n">u</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-                <span class="n">u</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">lx2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">midp</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">lx2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">midm</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">ly2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">ly2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">lz2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">lz2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">lx2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="p">(</span><span class="n">ht</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">u</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">fe</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">u</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">Nz</span><span class="p">]</span><span class="o">=</span><span class="n">ff</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">u</span><span class="p">[</span><span class="n">Nx</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fb</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fc</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">u</span><span class="p">[:,</span><span class="n">Ny</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u0</span><span class="o">=</span><span class="n">u1</span>
-        <span class="n">u1</span><span class="o">=</span><span class="n">u</span>
-    <span class="c1"># Norm</span>
-    <span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u</span><span class="o">-</span><span class="n">Uexact</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Norm</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">Uexact</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">N0</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
-<span class="n">Nt0</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span>
-<span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">N0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># iteration</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-        <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
-        
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[53]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>200</td>
-      <td>0.000030</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>200</td>
-      <td>0.000007</td>
-      <td>4.523345</td>
-      <td>2.177390</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>40</td>
-      <td>40</td>
-      <td>40</td>
-      <td>200</td>
-      <td>0.000002</td>
-      <td>4.080920</td>
-      <td>2.028894</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">N0</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
-<span class="n">Nt0</span><span class="o">=</span><span class="mi">20</span><span class="p">;</span>
-<span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">N0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># iteration</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-        <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
-        
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[56]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>5</td>
-      <td>5</td>
-      <td>5</td>
-      <td>20</td>
-      <td>0.000134</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>40</td>
-      <td>0.000030</td>
-      <td>4.482758</td>
-      <td>2.164387</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>80</td>
-      <td>0.000007</td>
-      <td>4.507186</td>
-      <td>2.172227</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>What stands out from the tables is that the order of the method is 2 (in space and time). Moreover, consider the following experiment to test the stability condition.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">N0</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
-<span class="n">Nt0</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
-<span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">N0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># iteration</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-        <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
-        
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[57]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>5</td>
-      <td>5</td>
-      <td>5</td>
-      <td>3</td>
-      <td>3.364656e-03</td>
-      <td>0.000000e+00</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>6</td>
-      <td>1.352591e+02</td>
-      <td>2.487564e-05</td>
-      <td>-15.294907</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>12</td>
-      <td>3.100136e+13</td>
-      <td>4.363004e-12</td>
-      <td>-37.737815</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-Implicit-Scheme">The Implicit Scheme<a class="anchor-link" href="#The-Implicit-Scheme">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Example01_ImSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">Nt</span><span class="p">):</span>
-    <span class="c1"># alpha, beta and gamma</span>
-    <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span>
-    <span class="n">beta</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
-    <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span>
-    <span class="c1"># N = the number of mesh points for space</span>
-    <span class="c1"># Nt = the number of mesh points for time</span>
-    <span class="n">Nx</span><span class="o">=</span><span class="n">N</span>
-    <span class="n">Ny</span><span class="o">=</span><span class="n">N</span>
-    <span class="n">Nz</span><span class="o">=</span><span class="n">N</span>
-    <span class="c1"># (x,y,z) \in [a_1,a_2]*[b_1,b_2]*[c_1,c_2]</span>
-    <span class="n">a1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">a2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">b1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">b2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">c1</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">c2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="c1"># t \in [T_1,T_2]</span>
-    <span class="n">T1</span><span class="o">=</span><span class="mi">0</span>
-    <span class="n">T2</span><span class="o">=</span><span class="mi">1</span>
-    <span class="c1"># Delta x, Delta y, Delta z and Delta t</span>
-    <span class="n">hx</span> <span class="o">=</span><span class="p">(</span><span class="n">a2</span><span class="o">-</span><span class="n">a1</span><span class="p">)</span><span class="o">/</span><span class="n">Nx</span>
-    <span class="n">hy</span> <span class="o">=</span><span class="p">(</span><span class="n">b2</span><span class="o">-</span><span class="n">b1</span><span class="p">)</span><span class="o">/</span><span class="n">Ny</span>
-    <span class="n">hz</span> <span class="o">=</span><span class="p">(</span><span class="n">c2</span><span class="o">-</span><span class="n">c1</span><span class="p">)</span><span class="o">/</span><span class="n">Nz</span>
-    <span class="n">ht</span> <span class="o">=</span><span class="p">(</span><span class="n">T2</span><span class="o">-</span><span class="n">T1</span><span class="p">)</span><span class="o">/</span><span class="n">Nt</span>
-    <span class="c1"># \lambda_x, \lambda_y and \lambda_z</span>
-    <span class="n">lx2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">ly2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">lz2</span><span class="o">=</span><span class="p">(</span><span class="n">ht</span><span class="o">/</span><span class="n">hz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-    <span class="c1"># Initial and Boundary Conditions</span>
-    <span class="n">C2</span> <span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span>
-    <span class="n">fa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">fb</span><span class="o">=</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">fc</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">fd</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">fe</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">ff</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="c1"># the exact solution</span>
-    <span class="n">Ue</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
-    <span class="c1"># Null Matrices</span>
-    <span class="n">CC</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">Uexact</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">u0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">u1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="c1"># x, y, z and t</span>
-    <span class="n">xx</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">yy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">zz</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">tt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">Nt</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">CC</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">C2</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-            <span class="n">Uexact</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ue</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">T2</span><span class="p">)</span>
-            <span class="n">u0</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-    <span class="c1"># indeces</span>
-    <span class="n">mid</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nx</span><span class="p">))</span>
-    <span class="n">midp</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">]</span>
-    <span class="n">midm</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">]</span>
-    <span class="n">sup</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nx</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">sub</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">Nx</span><span class="p">))</span>
-    <span class="c1"># Computing the solution at the first time step</span>
-    <span class="n">GG</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">ht</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">2</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">3</span>\
-    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">24</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">T1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">T1</span><span class="p">))</span><span class="o">*</span><span class="n">ht</span><span class="o">**</span><span class="mi">4</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">GG</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">fe</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">Nz</span><span class="p">]</span><span class="o">=</span><span class="n">ff</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">u1</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[</span><span class="n">Nx</span><span class="p">,:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fb</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fc</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">u1</span><span class="p">[:,</span><span class="n">Ny</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="c1"># for loop (n&gt;2)</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nt</span><span class="p">):</span>
-        <span class="n">u</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">X</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">Y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="c1"># Part 1: Finding the values of Y for current time step</span>
-        <span class="c1"># f_{a,j,k]}^{n+1} and f_{b,j,k]}^{n+1}</span>
-        <span class="n">FA</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">FB</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">FA</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">FB</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">fb</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-                <span class="c1"># Matrix A_{j,k]}</span>
-                <span class="n">Ajk</span><span class="o">=</span><span class="n">diags</span><span class="p">([</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">sub</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lx2</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lx2</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">sup</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lx2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-                <span class="c1"># F_{j,k}</span>
-                <span class="n">Fjk</span><span class="o">=</span><span class="n">lx2</span><span class="o">*</span><span class="n">beta</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="n">midp</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">u1</span><span class="p">[</span><span class="n">midm</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">ly2</span><span class="o">*</span><span class="n">beta</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">lz2</span><span class="o">*</span><span class="n">beta</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">beta</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">lx2</span><span class="o">+</span><span class="n">ly2</span><span class="o">+</span><span class="n">lz2</span><span class="p">))</span><span class="o">*</span><span class="n">u1</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="n">lx2</span><span class="o">*</span><span class="n">gamma</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u0</span><span class="p">[</span><span class="n">midp</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">u0</span><span class="p">[</span><span class="n">midm</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">ly2</span><span class="o">*</span><span class="n">gamma</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">lz2</span><span class="o">*</span><span class="n">gamma</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">gamma</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">lx2</span><span class="o">+</span><span class="n">ly2</span><span class="o">+</span><span class="n">lz2</span><span class="p">))</span><span class="o">*</span><span class="n">u0</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>\
-                    <span class="o">+</span><span class="p">((</span><span class="n">ht</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="p">]))</span>
-                <span class="c1">#</span>
-                <span class="n">X_0jk</span><span class="o">=</span><span class="p">(</span><span class="n">alpha</span><span class="o">*</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>\
-                    <span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FA</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>
-                <span class="c1">#</span>
-                <span class="n">X_Nxjk</span><span class="o">=</span><span class="p">(</span><span class="n">alpha</span><span class="o">*</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>\
-                    <span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>\
-                    <span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">])</span>\
-                    <span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FB</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>
-                <span class="c1"># b_{j,k}</span>
-                <span class="n">bjk</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-                <span class="n">bjk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lx2</span><span class="o">*</span><span class="n">X_0jk</span>
-                <span class="n">bjk</span><span class="p">[</span><span class="n">Nx</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">Nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lx2</span><span class="o">*</span><span class="n">X_Nxjk</span>
-                <span class="c1"># X</span>
-                <span class="n">X</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">spsolve</span><span class="p">(</span><span class="n">Ajk</span><span class="p">,</span><span class="n">Fjk</span><span class="o">+</span><span class="n">bjk</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">del</span> <span class="n">Ajk</span><span class="p">,</span> <span class="n">bjk</span><span class="p">,</span> <span class="n">Fjk</span><span class="p">,</span> <span class="n">X_0jk</span><span class="p">,</span> <span class="n">X_Nxjk</span>
-        <span class="c1"># Part 2: Finding the values of Y for current time step</span>
-        <span class="n">FC</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">FD</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># f_{c,j,k}^{n+1} and f_{d,j,k}^{n+1}</span>
-            <span class="n">FC</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span> <span class="n">fc</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">FD</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span> <span class="n">fd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-                <span class="c1"># Matrix A_{i,k}</span>
-                <span class="n">Aik</span><span class="o">=</span><span class="n">diags</span><span class="p">([</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">sup</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">Y_i0k</span><span class="o">=-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="n">FC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>
-                <span class="n">Y_iNyj</span><span class="o">=-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">Ny</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="o">*</span><span class="p">(</span><span class="n">FD</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">FD</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">Ny</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">)</span><span class="o">*</span><span class="n">FD</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="p">]</span>
-                <span class="c1"># b_{i,k]</span>
-                <span class="n">bik</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-                <span class="n">bik</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">Y_i0k</span>
-                <span class="n">bik</span><span class="p">[</span><span class="n">Ny</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">Ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">Y_iNyj</span>
-                <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">spsolve</span><span class="p">(</span><span class="n">Aik</span><span class="p">,</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">bik</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">del</span> <span class="n">Aik</span><span class="p">,</span> <span class="n">bik</span><span class="p">,</span> <span class="n">Y_i0k</span><span class="p">,</span> <span class="n">Y_iNyj</span>
-        <span class="c1"># Part 3: Finding the values of u^{n+1} for current time step</span>
-        <span class="n">FE</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">FF</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="c1"># f_{e,i,j}^{n+1} and f_{f,i,j}^{n+1}</span>
-            <span class="n">FE</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">fc</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">FF</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">fd</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mid</span><span class="p">:</span>
-                <span class="c1"># Matrix A_{i,j}</span>
-                <span class="n">Aik</span><span class="o">=</span><span class="n">diags</span><span class="p">([</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">sub</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">mid</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">,</span><span class="o">-</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">sup</span><span class="p">]</span><span class="o">*</span><span class="n">lz2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">bij</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-                <span class="n">bij</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">FE</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
-                <span class="n">bij</span><span class="p">[</span><span class="n">Nz</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="n">CC</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">Nz</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">ly2</span><span class="o">*</span><span class="n">FF</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
-                <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">mid</span><span class="p">]</span><span class="o">=</span><span class="n">spsolve</span><span class="p">(</span><span class="n">Aik</span><span class="p">,</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">mid</span><span class="p">]</span><span class="o">+</span><span class="n">bij</span><span class="p">,</span> <span class="n">use_umfpack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">del</span> <span class="n">Aik</span><span class="p">,</span> <span class="n">bij</span>
-        <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]</span><span class="o">=</span><span class="n">FA</span>
-        <span class="n">u</span><span class="p">[</span><span class="n">Nx</span><span class="p">,:,:]</span><span class="o">=</span><span class="n">FB</span>
-        <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">=</span><span class="n">FC</span>
-        <span class="n">u</span><span class="p">[:,</span><span class="n">Ny</span><span class="p">,:]</span><span class="o">=</span><span class="n">FD</span>
-        <span class="n">u</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">FE</span>
-        <span class="n">u</span><span class="p">[:,:,</span><span class="n">Nz</span><span class="p">]</span><span class="o">=</span><span class="n">FF</span>
-        <span class="n">u0</span><span class="o">=</span><span class="n">u1</span>
-        <span class="n">u1</span><span class="o">=</span><span class="n">u</span>
-    <span class="c1"># Norm</span>
-    <span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u</span><span class="o">-</span><span class="n">Uexact</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Norm</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">Uexact</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[103]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">N0</span><span class="o">=</span><span class="mi">5</span>
-<span class="n">Nt0</span><span class="o">=</span><span class="mi">100</span>
-<span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">N0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
-<span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># iteration</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ImSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-        <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
-        
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[103]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>5</td>
-      <td>5</td>
-      <td>5</td>
-      <td>100</td>
-      <td>0.000139</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>100</td>
-      <td>0.000031</td>
-      <td>4.451670</td>
-      <td>2.154347</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>100</td>
-      <td>0.000007</td>
-      <td>4.202264</td>
-      <td>2.071167</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-2">Example 2<a class="anchor-link" href="#Example-2">&#182;</a></h2><p>Consider the following problem,
+<div class="alert alert-block alert-info"><font size="+2"><b>Example</b></font></div><p>Consider the following problem,
 \begin{align*}
 \begin{cases}
 \dfrac{\partial^2 u}{\partial t^2} = \frac{1}{4} \Delta u +\frac{1}{4}e^{t+x+y+z},&amp;(x,y,z)\in I,~t\in(0,1],\\
@@ -14499,7 +13448,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Example02_4thSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">Nt</span><span class="p">):</span>
@@ -14553,7 +13502,7 @@ $$</p>
     <span class="n">sup</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">Nx</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">sub</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">Nx</span><span class="p">))</span>
     <span class="c1"># Null Matrices</span>
-    <span class="n">Uexact</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">U_exact</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">u0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">u1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">F</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">Nt</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -14573,7 +13522,7 @@ $$</p>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ny</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">F</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
-                <span class="n">Uexact</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ue</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">T2</span><span class="p">)</span>
+                <span class="n">U_exact</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ue</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">T2</span><span class="p">)</span>
                 <span class="n">u0</span><span class="p">[:,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
             <span class="c1"># f{a,j,k}^{n+1} and f{b,j,k}^{n+1}</span>
             <span class="n">FA</span><span class="p">[:,</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">(</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">tt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
@@ -14729,8 +13678,9 @@ $$</p>
         <span class="n">u0</span><span class="o">=</span><span class="n">u1</span>
         <span class="n">u1</span><span class="o">=</span><span class="n">u</span>
     <span class="c1"># Norm</span>
-    <span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u</span><span class="o">-</span><span class="n">Uexact</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Norm</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">Uexact</span>
+    <span class="n">U_Comp</span> <span class="o">=</span> <span class="n">u</span>
+    <span class="n">Norm</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U_Comp</span> <span class="o">-</span> <span class="n">U_exact</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Norm</span><span class="p">,</span> <span class="n">U_exact</span><span class="p">,</span> <span class="n">U_Comp</span>
 </pre></div>
 
     </div>
@@ -14748,7 +13698,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
@@ -14759,15 +13709,19 @@ $$</p>
 <span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
 <span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">CPU_Time</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="c1"># iteration</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example02_4thSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">CPU_Time</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
         <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
         
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">,</span> <span class="s1">&#39;CPU Time&#39;</span><span class="p">:</span> <span class="n">CPU_Time</span><span class="p">})</span>
+<span class="k">del</span> <span class="n">it</span><span class="p">,</span> <span class="n">Norm</span><span class="p">,</span> <span class="n">N0</span><span class="p">,</span> <span class="n">Nt0</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">Ratio</span><span class="p">,</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">CPU_Time</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.4e}</span><span class="s2">&quot;</span><span class="p">}))</span>
 </pre></div>
 
     </div>
@@ -14780,74 +13734,22 @@ $$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[91]:</div>
+    <div class="prompt"></div>
 
 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-3-ab2363dd4d75&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">     11</span> <span class="ansi-green-intense-fg ansi-bold">for</span> n <span class="ansi-green-intense-fg ansi-bold">in</span> range<span class="ansi-yellow-intense-fg ansi-bold">(</span>it<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">     12</span>     start <span class="ansi-yellow-intense-fg ansi-bold">=</span> timer<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 13</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>Norm<span class="ansi-yellow-intense-fg ansi-bold">[</span>n<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>_<span class="ansi-yellow-intense-fg ansi-bold">,</span>_ <span class="ansi-yellow-intense-fg ansi-bold">=</span>Example01_ExSolver3D<span class="ansi-yellow-intense-fg ansi-bold">(</span>N<span class="ansi-yellow-intense-fg ansi-bold">[</span>n<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>Nt<span class="ansi-yellow-intense-fg ansi-bold">[</span>n<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     14</span>     CPU_Time<span class="ansi-yellow-intense-fg ansi-bold">[</span>n<span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-yellow-intense-fg ansi-bold">=</span> timer<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">-</span> start
+<span class="ansi-green-fg">     15</span>     <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-yellow-intense-fg ansi-bold">(</span>n<span class="ansi-yellow-intense-fg ansi-bold">&gt;</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>5</td>
-      <td>5</td>
-      <td>5</td>
-      <td>100</td>
-      <td>1.940344e-05</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>100</td>
-      <td>1.246048e-06</td>
-      <td>15.571977</td>
-      <td>3.960880</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>100</td>
-      <td>7.809125e-08</td>
-      <td>15.956313</td>
-      <td>3.996055</td>
-    </tr>
-  </tbody>
-</table>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;Example01_ExSolver3D&#39; is not defined</pre>
 </div>
-</div>
-
 </div>
 
 </div>
@@ -14856,7 +13758,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">it</span><span class="o">=</span><span class="mi">3</span>
@@ -14867,97 +13769,22 @@ $$</p>
 <span class="n">Nt</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">Nt0</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">it</span><span class="p">)])</span>
 <span class="n">Ratio</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">LOG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">CPU_Time</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="c1"># iteration</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
-    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example02_4thSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+    <span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span><span class="n">Example01_ExSolver3D</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="n">Nt</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">CPU_Time</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Norm</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
         <span class="n">LOG</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Ratio</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
         
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">})</span>
-<span class="n">data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Nx&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Ny&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nz&#39;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="n">Nt</span><span class="p">,</span> <span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="n">Norm</span><span class="p">,</span> <span class="s1">&#39;Ratio&#39;</span><span class="p">:</span> <span class="n">Ratio</span><span class="p">,</span> <span class="s1">&#39;Log&#39;</span><span class="p">:</span> <span class="n">LOG</span><span class="p">,</span> <span class="s1">&#39;CPU Time&#39;</span><span class="p">:</span> <span class="n">CPU_Time</span><span class="p">})</span>
+<span class="k">del</span> <span class="n">it</span><span class="p">,</span> <span class="n">Norm</span><span class="p">,</span> <span class="n">N0</span><span class="p">,</span> <span class="n">Nt0</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">Ratio</span><span class="p">,</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">CPU_Time</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">start</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Norm&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.4e}</span><span class="s2">&quot;</span><span class="p">}))</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[92]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Nx</th>
-      <th>Ny</th>
-      <th>Nz</th>
-      <th>Nt</th>
-      <th>Norm</th>
-      <th>Ratio</th>
-      <th>Log</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>10</td>
-      <td>10</td>
-      <td>10</td>
-      <td>20</td>
-      <td>1.247129e-06</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>20</td>
-      <td>20</td>
-      <td>20</td>
-      <td>40</td>
-      <td>8.111692e-08</td>
-      <td>15.374460</td>
-      <td>3.942464</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>40</td>
-      <td>40</td>
-      <td>40</td>
-      <td>80</td>
-      <td>5.068829e-09</td>
-      <td>16.003088</td>
-      <td>4.000278</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
