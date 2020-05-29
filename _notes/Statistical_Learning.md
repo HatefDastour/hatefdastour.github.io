@@ -4,7 +4,7 @@ excerpt: "Statistical Learning with Python and R"
 collection: notes
 ---
 
-<img src='https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7' height='250' align="center"/>
+<img src='https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7' height='150' align="center"/>
 
 [*An Introduction to Statistical Learning*](https://link.springer.com/book/10.1007/978-1-4614-7138-7)
 
