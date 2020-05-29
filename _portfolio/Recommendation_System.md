@@ -21,7 +21,7 @@ collection: portfolio
 	* [Classification using Feature Importance](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_using_Feature_Importance.html)
 	* [Classification using PyTorch Logistic Regression with GPU](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_with_PyTorch_Logistic_Regression.html)
 	* [Classification using PyTorch Artificial Neural Network with GPU](/portfolio/recommendation_system/Telco_Customer_Churn_Classification_with_PyTorch_ANN.html)
-
-
-
-
+* Bank Marketing Dataset
+	* [Preprocessing](/portfolio/recommendation_system/Bank_Marketing_Preprocessing.html)
+	* [Exploratory Data Analysis](/portfolio/recommendation_system/Bank_Marketing_EDA.html)
+	* [Classification using PyTorch Logistic Regression with GPU](/portfolio/recommendation_system/Bank_Marketing_Modeling_using_PyTorch_Logistic_Regression.html)
