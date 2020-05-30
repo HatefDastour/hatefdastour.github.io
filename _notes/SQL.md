@@ -1,10 +1,10 @@
 ---
 title: "SQL"
-excerpt: "SQL and Python"
+excerpt: "SQL Server and Python"
 collection: notes
 ---
 ## Table of contents
 
-* [Python sqlite3](/notes/SQL/Python_sqlite3.html)
-* [SQL_Pandas](/notes/SQL/SQL_Pandas.html)
-* [MySQL and Python](/notes/SQL/MySQL_and_Python.html)
+* [Getting Started with SQLite](/notes/SQL/Getting_Started_with_SQLite.html)
+* [Getting Started with MySQL Connector/Python](/notes/SQL/etting_Started_with_MySQL_Connector_Python.html)
+* [Reading and Writing Table using Pandas DataFrame](/notes/SQL/Reading_and_Writing_Table_using_Pandas_DataFrame.html)
