@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>SQL_Basics_Joins</title>
+<title>SQL_Basics_Managing Tables</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13092,8 +13092,11 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
+<span class="n">pymysql</span><span class="o">.</span><span class="n">install_as_MySQLdb</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">MySQLdb</span>
 </pre></div>
 
     </div>
@@ -13104,28 +13107,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Dataset">Dataset<a class="anchor-link" href="#Dataset">&#182;</a></h1><p>In addition, here, we use <a href="https://www.kaggle.com/hugomathien/soccer"><strong>FIFA 20 Complete Player Datasetet</strong></a> and <a href="https://www.kaggle.com/hugomathien/soccer"><strong>European Soccer Database</strong></a> from <a href="kaggle.com"><strong>Kaggle.com</strong></a>.</p>
-<p>The datasets that we use from the above likes are:</p>
-<ul>
-<li>Country.csv</li>
-<li>League.csv</li>
-<li>players_20.csv</li>
-<li>Team.csv</li>
-<li>teams_and_leagues.csv</li>
-</ul>
-<h2 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h2><p>The datasets are also publicly available website <a href="https://sofifa.com"><strong>sofifa.com</strong></a>.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<div class="alert alert-block alert-info">
-<font size="+2"><b>
-SQL Joins
-</b></font>
-</div><p>In this article, we provide a summary of basic SQL Server commands and syntaxes. For sake of demonstrations SQL Server syntaxes, we use SQLite3. Moreover, the following function can help us to mimic SQL Server Environment in this Jupyter notebook.</p>
+<p>In this article, we provide a summary of basic SQL Server commands and syntaxes. For the full tutorial please see <a href="https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15">SQL Server technical documentation</a>. Since we are working on a Jupyter Notebook, all of SQL commands here complied through <a href="https://www.sqlite.org/index.html">SQLite</a> and <a href="https://pymysql.readthedocs.io/en/latest/">PyMySQL</a>.</p>
+<p>Moreover, the following function can help us to mimic SQL Server Environment in this Jupyter notebook.</p>
 
 </div>
 </div>
@@ -13135,10 +13118,7 @@ SQL Joins
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;FIFA.db&#39;</span><span class="p">)</span>
-<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">mySQL</span><span class="p">(</span><span class="n">Syntax</span><span class="p">):</span> <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">Syntax</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">mySQL</span><span class="p">(</span><span class="n">Syntax</span><span class="p">):</span> <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">Syntax</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13149,25 +13129,11 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here we provide a summary of popular SQL Server command with examples. For full notes, please see the official SQL Server documents at <a href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql?view=sql-server-ver15">docs.microsoft.com</a>.</p>
-<p>SQL joins are one of the important aspects of extracting information from multiple tables. We only provide a summary of joins in the forms of the following diagram. For a detailed note, please see <a href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins?view=sql-server-ver15">this link</a>.</p>
-<p><img src='https://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg' width='700' align="center"/></p>
-<p><strong>Picture Source</strong>: <a href="https://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg">codeproject.com</a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Inner-JOIN">Inner JOIN<a class="anchor-link" href="#Inner-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="p">[</span><span class="k">into</span> <span class="n">New_Table</span><span class="p">]</span>
-</pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using the records that are available in <strong>both</strong> Table A and TableB.</p>
+<div class="alert alert-block alert-info">
+<font size="+2"><b>
+Managing Tables
+</b></font>
+</div><p>Let's create <code>mydatabase.db</code>, and enter the all-time top goal scorers of the premier from this <a href="https://www.premierleague.com/stats/top/players/goals?co=1&amp;se=-1&amp;co=1&amp;cl=-1&amp;iso=-1&amp;po=-1?se=-1">website</a>.</p>
 
 </div>
 </div>
@@ -13177,131 +13143,11 @@ SQL Joins
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Select</span>
-<span class="s2">    B.url,</span>
-<span class="s2">    A.team_long_name,</span>
-<span class="s2">    B.league_name</span>
-<span class="s2">from Team A</span>
-<span class="s2">inner join teams_and_leagues B</span>
-<span class="s2">on</span>
-<span class="s2">    A.team_fifa_api_id = B.url</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;mydatabase.db&#39;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>url</th>
-      <th>team_long_name</th>
-      <th>league_name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>673</td>
-      <td>KRC Genk</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>15005</td>
-      <td>SV Zulte-Waregem</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2007</td>
-      <td>Sporting Lokeren</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1750</td>
-      <td>KSV Cercle Brugge</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>229</td>
-      <td>RSC Anderlecht</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>316</th>
-      <td>894</td>
-      <td>FC Zürich</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>317</th>
-      <td>898</td>
-      <td>FC St. Gallen</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>318</th>
-      <td>1715</td>
-      <td>FC Thun</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>319</th>
-      <td>324</td>
-      <td>Servette FC</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>320</th>
-      <td>1862</td>
-      <td>FC Lausanne-Sports</td>
-      <td>Swiss Super League</td>
-    </tr>
-  </tbody>
-</table>
-<p>321 rows × 3 columns</p>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13309,15 +13155,7 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Left-JOIN">Left JOIN<a class="anchor-link" href="#Left-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">Left</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="p">[</span><span class="k">into</span> <span class="n">New_Table</span><span class="p">]</span>
-</pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using all records that are available in Table A and the records in TableB that are available in TableA as well.</p>
-
+<h2 id="Delete-a-Table">Delete a Table<a class="anchor-link" href="#Delete-a-Table">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -13326,147 +13164,26 @@ SQL Joins
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Select</span>
-<span class="s2">    B.url,</span>
-<span class="s2">    A.team_long_name,</span>
-<span class="s2">    B.league_name</span>
-<span class="s2">from Team A</span>
-<span class="s2">left join teams_and_leagues B</span>
-<span class="s2">on</span>
-<span class="s2">    A.team_fifa_api_id = B.url</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Delete A Table If Exists</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;DROP TABLE IF EXISTS Players&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>url</th>
-      <th>team_long_name</th>
-      <th>league_name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>673.0</td>
-      <td>KRC Genk</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-      <td>Beerschot AC</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>15005.0</td>
-      <td>SV Zulte-Waregem</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2007.0</td>
-      <td>Sporting Lokeren</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1750.0</td>
-      <td>KSV Cercle Brugge</td>
-      <td>Belgian Jupiler Pro League</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>350</th>
-      <td>898.0</td>
-      <td>FC St. Gallen</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>351</th>
-      <td>1715.0</td>
-      <td>FC Thun</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>352</th>
-      <td>324.0</td>
-      <td>Servette FC</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>353</th>
-      <td>1862.0</td>
-      <td>FC Lausanne-Sports</td>
-      <td>Swiss Super League</td>
-    </tr>
-    <tr>
-      <th>354</th>
-      <td>NaN</td>
-      <td>Lugano</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-<p>355 rows × 3 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Right-JOIN">Right JOIN<a class="anchor-link" href="#Right-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">Right</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="p">[</span><span class="k">into</span> <span class="n">New_Table</span><span class="p">]</span>
+<h2 id="Creating-a-Table">Creating a Table<a class="anchor-link" href="#Creating-a-Table">&#182;</a></h2><p>A table can be created using the following syntax,</p>
+<div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">MyTable</span> <span class="p">(</span>
+    <span class="n">Column1</span> <span class="n">Datatype</span><span class="p">,</span>
+    <span class="n">Column2</span> <span class="n">Datatype</span><span class="p">,</span>
+    <span class="n">Column3</span> <span class="n">Datatype</span><span class="p">,</span>
+   <span class="p">....</span>
+    <span class="p">);</span>
 </pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using all records that are available in Table B and the records in TableA that are available in TableB as well.</p>
-<p><strong>Note: RIGHT and FULL OUTER JOINs are not currently supported in SQLite</strong></p>
 
 </div>
 </div>
@@ -13474,30 +13191,16 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="FULL-OUTER-JOIN">FULL OUTER JOIN<a class="anchor-link" href="#FULL-OUTER-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">FULL</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="p">[</span><span class="k">into</span> <span class="n">New_Table</span><span class="p">]</span>
+<p>To create <em>Players</em> table we can use the following SQL command</p>
+<div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Players</span> <span class="p">(</span> 
+    <span class="n">Rank</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> 
+    <span class="n">First_Name</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> 
+    <span class="n">Last_Name</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> 
+    <span class="n">Nationality</span> <span class="nb">CHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> 
+    <span class="n">Goals</span> <span class="nb">INTEGER</span><span class="p">,</span>
+    <span class="n">Birth_Date</span> <span class="nb">DATE</span>
+    <span class="p">);</span>
 </pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using the records that are available in Table A and TableB.</p>
-<p><strong>Note: RIGHT and FULL OUTER JOINs are not currently supported in SQLite</strong></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Left-Excluding-JOIN">Left Excluding JOIN<a class="anchor-link" href="#Left-Excluding-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">Left</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="k">Where</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span> <span class="k">is</span> <span class="k">Null</span>
-</pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using all records that are available in Table A but not in Table B.</p>
 
 </div>
 </div>
@@ -13507,270 +13210,18 @@ SQL Joins
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Select</span>
-<span class="s2">    B.url,</span>
-<span class="s2">    A.team_long_name,</span>
-<span class="s2">    B.league_name</span>
-<span class="s2">from Team A</span>
-<span class="s2">Left Join teams_and_leagues B</span>
-<span class="s2">on</span>
-<span class="s2">    A.team_fifa_api_id = B.url</span>
-<span class="s2">where</span>
-<span class="s2">    B.url is Null</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># running that syntax</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE Players ( </span>
+<span class="s2">    Rank INTEGER PRIMARY KEY, </span>
+<span class="s2">    First_Name VARCHAR(20), </span>
+<span class="s2">    Last_Name VARCHAR(30), </span>
+<span class="s2">    Nationality CHAR(10), </span>
+<span class="s2">    Goals INTEGER</span>
+<span class="s2">    );&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>url</th>
-      <th>team_long_name</th>
-      <th>league_name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>None</td>
-      <td>Beerschot AC</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>None</td>
-      <td>RAEC Mons</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>None</td>
-      <td>FCV Dender EH</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>None</td>
-      <td>KSV Roeselare</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>None</td>
-      <td>Tubize</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>None</td>
-      <td>KVC Westerlo</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>None</td>
-      <td>SC Bastia</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>None</td>
-      <td>De Graafschap</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>None</td>
-      <td>FC Volendam</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>None</td>
-      <td>SC Cambuur</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>None</td>
-      <td>Ruch Chorzów</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>None</td>
-      <td>P. Warszawa</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>None</td>
-      <td>Śląsk Wrocław</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>None</td>
-      <td>Widzew Łódź</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>None</td>
-      <td>Odra Wodzisław</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>None</td>
-      <td>Widzew Łódź</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>None</td>
-      <td>Zawisza Bydgoszcz</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>None</td>
-      <td>Termalica Bruk-Bet Nieciecza</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>None</td>
-      <td>Trofense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>None</td>
-      <td>Amadora</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>None</td>
-      <td>Portimonense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>None</td>
-      <td>Feirense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>None</td>
-      <td>Uniao da Madeira</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>None</td>
-      <td>Tondela</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>None</td>
-      <td>Falkirk</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>None</td>
-      <td>Inverness Caledonian Thistle</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>None</td>
-      <td>Dundee United</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>None</td>
-      <td>Dunfermline Athletic</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>None</td>
-      <td>RC Recreativo</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>None</td>
-      <td>Xerez Club Deportivo</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>None</td>
-      <td>AC Bellinzona</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>None</td>
-      <td>FC Aarau</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>None</td>
-      <td>FC Vaduz</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>None</td>
-      <td>Lugano</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13778,14 +13229,7 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Right-Excluding-JOIN">Right Excluding JOIN<a class="anchor-link" href="#Right-Excluding-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">Left</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="k">Where</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="k">is</span> <span class="k">Null</span>
-</pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using all records that are available in Table B but not in Table A.</p>
+<p>Note that now, we have created a blank table.</p>
 
 </div>
 </div>
@@ -13795,18 +13239,7 @@ SQL Joins
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Select</span>
-<span class="s2">    B.url,</span>
-<span class="s2">    A.team_long_name,</span>
-<span class="s2">    B.league_name</span>
-<span class="s2">from Team A</span>
-<span class="s2">Left Join teams_and_leagues B</span>
-<span class="s2">on</span>
-<span class="s2">    A.team_fifa_api_id = B.url</span>
-<span class="s2">where</span>
-<span class="s2">    A.team_fifa_api_id is Null</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13842,77 +13275,250 @@ SQL Joins
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>url</th>
-      <th>team_long_name</th>
-      <th>league_name</th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Adding-a-column">Adding a column<a class="anchor-link" href="#Adding-a-column">&#182;</a></h2><p>This can be done using <strong>Alter</strong> function.</p>
+<div class="highlight"><pre><span></span><span class="k">Alter</span> <span class="k">Table</span> <span class="n">MyTable</span>
+    <span class="k">Add</span> <span class="k">Column_name</span> <span class="n">Datatype</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Alter Table Players</span>
+<span class="s2">    Add Birth_Date DATE</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Thus,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Deleting-a-column">Deleting a column<a class="anchor-link" href="#Deleting-a-column">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">Alter</span> <span class="k">Table</span> <span class="n">MyTable</span>
+    <span class="k">Drop</span> <span class="k">Column</span> <span class="k">Column</span> <span class="n">List</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Renaming-a-column">Renaming a column<a class="anchor-link" href="#Renaming-a-column">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">Alter</span> <span class="k">Table</span> <span class="n">MyTable</span>
+  <span class="k">Rename</span> <span class="n">PreviousName</span> <span class="k">to</span> <span class="n">NewName</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Rename-Table">Rename Table<a class="anchor-link" href="#Rename-Table">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">Alter</span> <span class="k">Table</span> <span class="n">MyTable</span>
+  <span class="k">Rename</span> <span class="k">To</span> <span class="n">NewTableName</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Truncate-Table">Truncate Table<a class="anchor-link" href="#Truncate-Table">&#182;</a></h2><p>This command removed all data from a table</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">Truncate</span> <span class="k">Table</span> <span class="n">MyTable</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Inserting-a-row">Inserting a row<a class="anchor-link" href="#Inserting-a-row">&#182;</a></h2><p>For example, to enter a row of a player data, we can use the following SQL syntax</p>
+<div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">Players</span> <span class="p">(</span><span class="n">Rank</span><span class="p">,</span> <span class="n">First_Name</span><span class="p">,</span> <span class="n">Last_Name</span><span class="p">,</span> <span class="n">Nationality</span><span class="p">,</span> <span class="n">Goals</span><span class="p">,</span> <span class="n">Birth_Date</span><span class="p">)</span>
+    <span class="k">VALUES</span> <span class="p">(</span><span class="k">Null</span><span class="p">,</span> <span class="ss">&quot;Alan&quot;</span><span class="p">,</span> <span class="ss">&quot;Shearer&quot;</span><span class="p">,</span> <span class="ss">&quot;England&quot;</span><span class="p">,</span> <span class="mi">260</span><span class="p">,</span><span class="ss">&quot;1970-08-13&quot;</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
+<span class="sd">    VALUES (Null, &quot;Alan&quot;, &quot;Shearer&quot;, &quot;England&quot;, 260,&quot;1970-08-13&quot;);&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Therefore</span>
+<span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>None</td>
-      <td>FCV Dender EH</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>None</td>
-      <td>Tubize</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>None</td>
-      <td>FC Volendam</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>None</td>
-      <td>Termalica Bruk-Bet Nieciecza</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>None</td>
-      <td>Trofense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>None</td>
-      <td>Amadora</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>None</td>
-      <td>Portimonense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>None</td>
-      <td>Feirense</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>None</td>
-      <td>Uniao da Madeira</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>None</td>
-      <td>Tondela</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>None</td>
-      <td>Lugano</td>
-      <td>None</td>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
     </tr>
   </tbody>
 </table>
@@ -13928,16 +13534,256 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Outer-Excluding-JOIN">Outer Excluding JOIN<a class="anchor-link" href="#Outer-Excluding-JOIN">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">A</span><span class="p">.</span><span class="n">Column1</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">Column2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">FROM</span>
-    <span class="n">TableA</span> <span class="n">A</span>
-<span class="k">FULL</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="n">TableB</span> <span class="n">B</span>
-    <span class="k">ON</span> <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="o">=</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span><span class="p">;</span>
-<span class="k">Where</span>
-    <span class="n">A</span><span class="p">.</span><span class="k">key</span> <span class="k">is</span> <span class="k">Null</span> <span class="k">or</span> <span class="n">B</span><span class="p">.</span><span class="k">key</span> <span class="k">is</span> <span class="k">Null</span>
+<h2 id="Inserting-multiple-rows">Inserting multiple rows<a class="anchor-link" href="#Inserting-multiple-rows">&#182;</a></h2><p>As you noticed, entering table rows by the previous command is not convenient, especially for entering a large number of rows. Therefore, we can enter the data as follows instead.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
+<span class="s2">    VALUES</span>
+<span class="s2">        (Null, &quot;Wayne&quot;, &quot;Rooney&quot;, &quot;England&quot;, 208, &quot;1985-10-24&quot;),</span>
+<span class="s2">        (Null, &quot;Andrew&quot;, &quot;Cole&quot;, &quot;England&quot;, 187, &quot;1971-10-15&quot;),</span>
+<span class="s2">        (Null, &quot;Frank&quot;, &quot;Lampard&quot;, &quot;England&quot;, 177, &quot;1978-06-20&quot;);&quot;&quot;&quot;</span><span class="p">)</span>
+    
+<span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
-<p>This querying data returns a joining (on defined keys) of TableA and TableB using all records that are available in Table A and Table B but not in the mutual records.</p>
-<p><strong>Note: RIGHT and FULL OUTER JOINs are not currently supported in SQLite</strong></p>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Wayne</td>
+      <td>Rooney</td>
+      <td>England</td>
+      <td>208</td>
+      <td>1985-10-24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Andrew</td>
+      <td>Cole</td>
+      <td>England</td>
+      <td>187</td>
+      <td>1971-10-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Frank</td>
+      <td>Lampard</td>
+      <td>England</td>
+      <td>177</td>
+      <td>1978-06-20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Updating-a-table">Updating a table<a class="anchor-link" href="#Updating-a-table">&#182;</a></h2><p>Assume that we are going to enter the following row in our table.</p>
+<table>
+<thead><tr>
+<th>Last Name</th>
+<th>First Name</th>
+<th>Nationality</th>
+<th>Goals</th>
+<th>Birthdate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thierry</td>
+<td>Henry</td>
+<td>France</td>
+<td>175</td>
+<td>1977-08-17</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">INSERT INTO Players (Rank, First_Name, Last_Name, Nationality, Goals, Birth_Date)</span>
+<span class="s2">    VALUES (Null, &quot;Thierry&quot;, &quot;Henry&quot;, &quot;France&quot;, 180, &quot;1977-08-17&quot;);</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Wayne</td>
+      <td>Rooney</td>
+      <td>England</td>
+      <td>208</td>
+      <td>1985-10-24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Andrew</td>
+      <td>Cole</td>
+      <td>England</td>
+      <td>187</td>
+      <td>1971-10-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Frank</td>
+      <td>Lampard</td>
+      <td>England</td>
+      <td>177</td>
+      <td>1978-06-20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Thierry</td>
+      <td>Henry</td>
+      <td>France</td>
+      <td>180</td>
+      <td>1977-08-17</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, the number of goals for Thierry Henry needs to be corrected to 175. Thus,</p>
 
 </div>
 </div>
@@ -13945,10 +13791,441 @@ SQL Joins
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<hr>
+<p>However, we entered another value by mistake for goal numbers.</p>
+<table>
+<thead><tr>
+<th>Last Name</th>
+<th>First Name</th>
+<th>Nationality</th>
+<th>Goals</th>
+<th>Birthdate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thierry</td>
+<td>Henry</td>
+<td>France</td>
+<td>180</td>
+<td>1977-08-17</td>
+</tr>
+</tbody>
+</table>
+<p>In this case, we can update the table as follows</p>
+<div class="highlight"><pre><span></span><span class="k">UPDATE</span> <span class="n">Players</span>
+    <span class="k">SET</span> <span class="n">goals</span> <span class="o">=</span><span class="mi">175</span>
+    <span class="k">WHERE</span> <span class="n">Rank</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">UPDATE Players</span>
+<span class="s2">    SET goals =175</span>
+<span class="s2">    WHERE Rank=5;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from Players&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Wayne</td>
+      <td>Rooney</td>
+      <td>England</td>
+      <td>208</td>
+      <td>1985-10-24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Andrew</td>
+      <td>Cole</td>
+      <td>England</td>
+      <td>187</td>
+      <td>1971-10-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Frank</td>
+      <td>Lampard</td>
+      <td>England</td>
+      <td>177</td>
+      <td>1978-06-20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Thierry</td>
+      <td>Henry</td>
+      <td>France</td>
+      <td>175</td>
+      <td>1977-08-17</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Copying-a-Table">Copying a Table<a class="anchor-link" href="#Copying-a-Table">&#182;</a></h2><p>Syntax:</p>
+<div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">NewTable</span> <span class="k">As</span>
+    <span class="k">Select</span> <span class="o">*</span> <span class="k">From</span> <span class="n">Original_Table</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Create Table PlayersCopy As</span>
+<span class="s2">    Select * From Players;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Therefore,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from PlayersCopy&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Wayne</td>
+      <td>Rooney</td>
+      <td>England</td>
+      <td>208</td>
+      <td>1985-10-24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Andrew</td>
+      <td>Cole</td>
+      <td>England</td>
+      <td>187</td>
+      <td>1971-10-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Frank</td>
+      <td>Lampard</td>
+      <td>England</td>
+      <td>177</td>
+      <td>1978-06-20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Thierry</td>
+      <td>Henry</td>
+      <td>France</td>
+      <td>175</td>
+      <td>1977-08-17</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Deleting-a-row">Deleting a row<a class="anchor-link" href="#Deleting-a-row">&#182;</a></h2><p>syntax</p>
+<div class="highlight"><pre><span></span><span class="k">Delete</span> <span class="k">From</span> <span class="n">MyTable</span>
+    <span class="k">Where</span> <span class="n">Condition</span><span class="p">;</span>
+</pre></div>
+<p>For example, to delete the last entered row, we can try</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Delete From PlayersCopy</span>
+<span class="s2">    Where Last_Name=&quot;Henry&quot;;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Hence,</span>
+<span class="n">mySQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from PlayersCopy&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Rank</th>
+      <th>First_Name</th>
+      <th>Last_Name</th>
+      <th>Nationality</th>
+      <th>Goals</th>
+      <th>Birth_Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Alan</td>
+      <td>Shearer</td>
+      <td>England</td>
+      <td>260</td>
+      <td>1970-08-13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Wayne</td>
+      <td>Rooney</td>
+      <td>England</td>
+      <td>208</td>
+      <td>1985-10-24</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Andrew</td>
+      <td>Cole</td>
+      <td>England</td>
+      <td>187</td>
+      <td>1971-10-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Frank</td>
+      <td>Lampard</td>
+      <td>England</td>
+      <td>177</td>
+      <td>1978-06-20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Deleting-a-table">Deleting a table<a class="anchor-link" href="#Deleting-a-table">&#182;</a></h2><p>syntax</p>
+<div class="highlight"><pre><span></span><span class="k">Drop</span> <span class="k">Table</span> <span class="n">TableName</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Drop Table PlayersCopy</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
