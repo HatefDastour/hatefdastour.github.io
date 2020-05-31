@@ -9,7 +9,7 @@ collection: notes
 * [Querying Data From A Table](/notes/SQL/SQL_Basics_Querying_Data_From_A_Table.html)
 * [Joins](/notes/SQL/SQL_Basics_Joins.html)
 * [Operators](/notes/SQL/SQL_Basics_Operators.html)
-* [Managing Tables](/notes/SQL/SQL_Basics_Managing Tables.html)
+* [Managing Tables](/notes/SQL/SQL_Basics_Managing_Tables.html)
 * [Aggregate Functions](/notes/SQL/SQL_Basics_Aggregate_Functions.html)
 
 ### SQL Server and Python Connectors
