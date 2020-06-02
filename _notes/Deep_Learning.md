@@ -4,8 +4,13 @@ excerpt: "Deep Learning with Python"
 collection: notes
 ---
 ## Table of contents
+### PyTorch
 
 * [Getting_Started_with_Pytorch](/notes/Deel_Learning/Getting_Started_with_Pytorch.html)
+* [Logistic Regression_with Pytorch](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
+* [Artificial Neural Network with_Pytorch (Single Layer and Multiple Layers)](/notes/Deel_Learning/PyTorch_ANN.html)
+
+### Keras
 * Multi-layer Perceptron (MLP) using Keras
 	* [Binary classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
 	* [Multi-Class classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
