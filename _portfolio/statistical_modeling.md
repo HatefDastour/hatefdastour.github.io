@@ -6,8 +6,8 @@ collection: portfolio
 ## Table of contents
 
 * Digit Recognizer
-	* [Classification using PyTorch Logistic Regression](/notes/Deel_Learning/Digit_Recognizer_Classification_using_PyTorch_Logistic_Regression.html)
-	* [Digit Recognizer Classification using PyTorch ANN](/notes/Deel_Learning/Digit_Recognizer_Classification_using_PyTorch_ANN.html)
+	* [Classification using PyTorch Logistic Regression](/portfolio/statistical_modeling/Digit_Recognizer_Classification_using_PyTorch_Logistic_Regression.html)
+	* [Digit Recognizer Classification using PyTorch ANN](/portfolio/statistical_modeling/Digit_Recognizer_Classification_using_PyTorch_ANN.html)
 * [Black Friday (Stacked Model)](/portfolio/statistical_modeling/black_friday_stacked_model.html)
 * [Sign Language Digits (Stacking Classifiers)](/portfolio/statistical_modeling/Sign_Language_Digits_Stacking_Classifiers.html)
 * Pima Indians Diabetes Data
