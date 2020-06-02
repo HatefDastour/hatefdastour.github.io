@@ -12,5 +12,5 @@ collection: notes
 
 ### Keras
 * Multi-layer Perceptron (MLP) using Keras
-	* [Binary classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
-	* [Multi-Class classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
+	* [Binary Classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
+	* [Multi-Class Classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
