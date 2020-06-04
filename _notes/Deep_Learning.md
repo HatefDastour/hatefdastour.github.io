@@ -15,5 +15,6 @@ collection: notes
 	* [Binary Classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
 	* [Multi-Class Classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
 	* [Basic Image Classifications using Keras Multi-Class Classification](/notes/Deel_Learning/Basic_Image_Classifications_with_Keras.html)
+	* [Keras Regression with MLP](/notes/Deel_Learning/Keras_Regression.html)
 	
 	
