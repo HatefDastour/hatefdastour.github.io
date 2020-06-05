@@ -10,9 +10,9 @@ collection: notes
 
 ### Chapter 3: Linear Regression
 * [Linear Regression](/notes/Statistical_Learning/Linear_Regression.html)
+* [Linear Regression (R - Notebook)](/notes/Statistical_Learning/Linear_Regression_R.html)
 
 ### Chapter 4: Classification
-* [Linear Regression (R - Notebook)](/notes/Statistical_Learning/Linear_Regression_R.html)
 * [Logistic Regression](/notes/Statistical_Learning/Logistic_Regression.html)
 * [Logistic Regression (R - Notebook)](/notes/Statistical_Learning/Logistic_Regression_R.html)
 * [Linear Discriminant Analysis (LDA)](/notes/Statistical_Learning/Linear_Discriminant_Analysis.html)
