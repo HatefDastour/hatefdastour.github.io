@@ -10,11 +10,13 @@ collection: notes
 * [Logistic Regression_with Pytorch](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
 * [Artificial Neural Network with_Pytorch (Single Layer and Multiple Layers)](/notes/Deel_Learning/PyTorch_ANN.html)
 
-### Keras
+### Tensorflow and Keras
 * Multi-layer Perceptron (MLP) using Keras
 	* [Binary Classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
 	* [Multi-Class Classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
 	* [Basic Image Classifications using Keras Multi-Class Classification](/notes/Deel_Learning/Basic_Image_Classifications_with_Keras.html)
 	* [Keras Regression with MLP](/notes/Deel_Learning/Keras_Regression.html)
+* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Model.html)
 	
+
 	
