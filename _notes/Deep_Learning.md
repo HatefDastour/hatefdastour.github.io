@@ -16,7 +16,9 @@ collection: notes
 	* [Multi-Class Classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
 	* [Basic Image Classifications using Keras Multi-Class Classification](/notes/Deel_Learning/Basic_Image_Classifications_with_Keras.html)
 	* [Keras Regression with MLP](/notes/Deel_Learning/Keras_Regression.html)
-* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Model.html)
+* [Tensorflow Classifiers]
+	* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Classifier.html)
+	* [Tensorflow Deep Neural Network (DNN) Classifier](/notes/Deel_Learning/Tensorflow_DNN_Classifier.html)
 	
 
 	
