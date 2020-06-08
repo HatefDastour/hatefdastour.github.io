@@ -20,3 +20,4 @@ collection: notes
 	* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Classifier.html)
 	* [Tensorflow Deep Neural Network (DNN) Classifier](/notes/Deel_Learning/Tensorflow_DNN_Classifier.html)
 	* [Tensorflow Boosted Trees Classifier](/notes/Deel_Learning/Tensorflow_Boosted_Trees_Classifier.html)
+	* [Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/notes/Deel_Learning/Tensorflow_Boosted_Trees_Classifier_with_Feature_Importance_Analysis.html)
