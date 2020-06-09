@@ -11,18 +11,14 @@ redirect_from:
 
 * See my full CV [here](/files/Hatef_Dastour_CV.pdf).
 
-<div class="alert alert-block alert-info">
-<font size="+2"><b>
 Education
-</b></font>
-</div>
-
+======
 * Ph.D in Mathematics and Statistics, University of Calgary, Canada, December 2019
 * M.S. in Applied Mathematics, Damghan University, Iran, 2012
 * B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
 
 
-Working and Teaching Experience
+Working Experience
 ======
 * Data Science Developer<br/>
 StellarAlgo, Calgary, AB, Canada
@@ -32,28 +28,22 @@ Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Ca
 	* [MATH 211 - Linear Methods I - Summer 2018](https://hatefdastour.github.io/teaching/2018-summer-teaching-1)
 	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2)
 	* [MATH 275 - Calculus for Engineers and Scientists - Fall 2017](http://contacts.ucalgary.ca/info/math/courses/f17/MATH275) (Through Instructor Training Program)
-* Graduate Teaching Assistant
+* Graduate Teaching Assistant<br/>
+Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
+
+* Research Assistant<br/>
+School of Mathematics, Iran University of Science and Technology, Tehran, Iran
+
+* Graduate Student<br/>
+School of Mathematics and Computer science, Damghan University, Damghan, Iran
 
 * Self-employed Mathematics Tutor<br/>
 Tehran, Iran
 
-Research Experience
-======
-* Graduate Research Assistant, January 2016 to September 2016
-  * Department of Mathematics and Statistics, University of Calgary
-  * Advisor: [Dr. Wenyuan Liao](http://contacts.ucalgary.ca/info/math/profiles/101-152848)
-
-* Research Assistant, February 2012 to May 2015
-  * School of Mathematics, Iran University of Science and Technology
-  * Supervisor: [Dr. Morteza Garshasbi](https://www.researchgate.net/profile/Morteza_Garshasbi)
-  
-* Graduate Research Assistant, October 2010 to August 2012
-  * School of Mathematics and Computer science, Damghan University
-  * Advisor: [Dr. Morteza Garshasbi](https://www.researchgate.net/profile/Morteza_Garshasbi)
   
 Computer Skills
 ======
-* Proficiency with computer programming including MATLAB, Python, R, Julia Programming, and others.
+* Proficiency with computer programming including MATLAB, Python (TensorFlow, Keras, Scikit-Learn, NLP, ...), R, Julia Programming, and others.
 
 * Proficiency with SQL Server Analysis Services (SSAS).
 
@@ -61,7 +51,24 @@ Computer Skills
 
 * Proficiency with advanced graphical applications, such as Adobe Photoshop, 3D Studio Max, Blender, and more.
 
-* Proficiency with Linux command line .
+* Proficiency with Microsoft Windows, mac-OS, and various Linux distributions.
+
+
+Group Projects
+======
+* 2016 Graduate Mathematical Modelling in Industry Workshop, University of British Columbia, Vancouver, BC, Canada, August 08, 2016 - August 13, 2016,
+<br/>
+<font color='Blue'><b>Project:</b></font> [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016)
+* 2016 Industrial Problem Solving Workshop, University of Toronto, Toronto, ON, Canada, August 15, 2016 - August 19, 2016,
+<br/>
+<font color='Blue'><b>Project:</b></font> [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016) by Internal Ratings Management, Global Risk Management, Scotiabank.
+
+Awards
+======
+* PIMS Doctoral~Recruitment Scholarship. Amount: 10,000.00 C\$, 2015 - 2016
+* Eric Milner Graduate Scholarship. Amount: 5,500.00 C\$,  2016 - 2017
+* Alberta Innovates Graduate Student Scholarship. Amount: 31,500.00 C\$, 2017 - 2018
+* Alberta Innovates Graduate Student Scholarship. Amount: 31,500.00 C\$, 2018 - 2019
 
 Publications
 ======
@@ -75,12 +82,29 @@ Talks
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
   
-Awards
+
+Professional Services and Committees
 ======
-* PIMS Doctoral Recruitment Scholarship. --2016
 
-* Eric Milner Graduate Scholarship. --2017
+* Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw), University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
 
-* Alberta Innovates Graduate Student Scholarship. --2018
+* Serving on Mathematics and Statistics (MTST) Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
 
-* Alberta Innovates Graduate Student Scholarship. --2019
+* Instructor of Programming Workshop at [2017 CMS Math Camp (Alberta)](https://cms.math.ca/MathCamps/), University of Calgary,
+ Calgary, Canada, July 2017,
+
+* Contribution to the June 2016 convocation ceremonies, University of Calgary, Calgary, Canada, June 2016,
+
+* The vice-president academic of Graduate University Mathematics Society (GUMS), University of Calgary,
+ Calgary, Canada, September 2016 - September 2018,
+
+* The representative of graduate students of the Department of Mathematics and Statistics in the Graduate Committee of the department, University of Calgary, Calgary, Canada, October 2016 - September 2018,
+
+* The president of University of Calgary SIAM Student Chapter, University of Calgary,
+ Calgary, Canada, January 2017 - September 2018,
+
+* Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/),
+ Calgary, Canada, February 2017 - April 2018,
+
+* Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc), Calgary, Canada, May 21, 2017 - May 22, 2017.
+  
