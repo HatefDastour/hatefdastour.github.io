@@ -11,8 +11,12 @@ redirect_from:
 
 * See my full CV [here](/files/Hatef_Dastour_CV.pdf).
 
+<div class="alert alert-block alert-info">
+<font size="+2"><b>
 Education
-======
+</b></font>
+</div>
+
 * Ph.D in Mathematics and Statistics, University of Calgary, Canada, December 2019
 * M.S. in Applied Mathematics, Damghan University, Iran, 2012
 * B.S. in Applied Mathematics, Payam Noor University, Iran, 2010
