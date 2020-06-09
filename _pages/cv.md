@@ -58,10 +58,10 @@ Group Projects
 ======
 * 2016 Graduate Mathematical Modelling in Industry Workshop, University of British Columbia, Vancouver, BC, Canada, August 08, 2016 - August 13, 2016,
 <br/>
-<font color='Blue'><b>Project:</b></font> [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016)
+**Project:** [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016)
 * 2016 Industrial Problem Solving Workshop, University of Toronto, Toronto, ON, Canada, August 15, 2016 - August 19, 2016,
 <br/>
-<font color='Blue'><b>Project:</b></font> [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016) by Internal Ratings Management, Global Risk Management, Scotiabank.
+**Project:**  [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016) by Internal Ratings Management, Global Risk Management, Scotiabank.
 
 Awards
 ======
