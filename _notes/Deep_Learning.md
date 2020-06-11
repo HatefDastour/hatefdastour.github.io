@@ -23,3 +23,4 @@ collection: notes
 	* [Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/notes/Deel_Learning/Tensorflow_Boosted_Trees_Classifier_with_Feature_Importance_Analysis.html)
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
 * [Image Classification with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Classification.html)
+* [Text Classification Pipeline with Tensorflow](/notes/Deel_Learning/Tensorflow_Text_Classification_Pipeline.html)
