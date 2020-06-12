@@ -14,13 +14,10 @@ My name is Hatef Dastour and I am a Data Science enthusiast. Upon completion of 
 I am a tech enthusiast driven to learn about the new advancements in technology. I also enjoy working out, hiking, and spending time with family and friends.
 </p>
 
-
-
-
-<a href="https://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1">
-<img
-border="0"
-src="https://raw.githubusercontent.com/HatefDastour/hatefdastour.github.io/master/files/hd.jpg" width="500"
-align="center"
-/>
+<p style='text-align: center;'>
+<a href="https://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1"><img src="https://raw.githubusercontent.com/HatefDastour/hatefdastour.github.io/master/files/hd.jpg"
+title="Prediction to Make Better Decisions" width="600" align="center"/>
+<br>
+<a href="hhttps://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1">Prediction to Make Better Decisions</a>
 </a>
+</p>
