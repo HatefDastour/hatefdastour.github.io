@@ -16,8 +16,7 @@ I am a tech enthusiast driven to learn about the new advancements in technology.
 
 <p style='text-align: center;'>
 <a href="https://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1"><img src="https://raw.githubusercontent.com/HatefDastour/hatefdastour.github.io/master/files/hd.jpg"
-title="Prediction to Make Better Decisions" width="600" align="center"/>
+title="Prediction to Make Better Decisions" width="600" align="center"/></a>
 <br>
-<a href="hhttps://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1">Prediction to Make Better Decisions</a>
-</a>
+<a href="https://ucalgary.yuja.com/V/Video?v=31441&node=193438&a=1323573851&autoplay=1">Prediction to Make Better Decisions</a>
 </p>
