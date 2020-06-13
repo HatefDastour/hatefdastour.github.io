@@ -7,7 +7,7 @@ collection: portfolio
 
 * Airbnb Listings
 	* [Preprocessing](/portfolio/real_estate/Airbnb_Listings_Preprocessing.html)
-	* [Exploratory Data Analysis](/portfolio/real_estate/Airbnb_Listings_real_estate.html)
+	* [Exploratory Data Analysis](/portfolio/real_estate/Airbnb_Listings_exploratory_data_analysis.html)
 	
 * Calgary Property Assessments
 	* [Preprocessing](/portfolio/real_estate/Calgary_Property_Assessments_Preprocessing.html)
