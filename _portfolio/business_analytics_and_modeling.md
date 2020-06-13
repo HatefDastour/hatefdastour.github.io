@@ -1,6 +1,6 @@
 ---
 title: "Business Analytics and Modeling"
-excerpt: "Ecommerce Personalization, Customer Churn, and Employee Churn"
+excerpt: "Ecommerce Personalization, Customer Churn, Employee Churn, ..."
 collection: portfolio
 ---
 
