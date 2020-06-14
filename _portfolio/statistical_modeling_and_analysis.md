@@ -14,5 +14,5 @@ collection: portfolio
 	* [Classification using PyTorch Logistic Regression](/portfolio/statistical_modeling_and_analysis/Digit_Recognizer_Classification_using_PyTorch_Logistic_Regression.html)
 	* [Digit Recognizer Classification using PyTorch ANN](/portfolio/statistical_modeling_and_analysis/Digit_Recognizer_Classification_using_PyTorch_ANN.html)
 * [Movie Recommendation System](/portfolio/statistical_modeling_and_analysis/Movie_Recommendation_System.html)
-* [Netflix Titles Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Netflix_titles.html)
-* [State of Data Science and Machine Learning](/portfolio/business_analytics_and_modeling/State_of_Data_Science_and_Machine_Learning.html)
+* [Netflix Titles Exploratory Data Analysis](/portfolio/statistical_modeling_and_analysis/Netflix_titles.html)
+* [State of Data Science and Machine Learning](/portfolio/statistical_modeling_and_analysis/State_of_Data_Science_and_Machine_Learning.html)
