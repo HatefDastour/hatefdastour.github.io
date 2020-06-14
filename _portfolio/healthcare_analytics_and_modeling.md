@@ -9,7 +9,7 @@ collection: portfolio
 
 * Los Angeles County Restaurant and Market Violations and Inspections
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
-	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_healthcare_analytics_and_modeling.html)
+	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_exploratory_data_analysis.html)
 	* [Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
 
 * Pima Indians Diabetes Data
