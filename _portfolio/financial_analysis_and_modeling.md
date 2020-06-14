@@ -5,7 +5,6 @@ collection: portfolio
 ---
 ## Credit Risk Modeling and Fraud Detection
 
-* [Lending Data Modeling using Decision Trees and Random Forests](/portfolio/financial_analysis_and_modeling/Lending_Data_Modeling_using_Decision_Trees_and_Random_Forests.html)
 * Credit Card Fraud Detection
     * [Modeling using MLP](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_MLP.html)
     * [Modeling using Artificial Neural Network](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_ANN.html)
