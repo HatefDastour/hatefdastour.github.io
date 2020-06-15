@@ -5,7 +5,6 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Black Friday (Stacked Model)](/portfolio/statistical_modeling_and_analysis/black_friday_stacked_model.html)
 * [Sign Language Digits (Stacking Classifiers)](/portfolio/statistical_modeling_and_analysis/Sign_Language_Digits_Stacking_Classifiers.html)
 * Daily Weather Data
 	* [Analysis and Classification using Feature Importance](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_Feature_Importance.html)
