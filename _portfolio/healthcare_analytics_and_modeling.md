@@ -17,7 +17,8 @@ collection: portfolio
 	* [Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
 
 * Pima Indians Diabetes Data
-	* [Modeling using Voting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Data_Classification.html)
+	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Preprocessing.html)
+	* [Modeling: Voting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Voting_Classifier.html)
 	* [Modeling using Feature Importance](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Data_Classification_Feature_Importance.html)
 	* [Modeling using Keras Artificial Neural Network (ANN)](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Data_Classification_ANN.html)
 
