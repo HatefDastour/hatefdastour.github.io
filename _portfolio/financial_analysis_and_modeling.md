@@ -6,9 +6,9 @@ collection: portfolio
 ## Credit Risk Modeling and Fraud Detection
 
 * Credit Card Fraud Detection
-    * [Modeling using MLP](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_MLP.html)
-    * [Modeling using Artificial Neural Network](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_ANN.html)
-    * [Modeling using Feature Importance](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
+    * [Modeling: Multi-layer Perceptron Classifier (Neural Network)](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_MLP.html)
+    * [Modeling: Keras Neural Network](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_ANN.html)
+    * [Modeling: Feature Importance](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
 * Statlog (German Credit Data) Dataset
     * [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_Dataset_EDA.html)
     * [Modeling: Feature Importance](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Feature_Importance.html)
