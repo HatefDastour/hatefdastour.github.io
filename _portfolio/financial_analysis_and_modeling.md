@@ -11,8 +11,8 @@ collection: portfolio
     * [Modeling using Feature Importance](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_using_Feature_Importance.html)
 * Statlog (German Credit Data) Dataset
     * [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_Dataset_EDA.html)
-    * [Modeling using Feature Importance](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Feature_Importance.html)
-    * [Modeling using Keras](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Keras.html)
+    * [Modeling: Feature Importance](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Feature_Importance.html)
+    * [Modeling: Keras Sequential Neural Network](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Keras.html)
 
 ## Price Predictions
 * [Industrial Production (Electric and Gas Utilities)](/portfolio/financial_analysis_and_modeling/Industrial_Production_(Electric_and_Gas_Utilities).html)
@@ -21,6 +21,7 @@ collection: portfolio
     * [Modeling: Bayesian Methods and PyStan](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_Modeling_using_Bayesian_Methods_and_PyStan.html)
 
 ## The Stock Market
-* [The Market Analysis for Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
-* [The Market Analysis for Cryptocurrencies](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Cryptocurrencies.html)
-* [The Market Analysis for Technology Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Technology_Services.html)
+* The Market Analysis and Predicting Future Behaviors
+	* [Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
+	* [Cryptocurrencies](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Cryptocurrencies.html)
+	* [Technology Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Technology_Services.html)
