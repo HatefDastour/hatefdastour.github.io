@@ -17,8 +17,8 @@ collection: portfolio
 ## Price Predictions
 * [Industrial Production (Electric and Gas Utilities)](/portfolio/financial_analysis_and_modeling/Industrial_Production_(Electric_and_Gas_Utilities).html)
 * Price Mercari Data
-    * [Modeling using Bayesian Methods using PyMC3](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_using_Bayesian_Methods_using_PyMC3.html)
-    * [Modeling using Bayesian Methods using PyStan](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_using_Bayesian_Methods_using_PyStan.html)
+    * [Modeling: Bayesian Methods and PyMC3](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_Modeling_using_Bayesian_Methods_and_PyMC3.html)
+    * [Modeling: Bayesian Methods and PyStan](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_Modeling_using_Bayesian_Methods_and_PyStan.html)
 
 ## The Stock Market
 * [The Market Analysis for Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
