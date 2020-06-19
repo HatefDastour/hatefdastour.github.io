@@ -11,7 +11,7 @@ collection: portfolio
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/Bank_Marketing_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Bank_Marketing_EDA.html)
 	* [Modeling: PyTorch Logistic Regression with GPU](/portfolio/business_analytics_and_modeling/Bank_Marketing_Modeling_using_PyTorch_Logistic_Regression.html)
-* [Instacart Data Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Instacart_exploratory_data_analysis.html)
+* [Instacart Data Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Instacart_EDA.html)
 * Starbucks Offer Personalizations
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_EDA.html)
