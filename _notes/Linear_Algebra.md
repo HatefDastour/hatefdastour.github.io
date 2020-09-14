@@ -8,10 +8,11 @@ collection: notes
 
 # Chapter 0: Prologue
 * [Prologue](/notes/Linear_Algebra/Prologue.html)
+
 # Chapter 1: Systems of Equations
 * [Systems of Equations, Geometry](/notes/Linear_Algebra/Systems_of_Equations_Geometry.html)
 
-## 
+## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Systems of Equations](/notes/Linear_Algebra/Systems_of_Equations.html)
 * [Matrices](/notes/Linear_Algebra/Matrices.html)
