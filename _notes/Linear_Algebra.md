@@ -18,7 +18,7 @@ collection: notes
 ## Chapter 2: Matrices
 * [Matrix Arithmetic](/notes/Linear_Algebra/Matrix_Arithmetic.html)
 * [Transpose, Identity, and Inverse](/notes/Linear_Algebra/Transpose_Identity_Inverse.html)
-* [Transpose, Identity, and Inverse](/notes/Linear_Algebra/Elementary_Matrices.html)
+* [Elementary Matrices](/notes/Linear_Algebra/Elementary_Matrices.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
