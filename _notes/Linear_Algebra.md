@@ -23,7 +23,7 @@ collection: notes
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
-* [Matrices](/notes/Linear_Algebra/Matrices.html)
+* [Chapter 2: Matrices](/notes/Linear_Algebra/PyLab_Matrices.html)
 * [Determinants](/notes/Linear_Algebra/Determinants.html)
 * [Vectors_in_Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
 * [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
