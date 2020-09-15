@@ -20,6 +20,8 @@ collection: notes
 * [Transpose, Identity, and Inverse](/notes/Linear_Algebra/Transpose_Identity_Inverse.html)
 * [Elementary Matrices](/notes/Linear_Algebra/Elementary_Matrices.html)
 
+## Chapter 3: Determinants
+
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
