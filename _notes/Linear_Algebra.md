@@ -30,6 +30,7 @@ collection: notes
 * [Geometric Meaning of Vector Addition and Scalar Multiplication](/notes/Linear_Algebra/Geometric_Meaning_of_Vector_Addition_and_Scalar_Multiplication.html)
 * [Length of a Vector](/notes/Linear_Algebra/Length_of_a_Vector.html)
 * [Parametric Lines](/notes/Linear_Algebra/Parametric_Lines.html)
+* [The Dot Product](/notes/Linear_Algebra/The_Dot_Product.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
