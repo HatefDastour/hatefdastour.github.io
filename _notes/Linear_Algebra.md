@@ -37,6 +37,9 @@ collection: notes
 * [Linearly Independent Set of Vectors](/notes/Linear_Algebra/Linearly_Independent_Set_of_Vectors.html)
 
 ## Chapter 5: Linear Transformations
+* [Linear Transformations](/notes/Linear_Algebra/Linear_Transformations.html)
+* [Properties of Linear Transformations](/notes/Linear_Algebra/Properties_of_Linear_Transformations.html)
+* [The Matrix of a Linear Transformation](/notes/Linear_Algebra/The_Matrix_of_a_Linear_Transformation.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
