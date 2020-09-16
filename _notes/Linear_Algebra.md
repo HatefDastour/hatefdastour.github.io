@@ -27,6 +27,7 @@ collection: notes
 ## Chapter 4: Vector Geometry
 * [Vectors in Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
 * [Algebra in Rn](/notes/Linear_Algebra/Algebra_in_Rn.html)
+* [Geometric Meaning of Vector Addition and Scalar Multiplication](/notes/Linear_Algebra/Geometric_Meaning_of_Vector_Addition_and_Scalar_Multiplication.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
