@@ -21,6 +21,8 @@ collection: notes
 * [Elementary Matrices](/notes/Linear_Algebra/Elementary_Matrices.html)
 
 ## Chapter 3: Determinants
+* [Basic Techniques and Properties](/notes/Linear_Algebra/Basic_Techniques_and_Properties.html)
+* [Applications of the Determinant](/notes/Linear_Algebra/Applications_of_the_Determinant.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
