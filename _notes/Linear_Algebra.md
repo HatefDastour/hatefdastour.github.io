@@ -31,6 +31,8 @@ collection: notes
 * [Length of a Vector](/notes/Linear_Algebra/Length_of_a_Vector.html)
 * [Parametric Lines](/notes/Linear_Algebra/Parametric_Lines.html)
 * [The Dot Product](/notes/Linear_Algebra/The_Dot_Product.html)
+* [Projections](/notes/Linear_Algebra/Projections.html)
+* [Planes in Rn](/notes/Linear_Algebra/Planes_in_Rn.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
