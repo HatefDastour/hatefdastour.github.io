@@ -33,8 +33,8 @@ collection: notes
 * [The Dot Product](/notes/Linear_Algebra/The_Dot_Product.html)
 * [Projections](/notes/Linear_Algebra/Projections.html)
 * [Planes in Rn](/notes/Linear_Algebra/Planes_in_Rn.html)
-* [The Cross Product](/notes/The_Cross_Product.html)
-* [Linearly Independent Set of Vectors](/notes/Linearly_Independent_Set_of_Vectors.html)
+* [The Cross Product](/notes/Linear_Algebra/The_Cross_Product.html)
+* [Linearly Independent Set of Vectors](/notes/Linear_Algebra/Linearly_Independent_Set_of_Vectors.html)
 
 ## Chapter 5: Linear Transformations
 
