@@ -36,6 +36,8 @@ collection: notes
 * [The Cross Product](/notes/The_Cross_Product.html)
 * [Linearly Independent Set of Vectors](/notes/Linearly_Independent_Set_of_Vectors.html)
 
+## Chapter 5: Linear Transformations
+
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
