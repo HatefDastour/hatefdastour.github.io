@@ -25,7 +25,8 @@ collection: notes
 * [Applications of the Determinant](/notes/Linear_Algebra/Applications_of_the_Determinant.html)
 
 ## Chapter 4: Vector Geometry
-
+* [Vectors in Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
+* [Algebra in Rn](/notes/Linear_Algebra/Algebra_in_Rn.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
