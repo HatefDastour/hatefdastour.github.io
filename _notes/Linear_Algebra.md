@@ -43,7 +43,6 @@ collection: notes
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
 * [Chapter 2: Matrices](/notes/Linear_Algebra/PyLab_Matrices.html)
 * [Chapter 3: Determinants](/notes/Linear_Algebra/PyLab_Determinants.html)
-* [Vectors_in_Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
 * [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
 * [Spectral Theory](/notes/Linear_Algebra/Spectral_Theory.html)
 * [Markov Matrices](/notes/Linear_Algebra/Markov_Matrices.html)
