@@ -44,6 +44,7 @@ collection: notes
 
 ## Chapter 6: Complex Numbers
 * [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
+* [Polar Form](/notes/Linear_Algebra/Polar_Form.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
