@@ -42,11 +42,11 @@ collection: notes
 * [The Matrix of a Linear Transformation](/notes/Linear_Algebra/The_Matrix_of_a_Linear_Transformation.html)
 * [Special Linear Transformations in R2](/notes/Linear_Algebra/Special_Linear_Transformations_in_R2.html)
 
+## Chapter 6: Complex Numbers
+* [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
+
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
 * [Chapter 2: Matrices](/notes/Linear_Algebra/PyLab_Matrices.html)
 * [Chapter 3: Determinants](/notes/Linear_Algebra/PyLab_Determinants.html)
-* [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
-* [Spectral Theory](/notes/Linear_Algebra/Spectral_Theory.html)
-* [Markov Matrices](/notes/Linear_Algebra/Markov_Matrices.html)
