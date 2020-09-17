@@ -40,6 +40,7 @@ collection: notes
 * [Linear Transformations](/notes/Linear_Algebra/Linear_Transformations.html)
 * [Properties of Linear Transformations](/notes/Linear_Algebra/Properties_of_Linear_Transformations.html)
 * [The Matrix of a Linear Transformation](/notes/Linear_Algebra/The_Matrix_of_a_Linear_Transformation.html)
+* [Special Linear Transformations in R2](/notes/Linear_Algebra/Special_Linear_Transformations_in_R2.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
