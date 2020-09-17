@@ -46,6 +46,7 @@ collection: notes
 * [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
 * [Polar Form](/notes/Linear_Algebra/Polar_Form.html)
 * [Roots of Complex Numbers](/notes/Roots_of_Complex_Numbers.html)
+* [The Quadratic Formula](/notes/The_Quadratic_Formula.html)
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
