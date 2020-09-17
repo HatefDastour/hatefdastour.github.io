@@ -45,8 +45,12 @@ collection: notes
 ## Chapter 6: Complex Numbers
 * [Complex Numbers](/notes/Linear_Algebra/Complex_Numbers.html)
 * [Polar Form](/notes/Linear_Algebra/Polar_Form.html)
-* [Roots of Complex Numbers](/notes/Roots_of_Complex_Numbers.html)
-* [The Quadratic Formula](/notes/The_Quadratic_Formula.html)
+* [Roots of Complex Numbers](/notes/Linear_Algebra/Roots_of_Complex_Numbers.html)
+* [The Quadratic Formula](/notes/Linear_Algebra/The_Quadratic_Formula.html)
+* [Eigenvalues and Eigenvectors of a Matrix](/notes/Linear_Algebra/Eigenvalues_and_Eigenvectors_of_a_Matrix.html)
+* [Diagonalization](/notes/Linear_Algebra/Diagonalization.html)
+
+## Chapter 7: Spectral Theory
 
 ## Python Lab
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
