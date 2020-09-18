@@ -24,7 +24,7 @@ collection: notes
 * [Basic Techniques and Properties](/notes/Linear_Algebra/Basic_Techniques_and_Properties.html)
 * [Applications of the Determinant](/notes/Linear_Algebra/Applications_of_the_Determinant.html)
 
-## Chapter 4: Vector Geometry
+## Chapter 4: Rn
 * [Vectors in Rn](/notes/Linear_Algebra/Vectors_in_Rn.html)
 * [Algebra in Rn](/notes/Linear_Algebra/Algebra_in_Rn.html)
 * [Geometric Meaning of Vector Addition and Scalar Multiplication](/notes/Linear_Algebra/Geometric_Meaning_of_Vector_Addition_and_Scalar_Multiplication.html)
@@ -58,3 +58,5 @@ collection: notes
 * [Chapter 1: Systems of Equations](/notes/Linear_Algebra/PyLab_Systems_of_Equations.html)
 * [Chapter 2: Matrices](/notes/Linear_Algebra/PyLab_Matrices.html)
 * [Chapter 3: Determinants](/notes/Linear_Algebra/PyLab_Determinants.html)
+* [Chapter 4: Vectors in Rn](/notes/Linear_Algebra/PyLab_Vectors_in_Rn.html)
+* [Chapter 4: Vectors in Rn](/notes/Linear_Algebra/PyLab_Linear_Transformations.html)
