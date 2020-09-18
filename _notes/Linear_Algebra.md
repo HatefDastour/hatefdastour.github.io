@@ -60,3 +60,4 @@ collection: notes
 * [Chapter 3: Determinants](/notes/Linear_Algebra/PyLab_Determinants.html)
 * [Chapter 4: Rn](/notes/Linear_Algebra/PyLab_Rn.html)
 * [Chapter 5: Linear Transformations](/notes/Linear_Algebra/PyLab_Linear_Transformations.html)
+* [Chapter 6: Complex Numbers](/notes/Linear_Algebra/PyLab_Complex_Numbers.html)
