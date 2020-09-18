@@ -61,3 +61,8 @@ collection: notes
 * [Chapter 4: Rn](/notes/Linear_Algebra/PyLab_Rn.html)
 * [Chapter 5: Linear Transformations](/notes/Linear_Algebra/PyLab_Linear_Transformations.html)
 * [Chapter 6: Complex Numbers](/notes/Linear_Algebra/PyLab_Complex_Numbers.html)
+* [Chapter 7: Spectral Theory](/notes/Linear_Algebra/PyLab_Spectral_Theory.html)
+* [Chapter 7: Markov Matrices](/notes/Linear_Algebra/PyLab_Markov_Matrices.html)
+
+
+
