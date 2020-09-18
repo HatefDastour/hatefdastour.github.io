@@ -59,4 +59,4 @@ collection: notes
 * [Chapter 2: Matrices](/notes/Linear_Algebra/PyLab_Matrices.html)
 * [Chapter 3: Determinants](/notes/Linear_Algebra/PyLab_Determinants.html)
 * [Chapter 4: Vectors in Rn](/notes/Linear_Algebra/PyLab_Vectors_in_Rn.html)
-* [Chapter 4: Linear Transformations](/notes/Linear_Algebra/PyLab_Linear_Transformations.html)
+* [Chapter 5: Linear Transformations](/notes/Linear_Algebra/PyLab_Linear_Transformations.html)
