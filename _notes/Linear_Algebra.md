@@ -1,6 +1,6 @@
 ---
 title: "Linear Algebra"
-excerpt: "Linear Algebra using Python"
+excerpt: "Systems of equations and matrices, vectors, matrix representations and determinants. Complex numbers, polar form, eigenvalues, eigenvectors. Applications"
 collection: notes
 ---
 
