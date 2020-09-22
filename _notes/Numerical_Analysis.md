@@ -1,6 +1,6 @@
 ---
 title: "Numerical Analysis"
-excerpt: "Numerical methods with Python"
+excerpt: "Root-finding algorithms, Fixed-point iteration, Polynomial Interpolation, Numerical Integration, Numerical Differentiation, Linear Systems, and Numerical Solution of ODEs"
 collection: notes
 ---
 ## Table of contents
