@@ -15,3 +15,4 @@ collection: notes
 * [Worksheet 07.html](/notes/Differential_Equations/Worksheet_07.html)
 * [Worksheet 08.html](/notes/Differential_Equations/Worksheet_08.html)
 * [Worksheet 09.html](/notes/Differential_Equations/Worksheet_09.html)
+* [Worksheet 10.html](/notes/Differential_Equations/Worksheet_10.html)
