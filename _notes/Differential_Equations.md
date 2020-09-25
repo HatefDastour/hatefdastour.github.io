@@ -1,7 +1,7 @@
 ---
 title: "Differential Equations"
-excerpt: "Differential Equations using Python"
-collection: Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform.
+excerpt: "Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform."
+collection: notes
 ---
 
 ## Table of contents
