@@ -16,3 +16,6 @@ collection: notes
 * [Worksheet 08](/notes/Differential_Equations/Worksheet_08.html)
 * [Worksheet 09](/notes/Differential_Equations/Worksheet_09.html)
 * [Worksheet 10](/notes/Differential_Equations/Worksheet_10.html)
+
+## Python Lab
+* [Python Lab: ODE](/notes/Differential_Equations/PyLab_ODE.html)
