@@ -5,7 +5,7 @@ permalink: /publication/dastourthesis
 date: 2019-12-17
 venue: 'University of Calgary'
 paperurl: 'https://prism.ucalgary.ca/handle/1880/111362'
-citation: '<b>Dastour, H</b>. (2019). Optimal Finite Difference Schemes for the Helmholtz Equation with PML (Unpublished doctoral thesis). University of Calgary, Calgary, AB.'
+citation: '<b>H. Dastour</b>. (2019). Optimal Finite Difference Schemes for the Helmholtz Equation with PML (Unpublished doctoral thesis). University of Calgary, Calgary, AB.'
 
 ---
 <b>Abstract:</b> 
