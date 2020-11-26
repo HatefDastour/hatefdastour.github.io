@@ -65,10 +65,10 @@ Group Projects
 
 Awards
 ======
-* PIMS Doctoral~Recruitment Scholarship. Amount: 10,000.00 C\$, 2015 - 2016
-* Eric Milner Graduate Scholarship. Amount: 5,500.00 C\$,  2016 - 2017
-* Alberta Innovates Graduate Student Scholarship. Amount: 31,500.00 C\$, 2017 - 2018
-* Alberta Innovates Graduate Student Scholarship. Amount: 31,500.00 C\$, 2018 - 2019
+* PIMS Doctoral Recruitment Scholarship. [2015 - 2016]{style="float:right"}
+* Eric Milner Graduate Scholarship. [2016 - 2017]{style="float:right"}
+* Alberta Innovates Graduate Student Scholarship. [2017 - 2018]{style="float:right"}
+* Alberta Innovates Graduate Student Scholarship. [2018 - 2019]{style="float:right"}
 
 Publications
 ======
