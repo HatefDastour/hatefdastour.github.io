@@ -85,7 +85,7 @@ Talks
 
 Professional Services and Committees
 ======
-
+*  Student researcher speaker in the open educational resource videos for Taylor Institute for Teaching and Learning, University of Calgary, Calgary, Canada, October 2019
 * Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw), University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
 
 * Serving on Mathematics and Statistics (MTST) Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
