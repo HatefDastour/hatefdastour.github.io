@@ -3,12 +3,16 @@ title: "MATH 211 - Linear Methods I - Summer 2018"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/2018-summer-teaching-1
+venue: "University of Calgary, Department of Mathematics and Statistics"
 date: 2018-07-01
 location: "Calgary, Alberta"
 ---
 
-University of Calgary, Department of Mathematics and Statistics
+Systems of equations and matrices, vectors, matrix representations and determinants. Complex numbers, polar form, eigenvalues, eigenvectors. Applications.
 
-[More details](http://contacts.ucalgary.ca/info/math/courses/s18/MATH211?destination=profiles%2F1-6085569%2Fcourses)
+* [Lecture Notes](/notes/Linear_Algebra/)
+* [Textbook: A First Course in Linear Algebra](https://lyryx.com/first-course-linear-algebra/)
+* [Syllabus](http://contacts.ucalgary.ca/info/math/files/info/unitis/courses/MATH211/S2018/MATH211-S2018-syllabus.pdf)
+* [Course Outline](http://contacts.ucalgary.ca/info/math/files/info/unitis/courses/MATH211/S2018/LEC1/MATH211-S2018-LEC1-outline.pdf)
+* [More Details](http://contacts.ucalgary.ca/info/math/courses/s18/MATH211?destination=profiles%2F1-6085569%2Fcourses)
 
-[Lecture Notes](/notes/Linear_Algebra/)
