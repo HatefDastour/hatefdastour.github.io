@@ -37,5 +37,3 @@ collection: notes
 
 ### Chapter 10: Unsupervised Learning
 * [Unsupervised Learning](/notes/Statistical_Learning/Unsupervised_Learning.html)
-
-See also [Data Science](/notes/Data_Science) and [Portfolio](/portfolio/).
