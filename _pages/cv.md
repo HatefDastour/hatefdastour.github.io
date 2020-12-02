@@ -85,11 +85,13 @@ Talks
 
 Professional Services and Committees
 ======
-*  Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/), University of Calgary, Calgary, Canada, October 2019
+* Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/), University of Calgary, Calgary, Canada, October 2019
+
+* Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics) Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
 
 * Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw), University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
 
-* Serving on Mathematics and Statistics (MTST) Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
+* Served as a member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics) Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
 
 * Instructor of Programming Workshop at [2017 CMS Math Camp (Alberta)](https://cms.math.ca/MathCamps/), University of Calgary,
  Calgary, Canada, July 2017,
@@ -99,9 +101,7 @@ Professional Services and Committees
 * The vice-president academic of Graduate University Mathematics Society (GUMS), University of Calgary,
  Calgary, Canada, September 2016 - September 2018,
 
-* The representative of graduate students of the Department of Mathematics and Statistics in the Graduate Committee of the department, University of Calgary, Calgary, Canada, October 2016 - September 2018,
-
-* The president of University of Calgary SIAM Student Chapter, University of Calgary,
+* The founder and president of University of Calgary SIAM Student Chapter, University of Calgary,
  Calgary, Canada, January 2017 - September 2018,
 
 * Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/),
