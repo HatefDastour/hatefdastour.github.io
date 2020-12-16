@@ -20,8 +20,11 @@ Education
 
 Working Experience
 ======
+* Data Science Consultant<br/>
+Earth Space Inc., Calgary, AB, Canada
+
 * Data Science Developer<br/>
-StellarAlgo, Calgary, AB, Canada
+StellarAlgo Corp., Calgary, AB, Canada
 
 * Sessional Instructor<br/>
 Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
