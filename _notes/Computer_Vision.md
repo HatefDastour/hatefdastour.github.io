@@ -1,6 +1,6 @@
 ---
 title: "Computer Vision"
-excerpt: "Deep Learning with Python"
+excerpt: "Computer vision is a field of artificial intelligence that trains computers to interpret and understand the visual world."
 collection: notes
 ---
 ## Table of contents
@@ -9,6 +9,7 @@ OpenCV (Open Source Computer Vision Library: http://opencv.org) is an open-sourc
 * [Getting Started with Open CV](/notes/Computer_Vision/Getting_Started_with_Open_CV.html)
 * [Geometric Transformations using OpenCV](/notes/Computer_Vision/Geometric_Transformations_in_OpenCV.html)
 * [Image Thresholding in OpenCV](/notes/Computer_Vision/Image_Thresholding_in_OpenCV.html)
+* To be continued
 
 ### TensorFlow Image Augmentations and Classification
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
