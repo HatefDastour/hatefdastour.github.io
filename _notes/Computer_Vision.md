@@ -1,6 +1,6 @@
 ---
 title: "Computer Vision"
-excerpt: "Using Python to interpret and understand the visual world.
+excerpt: "Using Python to interpret and understand the visual world"
 ---
 ## Table of contents
 ### OpenCV
