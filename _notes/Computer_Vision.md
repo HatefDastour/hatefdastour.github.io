@@ -8,7 +8,6 @@ excerpt: "Using Python to interpret and understand the visual world"
 * [Getting Started with Open CV](/notes/Computer_Vision/Getting_Started_with_Open_CV.html)
 * [Geometric Transformations using OpenCV](/notes/Computer_Vision/Geometric_Transformations_in_OpenCV.html)
 * [Image Thresholding in OpenCV](/notes/Computer_Vision/Image_Thresholding_in_OpenCV.html)
-* To be continued
 
 ### TensorFlow Image Augmentations and Classification
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
