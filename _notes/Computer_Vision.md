@@ -1,5 +1,5 @@
 ---
-title: "Deep Learning"
+title: "Computer Vision"
 excerpt: "Deep Learning with Python"
 collection: notes
 ---
