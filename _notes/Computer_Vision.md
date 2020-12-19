@@ -1,7 +1,6 @@
 ---
 title: "Computer Vision"
-excerpt: "Computer vision is a field of artificial intelligence that trains computers to interpret and understand the visual world."
-collection: notes
+excerpt: "Using Python to interpret and understand the visual world.
 ---
 ## Table of contents
 ### OpenCV
