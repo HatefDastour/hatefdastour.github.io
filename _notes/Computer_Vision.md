@@ -10,8 +10,6 @@ excerpt: "Using Python to interpret and understand the visual world"
 * [Drawing Functions](/notes/Computer_Vision/OpenCV_Drawing_Functions.html)
 * [Image Thresholding](/notes/Computer_Vision/OpenCV_Image_Thresholding.html)
 
-OpenCV_Drawing_Functions.html
-
 ### TensorFlow Image Augmentations and Classification
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
 * [Image Classification with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Classification.html)
