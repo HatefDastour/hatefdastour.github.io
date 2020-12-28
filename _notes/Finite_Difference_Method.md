@@ -1,5 +1,5 @@
 ---
-title: "Finite Difference Method"
+title: "Finite Difference Methods"
 excerpt: "Finite Difference Method for solving PDEs"
 collection: notes
 ---
