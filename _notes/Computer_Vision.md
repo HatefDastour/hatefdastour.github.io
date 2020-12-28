@@ -8,7 +8,7 @@ excerpt: "Using Python to interpret and understand the visual world"
 * [Getting Started with Open CV](/notes/Computer_Vision/Getting_Started_with_Open_CV.html)
 * [Geometric Transformations](/notes/Computer_Vision/OpenCV_Geometric_Image_Transformations)
 * [Drawing Functions](/notes/Computer_Vision/OpenCV_Drawing_Functions.html)
-* [Image Thresholding in OpenCV](/notes/Computer_Vision/Image_Thresholding_in_OpenCV.html)
+* [Image Thresholding](/notes/Computer_Vision/OpenCV_Image_Thresholding.html)
 
 OpenCV_Drawing_Functions.html
 
