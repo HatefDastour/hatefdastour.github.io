@@ -19,7 +19,6 @@ collection: portfolio
 * Pima Indians Diabetes Data
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Preprocessing.html)
 	* [Modeling: Voting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Voting_Classifier.html)
-	* [Modeling: Feature Importance](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Feature_Importance.html)
 	* [Modeling: Binary Multi-layer Perceptron (MLP) using Keras](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Keras_Binary_MLP.html)
 	* [Modeling: PyTorch Artificial Neural Networks](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_PyTorch_ANN.html)
 
