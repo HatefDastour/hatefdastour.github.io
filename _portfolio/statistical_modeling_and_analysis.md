@@ -8,7 +8,7 @@ collection: portfolio
 * [Sign Language Digits (Stacking Classifiers)](/portfolio/statistical_modeling_and_analysis/Sign_Language_Digits_Stacking_Classifiers.html)
 * Daily Weather Data
 	* [Modeling: Feature Importance](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_Feature_Importance.html)
-	* [Modeling: Artificial Neural Network](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_ANN.html)
+	* [Modeling: Keras Sequential Multi-layer Perceptron ](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_Keras_MLP_for_MCC.html)
 * Digit Recognizer
 	* [Modeling: PyTorch Logistic Regression](/portfolio/statistical_modeling_and_analysis/Digit_Recognizer_Classification_using_PyTorch_Logistic_Regression.html)
 	* [Modeling: PyTorch ANN](/portfolio/statistical_modeling_and_analysis/Digit_Recognizer_Classification_using_PyTorch_ANN.html)
