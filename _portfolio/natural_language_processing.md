@@ -4,7 +4,7 @@ excerpt: "Processing and analyzing large amounts of natural language data"
 collection: portfolio
 ---
 ## Table of contents
-
+* [Consumer Finance Complaints Analyzing and Modeling (using Keras Text Classification)](/portfolio/natural_language_processing/Consumer_Finance_Complaints_Analyzing_and_Modeling_(using_Keras_Text_Classification).html)
 * Movie Recommendation System
 	* [Preprocessing](/portfolio/natural_language_processing/Movie_Recommendation_system_Preprocessing.html)
 	* [Modeling](/portfolio/natural_language_processing/Movie_Recommendation_system_Modeling.html)
