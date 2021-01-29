@@ -6,7 +6,12 @@ collection: notes
 ## Table of contents
 
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
-* [Root-finding algorithms](/notes/Numerical_Analysis/Root_finding_algorithms.html)
+
+### Root-finding algorithms
+* [Bracketing Methods]/notes/Numerical_Analysis/RFA_Bracketing_Methods.html)
+* [Newton's method]/notes/Numerical_Analysis/RFA_Newtons_method.html)
+* [Quasi-Newton method]/notes/Numerical_Analysis/RFA_Quasi_Newton.html)
+
 * [Fixed-point iteration](/notes/Numerical_Analysis/Fixed_point_iteration.html)
 * [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
