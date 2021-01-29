@@ -11,8 +11,8 @@ collection: notes
 * [Bracketing Methods](/notes/Numerical_Analysis/RFA_Bracketing_Methods.html)
 * [Newton's method](/notes/Numerical_Analysis/RFA_Newtons_method.html)
 * [Quasi-Newton method](/notes/Numerical_Analysis/RFA_Quasi_Newton.html)
-
 * [Fixed-point iteration](/notes/Numerical_Analysis/Fixed_point_iteration.html)
+
 * [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
