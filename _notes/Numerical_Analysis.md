@@ -13,10 +13,13 @@ collection: notes
 * [Quasi-Newton method](/notes/Numerical_Analysis/RFA_Quasi_Newton.html)
 * [Fixed-point iteration](/notes/Numerical_Analysis/Fixed_point_iteration.html)
 
+### Numerical linear algebra
+* [LU decomposition](/notes/Numerical_Analysis/NLA_LU_decomposition.html)
+* [Cholesky factorization](/notes/Numerical_Analysis/NLA_Cholesky_factorization.html)
+
 * [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
-* [Linear Systems](/notes/Numerical_Analysis/Linear_Systems.html)
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
 * [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
 
