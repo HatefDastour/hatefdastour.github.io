@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NLA_LDL_decomposition</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>NLA_QR_factorization</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14302,20 +14302,49 @@ a.anchor-link {
 <font size="+3"><b>
 Numerical Linear Algebra
 </b></font>
-</div><h1 id="LDL">LDL<a class="anchor-link" href="#LDL">&#182;</a></h1><p>A closely related variant of the <a href="https://hatefdastour.github.io/notes/Numerical_Analysis/NLA_Cholesky_factorization.html">Cholesky factorization</a> is the LDL decomposition. In this decomposition, a (real) symmetric positive definite matrix $A$ is decomposed as follows</p>
-$$ A =LDL^{*},$$<p>where $L$ is a lower triangular matrix, and $D$ is a diagonal matrix.</p>
-<p>Furthermore, We have,</p>
+</div><h1 id="QR">QR<a class="anchor-link" href="#QR">&#182;</a></h1><p>Let $A$ be a square matrix. This matrix can be decomposed as $A=QR$
+where $Q$ is an orthogonal matrix ($Q^{*}Q=QQ^{*}=I$) and $R$ is an upper triangular matrix. Moreover,  if A is invertible and if $R$ is required to be positive, then the factorization is unique.</p>
+<p>Furthermore, there are several methods for computing the QR decomposition such as  Gram–Schmidt process, Householder transformations, ... Here, we use Gram–Schmidt process.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Consider matrix $A = \begin{bmatrix}| &amp; | &amp;  &amp; | \\ \vec{a}_1 &amp; \vec{a}_2 &amp; \dots &amp; \vec{a}_n\\
+| &amp; | &amp;  &amp; | \end{bmatrix}$ were $ \vec{a}_i$ are the columns of the full column rank matrix $A$. Now, define the <a href="https://hatefdastour.github.io/notes/Linear_Algebra/Projections.html">projection</a> as follows:</p>
+$$\operatorname {proj} _{\vec{u} }\vec{a} ={\frac {\left\langle \vec{u} ,\vec{a} \right\rangle }{\left\langle \vec{u} ,\vec{u}\right\rangle }}{\vec{u}}$$<p>Therefore,</p>
 \begin{align}
+\begin{cases}
+\vec{u}_{1}&amp;=\vec{a}_{1}, &amp;\vec{e}_{1}&amp;={\vec{u}_{1} \over \|\vec{u}_{1}\|}\\
+\vec{u}_{2}&amp;=\vec{a}_{2}-\operatorname {proj} _{\vec{u}_{1}}\,\vec{a}_{2},&amp;\vec{e}_{2}&amp;={\vec{u}_{2} \over \|\vec{u}_{2}\|}\\
+\vec{u}_{3}&amp;=\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{1}}\,\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{2}}\,\vec{a}_{3},&amp;\vec{e}_{3}&amp;={\vec{u}_{3} \over \|\vec{u}_{3}\|}\\&amp;\vdots &amp;&amp;\vdots \\
+\vec{u}_{k}&amp;=\vec{a}_{k}-\sum _{j=1}^{k-1}\operatorname {proj} _{\vec{u}_{j}}\,\vec{a}_{k},&amp;\vec{e}_{k}&amp;={\vec{u}_{k} \over \|\vec{u}_{k}\|}
+\end{cases}
+\end{align}<p>Now, $\vec{a}_{i}$ can be expressed as</p>
+\begin{align}
+\begin{cases}
+\vec{a}_{1}&amp;=\langle \vec{e}_{1},\vec{a}_{1}\rangle \vec{e}_{1}\\
+\vec{a}_{2}&amp;=\langle \vec{e}_{1},\vec{a}_{2}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{2}\rangle \vec{e}_{2}\\
+\vec{a}_{3}&amp;=\langle \vec{e}_{1},\vec{a}_{3}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{3}\rangle \vec{e}_{2}+\langle \vec{e}_{3},\vec{a}_{3}\rangle \vec{e}_{3}\\&amp;\vdots \\
+\vec{a}_{k}&amp;=\sum _{j=1}^{k}\langle \vec{e}_{j},\vec{a}_{k}\rangle \vec{e}_{j}
+\end{cases}
+\end{align}<p>where $\left\langle \vec{e}_{i},\vec{a}_{i}\right\rangle =\left\|\vec{u}_{i}\right\|$.</p>
+<p>This can be written in matrix form:</p>
+\begin{align}
+A&amp;=QR
+\\
 \begin{bmatrix}a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\
-\vdots &amp; \vdots &amp;   &amp; \vdots \\ a_{n1} &amp; a_{n2} &amp; \dots &amp; a_{nn} \end{bmatrix}=
-\begin{bmatrix}1 &amp; 0 &amp; \dots &amp; 0 \\ l_{21} &amp; 1 &amp; \dots &amp; 0 \\
-\vdots &amp; \vdots &amp;   &amp; \vdots \\ l_{n1} &amp; l_{n2} &amp; \dots &amp; 1 \end{bmatrix}
-\begin{bmatrix}d_{11} &amp; 0 &amp; \dots &amp; 0 \\ 0 &amp; d_{22} &amp; \dots &amp; 0 \\
-\vdots &amp; \vdots &amp;   &amp; \vdots \\ 0 &amp; 0 &amp; \dots &amp; d_{nn} \end{bmatrix}.
-\end{align}<p>Solving this system, $l_{ij}$ and $d_{ii}$ can be identified as follows</p>
-\begin{align}
-d_{ii} &amp;= a_{ii} - \sum_{k=1}^{i-1} l_{ij}^{2}d_{jj},\\
-l_{ii} &amp;= \frac{1}{d_{ii}}\left( a_{ij} - \sum_{k=1}^{i-1} l_{ik} l_{jk} d_{kk}\right),\\
+a_{31} &amp; a_{32} &amp; \dots &amp; a_{3n} \\
+\vdots &amp; \vdots &amp;   &amp; \vdots \\ a_{n1} &amp; a_{n2} &amp; \dots &amp; a_{nn} \end{bmatrix} &amp;=
+\begin{bmatrix}| &amp; | &amp;  &amp; | \\ \vec{e}_1 &amp; \vec{e}_2 &amp; \dots &amp; \vec{e}_n\\
+| &amp; | &amp;  &amp; | \end{bmatrix}
+\begin{bmatrix}
+\langle \vec{e}_{1},\vec{a}_{1}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{2}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{3}\rangle &amp;\ldots 
+&amp; \langle \vec{e}_{1},\vec{a}_{n}\rangle \\
+0&amp;\langle \vec{e}_{2},\vec{a}_{2}\rangle &amp;\langle \vec{e}_{2},\vec{a}_{3}\rangle &amp;\ldots &amp; \langle \vec{e}_{2},\vec{a}_{n}\rangle\\
+0&amp;0&amp;\langle \vec{e}_{3},\vec{a}_{3}\rangle &amp;\ldots &amp; \langle \vec{e}_{3},\vec{a}_{n}\rangle\\
+\vdots &amp;\vdots &amp;\vdots &amp;\ddots &amp;\vdots\\
+0 &amp; 0 &amp; \dots &amp; \dots &amp; \langle \vec{e}_{n},\vec{a}_{n} \rangle \end{bmatrix}.
 \end{align}<p>See [1] for the full derivation of this algorithm. Furthermore, we can prepare a Python code using the above algorithm.</p>
 
 </div>
@@ -14325,39 +14354,24 @@ l_{ii} &amp;= \frac{1}{d_{ii}}\left( a_{ij} - \sum_{k=1}^{i-1} l_{ik} l_{jk} d_{
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Assuming that the matrix A is symmetric and positive definite,</span>
-<span class="sd">    this function computes a unit lower triangular matrix L, and</span>
-<span class="sd">    a diagonal matrix D, such that A = LDL^t</span>
-<span class="sd">    Input: A the nxn matrix to be factorized</span>
-<span class="sd">    n the number of rows and columns A has</span>
-<span class="sd">    Output: L an nxn unit lower triangular matrix</span>
-<span class="sd">    D an nxn diagonal matrix</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># create an nxn matrix U that holds L below its main diagonal</span>
-    <span class="c1"># and D on its main diagonal</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="c1"># define the first diagonal entry of D</span>
-    <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># define the first column of L</span>
-    <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="c1"># define the jth diagonal entry of D</span>
-        <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
-            <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-        <span class="c1"># define the jth column of L</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-            <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
-                <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-            <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-    <span class="c1"># Extract L and D from U</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Input: A</span>
+<span class="sd">    Applies the Gram-Schmidt method to A.</span>
+<span class="sd">    Output: Q, R</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+            <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="n">T</span> <span class="o">-=</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+        <span class="n">Q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span> <span class="o">/</span><span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">T</span>
+    <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
 </pre></div>
 
      </div>
@@ -14385,30 +14399,40 @@ $$A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">L</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$L$ =&#39;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$D$ =&#39;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$LD L^T$ =&#39;</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$QR$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Q</span><span class="nd">@R</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$QQ^T$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q^TQ$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">font</span> <span class="o">=</span> <span class="n">FontProperties</span><span class="p">()</span>
 <span class="n">font</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;Teal&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
               <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">L</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">Q</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
               <span class="n">marker</span> <span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;LightGreen&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;LightGreen&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
               <span class="n">marker</span> <span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$D$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;Orchid&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
-              <span class="n">marker</span> <span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$L^T$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;SpringGreen&#39;</span><span class="p">,</span>
+              <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$QQ^T$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">sps</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;MediumPurple&#39;</span><span class="p">,</span>
+              <span class="n">markeredgecolor</span> <span class="o">=</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markeredgewidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q^TQ$&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14430,7 +14454,7 @@ $$A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$L$ =
+$Q$ =
 </div>
 
 </div>
@@ -14444,10 +14468,10 @@ $L$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
-<pre>array([[ 7,  3, -1,  2],
-       [ 3,  8,  1, -4],
-       [-1,  1,  4, -1],
-       [ 2, -4, -1,  6]])</pre>
+<pre>array([[ 0.8819171 , -0.12001372,  0.10823812, -0.44283568],
+       [ 0.37796447,  0.75437193, -0.06201752,  0.53312257],
+       [-0.12598816,  0.18859298,  0.97180277, -0.06449063],
+       [ 0.25197632, -0.6172134 ,  0.20009425,  0.71799572]])</pre>
 </div>
 
 </div>
@@ -14461,7 +14485,7 @@ $L$ =
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$D$ =
+$R$ =
 </div>
 
 </div>
@@ -14475,10 +14499,10 @@ $D$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
-<pre>array([[7.        , 0.        , 0.        , 0.        ],
-       [0.        , 6.71428571, 0.        , 0.        ],
-       [0.        , 0.        , 3.55319149, 0.        ],
-       [0.        , 0.        , 0.        , 1.88622754]])</pre>
+<pre>array([[ 7.93725393,  4.53557368, -1.25988158,  1.88982237],
+       [ 0.        ,  8.3323809 ,  2.24597098, -7.14938855],
+       [ 0.        ,  0.        ,  3.51686121,  0.69330902],
+       [ 0.        ,  0.        ,  0.        ,  1.35430329]])</pre>
 </div>
 
 </div>
@@ -14492,7 +14516,7 @@ $D$ =
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$LD L^T$ =
+$QR$ =
 </div>
 
 </div>
@@ -14522,8 +14546,70 @@ $LD L^T$ =
 
 
 
+<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
+$QQ^T$ =
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>array([[ 1., -0., -0.,  0.],
+       [-0.,  1.,  0., -0.],
+       [-0.,  0.,  1.,  0.],
+       [ 0., -0.,  0.,  1.]])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
+$Q^TQ$ =
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>array([[ 1.,  0.,  0., -0.],
+       [ 0.,  1., -0.,  0.],
+       [ 0., -0.,  1.,  0.],
+       [-0.,  0.,  0.,  1.]])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -14537,7 +14623,7 @@ $LD L^T$ =
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Note that we could get a similar results using function, <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.ldl.html"><code>scipy.linalg.ldl</code></a>.</p>
+<p>Note that we could get a similar results using function, <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html"><code>np.linalg.qr</code></a>.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -14546,11 +14632,17 @@ $LD L^T$ =
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">ldl</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$L$ =&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$D$ =&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q$ =&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R$ =&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$QR$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Q</span><span class="nd">@R</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$QQ^T$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q^TQ$ =&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -14572,7 +14664,7 @@ $LD L^T$ =
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$L$ =
+$Q$ =
 </div>
 
 </div>
@@ -14584,10 +14676,10 @@ $L$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[ 1.          0.          0.          0.        ]
- [ 0.42857143  1.          0.          0.        ]
- [-0.14285714  0.21276596  1.          0.        ]
- [ 0.28571429 -0.72340426  0.08982036  1.        ]]
+<pre>[[-0.8819171   0.12001372 -0.10823812 -0.44283568]
+ [-0.37796447 -0.75437193  0.06201752  0.53312257]
+ [ 0.12598816 -0.18859298 -0.97180277 -0.06449063]
+ [-0.25197632  0.6172134  -0.20009425  0.71799572]]
 </pre>
 </div>
 </div>
@@ -14601,7 +14693,7 @@ $L$ =
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$D$ =
+$R$ =
 </div>
 
 </div>
@@ -14613,12 +14705,105 @@ $D$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[7.         0.         0.         0.        ]
- [0.         6.71428571 0.         0.        ]
- [0.         0.         3.55319149 0.        ]
- [0.         0.         0.         1.88622754]]
+<pre>[[-7.93725393 -4.53557368  1.25988158 -1.88982237]
+ [ 0.         -8.3323809  -2.24597098  7.14938855]
+ [ 0.          0.         -3.51686121 -0.69330902]
+ [ 0.          0.          0.          1.35430329]]
 </pre>
 </div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
+$QR$ =
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>array([[ 7.,  3., -1.,  2.],
+       [ 3.,  8.,  1., -4.],
+       [-1.,  1.,  4., -1.],
+       [ 2., -4., -1.,  6.]])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
+$QQ^T$ =
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>array([[ 1.,  0., -0.,  0.],
+       [ 0.,  1.,  0., -0.],
+       [-0.,  0.,  1., -0.],
+       [ 0., -0., -0.,  1.]])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
+$Q^TQ$ =
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>array([[ 1.,  0., -0.,  0.],
+       [ 0.,  1.,  0.,  0.],
+       [-0.,  0.,  1.,  0.],
+       [ 0.,  0.,  0.,  1.]])</pre>
+</div>
+
 </div>
 
 </div>
@@ -14628,13 +14813,13 @@ $D$ =
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Solving-Linear-systems-using-LDL-decomposition">Solving Linear systems using LDL decomposition<a class="anchor-link" href="#Solving-Linear-systems-using-LDL-decomposition">&#182;</a></h2><p>We can solve the linear system $Ax=b$ for $x$ using LDL decomposition. To demonstrate this, we use the following example,</p>
+<h2 id="Solving-Linear-systems-using-QR-factorization">Solving Linear systems using QR factorization<a class="anchor-link" href="#Solving-Linear-systems-using-QR-factorization">&#182;</a></h2><p>We can solve the linear system $Ax=b$ for $x$ using QR factorization. To demonstrate this, we use the following example,</p>
 <p>Let
 $$A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]
 \quad \text{and}\quad
 b=\left[\begin{array}{c} 7\\ 1\\ 11\\ 15 \end{array}\right].$$
 Then, this linear system can be also expressed as
-$$Ax=(LDL^T)x=L(D(L^Tx))=b,$$<br>
+$$Ax=(QR)x=Q(Rx)=b,$$<br>
 we have,</p>
 
 </div>
@@ -14646,11 +14831,11 @@ we have,</p>
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">11</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
-<span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">ldl</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$L$ =&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$D$ =&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$Q$ =&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R$ =&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14672,7 +14857,7 @@ we have,</p>
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$L$ =
+$Q$ =
 </div>
 
 </div>
@@ -14684,10 +14869,10 @@ $L$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[ 1.          0.          0.          0.        ]
- [ 0.42857143  1.          0.          0.        ]
- [-0.14285714  0.21276596  1.          0.        ]
- [ 0.28571429 -0.72340426  0.08982036  1.        ]]
+<pre>[[-0.8819171   0.12001372 -0.10823812 -0.44283568]
+ [-0.37796447 -0.75437193  0.06201752  0.53312257]
+ [ 0.12598816 -0.18859298 -0.97180277 -0.06449063]
+ [-0.25197632  0.6172134  -0.20009425  0.71799572]]
 </pre>
 </div>
 </div>
@@ -14701,7 +14886,7 @@ $L$ =
 
 
 <div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$D$ =
+$R$ =
 </div>
 
 </div>
@@ -14713,10 +14898,10 @@ $D$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[7.         0.         0.         0.        ]
- [0.         6.71428571 0.         0.        ]
- [0.         0.         3.55319149 0.        ]
- [0.         0.         0.         1.88622754]]
+<pre>[[-7.93725393 -4.53557368  1.25988158 -1.88982237]
+ [ 0.         -8.3323809  -2.24597098  7.14938855]
+ [ 0.          0.         -3.51686121 -0.69330902]
+ [ 0.          0.          0.          1.35430329]]
 </pre>
 </div>
 </div>
@@ -14730,9 +14915,8 @@ $D$ =
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Now we can solve the following linear systems instead
 $$\begin{cases}
-Lz = b,\\
-Dy = z,\\
-B^Tx=y.
+Qy = b,\\
+Rx=y.
 \end{cases}$$</p>
 
 </div>
@@ -14743,62 +14927,7 @@ B^Tx=y.
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># solving Lz=b for z</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$z$ =&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedLatex jp-OutputArea-output " data-mime-type="text/latex">
-$z$ =
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[ 7.        ]
- [-2.        ]
- [12.42553191]
- [10.43712575]]
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># solving Lz=b for z</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$y$ =&#39;</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
@@ -14834,10 +14963,10 @@ $y$ =
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[[ 1.        ]
- [-0.29787234]
- [ 3.49700599]
- [ 5.53333333]]
+<pre>[[ -8.94515919]
+ [  7.26940226]
+ [-14.38689355]
+ [  7.49381157]]
 </pre>
 </div>
 </div>
@@ -14849,11 +14978,11 @@ $y$ =
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># solving Ux=y for x</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$x$ =&#39;</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
@@ -14910,7 +15039,7 @@ $x$ =
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>

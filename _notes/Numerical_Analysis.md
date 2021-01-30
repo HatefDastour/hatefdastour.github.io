@@ -17,6 +17,7 @@ collection: notes
 * [LU decomposition](/notes/Numerical_Analysis/NLA_LU_decomposition.html)
 * [Cholesky factorization](/notes/Numerical_Analysis/NLA_Cholesky_factorization.html)
 * [LDL decomposition](/notes/Numerical_Analysis/NLA_LDL_decomposition.html)
+* [QR factorization](/notes/Numerical_Analysis/NLA_QR_factorization.html)
 
 * [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
