@@ -11,7 +11,7 @@ collection: notes
 * [Bracketing Methods](/notes/Numerical_Analysis/RFA_Bracketing_Methods.html)
 * [Newton's method](/notes/Numerical_Analysis/RFA_Newtons_method.html)
 * [Quasi-Newton method](/notes/Numerical_Analysis/RFA_Quasi_Newton.html)
-* [Fixed-point iteration](/notes/Numerical_Analysis/Fixed_point_iteration.html)
+* [Fixed-point iteration](/notes/Numerical_Analysis/RFA_Fixed_point.html)
 
 ### Numerical linear algebra
 * [LU decomposition](/notes/Numerical_Analysis/NLA_LU_decomposition.html)
@@ -19,7 +19,10 @@ collection: notes
 * [LDL decomposition](/notes/Numerical_Analysis/NLA_LDL_decomposition.html)
 * [QR factorization](/notes/Numerical_Analysis/NLA_QR_factorization.html)
 
-* [Polynomial Interpolation](/notes/Numerical_Analysis/Polynomial_Interpolation.html)
+### Interpolations
+* [Vandermonde Method](/notes/Numerical_Analysis/Int_Vandermonde_Method.html)
+
+
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
