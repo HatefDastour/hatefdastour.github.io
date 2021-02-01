@@ -21,7 +21,7 @@ collection: notes
 
 ### Interpolations
 * [Vandermonde Method](/notes/Numerical_Analysis/Int_Vandermonde_Method.html)
-* [Lagrange polynomial](Vandermonde Method](/notes/Numerical_Analysis/Int_Lagrange_polynomial.html)
+* [Lagrange polynomial](/notes/Numerical_Analysis/Int_Lagrange_polynomial.html)
 
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
