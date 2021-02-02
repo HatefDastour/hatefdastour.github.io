@@ -18,6 +18,7 @@ collection: notes
 * [Cholesky factorization](/notes/Numerical_Analysis/NLA_Cholesky_factorization.html)
 * [LDL decomposition](/notes/Numerical_Analysis/NLA_LDL_decomposition.html)
 * [QR factorization](/notes/Numerical_Analysis/NLA_QR_factorization.html)
+* [Newton Polynomial](/notes/Numerical_Analysis/Int_Newton_Polynomials.html)
 
 ### Interpolations
 * [Vandermonde Method](/notes/Numerical_Analysis/Int_Vandermonde_Method.html)
