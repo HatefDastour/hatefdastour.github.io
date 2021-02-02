@@ -18,14 +18,16 @@ collection: notes
 * [Cholesky factorization](/notes/Numerical_Analysis/NLA_Cholesky_factorization.html)
 * [LDL decomposition](/notes/Numerical_Analysis/NLA_LDL_decomposition.html)
 * [QR factorization](/notes/Numerical_Analysis/NLA_QR_factorization.html)
-* [Newton Polynomial](/notes/Numerical_Analysis/Int_Newton_Polynomials.html)
 
 ### Interpolations
 * [Vandermonde Method](/notes/Numerical_Analysis/Int_Vandermonde_Method.html)
 * [Lagrange polynomial](/notes/Numerical_Analysis/Int_Lagrange_polynomial.html)
+* [Newton Polynomial](/notes/Numerical_Analysis/Int_Newton_Polynomials.html)
 
+### Numerical Differentiation and Integration
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 * [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
+
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
 * [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
 
