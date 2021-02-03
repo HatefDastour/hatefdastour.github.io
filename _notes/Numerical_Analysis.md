@@ -25,8 +25,9 @@ collection: notes
 * [Newton Polynomial](/notes/Numerical_Analysis/Int_Newton_Polynomials.html)
 
 ### Numerical Differentiation and Integration
+* [Approximation of the first derivative of a function](/notes/Numerical_Analysis/ND_First_Derivative.html)
+* [Approximation of the second derivative of a function](/notes/Numerical_Analysis/ND_Second_Derivative.html)
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
-* [Numerical Differentiation](/notes/Numerical_Analysis/Numerical_Differentiation.html)
 
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
 * [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
