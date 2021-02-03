@@ -24,9 +24,12 @@ collection: notes
 * [Lagrange polynomial](/notes/Numerical_Analysis/Int_Lagrange_polynomial.html)
 * [Newton Polynomial](/notes/Numerical_Analysis/Int_Newton_Polynomials.html)
 
-### Numerical Differentiation and Integration
+### Numerical Differentiation
 * [Approximation of the first derivative of a function](/notes/Numerical_Analysis/ND_First_Derivative.html)
 * [Approximation of the second derivative of a function](/notes/Numerical_Analysis/ND_Second_Derivative.html)
+* [Higher Order Approximations](/notes/Numerical_Analysis/ND_Higher_Order_Approximations.html)
+
+### Numerical Integration
 * [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
 
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
