@@ -30,7 +30,7 @@ collection: notes
 * [Higher Order Approximations](/notes/Numerical_Analysis/ND_Higher_Order_Approximations.html)
 
 ### Numerical Integration
-* [Numerical Integration](/notes/Numerical_Analysis/Numerical_Integration.html)
+* [Trapezoidal Rule](/notes/Numerical_Analysis/NI_Trapezoidal_Rule.html)
 
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
 * [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
