@@ -32,6 +32,7 @@ collection: notes
 ### Numerical Integration
 * [Trapezoidal rule](/notes/Numerical_Analysis/NI_Trapezoidal_rule.html)
 * [Simpsons_rule](/notes/Numerical_Analysis/NI_Simpsons_rule.html)
+* [Midpoint rule](/notes/Numerical_Analysis/NI_Midpoint_rule.html)
 
 * [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
 * [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
