@@ -34,7 +34,3 @@ collection: notes
 * [Simpsons_rule](/notes/Numerical_Analysis/NI_Simpsons_rule.html)
 * [Midpoint rule](/notes/Numerical_Analysis/NI_Midpoint_rule.html)
 * [Gaussian quadrature](/notes/Numerical_Analysis/NI_Gaussian_quadrature.html)
-
-* [Numerical Solution of ODEs](/notes/Numerical_Analysis/Numerical_Solution_of_ODEs.html)
-* [Data Smoothing](/notes/Numerical_Analysis/Data_Smoothing.html)
-
