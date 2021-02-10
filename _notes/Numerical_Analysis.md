@@ -34,3 +34,6 @@ collection: notes
 * [Simpsons_rule](/notes/Numerical_Analysis/NI_Simpsons_rule.html)
 * [Midpoint rule](/notes/Numerical_Analysis/NI_Midpoint_rule.html)
 * [Gaussian quadrature](/notes/Numerical_Analysis/NI_Gaussian_quadrature.html)
+
+### Initial-Value Problems for Ordinary Differential Equations
+* [Euler method](/notes/Numerical_Analysis/IVP_ODE.html)
