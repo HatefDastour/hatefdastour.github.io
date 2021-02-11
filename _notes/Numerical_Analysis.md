@@ -36,4 +36,4 @@ collection: notes
 * [Gaussian quadrature](/notes/Numerical_Analysis/NI_Gaussian_quadrature.html)
 
 ### Initial-Value Problems for Ordinary Differential Equations
-* [Euler method](/notes/Numerical_Analysis/IVP_ODE.html)
+* [Forward Euler method](/notes/Numerical_Analysis/IVP_ODE_Forward_Euler.html)
