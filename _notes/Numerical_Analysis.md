@@ -37,3 +37,4 @@ collection: notes
 
 ### Initial-Value Problems for Ordinary Differential Equations
 * [Forward Euler method](/notes/Numerical_Analysis/IVP_ODE_Forward_Euler.html)
+* [Backward Euler method](/notes/Numerical_Analysis/IVP_ODE_Backward_Euler.html)
