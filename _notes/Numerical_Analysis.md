@@ -36,6 +36,8 @@ collection: notes
 * [Gaussian quadrature](/notes/Numerical_Analysis/NI_Gaussian_quadrature.html)
 
 ### Initial-Value Problems for Ordinary Differential Equations
+#### First-order methods
 * [Forward Euler method](/notes/Numerical_Analysis/IVP_ODE_Forward_Euler.html)
 * [Backward Euler method](/notes/Numerical_Analysis/IVP_ODE_Backward_Euler.html)
+#### Second-order methods
 * [Heun's method method](/notes/Numerical_Analysis/IVP_ODE_Heuns_method.html)
