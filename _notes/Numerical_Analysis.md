@@ -44,3 +44,5 @@ collection: notes
 * [Heun's method method](/notes/Numerical_Analysis/IVP_ODE_Heuns_method.html)
 * [Trapezoidal rule](/notes/Numerical_Analysis/IVP_ODE_Trapezoidal_rule.html)
 * [Midpoint methods](/notes/Numerical_Analysis/IVP_ODE_Midpoint_methods.html)
+
+### Higher-order methods
