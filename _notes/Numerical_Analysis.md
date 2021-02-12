@@ -41,3 +41,4 @@ collection: notes
 * [Backward Euler method](/notes/Numerical_Analysis/IVP_ODE_Backward_Euler.html)
 #### Second-order methods
 * [Heun's method method](/notes/Numerical_Analysis/IVP_ODE_Heuns_method.html)
+* [Trapezoidal rule](/notes/Numerical_Analysis/IVP_ODE_Trapezoidal_rule)
