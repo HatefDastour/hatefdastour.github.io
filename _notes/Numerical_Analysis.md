@@ -44,5 +44,6 @@ collection: notes
 * [Heun's method method](/notes/Numerical_Analysis/IVP_ODE_Heuns_method.html)
 * [Trapezoidal rule](/notes/Numerical_Analysis/IVP_ODE_Trapezoidal_rule.html)
 * [Midpoint methods](/notes/Numerical_Analysis/IVP_ODE_Midpoint_methods.html)
+* [Second Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Second_Runge_Kutta_methods.html)
 
 ### Higher-order methods
