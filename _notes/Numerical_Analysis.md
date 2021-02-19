@@ -47,3 +47,5 @@ collection: notes
 * [Second Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Second_Runge_Kutta_methods.html)
 
 ### Higher-order methods
+* [Third Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Third_Order_Runge_Kutta_methods.html)
+* [Fourth Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Fourth_Order_Runge_Kutta_methods.html)
