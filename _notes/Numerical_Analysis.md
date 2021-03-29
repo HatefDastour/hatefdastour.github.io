@@ -49,3 +49,6 @@ collection: notes
 ### Higher-order methods
 * [Third Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Third_Order_Runge_Kutta_methods.html)
 * [Fourth Runge-Kutta methods](/notes/Numerical_Analysis/IVP_ODE_Fourth_Order_Runge_Kutta_methods.html)
+
+## Regularization Methods
+* [Regularization Methods](/notes/Numerical_Analysis/Regularization_Methods.html)
