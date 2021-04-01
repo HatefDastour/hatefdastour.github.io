@@ -6,9 +6,9 @@ collection: notes
 ## Table of contents
 ### PyTorch
 
-* [Getting_Started_with_Pytorch](/notes/Deel_Learning/Getting_Started_with_Pytorch.html)
-* [Logistic Regression_with Pytorch](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
-* [Artificial Neural Network with_Pytorch (Single Layer and Multiple Layers)](/notes/Deel_Learning/PyTorch_ANN.html)
+* [Getting Started with Pytorch](/notes/Deel_Learning/Getting_Started_with_Pytorch.html)
+* [Logistic Regression with Pytorch](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
+* [Artificial Neural Network with Pytorch (Single Layer and Multiple Layers)](/notes/Deel_Learning/PyTorch_ANN.html)
 
 ### Tensorflow and Keras
 * Multi-layer Perceptron (MLP) using Keras
