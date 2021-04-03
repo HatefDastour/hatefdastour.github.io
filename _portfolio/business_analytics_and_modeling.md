@@ -19,11 +19,10 @@ collection: portfolio
 	* [Modeling: Multi Output Random Forest Classifier](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_MultiOutputRFC.html)
 	* [Modeling: Keras Sequential Neural Network](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_Keras_ANN.html)
 * Telco Customer Churn
-	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_EDA.html)
-	* [Preprocessing](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_Preprocessing.html)
-	* [Modeling: Feature Importance](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_using_Feature_Importance.html)
-	* [Modeling: PyTorch Logistic Regression with GPU](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_with_PyTorch_Logistic_Regression.html)
-	* [Modeling: PyTorch Artificial Neural Network with GPU](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_with_PyTorch_ANN.html)
+	- [Preprocessing](portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_Preprocessing.html)
+	- [Exploratory Data Analysis](portfolio/business_analytics_and_modeling/Telco_Customer_Churn_EDA.html)
+	- [Modeling: Decision Tree Classifier with Voting Classifier](portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Classification_DTC_Voting.html)
+	- [Modeling: PyTorch Multi-layer Perceptron (MLP)](portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_PyTorch_MLP.html)
 	
 ## Employee Churn
 * IBM HR Analytics Employee Attrition and Performance
