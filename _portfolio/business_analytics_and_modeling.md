@@ -10,7 +10,7 @@ collection: portfolio
 * Bank Marketing Dataset
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/Bank_Marketing_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Bank_Marketing_EDA.html)
-	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary classification](portfolio/business_analytics_and_modeling/Bank_Marketing_Modeling_PyTorch_MLP.html)
+	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary classification](/portfolio/business_analytics_and_modeling/Bank_Marketing_Modeling_PyTorch_MLP.html)
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary classification](/portfolio/business_analytics_and_modeling/Bank_Marketing_Modeling_Keras_MLP.html)
 * [Instacart Data Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Instacart_EDA.html)
 * Starbucks Offer Personalizations
