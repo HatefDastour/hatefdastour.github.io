@@ -28,7 +28,5 @@ collection: portfolio
 
 * IBM HR Analytics Employee Attrition and Performance
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_EDA.html)
-	* [Modeling: Stacking Classifiers](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_using_Stacking_Classifiers.html)
-	* [Modeling: Keras Artificial Neural Network](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_using_ANN.html)
 
 	
