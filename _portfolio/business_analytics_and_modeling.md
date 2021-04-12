@@ -27,6 +27,6 @@ collection: portfolio
 	* [Modeling: PyTorch Multi-layer Perceptron (MLP)](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_PyTorch_MLP.html)
 
 * IBM HR Analytics Employee Attrition and Performance
-	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_EDA.html)
+	* [Preprocessing and Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing_EDA.html)
 
 	
