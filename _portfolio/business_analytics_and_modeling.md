@@ -28,5 +28,5 @@ collection: portfolio
 
 * IBM HR Analytics Employee Attrition and Performance
 	* [Preprocessing and Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing_EDA.html)
-
-	
+	* [Modeling: Gaussian Naive Bayes](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
+	* [Modeling: Keras_Sequential Multi-layer Perceptron (MLP)](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_Sequential_MLP.html)
