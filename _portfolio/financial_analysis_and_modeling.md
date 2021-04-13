@@ -20,8 +20,7 @@ collection: portfolio
     * [Modeling: Bayesian Methods and PyMC3](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_Modeling_using_Bayesian_Methods_and_PyMC3.html)
     * [Modeling: Bayesian Methods and PyStan](/portfolio/financial_analysis_and_modeling/Price_Mercari_Data_Modeling_using_Bayesian_Methods_and_PyStan.html)
 
-## The Stock Market
-* The Market Analysis and Predicting Future Behaviors
-	* [Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
-	* [Cryptocurrencies](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Cryptocurrencies.html)
-	* [Technology Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Technology_Services.html)
+## The Market Analysis 
+* [The Market Analysis for Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
+* [The Market Analysis for Cryptocurrencies](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Cryptocurrencies.html)
+* [The Market Analysis for Technology Services](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Technology_Services.html)
