@@ -21,10 +21,10 @@ collection: portfolio
 
 ## Churn
 * Telco Customer Churn
-	* [Preprocessing](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_EDA.html)
-	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_DTC_Voting.html)
-	* [Modeling: Decision Tree Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_PyTorch_MLP.html)
-	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Preprocessing.html)
+	* [Preprocessing](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Preprocessing.html)
+	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_EDA.html)
+	* [Modeling: Decision Tree Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_DTC_Voting.html)
+	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_PyTorch_MLP.html)
 
 * IBM HR Analytics Employee Attrition and Performance
 	* [Preprocessing and Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing_EDA.html)
