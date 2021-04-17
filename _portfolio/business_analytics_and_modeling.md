@@ -27,6 +27,7 @@ collection: portfolio
 	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/Telco_Customer_Churn_Modeling_PyTorch_MLP.html)
 
 * IBM HR Analytics Employee Attrition and Performance
-	* [Preprocessing and Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing_EDA.html)
-	* [Modeling: Gaussian Naive Bayes](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
-	* [Modeling: Keras_Sequential Multi-layer Perceptron (MLP)](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_Sequential_MLP.html)
+	* [Preprocessing](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing.html)
+	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_EDA.html)
+	* [Modeling: Decision Tree Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_Sequential_MLP.html)
