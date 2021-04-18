@@ -29,5 +29,5 @@ collection: portfolio
 * IBM HR Analytics Employee Attrition and Performance
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_EDA.html)
-	* [Modeling: Decision Tree Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
-	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_Sequential_MLP.html)
+	* [Modeling: Gaussian Naïve Bayes Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_MLP.html)
