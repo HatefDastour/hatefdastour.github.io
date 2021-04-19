@@ -14,10 +14,10 @@ collection: portfolio
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary classification](/portfolio/business_analytics_and_modeling/Bank_Marketing_Modeling_Keras_MLP.html)
 * [Instacart Data Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Instacart_EDA.html)
 * Starbucks Offer Personalizations
-	* [Preprocessing](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_Preprocessing.html)
+* [Preprocessing](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_EDA.html)
 	* [Modeling: Multi Output Random Forest Classifier](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_MultiOutputRFC.html)
-	* [Modeling: Keras Sequential Neural Network](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_Keras_ANN.html)
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Multi-Class Classifications](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_Keras_MLP.html)
 
 ## Churn
 * Telco Customer Churn
