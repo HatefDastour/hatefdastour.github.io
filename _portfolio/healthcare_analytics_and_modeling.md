@@ -5,7 +5,7 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Breast Cancer Wisconsin (Diagnostic) Classification]
+* Breast Cancer Wisconsin (Diagnostic) Classification
 	* [Modeling: Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_GBC.html)
 	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_KNN.html)
 	* [Modeling: Multi-layer Perceptron Classifier (MLP) Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_MLPClassifier.html)
