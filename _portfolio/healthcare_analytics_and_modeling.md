@@ -14,7 +14,7 @@ collection: portfolio
 
 * Heart Disease Dataset
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_EDA.html)
-	* [Modeling: Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_with_Feat_Importance_Analysis.html)
+	* [Modeling: Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees.html)
 
 * Los Angeles County Restaurant and Market Violations and Inspections
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
