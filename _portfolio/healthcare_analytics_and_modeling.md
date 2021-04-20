@@ -5,7 +5,12 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Breast Cancer Wisconsin (Diagnostic) Classification](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_(Diagnostic)_Classification.html)
+* [Breast Cancer Wisconsin (Diagnostic) Classification]
+	* [Modeling: Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_GBC.html)
+	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_KNN.html)
+	* [Modeling: Multi-layer Perceptron Classifier (MLP) Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_MLPClassifier.html)
+	* [Modeling: Random Forest Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_RFC.html)
+	* [Modeling: Support Vector Machine](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_SVM.html)
 
 * Heart Disease Dataset
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_EDA.html)
