@@ -22,8 +22,6 @@ collection: portfolio
 	* [Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
 
 * Pima Indians Diabetes Data
-	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Preprocessing.html)
-	* [Modeling: Voting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Voting_Classifier.html)
-	* [Modeling: Binary Multi-layer Perceptron (MLP) using Keras](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_Keras_Binary_MLP.html)
-	* [Modeling: PyTorch Artificial Neural Networks](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Dataset_Modeling_PyTorch_ANN.html)
+	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
+	* [Modeling: Gradient Boosting Classifier with Feature Ranking](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_GBC_Feature_Importance.html)
 
