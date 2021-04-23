@@ -9,9 +9,10 @@ collection: portfolio
 	* [Modeling: scikit-learn Multi-layer Perceptron Classifier (MLP)](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_SL_MLP.html)
 	* [PyTorch Multi-layer Perceptron (MLP) for Binary classification](/portfolio/financial_analysis_and_modeling/Credit_Card_Fraud_Detection_PyTorch_MLP.html)
 * Statlog (German Credit Data) Dataset
-    * [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_Dataset_EDA.html)
-    * [Modeling: Feature Importance](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Feature_Importance.html)
-    * [Modeling: Keras Sequential Neural Network](/portfolio/financial_analysis_and_modeling/Statlog_(German_Credit_Data)_using_Keras.html)
+	* [Preprocessing](/portfolio/financial_analysis_and_modeling/Statlog_Dataset_Preprocessing.html)
+	* [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Statlog_Dataset_EDA.html)
+	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/financial_analysis_and_modeling/Statlog_Dataset_Modeling_PyTorch_MLP.html)
+	* [Modeling: Gradient Boosting Classifier](/portfolio/financial_analysis_and_modeling/Statlog_Dataset_Modeling_GBC.html)
 
 ## Price Predictions
 * [Industrial Production (Electric and Gas Utilities)](/portfolio/financial_analysis_and_modeling/Industrial_Production_(Electric_and_Gas_Utilities).html)
