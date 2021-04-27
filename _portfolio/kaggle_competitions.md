@@ -7,8 +7,8 @@ collection: portfolio
 
 * [Instacart Data Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Instacart_EDA.html)
 * Digit Recognizer
-	* [Modeling: PyTorch Logistic Regression](/portfolio/kaggle_competitions/Digit_Recognizer_Classification_using_PyTorch_Logistic_Regression.html)
-	* [Modeling: PyTorch ANN](/portfolio/kaggle_competitions/Digit_Recognizer_Classification_using_PyTorch_ANN.html)
+	* [Modeling: PyTorch Multinomial Logistic Regression for Multi-Class Classification](/portfolio/image_classification/Digit_Recognizer_Modeling_PyTorch_Logistic_Regression.html)
+	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Multi-Class Classification](/portfolio/image_classification/Digit_Recognizer_Modeling_PyTorch_MLP.html)
 * 1C Software Dataset Modeling
 	* [Exploratory Data Analysis](/portfolio/kaggle_competitions/1C_Software_Dataset_Preprocessing_EDA.html)
 	* [Modeling: Catboost GPU](/portfolio/kaggle_competitions/1C_Software_Dataset_Modeling_Catboost.html)
