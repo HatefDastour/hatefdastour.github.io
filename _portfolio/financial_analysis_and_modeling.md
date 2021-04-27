@@ -20,13 +20,15 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Mercari_Price_Suggestion_EDA.html)
 	* [Modeling: Bayesian Methods and PyStan](/portfolio/financial_analysis_and_modeling/Mercari_Price_Suggestion_PyStan.html)
 	* [Modeling: Bayesian Methods and PyMC3](/portfolio/financial_analysis_and_modeling/Mercari_Price_Suggestion_PyMC3.html)
-	
-## The Market Analysis 
+
+
+## Sale Predictions
 * Predict Future Sales
 	* [Preprocessing](/portfolio/financial_analysis_and_modeling/Predict_Future_Sales_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Predict_Future_Sales_EDA.html)
 	* [Modeling: CatBoost Regressor](/portfolio/financial_analysis_and_modeling/Predict_Future_Sales_Modeling_CatBoostReg.html)
 	
+## The Market Analysis 
 * [The Market Analysis for Communication Services Sector](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Communication_Services_Sector.html)
 * [The Market Analysis for Cryptocurrencies](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Cryptocurrencies.html)
 * [The Market Analysis for Technology Services](/portfolio/financial_analysis_and_modeling/The_Market_Analysis_for_Technology_Services.html)
