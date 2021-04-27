@@ -5,7 +5,6 @@ collection: portfolio
 ---
 ## Table of contents
 
-* [Sign Language Digits (Stacking Classifiers)](/portfolio/statistical_modeling_and_analysis/Sign_Language_Digits_Stacking_Classifiers.html)
 * Daily Weather Data
 	* [Modeling: Feature Importance](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_Feature_Importance.html)
 	* [Modeling: Keras Sequential Multi-layer Perceptron ](/portfolio/statistical_modeling_and_analysis/Daily_Weather_Data_Analysis_and_Classification_using_Keras_MLP_for_MCC.html)
