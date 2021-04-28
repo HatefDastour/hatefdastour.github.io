@@ -31,3 +31,6 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_EDA.html)
 	* [Modeling: Gaussian Naïve Bayes Classifier with Voting Classifier](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_GNB.html)
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Binary Classification](/portfolio/business_analytics_and_modeling/IBM_HR_Analytics_Modeling_Keras_MLP.html)
+
+## Individual Topics
+* [State of Data Science and Machine Learning](/portfolio/business_analytics_and_modeling/State_of_Data_Science_and_Machine_Learning.html)
