@@ -34,3 +34,5 @@ collection: portfolio
 
 ## Individual Topics
 * [State of Data Science and Machine Learning](/portfolio/business_analytics_and_modeling/State_of_Data_Science_and_Machine_Learning.html)
+* [Movie Recommendation System](/portfolio/business_analytics_and_modeling/Movie_Recommendation_System.html)
+* [Netflix Titles Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Netflix_titles.html)
