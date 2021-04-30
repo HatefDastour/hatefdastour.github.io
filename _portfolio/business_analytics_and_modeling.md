@@ -6,7 +6,9 @@ collection: portfolio
 
 ## Ecommerce Personalization
 * [An Example for RFM Scoring](/portfolio/business_analytics_and_modeling/RFM_Scoring.html)
-* [Consumer Finance Complaints Analyzing and Modeling (using Keras Text Classification)](/portfolio/natural_language_processing/Consumer_Finance_Complaints_Analyzing_and_Modeling_(using_Keras_Text_Classification).html)
+* Consumer Complaint Database
+	* [Exploratory Data Analysis](/portfolio/natural_language_processing/Consumer_Finance_Complaints_EDA.html)
+	* [Modeling: Keras Text Classification](/portfolio/natural_language_processing/Consumer_Finance_Complaints_Keras_text.html)
 * Bank Marketing Dataset
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/Bank_Marketing_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Bank_Marketing_EDA.html)
