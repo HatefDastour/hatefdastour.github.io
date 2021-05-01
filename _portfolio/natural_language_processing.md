@@ -8,8 +8,8 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/natural_language_processing/Consumer_Finance_Complaints_EDA.html)
 	* [Modeling: Keras Text Classification](/portfolio/natural_language_processing/Consumer_Finance_Complaints_Keras_text.html)
 * Movie Recommendation System
-	* [Preprocessing](/portfolio/natural_language_processing/Movie_Recommendation_system_Preprocessing.html)
-	* [Modeling](/portfolio/natural_language_processing/Movie_Recommendation_system_Modeling.html)
+	* [Preprocessing](/portfolio/natural_language_processing/Movie_Recommendation_System_Preprocessing.html)
+	* [Modeling: Cosine Similarity](/portfolio/natural_language_processing/Movie_Recommendation_System_Modeling_Cosine_Similarity.html)
 * Movie Reviews Comments classifications
 	* [Modeling: Natural Language Toolkit and Naive Bayes Classifier](/portfolio/natural_language_processing/Movie_Reviews_Comments_classifications_using_Modeling_using_NLTK.html)
 	* [Modeling: Natural Language Toolkit and Naive Bayes Classifier (Improved Model)](/portfolio/natural_language_processing/Movie_Reviews_Comments_classifications_using_Modeling_using_NLTK_Improved_Model.html)
