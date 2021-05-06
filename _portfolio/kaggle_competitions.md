@@ -14,5 +14,5 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/financial_analysis_and_modeling/Predict_Future_Sales_EDA.html)
 	* [Modeling: CatBoost Regressor](/portfolio/financial_analysis_and_modeling/Predict_Future_Sales_Modeling_CatBoostReg.html)
 * House Prices: Advanced Regression Techniques
-	* [Preprocessing](/portfolio/kaggle_competitions/House_Prices_Preprocessing.html)
-	* [Modeling: Stacked Modeling](/portfolio/kaggle_competitions/House_Prices_Stacked_Modeling.html)
+	* [Preprocessing](/portfolio/real_estate/House_Prices_Preprocessing.html)
+	* [Modeling: Stacked Modeling](/portfolio/real_estate/House_Prices_Stacked_Modeling.html)
