@@ -1,5 +1,5 @@
 ---
-title: "Natural Language Processing (NLP)"
+title: "Natural Language Processing"
 excerpt: "Processing and analyzing large amounts of natural language data"
 collection: portfolio
 ---
