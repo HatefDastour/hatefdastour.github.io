@@ -14,6 +14,4 @@ collection: portfolio
 	* [Natural Language Toolkit and Naive Bayes Classifier](/portfolio/natural_language_processing/Movie_Reviews_Comments_Classifications_NLTK_NBC.html)
 	* [Natural Language Toolkit and Naive Bayes Classifier (Improved Model)](/portfolio/natural_language_processing/Movie_Reviews_Comments_Classifications_NLTK_NBC_Improved.html)
 * Spooky Author Identification Dataset
-	* [NLP using Logistic Regression](/portfolio/natural_language_processing/Spooky_Author_Identification_Dataset_NLP_using_LogReg.html)
-	* [NLP using Naive Bayes Classifier for Multinomial Models](/portfolio/natural_language_processing/Spooky_Author_Identification_Dataset_NLP_using_MNB.html)
-	* [NLP using Multi-layer Perceptron Classifier](/portfolio/natural_language_processing/Spooky_Author_Identification_Dataset_NLP_using_MLP.html)
+	* [Modeling: Logistic Regression](/portfolio/natural_language_processing/Spooky_Author_Identification_Dataset_LogisticRegression.html)
