@@ -6,14 +6,7 @@ collection: notes
 
 ## Table of contents
 
-* Textbook:
-
-<table>
-<tr>
-<td> <https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7" height='200'   alt="1" ></td>
-<td><b>An Introduction to Statistical Learning with Applications in R<b> by Gareth James et al.</td>
-</tr> 
-</table>
+* Textbook: [**An Introduction to Statistical Learning with Applications in R**](https://link.springer.com/book/10.1007/978-1-4614-7138-7) by Gareth James et al.
 
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 
