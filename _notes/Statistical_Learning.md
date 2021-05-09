@@ -10,7 +10,7 @@ collection: notes
 
 <table>
 <tr>
-<td> <https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7" height='250' ></td>
+<td> <https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7" height='200' ></td>
 <td><b>An Introduction to Statistical Learning with Applications in R<b> by Gareth James et al.</td>
 </tr> 
 </table>
