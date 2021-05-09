@@ -1,10 +1,16 @@
 ---
 title: "Statistical Learning"
-excerpt: "Statistical Learning with Python and R"
+excerpt: "Statistical Learning with Python"
 collection: notes
 ---
 
 ## Table of contents
+
+* Textbook:
+<img src="https://media.springernature.com/w306/springer-static/cover-hires/book/978-1-4614-7138-7" height='250' align="center"/>
+
+**An Introduction to Statistical Learning
+with Applications in R** by Gareth James et al.
 
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 
