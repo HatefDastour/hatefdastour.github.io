@@ -6,6 +6,10 @@ collection: notes
 
 ## Table of contents
 
+* Textbook:
+	* [**A First Course in Linear Algebra**](https://lyryx.com/wp-content/uploads/2017/06/Kuttler-LinearAlgebra-AFirstCourse-2017A.pdf) by Ken Kuttler
+	* [**Linear Algebra with Applications**](https://lila1.lyryx.com/textbooks/OPEN_LAWA_1/marketing/Nicholson-OpenLAWA-2021A.pdf) by W. Keith Nicholson
+
 ## Chapter 0: Prologue
 * [Prologue](/notes/Linear_Algebra/Prologue.html)
 
