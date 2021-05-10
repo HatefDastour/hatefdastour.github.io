@@ -6,6 +6,8 @@ collection: notes
 
 ## Table of contents
 
+* Textbook: [Elementary Differential Equations with Boundary Value Problems](https://digitalcommons.trinity.edu/mono/9/) by William F. Trench
+
 * [Worksheet 01](/notes/Differential_Equations/Worksheet_01.html)
 * [Worksheet 02](/notes/Differential_Equations/Worksheet_02.html)
 * [Worksheet 03](/notes/Differential_Equations/Worksheet_03.html)
