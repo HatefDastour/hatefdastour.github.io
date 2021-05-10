@@ -6,7 +6,7 @@ collection: notes
 
 ## Table of contents
 
-* Textbook: [**An Introduction to Statistical Learning with Applications in R**](https://link.springer.com/book/10.1007/978-1-4614-7138-7) by Gareth James et al.
+* Textbook: [An Introduction to Statistical Learning with Applications in R](https://link.springer.com/book/10.1007/978-1-4614-7138-7) by Gareth James et al.
 
 * [Getting Started with Python](/notes/Getting_Started/Getting_Started.html)
 
