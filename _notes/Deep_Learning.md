@@ -5,10 +5,10 @@ collection: notes
 ---
 ## Table of contents
 ### PyTorch
-
-* [Getting Started with Pytorch](/notes/Deel_Learning/Getting_Started_with_Pytorch.html)
-* [Logistic Regression with Pytorch](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
-* [Artificial Neural Network with Pytorch (Single Layer and Multiple Layers)](/notes/Deel_Learning/PyTorch_ANN.html)
+* [Getting Started](/notes/Deel_Learning/PyTorch_Getting_Started.html)
+* [Logistic Regression](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
+* [Multi-layer Perceptron (MLP) for Binary Classification](/notes/Deel_Learning/PyTorch_MLP_Binary_Classification.html)
+* [Multi-layer Perceptron (MLP) for Multi-Class Classification](/notes/Deel_Learning/PyTorch_MLP_Multi-Class_Classification.html)
 
 ### Tensorflow and Keras
 * Multi-layer Perceptron (MLP) using Keras
