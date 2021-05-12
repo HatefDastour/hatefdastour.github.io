@@ -21,7 +21,7 @@ Education
 Working Experience
 ======
 * Data Science Consultant<br/>
-Earth \& Space Inc., Calgary, AB, Canada
+Earth & Space Inc., Calgary, AB, Canada
 
 * Data Science Developer<br/>
 StellarAlgo Corp., Calgary, AB, Canada
