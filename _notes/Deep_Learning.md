@@ -7,9 +7,8 @@ collection: notes
 ### PyTorch
 * [Getting Started](/notes/Deel_Learning/PyTorch_Getting_Started.html)
 * [Logistic Regression](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
-* Multi-layer Perceptron (MLP)
-	* [Multi-layer Perceptron (MLP) for Binary Classification](/notes/Deel_Learning/PyTorch_MLP_Binary_Classification.html)
-	* [Multi-layer Perceptron (MLP) for Multi-Class Classification](/notes/Deel_Learning/PyTorch_MLP_Multi-Class_Classification.html)
+* [Multi-layer Perceptron (MLP) for Binary Classification](/notes/Deel_Learning/PyTorch_MLP_Binary_Classification.html)
+* [Multi-layer Perceptron (MLP) for Multi-Class Classification](/notes/Deel_Learning/PyTorch_MLP_Multi-Class_Classification.html)
 
 ### Tensorflow and Keras
 * Multi-layer Perceptron (MLP)
