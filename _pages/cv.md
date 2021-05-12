@@ -20,7 +20,7 @@ Education
 
 Working Experience
 ======
-* Data Science Consultant<br/>
+* Data Scientist<br/>
 <a href="https://earthspace.ca/">Earth & Space Inc.</a>, Calgary, AB, Canada
 
 * Data Science Developer<br/>
