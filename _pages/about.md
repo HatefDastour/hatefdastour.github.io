@@ -9,7 +9,7 @@ redirect_from:
 ---
 
 <p style='text-align: justify;'>
-My name is Hatef Dastour and I am a Data Science enthusiast. Upon completion of my BSc and MSc degrees in Applied Mathematics in Iran, I joined the <a href="https://www.ucalgary.ca/">University of Calgary</a> to pursue my Ph.D. studies in January 2016.
+My name is Hatef Dastour, and I am a Data Science enthusiast. Upon completion of my BSc and MSc degrees in Applied Mathematics in Iran, I joined the <a href="https://www.ucalgary.ca/">University of Calgary</a> to pursue my Ph.D. studies in January 2016.
 <br>
 Before completing my Ph.D. in Mathematics and Statistics at the end of December 2019, I had finished a number of research projects in the fields of Applied Numerical Analysis and Mathematics, and I had worked as a sessional instructor for a few semesters at the University of Calgary. My research interests focus on the applications of the wave equation in industrial problems and topics in data science.
 <br>
