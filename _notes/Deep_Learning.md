@@ -18,7 +18,7 @@ collection: notes
 	* [Keras Multi-layer Perceptron (MLP) for Regression](/notes/Deel_Learning/Keras_Regression_MLP.html)
 * Tensorflow Classifiers
 	* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Classifier.html)
-	* [Tensorflow Deep Neural Network (DNN) Classifier](/notes/Deel_Learning/Tensorflow_DNN_Classifier.html)
+	* [Tensorflow DNN Classifier](/notes/Deel_Learning/Tensorflow_DNN_Classifier.html)
 	* [Tensorflow Boosted Trees Classifier](/notes/Deel_Learning/Tensorflow_Boosted_Trees_Classifier.html)
 	* [Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/notes/Deel_Learning/Tensorflow_Boosted_Trees_Classifier_with_Feature_Importance_Analysis.html)
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
