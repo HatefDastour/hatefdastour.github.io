@@ -12,10 +12,10 @@ collection: notes
 
 ### Tensorflow and Keras
 * Multi-layer Perceptron (MLP)
-	* [Binary Classification](/notes/Deel_Learning/Keras_Binary_MLP.html)
-	* [Multi-Class Classification](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
-	* [Basic Image Classifications using Keras Multi-Class Classification](/notes/Deel_Learning/Basic_Image_Classifications_with_Keras.html)
-	* [Keras Regression with MLP](/notes/Deel_Learning/Keras_Regression.html)
+	* [Keras Multi-layer Perceptron (MLP) for Binary Classifications](/notes/Deel_Learning/Keras_Binary_MLP.html)
+	* [Keras Multi-layer Perceptron (MLP) for Multi-Class Classifications](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
+	* [Keras Multi-layer Perceptron (MLP) for Image Classifications](/notes/Deel_Learning/Keras_Image_Classifications_MLP.html)
+	* [Keras Multi-layer Perceptron (MLP) for Regression](/notes/Deel_Learning/Keras_Regression_MLP.html)
 * Tensorflow Classifiers
 	* [Tensorflow Linear Classifier](/notes/Deel_Learning/Tensorflow_Linear_Classifier.html)
 	* [Tensorflow Deep Neural Network (DNN) Classifier](/notes/Deel_Learning/Tensorflow_DNN_Classifier.html)
