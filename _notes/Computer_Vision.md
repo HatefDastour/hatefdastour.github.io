@@ -11,7 +11,3 @@ excerpt: "Using Python to interpret and understand the visual world"
 * [Image Thresholding](/notes/Computer_Vision/OpenCV_Image_Thresholding.html)
 * [Image Filtering](/notes/Computer_Vision/OpenCV_Image_Filtering.html)
 * [Morphological Transformations](/notes/Computer_Vision/OpenCV_Morphological_Transformations.html)
-
-### TensorFlow Image Augmentations and Classification
-* [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
-* [Image Classification with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Classification.html)
