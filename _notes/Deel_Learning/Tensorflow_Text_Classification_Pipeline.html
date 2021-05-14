@@ -10,9 +10,9 @@
 
 <style type="text/css">
     pre { line-height: 125%; }
-td.linenos pre { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-span.linenos { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-td.linenos pre.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .highlight .hll { background-color: var(--jp-cell-editor-active-background) }
 .highlight { background: var(--jp-cell-editor-background); color: var(--jp-mirror-editor-variable-color) }
@@ -14278,21 +14278,13 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">tensorflow.keras.utils</span> <span class="kn">import</span> <span class="n">plot_model</span>
 
 <span class="c1"># Visualisation libraries</span>
+
 <span class="c1">## Text</span>
 <span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Fore</span><span class="p">,</span> <span class="n">Back</span><span class="p">,</span> <span class="n">Style</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">Latex</span><span class="p">,</span> <span class="n">clear_output</span>
 
-<span class="c1">## matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="kn">import</span> <span class="n">FontProperties</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-
-<span class="c1">## seaborn</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1">## progressbar</span>
+<span class="kn">import</span> <span class="nn">progressbar</span>
 
 <span class="c1">## plotly</span>
 <span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">iplot</span> 
@@ -14300,8 +14292,24 @@ a.anchor-link {
 <span class="kn">import</span> <span class="nn">plotly.offline</span> <span class="k">as</span> <span class="nn">py</span>
 <span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="kn">import</span> <span class="nn">plotly.figure_factory</span> <span class="k">as</span> <span class="nn">ff</span>
-<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39; 
+
+<span class="c1">## seaborn</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1">## matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Ellipse</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="kn">import</span> <span class="n">FontProperties</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
@@ -14312,6 +14320,14 @@ a.anchor-link {
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<div class="alert alert-block alert-success">
+<a href="https://hatefdastour.github.io/">Home</a> / 
+<a href="https://hatefdastour.github.io/notes/Deep_Learning/">Deep Learning</a>
+</div>
+</div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14328,7 +14344,7 @@ Large Movie Review Dataset
 </div><p>This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. We provide a set of 25,000 highly polar movie reviews for training, and 25,000 for testing. There is additional unlabeled data for use as well. Raw text and already processed bag of words formats are provided. See the README file contained in the release for more details.</p>
 <h2 id="Downloading-the-Dataset">Downloading the Dataset<a class="anchor-link" href="#Downloading-the-Dataset">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
@@ -14357,6 +14373,28 @@ Large Movie Review Dataset
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Downloading data from https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
+84131840/84125825 [==============================] - 5s 0us/step
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -14920,7 +14958,7 @@ _________________________________________________________________
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Train-the-model">Train the model<a class="anchor-link" href="#Train-the-model">&#182;</a></h2>
+<h2 id="Training-the-model">Training the model<a class="anchor-link" href="#Training-the-model">&#182;</a></h2>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14974,63 +15012,51 @@ _________________________________________________________________
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style  type="text/css" >
-    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col0 {
+#T_b1002_row0_col0,#T_b1002_row2_col2{
             background-color:  #fc7f00;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col1 {
+        }#T_b1002_row0_col1,#T_b1002_row2_col3{
             background-color:  #f7fcfd;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col2 {
+        }#T_b1002_row0_col2,#T_b1002_row2_col0{
             background-color:  #e4ff7a;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col3 {
-            background-color:  #f7fcfd;
+        }#T_b1002_row0_col3{
+            background-color:  #94d6c5;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col0 {
-            background-color:  #ffe217;
+        }#T_b1002_row1_col0{
+            background-color:  #ffe417;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col1 {
-            background-color:  #127c39;
+        }#T_b1002_row1_col1{
+            background-color:  #117b38;
             color:  #f1f1f1;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col2 {
-            background-color:  #e8fc6c;
+        }#T_b1002_row1_col2{
+            background-color:  #eafa65;
             color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col3 {
+        }#T_b1002_row1_col3,#T_b1002_row2_col1{
             background-color:  #00441b;
             color:  #f1f1f1;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col0 {
-            background-color:  #e4ff7a;
-            color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col1 {
-            background-color:  #00441b;
-            color:  #f1f1f1;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col2 {
-            background-color:  #fc7f00;
-            color:  #000000;
-        }    #T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col3 {
-            background-color:  #006328;
-            color:  #f1f1f1;
-        }</style><table id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" colspan=2>Train</th>        <th class="col_heading level0 col2" colspan=2>Validation</th>    </tr>    <tr>        <th class="blank level1" ></th>        <th class="col_heading level1 col0" >Loss</th>        <th class="col_heading level1 col1" >Accuracy</th>        <th class="col_heading level1 col2" >Loss</th>        <th class="col_heading level1 col3" >Accuracy</th>    </tr></thead><tbody>
+        }</style><table id="T_b1002_" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" colspan="2">Train</th>        <th class="col_heading level0 col2" colspan="2">Validation</th>    </tr>    <tr>        <th class="blank level1" ></th>        <th class="col_heading level1 col0" >Loss</th>        <th class="col_heading level1 col1" >Accuracy</th>        <th class="col_heading level1 col2" >Loss</th>        <th class="col_heading level1 col3" >Accuracy</th>    </tr></thead><tbody>
                 <tr>
-                        <th id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81level0_row0" class="row_heading level0 row0" >0</th>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col0" class="data row0 col0" >0.4844</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col1" class="data row0 col1" >0.7300</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col2" class="data row0 col2" >0.3186</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row0_col3" class="data row0 col3" >0.8638</td>
+                        <th id="T_b1002_level0_row0" class="row_heading level0 row0" >0</th>
+                        <td id="T_b1002_row0_col0" class="data row0 col0" >0.5211</td>
+                        <td id="T_b1002_row0_col1" class="data row0 col1" >0.6964</td>
+                        <td id="T_b1002_row0_col2" class="data row0 col2" >0.3165</td>
+                        <td id="T_b1002_row0_col3" class="data row0 col3" >0.8670</td>
             </tr>
             <tr>
-                        <th id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81level0_row1" class="row_heading level0 row1" >1</th>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col0" class="data row1 col0" >0.2174</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col1" class="data row1 col1" >0.9158</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col2" class="data row1 col2" >0.3221</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row1_col3" class="data row1 col3" >0.8762</td>
+                        <th id="T_b1002_level0_row1" class="row_heading level0 row1" >1</th>
+                        <td id="T_b1002_row1_col0" class="data row1 col0" >0.2349</td>
+                        <td id="T_b1002_row1_col1" class="data row1 col1" >0.9075</td>
+                        <td id="T_b1002_row1_col2" class="data row1 col2" >0.3225</td>
+                        <td id="T_b1002_row1_col3" class="data row1 col3" >0.8792</td>
             </tr>
             <tr>
-                        <th id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81level0_row2" class="row_heading level0 row2" >2</th>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col0" class="data row2 col0" >0.1127</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col1" class="data row2 col1" >0.9592</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col2" class="data row2 col2" >0.4081</td>
-                        <td id="T_b18b8d7a_ac22_11ea_a00f_50e08586bf81row2_col3" class="data row2 col3" >0.8750</td>
+                        <th id="T_b1002_level0_row2" class="row_heading level0 row2" >2</th>
+                        <td id="T_b1002_row2_col0" class="data row2 col0" >0.1257</td>
+                        <td id="T_b1002_row2_col1" class="data row2 col1" >0.9552</td>
+                        <td id="T_b1002_row2_col2" class="data row2 col2" >0.4270</td>
+                        <td id="T_b1002_row2_col3" class="data row2 col3" >0.8592</td>
             </tr>
     </tbody></table>
 </div>
