@@ -14,10 +14,10 @@ collection: portfolio
 
 * Heart Disease Dataset
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_EDA.html)
-	* [Tensorflow Linear Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Linear_Classifier.html)
-	* [Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier.html)
-	* [Tensorflow DNN Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_DNN_Classifier.html)
-	* [Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier_Feat_Importance.html)
+	* [Modeling: Tensorflow Linear Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Linear_Classifier.html)
+	* [Modeling: Tensorflow DNN Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_DNN_Classifier.html)
+	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier.html)
+	* [Modeling: Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier_Feat_Importance.html)
 
 * Los Angeles County Restaurant and Market Violations and Inspections
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
