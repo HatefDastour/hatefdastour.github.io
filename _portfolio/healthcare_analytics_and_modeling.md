@@ -26,5 +26,6 @@ collection: portfolio
 
 * Pima Indians Diabetes Data
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
-	* [Modeling: Gradient Boosting Classifier with Feature Ranking](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_GBC_Feature_Importance.html)
+	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_sklearn_GBC_Feature_Importance.html)
+	* [Modeling: CatBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_CatBoost_Classifier.html)
 
