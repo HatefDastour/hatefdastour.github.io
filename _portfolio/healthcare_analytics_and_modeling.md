@@ -27,10 +27,9 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_EDA.html)
 	* [Interactive Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
 
-* Breast Cancer Wisconsin
-	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_GBC.html)
-	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_KNN.html)
-	* [Modeling: Multi-layer Perceptron Classifier (MLP) Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_MLPClassifier.html)
-	* [Modeling: Random Forest Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_RFC.html)
-	* [Modeling: Support Vector Machine](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_SVM.html)
-	* [Modeling: XGBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_XGBClassifier.html)
+* Pima Indians Diabetes
+	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
+	* [Modeling: scikit-learn Gradient Boosting Classifier with  Feature Importance](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_sklearn_GBC_Feature_Importance.html)
+	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_TF_Boosted_Trees_Classifier.html)
+	* [Modeling: CatBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_CatBoost_Classifier.html)
+	* [Modeling: XGBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_XGBClassifier.html)
