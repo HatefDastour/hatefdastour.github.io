@@ -12,6 +12,9 @@ collection: portfolio
 	* [Modeling: Random Forest Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_RFC.html)
 	* [Modeling: Support Vector Machine](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_SVM.html)
 
+* Liver Disorders Dataset
+	* [Modeling: CatBoost Regressor](/portfolio/healthcare_analytics_and_modeling/Liver_Disorders_Dataset_CatBoost_Regressor.html)
+
 * Heart Disease Dataset
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_EDA.html)
 	* [Modeling: Tensorflow Linear Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Linear_Classifier.html)
