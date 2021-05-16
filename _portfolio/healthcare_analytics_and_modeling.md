@@ -27,8 +27,9 @@ collection: portfolio
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_EDA.html)
 	* [Interactive Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
 
-* Pima Indians Diabetes Data
+* Pima Indians Diabetes
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
 	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_sklearn_GBC_Feature_Importance.html)
+	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_TF_Boosted_Trees_Classifier.html)
 	* [Modeling: CatBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_CatBoost_Classifier.html)
 
