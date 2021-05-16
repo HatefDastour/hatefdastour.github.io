@@ -5,12 +5,13 @@ collection: portfolio
 ---
 ## Table of contents
 
-* Breast Cancer Wisconsin (Diagnostic) Classification
-	* [Modeling: Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_GBC.html)
-	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_KNN.html)
-	* [Modeling: Multi-layer Perceptron Classifier (MLP) Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_MLPClassifier.html)
-	* [Modeling: Random Forest Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_RFC.html)
-	* [Modeling: Support Vector Machine](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_SVM.html)
+* Breast Cancer Wisconsin
+	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_GBC.html)
+	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_KNN.html)
+	* [Modeling: Multi-layer Perceptron Classifier (MLP) Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_MLPClassifier.html)
+	* [Modeling: Random Forest Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_RFC.html)
+	* [Modeling: Support Vector Machine](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_SVM.html)
+	* [Modeling: XGBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_XGBClassifier.html)
 
 * Liver Disorders Dataset
 	* [Modeling: CatBoost Regressor](/portfolio/healthcare_analytics_and_modeling/Liver_Disorders_Dataset_CatBoost_Regressor.html)
