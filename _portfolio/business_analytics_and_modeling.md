@@ -18,8 +18,7 @@ collection: portfolio
 * Starbucks Offer Personalizations
 	* [Preprocessing](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_EDA.html)
-	* [Modeling: Multi Output Random Forest Classifier](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_MultiOutputRFC.html)
-	* [Modeling: Keras Multi-layer Perceptron (MLP) for Multi-Class Classifications](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_using_Keras_MLP.html)
+	* [Modeling: Multi-Output Random Forest Classifier](/portfolio/business_analytics_and_modeling/Starbucks_Offer_Personalizations_sklearn_MultiOutput_RFC.html)
 
 ## Churn
 * Telco Customer Churn
