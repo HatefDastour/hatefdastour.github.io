@@ -27,6 +27,10 @@ collection: portfolio
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
 	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_EDA.html)
 	* [Interactive Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
+	
+* Skin Lesion Analysis Towards Melanoma Detection
+	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Keras_Image_Classifications_MLP.html)
 
 * Pima Indians Diabetes
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
