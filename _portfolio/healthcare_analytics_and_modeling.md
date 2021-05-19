@@ -5,6 +5,7 @@ collection: portfolio
 ---
 ## Table of contents
 
+## Disorder Detection
 * Breast Cancer Wisconsin
 	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_GBC.html)
 	* [Modeling: K-Nearest Neighbors Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_KNN.html)
@@ -23,14 +24,6 @@ collection: portfolio
 	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier.html)
 	* [Modeling: Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier_Feat_Importance.html)
 
-* Los Angeles County Restaurant and Market Violations and Inspections
-	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
-	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_EDA.html)
-	* [Interactive Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)
-	
-* Skin Lesion Analysis Towards Melanoma Detection
-	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
-	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Keras_Image_Classifications_MLP.html)
 
 * Pima Indians Diabetes
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
@@ -38,3 +31,17 @@ collection: portfolio
 	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_TF_Boosted_Trees_Classifier.html)
 	* [Modeling: CatBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_CatBoost_Classifier.html)
 	* [Modeling: XGBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_XGBClassifier.html)
+	
+## Medical Image Classification
+* CT Images from Cancer Imaging Archive with Contrast and Patient Age
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/CT_Medical_Images_Keras_Image_Classifications_MLP.html)
+	
+* Skin Lesion Analysis Towards Melanoma Detection
+	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Keras_Image_Classifications_MLP.html)
+
+## Individual Topics	
+* Los Angeles County Restaurant and Market Violations and Inspections
+	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Preprocessing.html)
+	* [Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_EDA.html)
+	* [Interactive Maps](/portfolio/healthcare_analytics_and_modeling/Los_Angeles_Inspection_Maps.html)

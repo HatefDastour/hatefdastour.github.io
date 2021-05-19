@@ -5,9 +5,11 @@ collection: portfolio
 ---
 ## Table of contents
 
-	
 * Fire Dataset
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/image_classification/Fire_Dataset_Keras_Image_Classifications_MLP.html)
+
+* CT Images from Cancer Imaging Archive with Contrast and Patient Age
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/CT_Medical_Images_Keras_Image_Classifications_MLP.html)
 	
 * Digit Recognizer Dataset
 	* [Modeling: PyTorch Multinomial Logistic Regression for Multi-Class Classification](/portfolio/image_classification/Digit_Recognizer_Modeling_PyTorch_Logistic_Regression.html)
