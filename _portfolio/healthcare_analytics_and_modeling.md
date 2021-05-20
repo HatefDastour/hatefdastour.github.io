@@ -3,8 +3,6 @@ title: "Healthcare Analytics and Modeling"
 excerpt: "Healthcare Analytics and Modeling"
 collection: portfolio
 ---
-## Table of contents
-
 ## Disorder Detection
 * Breast Cancer Wisconsin
 	* [Modeling: scikit-learn Gradient Boosting Classifier](/portfolio/healthcare_analytics_and_modeling/Breast_Cancer_Wisconsin_sklearn_GBC.html)
