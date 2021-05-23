@@ -31,6 +31,9 @@ collection: portfolio
 	* [Modeling: XGBoost Classifier](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_XGBClassifier.html)
 	
 ## Medical Image Classification
+* Brain Tumor Detection
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Brain_Tumor_Detection_Keras_Image_Classifications_MLP.html)
+	
 * CT Images from Cancer Imaging Archive with Contrast and Patient Age
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/CT_Medical_Images_Keras_Image_Classifications_MLP.html)
 	
