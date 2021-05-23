@@ -22,7 +22,6 @@ collection: portfolio
 	* [Modeling: Tensorflow Boosted Trees Classifier](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier.html)
 	* [Modeling: Tensorflow Boosted Trees Classifier with Feature Importance Analysis](/portfolio/healthcare_analytics_and_modeling/Heart_Disease_Dataset_TF_Boosted_Trees_Classifier_Feat_Importance.html)
 
-
 * Pima Indians Diabetes
 	* [Preprocessing](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_Preprocessing.html)
 	* [Modeling: scikit-learn Gradient Boosting Classifier with  Feature Importance](/portfolio/healthcare_analytics_and_modeling/Pima_Indians_Diabetes_sklearn_GBC_Feature_Importance.html)
