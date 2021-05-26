@@ -11,3 +11,6 @@ collection: portfolio
 	
 * Fire Dataset
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/natural_processes_analytics_and_modeling/Fire_Dataset_Keras_Image_Classifications_MLP.html)
+	
+* Satellite Images Of Hurricane Damage
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/natural_processes_analytics_and_modeling/Satellite_Images_of_Hurricane_Damage_Keras_Image_Classifications_MLP.html)
