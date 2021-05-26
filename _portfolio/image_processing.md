@@ -19,6 +19,9 @@ collection: portfolio
 
 * Histopathologic Cancer Detection
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/HCD_Keras_Image_Classifications_MLP.html)
+
+* Natural Scenes Image Classification
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/image_processing/Natural_Scenes_Image_Classification_Keras_Image_Classifications_MLP.html)
 	
 * Skin Lesion Analysis Towards Melanoma Detection
 	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
