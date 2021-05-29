@@ -30,3 +30,7 @@ collection: portfolio
 * Sign Language Digits
 	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Multi-Class Classification](/portfolio/image_processing/Sign_Language_Digits_PyTorch_MLP_MultiClass.html)
 	* [Modeling: CatBoost Classifier](/portfolio/image_processing/Sign_Language_Digits_CatBoost_Classifier.html)
+	
+## Image Segmentation	
+* Lungs CT Data
+	* [Tensorflow Modified U-Net](/portfolio/healthcare_analytics_and_modeling/Lung_CT_TF_Modified_U_Net.html)

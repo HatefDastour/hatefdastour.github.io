@@ -43,7 +43,7 @@ collection: portfolio
 	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Keras_Image_Classifications_MLP.html)
 	
-## Image_Segmentation	
+## Image Segmentation	
 * Lungs CT Data
 	* [Tensorflow Modified U-Net](/portfolio/healthcare_analytics_and_modeling/Lung_CT_TF_Modified_U_Net.html)
 
