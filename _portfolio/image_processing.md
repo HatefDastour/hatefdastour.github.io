@@ -26,6 +26,9 @@ collection: portfolio
 * Skin Lesion Analysis Towards Melanoma Detection
 	* [Preprocessing and Exploratory Data Analysis](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Preprocessing_EDA.html)
 	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/healthcare_analytics_and_modeling/Melanoma_Detection_Keras_Image_Classifications_MLP.html)
+
+* Satellite Images Of Hurricane Damage
+	* [Modeling: Keras Multi-layer Perceptron (MLP) for Image Classifications](/portfolio/natural_processes_analytics_and_modeling/Satellite_Images_of_Hurricane_Damage_Keras_Image_Classifications_MLP.html)
 	
 * Sign Language Digits
 	* [Modeling: PyTorch Multi-layer Perceptron (MLP) for Multi-Class Classification](/portfolio/image_processing/Sign_Language_Digits_PyTorch_MLP_MultiClass.html)
