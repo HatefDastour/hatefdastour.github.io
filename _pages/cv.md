@@ -20,6 +20,9 @@ Education
 
 Working Experience
 ======
+* Sessional Lecturer I/Tutorial instructor<br/>
+<a href="https://www.ulethbridge.ca/calgary//">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada
+
 * Data Scientist<br/>
 <a href="https://earthspace.ca/">Earth & Space Inc.</a>, Calgary, AB, Canada
 
