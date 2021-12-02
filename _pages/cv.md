@@ -24,6 +24,7 @@ Working Experience
 <a href="https://schulich.ucalgary.ca/geomatics//">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada
 
 * Sessional Lecturer I/Tutorial instructor<br/>
+Department of Mathematics & Computer Science, Faculty  of Arts \& Science, <a href="https://www.ulethbridge.ca/calgary//">University of Lethbridge (Calgary Campus), Calgary, AB, Canada\\
 <a href="https://www.ulethbridge.ca/calgary//">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada
 
 * Data Scientist/Research Scientist<br/>
