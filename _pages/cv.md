@@ -20,10 +20,13 @@ Education
 
 Working Experience
 ======
+* Research Associate<br/>
+<a href="https://schulich.ucalgary.ca/geomatics//">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada\\
+
 * Sessional Lecturer I/Tutorial instructor<br/>
 <a href="https://www.ulethbridge.ca/calgary//">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada
 
-* Data Scientist<br/>
+* Data Scientist/Research Scientist<br/>
 <a href="https://earthspace.ca/">Earth & Space Inc.</a>, Calgary, AB, Canada
 
 * Data Science Developer<br/>
