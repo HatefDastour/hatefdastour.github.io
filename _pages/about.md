@@ -15,10 +15,10 @@ My name is Hatef Dastour, and I am a Data Science enthusiast. After completing m
 Before completing my Ph.D. in Mathematics and Statistics at the end of December 2019, I had finished a number of research projects in the fields of Applied Numerical Analysis and Mathematics, and I had worked as a sessional instructor for a few semesters at the University of Calgary. My current research interests focus on the applications of the wave equation in industrial problems and topics in data science.
 <br>
 <br>
-I finished my Ph.D. program at the end of December 2019, and then I joined <a href="https://stellaralgo.com/">StellarAlgo</a> as a Data Science Developer on January 06, 2020. After that, I joined <a href="https://earthspace.ca/">Earth & Space Inc</a> to assist them with various Data Science related tasks. I am also working as a Sessional Lecturer/Tutorial Instructor at the <a href="https://www.ulethbridge.ca/calgary/">University of Lethbridge (Calgary Campus)</a> and as a research associate at the Department of <a href="https://schulich.ucalgary.ca/geomatics/">Geomatical Engineering</a> from Schulich School of Engineering at the <a href="https://www.ucalgary.ca/">University of Calgary</a>.
+I finished my Ph.D. program at the end of December 2019, and then I joined <a href="https://stellaralgo.com/">StellarAlgo</a> as a Data Science Developer on January 06, 2020. After that, I joined <a href="https://earthspace.ca/">Earth & Space Inc</a> to assist them with various Data Science related tasks. I am also working as a Sessional Lecturer/Tutorial Instructor at the <a href="https://www.ulethbridge.ca/calgary/">University of Lethbridge (Calgary Campus)</a> and as a Research Associate at the Department of <a href="https://schulich.ucalgary.ca/geomatics/">Geomatical Engineering</a> from Schulich School of Engineering at the <a href="https://www.ucalgary.ca/">University of Calgary</a>.
 <br>
 <br>
-I am a tech enthusiast driven to learn about the new advancements in technology. I also enjoy working out, hiking, and spending time with family and friends.
+I am a tech enthusiast driven to learn about new advancements in technology. I also enjoy working out, hiking, and spending time with family and friends.
 </p>
 
 <!---
