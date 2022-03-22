@@ -1,11 +1,16 @@
-# Systems of Equations, Geometry
+# 1.1 Systems of Equations, Geometry
 
-**Linear equation**:
-If $a$, $b$, and $c$ are real numbers, the graph of an equation of the form
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Linear Equation
+</b></font>
+
+Let $a$, $b$, and $c$ be real numbers ($a$ and $b$ are not both zero). Then, the graph of an equation with the following form
 \begin{equation*}
 ax+by = c
 \end{equation*}
-is a straight line (if $a$ and $b$ are not both zero), so such an equation is called a *linear equation* in the *variables* $x$ and $y$.
+is a straight line. Such an equation is called a **linear equation**, and the **variables** of this linear equation are $x$ and $y$.
+</div>
 
 For example, $x-y=0$ is a linear equation.
 
@@ -14,20 +19,46 @@ For example, $x-y=0$ is a linear equation.
 :align: center
 ```
 
-
-In general, when more than two variables are involved, variables are often shown with $x_1$, $x_2$, ..., $x_n$. An equation of the form
+Note that, here, $x$ and $y$ are the variables. However, in general, when more than two variables are involved, variables are often demonstrated with some subscripts. For example, $x_1$, $x_2$, ..., $x_n$ are variables for an equation of the form
 \begin{equation*}
 a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
 \end{equation*}
-is a linear equation with $n$ variables $x_1$, $x_2$, ..., $x_n$ (here $a_1$, $a_2$, ..., $a_n$ and
-$b$ denote real numbers).
 
-**System of linear equations**:
-A finite collection of linear equations in the variables $x_1$, $x_2$,
-..., $x_n$ is called a *system of linear equations* in these variables.
+Moreover, $\Sigma$ (Sigma) is often used to demonstrate a sum of some terms. For example,
+\begin{equation*}
+a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
+\end{equation*}
+also can be shows as follows
+\begin{equation*}
+\sum_{j = 1}^{n}  a_j\,x_j  = b
+\end{equation*}
+which shows a sumation of $n$ terms. This also know as **summation notation**.
+
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+System of Linear Equations
+</b></font>
+
+A system of equations is a collection of equations. For example, for linear equations $a_{11}x_1+\ldots+a_{1n}x_{n}=b_1$, $a_{21}x_1+\ldots+a_{2n}x_{n}=b_2$, $\ldots$, $a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m$.
+
+\begin{align*}
+\begin{cases}
+a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
+a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
+\vdots \\
+a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m.
+\end{cases}
+\end{align*} 
+</div>
+
+In terms of summation notation, the above linear equation can be written as
+\begin{align*}
+\sum_{j = 1}^{n}  a_{ij}\,x_{ij}  = b_{i},\quad i = 1, 2, 3, \ldots, m.
+\end{align*} 
 
 <font color='Blue'><b>Example</b></font>:
-The system of equation,
+The following system of equation,
 
 \begin{align*}
 \begin{cases}
@@ -47,24 +78,43 @@ is linear and has
 
 -   **Constant term** (the second equation): $25\pi$.
 
-**Homogeneous System of Equations**: A system of equations is called homogeneous if each equation in the
-system is equal to 0 .
 
-<font color='Blue'><b>Example</b></font>: The system of equation, \begin{align*}
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Homogeneous System of Equations
+</b></font>
+<p style='text-align: justify;'>
+A system of equations is called homogeneous if all the right hand side values are zero (each equation in the system is equal to zero).
+</p>
+</div>
+
+<font color='Blue'><b>Example</b></font>:
+The system of equation,
+\begin{align*}
 \begin{cases}
 x+y=0\\
 x-y=0,\\
-\end{cases}\end{align*} is homogeneous.
+\end{cases}
+\end{align*}
+is homogeneous.
 
-**Solution of a linear system**: A solution of a linear system is a point that satisfies every
-equation.
 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Solution of a Linear System
+</b></font>
+If $(x_1,~x_2,~x_3,\ldots,~x_n)$ is a solution for a linear system, then it satisfies every equation of that linear system.
+</div>
+
+<font color='Blue'><b>Example</b></font>:
 Show that $x = -2$, $y = 5$, $z = 0$ and $x = 0$, $y = 4$, $z = -1$ are
 both solutions to the system, 
-\begin{align*}\begin{cases}
+\begin{align*}
+\begin{cases}
 x+y+ z=3,\\
 2x+y+3z=1.
-\end{cases}\end{align*}
+\end{cases}
+\end{align*}
 
 Basically, we need to plug each solution into the system of equation.
 
@@ -92,83 +142,94 @@ Basically, we need to plug each solution into the system of equation.
 3=3~\surd\\
 1=1~\surd
 \end{cases},\end{align*}
+***
 
-## Possible sets of solution for two equations and two variables
+## 1.1.1 Possible sets of solution for two equations and two variables
 
-When only two variables are involved, the solutions to systems of linear equations can be described geometrically because the graph of a linear
-equation $ax+by = c$ is a straight line if $a$ and $b$ are not both zero.
+When a system of linear equations has only two variables, then the solutions to that system of linear equations can be explained geometrically using a graph. The graph of an equation $ax+by = c$ is a straight line when $a$ and $b$ are not both zero at the same time.
 
-If the system has two equations, there are three possibilities for the
+For the following system of linear equations (with two variables), there are three possibilities.
+
+\begin{align*}
+\begin{cases}
+a_{11}x+a_{12}y=b_1\\
+a_{21}x+a_{22}y=b_2\\
+\end{cases}
+\end{align*} 
+
+Note that each equation can be shown on a graph using a straight line, and there are three possibilities for the
 corresponding straight lines:
 
-1.  The lines intersect at a single point. Then the system has a unique solution corresponding to that point.
+1.  The lines intersect at a only one point. Then the system has a **unique solution** corresponding to that point.
+
+<font color='Blue'><b>Example</b></font>: For the following system of linear equations,
+\begin{align*}
+\begin{cases}
+x + y = 2\\
+x - y = -1\\
+\end{cases}
+\end{align*} 
+we have,
 
 ```{image} ../Figures/fig1_01a.png
-:width: 200px
+:width: 300px
 :align: center
 ```
+As can be seen, $(x, y) = (0.5, 1.5)$ is a solution. In this case, it's the only solution (unique solution).
 
-2.  The lines are parallel (and distinct) and so do not intersect. Then the system has no solution.
+2.  The lines are parallel (and distinct) and so do not intersect. Then the system has **no solution**.
+
+<font color='Blue'><b>Example</b></font>: For the following system of linear equations,
+\begin{align*}
+\begin{cases}
+x + y = 2\\
+x + y = -1\\
+\end{cases}
+\end{align*} 
+we have,
 
 ```{image} ../Figures/fig1_01b.png
-:width: 200px
+:width: 300px
 :align: center
 ```
 
+The two lines are parallel and there is no solution.
 
-3.  The lines are identical. Then the system has infinitely many solutions---one for each point on the (common) line.
+3.  The lines are identical. Then the system has infinitely many solutions.
+
+<font color='Blue'><b>Example</b></font>: For the following system of linear equations,
+\begin{align*}
+\begin{cases}
+2\,x + 2\,y = 2\\
+x + y = 1\\
+\end{cases}
+\end{align*} 
+we have,
 
 ```{image} ../Figures/fig1_01c.png
-:width: 200px
+:width: 300px
 :align: center
 ```
 
+## 1.1.2 Consistent and inconsistent linear systems
 
-Check [this link](https://www.desmos.com/calculator/l8vbpfq2u4) for an interactive example.
+A system of equations is called **inconsistent** when there is no solution for this system of equations, and it is called **consistent** when there is at least one solution for it.
 
-**Consistent and inconsistent linear systems**: A system that has no solution is called *inconsistent*, and a system
-with at least one solution is called *consistent*.
+The graph of $ax+by+cz = d$ (it has hree variables) is a plane.
 
-With three variables, the graph of an equation $ax+by+cz = d$ can be shown to be a plane.
-
-```{figure} ../Figures/fig1_02a.png
+```{figure} ../Figures/fig1_02.jpg
 ---
-scale: 100%
+scale: 60%
 align: center
 ---
-Three planes intersecting in a line
+a) three planes intersecting in a line, b) three planes intersecting in a point, c) three planes with no intersection, d) three planes with no intersection
 ```
 
-```{figure} ../Figures/fig1_02b.png
----
-scale: 100%
-align: center
----
-Three planes intersecting in a point
-```
-
-```{figure} ../Figures/fig1_02c.png
----
-scale: 100%
-align: center
----
-Three planes with no intersection
-```
-
-```{figure} ../Figures/fig1_02d.png
----
-scale: 100%
-align: center
----
-Three planes with no intersection
-```
-
-However, this graphical method has its limitations: When more than three variables are involved, no physical image of the
-graphs is possible. It is necessary to turn to a more “algebraic” method of solution.
+This graphical method has its limitations. When more than three variables are involved, we can not graph the planes anymore.
 
 
 ***
 ## Refrences
-1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
-1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
+1. Kuttler, Kenneth. "[A First Course in Linear Algebra (Lyryx)](https://lyryx.com/first-course-linear-algebra/)." (2021).
+1. Nicholson, W. Keith. "[Linear Algebra with Applications (Lyryx)](https://lyryx.com/linear-algebra-applications/)." (2021).
 ***

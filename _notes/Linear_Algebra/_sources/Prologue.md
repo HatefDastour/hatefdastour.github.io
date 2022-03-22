@@ -1,45 +1,96 @@
 # Prologue
 
-Throughout Chapter 1 of the textbook, A First Course in Linear Algebra by K. Kuttler, there are a number of notations and terminologies that are introduced from Chapter 2 onwards. Therefore, in this prologue, we set the stage by briefly discussing some points of notation and terminology that will be used throughout this semester.
+Throughout Chapter 1 of the textbook, A First Course in Linear Algebra by K. Kuttler {cite}`kuttler2017first`, there are a number of notations and terminologies that are introduced from Chapter 2 onwards. Therefore, in this prologue, we set the stage by briefly discussing some points of notation and terminology that will be used throughout this semester.
 
 ## Equation
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Equation
+</b></font>
 
-An equation is a mathematical statement that two things are equal. A mathematical equation is an expression containing at least one variable (an unknown value) and an "equals sign" ( = ) with a mathematical expression on each side of it.
+<p style='text-align: justify;'>
+An equation is a mathematical expression in which two things are equal. In an equation, there is at least one unknown value (also known as a variable), and there is an equal sign (=).
+</p>
+</div>
 
 For example,
-\begin{equation*}
+
+\begin{align*}
 x+2=3
-\end{equation*}
+\end{align*} 
+
 is a mathematical equation where $x$ is a variable (unknown value).
 
-## Plane
+## Planes
 
-Plane is a flat surface that is infinitely large and with zero thickness. For two planes in space we can have either **parallel planes** or **intersecting planes**.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Plane
+</b></font>
 
-#### Parallel planes:
+<p style='text-align: justify;'>
+A plane is a flat surface with zero thickness and an infinitely large area.
+</p>
+</div>
 
-Parallel planes are the same distance apart everywhere, and so they never touch.
+<div class="alert alert-info" role="alert">
+We will discuss planes more in Chapter 4.
+</div>
+
+For two planes in three dimensional space, we can have either **parallel planes** or **intersecting planes**.
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Parallel planes
+</b></font>
+
+<p style='text-align: justify;'>
+Parallel planes are those planes that never cross over and the distance between them is always the same.
+</p>
 
 ```{image} Figures/fig0_01.png
 :width: 400px
 :align: center
 ```
+</div>
 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Intersecting planes
+</b></font>
 
-#### Intersecting planes:
-If two planes are not parallel, then they will intersect (cross over) each other somewhere. Two planes always intersect at a line (This is similar to the way two lines intersect at a point.).
+<p style='text-align: justify;'>
+If two planes are not parallel, then they will intersect (cross over) each other somewhere. Two planes always intersect at a line.
+</p>
 
 ```{image} Figures/fig0_02.png
 :width: 300px
 :align: center
 ```
+</div>
 
-## Hyperplane
-In geometry, a **hyperplane** is a subspace whose dimension is one less than that of its ambient space. For example, if a space is 3-dimensional, then its hyperplanes are 2-dimensional planes. Moreover, if the space is 2-dimensional, its hyperplanes are the 1-dimensional lines.
+<div class="alert alert-warning" role="alert">
+Note that two planes intersect at a line, and two lines intersect at a point.
+</div>
+
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Hyperplane
+</b></font>
+<p style='text-align: justify;'>
+In geometry, a <b>hyperplane</b> is a subspace whose dimension is one less than that of its ambient space. For example, if a space is 3-dimensional, then its hyperplanes are 2-dimensional planes. Moreover, if the space is 2-dimensional, its hyperplanes are the 1-dimensional lines.
+</p>
+</div>
 
 ## Matrix
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Matrix
+</b></font>
+A matrix is a set of numbers laid out in tabular form (in rows and columns). Usually the numbers are real numbers (real number such as $1$, $5$, $\sqrt{2}$, $\frac{2}{3}$,...,\...). In general, matrices can contain complex numbers. The rows of a matrix are each left-to-right (horizontal) lines, and the columns of a matrix go top-to-bottom (vertical).
+</div>
 
-A matrix is a set of numbers laid out in tabular form (in rows and columns). Usually the numbers are real numbers (real number such as $1$, $5$, $\sqrt{2}$, $\frac{2}{3}$,...,\...). In general, matrices can contain complex numbers[^1]. The rows of a matrix are each left-to-right (horizontal) lines, and the columns of a matrix go top-to-bottom (vertical).
 
 Here is an example of a matrix with four rows and three columns:
 
@@ -48,7 +99,11 @@ Here is an example of a matrix with four rows and three columns:
 :align: center
 ```
 
-```{admonition} Remarks
+<div class="alert alert-warning" role="alert">
+<font size="+1"><b>
+Remarks
+</b></font>
+
 1.  Each number that makes up a matrix is called an **element** or an
     **entry** of the matrix. The elements (entries) in a matrix have
     specific locations.
@@ -91,4 +146,8 @@ Here is an example of a matrix with four rows and three columns:
     \quad \text{ and } \quad
     2\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}=\begin{bmatrix} (2)(1) & (2)(2) \\ (2)(3) & (2)(4) \end{bmatrix}
     =\begin{bmatrix} 2 & 4 \\ 6 & 8\end{bmatrix}.\end{aligned}$$
+</div>
+
+```{bibliography}
+:style: alpha
 ```

@@ -1,4 +1,4 @@
-# Rank of a matrix
+# 1.2.4 Rank of a matrix
 
 **Rank of a Matrix**: The rank of matrix $A$ is the number of leading 1 s in any row-echelon matrix to which $A$ can be carried by row operations.
 

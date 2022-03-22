@@ -1,37 +1,41 @@
-# Gaussian Elimination
-
-## Elementary Operations
+# 1.2.2 Gaussian Elimination
 
 
-**Equivalent Matrices**: We say that the matrix $B$ is equivalent to the matrix $A$ provided that $B$ can be obtained from $A$ by performing a sequence of elementary row operations beginning with $A$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Equivalent Matrices
+</b></font>
 
+The matrix $B$ is equivalent to the matrix $A$ if $B$ can be obtained from $A$ by performing a sequence of elementary row operations starting with $A$.
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
-    
-<ul>
-<li><p>The two linear systems of equations corresponding to two equivalent augmented matrices have exactly the same solutions.</p></li>
-<li><p>Every matrix <span class="math inline">\(A\)</span> is equivalent to a unique matrix in RREF.</p></li>
-</ul>
+
+* If corresponding augmented matrices of two linear systems of equations are equivalent, then those two linear systems have exactly the same solutions.
+* Every matrix $A$ is equivalent to a unique matrix in RREF.
 </div>
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
-Gaussian Algorithm
+Gaussian Algorithm:
 </b></font>
-    
-<p><strong>Step 1</strong>: If the matrix consists entirely of zeros, stop—it is already in row-echelon form.</p>
-<p><strong>Step 2</strong>: Otherwise, find the first column from the left containing a nonzero entry (call it a ), and move the row containing that entry to the top position.</p>
-<p><strong>Step 3</strong>: Now multiply the new top row by 1/a to create a leading 1 .</p>
+<p><strong>Step 1</strong>: If the matrix consists entirely of zeros, stop. It is already in row-echelon form.</p>
+<p><strong>Step 2</strong>: Otherwise, find the first column from the left containing a nonzero entry (call it <span class="math inline">\(a\)</span>), and move the row containing that entry to the top position.</p>
+<p><strong>Step 3</strong>: Now multiply the new top row by <span class="math inline">\(1/a\)</span> to create a leading 1 .</p>
 <p><strong>Step 4</strong>: By subtracting multiples of that row from rows below it, make each entry below the leading 1 zero. This completes the first row, and all further row operations are carried out on the remaining rows.</p>
 <p><strong>Step 5</strong>: Repeat steps 1-4 on the matrix consisting of the remaining rows. The process stops when either no rows remain at step 5 or the remaining rows consist entirely of zeros.</p>
 </div>
 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Back-Substitution
+</b></font>
 
-**Back-Substitution**: 
-The process of solving a linear system of equations that has been transformed into row-echelon form or reduced row-echelon form. The last equation is solved first, then the next-to-last, etc.
+Back-substitution is a process of solving a linear system of equations using its transformed into a row-echelon form or the reduced row-echelon form. In this process, the last equation is solved first, then the second last equation is solved next, etc.
+</div>
 
 <font color='Blue'><b>Example</b></font>: Solve the following linear system using back-substitution.
 \begin{equation*}
@@ -44,28 +48,32 @@ x_{2}-2\,x_{1}+3\,x_{3}=5
 
 <font color='Green'><b>Solution</b></font>: The corresponding augmented matrix is
 
-$$\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 4 & -3 & 1 & -3\\ -2 & 1 & 3 & 5 \end{array}\right].$$
-Use the first row to make the first entry of the second row and third
-row zero. That is
+\begin{align*}
+\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 4 & -3 & 1 & -3\\ -2 & 1 & 3 & 5 \end{array}\right].
+\end{align*}
+Use the first row to make the first entry of the second row and third row zero. That is
 
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ {4} & -3 & 1 & -3\\ -2 & 1 & 3 & 5 \end{array}\right]
 &\Rightarrow{-4 R_{1} +R_{2} \rightarrow R_{2}}\Rightarrow
-\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & -11 & -11 & -11\\ -2 & 1 & 3 & 5 \end{array}\right]\end{align*}
+\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & -11 & -11 & -11\\ -2 & 1 & 3 & 5 \end{array}\right]
+\end{align*}
 
 and
 
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & -11 & -11 & -11\\ {-2} & 1 & 3 & 5 \end{array}\right]
 &\Rightarrow{2 R_{1} +R_{3} \rightarrow R_{3}}\Rightarrow
-\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & -11 & -11 & -11\\ 0 & 5 & 9 & 9 \end{array}\right]\end{align*}
+\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & -11 & -11 & -11\\ 0 & 5 & 9 & 9 \end{array}\right]
+\end{align*}
 
 Multiply the second row by -1/11 to create a leading 1. We have
 
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & {-11} & -11 & -11\\ 0 & 5 & 9 & 9 \end{array}\right]
 &\Rightarrow{-\frac{1}{11}R_{2} \rightarrow R_{2}}\Rightarrow
-\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 5 & 9 & 9 \end{array}\right]\end{align*}
+\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 5 & 9 & 9 \end{array}\right]
+\end{align*}
 
 By subtracting 5 times of the second row from the third row, make entry
 below the leading 1 zero.
@@ -73,7 +81,8 @@ below the leading 1 zero.
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & {5} & 9 & 9 \end{array}\right]
 &\Rightarrow{-5 R_{2} +R_{3} \rightarrow R_{3}}\Rightarrow
-\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & 4 & 4 \end{array}\right]\end{align*}
+\left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & 4 & 4 \end{array}\right]
+\end{align*}
 
 Finally, we can multiply the last row by 1/4 to create a leading 1. That
 is
@@ -81,29 +90,41 @@ is
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & {4} & 4 \end{array}\right]
 &\Rightarrow{\frac{1}{4}R_{3} \rightarrow R_{3}}\Rightarrow
-\left[\begin{array}{ccc|c} {1} & 2 & 3 & 2\\ 0 & {1} & 1 & 1\\ 0 & 0 & {1} & 1 \end{array}\right]\end{align*}
+\left[\begin{array}{ccc|c} {1} & 2 & 3 & 2\\ 0 & {1} & 1 & 1\\ 0 & 0 & {1} & 1 \end{array}\right]
+\end{align*}
 This REF augmented matrix is equivalent to the following linear system:
 
-$$\begin{cases}
+\begin{align*}
+\begin{cases}
 x_{1}+2\,x_{2}+3\,x_{3}=2,\\ x_{2}+x_{3}=1,\\ x_{3}=1.
-\end{cases}$$
+\end{cases}
+\end{align*}
 
 Therefore, $x_{1}=-1$, $x_{2}=0$ and $x_{3}=1$.
 ***
 
-**homogeneous systems**: A system of equations with the variables $x_1$, $x_2$, ..., $x_n$ is
-called **homogeneous** if all the constant terms (RHS) are zero. That
-is, if each equation of the system has the form
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Homogeneous Systems
+</b></font>
 
-\begin{equation*}
-a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = 0
-\end{equation*}
+A system of equations is called **homogeneous** if all the constant terms (right-hand side terms) are zero. In other words,  for a system of equations with the variables $x_1$, $x_2$, ..., $x_n$, we have
+
+\begin{align*}
+\begin{cases}
+a_{11}x_1+\ldots+a_{1n}x_{n}=0\\
+a_{21}x_1+\ldots+a_{2n}x_{n}=0\\
+\vdots \\
+a_{m1}x_1+\ldots+a_{mn}x_{n}=0.
+\end{cases}
+\end{align*} 
+</div>
 
 Clearly, $x_1=0$, $x_2=0$, ..., $x_n=0$ is a solution to such a system;
 it is called the **trivial solution**. Any solution in which at least
 one variable has a nonzero value is called a **nontrivial solution**.
 
-**Example:** The linear system
+<font color='Blue'><b>Example</b></font>: The linear system 
 $\begin{cases}x_{1}+2\,x_{2}=0\\ x_{1}-x_{2}=0\end{cases}$ is
 homogeneous. Clearly, $x_1 = 0$ and $x_2 = 0$ is a solution to such a
 system; it is called the **trivial solution**. Any solution in which at
