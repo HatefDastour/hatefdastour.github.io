@@ -1,18 +1,32 @@
 # 1.2.4 Rank of a matrix
 
-**Rank of a Matrix**: The rank of matrix $A$ is the number of leading 1 s in any row-echelon matrix to which $A$ can be carried by row operations.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Rank of a Matrix
+</b></font>
 
-<div class="alert alert-block alert-info">
+The rank of matrix $A$ is the number of leading 1s in the reduced row-echelon form (RREF) of the matrix $A$.
+</div>
+
+
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
     
-<p>Suppose a system of <span class="math inline">\(m\)</span> equations in <span class="math inline">\(n\)</span> variables is consistent (has at least a solution), and that the rank of the augmented matrix is <span class="math inline">\(r\)</span>.</p>
-<ol>
-<li><p>If <span class="math inline">\(r &lt; n\)</span> , the system has <strong>infinitely many solutions</strong>.</p></li>
-<li><p>If <span class="math inline">\(r = n\)</span> , the system has <strong>a unique solution</strong>.</p></li>
-</ol>
-    
+Conider following system of equations with $m$ equations in $n$ variables
+\begin{align*}
+\begin{cases}
+a_{11}x_1+\ldots+a_{1n}x_{n}=0\\
+a_{21}x_1+\ldots+a_{2n}x_{n}=0\\
+\vdots \\
+a_{m1}x_1+\ldots+a_{mn}x_{n}=0.
+\end{cases}
+\end{align*} 
+Suppose that the rank of the augmented matrix is $r$. Then
+
+* If $r<n$ , the system has **infinitely many solutions**.
+* If $r = n$ , the system has **a unique solution**.
 </div>
 
 
@@ -39,12 +53,17 @@ From the above theorem, we know that if $r < n$ , the system has
 **infinitely many solutions**.
 ***
 
-**Linear Combinations**: Let $X_1,X_2,\ldots,X_n$, $V$ be column matrices. Then $V$ is said to be
-a *linear combination* of the columns $X_1,X_2,\ldots,X_n$ if there
-exist scalars, $a_1,a_2,\ldots,a_n$ such that
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Linear Combinations
+</b></font>
+
+Let $X_1,~X_2,~\ldots,~X_n$, $V$ be column matrices (they only have one column). Then $V$ is said to be a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if there exist scalars, $a_1,~a_2,~\ldots,~a_n$ such that
 
 \begin{align*}
-V=a_1X_1+a_2X_2+\ldots+a_nX_n.\end{align*}
+V=a_1X_1+a_2X_2+\ldots+a_nX_n.
+\end{align*}
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Let $X_1=\begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix}$ and
@@ -97,15 +116,17 @@ REF:
 \left[\begin{array}{cc|c} 2 & 3 & 1\\ -1 & 3 & r\\ 1 & 2 & 0 \end{array}\right]
 &\Rightarrow{R_{1} \leftrightarrow R_{3}} \Rightarrow
 \left[\begin{array}{cc|c} 1 & 2 & 0\\ -1 & 3 & r\\ 2 & 3 & 1 \end{array}\right]
+\\ &
 \Rightarrow -2R_{1}+R_{3}\rightarrow R_{3}, {R_{1}+R_{2}\rightarrow R_{2}} \Rightarrow
 \left[\begin{array}{cc|c} 1 & 2 & 0\\ 0 & 5 & r\\ 0 & -1 & 1 \end{array}\right]
-\\
-&\Rightarrow{R_{2} \leftrightarrow R_{3}} \Rightarrow
+\\ &
+\Rightarrow{R_{2} \leftrightarrow R_{3}} \Rightarrow
 \left[\begin{array}{cc|c} 1 & 2 & 0\\ 0 & -1 & 1\\ 0 & 5 & r \end{array}\right]
+\\ &
 \Rightarrow{-R_{2}\rightarrow R_{2}} \Rightarrow
 \left[\begin{array}{cc|c} 1 & 2 & 0\\ 0 & 1 & -1\\ 0 & 5 & r \end{array}\right]
-\\
-&\Rightarrow{-5R_{2}+R_{3}\rightarrow R_{3}} \Rightarrow
+\\ &
+\Rightarrow{-5R_{2}+R_{3}\rightarrow R_{3}} \Rightarrow
 \left[\begin{array}{cc|c} {1} & 2 & 0\\ 0 & {1} & -1\\ 0 & 0 & r+5 \end{array}\right]\end{align*}
 
 Note that the linear system is inconsistent if $r+5\neq 0$, and the linear system is consistent
