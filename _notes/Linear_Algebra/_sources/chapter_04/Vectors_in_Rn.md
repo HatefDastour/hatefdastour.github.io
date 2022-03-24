@@ -1,19 +1,22 @@
-# Vectors in $\mathbb{R}^n$
+# 4.1 Vectors in $\mathbb{R}^n$
 
--   A scalar quantity has only magnitude. Examples: time, temp,
-    distance, speed,...
+-   A scalar quantity has only magnitude. Examples: time, temp, distance, speed,...
 
--   A vector quantity has both magnitude and direction. Examples:
-    displacement, velocity, force,...
-    
-**Ordered n-tuple**: An ordered sequence $(a_1 , a_2 , \ldots, a_n )$ of real numbers is called an \textbf{ordered n-tuple}. The word “ordered” here reflects our insistence that two ordered n-tuples are equal if and only if corresponding entries are the same. In other words,
+-   A vector quantity has both magnitude and direction. Examples: displacement, velocity, force,...
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Ordered n-tuple
+</b></font>
+
+An ordered sequence $(a_1 , a_2 , \ldots, a_n )$ of real numbers is called an \textbf{ordered n-tuple}. The word “ordered” here reflects our insistence that two ordered n-tuples are equal if and only if corresponding entries are the same. In other words,
 
 $$(a_1 , a_2 , \ldots, a_n ) = (b_1 , b_2 , \ldots, b_n )$$
 
 if and only if
 
 $$a_1 = b_1 , a_2 = b_2 , \ldots,\text{ and }a_n = b_n$$
-
+</div>
 
 The notation $\mathbb{R}^n$ refers to the collection of ordered lists of $n$
 real numbers, that is

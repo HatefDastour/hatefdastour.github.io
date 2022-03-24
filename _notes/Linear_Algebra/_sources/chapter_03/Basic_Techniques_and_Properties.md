@@ -1,26 +1,44 @@
-# Basic Techniques and Properties
+# 3.1 Basic Techniques and Properties
 
-## Cofactors and Determinants
+## 3.1.1 Cofactors and Determinants
 
-**Determinant**: The determinant of an $n\times n$ matrix $A$, denoted by $\det(A)$ or $|A|$, is a very important number associated with $A$.
 
-If $A$ is a $2\times 2$ matrix, the determinant is given by the following formula.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Determinant
+</b></font>
 
-**Determinant of a Two By Two Matrix**: Let $A=\begin{bmatrix}a & b \\ c & d\end{bmatrix}$. Then
-\begin{equation*}
+The determinant of an $n\times n$ matrix $A$ is a number associated with $A$, and it is denoted by $\det(A)$ or $|A|$.
+</div>
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Determinant of a Two By Two Matrix
+</b></font>
+
+If $A=\begin{bmatrix}a & b \\ c & d\end{bmatrix}$ (a $2\times 2$ matrix), the determinant is given by the following formula.
+\begin{align*}
 \det(A)=\left|\begin{array}{cc} a & b \\ c & d \end{array}\right|= ad-cb
-\end{equation*}
+\end{align*}
+</div>
+
+
 
 <font color='Blue'><b>Example</b></font>:
 Find $det(A)$ for the matrix $A = \begin{bmatrix}1 & 2\\ 5 & 1\end{bmatrix}$.
 
 <font color='Green'><b>Solution</b></font>: $\det(A)=(1)(1)-(2)(5)=1-10=-9.$
 
-***
 
-**The $ij^{\text{th}}$  Minor of a Matrix**: Let $A$ be a $3\times 3$ matrix. The $ij^{\text{th}}$ minor of $A$ , denoted as $minor(A)_{ij}$, is the determinant of the $2\times 2$ matrix which results from deleting the $i^{\text{th}}$ row and the $j^{\text{th}}$ column of $A$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+<span class="math inline">\({ij}^{th}\)</span> Minor of a Matrix
+</b></font>
 
-In general, if $A$ is an $n\times n$ matrix, then the $ij^{\text{th}}$  minor of $A$ is the determinant of \linebreak the $(n-1)\times(n-1)$ matrix which results from deleting the $i^{\text{th}}$ row and the $j^{\text{th}}$ column of $A$.
+For a $3\times 3$ matrix $A$ , the $ij^{\text{th}}$ minor of $A$, denoted as $minor(A)_{ij}$, is the determinant of the $2\times 2$ matrix which results from deleting the $i^{\text{th}}$ row and the $j^{\text{th}}$ column of $A$.
+</div>
+
+In general, for an an $n\times n$ matrix $A$, the $ij^{\text{th}}$ minor of $A$ is the determinant of \linebreak the $(n-1)\times(n-1)$ matrix which results from deleting the $i^{\text{th}}$ row and the $j^{\text{th}}$ column of $A$.
 
 <font color='Blue'><b>Example</b></font>:
 If $A = \begin{bmatrix}1 & 2 & 3\\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$, find $minor(A)_{11}$, $minor(A)_{12}$, $minor(A)_{13}$, $minor(A)_{21},~\ldots$.
@@ -60,20 +78,26 @@ minor(A)_{33}&=
 \left|\begin{array}{cc} 1 & 2\\ 4 & 5\end{array}\right|=-3.
 \end{align*}
 
-***
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+<span class="math inline">\({ij}^{th}\)</span> Cofactor of a Matrix
+</b></font>
 
-**The $ij^{\text{th}}$  Cofactor of a Matrix**: Suppose $A$ is an $n\times n$ matrix. The $ij^{\text{th}}$ \textbf{cofactor}, denoted by $cof (A)_{ij}$ is defined to be
-$$cof (A) _{ij} = (-1)^{i+j} minor(A)_{ij}$$
+for an an $n\times n$ matrix $A$, the $ij^{\text{th}}$ **cofactor**, denoted by $cof (A)_{ij}$ is defined by
+\begin{align*}
+cof (A) _{ij} = (-1)^{i+j} minor(A)_{ij}
+\end{align*}
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark
 </b></font>
     
-<ul>
-<li><p>We use cofactors to compute the determinant of a matrix.</p></li>
-<li><p><span class="math inline">\(cof (A) _{ij}\)</span> provides the sign of (<span class="math inline">\(i\)</span>,<span class="math inline">\(j\)</span>)-entry of <span class="math inline">\(A\)</span> multiplied by <span class="math inline">\(minor(A)_{ij}\)</span>.</p></li>
-<li><p>Sign patterns: <span class="math display">\[\begin{aligned}
+* We use cofactors to compute the determinant of a matrix.
+* $cof (A) _{ij}$ provides the sign of ($i$,$j$)-entry of $A$ multiplied by $minor(A)_{ij}$.
+* Sign patterns:
+\begin{align*}
 \left[\begin{array}{cc} {\color{blue}+} & {\color{red}-} \\ {\color{red}-} & {\color{blue}+} \end{array}\right],~
 \left[\begin{array}{ccc}
 {\color{blue}+} & {\color{red}-} &  {\color{blue}+} \\
@@ -86,15 +110,21 @@ Remark
 {\color{red}-} & {\color{blue}+} & {\color{red}-} & {\color{blue}+} \\
 {\color{blue}+} & {\color{red}-} &  {\color{blue}+} & {\color{red}-} \\
 {\color{red}-} & {\color{blue}+} & {\color{red}-} & {\color{blue}+} \\
-\end{array}\right],\ldots\end{aligned}\]</span></p></li>
-</ul>
+\end{array}\right],\ldots
+\end{align*}
 </div>
 
-**The Determinant of a Three By Three Matrix**: Let $A$ be a $3\times 3$ matrix. Then, $\det(A)$ is calculated by picking a row (or column) and taking the product of each entry in that row (column) with its cofactor and adding these products together. This process when applied to the $i^{\text{th}}$ row (column) is known as expanding along the $i^{\text{th}}$ row (column) as is given by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Determinant of a Three By Three Matrix
+</b></font>
 
-\begin{equation*}
+Let $A$ be a $3\times 3$ matrix. Then, $\det(A)$ can be calculated by picking a row (or column) and taking the product of each entry in that row (column) with its cofactor and adding these products together. This procedure when applied to the $i^{\text{th}}$ row (column) is known as expanding along the $i^{\text{th}}$ row (column) as is given by
+
+\begin{align*}
 det(A) = a_{i1}\, cof (A)_{i1} +a_{i2}\, cof (A)_{i2} +a_{i3}\, cof (A)_{i3}
-\end{equation*}
+\end{align*}
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Evaluate $\det(A)$ if $A=\begin{bmatrix} 1 & 8 & 2 \\ 0 & -1 & 1 \\ 1 & 0 & 3 \end{bmatrix}$.
@@ -124,22 +154,20 @@ A=\left[\begin{array}{ccc} 1 & 8 & 2 \\ 0 & -1 & 1 \\ 1 & 0 & 3 \end{array}\righ
 \end{align*}
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Determinant is Well Defined
 </b></font>
     
-<p>Expanding the <span class="math inline">\(n\times n\)</span> matrix along any row or column always gives the <u>same answer</u>, which is the determinant.</p>
-
+In calculating the determinant of a $n\times n$ matrix, expanding matrix along any row or column always gives the **same answer**.
 </div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark
 </b></font>
-    
-<p>Generally, we usually pick a row or column with <strong>most number of zeros</strong> for evaluating the determinan of a matrix.</p>
 
+For convenience, we usually pick a row or column with **most zeros** for evaluating the determinant of a matrix.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -156,6 +184,7 @@ A=\left[\begin{array}{c>{\columncolor{green!20}}ccc} 0 & 0 & 1 & 2 \\ 1 & 0 & 0 
 
 \begin{align*}
 \det(A)&=\left|\begin{array}{cccc} 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 1 \\ 2 & 0 & -1 & 2 \\ 3 & 2 & 0 & 0 \end{array}\right|
+\\ &
 = a_{12}\, cof (A)_{12} +a_{22}\, cof (A)_{22} +a_{32}\, cof (A)_{32}+a_{42}\, cof (A)_{42}
 \\ &
 = -a_{12}\, minor(A)_{12} +a_{22}\, minor(A)_{22} -a_{32}\,minor(A)_{32}+a_{42}\,minor(A)_{42}
@@ -192,32 +221,41 @@ Therefore,
 \end{align*}
 ***
 
-## The Determinant of a Triangular Matrix
+## 3.1.2 The Determinant of a Triangular Matrix
 
-**Triangular Matrices**: A triangular matrix is a matrix that is either an upper triangular
-matrix or a lower triangular matrix.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Triangular Matrices
+</b></font>
 
--   An **upper triangular matrix** is defined as a matrix for which all
-    entries **below** the main diagonal are equal to zero.
+- An **upper triangular matrix** is defined as a matrix for which all entries **under** the main diagonal are equal to zero.
     
-	\begin{align*}
-    \begin{bmatrix}  * & * & \dots & * \\   0 & * & \dots & \vdots \\   \vdots & \vdots & \ddots & * \\   0 & \dots & 0 & * \end{bmatrix}
-	\end{align*}
+\begin{align*}
+\begin{bmatrix}  * & * & \dots & * \\   0 & * & \dots & \vdots \\   \vdots & \vdots & \ddots & * \\   0 & \dots & 0 & * \end{bmatrix}
+\end{align*}
 
--   A **lower triangular matrix** is defined as a matrix for which all
-    entries **above** the main diagonal are equal to zero.
+- A **lower triangular matrix** is defined as a matrix for which all entries **above** the main diagonal are equal to zero.
     
-	\begin{align*}
-    \begin{bmatrix}  * & 0 & \dots & 0 \\   * & 0 & \dots & \vdots \\   \vdots & \vdots & \ddots & 0 \\   * & \dots & * & * \end{bmatrix}
-	\end{align*}
+\begin{align*}
+\begin{bmatrix}  * & 0 & \dots & 0 \\   * & 0 & \dots & \vdots \\   \vdots & \vdots & \ddots & 0 \\   * & \dots & * & * \end{bmatrix}
+\end{align*}
 
-**Diagonal Matrices**: A **diagonal matrix** is defined as a matrix for which all entries
-**above** and **below** the main diagonal are equal to zero.
+A **triangular matrix** is a matrix that is either an upper triangular matrix or a lower triangular matrix.
+</div>
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Diagonal Matrices
+</b></font>
+
+A **diagonal matrix** is defined as a matrix for which all entries **under** and **above** the main diagonal are equal to zero.
 
 \begin{align*}
-\begin{bmatrix}  * & 0 & \dots & 0 \\   0 & * & \dots & \vdots \\   \vdots & \vdots & \ddots & 0 \\   0 & \dots & 0 & * \end{bmatrix}\end{align*}
+\begin{bmatrix}  * & 0 & \dots & 0 \\   0 & * & \dots & \vdots \\   \vdots & \vdots & \ddots & 0 \\   0 & \dots & 0 & * \end{bmatrix}
+\end{align*}
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Determinant of a Triangular Matrix
 </b></font>
@@ -239,32 +277,29 @@ Expanding along row 1:
 \end{align*}
 ***
 
-Properties of Determinants
--------------------------------
+## 3.1.3 Properties of Determinants
 
 There are many important properties of determinants. Here, we discuss some important properties of determinants. We are familiar with the row operations:
 
 <div class="alert alert-block alert-success">
-<p>The row operations consist of the following</p>
-<ol>
-<li><p>Switching two rows.</p></li>
-<li><p>Multiplying a row by a nonzero number.</p></li>
-<li><p>Replacing a row by a multiple of another row added to itself.</p></li>
-</ol>
+The row operations consist of the following
+
+* Switching two rows.
+* Multiplying a row by a nonzero number.
+* Replacing a row by a multiple of another row added to itself.
 </div>
 
 We now consider the effect of row operations on the determinant of a matrix.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
     
-<p>Let <span class="math inline">\(B\)</span> be a matrix which results from …</p>
-<ul>
-<li><p>switching two rows of <span class="math inline">\(A\)</span>. Then <span class="math inline">\(det(B) = -det(A)\)</span>.</p></li>
-<li><p>multiplying some row of <span class="math inline">\(A\)</span> by a scalar <span class="math inline">\(k\)</span>. Then <span class="math inline">\(\det(B) = k\det(A)\)</span>.</p></li>
-<li><p>adding a multiple of a row to another row. Then <span class="math inline">\(det(B) = det(A)\)</span>.</p></li>
+Let $B$ be a matrix which results from $\ldots$
+* switching two rows of $A$. Then $det(B) = -det(A)$.
+* multiplying a row of $A$ by a scalar $k$. Then $\det(B) = k\det(A)$.
+* adding a multiple of a row to another row. Then $det(B) = det(A)$.
 </ul>
 
 </div>
@@ -275,35 +310,35 @@ Remark
 </b></font>
     
 Note that this theorem is true when we multiply one row of the matrix by $k$. If we were to multiply two rows of $A$ by $k$ to obtain $B$, we would have $\det(B) = k ^2 \det(A)$. Suppose we were to multiply all rows of $A$, where $A$ is a $n\times n$ matrix,  by $k$ to obtain the matrix $B$, so that $B = kA$. Then, $\det(B) = k^n \det(A)$.
-
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Scalar Multiplication
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be <span class="math inline">\(n\times n\)</span> matrices and <span class="math inline">\(k\)</span> a scalar, such that <span class="math inline">\(B = kA\)</span>. Then <span class="math inline">\(\det(B) = k^n \det(A)\)</span>.</p>
-
+Let $A$ be $n\times n$ matrix and $k$ a scalar. If $B = kA$, then $\det(B) = k^n \det(A)$.
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
     
-<ul>
-<li><p><strong>Determinant of a Product:</strong> Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be two <span class="math inline">\(n\times n\)</span> matrices. Then <span class="math display">\[\det(AB) = \det(A)\det(B).\]</span></p></li>
-<li><p><strong>Determinant of the Transpose</strong>: Let <span class="math inline">\(A\)</span> be a matrix where <span class="math inline">\(A^T\)</span> is the transpose of <span class="math inline">\(A\)</span>. Then, <span class="math display">\[\det\left(A^T\right)= \det(A).\]</span></p></li>
-<li><p><strong>Determinant of the Inverse:</strong> Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix. Then <span class="math inline">\(A\)</span> is invertible if and only if <span class="math inline">\(\det(A) \neq 0\)</span>. If this is true, it follows that <span class="math display">\[\det(A^{-1}) =\det(A)^{-1}=\frac{1}{\det(A)}.\]</span></p></li>
-</ul>
-
+* \textbf{Determinant of a Product:} Let $A$ and $B$ be two $n\times n$ matrices. Then 
+\begin{align*}
+\det(AB) = \det(A)\det(B).
+\end{align*}
+* \textbf{Determinant of the Transpose}: Let $A$ be a matrix where $A^T$ is the transpose of $A$. Then,
+\begin{align*}\det\left(A^T\right)= \det(A).\end{align*}
+* \textbf{Determinant of the Inverse:} Let $A$ be an $n\times n$ matrix. Then $A$ is invertible if and only if $\det(A) \neq 0$. If this is true, it follows that
+\begin{align*}\det(A^{-1}) =\det(A)^{-1}=\frac{1}{\det(A)}.\end{align*}
 </div>
 
 <font color='Blue'><b>Example</b></font>:
 Suppose $A$, $B$ and $C$ are $4\times 4$ matrices and $\det(A)=-1$, $\det(B)>0$ and $\det(C)=\frac{1}{2}$. Find $\det(2\,A^2B^{-1}(C^T)^3BA^{-1})$.
 
-***
+<font color='Green'><b>Solution</b></font>:
 Since $A$, $B$ and $C$ are $4\times 4$ matrices, $A^2B^{-1}(C^T)^3BA^{-1}$ is also a $4\times 4$ matrix.
 \begin{align*}
 \det(\underbrace{2}_{\text{\text{scalar}}}\,\underbrace{A^2B^{-1}(C^T)^3BA^{-1}}_{4\times 4\text{ matrix}})&=
@@ -317,7 +352,7 @@ Since $A$, $B$ and $C$ are $4\times 4$ matrices, $A^2B^{-1}(C^T)^3BA^{-1}$ is al
 \end{align*}
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
@@ -329,9 +364,9 @@ Theorem:
 
 </div>
 
-## Finding Determinants using Row Operations
+## 3.1.4 Finding Determinants using Row Operations
 
-By using row operations, we can simplify a matrix to the point where we can find the determinant easily. We usually continue using row operations until the matrix is in a triangular form, and taken the product of the entries on the main diagonal.
+By using row operations, we can simplify a matrix to the point where we can calculate its determinant easily. For convenience, we try to continue using row operations until the matrix is triangular and take the product of the entries on the main diagonal.
 
 <font color='Blue'><b>Example</b></font>:
 Find $\det(A)$ if $A=\begin{bmatrix}3 & 1 & 2 & 7\\ 3 & 2 & 4 & 8\\ 3 & 1 & 7 & 9\\ 3 & 1 & 2 & 6\end{bmatrix}$.

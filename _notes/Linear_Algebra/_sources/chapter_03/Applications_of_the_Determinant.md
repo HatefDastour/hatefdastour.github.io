@@ -1,36 +1,47 @@
-# Applications of the Determinant
+# 3.2 Applications of the Determinant
 
-## A Formula for the Inverse
+## 3.2.1 A Formula for the Inverse
 
-**The Cofactor Matrix**: Let $A = [a_{ij}]$ be an $n\times n$ matrix. Then the cofactor matrix of $A$, denoted $cof (A)$, is defined by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Cofactor Matrix
+</b></font>
+
+Let $A = [a_{ij}]$ be an $n\times n$ matrix. Then the cofactor matrix of $A$, denoted $cof (A)$, is defined by
 $cof (A) =\left[cof (A)_{ij}\right]$ where $cof (A)_{ij}$ is the $ij^{\text{th}}$ cofactor of $A$.
 \begin{align*}
 cof (A) =\begin{bmatrix}
-           cof (A)_{11} & cof (A)_{12} & \dots & cof (A)_{1n}\\
-           cof (A)_{21} & cof (A)_{22} & \dots & cof (A)_{2n}\\
-           \vdots & \vdots & \dots & \vdots\\
-           cof (A)_{n1} & cof (A)_{n2} & \dots & cof (A)_{nn}\\
-         \end{bmatrix}
+cof (A)_{11} & cof (A)_{12} & \dots & cof (A)_{1n}\\
+cof (A)_{21} & cof (A)_{22} & \dots & cof (A)_{2n}\\
+\vdots & \vdots & \dots & \vdots\\
+cof (A)_{n1} & cof (A)_{n2} & \dots & cof (A)_{nn}\\
+\end{bmatrix}
 \end{align*}
+</div>
 
-**The adjugate Matrix**: The adjugate of $A$ to be the transpose of the cofactor matrix. That is
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Adjugate Matrix
+</b></font>
+
+The adjugate of $A$ is the transpose of the cofactor matrix:
 \begin{align*}
 adj (A) =\left[cof (A)_{ji}\right]=\begin{bmatrix}
-           cof (A)_{11} & cof (A)_{21} & \dots & cof (A)_{n1}\\
-           cof (A)_{12} & cof (A)_{22} & \dots & cof (A)_{n2}\\
-           \vdots & \vdots & \dots & \vdots\\
-           cof (A)_{1n} & cof (A)_{2n} & \dots & cof (A)_{nn}\\
-         \end{bmatrix}
+cof (A)_{11} & cof (A)_{21} & \dots & cof (A)_{n1}\\
+cof (A)_{12} & cof (A)_{22} & \dots & cof (A)_{n2}\\
+\vdots & \vdots & \dots & \vdots\\
+cof (A)_{1n} & cof (A)_{2n} & \dots & cof (A)_{nn}\\
+\end{bmatrix}
 \end{align*}
-We can also call this matrix the \textbf{classical adjoint} of $A$, and we denote it by $adj(A)$.
+This is also called **classical adjoint** of $A$.
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark
 </b></font>
     
-<p>The adjugate of <span class="math inline">\(A\)</span> is also called the classical adjoint of <span class="math inline">\(A\)</span> and denoted it by <span class="math inline">\(adj(A)\)</span>; however, the term “adjoint” has another meaning.</p>
-
+The adjugate of $A$ is also called the classical adjoint of $A$ and denoted it by $adj(A)$; however, the term “adjoint” has another meaning in mathematics.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -72,15 +83,19 @@ adj(A)=\left(cof (A)\right)^T =\begin{bmatrix}-6 & 18 & -27\\ -4 & 16 & -25\\ 6 
 \end{equation*}
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Inverse and the Determinant
 </b></font>
     
-Let $A$ be an $n\times n$ matrix. Then $$A\,adj (A) = adj (A)\,A = \det(A)I$$
+Let $A$ be an $n\times n$ matrix. Then 
+\begin{align*}
+A\,adj (A) = adj (A)\,A = \det(A)I
+\end{align*}
 Moreover, $A$ is invertible if and only if $\det(A) \neq 0$. In this case we have:
-$$A^{-1}  = \frac{1}{\det(A)} adj(A).$$
-
+\begin{align*}
+A^{-1}  = \frac{1}{\det(A)} adj(A).
+\end{align*}
 </div>
 
 In the specific case where $A$ is an invertible $2\times 2$ matrix given by $A=\begin{bmatrix}a & b \\ c & d\end{bmatrix}.$ Then
@@ -134,7 +149,7 @@ A=(A^T)^T=\begin{bmatrix}\frac{3}{2} & 1\\ \frac{1}{2} & \frac{5}{2}\end{bmatrix
 
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition
 </b></font>
@@ -218,9 +233,14 @@ A=&U^{-1}=(E_{1}E_{2})^{-1}=E_{1}^{-1}E_{2}^{-1}=
 
 ***
 
-## Cramer’s Rule
+## 3.2.2 Cramer’s Rule
 
-**The Vector Form of a System of Linear Equations**: Suppose we have a system of equations given by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Vector Form of a System of Linear Equations
+</b></font>
+
+Consider the following system of linear equations
 \begin{align*}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
@@ -229,7 +249,7 @@ a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
 a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m\\
 \end{cases}
 \end{align*}
-We can express this system in **vector form** which is as follows:
+We can express this system of linear equations in **vector form** as follows:
 \begin{align*}
 x_1\begin{bmatrix}a_{11}\\a_{21}\\ \vdots \\ a_{m1}\end{bmatrix}+
 x_2\begin{bmatrix}a_{12}\\a_{22}\\ \vdots \\ a_{m2}\end{bmatrix}+
@@ -237,8 +257,14 @@ x_2\begin{bmatrix}a_{12}\\a_{22}\\ \vdots \\ a_{m2}\end{bmatrix}+
 x_n\begin{bmatrix}a_{1n}\\a_{2n}\\ \vdots \\ a_{mn}\end{bmatrix}=
 \begin{bmatrix}b_{1}\\b_{2}\\ \vdots \\ b_{m}\end{bmatrix}
 \end{align*}
+</div>
 
-**The Matrix Form of a System of Linear Equations**: Suppose we have a system of equations given by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Matrix Form of a System of Linear Equations
+</b></font>
+
+Consider the following system of linear equations
 \begin{align*}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
@@ -247,16 +273,16 @@ a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
 a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m\\
 \end{cases}
 \end{align*}
-Then we can express this system in **matrix form** as follows.
+we also can express this system in **matrix form** as follows.
 \begin{align*}
 \begin{bmatrix}a_{11} & a_{12} & \dots & a_{1n}\\a_{21} & a_{22} & \dots & a_{2n}\\
 \vdots & \vdots & \ddots & \vdots \\a_{m1} & a_{m2} & \dots & a_{mn}\\ \end{bmatrix}
 \begin{bmatrix}x_{1}\\x_{2}\\ \vdots \\ x_{n}\end{bmatrix}=
 \begin{bmatrix}b_{1}\\b_{2}\\ \vdots \\ b_{m}\end{bmatrix}
 \end{align*}
+</div>
 
-The expression $AX = B$ is also known as the **Matrix Form** of the
-corresponding system of linear equations.
+The expression $AX = B$ is also known as the **Matrix Form** of the corresponding system of linear equations.
 
 <font color='Blue'><b>Example</b></font>:
 Convert the following system into $AX=B$ form.
@@ -277,7 +303,7 @@ Convert the following system into $AX=B$ form.
 
 ***
 
-Suppose we have a system of equations given by $AX = B$, and we want to find solutions $X$ which satisfy this system. Then recall that if $A^{-1}$ exists,
+For a system of equations given by $AX = B$, and we can find its solutions $X$ using $A^{-1}$ (if $A^{-1}$ exists),
 
 \begin{align*}
 AX &= B\\
@@ -286,7 +312,7 @@ A^{-1}(AX) &= A^{-1} B\\
 IX &= A^{-1} B\\
 X &= A^{-1}B
 \end{align*}
-Hence, the solutions $X$ to the system are given by $X =A^{-1} B$. Since we assume that $A^{-1}$ exists, we can use
+Observe that the solutions $X$ to the system are given by $X =A^{-1} B$. Since we assumed that $A^{-1}$ exists, we can use
 the formula for $A^{-1}$ given above. Substituting this formula into the equation for $X$, we have
 \begin{align*}
 X = A^{-1} B = \frac{1}{\det(A)}  adj(A)B
@@ -324,19 +350,23 @@ X &= A^{-1}B=\begin{bmatrix} 1 & 2\\ 2 & 3 \end{bmatrix}^{-1}\begin{bmatrix} 3\\
 Remark
 </b></font>
     
-<p>It is conventional in writing to use <span class="math inline">\(\begin{bmatrix}x_1 & x_2 & \dots & x_n \end{bmatrix}^{T}\)</span> instead of <span class="math inline">\(\begin{bmatrix}x_1 \\ x_2 \\ \vdots \\ x_n. \end{bmatrix}\)</span></p>
-
-
+It is conventional in writing to use $\begin{bmatrix}x_1 & x_2 & \dots & x_n \end{bmatrix}^{T}$ instead of $\begin{bmatrix}x_1 \\ x_2 \\ \vdots \\ x_n. \end{bmatrix}$.
 </div>
 
-**Cramer’s rule**: Suppose $A$ is an $n\times  n$ invertible matrix and we wish to solve the system $AX = B$ for $X=\begin{bmatrix}x_1 & x_2 & \dots & x_n \end{bmatrix}^{T}$. Then Cramer’s rule says
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Cramer’s rule
+</b></font>
+
+Let $A$ be an $n\times  n$ invertible matrix. To solve the system $AX = B$ for $X=\begin{bmatrix}x_1 & x_2 & \dots & x_n \end{bmatrix}^{T}$, Cramer’s rule can be used:
 \begin{align*}
 x_i =\frac{\det(A_i )}{\det(A)}
 \end{align*}
 where $A_i$ is the matrix obtained by replacing the $i^{\text{th}}$ column of $A$ with the column matrix
 \begin{align*}
-B=\begin{bmatrix}b_1 \\ b_2 \\ \vdots \\ b_n \end{bmatrix}
+B=\begin{bmatrix}b_1 \\ b_2 \\ \vdots \\ b_n \end{bmatrix}.
 \end{align*}
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Use Cramer’s rule to find the solution to
@@ -348,7 +378,6 @@ x+z = 1.
 \end{cases}
 \end{align*}
 
-***
 <font color='Green'><b>Solution</b></font>:
 First off, we can express this system in matrix form as follows
 \begin{align*}
@@ -382,63 +411,80 @@ z =\frac{\det(A_3)}{\det(A)}=\frac{\left|\begin{array}{ccc}1 & 2 & 1\\ 2 & -1 & 
 
 ***
 
-## Polynomial Interpolation
+## 3.2.3 Polynomial Interpolation
 
-**Polynomial and the Degree of the Polynomial**: A **polynomial** is an expression of the form
-$a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0$ where the
-$a_{i}$ are numbers and $x$ is a variable. If $a_n \neq 0$, the integer
-$n$ is called the **degree of the polynomial**, and a n is called the
-leading coefficient.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Polynomial and the Degree of the Polynomial
+</b></font>
 
-**Interpolating Polynomial**: Let $n$ data pairs $(x_1,y_1 )$, $(x_2 , y_2 )$, \ldots, $(x_n , y_n )$ be given, and assume that the $x_i$ are distinct. Then there exists a unique polynomial
+A **polynomial** is an expression of the form $a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0$ where the
+$a_{0},~a_{1},~\ldots,~a_{n}$ are numbers and $x$ is a variable. If the coeficient of $x^n$ is nonzero ($a_n \neq 0$), the integer
+$n$ is called the **degree of the polynomial**, and $a_n$ is called the leading coefficient.
+</div>
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+*Interpolating Polynomial
+</b></font>
+
+Asssume that $n$ data pairs $(x_1,y_1 )$, $(x_2 , y_2 )$, \ldots, $(x_n , y_n )$ are available in a way that the $x_i$ are distinct. Then, there exists a unique polynomial
 \begin{equation*}
 p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}
 \end{equation*}
 such that $p(x_i ) = y_i$ for each $i = 1, 2, \ldots, n$.
 
-This polynomial is called the \textbf{interpolating polynomial} for the data.
-\end{definition}
+This polynomial is called the **interpolating polynomial** for the data.
+</div>
 
-If given $x_1 , x_2 , \ldots, x_n$ and the corresponding
-$y_1 , y_2 , \ldots, y_n$ , the procedure to find $p(x)$:
 
-1.  The desired polynomial $p(x)$ is given by
-    $$p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}$$
+<div class="alert alert-success" role="alert">
+
+If given $x_1 , x_2 , \ldots, x_n$ and the corresponding $y_1 , y_2 , \ldots, y_n$ , the procedure to find $p(x)$:
+
+1.  Assume that desired polynomial $p(x)$ is given by \begin{align*}p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}.\end{align*}
 
 2.  $p(x_i ) = y_i$ for all $i = 1, 2, \ldots, n$ so that
-    $$\begin{cases}
+    \begin{align*}
+	\begin{cases}
     r_0 +r_1 x_{1}+r_2 x_{1}^2 +\ldots+r_{n-1} x_{1}^{n-1}=y_{1}\\
     r_0 +r_1 x_{2}+r_2 x_{2}^2 +\ldots+r_{n-1} x_{2}^{n-1}=y_{2}\\    \ldots \\
     r_0 +r_1 x_{n}+r_2 x_{n}^2 +\ldots+r_{n-1} x_{n}^{n-1}=y_{n}
-    \end{cases}$$
+    \end{cases}
+	\end{align*}
     
     In matrix form, this is
 	
-    $$\begin{bmatrix}
+    \begin{align*}
+	\begin{bmatrix}
     1 & x_{1} & x_{1}^{2} & \dots & x_{1}^{n}\\
     1 & x_{2} & x_{2}^{2} & \dots & x_{2}^{n}\\
     \vdots & \vdots & \vdots & & \vdots \\
     1 & x_{n} & x_{n}^{2} & \dots & x_{n}^{n}\\
     \end{bmatrix}
-    \begin{bmatrix}r_{1}\\r_{2}\\ \vdots \\ r_{n-1}\end{bmatrix}    =
-    \begin{bmatrix}y_{1}\\y_{2}\\ \vdots \\ y_{m}\end{bmatrix}.$$
+    \begin{bmatrix}r_{1}\\r_{2}\\ \vdots \\ r_{n-1}
+	\end{bmatrix}    =
+    \begin{bmatrix}y_{1}\\y_{2}\\ \vdots \\ y_{m}
+	\end{bmatrix}.
+	\end{align*}
 
 3.  Set up the augmented matrix of this system of equations
-    $$\left[\begin{array}{ccccc|c}
+    \begin{bmatrix}\left[\begin{array}{ccccc|c}
     1 & x_{1} & x_{1}^{2} & \dots & x_{1}^{n} & y_{1}\\
     1 & x_{2} & x_{2}^{2} & \dots & x_{2}^{n} & y_{2}\\
     \vdots & \vdots & \vdots & & \vdots  & \vdots \\
     1 & x_{n} & x_{n}^{2} & \dots & x_{n}^{n} &  y_{m}\\
-    \end{array}\right]$$
+    \end{array}\right]
+	\end{align*}
 
-4.  Solving this system will result in a [unique]{.ul} solution $r_0$ ,
+4.  Solving this system will result in a **unique** solution $r_0$ ,
     $r_1$, ..., $r_{n-1}$ . Use these values to construct $p(x)$ , and
     estimate the value of $p(a)$ for any $x = a$.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Consider the data points $(-2,1)$, $(0,1)$, $(2,9)$, $(3,16)$ . Find an interpolating polynomial $p(x)$ of degree at most three, and estimate the value of $p(1)$.
 
-***
 <font color='Green'><b>Solution</b></font>:
 \begin{equation*}
 p(x) = r_0 +r_1 x+r_2 x^2 +r_{3} x^{3}
@@ -474,8 +520,10 @@ p(1) = (1)^2+2(1)+1= 4.
 :align: center
 ```
 
-Check https://www.desmos.com/calculator/wh28jyfwvp for the graph.
+<div class="alert alert-danger" role="alert">
+<p>Check out <a href="https://www.desmos.com/calculator/wh28jyfwvp" target="_blank" rel="noopener noreferrer">https://www.desmos.com/calculator/wh28jyfwvp</a> for the graph.
 
+</div>
 
 ***
 ## Refrences

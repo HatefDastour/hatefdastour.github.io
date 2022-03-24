@@ -2,13 +2,13 @@
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
-$B =UA$ Form
+B =UA Form
 </b></font>
 
-Let $A$ be an $m\times n$ matrix and let $B$ be the reduced row-echelon form of $A$. Then we can write $B =UA$ where U is the product of all elementary matrices representing the row operations done to $A$ to obtain $B$.
+Let $A$ be an $m\times n$ matrix and $B$ be the reduced row-echelon form of $A$. Then, we can write $B =UA$ where U is the product of all elementary matrices expressing the row operations done to $A$ to obtain $B$.
 </div>
 
-Suppose that an $m\times n$ matrix $A$ is carried to a matrix $B$ (written $A \to B$) by a series of $k$ elementary row operations.  Let $E_1$, $E_2$, \ldots, $E_k$ denote the corresponding elementary matrices.
+Suppose that an $m\times n$ matrix $A$ is carried to a matrix $B$ (written $A \to B$) by a series of $k$ elementary row operations, and let $E_1$, $E_2$, \ldots, $E_k$ denote the corresponding elementary matrices.
 
 1.  $B =UA$ where $U$ is an $m\times m$ invertible matrix.
 
@@ -74,7 +74,7 @@ A=\left(A^{-1}\right)^{-1}=\left(E_k E_{k-1} \ldots E_{2}E_{1}\right)^{-1}
     
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Product of Elementary Matrices
 </b></font>

@@ -38,16 +38,18 @@ is the elementary matrix obtained from **adding $5$ times the first row to the s
 
 <div class="alert alert-block alert-success">
     
-<li><strong>Multiplication by an Elementary Matrix and Row Operations</strong>:<br />
-To perform any of the row operations on a matrix <span class="math inline">\(A\)</span> it suffices to take the product <span class="math inline">\(EA\)</span>, where <span class="math inline">\(E\)</span> is the elementary matrix obtained by using the desired row operation on the identity matrix.</p></li>
-<li><strong>Action of Permutation Matrix</strong>:<br />
-Let <span class="math inline">\(P^{ij}\)</span> denote the elementary matrix which involves switching the <span class="math inline">\(i^{\text{th}}\)</span> and the <span class="math inline">\(j^{\text{th}}\)</span> rows. Then <span class="math inline">\(P^{ij}\)</span> is a permutation matrix and <span class="math inline">\(P^{ij}A = B\)</span> where <span class="math inline">\(B\)</span> is obtained from <span class="math inline">\(A\)</span> by switching the <span class="math inline">\(i^{\text{th}}\)</span> and the <span class="math inline">\(j^{\text{th}}\)</span> rows.</p></li>
-</ul>
+* **Multiplication by an Elementary Matrix and Row Operations:**
+Let $E$ be an elementary matrix obtained by using the preferred row operation on the identity matrix and $A$ be a matrix. Then, the product $EA$ applies the same row operations on the matrix $A$.
+
+* **Action of Permutation Matrix</strong>:**
+Let $P^{ij}$ be a permutation matrix (an elementary matrix which involves switching the $i^{\text{th}}$ and the $j^{\text{th}}$ rows). $P^{ij}A$ is a matrix obtained from $A$ by switching the $i^{\text{th}}$ and the $j^{\text{th}}$ rows.
     
 </div>
 
 <font color='Blue'><b>Example</b></font>:
-Let $$P^{23}=\begin{bmatrix}
+Let
+\begin{align*}
+P^{23}=\begin{bmatrix}
 1 & 0 & 0 \\
 0 & 0 & 1 \\
 0 & 1 & 0 \\
@@ -56,7 +58,9 @@ Let $$P^{23}=\begin{bmatrix}
 1 & 2 \\
 3 & 4 \\
 5 & 6
-\end{bmatrix}.$$ Find $B$ where $B = P^{23}A$
+\end{bmatrix}.
+\end{align*}
+Find $B$ where $B = P^{23}A$
 
 <font color='Green'><b>Solution</b></font>:
 $B$ can be obtained from switching the last two rows of matrix $A$. Therefore,
@@ -69,14 +73,20 @@ B=\begin{bmatrix}1 & 2 \\
 ***
 
 <div class="alert alert-block alert-success">
-    
-<ul>
-<li><p><strong>Multiplication by a Scalar and Elementary Matrices</strong>:<br />
-Let <span class="math inline">\(E(k,i)\)</span> denote the elementary matrix corresponding to the row operation in which the <span class="math inline">\(i^{\text{th}}\)</span> row is multiplied by the nonzero scalar, <span class="math inline">\(k\)</span>. Then <span class="math display">\[E(k,i)A = B\]</span> where <span class="math inline">\(B\)</span> is obtained from <span class="math inline">\(A\)</span> by multiplying the <span class="math inline">\(i^{\text{th}}\)</span> row of <span class="math inline">\(A\)</span> by <span class="math inline">\(k\)</span>.</p></li>
-<li><p><strong>Action of Permutation Matrix</strong>:<br />
-Let <span class="math inline">\(E(k\times \, i+ \, j)\)</span> denote the elementary matrix obtained from <span class="math inline">\(I\)</span> by adding <span class="math inline">\(k\)</span> times the <span class="math inline">\(i^{\text{th}}\)</span> row to the <span class="math inline">\(j^{\text{th}}\)</span> . Then <span class="math inline">\(E(k\times \, i+ \, j) A = B\)</span> where <span class="math inline">\(B\)</span> is obtained from <span class="math inline">\(A\)</span> by adding <span class="math inline">\(k\)</span> times the <span class="math inline">\(i^{\text{th}}\)</span> row to the <span class="math inline">\(j^{\text{th}}\)</span> row of A.</p></li>
-</ul>
-    
+
+**Multiplication by a Scalar and Elementary Matrices:**
+Let $E(k,i)$ be the elementary matrix corresponding to the row operation in which the $i^{\text{th}}$ row is multiplied by the scalar $k$ (nonzero). Then
+\begin{align*}
+E(k,i)A = B
+\end{align*}
+where $B$ is obtained from $A$ by multiplying the $i^{\text{th}}$ row of $A$ by $k$.
+
+**Action of Permutation Matrix:**
+Let $E(k\times \, i+ \, j)$ denote the elementary matrix obtained from $I$ by adding $k$ times the $i^{\text{th}}$  row to the $j^{\text{th}}$ . Then
+\begin{align*}
+E(k\times \, i+ \, j) A = B
+\end{align*}
+where $B$ is obtained from $A$ by adding $k$ times the $i^{\text{th}}$ row to the $j^{\text{th}}$ row of A.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -98,7 +108,7 @@ Moreover, $C$ can be obtained from multiplying the second row of matrix $A$ by 4
 $C=\begin{bmatrix}1 & 2 \\3 & 4 \\17 & 22\end{bmatrix}$.
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Elementary Matrices and Inverses
 </b></font>
