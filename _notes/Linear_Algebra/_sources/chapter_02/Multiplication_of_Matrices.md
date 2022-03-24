@@ -9,7 +9,6 @@ Column matrices (matrices of size $n\times 1$ or $1\times n$) are called vectors
 * If $A = \begin{bmatrix}a_{1} \\a_{2} \\ \vdots\\ a_{n}\end{bmatrix}$ (a column matrix), $a_i$ denotes the entry of $A$ in the $i^{th}$ row.
 * If $B = \begin{bmatrix}b_{1} & b_{2} & \dots & b_{n}\end{bmatrix}$ ( a row matrix), $b_i$ denotes the entry of $B$ in the $i^{th}$ column.
 </div>
-****:
 
 Before we explain multiplying matrices. Let's explain the multiplication of a row vector by a column vector. For row vector $X$ and a column vector $Y$. we have,
 
@@ -153,3 +152,9 @@ AB=\begin{bmatrix} 2 & 4 \\  6& 8 \end{bmatrix} \text{ and } BA=\begin{bmatrix} 
 $$
 
 Note that usually $AB$ is different from $BA$.
+
+***
+## Refrences
+1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
+1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
+***
