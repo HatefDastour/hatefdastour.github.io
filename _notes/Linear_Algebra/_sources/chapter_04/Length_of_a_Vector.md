@@ -1,20 +1,20 @@
-# Length of a Vector
+# 4.4 Length of a Vector
 
 Let $P$ and $Q$ be two points in $\mathbb{R}^n$,
 
--   $n=1$:distance= $d(P,Q)=|P-Q|$
+-   $n=1$: distance= $d(P,Q)=|P-Q|$
 
--   $n=2$:distance= $d(P,Q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2}$
+-   $n=2$: distance= $d(P,Q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2}$
 
 ```{image} ../Figures/fig4_07.png
 :width: 300px
 :align: center
 ```
 
--   $n=3$:distance= $d(P,Q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2}$
+-   $n=3$: distance= $d(P,Q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2}$
 
 ```{image} ../Figures/fig4_08.png
-:width: 380px
+:width: 400px
 :align: center
 ```
 
@@ -35,7 +35,7 @@ Find the distance between the points $P$ and $Q$ in $\mathbb{R}^6$ , where $P$ a
 \end{align*}
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
@@ -89,7 +89,7 @@ where the vector $\vec{u}$ has the same direction as $\vec{v}$ but length equal 
 
 <font color='Blue'><b>Example</b></font>:
 Let $\vec{v}$ be given by $\vec{v} =\begin{bmatrix} 1 & 2 & 2\end{bmatrix}^{T}$. Find the unit vector $\vec{u}$ which has the same direction as $\vec{v}$.
-***
+
 <font color='Green'><b>Solution</b></font>:
 We have
 \begin{align*}
@@ -104,7 +104,7 @@ We always can verify that $\|\vec{u}\|=1$.
 
 <font color='Blue'><b>Example</b></font>:
 Find the point $T$ which is $\dfrac{2}{3}$ of the way from $P=(3,-1,2)$ to $Q=(9,-7,-10)$.
-***
+
 <font color='Green'><b>Solution</b></font>:
 First off,
 ```{image} ../Figures/fig4_09.png

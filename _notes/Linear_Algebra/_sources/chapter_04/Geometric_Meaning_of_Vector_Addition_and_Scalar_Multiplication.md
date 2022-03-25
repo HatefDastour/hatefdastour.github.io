@@ -1,14 +1,16 @@
-# Geometric Meaning of Vector Addition and  Scalar Multiplication
+# 4.3 Geometric Meaning of Vector Addition and  Scalar Multiplication
 
-**Geometric Vectors**:
-Suppose that $A$ and $B$ are any two points in $\mathbb{R}^3$. The line
-segment from $A$ to $B$ is denoted $\overrightarrow{AB}$ and is called
-the geometric vector from $A$ to $B$. Point $A$ is called the tail of
-$\overrightarrow{AB}$, $B$ is called the tip of $\overrightarrow{AB}$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Geometric Vectors
+</b></font>
+
+Let $A$ and $B$ be two arbitrary points in $\mathbb{R}^3$. The geometric vector from $A$ to $B$ it the line segment from point $A$ to point $B$ is (denoted $\overrightarrow{AB}$). Point $A$ is called the tail of $\overrightarrow{AB}$, $B$ is called the tip of $\overrightarrow{AB}$.
+</div>
 
 <div class="alert alert-block alert-success">
 
-<p>In the parallelogram determined by two vectors <span class="math inline">\(\vec{v}\)</span> and <span class="math inline">\(\vec{w}\)</span>, the vector <span class="math inline">\(\vec{v}+\vec{w}\)</span> is the diagonal with the same tail as <span class="math inline">\(\vec{v}\)</span> and <span class="math inline">\(\vec{w}\)</span>.</p>
+In the parallelogram determined by two vectors $\vec{v}$ and $\vec{w}$, the vector $\vec{v}+\vec{w}$ is the diagonal with the same tail as $\vec{v}$ and $\vec{w}$.
 
 
 ```{image} ../Figures/fig4_02.png
@@ -30,7 +32,7 @@ Similarly, moving the tail of $\vec{v}$ to the tip of $\vec{w}$ shows in followi
 :align: center
 ```
 
-This is referred to as the \textbf{tip-to-tail rule}, and it gives graphic illustrations why $\vec{v}+\vec{w}=\vec{w}+\vec{v}$.
+This is referred to as the **tip-to-tail rule**, and it gives graphic illustrations why $\vec{v}+\vec{w}=\vec{w}+\vec{v}$.
 
 If $\vec{v}$ and $\vec{w}$ have a common tail, then $\vec{v} - \vec{w}$ is the vector from the tip of $\vec{w}$ to the tip of $\vec{v}$.
 
@@ -45,6 +47,7 @@ Examples of scalar multiples of a vector $\vec{v}$:
 :width: 160px
 :align: center
 ```
+</div>
 
 ***
 ## Refrences
