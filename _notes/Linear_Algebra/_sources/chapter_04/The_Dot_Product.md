@@ -1,45 +1,47 @@
-The Dot Product
-========================
+# 4.6 The Dot Product
 
-**Dot Product**:
+## Dot Product
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Dot Product
+</b></font>
+
 Let $\vec{u}=\begin{bmatrix} u_1 & \dots & u_n \end{bmatrix}^T$, $\vec{v}=\begin{bmatrix} v_1 & \dots & v_n \end{bmatrix}^T$ be two vectors in $\mathbb{R}^n$.
 Then, their dot product $\vec{u} \bullet \vec{v}$ is a number defined as
 \begin{align*}
 \vec{u} \bullet \vec{v}=\begin{bmatrix} u_1 \\ \vdots \\ u_n \end{bmatrix} \bullet \begin{bmatrix} v_1 \\ \vdots \\ v_n \end{bmatrix}=u_1v_1+u_2v_2+\ldots+u_nv_n.
 \end{align*}
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-<p>The dot product is also called the <strong>scalar product</strong> and sometimes the <strong>inner product</strong>.</p>
-    
+The dot product is also called the **scalar product** and sometimes **inner product**.   
 </div>
 
 <font color='Blue'><b>Example</b></font>:
 Find $\vec{u} \bullet \vec{v}$ if $\vec{u} =\begin{bmatrix} 3 & 13 & 3 \end{bmatrix}^T$ and $\vec{v} =\begin{bmatrix} 17 & 0 & -1 \end{bmatrix}^T$.
 $\vec{d} =\begin{bmatrix} 2 & 2 & 1 \end{bmatrix}^T$.
-***
+
 <font color='Green'><b>Solution</b></font>:
 $\vec{u} \bullet \vec{v}= \begin{bmatrix} 3 \\ 13 \\ 3 \end{bmatrix} \bullet \begin{bmatrix} 17 \\ 0 \\ -1 \end{bmatrix}=(3)(17)+(13)(0)+(3)(-1)=48.$
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of the Dot Product
 </b></font>
     
-<p>Let <span class="math inline">\(k\)</span> and <span class="math inline">\(p\)</span> denote scalars and <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> denote vectors. Then the dot product <span class="math inline">\(\vec{u} \bullet \vec{v}\)</span> satisfies the following properties.</p>
-<ul>
-<li><p><span class="math inline">\(\vec{u} \bullet \vec{v}= \vec{v} \bullet \vec{u}\)</span>,</p></li>
-<li><p><span class="math inline">\(\vec{u} \bullet \vec{u} \geq 0\)</span>,</p></li>
-<li><p><span class="math inline">\(\vec{u} \bullet \vec{u}=0\)</span> if and only if <span class="math inline">\(\vec{u} = \vec{0}\)</span>,</p></li>
-<li><p><span class="math inline">\((k\vec{u}+ p\vec{v}) \bullet \vec{w} = k(\vec{u}\bullet \vec{w})+ p(\vec{v}\bullet \vec{w})\)</span>,</p></li>
-<li><p><span class="math inline">\(\vec{u}\bullet (k\vec{v}+ p \vec{w}) = k(\vec{u}\bullet \vec{v})+ p(\vec{u}\bullet \vec{w})\)</span>,</p></li>
-<li><p><span class="math inline">\(\|\vec{u}\|^2=\vec{u} \bullet \vec{u}\)</span>.</p></li>
-</ul>
-    
+Let $k$ and $p$ denote scalars and $\vec{u}$, $\vec{v}$, $\vec{w}$ denote vectors. Then the dot product $\vec{u} \bullet \vec{v}$ satisfies the following properties.
+
+* $\vec{u} \bullet \vec{v}= \vec{v} \bullet \vec{u}$,
+* $\vec{u} \bullet \vec{u} \geq 0$,
+* $\vec{u} \bullet \vec{u}=0$ if and only if $\vec{u} = \vec{0}$,
+* $(k\vec{u}+ p\vec{v}) \bullet \vec{w} = k(\vec{u}\bullet \vec{w})+ p(\vec{v}\bullet \vec{w})$,
+* $\vec{u}\bullet (k\vec{v}+ p \vec{w}) = k(\vec{u}\bullet \vec{v})+ p(\vec{u}\bullet \vec{w})$,
+* $\|\vec{u}\|^2=\vec{u} \bullet \vec{u}$.
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -47,31 +49,40 @@ Theorem: Properties of the Dot Product
 Remark:
 </b></font>
     
-<p>From the above Theorem, <span class="math inline">\(\|\vec{u}\|^2=\vec{u} \bullet \vec{u}\)</span>. Therefore, the length of vector <span class="math inline">\(\vec{u}\)</span> can also be found using <span class="math display">\[\|\vec{u}\|=\sqrt{\vec{u} \bullet \vec{u}}.\]</span></p>
-
-    
+From the above Theorem, we have $\|\vec{u}\|^2=\vec{u} \bullet \vec{u}$. Therefore, the length of vector $\vec{u}$ can also be found using
+\begin{equation*}
+\|\vec{u}\|=\sqrt{\vec{u} \bullet \vec{u}}.
+\end{equation*}  
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Triangle Inequality
 </b></font>
     
-<p>For <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w} \in \mathbb{R}^n\)</span> <span class="math display">\[\|\vec{v}+\vec{w}\| \leq \|\vec{v}\|+\|\vec{w}\|\]</span></p>
+For $\vec{v}$, $\vec{w} \in \mathbb{R}^n$
+\begin{align*}\|\vec{v}+\vec{w}\| \leq \|\vec{v}\|+\|\vec{w}\|\end{align*}
 
 ```{image} ../Figures/fig4_11.png
-:width: 200px
+:width: 300px
 :align: center
 ```
-    
-<p>and equality holds if and only if one of the vectors is a non-negative scalar multiple of the other. Also <span class="math display">\[\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|\]</span></p>
-    
+and equality holds if and only if one of the vectors is a non-negative scalar multiple of the other.
+
+Furthermore,
+\begin{align*}\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|.\end{align*}  
 </div>
 
-**The Included Angle**: Given two vectors $\vec{u}$ and $\vec{v}$, the ***included angle*** is the angle between these two vectors which is given by
-$\theta$ such that $0 \leq \theta \leq \pi$.
+## The Included Angle
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Included Angle
+</b></font>
 
-<div class="alert alert-block alert-info">
+For two vectors $\vec{u}$ and $\vec{v}$, the ***included angle*** is the angle between these two vectors and is given by $\theta$ such that $0 \leq \theta \leq \pi$.
+</div>
+
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Dot Product and the Included Angle
 </b></font>
@@ -83,7 +94,7 @@ Theorem: The Dot Product and the Included Angle
 
 <font color='Blue'><b>Example</b></font>:
 Find the angle between $\vec{u}=\begin{bmatrix}1 \\ 0\end{bmatrix}$ and $\vec{v}=\begin{bmatrix}1 \\ 1\end{bmatrix}$.
-***
+
 <font color='Green'><b>Solution</b></font>:
 From the above theorem,
 \begin{equation*}
@@ -94,7 +105,7 @@ From the above theorem,
 Therefore, $\theta=\pi/4$.
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Perpendicular Vectors
 </b></font>
@@ -105,10 +116,10 @@ Theorem: Perpendicular Vectors
 
 <font color='Blue'><b>Example</b></font>:
 Consider the triangle $ABC$ with vertices $A=(1,1,-1)$, $B=(2,3,0)$ and \linebreak $C=(1,0,3)$. Is $ABC$ a right triangle?
-***
+
 <font color='Green'><b>Solution</b></font>:
 ```{image} ../Figures/fig4_13.png
-:width: 220px
+:width: 300px
 :align: center
 ```
 
@@ -139,7 +150,7 @@ L:\quad \begin{bmatrix} x \\ y \\ z \end{bmatrix}=
 \quad, t \in \mathbb{R}.
 \end{align*}
 Moreover, find the point $Q$ on $L$ that is closest to $P$.
-***
+
 <font color='Green'><b>Solution</b></font>:
 ```{image} ../Figures/fig4_14.png
 :width: 380px
@@ -170,7 +181,13 @@ and
 =\sqrt{\left(1+4+4\right)^2}=\sqrt{9}=3.
 \end{align*}
 
-Check https://www.geogebra.org/3d/ewdr2y6z for the graph.
+Check  for the graph.
+
+
+<div class="alert alert-danger" role="alert">
+<p>Check out <a href="https://www.geogebra.org/3d/ewdr2y6z" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/3d/ewdr2y6z</a> for the graph.
+
+</div>
 
 ***
 ## Refrences

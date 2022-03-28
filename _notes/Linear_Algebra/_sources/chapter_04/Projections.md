@@ -1,12 +1,12 @@
-Projections
-========================
+# 4.7 Projections
+
 
 ```{image} ../Figures/fig4_15.png
 :width: 200px
 :align: center
 ```
 
-If a nonzero vector $\vec{d}$ is specified, the key idea of projection is to be able to write an arbitrary vector $u$ as a sum of two vectors,
+The key idea of projection is to be able to write a vector as a sum of two vectors. For a nonzero vector $\vec{d}$ and an arbitrary vector $u$, we have,
 \begin{equation*}
 \vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}.
 \end{equation*}
@@ -14,33 +14,56 @@ where $\vec{u}_{\parallel}$ is a parallel to $\vec{d}$ , and $\vec{u}_{\perp}=\v
 
 Suppose that $\vec{u}$ and $\vec{d}\neq 0$ emanate from a common tail $Q$. Let $P$ be the tip of $\vec{u}$, and let $P_1$ denote the foot of the perpendicular from $P$ to the line through $Q$ parallel to $\vec{d}$.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Vector Projections
 </b></font>
 
-<p>Let <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{d}\)</span> be nonzero vectors. Then there exist unique vectors <span class="math inline">\(\vec{u}_{\parallel}\)</span> and <span class="math inline">\(\vec{u}_{\perp}\)</span> such that <span class="math display">\[\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}.\]</span> where <span class="math inline">\(\vec{u}_{\parallel}\)</span> is a scalar multiple of <span class="math inline">\(\vec{d}\)</span> , and <span class="math inline">\(\vec{u}_{\perp}\)</span> is perpendicular to <span class="math inline">\(\vec{d}\)</span>.</p>
-    
+Let $\vec{u}$ and $\vec{d}$ be nonzero vectors. Then there exist unique vectors $\vec{u}_{\parallel}$ and $\vec{u}_{\perp}$ such that
+\begin{equation*}
+\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}.
+\end{equation*}
+where $\vec{u}_{\parallel}$ is a scalar multiple of $\vec{d}$ ($\vec{u}_{\parallel}$ is parallel
+ to $\vec{d}$), and $\vec{u}_{\perp}$ is perpendicular to $\vec{d}$ ($\vec{u}_{\perp}$ is perpendicular
+ to $\vec{d}$).
+
+```{image} ../Figures/fig4_15.png
+:width: 200px
+:align: center
+```
 </div>
 
-**Vector Projection**: Let $\vec{u}$ and $\vec{d}$ be vectors. Then, the projection of $\vec{u}$ onto $\vec{d}$ is given by
+<div class="alert alert-secondary" role="alert">
+<font size="+1"><b>
+Vector Projection
+</b></font>
+
+Let $\vec{u}$ and $\vec{d}$ be vectors. Then, the projection of $\vec{u}$ onto $\vec{d}$ is denoted by $\vec{u}_{\parallel}$ and is defined as follows
 \begin{equation*}
 \vec{u}_{\parallel}=proj_{\vec{d}}{\vec{u}}=
 \left( \frac{\vec{u} \bullet \vec{d}}{\vec{d} \bullet \vec{d}}\right)\vec{d}=
 \frac{\vec{u}\bullet\vec{d}}{\|\vec{d}\|^2}\vec{d}.
 \end{equation*}
+</div>
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
 Summary:
 </b></font>
-<ol>
-<li><p><span class="math inline">\(\vec{u}_{\parallel}=\overrightarrow{OP_1}\)</span>.</p></li>
-<li><p><span class="math inline">\(\vec{u}_{\parallel}\)</span> is parallel to <span class="math inline">\(\vec{d}\)</span>.</p></li>
-<li><p><span class="math inline">\(\vec{u}_{\perp}= u - \vec{u}_{\parallel}\)</span> is orthogonal to <span class="math inline">\(\vec{d}\)</span>. In other words <span class="math display">\[\vec{u}_{\perp}=\vec{u}-\frac{\vec{u}\bullet\vec{d}}{\|\vec{d}\|^2}\vec{d}.\]</span></p></li>
-<li><p><span class="math inline">\(\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}\)</span>.</p></li>
-</ol>
- 
+
+* $\vec{u}_{\parallel}=\overrightarrow{OP_1}$.
+* $\vec{u}_{\parallel}$ is parallel to $\vec{d}$, and
+\begin{equation*}
+\vec{u}_{\parallel}=proj_{\vec{d}}{\vec{u}}=
+\left( \frac{\vec{u} \bullet \vec{d}}{\vec{d} \bullet \vec{d}}\right)\vec{d}=
+\frac{\vec{u}\bullet\vec{d}}{\|\vec{d}\|^2}\vec{d}.
+\end{equation*}
+* $\vec{u}_{\perp}= u - \vec{u}_{\parallel}$ is orthogonal to $\vec{d}$. In other words
+\begin{equation*}
+\vec{u}_{\perp}=\vec{u}-\frac{\vec{u}\bullet\vec{d}}{\|\vec{d}\|^2}\vec{d}.
+\end{equation*}
+* $\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}$. 
+
 ```{image} ../Figures/fig4_15.png
 :width: 200px
 :align: center
@@ -71,8 +94,10 @@ $\vec{u}_{\parallel}$ and $\vec{u}_{\perp}$ such that,
 \end{align*}
 We also can verify that $\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}$.
 
-Check https://www.geogebra.org/classic/nqdjwxau for the graph.
-***
+<div class="alert alert-danger" role="alert">
+<p>Check out <a href="https://www.geogebra.org/classic/nqdjwxau" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/classic/nqdjwxau</a> for the graph.
+
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Consider $P=(2,2,-1)$ and the line
@@ -84,7 +109,7 @@ Find point $Q$ on $L$ closest to $P$.
 
 <font color='Green'><b>Solution</b></font>:
 ```{image} ../Figures/fig4_17.png
-:width: 450px
+:width: 340px
 :align: center
 ```
      

@@ -1,36 +1,59 @@
-# Planes in $\mathbb{R}^n$
+# 4.8 Planes in $\mathbb{R}^n$
 
+## Normal Vector
 A nonzero vector $n$ is called a normal for a plane if it is orthogonal to every vector in the plane.
 
-**Normal Vector**:
-Let $\vec{n}$ be a nonzero vector in $\mathbb{R}^n$. Then $\vec{n}$ is called a \textbf{normal vector} to a plane if and only if
-$$
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Normal Vector
+</b></font>
+
+$\vec{n}$ (a nonzero vector in $\mathbb{R}^n$) is called a **normal vector** to a plane if and only if
+\begin{align*}
 \vec{n}\bullet \vec{v} = 0
-$$
-for every vector $\vec{v}$ in the plane.
+\end{align*}
+for every vector $\vec{v}$ in the plane. This means that $\vec{n}$ is perpendicular to **every point** on that plane.
 
 ```{image} ../Figures/fig4_18.png
 :width: 220px
 :align: center
 ```
+  
+</div>
 
-**Vector Equation of a Plane**: Let $\vec{n}$ be the normal vector for a plane which contains a point $P_0$. If $P$ is an arbitrary point on this plane, then the \textbf{vector equation} of the plane is given by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Vector Equation of a Plane
+</b></font>
+
+Let $P_0$ on a plane with the normal vector $\vec{n}$. Any point $P$ on this plane can be expressed as follows,
 \begin{equation*}
 \vec{n}\bullet \left(\overrightarrow{0P}-\overrightarrow{0P_0}\right)=0.
 \quad \text{or} \quad
 \overrightarrow{P_0P} \bullet \vec{n}=0.
 \end{equation*}
+This is called the **vector equation** of a plane.
 
 ```{image} ../Figures/fig4_19.png
 :width: 300px
 :align: center
-```
+```  
+</div>
 
-The plane through $P_0=(x_0 , y_0 , z_0 )$ with normal\linebreak $\vec{n} =(a , b , c )\neq 0$ as a normal vector is given by
+In $\mathbb{R}^3$, the plane that contains point $P_0=(x_0,~y_0,~z_0)$
+and has the normal vector $\vec{n} =(a,~b,~c)\neq 0$ is given by
 \begin{equation*}
 a(x-x_0 )+b(y-y_0 )+c(z-z_0 ) = 0.
 \end{equation*}
-In other words, a point $P=(x, y, z)$ is on this plane if and only if $x$ , $y$ , and $z$ satisfy this equation.
+
+
+<div class="alert alert-block alert-warning">
+<font size="+1"><b>
+Remark:
+</b></font>
+    
+A point $P=(x,~y,~z)$ is on a plane if and only if $x$ , $y$ , and $z$ satisfy its vector equation.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Find an equation of the plane containing $(1,-1,0)$  and orthogonal to $\begin{bmatrix} \pi & 0 & 3 \end{bmatrix}^T$.
@@ -42,14 +65,25 @@ Here $P_0=(1,-1,0)$ and $\vec{n} =(\pi,0,3)$
 \end{align*}
 ***
 
-**Scalar Equation of a Plane**: Let $\vec{n} = \begin{bmatrix}  a & b & c \end{bmatrix}^T$ be the normal vector for a plane which contains the point $P_0 = (x_0 ,y_0 ,z_0 )$. Then if $P = (x,y,z)$ is an arbitrary point on the plane, the scalar equation of the plane is given by $ax+by+cz = d$
-where $a,b,c,d \in \mathbb{R}$ and $d = ax_0 +by_0 +cz_0$.
+## Scalar Equation of a Plane
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Scalar Equation of a Plane
+</b></font>
+
+Let $\vec{n} = \begin{bmatrix}  a & b & c \end{bmatrix}^T$ be the normal vector for a plane which contains the point $P_0 = (x_0,~y_0,~z_0)$. Then, the scalar equation of the plane for any arbitrary point $P = (x,~y,~z)$ on the plane is given by
+\begin{equation*}
+ax+by+cz = d
+\end{equation*}
+where $a,~b,~c,~d \in \mathbb{R}$ and $d = ax_0 +by_0 +cz_0$.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Let $A = (0,0,1)$, $B = (2,0,-1)$ and $C = (0,1,0)$ be points in $\mathbb{R}^3$. Find an equation for the plane containing $A$, $B$, and $C$.
 
 <font color='Green'><b>Solution</b></font>:
-The scalar equation of the plane is given by $ax+by+cz = d$ where $a,b,c,d$ are to be determined. To find $a,b,c,d$, we use points $A$, $B$ and $C$. We have
+The scalar equation of the plane is given by $ax+by+cz = d$ where $a,~b,~c,~d$ are to be determined. To find $a,~b,~c,~d$, we use points $A$, $B$ and $C$. We have
 
 \begin{align*}
 \begin{cases}
@@ -71,7 +105,8 @@ The augmented matrix of this system is given by
 \left[\begin{array}{cccc|c} 0 & 0 & 1 & -1 & 0\\ 2 & 0 & -1 & -1 & 0\\ 0 & 1 & 0 & -1 & 0 \end{array}\right]
 \end{equation*}
 
-In RREF:
+{badge}`In RREF:,badge-primary`
+
 \begin{equation*}
 \left[\begin{array}{cccc|c} {1} & 0 & 0 & -1 & 0\\ 0 & {1} & 0 & -1 & 0\\ 0 & 0 & {1} & -1 & 0 \end{array}\right]
 \end{equation*}

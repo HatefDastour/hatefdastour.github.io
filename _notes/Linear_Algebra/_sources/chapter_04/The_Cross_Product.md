@@ -1,9 +1,18 @@
-# The Cross Product
+# 4.9 The Cross Product
 
-**Right Hand System of Vectors**:
-Three vectors, $\vec{u}$, $\vec{v}$, $\vec{w}$ form a right hand system if when you extend the fingers of your right hand
-along the direction of vector $\vec{u}$ and close them in the direction of $\vec{v}$, the thumb points roughly in the
-direction of $\vec{w}$.
+## Right Hand System of Vectors
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Right Hand System of Vectors
+</b></font>
+
+Three vectors, $\vec{u}$, $\vec{v}$, $\vec{w}$ form a right-hand system if when you extend the fingers of your right hand along the direction of vector $\vec{u}$ and close them in the direction of $\vec{v}$, the thumb points roughly in the direction of $\vec{w}$.
+
+```{image} ../Figures/fig4_37.png
+:width: 200px
+:align: center
+```
+</div>
 
 For an example of a right handed system of vectors, see the following picture.
 ```{image} ../Figures/fig4_20.png
@@ -14,11 +23,6 @@ For an example of a right handed system of vectors, see the following picture.
 
 In this picture the vector $\vec{w}$ points upwards from the plane determined by the other two vectors. Point the fingers of your right hand along $\vec{u}$, and close them in the direction of $\vec{v}$. Notice that if you extend the thumb on your right hand, it points in the direction of $\vec{w}$.
 
-```{image} ../Figures/fig4_38.png
-:width: 160px
-:align: center
-```
-
 ```{image} ../Figures/fig4_37.png
 :width: 160px
 :align: center
@@ -26,31 +30,50 @@ In this picture the vector $\vec{w}$ points upwards from the plane determined by
 
 Try using your left hand and you will see that the vector $\vec{w}$ would need to point in the opposite direction.
 
-**Coordinate vectors**: The coordinate vectors are unit vectors in the direction of the $x$, $y$, and $z$ axes of a three dimensional Cartesian coordinate system.
+```{image} ../Figures/fig4_38.png
+:width: 160px
+:align: center
+```
+
+## Coordinate Vectors
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Coordinate Vectors
+</b></font>
+
+The coordinate vectors are unit vectors in the direction of the $x$, $y$, and $z$ axes of a three dimensional Cartesian coordinate system.
 \begin{align*}
 \vec{i}=\begin{bmatrix}1\\0\\0\end{bmatrix},\quad \vec{j}=\begin{bmatrix}0\\1\\0\end{bmatrix} ,\quad \text{and}\quad  \vec{k}=\begin{bmatrix}0\\0\\1\end{bmatrix}.
 \end{align*}
 
 ```{image} ../Figures/fig4_21.png
-:width: 200px
+:width: 280px
 :align: center
 ```
+</div>
+
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-<p>Note that the special vectors, <span class="math inline">\(\vec{i}\)</span>, <span class="math inline">\(\vec{j}\)</span>, <span class="math inline">\(\vec{k}\)</span> will always form a right handed system. If you extend the fingers of your right hand along <span class="math inline">\(\vec{i}\)</span> and close them in the direction <span class="math inline">\(\vec{j}\)</span>, the thumb points in the direction of <span class="math inline">\(\vec{k}\)</span>.</p>
+Note that the special vectors, $\vec{i}$, $\vec{j}$, $\vec{k}$ will always form a right handed system. If you extend the fingers
+of your right hand along $\vec{i}$ and close them in the direction $\vec{j}$, the thumb points in the direction of $\vec{k}$.
 
 ```{image} ../Figures/fig4_22.png
-:width: 150px
+:width: 450px
 :align: center
 ```
- 
 </div>
 
-**Geometric Definition of Cross Product**: Let $\vec{u}$ and $\vec{v}$ be two vectors in $\mathbb{R}^3$. Then the
+## Geometric Definition of Cross Product
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Geometric Definition of Cross Product
+</b></font>
+
+Let $\vec{u}$ and $\vec{v}$ be two vectors in $\mathbb{R}^3$. Then the
 cross product, written $\vec{u}\times \vec{v}$, is defined by the
 following two rules:
 
@@ -65,29 +88,31 @@ following two rules:
     $\vec{v}$, $\vec{u}\times\vec{v}$ form a right hand system.
     
 ```{image} ../Figures/fig4_25.png
-:width: 220px
+:width: 240px
 :align: center
 ```
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-Recall that the dot product of two vectors results in a scalar. In contrast, the cross product results in a vector, as the product gives a direction
-as well as magnitude.
-    
+The dot product of two vectors results in a **scalar** (a number) as opposed to the cross product that results in a vector (has direction
+and magnitude).    
 </div>
 
 <div class="alert alert-block alert-success">
-<p>The cross product of the special vectors <span class="math inline">\(\vec{i}\)</span>, <span class="math inline">\(\vec{j}\)</span> and <span class="math inline">\(\vec{k}\)</span> is as follows.</p>
-<p><span class="math display">\[\begin{aligned}
+
+The cross product of the special vectors $\vec{i}$, $\vec{j}$ and $\vec{k}$ is as follows.
+
+\begin{align*}
 \begin{array}{cc}
-\vec{i}\times \vec{j} = \vec{k} & \vec{j}\times \vec{i} = - \vec{k} \\
-\vec{k} \times \vec{i} = \vec{j} & \vec{i}\times \vec{k} = - \vec{j} \\
-\vec{j}\times \vec{k} = \vec{i} & \vec{k}\times \vec{j} = - \vec{i}  \\
-\end{array}\end{aligned}\]</span></p>
-    
+\vec{i}\times \vec{j} = \vec{k}, & \vec{j}\times \vec{i} = - \vec{k} \\
+\vec{k} \times \vec{i} = \vec{j}, & \vec{i}\times \vec{k} = - \vec{j} \\
+\vec{j}\times \vec{k} = \vec{i}, & \vec{k}\times \vec{j} = - \vec{i}  \\
+\end{array}
+\end{align*} 
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -95,19 +120,19 @@ as well as magnitude.
 Remark:
 </b></font>
     
-<p>Not that a vector <span class="math inline">\(\vec{u} =\begin{bmatrix}u_1 &amp; u_2  &amp;u_3\end{bmatrix}^T\)</span> can be written in terms of <span class="math inline">\(\vec{i}\)</span>, <span class="math inline">\(\vec{j}\)</span> and <span class="math inline">\(\vec{k}\)</span> as <span class="math inline">\(\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}\)</span>.</p>
-
-    
+Not that a vector $\vec{u} =\begin{bmatrix}u_1 & u_2  &u_3\end{bmatrix}^T$ can be written in terms of  $\vec{i}$, $\vec{j}$ and $\vec{k}$ as \begin{align*}\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}.\end{align*}     
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: Coordinate Description of Cross Product
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}\)</span> and <span class="math inline">\(\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}\)</span> be two vectors. Then <span class="math display">\[\begin{aligned}
-\vec{u} \times \vec{v} &=\begin{bmatrix}u_2 v_3 -u_3 v_2\\-(u_1v_3 -u_3 v_1 )\\u_1 v_2 -u_2 v_1\end{bmatrix}=(u_2 v_3 -u_3 v_2)\vec{i}-(u_1v_3 -u_3 v_1 )\vec{j}+(u_1 v_2 -u_2 v_1)\vec{k}\end{aligned}\]</span></p>
-    
+Let $\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}$ and $\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}$ be two vectors. Then
+\begin{align*}
+\vec{u} \times \vec{v} &=\begin{bmatrix}u_2 v_3 -u_3 v_2\\-(u_1v_3 -u_3 v_1 )\\u_1 v_2 -u_2 v_1\end{bmatrix}\\
+&=(u_2 v_3 -u_3 v_2)\vec{i}-(u_1v_3 -u_3 v_1 )\vec{j}+(u_1 v_2 -u_2 v_1)\vec{k}
+\end{align*}    
 </div>
 
 We also can express the cross product as the determinant of a matrix,
@@ -121,19 +146,17 @@ We also can express the cross product as the determinant of a matrix,
 &=(u_2 v_3 -u_3 v_2)\vec{i}-(u_1v_3 -u_3 v_1 )\vec{j}+(u_1 v_2 -u_2 v_1)\vec{k}
 \end{align*}
 
-<div class="alert alert-block alert-info">
+## Properties of the Cross Product
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: Properties of the Cross Product
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> be vectors in <span class="math inline">\(\mathbb{R}^3\)</span>, and <span class="math inline">\(k\)</span> a scalar. Then, the following properties of the cross product hold.</p>
-<ol>
-<li><p><span class="math inline">\(\vec{u}\times \vec{v} = -(\vec{v}\times \vec{u})\)</span>, and <span class="math inline">\(\vec{u}\times \vec{u}=0\)</span>,</p></li>
-<li><p><span class="math inline">\((k\vec{u})\times \vec{v} = k(\vec{u}\times \vec{v}) = \vec{u}\times (k\vec{v})\)</span>,</p></li>
-<li><p><span class="math inline">\(\vec{u}\times (\vec{v}+\vec{w}) = \vec{u}\times \vec{v}+\vec{u}\times  \vec{w}\)</span>,</p></li>
-<li><p><span class="math inline">\((\vec{v}+\vec{w})\times \vec{u}=\vec{v}\times \vec{u}+\vec{w}\times \vec{u}\)</span>.</p></li>
-</ol>
-    
+Let $\vec{u}$, $\vec{v}$, $\vec{w}$ be vectors in $\mathbb{R}^3$, and $k$ a scalar. Then, the following properties of the cross product hold.
+1. $\vec{u}\times \vec{v} = -(\vec{v}\times \vec{u})$, and $\vec{u}\times \vec{u}=0$,
+2. $(k\vec{u})\times \vec{v} = k(\vec{u}\times \vec{v}) = \vec{u}\times (k\vec{v})$,
+3. $\vec{u}\times (\vec{v}+\vec{w}) = \vec{u}\times \vec{v}+\vec{u}\times  \vec{w}$,
+4. $(\vec{v}+\vec{w})\times \vec{u}=\vec{v}\times \vec{u}+\vec{w}\times \vec{u}$.
 </div>
 
 <font color='Blue'><b>Example</b></font>: Find $\vec{u}\times \vec{v}$ and $\vec{v}\times \vec{u}$ for the following vectors $\vec{u}=\begin{bmatrix} 2\\0\\-2 \end{bmatrix}$ and
@@ -199,30 +222,23 @@ An important geometrical application of the cross product is as follows. The siz
 :align: center
 ```
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: The Area of a Parallelogram and The Area of a Triangle
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span> be three vectors in <span class="math inline">\(\mathbb{R}^n\)</span>:</p>
-<ul>
-<li><p>Area of a Parallelogram = <span class="math inline">\(\|\vec{u}\times \vec{v}\| = \|\vec{u}\|\|\vec{v}\|\sin(\theta)\)</span>,</p>
+Let $\vec{u}$ and $\vec{v}$ be three vectors in $\mathbb{R}^n$:
+* Area of a Parallelogram = $\|\vec{u}\times \vec{v}\| = \|\vec{u}\|\|\vec{v}\|\sin(\theta)$,
 ```{image} ../Figures/fig4_28.png
-:width: 220px
+:width: 300px
 :align: center
 ```
-
-   
-<li><p>Area of a Triangle = <span class="math inline">\(\dfrac{1}{2}\|\vec{u}\times \vec{v}\| = \dfrac{1}{2}\|\vec{u}\|\|\vec{v}\|\sin(\theta)\)</span>.</p>
+* Area of a Triangle = $\dfrac{1}{2}\|\vec{u}\times \vec{v}\| = \dfrac{1}{2}\|\vec{u}\|\|\vec{v}\|\sin(\theta)$.
 ```{image} ../Figures/fig4_29.png
-:width: 220px
+:width: 240px
 :align: center
 ```
-
- 
-</ul>
-<p>where <span class="math inline">\(\theta\)</span> is the included angle between <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span>.</p>
-    
+where $\theta$ is the included angle between $\vec{u}$ and $\vec{v}$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -279,11 +295,20 @@ Determine whether $\vec{u}=\begin{bmatrix} 1&1&-1 \end{bmatrix}^T$ and $\vec{v}=
 \left|\begin{array}{ccc} \vec{i} & \vec{j} & \vec{k}\\ 1 & 1 & -1\\ 1 & 0 & 2 \end{array}\right|
 =\begin{bmatrix} 2\\ -3\\ -1 \end{bmatrix}\neq \begin{bmatrix} 0\\ 0\\ 0\end{bmatrix}.
 \end{align*}
-$\vec{u}$ and $\vec{v}$ are \underline{not parallel}.
+$\vec{u}$ and $\vec{v}$ are **not parallel**.
 
-**The Box Product**: $$(\vec{u}\times \vec{v})\bullet \vec{w}=\|\vec{u}\times \vec{v}\|\|\vec{w}\|\cos(\theta)$$
+## The Box Product
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Box Product
+</b></font>
 
-<div class="alert alert-block alert-info">
+\begin{align*}
+(\vec{u}\times \vec{v})\bullet \vec{w}=\|\vec{u}\times \vec{v}\|\|\vec{w}\|\cos(\theta).
+\end{align*}
+</div>
+
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: 
 </b></font>
@@ -297,7 +322,7 @@ Proposition:
 <p>Let <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> be three vectors in <span class="math inline">\(\mathbb{R}^n\)</span> that define a parallelepiped. Then the volume of theparallelepiped is the absolute value of the box product, given by <span class="math display">\[|(\vec{u}\times \vec{v})\bullet \vec{w}|.\]</span></p>
 
 ```{image} ../Figures/fig4_30.png
-:width: 350px
+:width: 320px
 :align: center
 ```
 </div>
@@ -373,8 +398,9 @@ Determine whether the three vectors $\begin{bmatrix} 1 & 4 & -7 \end{bmatrix}^T$
 \end{align*}
 
 
-Check https://www.geogebra.org/3d/ftd84v7n for the graph.
-
+<div class="alert alert-danger" role="alert">
+<p>Check out <a href="https://www.geogebra.org/3d/ftd84v7n" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/3d/ftd84v7n</a> for the graph.
+</div>
 ***
 
 <font color='Blue'><b>Example</b></font>:
@@ -440,11 +466,11 @@ Note that the two lines are parallel since
 Therefore,
 \begin{align*}
 \overrightarrow{0Q}&=\overrightarrow{0P_1}+ \overrightarrow{P_1Q}= \overrightarrow{0P_1}+ proj_{\vec{d_1}}{\overrightarrow{P_1P_2}}
-%\\ &
+\\ &
 = \begin{bmatrix} 2\\ 0\\ -1 \end{bmatrix}+
 \frac{\begin{bmatrix} 0\\ 0\\ 3\end{bmatrix}\bullet \begin{bmatrix}1\\ 1\\ 1\end{bmatrix}}{\begin{bmatrix}1\\ 1\\ 1\end{bmatrix}\bullet
  \begin{bmatrix}1\\ 1\\ 1\end{bmatrix}}\begin{bmatrix}1\\ 1\\ 1\end{bmatrix}
-%\\&
+\\&
 =\begin{bmatrix} 2\\ 0\\ -1 \end{bmatrix}+\begin{bmatrix}1\\ 1\\ 1\end{bmatrix}=\begin{bmatrix} 3\\ 1\\ 0 \end{bmatrix}
 \end{align*}
 $Q$ is a point on $L_1$ (why!?). Therefore, the shortest distance is the length of $\overrightarrow{QP_2}$ (or $\overrightarrow{P_2Q}$)

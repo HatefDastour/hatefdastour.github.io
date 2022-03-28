@@ -1,23 +1,27 @@
-# Properties of Linear Transformations
+# 5.3 Properties of Linear Transformations
 
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of Linear Transformations
 </b></font>
     
-<p>Let <span class="math inline">\(T:~\mathbb{R}^n \to \mathbb{R}^m\)</span> be a linear transformation and let <span class="math inline">\(\vec{x}\in \mathbb{R}^n\)</span>.</p>
-<ol>
-<li><p><strong><span class="math inline">\(T\)</span> preserves the zero vector:</strong> <span class="math display">\[\begin{aligned}
-T(0\vec{x}) = 0T(\vec{x}).\quad \mathbb{R}ightarrow \quad  T( \vec{0}) = \vec{0}.\end{aligned}\]</span></p></li>
-<li><p><strong><span class="math inline">\(T\)</span> preserves the negative of a vector:</strong> <span class="math display">\[\begin{aligned}
-T((-1)\vec{x}) = (-1)T(\vec{x}).\quad \mathbb{R}ightarrow \quad T(-\vec{x}) = -T(\vec{x}).\end{aligned}\]</span></p></li>
-<li><p><strong><span class="math inline">\(T\)</span> preserves linear combinations:</strong><br />
-Let <span class="math inline">\(\vec{x}_1 ,\ldots ,\vec{x}_k\)</span> in <span class="math inline">\(\mathbb{R}^n\)</span> and <span class="math inline">\(a_1 ,\ldots ,a_k\)</span> in <span class="math inline">\(\mathbb{R}^n\)</span>. Then if <span class="math inline">\(\vec{y} = a_1 \vec{x}_1 +a_2 \vec{x}_2 +\ldots+a_k\vec{x}_k\)</span>, it follows that <span class="math display">\[\begin{aligned}
+Let $T:~\mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation and let $\vec{x}\in \mathbb{R}^n$.
+
+1. \textbf{$T$ preserves the zero vector:}
+\begin{align*}
+T(0\vec{x}) = 0T(\vec{x}).\quad \Rightarrow \quad  T( \vec{0}) = \vec{0}.
+\end{align*}
+1. \textbf{$T$ preserves the negative of a vector:}
+\begin{align*}
+T((-1)\vec{x}) = (-1)T(\vec{x}).\quad \Rightarrow \quad T(-\vec{x}) = -T(\vec{x}).
+\end{align*}
+1. \textbf{$T$ preserves linear combinations:}\\
+Let $\vec{x}_1 ,\ldots ,\vec{x}_k$ in $\mathbb{R}^n$ and $a_1 ,\ldots ,a_k$ in $\mathbb{R}^n$. Then if $\vec{y} = a_1 \vec{x}_1 +a_2 \vec{x}_2 +\ldots+a_k\vec{x}_k$, it follows that
+\begin{align*}
 T(\vec{y}) = T(a_1 \vec{x}_1 +a_2 \vec{x}_2 +\ldots+a_k\vec{x}_k) =
-a_1 T(\vec{x}_1 )+a_2 T(\vec{x}_2)+\ldots+a_k T(\vec{x}_1).\end{aligned}\]</span></p></li>
-</ol>
-    
+a_1 T(\vec{x}_1 )+a_2 T(\vec{x}_2)+\ldots+a_k T(\vec{x}_1).
+\end{align*}
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -132,24 +136,29 @@ T\left(\vec{x}\right)&=T\left(x_1 \vec{e}_1+x_2 \vec{e}_2\right)=x_1 T\left(\vec
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
-Procedure
+Procedure: Finding the Matrix of Inconveniently Defined Linear Transformation
 </b></font>
     
-<p><strong>Finding the Matrix of Inconveniently Defined Linear Transformation</strong><br />
-Suppose <span class="math inline">\(T:~\mathbb{R}^n \to \mathbb{R}^m\)</span> is a linear transformation. Suppose there exist vectors <span class="math inline">\(\{\vec{x}_1 ,\ldots ,\vec{x}_n \}\)</span> in <span class="math inline">\(\mathbb{R}^n\)</span> such that the inverse of <span class="math inline">\(X=\begin{bmatrix}|  |  \dots  |\\
-\vec{x}_1  \vec{x}_2  \dots  \vec{x}_n\\
-|  |  \dots  | \end{bmatrix}\)</span> exists, and <span class="math inline">\(\{T (\vec{x}_1) ,\ldots ,T (\vec{x}_n) \}\)</span> in <span class="math inline">\(\mathbb{R}^m\)</span>.</p>
-<p>Set <span class="math inline">\(Y=\begin{bmatrix}|  |  \dots  |\\
-T (\vec{x}_1)  T (\vec{x}_2)  \dots  T (\vec{x}_n)\\
-|  |  \dots  | \end{bmatrix}\)</span>. Then, the matrix of <span class="math inline">\(A\)</span> is of the form <span class="math display">\[\begin{aligned}
+Suppose $T:~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation. Suppose there exist vectors $\{\vec{x}_1 ,\ldots ,\vec{x}_n \}$ in $\mathbb{R}^n$
+such that the inverse of
+$X=\begin{bmatrix}| & | & \dots & |\\
+\vec{x}_1 & \vec{x}_2 & \dots & \vec{x}_n\\
+| & | & \dots & | \end{bmatrix}$
+exists, and $\{T (\vec{x}_1) ,\ldots ,T (\vec{x}_n) \}$ in $\mathbb{R}^m$.
+
+Set $Y=\begin{bmatrix}| & | & \dots & |\\
+T (\vec{x}_1) & T (\vec{x}_2) & \dots & T (\vec{x}_n)\\
+| & | & \dots & | \end{bmatrix}$.
+Then, the matrix of $A$ is of the form
+\begin{align*}
 A=Y\,X^{-1}=
-\begin{bmatrix}|  |  \dots  |\\
-T (\vec{x}_1)  T (\vec{x}_2)  \dots  T (\vec{x}_n)\\
-|  |  \dots  | \end{bmatrix}
-\begin{bmatrix}|  |  \dots  |\\
-\vec{x}_1  \vec{x}_2  \dots  \vec{x}_n\\
-|  |  \dots  | \end{bmatrix}^{-1}.\end{aligned}\]</span></p>
-    
+\begin{bmatrix}| & | & \dots & |\\
+T (\vec{x}_1) & T (\vec{x}_2) & \dots & T (\vec{x}_n)\\
+| & | & \dots & | \end{bmatrix}
+\begin{bmatrix}| & | & \dots & |\\
+\vec{x}_1 & \vec{x}_2 & \dots & \vec{x}_n\\
+| & | & \dots & | \end{bmatrix}^{-1}.
+\end{align*}
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -221,10 +230,21 @@ A=\begin{bmatrix}| & | & |\\ T\left(\vec{e}_1\right) & T\left(\vec{e}_2\right) &
 The linear transformation is given by $T (\vec{x}) = A\vec{x}$ for all $\vec{x}\in \mathbb{R}^3$.
 ***
 
-**Equal Transformations**: Let $S$ and $T$ be linear transformations from $\mathbb{R}^n$ to $\mathbb{R}^m$. Then $S = T$ if and only if for every $\vec{x}\in \mathbb{R}^n$,
-$$S(\vec{x}) = T (\vec{x})$$
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Equal Transformations
+</b></font>
 
-**Composition of Linear Transformations**: Suppose $T:\mathbb{R}^k\rightarrow \mathbb{R}^n$ and $S:\mathbb{R}^n\rightarrow \mathbb{R}^m$ are linear transformations. The composition of $S$ and $T$ is
+Let $S$ and $T$ be linear transformations from $\mathbb{R}^n$ to $\mathbb{R}^m$. Then $S = T$ if and only if for every $\vec{x}\in \mathbb{R}^n$,
+$$S(\vec{x}) = T (\vec{x})$$
+</div>
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Composition of Linear Transformations
+</b></font>
+
+Suppose $T:\mathbb{R}^k\rightarrow \mathbb{R}^n$ and $S:\mathbb{R}^n\rightarrow \mathbb{R}^m$ are linear transformations. The composition of $S$ and $T$ is
 $S\circ T: \mathbb{R}^k\rightarrow \mathbb{R}^m,$
 is defined by
 \begin{align*}
@@ -232,18 +252,17 @@ is defined by
 \end{align*}
 
 ```{image} ../Figures/fig5_01.png
-:width: 250px
+:width: 300px
 :align: center
 ```
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Composition of Transformations
 </b></font>
     
-<p>Let <span class="math inline">\(T:~\mathbb{R}^k \to \mathbb{R}^n\)</span> and <span class="math inline">\(S:~\mathbb{R}^n \to \mathbb{R}^m\)</span> be linear transformations such that <span class="math inline">\(T\)</span> is induced by the matrix <span class="math inline">\(A\)</span> and <span class="math inline">\(S\)</span> is induced by the matrix <span class="math inline">\(B\)</span>. Then <span class="math inline">\(S\circ T\)</span> is a linear transformation that is induced by the matrix <span class="math inline">\(BA\)</span>.</p>
-
-
+Let $T:~\mathbb{R}^k \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^m$ be linear transformations such that $T$ is induced by the matrix $A$ and $S$ is induced by the matrix $B$. Then $S\circ T$ is a linear transformation which is induced by the matrix $BA$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -259,7 +278,12 @@ AB=\begin{bmatrix}1 & 1\\ 2 & 0\end{bmatrix}\begin{bmatrix}1 & 0\\ 2 & 1\end{bma
 \end{align*}
 ***
 
-**Inverse of a Transformation**: Let $T:~\mathbb{R}^n \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^n$ be linear transformations. Suppose that for each $\vec{x}\in \mathbb{R}^n$,
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Inverse of a Transformation
+</b></font>
+
+Let $T:~\mathbb{R}^n \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^n$ be linear transformations. Suppose that for each $\vec{x}\in \mathbb{R}^n$,
 \begin{align*}
 (S\circ T)(\vec{x}) =\vec{x} \quad \text{and} \quad (T\circ S)(\vec{x}) =\vec{x}.
 \end{align*}
@@ -268,14 +292,14 @@ Then, $S$ is called an inverse of $T$ and $T$ is called an inverse of $S$. Geome
 :width: 300px
 :align: center
 ```
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Inverse of a Transformation
 </b></font>
     
-<p>Let <span class="math inline">\(T:~\mathbb{R}^n \to \mathbb{R}^n\)</span> n be a linear transformation induced by the matrix <span class="math inline">\(A\)</span>. Then <span class="math inline">\(T\)</span> has an inverse transformation if and only if the matrix <span class="math inline">\(A\)</span> is <u>invertible</u>. In this case, the inverse transformation is unique and denoted <span class="math inline">\(T^{-1}:~\mathbb{R}^n \to \mathbb{R}^n\)</span>. <span class="math inline">\(T^{-1}\)</span> is induced by the matrix <span class="math inline">\(A^{-1}\)</span>.</p>
-    
+Let $T:~\mathbb{R}^n \to \mathbb{R}^n$  n be a linear transformation induced by the matrix $A$. Then $T$ has an inverse transformation if and only if the matrix $A$ is \underline{invertible}. In this case, the inverse transformation is unique and denoted $T^{-1}:~\mathbb{R}^n \to \mathbb{R}^n$. $T^{-1}$ is induced by the matrix $A^{-1}$.    
 </div>
 
 <font color='Blue'><b>Example</b></font>:

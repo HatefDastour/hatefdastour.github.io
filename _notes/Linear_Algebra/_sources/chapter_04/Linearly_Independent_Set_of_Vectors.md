@@ -1,21 +1,29 @@
-# Linearly Independent Set of Vectors
+# 4.10 Linearly Independent Set of Vectors
 
-**Linear Independence in $\mathbb{R}^n$**:
-We call a set $\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}$ of vectors \textbf{linearly independent} if
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Linear Independence in <span class="math inline">\(\mathbb{R}^n\)</span>
+</b></font>
+    
+A set $\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}$ of vectors is **linearly independent** if
 \begin{align*}
 a_1 \vec{u}_1 +a_2\vec{u}_2 +\ldots+ a_k \vec{u}_k = 0
 \end{align*}
 then $a_1 =a_2 = \ldots =a_k = 0.$
+</div>
+
 
 <div class="alert alert-block alert-success">
-<p><strong>Independence Test</strong>:<br />
-To verify that a set <span class="math inline">\(\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}\)</span> of vectors in <span class="math inline">\(\mathbb{R}^n\)</span> is linearly independent, proceed as follows:</p>
-<ol>
-<li><p>Set a linear combination equal to zero: <span class="math inline">\(a_1 \vec{u}_1 +a_2\vec{u}_2 +\ldots+ a_k \vec{u}_k = 0\)</span>.</p></li>
-<li><p>Show that <span class="math inline">\(a_1 =a_2 = \ldots =a_k = 0.\)</span> (that is, the linear combination is trivial).</p></li>
-</ol>
-<p>Of course, if some nontrivial linear combination vanishes, the vectors are not linearly independent (linearly dependent).</p>
-    
+<font size="+1"><b>
+Linearly Independence Test:
+</b></font>
+
+To verify that a set $\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}$ of vectors in $\R^n$ is linearly independent, proceed as follows:
+\begin{enumerate}
+1. Set a linear combination equal to zero: $a_1 \vec{u}_1 +a_2\vec{u}_2 +\ldots+ a_k \vec{u}_k = 0$.
+1. Show that $a_1 =a_2 = \ldots =a_k = 0.$ (that is, the linear combination is trivial).
+
+Of course, if some nontrivial linear combination vanishes, the vectors are not linearly independent (linearly dependent)
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -54,8 +62,7 @@ This means that $a_1=a_2=a_3=0$. Therefore,  these vectors are linearly independ
 Lemma:
 </b></font>
 
-<p>A set of <span class="math inline">\(n\)</span> vectors of length <span class="math inline">\(n\)</span> (a set of <span class="math inline">\(n\)</span> vectors in <span class="math inline">\(\mathbb{R}^n\)</span>) is linearly independent if the matrix with these vectors as columns has a <u>non-zero determinant</u>. The set is of course linearly dependent if the determinant is zero.</p>
- 
+If the matrix with these vectors as columns has a **non-zero determinant**, a set of $n$ vectors of length $n$ (a set of $n$ vectors in $\mathbb{R}^n$) is linearly independent. The set is of course linearly dependent if the determinant is zero.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
