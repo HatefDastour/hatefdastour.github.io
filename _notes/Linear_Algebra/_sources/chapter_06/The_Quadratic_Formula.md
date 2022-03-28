@@ -1,6 +1,4 @@
-
-The Quadratic Formula
-========================
+# 6.4 The Quadratic Formula
 
 Since $i^2=-1$, we can think of as a square root of $-1$. But notice
 that we also have $(-i)^2=i^2=-1$ and so $-i$ is also a square root of

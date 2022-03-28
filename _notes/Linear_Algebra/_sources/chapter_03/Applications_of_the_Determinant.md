@@ -515,15 +515,9 @@ Therefore, $r_0 = 1$, $r_1 = 2$ , $r_2 = 1$, $r_3 = 0$ and $p(x) = x^2+2\,x+1$ .
 p(1) = (1)^2+2(1)+1= 4.
 \end{equation*}
 
-```{image} ../Figures/fig3_00.png
-:width: 250px
-:align: center
-```
-
-<div class="alert alert-danger" role="alert">
-<p>Check out <a href="https://www.desmos.com/calculator/wh28jyfwvp" target="_blank" rel="noopener noreferrer">https://www.desmos.com/calculator/wh28jyfwvp</a> for the graph.
-
-</div>
+<center>
+<iframe src="https://www.desmos.com/calculator/tpnftqinpd?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
 
 ***
 ## Refrences

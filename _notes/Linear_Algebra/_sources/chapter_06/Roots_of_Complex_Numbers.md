@@ -1,6 +1,5 @@
+# 6.3 Roots of Complex Numbers
 
-Roots of Complex Numbers
-========================
 
 A fundamental identity is the formula of De Moivre with which we begin this section.
 

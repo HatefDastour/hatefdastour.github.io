@@ -1,24 +1,20 @@
-# Complex Numbers
+# 6.1 Complex Numbers
 
-Complex numbers have two parts real part and the imaginary part. 
-A complex number is usually represented as $z = a+b\,i$, where $a$ and $b$ are real numbers, and $i$ is a symbol for indicating the imaginary part ($i^2=-1$). The real part of the complex number $z = a+b\,i$ is the real number $a$ and the imaginary part is the real number $b$.
+Complex numbers have two components real part and the imaginary part. A complex number is usually expressed as $z = a+b\,i$, where $a$ and $b$ are real numbers, and $i$ is a symbol for indicating the imaginary part ($i^2=-1$). The real part of the complex number $z = a+b\,i$ is the real number $a$, and the imaginary part is the real number $b$.
 
 
-A Complex number can be represented by the ordered pair. This representation can be handy in plotting this number in the Argand plane. However, here the horizontal axis is called the **real axis**, and the vertical axis is called the **imaginary axis**.
+A Complex number can be expressed by the ordered pair. This representation can be convenient in plotting this number in the Argand plane. However, here the horizontal axis is called the **real axis**, and the vertical axis is called the **imaginary axis**.
 
-```{image} ../Figures/fig6_01.png
-:width: 320px
-:align: center
-```
+<center>
+<iframe src="https://www.desmos.com/calculator/zvu0kgtj3y?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-<p>The fields of most interest will be the familiar field of real numbers, denoted as <span class="math inline">\(\mathbb{R}\)</span>, and the field of complex numbers, denoted as <span class="math inline">\(\mathbb{C}\)</span>.</p>
-
-    
+The field of real numbers denoted as $\mathbb{R}$ and the field of complex numbers denoted $\mathbb{C}$.
 </div>
 
 ## Addition and Subtraction of Complex Numbers
@@ -42,20 +38,19 @@ Now, for two complex numbers $z_1=a+bi$ and $z_2=c+di$, we have
 
 -   $(4-7i) - (6-2i) =  -2-5i$.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: Properties of Addition
 </b></font>
     
-<p>Let <span class="math inline">\(z\)</span>, <span class="math inline">\(w\)</span>, and <span class="math inline">\(v\)</span> be complex numbers.</p>
-<ul>
-<li><p><span class="math inline">\(z + w = w + z\)</span>.</p></li>
-<li><p><span class="math inline">\((z + w) + v = z + (w + v)\)</span>.</p></li>
-<li><p><span class="math inline">\(z + 0 =0+z= z\)</span>.</p></li>
-<li><p>For every <span class="math inline">\(z=a+bi\)</span> there exists a complex number <span class="math inline">\(-z = -a -bi\)</span> such that<br />
-<span class="math inline">\(z + (-z) =(-z)+z=0.\)</span></p></li>
-</ul>
-    
+* $z + w = w + z$. <font color='Blue'>(addition is commutative)</font>
+
+* $(z + w) + v = z + (w + v)$. <font color='Blue'>(addition is associative)</font>
+
+* $z + 0 =0+z= z$. <font color='Blue'>(existence of an additive identity)</font>
+
+* For every $z=a+bi$ there exists a complex number $-z = -a -bi$ such that
+\\$z + (-z) =(-z)+z=0.$ <font color='Blue'>(existence of an additive inverse)</font>
 </div>
 
 If $z=a+bi$ and $w=c+di$, then $z+w=(a+c)+(b+d)i$.
@@ -150,41 +145,45 @@ Therefore, if $z^2=-3+4i$, then $z=1+2i$ or $z=-1-2i$.
 
 ## The Conjugate of a Complex Number
 
-**Conjugate of a Complex Number**: For the complex number $z = a+b\,i$, we define its \textbf{complex conjugate} to be $\overline{z} = a-b\,i$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Conjugate of a Complex Number
+</b></font>
+
+For the complex number $z = a+b\,i$, we define its \textbf{complex conjugate} to be $\overline{z} = a-b\,i$.
 $$\overline{z} = \overline{a+b\,i}=a-b\,i.$$
 
 <font color='Blue'><b>Example</b></font>:
 Conjugate of a Complex Number
+</b></font>
 
 \begin{align*}
 \overline{2+\,i}&=2-\,i,\\
 \overline{i}&=-i,\\
 \overline{1}&=1.
 \end{align*}
+</div>
 
 The geometric interpretation of the complex conjugate is shown in Figure following figure.
 
-```{image} ../Figures/fig6_02.png
-:width: 320px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/uxsbnzbk?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 Some of the properties of the complex conjugate are listed in the following theorem.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of the Conjugate
 </b></font>
     
-<p>Let <span class="math inline">\(z\)</span> and <span class="math inline">\(w\)</span> be complex numbers. Then, the following properties of the conjugate hold.</p>
-<ul>
-<li><p><span class="math inline">\(\overline{z\pm w}=\overline{z}\pm \overline{w}\)</span>,</p></li>
-<li><p><span class="math inline">\(\overline{zw} = \overline{z}\, \overline{w}\)</span>,</p></li>
-<li><p><span class="math inline">\(\overline{\left(\overline{z}\right)} = z\)</span>,</p></li>
-<li><p><span class="math inline">\(\overline{\left(\dfrac{z}{w}\right)}=\dfrac{\overline{z}}{\overline{w}}\)</span>,</p></li>
-<li><p><span class="math inline">\(z\)</span> is real if and only if <span class="math inline">\(\overline{z} = z\)</span>.</p></li>
-</ul>
-    
+Let $z$ and $w$ be complex numbers. Then, the following properties of the conjugate hold.
+
+* $\overline{z\pm w}=\overline{z}\pm \overline{w}$,
+* $\overline{zw} = \overline{z}\, \overline{w}$,
+* $\overline{\left(\overline{z}\right)} = z$,
+* $\overline{\left(\dfrac{z}{w}\right)}=\dfrac{\overline{z}}{\overline{w}}$,
+* $z$ is real if and only if $\overline{z} = z$.
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -192,10 +191,10 @@ Theorem: Properties of the Conjugate
 Remark:
 </b></font>
     
-<p>Let <span class="math inline">\(z=a+b\,i\)</span> be a complex number. Then, <span class="math display">\[\begin{aligned}
-z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=\left(a^2+b^2\right)+\left(ab-ab\right)\,i=a^2+b^2.\end{aligned}\]</span></p>
-
-    
+Let $z=a+b\,i$ be a complex number. Then,
+\begin{align*}
+z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=\left(a^2+b^2\right)+\left(ab-ab\right)\,i=a^2+b^2.
+\end{align*}
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -203,14 +202,15 @@ z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=\left(a^2+b^2\right)+\left(
 Remark:
 </b></font>
     
-<p>The quotient <span class="math inline">\(z=a+b\,i\)</span> divided by <span class="math inline">\(w=c+d\,i\)</span>, where <span class="math inline">\(c^2+d^2\neq0\)</span>, is <span class="math display">\[\begin{aligned}
-\dfrac{z}{w}&amp;=\dfrac{a+b\,i}{c+d\,i}=\dfrac{\left(a+b\,i\right)}{\left(c+d\,i\right)}\times\dfrac{\left(c-d\,i\right)}{\left(c-d\,i\right)}=
+The quotient $z=a+b\,i$ divided by $w=c+d\,i$, where $c^2+d^2\neq0$, is
+\begin{align*}
+\dfrac{z}{w}&=\dfrac{a+b\,i}{c+d\,i}=\dfrac{\left(a+b\,i\right)}{\left(c+d\,i\right)}\times\dfrac{\left(c-d\,i\right)}{\left(c-d\,i\right)}=
 \dfrac{\left(a+b\,i\right)\left(c-d\,i\right)}{\left(c+d\,i\right)\left(c-d\,i\right)}=
 \dfrac{\left(a+b\,i\right)\left(c-d\,i\right)}{c^2+d^2}
-\\ &amp;
+\\ &
 =\dfrac{1}{c^2+d^2}\left(a+b\,i\right)\left(c-d\,i\right)=
-\left(\dfrac{ac+bd}{c^2+d^2}\right)+\left(\dfrac{bc-ad}{c^2+d^2}\right)\,i\end{aligned}\]</span></p>
-    
+\left(\dfrac{ac+bd}{c^2+d^2}\right)+\left(\dfrac{bc-ad}{c^2+d^2}\right)\,i
+\end{align*}
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -227,14 +227,19 @@ Remark:
 \end{array}
 \end{align*}
 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Inverse of a Complex Number
+</b></font>
 
-**Inverse of a Complex Number**: Let $z=a+b\,i$ be a complex number. Then the multiplicative inverse of $z$, written $z^{-1}$ exists if and only if $a^2 +b^2 \neq 0$ and is given by
+Let $z=a+b\,i$ be a complex number. Then the multiplicative inverse of $z$, written $z^{-1}$ exists if and only if $a^2 +b^2 \neq 0$ and is given by
 \begin{align*}
 z^{-1}&=\frac{1}{a+b\,i}=\frac{1}{\left(a+b\,i\right)}\times\frac{\left(a-b\,i\right)}{\left(a-b\,i\right)}
 =\frac{\left(a-b\,i\right)}{\left(a+b\,i\right)\left(a-b\,i\right)}=\frac{1}{a^2+b^2}\left(a-b\,i\right)
 \\ &
 =\frac{a}{a^2+b^2}-\frac{b}{a^2+b^2}i.
 \end{align*}
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 When $z = 2 + 6i$, $z^{-1}$ is defined, and
@@ -255,26 +260,20 @@ its distance from the origin.
 |z|=|a+b\,i| = \sqrt{a^2+b^2}.
 \end{align*}
 
+<center>
+<iframe src="https://www.geogebra.org/classic/uxsbnzbk?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
-```{image} ../Figures/fig6_03.png
-:width: 320px
-:align: center
-```
-
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of the Modulus
 </b></font>
     
-<p>Let <span class="math inline">\(z\)</span> and <span class="math inline">\(w\)</span> be complex numbers.</p>
-<ul>
-<li><p><span class="math inline">\(z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=a^2+ab\,i-ab\,i-b\,i^2=a^2+b^2=|z|^2\)</span>.</p></li>
-<li><p><span class="math inline">\(\dfrac{1}{z}= \dfrac{\overline{z}}{|z|^2}\)</span>.</p></li>
-<li><p><span class="math inline">\(|z|\geq 0\)</span> for all <span class="math inline">\(z\)</span>.</p></li>
-<li><p><span class="math inline">\(|z|=0\)</span> if and only if <span class="math inline">\(z=0\)</span>.</p></li>
-<li><p><span class="math inline">\(\dfrac{z}{w}=\dfrac{z}{w}\dfrac{\overline{w}}{\overline{w}}=\dfrac{z\overline{w}}{|w|^2},\)</span></p></li>
-</ul>
-    
+* $z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=a^2+ab\,i-ab\,i-b\,i^2=a^2+b^2=|z|^2$.
+* $\dfrac{1}{z}= \dfrac{\overline{z}}{|z|^2}$.
+* $|z|\geq 0$ for all $z$.
+* $|z|=0$ if and only if $z=0$.
+* $\dfrac{z}{w}=\dfrac{z}{w}\dfrac{\overline{w}}{\overline{w}}=\dfrac{z\overline{w}}{|w|^2}.$  
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -284,20 +283,20 @@ Theorem: Properties of the Modulus
 
 3.  $|i|= \sqrt{1^2}=1$.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
     
-<ol>
-<li><p>For complex numbers <span class="math inline">\(z=a+b\,i\)</span> and <span class="math inline">\(w=c+d\,i\)</span>, <span class="math display">\[|zw|=|z||w|.\]</span></p></li>
-<li><p>For complex numbers <span class="math inline">\(z=a+b\,i\)</span> and <span class="math inline">\(w=c+d\,i\)</span> such that <span class="math inline">\(c^2+d^2\neq0\)</span> <span class="math display">\[\left|\frac{z}{w}\right|=\frac{|z|}{|w|}.\]</span></p></li>
-<li><p>For complex numbers <span class="math inline">\(z=a+b\,i\)</span> and <span class="math inline">\(c\in \mathbb{R}\)</span>, <span class="math display">\[|cz|=|c||z|.\]</span></p></li>
-</ol>
-    
+* For complex numbers $z=a+b\,i$ and $w=c+d\,i$,
+$$|zw|=|z||w|.$$
+* For complex numbers $z=a+b\,i$ and $w=c+d\,i$ such that $c^2+d^2\neq0$
+$$\left|\frac{z}{w}\right|=\frac{|z|}{|w|}.$$
+* For complex numbers $z=a+b\,i$ and $c\in \mathbb{R}$,
+$$|cz|=|c||z|.$$
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Triangle Inequality
 </b></font>

@@ -1,13 +1,10 @@
-
-Polar Form
-========================
+# 6.2 Polar Form
 
 Let $z=a+bi$ be a complex number, and let $r$ be the distance from $z$ to the origin, i.e. $r=|z|=\sqrt{a^2+b^2}$. Moreover, let $\theta$ represent the angle that the line through $0$ and $z$ makes with the positive $x$-axis (measured clockwise). See the following diagram. Then $\theta$ is an angle defined by $\cos\theta = \dfrac{a}{r}$ and $\sin\theta=\dfrac{b}{r}$.
 
-```{image} ../Figures/fig6_04.png
-:width: 250px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/jqkh34yt?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 In addition, we know that any complex number $z=a+b\,i$ can be considered as a point $(a,b)$. Any such point can be represented by polar coordinates $(r,\theta)$ with $r\geq 0$.
 
@@ -18,36 +15,46 @@ z=r\cos\theta +r\sin\theta i=r(\cos\theta + i\sin\theta).
 \end{align*}
 
 
-**Polar Form of a Complex Number**:
+<font color='Blue'><b>Example</b></font>:
+Polar Form of a Complex Number
+</b></font>
+
 Let $z$ be a complex number with $|z|=r$ and $\arg z=\theta$. Then
 \begin{align*}
 z=re^{i\theta} =r(\cos\theta + i\sin\theta )
 \end{align*}
-is called **a polar form**
-of $z$.
+is called **a polar form** of $z$.
+</div>
 
 We have
 \begin{align*}
 a+b\,i=\left(r\,\cos(\theta)\right)+\left(r\,\sin(\theta)\right)i.
 \end{align*}
 Thus, we can write any complex number in the form
+
 <div class="alert alert-block alert-success">
 <p><span class="math display">\[z=r\left(\cos(\theta)+i\,\sin(\theta)\right)\]</span></p>
 
 </div>
 
 where $\theta$ is the argument of $z$.
-***
-**Euler's formula**: The identity
+
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Euler's formula
+</b></font>
+
+The identity
 \begin{align*}
 e^{i\theta}=\cos(\theta)+i\,\sin(\theta)
 \end{align*}
 called **Euler's formula**.
-***
+</div>
+
 The polar form of the complex number $z = a+b\,i = r(\cos(\theta) +i\sin(\theta) )$ is for convenience written as:
 
 <div class="alert alert-block alert-success">
-<p><span class="math display">\[z =r\,e^{i\theta}\]</span></p>
+<p><span class="math display">\[z =re^{i\theta}\]</span></p>
 </div>
 
 where $\theta$ is the argument of $z$.
@@ -70,26 +77,37 @@ This angle $\theta$ is referred as the **argument** of $z$ and is
 denoted $\arg(z)$. Note that is not unique; any two arguments of differ
 by an integer multiple of $2\pi$. Therefore, we often speak of the
 **principal argument** of $z$. This is the unique angle
-$\theta \in (- \pi , \pi]$ such that $$\begin{aligned}
+$\theta \in (- \pi , \pi]$ such that
+\begin{align*}
 \begin{cases}
 \cos(\theta)=\dfrac{a}{r},\\
 \sin(\theta)=\dfrac{b}{r}.
-\end{cases}\end{aligned}$$
+\end{cases}
+\end{align*}
 
-**Principal Argument**: Let $z$ be a complex number with $|z|=r$.
-The \textbf{principal argument} of $z$
-is the unique angle $\theta=\arg (z)$ (measured in radians) such that
+
+<font color='Blue'><b>Example</b></font>:
+Principal Argument
+</b></font>
+
+Let $z$ be a complex number with $|z|=r$. The \textbf{principal argument} of $z$ is the unique angle $\theta=\arg (z)$ (measured in radians) such that
 \begin{align*}
 -\pi < \theta \leq \pi.
 \end{align*}
+</div>
 
-**Polar Form of a Complex Number**: Let $z = a+b\,i$ be a complex number. Then the polar form of $z$ is written as $$z = r\,e^{i\theta}$$
+<font color='Blue'><b>Example</b></font>:
+Polar Form of a Complex Number
+</b></font>
+
+Let $z = a+b\,i$ be a complex number. Then the polar form of $z$ is written as
+\begin{align*}z = re^{i\theta}\end{align*}
 where $r = \sqrt{a^2+b^2}$ and $\theta$ is the (principal) argument of $z$.
+</div>
 
-```{image} ../Figures/fig6_05.png
-:width: 260px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/wdrrje5w?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 <font color='Blue'><b>Example</b></font>:
 Convert the number $z = -2 +2\sqrt{3}i$ to polar form.
@@ -109,10 +127,10 @@ r=\sqrt{(-2)^2 + (2\sqrt{3})^2}
 There are two approaches to finding an argument, $\theta$.
 
 One is to graph $-2+2\sqrt{3}$ in the complex plane.
-```{image} ../Figures/fig6_14.png
-:width: 260px
-:align: center
-```
+
+<center>
+<iframe src="https://www.geogebra.org/classic/bpj9qvay?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 The triangle sitting on the negative half of the real axis has sides of length $2$, $2\sqrt 3$, and $4$;
 
@@ -138,8 +156,8 @@ $z$ can be written in polar form as $z=4e^{i(2\pi/3)}.$
 ***
 <font color='Blue'><b>Example</b></font>:
 
-a.  Let $z = -\frac{1}{2}+\frac{\sqrt{3}}{2}i$ be a complex number.
-    Write $z$ in the polar form $z =r\,e^{i\theta}$.
+a.  Let $z = -\dfrac{1}{2}+\dfrac{\sqrt{3}}{2}i$ be a complex number.
+    Write $z$ in the polar form $z =re^{i\theta}$.
 
 b.  Let $z = 2\,e^{i\pi/6}$. Write $z$ in the standard (Cartesian) form
     $z = a+b\,i$.

@@ -181,11 +181,8 @@ and
 =\sqrt{\left(1+4+4\right)^2}=\sqrt{9}=3.
 \end{align*}
 
-Check  for the graph.
-
-
 <div class="alert alert-danger" role="alert">
-<p>Check out <a href="https://www.geogebra.org/3d/ewdr2y6z" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/3d/ewdr2y6z</a> for the graph.
+<p>Check out <a href="https://www.geogebra.org/m/ftd84v7n" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/m/ftd84v7n</a> for the graph.
 
 </div>
 

@@ -217,6 +217,8 @@ A system of equations is called **inconsistent** when there is no solution for t
 
 The graph of $ax+by+cz = d$ (it has hree variables) is a plane.
 
+<center>
+
 ```{figure} ../Figures/fig1_02.jpg
 ---
 scale: 60%
@@ -224,6 +226,8 @@ align: center
 ---
 a) three planes intersecting in a line, b) three planes intersecting in a point, c) three planes with no intersection, d) three planes with no intersection
 ```
+
+</center>
 
 This graphical method has its limitations. When more than three variables are involved, we can not graph the planes anymore.
 
