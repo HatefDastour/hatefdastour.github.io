@@ -14,8 +14,9 @@ Therefore,
 z=r\cos\theta +r\sin\theta i=r(\cos\theta + i\sin\theta).
 \end{align*}
 
-
-<font color='Blue'><b>Example</b></font>:
+## Polar Form of a Complex Number
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
 Polar Form of a Complex Number
 </b></font>
 
@@ -31,31 +32,28 @@ We have
 a+b\,i=\left(r\,\cos(\theta)\right)+\left(r\,\sin(\theta)\right)i.
 \end{align*}
 Thus, we can write any complex number in the form
-
-<div class="alert alert-block alert-success">
-<p><span class="math display">\[z=r\left(\cos(\theta)+i\,\sin(\theta)\right)\]</span></p>
-
-</div>
-
+\begin{align*}
+z=r\left(\cos(\theta)+i\,\sin(\theta)\right)
+\end{align*}
 where $\theta$ is the argument of $z$.
+
+## Euler's formula
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Euler's formula
 </b></font>
 
-The identity
 \begin{align*}
 e^{i\theta}=\cos(\theta)+i\,\sin(\theta)
 \end{align*}
-called **Euler's formula**.
 </div>
 
 The polar form of the complex number $z = a+b\,i = r(\cos(\theta) +i\sin(\theta) )$ is for convenience written as:
 
-<div class="alert alert-block alert-success">
-<p><span class="math display">\[z =re^{i\theta}\]</span></p>
-</div>
+\begin{align*}
+z =re^{i\theta}
+\end{align*}
 
 where $\theta$ is the argument of $z$.
 
@@ -63,21 +61,16 @@ where $\theta$ is the argument of $z$.
 Find the polar form for the number $z=1$.
 
 <font color='Green'><b>Solution</b></font>: 
-To convert $z$ to polar form, we need to find $r$ and $\theta$
-so that $1=re^{i\theta}$.
+To convert $z$ to polar form, we need to find $r$ and $\theta$ so that $1=re^{i\theta}$.
 
 Now $r=|z|=\sqrt{1^2}=1$, and $\theta=0$ is an argument for $z=1$. However, we may also write
 \begin{align*}
 1=e^{2\pi i}, 1=e^{-2\pi i}, e^{4\pi i}, e^{6\pi i}, \ldots
 \end{align*}
-Since sine and cosine have periodicity $2\pi$, we may add (or subtract)
-multiples of $2\pi$ to any argument.
+Since sine and cosine have periodicity $2\pi$, we may add (or subtract) multiples of $2\pi$ to any argument.
 
-This angle $\theta$ is referred as the **argument** of $z$ and is
-denoted $\arg(z)$. Note that is not unique; any two arguments of differ
-by an integer multiple of $2\pi$. Therefore, we often speak of the
-**principal argument** of $z$. This is the unique angle
-$\theta \in (- \pi , \pi]$ such that
+## Principal Argument
+This angle $\theta$ is referred as the **argument** of $z$ and is denoted $\arg(z)$. Note that is not unique; any two arguments of differ by an integer multiple of $2\pi$. Therefore, we often speak of the **principal argument** of $z$. This is the unique angle $\theta \in (- \pi , \pi]$ such that
 \begin{align*}
 \begin{cases}
 \cos(\theta)=\dfrac{a}{r},\\
@@ -85,8 +78,8 @@ $\theta \in (- \pi , \pi]$ such that
 \end{cases}
 \end{align*}
 
-
-<font color='Blue'><b>Example</b></font>:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
 Principal Argument
 </b></font>
 
@@ -96,7 +89,8 @@ Let $z$ be a complex number with $|z|=r$. The \textbf{principal argument} of $z$
 \end{align*}
 </div>
 
-<font color='Blue'><b>Example</b></font>:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
 Polar Form of a Complex Number
 </b></font>
 
@@ -154,6 +148,7 @@ By graphing the point $(-\frac{1}{2}, \frac{\sqrt{3}}{2})$,
 we again determine that $\theta=\frac{2\pi}{3}$, and thus
 $z$ can be written in polar form as $z=4e^{i(2\pi/3)}.$
 ***
+
 <font color='Blue'><b>Example</b></font>:
 
 a.  Let $z = -\dfrac{1}{2}+\dfrac{\sqrt{3}}{2}i$ be a complex number.
@@ -178,6 +173,11 @@ We know that
 $\theta \in (- \pi , \pi]$;
 therefore,
 $\theta=\frac{2\pi}{3}$, and $z = e^{i\,2\pi/3}$.
+
+
+<center>
+<iframe src="https://www.geogebra.org/classic/e7rvst7c?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 b.  We have
 \begin{align*}

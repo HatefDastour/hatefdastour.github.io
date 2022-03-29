@@ -94,10 +94,9 @@ $\vec{u}_{\parallel}$ and $\vec{u}_{\perp}$ such that,
 \end{align*}
 We also can verify that $\vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}$.
 
-<div class="alert alert-danger" role="alert">
-<p>Check out <a href="https://www.geogebra.org/classic/nqdjwxau" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/classic/nqdjwxau</a> for the graph.
-
-</div>
+<center>
+<iframe src="https://www.geogebra.org/classic/p7wqv39m?embed" width="600" height="400" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 <font color='Blue'><b>Example</b></font>:
 Consider $P=(2,2,-1)$ and the line

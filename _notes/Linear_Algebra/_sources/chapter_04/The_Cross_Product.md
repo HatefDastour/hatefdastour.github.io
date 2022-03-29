@@ -397,10 +397,10 @@ Determine whether the three vectors $\begin{bmatrix} 1 & 4 & -7 \end{bmatrix}^T$
 \quad \Rightarrow\quad \text{The three points lie in the same plane.}
 \end{align*}
 
+<center>
+<iframe src="https://www.geogebra.org/classic/eb8s7rza?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
-<div class="alert alert-danger" role="alert">
-<p>Check out <a href="https://www.geogebra.org/3d/ftd84v7n" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/3d/ftd84v7n</a> for the graph.
-</div>
 ***
 
 <font color='Blue'><b>Example</b></font>:

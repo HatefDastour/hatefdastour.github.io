@@ -171,7 +171,7 @@ Since $\overrightarrow{PQ}$  and $\vec{d}$ are perpendicular (the angle between 
 \overrightarrow{PQ}\bullet\vec{d}=0.
 \end{align*}
 It follows that,
-\begin{align*}(-1+2t_0)(2)+(-1-t_0)(-1)+(4-2t_0)(-2)=0. \quad \mathbb{R}ightarrow \quad 9\,t_{0}-9=0.\end{align*}
+\begin{align*}(-1+2t_0)(2)+(-1-t_0)(-1)+(4-2t_0)(-2)=0. \quad \Rightarrow \quad 9\,t_{0}-9=0.\end{align*}
 Hence, $t_0=1$. As a result,
 \begin{align*}Q=(2+2(1),1-1,3-2(1))=\left(4, 0, 1\right),\end{align*}
 and
@@ -181,10 +181,10 @@ and
 =\sqrt{\left(1+4+4\right)^2}=\sqrt{9}=3.
 \end{align*}
 
-<div class="alert alert-danger" role="alert">
-<p>Check out <a href="https://www.geogebra.org/m/ftd84v7n" target="_blank" rel="noopener noreferrer">https://www.geogebra.org/m/ftd84v7n</a> for the graph.
+<center>
+<iframe src="https://www.geogebra.org/classic/ybnphwwm?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
-</div>
 
 ***
 ## Refrences

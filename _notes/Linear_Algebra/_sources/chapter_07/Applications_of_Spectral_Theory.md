@@ -1,4 +1,6 @@
-# Applications of Spectral Theory
+# 7.3 Applications of Spectral Theory
+
+## 7.3.1 Raising a Matrix to a High Power
 
 Suppose we have a matrix $A$ and we want to find $A^{20}$. You could try to multiply A with itself 20 times; however, this is computationally extremely intensive and it is not recommended. We also can diagonalization to compute high powers of a matrix relatively easily.
 
@@ -141,23 +143,40 @@ A^{10}=PD^{10}P^{-1}&=
 \end{align*}
 ***
 
-## Raising a Symmetric Matrix to a High Power
+## 7.3.2 Raising a Symmetric Matrix to a High Power
 
-**Symmetric and Skew Symmetric Matrices**: $A$ real $n\times n$ matrix $A$, is symmetric if $A^T = A$. If $A = -A^T$, then $A$ is called skew symmetric.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Symmetric and Skew Symmetric Matrices
+</b></font>
+    
+$A$ real $n\times n$ matrix $A$, is symmetric if $A^T = A$. If $A = -A^T$, then $A$ is called skew symmetric.
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of Trace
 </b></font>
     
-The eigenvalues of any real symmetric matrix are real.
-    
+The eigenvalues of any real symmetric matrix are real. 
 </div>
 
-**Similar Matrices**:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Similar Matrices
+</b></font>
+    
 If $A$ and $B$ be $n\times n$, we say that $A$ and $B$ are similar, and write $A \sim B$, if $B = P^{-1} AP$ for some invertible matrix $P$.
+</div>
 
-**Orthogonal Matrices**: $A$ real $n\times n$ matrix $U$ is called an orthogonal matrix if $UU^T =U^T U = I$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Orthogonal Matrices
+</b></font>
+    
+$A$ real $n\times n$ matrix $U$ is called an orthogonal matrix if $UU^T =U^T U = I$.
+</div>
+
 
 <font color='Blue'><b>Example</b></font>:
 Show the matrix $U =\left[\begin{array}{ccc} 1 & 0 & 0\\ 0 & 0 & -1\\ 0 & -1 & 0 \end{array}\right]$ is orthogonal.
@@ -175,14 +194,12 @@ U^T U = \left[\begin{array}{ccc} 1 & 0 & 0\\ 0 & 0 & -1\\ 0 & -1 & 0 \end{array}
 Hence, this matrix is orthogonal.
 ***
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Determinant of Orthogonal Matrices
 </b></font>
     
-<p>Suppose <span class="math inline">\(U\)</span> is an orthogonal matrix. Then, <span class="math inline">\(\det(U) = 1\)</span> or <span class="math inline">\(\det(U) = -1\)</span>.</p>
-
-    
+Suppose $U$ is an orthogonal matrix. Then, $det(U) = 1$ or $det(U) = -1$.  
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -191,30 +208,42 @@ We can see that
 \det(U)=\left|\begin{array}{ccc} 1 & 0 & 0\\ 0 & 0 & -1\\ 0 & -1 & 0 \end{array}\right|=-1.
 \end{align*}
 
-We know that a matrix $A$ is called symmetric if $A = A^T$. If the
-matrix $A$ is symmetric, then we can actually find such a matrix $P$
-that is an orthogonal matrix of eigenvectors. Thus $P^{-1}$ is simply
-its transpose $P^T$, and $P^T AP$ is diagonal. When this happens we say
+We know that a matrix $A$ is called symmetric if $A = A^T$. If the matrix $A$ is symmetric, then we can actually find such a matrix $P$ that is an orthogonal matrix of eigenvectors. Thus $P^{-1}$ is simply its transpose $P^T$, and $P^T AP$ is diagonal. When this happens we say
 that $A$ is **orthogonally diagonalizable**.
 
-**orthogonally diagonalizable**: An $n\times n$ matrix $A$ is said to be **orthogonally diagonalizable**
-when an orthogonal matrix $P$ can be found such that
-$P^{-1} AP = P^T AP$ is diagonal.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Orthogonally Diagonalizable
+</b></font>
+    
+An $n\times n$ matrix $A$ is said to be **orthogonally diagonalizable** when an orthogonal matrix $P$ can be found such that $P^{-1} AP = P^T AP$ is diagonal.
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-<p>For the next example and similar examples for symmetric matrices, we need to <strong>normalize</strong> eigenvectors. In this course, we usually normalize eigenvectors when it comes to using <span class="math inline">\(D=P^T AP\)</span> instead of <span class="math inline">\(D=P^{-1} AP\)</span>.</p>
-    
+For the next example and similar examples for symmetric matrices, we need to \textbf{normalize} eigenvectors. In this course, we usually normalize eigenvectors when it comes to using $D=P^T AP$ instead of $D=P^{-1} AP$.
 </div>
 
-## Markov Matrices
+## 7.3.3 Markov Matrices
 
-**Markov chain**: A Markov chain is such an evolving system in which the next state only depends on its present state (not the earlier history of the system).
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Markov Chain
+</b></font>
+    
+A Markov chain is such an evolving system in which the next state only depends on its present state (not the earlier history of the system).
+</div>
 
-**Transition Matrix**: A transition Matrix comprised of non-negative numbers which the sum of each column is equal to one.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Transition Matrix
+</b></font>
+    
+A transition Matrix comprised of non-negative numbers which the sum of each column is equal to one.
+</div>
 
 This matrix matrix can be shown as $A =[a_{ij}]_{n\times n}$ where $a_{ij}$ denotes the probability of transition to state $i$ from state $j$.
 
@@ -223,12 +252,17 @@ This matrix matrix can be shown as $A =[a_{ij}]_{n\times n}$ where $a_{ij}$ deno
 :align: center
 ```
 
-**State Vector**: Let $x_{in}$ denote the probability that the system is in state $i$ after $m$ transitions. The $n\times 1$ matrices
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+State Vector
+</b></font>
+    
+Let $x_{in}$ denote the probability that the system is in state $i$ after $m$ transitions. The $n\times 1$ matrices
 \begin{align*}
 X_n=\begin{bmatrix}x_{1n}\\x_{2n}\\ \vdots \\ x_{mn}\end{bmatrix}.
 \end{align*}
-
-$X_n$ is called the **state vector at period** $n$. Similarly, $X_0$ is called the **initial state vector** for the Markov chain.
+is called the **state vector at period** $n$. Similarly, $X_0$ is called the **initial state vector** for the Markov chain.
+</div>
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
@@ -239,7 +273,7 @@ The transition matrix also is known as the Migration matrix.
     
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem:
 </b></font>
@@ -280,6 +314,7 @@ Note that the total population is **unchanged**, it simply migrates
 within the given locations.
 ***
 
+### Simplified Weather Model
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
 Simplified Weather Model:
@@ -405,36 +440,25 @@ Note that we only need location $3$ at $n=3$ ($x_{{\color{blue}3}{\color{red}3}}
 
 When the state vector remains unchanged from a step to the next step, this vector is called the **Steady State Vector**.
 
-<div class="alert alert-block alert-success">
-<font size="+1"><b>
-Steady State Vector:
-</b></font>
-
-<p><span class="math display">\[\begin{aligned}
-X_s = AX_s\end{aligned}\]</span> where <span class="math inline">\(X_s\)</span> has positive entries which have the same sum as the entries of <span class="math inline">\(X_0\)</span>. As n increases, the state vectors <span class="math inline">\(X_n\)</span> will approach <span class="math inline">\(X_s\)</span>.</p>
-
-
-    
-</div>
+\begin{align*}
+X_s = AX_s
+\end{align*}
+where $X_s$ has positive entries which have the same sum as the entries of $X_0$. As n increases, the state vectors $X_n$ will approach $X_s$.  
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
     
-<p>Note that the condition in above theorem can be written as <span class="math inline">\((I-A)X_s = 0\)</span>, representing a homogeneous system of equations (similar to eigenvectors corresponding <span class="math inline">\(\lambda=1\)</span>).</p>
-
-    
+Note that the condition in above theorem can be written as $(I-A)X_s = 0$, representing a homogeneous system of equations (similar to eigenvectors corresponding $\lambda=1$).
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition: Eigenvalues of a Transition Matrix
 </b></font>
 
-<p>Let <span class="math inline">\(A = [a_{ij}]\)</span> be a transition (or migration) matrix. Then <span class="math inline">\(\lambda=1\)</span> is always an eigenvalue for <span class="math inline">\(A\)</span>.</p>
-
-    
+Let $A = [a_{ij}]$ be a transition (or migration) matrix. Then $\lambda=1$ is always an eigenvalue for $A$.    
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -483,12 +507,17 @@ X_s= 200 \left[\begin{array}{c}1 \\ 1 \\ 1 \end{array}\right]=\left[\begin{array
 \end{align*}
 ***
 
-## Dynamical Systems
+### Dynamical Systems
 
 If $A$ is an $n\times n$ matrix, a sequence $V_0, V_1 , V_2 , \ldots$ of columns in $\mathbb{R}^n$ is called a linear dynamical system if $v_0$ is specified and
 $V_1, V_2 ,\ldots$ are given by the matrix recurrence $V_{n+1}= AV_n$ for each $n \geq 0$.
 
-**Matrix Recurrence**: Suppose a dynamical system is given by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Matrix Recurrence
+</b></font>
+    
+Suppose a dynamical system is given by
 \begin{align*}
 \begin{cases}
 x_{n+1} = ax_n +by_n,\\
@@ -497,24 +526,27 @@ y_{n+1} = cx_n +dy_n.
 \end{align*}
 This system can be expressed as $V_{n+1} = AV_n$ where $V_n =\begin{bmatrix}x_{n}\\y_{n}\end{bmatrix}$ and
 $A =\begin{bmatrix}a & b\\c & d\end{bmatrix}$.
+</div>
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
 Solving a Dynamical System:
 </b></font>
 
-<p>Suppose a dynamical system is given by <span class="math display">\[\begin{aligned}
+Suppose a dynamical system is given by
+\begin{align*}
 \begin{cases}
 x_{n+1} = ax_n +by_n,\\
 y_{n+1} = cx_n +dy_n.
-\end{cases}\end{aligned}\]</span> Given initial conditions <span class="math inline">\(x_0\)</span> and <span class="math inline">\(y_0\)</span> , the solutions to the system are found as follows:</p>
-<ol>
-<li><p>Express the dynamical system in the form <span class="math inline">\(V_{n+1} = AV_n\)</span>.</p></li>
-<li><p>Diagonalize <span class="math inline">\(A\)</span> to be written as <span class="math inline">\(A = PDP^{-1}\)</span>.</p></li>
-<li><p>Then <span class="math inline">\(V_{n} = \underbrace{PD^nP^{-1}}_{A^n}V_0\)</span> where <span class="math inline">\(V_0\)</span> is the vector containing the initial conditions.</p></li>
-<li><p>If given specific values for <span class="math inline">\(n\)</span>, substitute into this equation. Otherwise, find a general solution for <span class="math inline">\(n\)</span>.</p></li>
-</ol>
-    
+\end{cases}
+\end{align*}
+Given initial conditions $x_0$ and $y_0$ , the solutions to the system are found as follows:
+
+* Express the dynamical system in the form $V_{n+1} = AV_n$.
+* Diagonalize $A$ to be written as $A = PDP^{-1}$.
+* Then $V_{n} = \underbrace{PD^nP^{-1}}_{A^n}V_0$ where $V_0$ is the vector containing the initial conditions.
+* If given specific values for $n$, substitute into this equation. Otherwise, find a general solution
+for $n$. 
 </div>
 
 <font color='Blue'><b>Example 7.42 - from the textbook</b></font>:

@@ -1,9 +1,8 @@
 # 6.4 The Quadratic Formula
 
-Since $i^2=-1$, we can think of as a square root of $-1$. But notice
-that we also have $(-i)^2=i^2=-1$ and so $-i$ is also a square root of
-$-1$. We say that is the **principal square root** of $-1$ and write
-$\sqrt{-1}=i$. In general, if $c$ is any positive number, we write
+
+Since $i^2=-1$, we can think of as a square root of $-1$. But notice that we also have $(-i)^2=i^2=-1$ and so $-i$ is also a square root of
+$-1$. We say that is the **principal square root** of $-1$ and write $\sqrt{-1}=i$. In general, if $c$ is any positive number, we write
 \begin{align*}
 \sqrt{-c}=\sqrt{c}i
 \end{align*}
@@ -42,14 +41,12 @@ x=\frac{-1\pm\sqrt{1^2-4(1)(1)}}{2(1)}=\frac{-1\pm\sqrt{1-4}}{2}=\frac{-1\pm\sqr
 \end{cases}
 \end{align*}
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Fundamental Theorem of Algebra
 </b></font>
     
-<p>Every polynomial of positive degree with complex coefficients has a complex root.</p>
-
-
+Every polynomial of positive degree with complex coefficients has a complex root.
 </div>
 
 <font color='Blue'><b>Example</b></font>:

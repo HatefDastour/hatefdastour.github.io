@@ -1,16 +1,18 @@
+# 7.2 Diagonalization
 
-Diagonalization
-==============================
+## 7.2.1 Similarity and Diagonalization
 
-Similarity and Diagonalization
-----------------------------------
-
-**Trace of a Matrix**:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Trace of a Matrix
+</b></font>
+    
 The trace of an $n\times n$ matrix $A$ is defined to be the sum of the
 main diagonal elements of $A$
 \begin{align*}
 tr(A) = \sum_{i=1}^{n}a_{ii}.
 \end{align*}
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Find the trace of a matrix of $A=\left[\begin{array}{ccc} 1 & 1 & 2\\ 3 & 4 & 5\\ 1 & 2 & 3 \end{array}\right]$.
@@ -21,51 +23,55 @@ The trace of $A$:
 tr(A)=1+4+3=8.
 \end{align*}
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of Trace
 </b></font>
     
-<p>For <span class="math inline">\(n\times n\)</span> matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, and any <span class="math inline">\(k \in \mathbb{R}\)</span>,</p>
-<ol>
-<li><p><span class="math inline">\(tr (A+B) = tr (A)+ tr (B)\)</span>,</p></li>
-<li><p><span class="math inline">\(tr (kA) = k\, tr (A)\)</span></p></li>
-<li><p><span class="math inline">\(tr (AB) = tr (BA)\)</span></p></li>
-</ol>
+For $n\times n$ matrices $A$ and $B$, and any $k \in \mathbb{R}$,
+* $tr (A+B) = tr (A)+ tr (B)$,
+* $tr (kA) = k\, tr (A)$
+* $tr (AB) = tr (BA)$
 </div>
 
-**Similar Matrices**:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Similar Matrices
+</b></font>
+    
 If $A$ and $B$ be $n\times n$, we say that $A$ and $B$ are similar, and write $A \sim B$, if $B = P^{-1} AP$ for some invertible matrix $P$.
+</div>
+
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
 Lemma: Similarity is an Equivalence Relation
 </b></font>
     
-<p>Similarity is an equivalence relation, i.e. for <span class="math inline">\(n\times n\)</span> matrices <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>,</p>
-<ul>
-<li><p><span class="math inline">\(A \sim A\)</span>, (reflexive)</p></li>
-<li><p>If <span class="math inline">\(A \sim B\)</span>, then <span class="math inline">\(B \sim A\)</span>,(symmetric)</p></li>
-<li><p>If <span class="math inline">\(A \sim B\)</span> and <span class="math inline">\(B \sim C\)</span> , then <span class="math inline">\(A \sim C\)</span>,(transitive)</p></li>
-</ul>
+Similarity is an equivalence relation, i.e. for $n\times n$ matrices $A$, $B$, and $C$,
+* $A \sim A$, \hfill(reflexive)
+* If $A \sim B$, then $B \sim A$,\hfill(symmetric)
+* If $A \sim B$ and $B \sim C$ , then $A \sim C$,\hfill(transitive)
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Properties of Similar Matrices
 </b></font>
     
-<p>If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <span class="math inline">\(n\times n\)</span> matrices and <span class="math inline">\(A \sim B\)</span>, then</p>
-<ul>
-<li><p><span class="math inline">\(\det(A)=\det(B)\)</span>,</p></li>
-<li><p><span class="math inline">\(rank(A)=rank(B)\)</span>,</p></li>
-<li><p><span class="math inline">\(tr (A) = tr (B)\)</span>,</p></li>
-<li><p><span class="math inline">\(c_A (\lambda) = c_B (\lambda)\)</span>,(<span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> have the same characteristic polynomial).</p></li>
-<li><p><span class="math inline">\(\sigma(A)=\sigma(B)\)</span>,(<span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> have the same eigenvalues).</p></li>
-</ul>
+If $A$ and $B$ are $n\times n$ matrices and $A \sim B$, then
+* $\det(A)=\det(B)$,
+* $rank(A)=rank(B)$,
+* $tr (A) = tr (B)$,
+* $c_A (\lambda) = c_B (\lambda)$,\hfill ($A$ and $B$ have the same characteristic polynomial).
+* $\sigma(A)=\sigma(B)$,\hfill($A$ and $B$ have the same eigenvalues).
 </div>
 
-**Diagonal Matrix**:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Diagonal Matrix
+</b></font>
+    
 An $n\times n$ matrix $A$ is diagonal if it is both upper triangular and lower triangular.
 
 Equivalently, all entries except those on the main diagonal are zeros.
@@ -83,30 +89,40 @@ D=
 \end{array}\right]
 \end{align*}
 is written $D=\mathrm{Diag}(a_1, a_2, a_3, \ldots, a_{n-1}, a_n)$.
+</div>
 
-**Diagonalizable**: 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Diagonalizable
+</b></font>
+    
 Let $A$ be an $n\times n$ matrix. Then $A$ is said to be \textbf{diagonalizable} if there exists an invertible matrix $P$
 such that $P^{-1} AP = D$ where $D$ is a diagonal matrix.
 \\~\\
 Here the invertible matrix $P$ is called a \textbf{diagonalizing matrix} for $A$.
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Proposition:
 </b></font>
     
-<p>An <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(A\)</span> is <strong>diagonalizable</strong> if <span class="math inline">\(A\sim D\)</span> for some <strong>diagonal matrix</strong> <span class="math inline">\(D\)</span>.</p>
-
+An $n\times n$ matrix $A$ is \textbf{diagonalizable} if $A\sim D$ for some \textbf{diagonal matrix} $D$.
 </div>
 
-**Dominant Eigenvalue**: If $\lambda$ is an eigenvalue of $A$ that is larger in absolute value
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Dominant Eigenvalue
+</b></font>
+    
+If $\lambda$ is an eigenvalue of $A$ that is larger in absolute value
 than any other eigenvalue, it is called the **dominant eigenvalue** of
 $A$.
+</div>
 
 Note that the above equation can be rearranged as $A = PDP^{-1}$ . Suppose we wanted to compute $A^{100}$. By diagonalizing A first it suffices to then compute $\left(PDP^{-1}\right)^{100}$, which reduces to $PD^{100} P^{-1}$. This last computation is much simpler than $A^{100}$.
 
-Diagonalizing a Matrix
-------------------------------------
+## 7.2.2 Diagonalizing a Matrix
 
 Let $A$ be an $n\times n$ matrix. The process of finding an
 **invertible** matrix $P$ and a **diagonal** matrix $D$ so that
@@ -116,16 +132,19 @@ is called the **diagonalizing** matrix for $A$.
 The key to diagonalizing a matrix (finding the matrices $P$ and $D$)
 lies in the eigenvectors and eigenvalues of the matrix $A$.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Eigenvectors and Diagonalizable Matrices
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix.</p>
-<ol>
-<li><p><span class="math inline">\(A\)</span> is diagonalizable if and only if it has eigenvectors <span class="math inline">\(X_1, X_2, \ldots, X_n\)</span> so that <span class="math inline">\(P = \left[\begin{array}{cccc} X_1 &amp; X_2 &amp; \cdots &amp; X_n \end{array}\right]\)</span> is invertible.</p></li>
-<li><p>If <span class="math inline">\(P\)</span> is invertible, then <span class="math display">\[P^{-1}AP=\mathrm{Diag}(\lambda_1, \lambda_2, \ldots, \lambda_n )\]</span> where <span class="math inline">\(\lambda_i\)</span> is the eigenvalue of <span class="math inline">\(A\)</span> corresponding to the eigenvector <span class="math inline">\(X_i\)</span>, i.e., <span class="math inline">\(AX_i=\lambda_i X_i\)</span>.</p></li>
-</ol>
+Let $A$ be an $n\times n$ matrix.
+1. $A$ is diagonalizable if and only if it has eigenvectors $X_1, X_2, \ldots, X_n$ so that \linebreak
+$P = \left[\begin{array}{cccc} X_1 & X_2 & \cdots & X_n \end{array}\right]$ is invertible.
+
+2. If $P$ is invertible, then
+\begin{align*}P^{-1}AP=\mathrm{Diag}(\lambda_1, \lambda_2, \ldots, \lambda_n )\end{align*}
+where $\lambda_i$ is the eigenvalue of $A$ corresponding to
+the eigenvector $X_i$, i.e., $AX_i=\lambda_i X_i$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -209,8 +228,9 @@ P =\begin{bmatrix}  | & | & |\\  X_1 & X_2 & X_3\\  | & | & |\end{bmatrix}=
 \begin{bmatrix}1 & 0 & 1\\ 0 & 0 & 1\\ 0 & 1 & 2 \end{bmatrix}.
 \end{align*}
 It follows that,
+
 \begin{align*}
-P^{-1} =\begin{bmatrix} 1 & -1 & 0\\ 0 & -2 & 1\\ 0 & 1 & 0
+P^{-1} =\begin{bmatrix} 1 & -1 & 0\\ 0 & -2 & 1\\ 0 & 1 & 0 \end{bmatrix}.
 \end{align*}
 
 Therefore,
@@ -232,24 +252,28 @@ Remark:
 
 </div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: 
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix, and suppose that <span class="math inline">\(A\)</span> has distinct eigenvalues <span class="math inline">\(\lambda_1, \lambda_2, \ldots, \lambda_m\)</span>. For each <span class="math inline">\(i\)</span>, let <span class="math inline">\(X_i\)</span> be a <span class="math inline">\(\lambda_i\)</span>-eigenvector of <span class="math inline">\(A\)</span>. Then <span class="math inline">\(\{ X_1, X_2, \ldots, X_m\}\)</span> is linearly independent.</p>
-
+Let $A$ be an $n\times n$ matrix, and suppose that $A$ has distinct eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_m$. For each $i$, let $X_i$ be a $\lambda_i$-eigenvector of $A$. Then $\{ X_1, X_2, \ldots, X_m\}$ is linearly independent.
 </div>
 
-**Diagonalizability**: Determining whether or not a square matrix $A$ is diagonalizable can be done using eigenvalues and eigenvectors of the matrix $A$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Diagonalizability
+</b></font>
+    
+Determining whether or not a square matrix $A$ is diagonalizable can be done using eigenvalues and eigenvectors of the matrix $A$.
+</div>
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: 
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n \times n\)</span> matrix and suppose it has <span class="math inline">\(n\)</span> distinct eigenvalues. Then it follows that <span class="math inline">\(A\)</span> is diagonalizable.</p>
-
+Let $A$ be an $n \times n$ matrix and suppose it has $n$ distinct eigenvalues. Then it follows that $A$ is diagonalizable.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -274,9 +298,8 @@ and thus $A$ has distinct eigenvalues $0, 2$ and $3$. Since $A$ is $3 \times 3$ 
 Lemma: 
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n \times n\)</span> matrix <span class="math inline">\(A\)</span>. Then <span class="math inline">\(A\)</span> is diagonalizable if and only if for each eigenvalue <span class="math inline">\(\lambda\)</span> of A, the set of all linearly independent eigenvectors corresponding to <span class="math inline">\(\lambda\)</span> has the same number vectors as the multiplicity of <span class="math inline">\(\lambda\)</span>.</p>
-
-
+Let $A$ be an $n \times n$ matrix $A$. Then $A$ is diagonalizable if and only if for each eigenvalue $\lambda$ of A,
+the set of all linearly independent eigenvectors corresponding to $\lambda$ has the same number vectors as the multiplicity of $\lambda$.
 </div>
 
 It is possible that a matrix $A$ cannot be diagonalized. In other words, we cannot find an invertible matrix P so that $P^{-1} AP = D$.
@@ -327,17 +350,14 @@ this matrix is \textbf{not} diagonalizable.
 The matrix $A$ has one eigenvalue of multiplicity two, but only one basic eigenvector. In order to diagonalize $A$, we need to construct an invertible $2\times 2$ matrix $P$. However, because $A$ only has one basic eigenvector, we cannot construct this $P$. Note that if we were to use $X_1$ as both columns of $P$, $P$ would not be invertible ($\det(P)=0$). For this reason, we cannot repeat eigenvectors in $P$.
 ***
 
-Complex Eigenvalues
-------------------------------
+## 7.2.3 Complex Eigenvalues
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Remark:
 </b></font>
 
-<p>Let <span class="math inline">\(z\)</span> denote the conjugate of a complex number <span class="math inline">\(z\)</span>. If <span class="math inline">\(A\)</span> is a complex matrix, the conjugate matrix <span class="math inline">\(A\)</span> is defined to be the matrix obtained from <span class="math inline">\(A\)</span> by <u>conjugating every entry</u>.</p>
-
-
+Let $z$ denote the conjugate of a complex number $z$. If $A$ is a complex matrix, the conjugate matrix $A$ is defined to be the matrix obtained from $A$ by **conjugating every entry**.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -392,9 +412,10 @@ Therefore, $\sigma(A)=\{1,1+ i,1- i\}$.
 Proposition: 
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be a matrix with <u>real entries</u>. If <span class="math inline">\(\lambda\)</span> is a complex eigenvalue with eigenvector <span class="math inline">\(X\)</span>, then <span class="math inline">\(\overline{\lambda}\)</span> is a complex eigenvalue with eigenvector <span class="math inline">\(\overline{X}\)</span>.</p>
-<p>In other words, both eigenvalues and eigenvectors come in conjugate pairs.</p>
+Let $A$  be a matrix with \underline{real entries}. If $\lambda$ is a complex eigenvalue with eigenvector $X$, then
+$\overline{\lambda}$ is a complex eigenvalue with eigenvector $\overline{X}$.
 
+In other words, both eigenvalues and eigenvectors come in conjugate pairs.
 </div>
 
 <font color='Blue'><b>Example</b></font>:

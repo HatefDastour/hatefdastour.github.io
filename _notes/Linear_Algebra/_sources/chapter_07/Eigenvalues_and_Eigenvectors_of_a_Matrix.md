@@ -1,14 +1,19 @@
-# Eigenvalues and Eigenvectors of a Matrix
+# 7.1 Eigenvalues and Eigenvectors of a Matrix
 
-## Definition of Eigenvectors and Eigenvalues
+## 7.1.1 Definition of Eigenvectors and Eigenvalues
 
-**Eigenvalues and Eigenvectors of a Matrix**:
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Eigenvalues and Eigenvectors of a Matrix
+</b></font>
+    
 Let $A$ be an $n\times n$ matrix and let $X \in \mathbb{C}^n$  be a **nonzero vector** for which
 \begin{align*}
 AX = \lambda X
 \end{align*}
 for some scalar $\lambda$ . Then $\lambda$ is called an **eigenvalue** of the matrix $A$ and $X$ is called an **eigenvector** of
 $A$ associated with $\lambda$, or a $\lambda$-eigenvector of $A$.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Let $A=\left[\begin{array}{cc} 2 & -2\\ -1 & 3 \end{array}\right]$ and $X=\left[\begin{array}{c} 2\\ 1 \end{array}\right]$.
@@ -24,8 +29,14 @@ and
 Hence, $AX=1 X$. This means that $1$ is an {eigenvalue} of $A$, and
 $\left[\begin{array}{c} 2\\ 1 \end{array}\right]$ is an **eigenvector of $A$ corresponding to $1$** (or a $1$-eigenvector of $A$).
 
-**The Spectrum of a Matrix**: The set of all eigenvalues of an $n\times n$ matrix $A$ is denoted by
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Spectrum of a Matrix
+</b></font>
+    
+The set of all eigenvalues of an $n\times n$ matrix $A$ is denoted by
 $\sigma(A)$ and is referred to as the **spectrum** of $A$.
+</div>
 
 Suppose that $A$ is an $n\times n$ matrix, with eigenvalue
 $\lambda$ and corresponding eigenvector $X$.
@@ -43,12 +54,18 @@ Since $X\neq 0$, $X$ is a \textbf{nontrivial} solution to the linear system with
 \det(\lambda I - A)=0.
 \end{align*}
 
-**The Characteristic Polynomial and the Characteristic Equation**: 
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+The Characteristic Polynomial and the Characteristic Equation
+</b></font>
+    
 If $A$ is an $n\times n$  matrix, the characteristic polynomial $c_A (\lambda)$ of $A$ is defined by
 \begin{align*}
 c_A (\lambda) = \det(\lambda I-A).
 \end{align*}
 Moreover, $\det(\lambda I-A)=0$ is usually referred as the \textbf{characteristic equation}.
+</div>
+
 
 <font color='Blue'><b>Example</b></font>:
 Find the characteristic polynomial of $A=\left[\begin{array}{cc} 2 & -2\\ -1 & 3 \end{array}\right]$.
@@ -64,7 +81,7 @@ c_A(\lambda) & = \det(\lambda I-A)
 =(\lambda -2)(\lambda -3)-(2)(1)=\lambda ^2-5\,\lambda +4
 \end{align*}
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Existence of an Eigenvector
 </b></font>
@@ -73,9 +90,9 @@ Theorem: The Existence of an Eigenvector
 
 </div>
 
-## Finding Eigenvectors and Eigenvalues
+## 7.1.2 Finding Eigenvectors and Eigenvalues
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: The Existence of an Eigenvector
 </b></font>
@@ -136,9 +153,14 @@ Therefore the $4$-eigenvectors of $A$ are the vectors
 X = \left[\begin{array}{c} -s\\ s \end{array}\right]=s\left[\begin{array}{c} -1\\ 1 \end{array}\right]\mbox{ where } s\in\mathbb{R}\mbox{ and } s\neq 0.
 \end{align*}
 
-**Basic Eigenvector**: A **basic eigenvector** of an $n\times n$ matrix $A$ is any nonzero
-multiple of a basic solution to $(\lambda I-A)X=0$, where $\lambda$ is
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Basic Eigenvector
+</b></font>
+    
+A **basic eigenvector** of an $n\times n$ matrix $A$ is any nonzero multiple of a basic solution to $(\lambda I-A)X=0$, where $\lambda$ is
 an eigenvalue of $A$.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Basic eigenvectors of
@@ -150,7 +172,13 @@ $A=\left[\begin{array}{rr} 2 & -2\\ -1 & 3 \end{array}\right]$:
 -   $X=\left[\begin{array}{r} -1 \\ 1 \end{array}\right]$ is a basic
     eigenvector of $A$ corresponding to the eigenvalue $4$.
 
-**Multiplicity of an Eigenvalue**: The multiplicity of an eigenvalue $\lambda$ of $A$ is the number of times $\lambda$ occurs as a root of $c_A(x)$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Multiplicity of an Eigenvalue
+</b></font>
+    
+The multiplicity of an eigenvalue $\lambda$ of $A$ is the number of times $\lambda$ occurs as a root of $c_A(x)$.
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Find the characteristic polynomial and eigenvalues of the matrix
@@ -173,14 +201,14 @@ Therefore, $A$ has eigenvalues $1$ and $4$, with $4$ being
 an eigenvalue of **multiplicity two**.
 
 <div class="alert alert-block alert-success">
-<p><strong>Finding Eigenvectors and Eigenvalues</strong>:<br />
-Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix.</p>
-<ol>
-<li><p>Find the eigenvalues <span class="math inline">\(\lambda\)</span> of <span class="math inline">\(A\)</span> by solving the characteristic equation, <span class="math inline">\(\det(\lambda I-A)=0\)</span>.</p></li>
-<li><p>For each <span class="math inline">\(\lambda\)</span>, find the basic eigenvectors <span class="math inline">\(X\neq 0\)</span> by finding the basic solutions to <span class="math inline">\((\lambda I-A)X =0\)</span>.</p></li>
-<li><p>To verify your work, make sure that <span class="math inline">\(AX = \lambda X\)</span> for each <span class="math inline">\(\lambda\)</span> and associated eigenvector <span class="math inline">\(X\)</span> .</p></li>
-</ol>
+<font size="+1"><b>
+Finding Eigenvectors and Eigenvalues
+</b></font>
 
+Let $A$ be an $n\times n$ matrix.
+* Find the eigenvalues $\lambda$ of $A$ by solving the characteristic equation, $\det(\lambda I-A)=0$.
+* For each $\lambda$, find the basic eigenvectors $X\neq 0$ by finding the basic solutions to $(\lambda I-A)X =0$.
+* To verify your work, make sure that $AX = \lambda X$ for each $\lambda$ and associated eigenvector $X$ .
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -214,7 +242,7 @@ The eigenvalues of $A$ are the the roots of $c_A(\lambda)$:
 \sigma(A)=\{0,2,4\}.
 \end{align*}
 
-<div class="alert alert-block alert-success">
+<div class="alert alert-danger" role="alert">
 <p><span class="math inline">\(\lambda_1 = 0\)</span></p>
 </div>
 
@@ -248,7 +276,7 @@ $X_1 = \begin{bmatrix} 1\\0\\1\end{bmatrix}$
 as the basic eigenvector corresponding to
 $\lambda_1 = 0$.
 
-<div class="alert alert-block alert-success">
+<div class="alert alert-danger" role="alert">
 <p><span class="math inline">\(\lambda_2 = 4\)</span></p>
 </div>
 
@@ -281,7 +309,7 @@ t \begin{bmatrix} 1\\1\\0 \end{bmatrix},\quad t\neq0.
 Therefore, we can use
 $X_2 = \begin{bmatrix} 1\\1\\0\end{bmatrix}$ as the basic eigenvector corresponding to $\lambda_2 = 4$.
 
-<div class="alert alert-block alert-success">
+<div class="alert alert-danger" role="alert">
 <p><span class="math inline">\(\lambda_3 = 2\)</span></p>
 </div>
 
@@ -339,7 +367,7 @@ The eigenvalues of $A$ are the the roots of $c_A(\lambda)$:
 \sigma(A)=\{1,4\}.
 \end{align*}
 
-<div class="alert alert-block alert-success">
+<div class="alert alert-danger" role="alert">
 <p><span class="math inline">\(\lambda_1 = 1\)</span></p>
 </div>
 
@@ -373,7 +401,7 @@ $X_1 = \begin{bmatrix} -1\\1\\1 \end{bmatrix}$
 as the basic eigenvector corresponding to
 $\lambda_1 = 1$.
 
-<div class="alert alert-block alert-success">
+<div class="alert alert-danger" role="alert">
 <p><span class="math inline">\(\lambda_2 =\lambda_3= 4\)</span></p>
 </div>
 
@@ -406,7 +434,7 @@ t \begin{bmatrix} 1\\0\\0 \end{bmatrix}+s \begin{bmatrix} 0\\-2\\1 \end{bmatrix}
 Therefore, we can use $X_2 =\begin{bmatrix} 1\\0\\0\end{bmatrix}$ and $X_3 =\begin{bmatrix} 0\\-2\\1\end{bmatrix}$ as the basic eigenvectors corresponding to $\lambda_2 = \lambda_3=4$.
 ***
 
-## Eigenvalues and Eigenvectors for Special Types of Matrices
+## 7.1.3 Eigenvalues and Eigenvectors for Special Types of Matrices
 
 
 Let $A$, and $B$ be $n \times n$ matrices. Suppose there exists an invertible matrix $P$ such that
@@ -415,14 +443,12 @@ A = P^{-1} BP
 \end{align*}
 Then $A$ and $B$ are called \textbf{similar matrices}.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> be similar matrices, so that <span class="math inline">\(A = P^{-1}BP\)</span> where <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are <span class="math inline">\(n\times n\)</span> matrices, and <span class="math inline">\(P\)</span> is <u>invertible</u>. Then <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> have the <u>same eigenvalues</u>.</p>
-
-
+Let $A$ and $B$ be similar matrices, so that $A = P^{-1}BP$ where $A$ and $B$ are $n\times n$ matrices, and $P$ is **invertible**. Then $A$ and $B$ have the **same eigenvalues**.
 </div>
 
 **Proof**: 

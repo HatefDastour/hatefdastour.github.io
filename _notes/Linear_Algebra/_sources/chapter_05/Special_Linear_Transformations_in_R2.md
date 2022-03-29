@@ -2,7 +2,7 @@
 
 ## Rotation
 
-Let $R_\theta:~\mathbb{R}^2 \to \mathbb{R}^2$ be a linear transformation given by\linebreak rotating vectors through an angle of $\theta$. Then
+Let $R_\theta:~\mathbb{R}^2 \to \mathbb{R}^2$ be a linear transformation given by rotating vectors through an angle of $\theta$. Then
 the matrix $A$ of $R_\theta$ is given by
 \begin{align*}
 \begin{bmatrix}\cos( \theta ) & -\sin( \theta )\\\sin( \theta ) & \cos( \theta )\end{bmatrix}.
@@ -37,8 +37,7 @@ Proposition:
 | $\cos(\theta)$ 	| $1$ 	| $\frac{\sqrt{3}}{2}$ 	| $\frac{\sqrt{2}}{2}$ 	| $\frac{1}{2}$ 	| $0$ 	| $-\frac{1}{2}$ 	| $-\frac{\sqrt{2}}{2}$ 	| $-\frac{\sqrt{3}}{2}$ 	| $-1$ 	| $0$ 	| $1$ 	|
 
 <font color='Blue'><b>Example</b></font>:
-Let $R_\pi: ~\mathbb{R}^2 \to \mathbb{R}^2$ denote rotation through $\pi$. Find the matrix of $R_\pi$. Then, find $R_\pi\begin{bmatrix}1 \\ 1\end{bmatrix}$.
-
+Let $R_\pi: ~\mathbb{R}^2 \to \mathbb{R}^2$ denote rotation through $\pi$. Find the matrix of $R_\pi$. Then, find $\vec{u}=R_\pi\,\vec{v}$ where $\vec{v} = \begin{bmatrix}1 \\ 1\end{bmatrix}$.
 <font color='Green'><b>Solution</b></font>: 
 The linear transformation: $R_\pi(\vec{x}) = A\vec{x}$ for all $\vec{x}\in \mathbb{R}^2$
 where
@@ -48,14 +47,15 @@ A=\begin{bmatrix}\cos(\pi) & -\sin(\pi)\\ \sin(\pi) & \cos(\pi)\end{bmatrix}
 \end{align*}
 Therefore,
 \begin{align*}
-R_\pi\begin{bmatrix}1 \\ 1\end{bmatrix}=
+\vec{u}=R_\pi\,\vec{v} = R_\pi\begin{bmatrix}1 \\ 1\end{bmatrix}=
 \begin{bmatrix}-1 & 0\\0 &-1\end{bmatrix}\begin{bmatrix}1 \\ 1\end{bmatrix}=\begin{bmatrix}-1 \\ -1\end{bmatrix}
 \end{align*}
 
-```{image} ../Figures/fig5_05.png
-:width: 250px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/aqbrcm4r?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
+
+***
 
 ## The Rotation Matrix of the Sum of Two Angles
 
@@ -172,7 +172,7 @@ For any $m\in \mathbb{R}$, we have
 
 <font color='Blue'><b>Example</b></font>:
 Let $Q_3: ~\mathbb{R}^2 \to \mathbb{R}^2$ denote reflection over the line $y = 3x$ . Then $Q_3$ is a linear transformation. Find
-the matrix of $Q_3$. Then, find $Q_3\begin{bmatrix}1 \\ 1\end{bmatrix}$.
+the matrix of $Q_3$. Then, find $\vec{u} = Q_3\,\vec{v}$ where $\vec{v} = \begin{bmatrix}1 \\ 1\end{bmatrix}$.
 
 <font color='Green'><b>Solution</b></font>: 
 The linear transformation: $Q_3(\vec{x}) = A\vec{x}$ for all $\vec{x}\in \mathbb{R}^2$
@@ -183,14 +183,14 @@ A=\frac{1}{1+m^2}\begin{bmatrix}1-m^2 & 2m\\2m &m^2-1\end{bmatrix}
 \end{align*}
 Therefore,
 \begin{align*}
-Q_3\begin{bmatrix}1 \\ 1\end{bmatrix}=
+\vec{u} = Q_3\,\vec{v} = 
 \begin{bmatrix}-\frac{4}{5} & \frac{3}{5}\\ \frac{3}{5} & \frac{4}{5}\end{bmatrix}\begin{bmatrix}1 \\ 1\end{bmatrix}=\begin{bmatrix}-1/5\\7/5\end{bmatrix}
 \end{align*}
 
-```{image} ../Figures/fig5_06.png
-:width: 250px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/x725dkpp?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
+
 
 <font color='Blue'><b>Example</b></font>:
 Find the matrix of the linear transformation which is obtained by first rotating all vectors through an angle of $\pi/2$ and then reflecting through the $x$ axis.

@@ -14,10 +14,9 @@ is a straight line. Such an equation is called a **linear equation**, and the **
 
 For example, $x-y=0$ is a linear equation.
 
-```{image} ../Figures/fig1_00.png
-:width: 300px
-:align: center
-```
+<center>
+<iframe src="https://www.desmos.com/calculator/64mqn7hni9?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
 
 Note that, here, $x$ and $y$ are the variables. However, in general, when more than two variables are involved, variables are often demonstrated with some subscripts. For example, $x_1$, $x_2$, ..., $x_n$ are variables for an equation of the form
 \begin{equation*}
@@ -171,10 +170,10 @@ x - y = -1\\
 \end{align*} 
 we have,
 
-```{image} ../Figures/fig1_01a.png
-:width: 300px
-:align: center
-```
+<center>
+<iframe src="https://www.desmos.com/calculator/vnw7ffhpe1?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
+
 As can be seen, $(x, y) = (0.5, 1.5)$ is a solution. In this case, it's the only solution (unique solution).
 
 2.  The lines are parallel (and distinct) and so do not intersect. Then the system has **no solution**.
@@ -188,10 +187,9 @@ x + y = -1\\
 \end{align*} 
 we have,
 
-```{image} ../Figures/fig1_01b.png
-:width: 300px
-:align: center
-```
+<center>
+<iframe src="https://www.desmos.com/calculator/xzutr6yr9u?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
 
 The two lines are parallel and there is no solution.
 
@@ -206,10 +204,9 @@ x + y = 1\\
 \end{align*} 
 we have,
 
-```{image} ../Figures/fig1_01c.png
-:width: 300px
-:align: center
-```
+<center>
+<iframe src="https://www.desmos.com/calculator/vtceot3sfb?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+</center>
 
 ## 1.1.2 Consistent and inconsistent linear systems
 

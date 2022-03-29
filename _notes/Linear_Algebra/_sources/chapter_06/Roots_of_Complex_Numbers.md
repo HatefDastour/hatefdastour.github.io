@@ -3,13 +3,15 @@
 
 A fundamental identity is the formula of De Moivre with which we begin this section.
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
-Theorem: Roots of Complex Numbers
+Theorem: De Moivre’s Theorem
 </b></font>
     
-<p>If <span class="math inline">\(z=re^{i\theta}\)</span> and <span class="math inline">\(n\)</span> is a positive integer, <span class="math display">\[\left(re^{i\theta}\right)^n=r^n e^{i\,n\theta}= r^n\left(\cos(n\theta) +i\sin(n\theta)\right).\]</span> or <span class="math display">\[\left(r\left(\cos(\theta) +i\sin(\theta)\right)\right)^n=
-r^n\left(\cos(n\theta) +i\sin(n\theta)\right).\]</span></p>
+If $z=re^{i\theta}$ and $n$ is a positive integer,
+\begin{align*}\left(re^{i\theta}\right)^n=r^n e^{i\,n\theta}= r^n\left(\cos(n\theta) +i\sin(n\theta)\right).\end{align*}
+or
+\begin{align*}\left(r\left(\cos(\theta) +i\sin(\theta)\right)\right)^n=r^n\left(\cos(n\theta) +i\sin(n\theta)\right).\end{align*}
 </div>
 
 This says that to take the $n^{\text{th}}$ power of a complex number, we take the $n^{\text{th}}$ power of the modulus and multiply the argument by $n$.
@@ -55,13 +57,12 @@ This says that to take the $n^{\text{th}}$ power of a complex number, we take th
     =\frac{\sqrt{3}}{4}-\frac{1}{4}{}i.
 	\end{align*}
 
-<div class="alert alert-block alert-info">
+<div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Multiplication Rule
 </b></font>
     
-<p>If <span class="math inline">\(z_1 = r_1 e^{i\theta_1}\)</span> and <span class="math inline">\(z_2 = r_2 e^{i\theta_2}\)</span> are complex numbers in polar form, then <span class="math inline">\(z_1 z_2 = r_1 r_2 e^{i(\theta_1+\theta_2)}\)</span>.</p>
-
+If $z_1 = r_1 e^{i\theta_1}$ and $z_2 = r_2 e^{i\theta_2}$ are complex numbers in polar form, then $z_1 z_2 = r_1 r_2 e^{i(\theta_1+\theta_2)}$.
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -69,14 +70,10 @@ Theorem: Multiplication Rule
 Remark:
 </b></font>
     
-<p>Note that for a real number <span class="math inline">\(c\in \mathbb{R}\)</span>,</p>
-<ol>
-<li><p><span class="math inline">\(c^{0}=1\)</span>,</p></li>
-<li><p><span class="math inline">\(c^{1/n}=\sqrt[n]{c}\)</span> for <span class="math inline">\(n=1,2,3,\ldots\)</span>,</p></li>
-<li><p>If <span class="math inline">\(c\neq 0\)</span>, <span class="math inline">\(c^{-n}=\dfrac{1}{c^n}\)</span> for <span class="math inline">\(n=1,2,3,\ldots\)</span>.</p></li>
-</ol>
-
-    
+Note that for a real number $c\in \mathbb{R}$,
+* $c^{0}=1$,
+* $c^{1/n}=\sqrt[n]{c}$ for $n=1,2,3,\ldots$,
+* If $c\neq 0$, $c^{-n}=\dfrac{1}{c^n}$ for $n=1,2,3,\ldots$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -95,8 +92,15 @@ z^6w^3 & = & (\sqrt{2}e^{-i\pi /4})^6(2e^{i\pi /6})^3 \\
 & = & -64.
 \end{eqnarray*}
 
-**$n^{th}$ root of $q$**: Let $z$ and $q$ be complex numbers, and let $n$ be a positive integer. Then $z$ is called an **$n^{th}$ root of $q$**
-if $z^n=q$.
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+<span class="math inline">\(n^{th}\)</span> root of <span class="math inline">\(q\)</span>
+</b></font>
+
+Let $z$ and $q$ be complex numbers, and let $n$ be a positive integer. Then $z$ is called an **$n^{th}$ root of $q$** if $z^n=q$.
+</div>
+
+
 
 <font color='Blue'><b>Example</b></font>:
 For any positive real number $a$, $z^2=a$ has two complex (in this case,
@@ -116,9 +120,7 @@ roots.
 Corollary:
 </b></font>
     
-<p>Let <span class="math inline">\(q\)</span> be a nonzero complex number and <span class="math inline">\(n\)</span> a positive integer. Then <span class="math inline">\(z^n=q\)</span> has exactly <span class="math inline">\(n\)</span> complex solutions, i.e., <span class="math inline">\(q\)</span> has exactly <span class="math inline">\(n\)</span> complex <span class="math inline">\(n^{th}\)</span> roots.</p>
-
-    
+Let $q$ be a nonzero complex number and $n$ a positive integer. Then $z^n=q$ has exactly $n$ complex solutions, i.e., $q$ has exactly $n$ complex $n^{th}$ roots.    
 </div>
 
 Let $z = a+b\,i$ and let $z=|z|\left(\cos(\theta) +i\sin(\theta)\right)$ be the polar form of the complex number. By De
@@ -155,8 +157,7 @@ w_k=&r^{1/n}e^{i\left(\theta+2k\pi\right)/n}=r^{1/n}\left(\cos\left(\frac{\theta
 k=0,1,2,\ldots,n-1,
 \end{align*}
 where $r=|q|$ and $w_k$ with $k=0,1,2,\ldots,n-1$ are $n$ distinct $n^{\text{th}}$ roots.
-
-    
+  
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -164,10 +165,8 @@ where $r=|q|$ and $w_k$ with $k=0,1,2,\ldots,n-1$ are $n$ distinct $n^{\text{th}
 Remark:
 </b></font>
     
-<p>Notice that each of the <span class="math inline">\(n^{\text{th}}\)</span> roots of has modulus <span class="math inline">\(|w_k|=r^{1/n}\)</span>. Thus all the <span class="math inline">\(n^{\text{th}}\)</span> roots of lie on the circle of radius <span class="math inline">\(r^{1/n}\)</span> in the complex plane. Also, since the argument of each successive <span class="math inline">\(n^{\text{th}}\)</span> root exceeds the argument of the previous root by <span class="math inline">\(2\pi/n\)</span>, we see that the <span class="math inline">\(n^{\text{th}}\)</span> roots of are equally spaced on this circle.</p>
-
-
-    
+Notice that each of the $n^{\text{th}}$ roots of has modulus $|w_k|=r^{1/n}$. Thus all the $n^{\text{th}}$ roots of lie on the circle of radius $r^{1/n}$ in the complex plane. Also, since the argument of each
+successive $n^{\text{th}}$ root exceeds the argument of the previous root by $2\pi/n$, we see that the $n^{\text{th}}$ roots of are equally spaced on this circle.    
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -226,10 +225,9 @@ Therefore,
 \sqrt{2}\left(\frac{\sqrt{3}}{2}-\frac{1}{2}i\right).
 \end{align*}
 
-```{image} ../Figures/fig6_07.png
-:width: 300px
-:align: center
-```
+<center>
+<iframe src="https://www.geogebra.org/classic/e9wq9bf9?embed" width="600" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+</center>
 
 ***
 ## Refrences
