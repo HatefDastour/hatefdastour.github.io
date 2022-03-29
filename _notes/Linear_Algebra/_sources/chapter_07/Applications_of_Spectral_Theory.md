@@ -436,8 +436,6 @@ Note that we only need location $3$ at $n=3$ ($x_{{\color{blue}3}{\color{red}3}}
 \end{align*}
 ***
 
-## Steady State Vector
-
 When the state vector remains unchanged from a step to the next step, this vector is called the **Steady State Vector**.
 
 \begin{align*}
