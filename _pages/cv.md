@@ -21,22 +21,22 @@ Education
 Working Experience
 ======
 * Research Associate<br/>
-<a href="https://schulich.ucalgary.ca/geomatics//">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada
+[Department of Geomatics Engineering](https://schulich.ucalgary.ca/geomatics/){:target="_blank"}, Schulich School of Engineering, University of Calgary, Alberta, Canada
 
 * Sessional Lecturer I/Tutorial instructor<br/>
-Department of Mathematics & Computer Science, Faculty  of Arts \& Science, <a href="https://www.ulethbridge.ca/calgary//">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada
+Department of Mathematics & Computer Science, Faculty  of Arts \& Science, [University of Lethbridge (Calgary Campus)](https://www.ulethbridge.ca/calgary/){:target="_blank"}, Calgary, AB, Canada
 
 * Data Scientist/Research Scientist<br/>
-<a href="https://earthspace.ca/">Earth & Space Inc.</a>, Calgary, AB, Canada
+[Earth \& Space Inc.](https://earthspace.ca/){:target="_blank"}, Calgary, AB, Canada
 
 * Data Science Developer<br/>
-<a href="https://stellaralgo.com/">StellarAlgo Corp.</a>, Calgary, AB, Canada
+[StellarAlgo Corp](https://stellaralgo.com/){:target="_blank"}, Calgary, AB, Canada
 
 * Sessional Instructor<br/>
 Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
-	* [MATH 211 - Linear Methods I - Summer 2018](https://hatefdastour.github.io/teaching/2018-summer-teaching-1)
-	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2)
-	* [MATH 275 - Calculus for Engineers and Scientists - Fall 2017](http://contacts.ucalgary.ca/info/math/courses/f17/MATH275) (Through Instructor Training Program)
+	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-1){:target="_blank"}
+	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2){:target="_blank"}
+	* [MATH 275 - Calculus for Engineers and Scientists - Fall 2017](http://contacts.ucalgary.ca/info/math/courses/f17/MATH275){:target="_blank"} (Through Instructor Training Program)
 * Graduate Teaching Assistant<br/>
 Department of Mathematics and Statistics, University of Calgary, Calgary, AB, Canada
 
@@ -67,10 +67,10 @@ Group Projects
 ======
 * 2016 Graduate Mathematical Modelling in Industry Workshop, University of British Columbia, Vancouver, BC, Canada, August 08, 2016 - August 13, 2016,
 <br/>
-**Project:** [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016)
+**Project:** [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016){:target="_blank"}
 * 2016 Industrial Problem Solving Workshop, University of Toronto, Toronto, ON, Canada, August 15, 2016 - August 19, 2016,
 <br/>
-**Project:**  [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016) by Internal Ratings Management, Global Risk Management, Scotiabank.
+**Project:**  [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016){:target="_blank"} by Internal Ratings Management, Global Risk Management, Scotiabank.
 
 Awards
 ======
@@ -94,15 +94,15 @@ Talks
 
 Professional Services and Committees
 ======
-* Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/), University of Calgary, Calgary, Canada, October 2019
+* Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/){:target="_blank"}, University of Calgary, Calgary, Canada, October 2019
 
-* Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics) Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
+* Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
 
-* Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw), University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
+* Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw){:target="_blank"}, University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
 
-* Served as a member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics) Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
+* Served as a member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
 
-* Instructor of Programming Workshop at [2017 CMS Math Camp (Alberta)](https://cms.math.ca/MathCamps/), University of Calgary,
+* Instructor of Programming Workshop at [2017 CMS Math Camp (Alberta)](https://cms.math.ca/MathCamps/){:target="_blank"}, University of Calgary,
  Calgary, Canada, July 2017,
 
 * Contribution to the June 2016 convocation ceremonies, University of Calgary, Calgary, Canada, June 2016,
@@ -113,8 +113,8 @@ Professional Services and Committees
 * The founder and president of University of Calgary SIAM Student Chapter, University of Calgary,
  Calgary, Canada, January 2017 - September 2018,
 
-* Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/),
+* Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/){:target="_blank"},
  Calgary, Canada, February 2017 - April 2018,
 
-* Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc), Calgary, Canada, May 21, 2017 - May 22, 2017.
+* Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc){:target="_blank"}, Calgary, Canada, May 21, 2017 - May 22, 2017.
   
