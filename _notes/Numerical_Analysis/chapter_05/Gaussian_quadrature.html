@@ -1,0 +1,721 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>5.4 Gaussian quadrature &#8212; Linear Algebra</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 6: Initial-Value Problems for Ordinary Differential Equations" href="../chapter_06/ReadMe.html" />
+    <link rel="prev" title="5.3 Midpoint rule" href="Midpoint_rule.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Linear Algebra</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Getting_Started.html">
+   Getting Started with Python
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_01/ReadMe.html">
+   Chapter 1: Root-finding algorithms
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_01/Bracketing_Methods.html">
+     1. 1 Bracketing Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_01/Newtons_method.html">
+     1.2 Newton’s method
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_01/Quasi_Newton.html">
+     1.3 Quasi-Newton Methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_01/Fixed_point.html">
+     1.4 Fixed-point iteration
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_02/ReadMe.html">
+   Chapter 2: Numerical linear algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_02/LU_decomposition.html">
+     2.1 LU decomposition
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_02/Cholesky_factorization.html">
+     2.2 Cholesky factorization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_02/LDL_decomposition.html">
+     2.3 LDL decomposition
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_02/QR_factorization.html">
+     2.4 QR factorization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_03/ReadMe.html">
+   Chapter 3: Interpolations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_03/Vandermonde_Method.html">
+     3.1 Vandermonde Method
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_03/Lagrange_polynomial.html">
+     3.2 Lagrange polynomial
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_03/Newton_Polynomials.html">
+     3.3 Newton Polynomial
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_04/ReadMe.html">
+   Chapter 4: Numerical Differentiation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_04/First_Derivative.html">
+     4.1 Approximation of the first derivative of a function
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_04/SecoDerivative.html">
+     4.2 Approximation of the second derivative of a function
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_04/Higher_Order_Approximations.html">
+     4.3 Higher-order approximations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="ReadMe.html">
+   Chapter 5: Numerical Integration
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="Trapezoidal_rule.html">
+     5.1 Trapezoidal rule
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Simpsons_rule.html">
+     5.2 Simpson’s rule
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="Midpoint_rule.html">
+     5.3 Midpoint rule
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     5.4 Gaussian quadrature
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_06/ReadMe.html">
+   Chapter 6: Initial-Value Problems for Ordinary Differential Equations
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_06/FirstOrder_methods.html">
+     6.1 First-order methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_06/SecondOrder_methods.html">
+     6.2 Second-order methods
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_06/HigherOrder_methods.html">
+     6.3 Runge–Kutta methods
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../chapter_07/ReadMe.html">
+   Chapter 7: Numerical Integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../chapter_07/Regularization_Methods.html">
+     7.1 Savitzky-Golay Filter
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/chapter_05/Gaussian_quadrature.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://hatefdastour.github.io/notes/Numerical_Analysis/"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://hatefdastour.github.io/notes/Numerical_Analysis//issues/new?title=Issue%20on%20page%20%2Fchapter_05/Gaussian_quadrature.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   5.4 Gaussian quadrature
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#legendre-polynomials">
+   Legendre Polynomials
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#change-of-interval">
+     5.4.1 Change of interval
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section id="gaussian-quadrature">
+<h1>5.4 Gaussian quadrature<a class="headerlink" href="#gaussian-quadrature" title="Permalink to this headline">¶</a></h1>
+<p>Gaussian quadrature chooses the points in an optimal way (rather than an equally-spaced way). Therefore, the nodes <span class="math notranslate nohighlight">\(x_j,~1\leq j \leq n\)</span> in the interval [a, b] and coefficients <span class="math notranslate nohighlight">\(w_j,~1\leq j \leq n\)</span>, are chosen to minimize the expected error obtained in the approximation [2]</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int _{1}^{-1}f(x)\,dx \approx \sum _{i=1}^{n} w_{i}f \left(x_i\right).
+\end{align*}\]</div>
+<p>Whenever <span class="math notranslate nohighlight">\(f(x)\)</span> is a polynomial of degree <span class="math notranslate nohighlight">\(2n-1\)</span>, this approxmation is exact [2]. Moreover, usally, these approxmations are done using <span class="math notranslate nohighlight">\([-1,~1]\)</span> interval. For example, for <span class="math notranslate nohighlight">\(f(x) = a_{0} + a_{1} x + a_{2}x^{2} + a_{3}x^{3}\)</span>, we have,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int a_{0} + a_{1} x + a_{2}x^{2} + a_{3}x^{3} \,dx \approx w_{1}f \left(x_1\right) + w_{2}f \left(x_2\right).
+\end{align*}\]</div>
+<p>On the other hand,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int a_{0} + a_{1} x + a_{2}x^{2} + a_{3}x^{3} \,dx &amp;= a_{0} \int 1 \,dx
++a_{1} \int x\,dx +a_{2} \int x^{2} \,dx +a_{3} \int x^{3} \,dx
+\end{align*}\]</div>
+<p>It follows that,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{cases}
+w_{1}  + w_{2} = \int_{-1}^{1} 1 \,dx = 2,\\
+w_{1}x_{1}  + w_{2}x_{2} = \int_{-1}^{1} x \,dx = 0,\\
+w_{1}x_{1}^{2}  + w_{2}x_{2}^{2} = \int_{-1}^{1} x^{2} \,dx = \frac{2}{3},\\
+w_{1}x_{1}^{3}  + w_{2}x_{2}^{3} = \int_{-1}^{1} x^{3} \,dx = 0.
+\end{cases}
+\end{align*}\]</div>
+<p>Solving this system of equations leads to <span class="math notranslate nohighlight">\(w_{1} = w_{2} = 1\)</span> and <span class="math notranslate nohighlight">\(x_{1} = -\frac{\sqrt{3}}{3} = -x_{2}\)</span>. Hence,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int _{1}^{-1}f(x)\,dx\approx f\left(-\frac{\sqrt{3}}{3}\right) + f\left(\frac{\sqrt{3}}{3}\right).
+\end{align*}\]</div>
+<p><font color='Blue'><b>Example</b></font>: We can test the above approximation using various example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">TwoPointGaussian</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we have
+$<span class="math notranslate nohighlight">\(\int _{1}^{-1}x^{2}\,dx = \frac{1}{3} x^{3}\Big|_{-1}^{1} = \frac{2}{3}\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
+<span class="n">Int</span> <span class="o">=</span> <span class="n">TwoPointGaussian</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;f</span><span class="se">\\</span><span class="s1">left(-</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">sqrt</span><span class="si">{3}</span><span class="s1">}</span><span class="si">{3}</span><span class="se">\\</span><span class="s1">right) + f</span><span class="se">\\</span><span class="s1">left(</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">sqrt</span><span class="si">{3}</span><span class="s1">}</span><span class="si">{3}</span><span class="se">\\</span><span class="s1">right) =  </span><span class="si">%.4f</span><span class="s1">&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">Int</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[f\left(-\frac{\sqrt{3}}{3}\right) + f\left(\frac{\sqrt{3}}{3}\right) =  0.6667\]</div>
+</div>
+</div>
+<p>Moreover, $<span class="math notranslate nohighlight">\(\int _{1}^{-1}x^{3} - x^{2} + 1\,dx =\frac{1}{4} x^{4}\Big|_{-1}^{1} - \frac{1}{3} x^{3}\Big|_{-1}^{1} + x\Big|_{-1}^{1}= \frac{4}{3}\)</span>$.</p>
+<p>Trying this numerically</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Int</span> <span class="o">=</span> <span class="n">TwoPointGaussian</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;f</span><span class="se">\\</span><span class="s1">left(-</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">sqrt</span><span class="si">{3}</span><span class="s1">}</span><span class="si">{3}</span><span class="se">\\</span><span class="s1">right) + f</span><span class="se">\\</span><span class="s1">left(</span><span class="se">\\</span><span class="s1">frac{</span><span class="se">\\</span><span class="s1">sqrt</span><span class="si">{3}</span><span class="s1">}</span><span class="si">{3}</span><span class="se">\\</span><span class="s1">right) =  </span><span class="si">%.4f</span><span class="s1">&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">Int</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[f\left(-\frac{\sqrt{3}}{3}\right) + f\left(\frac{\sqrt{3}}{3}\right) =  1.3333\]</div>
+</div>
+</div>
+</section>
+<section id="legendre-polynomials">
+<h1>Legendre Polynomials<a class="headerlink" href="#legendre-polynomials" title="Permalink to this headline">¶</a></h1>
+<p>The Legendre polynomials is a collection <span class="math notranslate nohighlight">\(\{P_0(x), P_1(x), \ldots , P_n(x), \ldots \}\)</span> with properties [2]:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P_n(x),~n\in \mathbb{N}\)</span> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Monic_polynomial">monic polynomial</a> of degree <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int _{1}^{-1} P(x)P_{n}(x)\,dx = 0\)</span> whenever <span class="math notranslate nohighlight">\(P(x)\)</span> is a polynomial of degree less than <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+</ul>
+<p>Furthermore, if <span class="math notranslate nohighlight">\(P(x)\)</span> is any polynomial of degree less than <span class="math notranslate nohighlight">\(2n\)</span>, then, the coefficient <span class="math notranslate nohighlight">\(w_i\)</span> can be calculated using</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int _{a}^{b}P(x)\,dx \approx \sum _{i=1}^{n} w_{i}P \left(x_i\right).
+\end{align*}\]</div>
+<p>where</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+w_{i} = \int _{-1}^{1} \prod_{j = 1,\\j \neq i}^{n}
+\dfrac{x-x_{j}}{x_{i} - x_j}\,dx.
+\end{align*}\]</div>
+<p>with <span class="math notranslate nohighlight">\(x_{1},~x_{2},~\ldots , x_{n}\)</span> are the roots of the nth Legendre polynomial <span class="math notranslate nohighlight">\(P_{n}(x)\)</span>.</p>
+<p>These coefficients can be calculated using <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.polynomial.legendre.leggauss.html">numpy leggauss function</a>. For example, for polynomials of degree <span class="math notranslate nohighlight">\(n\)</span> with <span class="math notranslate nohighlight">\(n=1,2\ldots,7\)</span>, we have</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">Table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;xi&#39;</span><span class="p">,</span> <span class="s1">&#39;wi&#39;</span><span class="p">])</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">Table</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+     <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;xi&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">],</span> <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;wi&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
+    
+<span class="n">display</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span>
+                   <span class="o">**</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;Honeydew&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span><span class="s1">&#39;border-color&#39;</span><span class="p">:</span> <span class="s1">&#39;DarkGreen&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">hide</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\hatef\AppData\Local\Temp\ipykernel_11204\1134547699.py:6: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  Table[&#39;xi&#39;][n], Table[&#39;wi&#39;][n] = np.polynomial.legendre.leggauss(Table[&#39;n&#39;][n])
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+#T_fec30_row0_col0, #T_fec30_row1_col0, #T_fec30_row2_col0, #T_fec30_row3_col0, #T_fec30_row4_col0, #T_fec30_row5_col0, #T_fec30_row6_col0, #T_fec30_row7_col0 {
+  background-color: Honeydew;
+  color: Black;
+  border-color: DarkGreen;
+}
+</style>
+<table id="T_fec30">
+  <thead>
+    <tr>
+      <th id="T_fec30_level0_col0" class="col_heading level0 col0" >n</th>
+      <th id="T_fec30_level0_col1" class="col_heading level0 col1" >xi</th>
+      <th id="T_fec30_level0_col2" class="col_heading level0 col2" >wi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_fec30_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_fec30_row0_col1" class="data row0 col1" >[0.]</td>
+      <td id="T_fec30_row0_col2" class="data row0 col2" >[2.]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_fec30_row1_col1" class="data row1 col1" >[-0.57735027  0.57735027]</td>
+      <td id="T_fec30_row1_col2" class="data row1 col2" >[1. 1.]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_fec30_row2_col1" class="data row2 col1" >[-0.77459667  0.          0.77459667]</td>
+      <td id="T_fec30_row2_col2" class="data row2 col2" >[0.55555556 0.88888889 0.55555556]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row3_col0" class="data row3 col0" >4</td>
+      <td id="T_fec30_row3_col1" class="data row3 col1" >[-0.86113631 -0.33998104  0.33998104  0.86113631]</td>
+      <td id="T_fec30_row3_col2" class="data row3 col2" >[0.34785485 0.65214515 0.65214515 0.34785485]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row4_col0" class="data row4 col0" >5</td>
+      <td id="T_fec30_row4_col1" class="data row4 col1" >[-0.90617985 -0.53846931  0.          0.53846931  0.90617985]</td>
+      <td id="T_fec30_row4_col2" class="data row4 col2" >[0.23692689 0.47862867 0.56888889 0.47862867 0.23692689]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row5_col0" class="data row5 col0" >6</td>
+      <td id="T_fec30_row5_col1" class="data row5 col1" >[-0.93246951 -0.66120939 -0.23861919  0.23861919  0.66120939  0.93246951]</td>
+      <td id="T_fec30_row5_col2" class="data row5 col2" >[0.17132449 0.36076157 0.46791393 0.46791393 0.36076157 0.17132449]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row6_col0" class="data row6 col0" >7</td>
+      <td id="T_fec30_row6_col1" class="data row6 col1" >[-0.94910791 -0.74153119 -0.40584515  0.          0.40584515  0.74153119
+  0.94910791]</td>
+      <td id="T_fec30_row6_col2" class="data row6 col2" >[0.12948497 0.27970539 0.38183005 0.41795918 0.38183005 0.27970539
+ 0.12948497]</td>
+    </tr>
+    <tr>
+      <td id="T_fec30_row7_col0" class="data row7 col0" >8</td>
+      <td id="T_fec30_row7_col1" class="data row7 col1" >[-0.96028986 -0.79666648 -0.52553241 -0.18343464  0.18343464  0.52553241
+  0.79666648  0.96028986]</td>
+      <td id="T_fec30_row7_col2" class="data row7 col2" >[0.10122854 0.22238103 0.31370665 0.36268378 0.36268378 0.31370665
+ 0.22238103 0.10122854]</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<section id="change-of-interval">
+<h2>5.4.1 Change of interval<a class="headerlink" href="#change-of-interval" title="Permalink to this headline">¶</a></h2>
+<p>To approximate the integral of a function over an interval <span class="math notranslate nohighlight">\([a,~b]\)</span>,  this interval must be changed into an integral over <span class="math notranslate nohighlight">\([−1,~1]\)</span> before applying the Gaussian quadrature rule. This can be done as follows [8]:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int _{a}^{b}f(x)\,dx={\frac {b-a}{2}}\int _{-1}^{1}f\left({\frac {b-a}{2}}\xi +{\frac {a+b}{2}}\right)\,d\xi.
+\end{align*}\]</div>
+<p>Now, a <span class="math notranslate nohighlight">\(n\)</span> point Gaussian quadrature over an interval [a, b] can be expressed as follows [8]:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int _{a}^{b}f(x)\,dx\approx {\frac {b-a}{2}}\sum _{i=1}^{n}w_{i}f\left({\frac {b-a}{2}}x _{i}+{\frac {a+b}{2}}\right).
+\end{align*}\]</div>
+<p>Furthermore, we can implement this algorithm in Python.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">GaussQuadrature</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="c1"># f : single variable function f</span>
+    <span class="c1"># a , b : Interval of integration [a,b]</span>
+    <span class="c1"># n : n-point Gauss integration rule</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">w</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="n">a</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='Blue'><b>Example</b></font>: We can evalute this following integral using Gaussian quadrature.
+$<span class="math notranslate nohighlight">\(\int_{0}^{1} x^2\, dx\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Gaussian quadrature using the </span><span class="si">%i</span><span class="s2">-point = </span><span class="si">%.8f</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">GaussQuadrature</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gaussian quadrature using the 2-point = 0.33333333
+Gaussian quadrature using the 3-point = 0.33333333
+Gaussian quadrature using the 4-point = 0.33333333
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ol class="simple">
+<li><p>Allaire, Grégoire, et al. Numerical linear algebra. Vol. 55. New York: Springer, 2008.</p></li>
+<li><p>Burden, Richard L., and J. Douglas Faires. “Numerical analysis 8th ed.” Thomson Brooks/Cole (2005).</p></li>
+<li><p>Atkinson, Kendall E. An introduction to numerical analysis. John wiley &amp; sons, 2008.</p></li>
+<li><p>Khoury, Richard, and Douglas Wilhelm Harder. Numerical methods and modelling for engineering. Springer, 2016.</p></li>
+<li><p>Zarowski, Christopher J. An introduction to numerical analysis for electrical and computer engineers. John Wiley &amp; Sons, 2004.</p></li>
+<li><p>Abramowitz, Milton, and Irene A. Stegun. Handbook of mathematical functions: with formulas, graphs, and mathematical tables. Vol. 55. Washington, DC: National bureau of standards, 1972.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Numerical_integration">Numerical integration Wikipedia page</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_quadrature">Gaussian quadrature</a></p></li>
+</ol>
+<hr class="docutils" />
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="Midpoint_rule.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">5.3 Midpoint rule</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="../chapter_06/ReadMe.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Chapter 6: Initial-Value Problems for Ordinary Differential Equations</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Hatef Dastour<br/>
+        
+            &copy; Copyright 2022.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+    
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+
+    
+  </body>
+</html>
