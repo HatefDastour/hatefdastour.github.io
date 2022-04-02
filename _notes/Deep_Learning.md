@@ -3,9 +3,14 @@ title: "Deep Learning"
 excerpt: "Deep Learning with Python"
 collection: notes
 ---
-## Table of contents
+
 ### PyTorch
-* [Getting Started](/notes/Deel_Learning/PyTorch_Getting_Started.html)
+
+PyTorch [1] is an open-source machine learning framework based on the Torch library. It was primarily developed and is maintained by Facebook's AI Research lab. PyTorch is used in various applications such as computer vision (CV) and natural language processing (NLP), etc. 
+
+
+* [Getting Started with PyTorch](/notes/Deel_Learning/PyTorch_Getting_Started.html)
+* [Linear Regression](/notes/Deel_Learning/PyTorch_Linear_Regression.html)
 * [Logistic Regression](/notes/Deel_Learning/PyTorch_Logistic_Regression.html)
 * [Multi-layer Perceptron (MLP) for Binary Classification](/notes/Deel_Learning/PyTorch_MLP_Binary_Classification.html)
 * [Multi-layer Perceptron (MLP) for Multi-Class Classification](/notes/Deel_Learning/PyTorch_MLP_Multi-Class_Classification.html)
@@ -24,3 +29,9 @@ collection: notes
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
 * [Image Classification with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Classification.html)
 * [Text Classification Pipeline with Tensorflow](/notes/Deel_Learning/Tensorflow_Text_Classification_Pipeline.html)
+
+
+***
+### Refrences
+1. [PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
+***
