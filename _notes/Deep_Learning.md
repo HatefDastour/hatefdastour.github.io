@@ -16,6 +16,9 @@ collection: notes
 * [Multi-layer Perceptron (MLP) for Multi-Class Classification](/notes/Deel_Learning/PyTorch_MLP_Multi-Class_Classification.html)
 
 ### Tensorflow and Keras
+
+[TensorFlow](https://www.tensorflow.org/) is an adaptable end-to-end open-source machine learning platform that benefits from advanced tools, libraries, and community resources.
+
 * Multi-layer Perceptron (MLP)
 	* [Keras Multi-layer Perceptron (MLP) for Binary Classifications](/notes/Deel_Learning/Keras_Binary_MLP.html)
 	* [Keras Multi-layer Perceptron (MLP) for Multi-Class Classifications](/notes/Deel_Learning/Keras_MultiClass_MLP.html)
