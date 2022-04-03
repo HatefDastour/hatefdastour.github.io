@@ -24,10 +24,10 @@ Working Experience
 [Department of Geomatics Engineering](https://schulich.ucalgary.ca/geomatics/){:target="_blank"}, Schulich School of Engineering, University of Calgary, Alberta, Canada
 
 * Sessional Lecturer I/Tutorial instructor<br/>
-Department of Mathematics & Computer Science, Faculty  of Arts \& Science, [University of Lethbridge (Calgary Campus)](https://www.ulethbridge.ca/calgary/){:target="_blank"}, Calgary, AB, Canada
+Department of Mathematics & Computer Science, Faculty  of Arts & Science, [University of Lethbridge (Calgary Campus)](https://www.ulethbridge.ca/calgary/){:target="_blank"}, Calgary, AB, Canada
 
 * Data Scientist/Research Scientist<br/>
-[Earth \& Space Inc.](https://earthspace.ca/){:target="_blank"}, Calgary, AB, Canada
+[Earth & Space Inc.](https://earthspace.ca/){:target="_blank"}, Calgary, AB, Canada
 
 * Data Science Developer<br/>
 [StellarAlgo Corp](https://stellaralgo.com/){:target="_blank"}, Calgary, AB, Canada
