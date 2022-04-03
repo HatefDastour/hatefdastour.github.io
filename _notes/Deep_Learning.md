@@ -6,7 +6,7 @@ collection: notes
 
 ### PyTorch
 
-PyTorch [1] is an open-source machine learning framework based on the Torch library. It was primarily developed and is maintained by Facebook's AI Research lab. PyTorch is used in various applications such as computer vision (CV) and natural language processing (NLP), etc. 
+[PyTorch](https://pytorch.org/docs/stable/index.html) is an open-source machine learning framework based on the Torch library. It was primarily developed and is maintained by Facebook's AI Research lab. PyTorch is used in various applications such as computer vision (CV) and natural language processing (NLP), etc. 
 
 
 * [Getting Started with PyTorch](/notes/Deel_Learning/PyTorch_Getting_Started.html)
@@ -29,9 +29,3 @@ PyTorch [1] is an open-source machine learning framework based on the Torch libr
 * [Image Augmentations with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Augmentations.html)
 * [Image Classification with TensorFlow](/notes/Deel_Learning/TensorFlow_Image_Classification.html)
 * [Text Classification Pipeline with Tensorflow](/notes/Deel_Learning/Tensorflow_Text_Classification_Pipeline.html)
-
-
-***
-### Refrences
-1. [PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
-***
