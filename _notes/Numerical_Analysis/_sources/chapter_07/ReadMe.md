@@ -1,4 +1,4 @@
-# Chapter 7: Numerical Integration
+# Chapter 7: Regularization Methods
 
 Content:
 * Trapezoidal rule
