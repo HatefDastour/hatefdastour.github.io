@@ -5,6 +5,6 @@ permalink: /publications/
 author_profile: true
 ---
 
-{% for post in site.publications reversed %}
+<ul>{% for post in site.publications reversed %}
   {% include archive-single-cv.html %}
-{% endfor %}
+{% endfor %}</ul>
