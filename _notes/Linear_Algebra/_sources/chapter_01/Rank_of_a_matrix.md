@@ -14,7 +14,7 @@ The rank of matrix $A$ is the number of leading 1s in the reduced row-echelon fo
 Theorem:
 </b></font>
     
-Conider following system of equations with $m$ equations in $n$ variables
+Consider following system of equations with $m$ equations in $n$ variables
 \begin{align*}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=0\\
@@ -58,11 +58,13 @@ From the above theorem, we know that if $r < n$ , the system has
 Linear Combinations
 </b></font>
 
-Let $X_1,~X_2,~\ldots,~X_n$, $V$ be column matrices (they only have one column). Then $V$ is said to be a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if there exist scalars, $a_1,~a_2,~\ldots,~a_n$ such that
+Let $X_1,~X_2,~\ldots,~X_n$, $V$ be column matrices (each of them consists of only one column). Then, $V$ is said to be a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if there exist scalars, $a_1,~a_2,~\ldots,~a_n$ such that
 
 \begin{align*}
 V=a_1X_1+a_2X_2+\ldots+a_nX_n.
 \end{align*}
+
+In other words, $V$ is a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if it can be expressed in terms of those column matrices.
 </div>
 
 <font color='Blue'><b>Example</b></font>:

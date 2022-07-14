@@ -1,4 +1,4 @@
-# 2.1.6 Finding the Inverse of a Matrix
+# Finding the Inverse of a Matrix
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
@@ -8,7 +8,7 @@ Matrix Inverse Algorithm:
 1. Form the augmented $n\times 2$ matrix $[~A~|~I~]$. Note that matrix $A$ is $n\times n$, but $[~A~|~I~]$ has double number of columns $n\times 2$.
 1. If it is possible, perform row operations until you get an $n\times 2n$ matrix of the form $[~I~|~B~]$
 1. Then, $B = A^{-1}$ and $A$ is **invertible**.
-1.  If it is impossible to row reduce to a matrix of the form $[~I~|~B~]$, then A has **no inverse**.    
+1. If it is impossible to row reduce to a matrix of the form $[~I~|~B~]$, then A has **no inverse**.    
 </div>
 
 <font color='Blue'><b>Example</b></font>: Find the inverse of $A=\begin{bmatrix}1 & 0 & 2 \\ 0 & 1 & 0 \\ 0 & 3 & -1\end{bmatrix}$  if it exists.
@@ -64,7 +64,7 @@ Let $A$ be a $n\times n$ matrix and $I$ be the identity matrix. Then,
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

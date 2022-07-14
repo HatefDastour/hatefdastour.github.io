@@ -1,12 +1,12 @@
-# 2.1.3 Multiplication of Matrices
+# Multiplication of Matrices
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Row and Column Vectors
 </b></font>
 
-Column matrices (matrices of size $n\times 1$ or $1\times n$) are called vectors. If $X$ is such a matrix, 
-* If $A = \begin{bmatrix}a_{1} \\a_{2} \\ \vdots\\ a_{n}\end{bmatrix}$ (a column matrix), $a_i$ denotes the entry of $A$ in the $i^{th}$ row.
+Column matrices, matrices of size $n\times 1$, (or row matrices with a size of $1\times n$) are called vectors. If $X$ is such a matrix,
+* If $A = \begin{bmatrix}a_{1} \\ a_{2} \\ \vdots\\ a_{n}\end{bmatrix}$ (a column matrix), $a_i$ denotes the entry of $A$ in the $i^{th}$ row.
 * If $B = \begin{bmatrix}b_{1} & b_{2} & \dots & b_{n}\end{bmatrix}$ ( a row matrix), $b_i$ denotes the entry of $B$ in the $i^{th}$ column.
 </div>
 
@@ -141,7 +141,7 @@ $AB=\begin{bmatrix} 7 & -5 & 4\\ -3 & 3 & -6\\ -11 & 7 & -2 \end{bmatrix}$.
 Remark:
 </b></font>
     
-In general, matrix multiplication is not commutative! (i.e, $AB\neq BA)$. However, there are some examples where $AB=BA$ and in this case we say $A$ and $B$ commute.
+In general, matrix multiplication is not commutative! (i.e, $AB\neq BA)$. However, there are some examples where $AB=BA$.
     
 </div>
 
@@ -154,7 +154,7 @@ $$
 Note that usually $AB$ is different from $BA$.
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

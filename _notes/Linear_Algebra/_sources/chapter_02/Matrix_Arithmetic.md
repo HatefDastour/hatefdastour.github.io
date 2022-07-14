@@ -1,11 +1,11 @@
-# 2.1 Matrix Arithmetic
+# Matrix Arithmetic
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Matrix
 </b></font>
 
-A matrix is A rectangular array of numbers. and each number from a matrix is called an entry of the matrix. Matrices are often denoted by uppercase letters: $A$, $B$, $C$,...
+An array of numbers is called a matrix. Each number from a matrix is called an entry of the matrix. Matrices are often denoted by uppercase letters: $A$, $B$, $C$, ...
 </div>
 
 <font color='Blue'><b>Example</b></font>: $A$, $B$, and $C$ are matrices.
@@ -47,7 +47,7 @@ D=\begin{bmatrix} 5 & 3 & 1\\ 0 & 2 & -1\end{bmatrix}.
 * The (2, 2)-entry of $D$ is 2.
 * The (2, 3)-entry of $D$ is -1.
 
-A special notation is commonly used for the entries of a matrix. If $A$ is an $m\times n$ matrix, and if the (i,j)-entry of A is denoted as $a_{ij}$, then $A$ is displayed as follows:
+A special notation is commonly used for the entries of a matrix. If $A$ is an $m\times n$ matrix, and if the (i,j)-entry of A is denoted by $a_{ij}$, then $A$ is displayed as follows:
 
 \begin{align*}
 A=
@@ -82,7 +82,7 @@ A matrix with the same number of rows and columns is called a **square matrix**.
 Zero Matrix
 </b></font>
 
-A matrix in which all of its entries are zero is called a zero matrix. If a zero matrix has size $m\times n$, it is represented by $O_{m,n}$ (or simply just 0).
+A matrix with all zero entries is called a zero matrix. If a zero matrix has size $m\times n$, it can be represented by $O_{m,n}$ (or simply just 0).
 </div>
 
 
@@ -114,7 +114,7 @@ Two matrices $A$ and $B$ are **equal** (written $A = B$) if and only if:
 \begin{bmatrix}  1 & 2 \\   3 & 4 \end{bmatrix} = \begin{bmatrix}  1 & 2 \\  3 & 4 \end{bmatrix}.\end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

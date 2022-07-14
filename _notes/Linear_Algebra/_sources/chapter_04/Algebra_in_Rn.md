@@ -1,11 +1,11 @@
-# 4.2 Algebra in $\mathbb{R}^n$
+# Algebra in $\mathbb{R}^n$
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Addition of Vectors in <span class="math inline">\(\mathbb{R}^n\)</span>
 </b></font>
 
-If $\vec{u}=\begin{bmatrix}u_1 & u_2 & \dots & u_n\end{bmatrix}^T ,~\vec{v}=\begin{bmatrix}v_1 & v_2 & \dots & v_n\end{bmatrix}^T  \in \mathbb{R}^n$ hen $\vec{u}+\vec{v}\in \mathbb{R}^n$ and is defined by
+Let $\vec{u}=\begin{bmatrix}u_1 & u_2 & \dots & u_n\end{bmatrix}^T$ and $\vec{v}=\begin{bmatrix}v_1 & v_2 & \dots & v_n\end{bmatrix}^T  \in \mathbb{R}^n$. Then, the addition of vectors $\vec{u}$ and $\vec{v}$ is
 \begin{align*}
 \vec{u}+\vec{v}=\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}+\begin{bmatrix}v_1\\v_2\\\vdots\\v_n\end{bmatrix}=
 \begin{bmatrix}u_1+v_1\\u_2+v_2\\\vdots\\u_n+v_n\end{bmatrix}.
@@ -16,8 +16,8 @@ If $\vec{u}=\begin{bmatrix}u_1 & u_2 & \dots & u_n\end{bmatrix}^T ,~\vec{v}=\beg
 <font size="+1"><b>
 Theorem: Properties of Vector Addition
 </b></font>
-    
-Let $\vec{u}$, $\vec{v}$ and $\vec{w}$ be vectors in $\mathbb{R}^n$. Then, the following properties hold.
+
+For three vectors $\vec{u}$, $\vec{v}$ and $\vec{w}$ from $\mathbb{R}^n$, we have
 \begin{equation*}
 \begin{array}{llc}
 \bullet &\text{The Commutative Law of Addition:} & \vec{u}+\vec{v} = \vec{v}+\vec{u}, \\
@@ -44,7 +44,7 @@ Let $\vec{u}$, $\vec{v}$ and $\vec{w}$ be vectors in $\mathbb{R}^n$. Then, the f
 Scalar Multiplication of Vectors in <span class="math inline">\(\mathbb{R}^n\)</span>
 </b></font>
 
-If $\vec{u}=\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}$ and $k\in \mathbb{R}$ is a scalar, then $k \vec{u} \in \mathbb{R}^n$ is defined by
+For a vector $\vec{u}=\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}$ and a scalar(number) $k\in \R$, we have $k \vec{u} \in \R^n$ and
 \begin{align*}
 k\vec{u}=k\,\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}=\begin{bmatrix}ku_1\\ku_2\\\vdots\\ku_n\end{bmatrix}.
 \end{align*}
@@ -57,7 +57,7 @@ k\vec{u}=k\,\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}=\begin{bmatrix}ku_
 Theorem: Properties of Scalar Multiplication
 </b></font>
     
-The following properties hold for vectors $\vec{u},~\vec{v} \in \mathbb{R}^n$ and $k,~p$ scalars.
+For vectors $\vec{u},~\vec{v} \in \R^n$ and  scalars $k,~p$, we have
 \begin{equation*}
 \begin{array}{llc}
 \bullet &\text{The Distributive Law over Vector Addition} & k(\vec{u}+\vec{v}) = k\vec{u}+k\vec{v}, \\
@@ -90,7 +90,7 @@ $\vec{u}_{3}=\begin{bmatrix}0& 0& 3& 3\end{bmatrix}^{T}$ since
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

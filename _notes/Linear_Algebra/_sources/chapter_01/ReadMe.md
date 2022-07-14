@@ -1,4 +1,4 @@
-# Chapter 1: Systems of Equations
+# Systems of Equations
 
 Content:
 * Systems of Equations, Geometry

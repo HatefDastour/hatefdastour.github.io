@@ -1,4 +1,4 @@
-# Chapter 2: Matrices
+# Matrices
 
 Content:
 * Matrix Arithmetic

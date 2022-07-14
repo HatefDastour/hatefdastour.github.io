@@ -1,4 +1,4 @@
-# 4.1 Vectors in $\mathbb{R}^n$
+# Vectors in $\mathbb{R}^n$
 
 -   A scalar quantity has only magnitude. Examples: time, temp, distance, speed,...
 
@@ -20,7 +20,7 @@ a_1 = b_1 , a_2 = b_2 , \ldots,\text{ and }a_n = b_n
 \end{align*}
 </div>
 
-The notation $\mathbb{R}^n$ refers to the collection of ordered lists of $n$ real numbers, that is 
+The notation $\mathbb{R}^n$ refers to a collection of ordered lists of $n$ real numbers, that is
 \begin{align*}
 \mathbb{R}^n =\left\{ (x_1,\ldots,x_n ):~x_j \in \mathbb{R}~\text{for}~j = 1,\ldots ,n\right\}.
 \end{align*}
@@ -37,9 +37,28 @@ In particular, for various values of $n$ we have,
 Vectors in <span class="math inline">\(\mathbb{R}^n\)</span>
 </b></font>
 
-If $\mathbb{R}^n =\left\{ (x_1,\ldots,x_n ):~x_j \in \mathbb{R}~\text{for}~j = 1,\ldots ,n\right\}$, then $\vec{x}=\begin{bmatrix} x_1\\ \vdots \\ x_n \\  \end{bmatrix}$ is called a **vector**.
+If $\mathbb{R}^n =\left\{ (x_1,\ldots,x_n ):~x_j \in \mathbb{R}~\text{for}~j = 1,\ldots ,n\right\}$, then
+\begin{align*}
+\vec{x}=\begin{bmatrix} x_1\\ \vdots \\ x_n \\  \end{bmatrix}
+\quad \text{or} \quad
+\vec{x}=\begin{bmatrix} x_1 & \dots & x_n &  \end{bmatrix}^T
+\end{align*}
+is called a **vector**.
 
-Each number $x_j$ from vector $$\vec{x}$ is called the **components** of $\vec{x}$. Vectors have both size (magnitude) and direction. 
+Each number $x_j$ from vector $\vec{x}$ is called the **components** of $\vec{x}$. Vectors have both size (magnitude) and direction. 
+</div>
+
+<div class="alert alert-block alert-warning">
+<font size="+1"><b>
+Remark:
+</b></font>
+    
+* Vectors can be written in either **column vector** form or \textbf{row vector} form
+\begin{align*}
+\vec{u}&=\begin{bmatrix}    u_1\\ \vdots \\ u_n \\  \end{bmatrix},& {\color{blue}(\text{column vector})}\\
+\vec{u}&=\begin{bmatrix}    u_1 & \dots & u_n \\  \end{bmatrix}.& {\color{blue}(\text{row vector})}
+\end{align*}
+*  Sometimes a **column vector** in $\mathbb{R}^n$ is written in forms of $\begin{bmatrix}    u_1 & \dots & u_n \\  \end{bmatrix}^T$.
 </div>
 
 
@@ -73,20 +92,6 @@ This definition is illustrated in the following picture for the special case of 
 
 </div>
 
-$$x, y, z$$
-
-<div class="alert alert-block alert-warning">
-<font size="+1"><b>
-Remark:
-</b></font>
-    
-* Vectors can be written in either \textbf{column vector} form or \textbf{row vector} form
-\begin{align*}
-\vec{u}&=\begin{bmatrix}    u_1\\ \vdots \\ u_n \\  \end{bmatrix},& {\color{blue}(\text{column vector})}\\
-\vec{u}&=\begin{bmatrix}    u_1 & \dots & u_n \\  \end{bmatrix}.& {\color{blue}(\text{row vector})}
-\end{align*}
-*  Sometimes a \textbf{column vector} in $\mathbb{R}^n$ is written in forms of $\begin{bmatrix}    u_1 & \dots & u_n \\  \end{bmatrix}^T$.
-</div>
 
 We can also determine the **position vector from $P$ to $Q$** (the vector from $P$ to $Q$) as follows
 \begin{align*}
@@ -101,7 +106,7 @@ where $P = (p_1 ,\ldots,p_n )$ and $Q = (q_1 ,\ldots,q_n )$.
 ```
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

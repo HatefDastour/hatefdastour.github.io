@@ -1,4 +1,4 @@
-# 2.1.5 The Identity and Inverses
+# The Identity and Inverses
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -30,15 +30,13 @@ Note that a symmetric matrix has to be a square matrix. If a symmetric $A$ is $m
 <font color='Blue'><b>Example</b></font>: Examples of symmetric and skew symmetric matrices.
 
 
--   $\begin{bmatrix}1 & 2\\ 2 & 1\end{bmatrix}$ (Symmetric),
-
--   $\begin{bmatrix}1 & 2 & 3\\ 2 & 1 & 3\\ 3 & 3 & 1\end{bmatrix}$ (Symmetric),
-
--   $\begin{bmatrix} 0 & 2 & 3 & 13\\ -2 & 0 & 10 & 8\\ -3 & -10 & 0 & 12\\ -13 & -8 & -12 & 0 \end{bmatrix}$
-    (Skew-symmetric),
-
--   $\begin{bmatrix}0 & 24 & 1 & 8 & 15\\ -24 & 0 & 7 & 14 & 16\\ -1 & -7 & 0 & 20 & 22\\ -8 & -14 & -20 & 0 & 3\\ -15 & -16 & -22 & -3 & 0\end{bmatrix}$
-    (Skew-symmetric).
+\begin{align*}
+&\begin{bmatrix}1 & 2\\ 2 & 1\end{bmatrix}  &\text{(Symmetric)},\\
+&\begin{bmatrix}1 & 2 & 3\\ 2 & 1 & 3\\ 3 & 3 & 1\end{bmatrix} &\text{(Symmetric)},\\
+&\begin{bmatrix} 0 & 2 & 3 & 13\\ -2 & 0 & 10 & 8\\ -3 & -10 & 0 & 12\\ -13 & -8 & -12 & 0 \end{bmatrix}&\text{(Skew-symmetric)},\\
+&\begin{bmatrix}0 & 24 & 1 & 8 & 15\\ -24 & 0 & 7 & 14 & 16\\ -1 & -7 & 0 & 20 & 22\\ -8 & -14 & -20 & 0 & 3\\ -15 & -16 & -22 & -3 & 0\end{bmatrix}
+&\text{(Skew-symmetric)},
+\end{align*}
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
@@ -53,7 +51,7 @@ The entries on the main diagonal of a skew-symmetric matrix are **zero**.
 The Identity matrix
 </b></font>
 
-The identity matrix is (always) a square matrix that there are ones on its main diagonal and zeroes elsewhere, and it is shown with $I_n$ for $n\geq 1$.
+The identity matrix is (always) a square matrix with 1s on its main diagonal and 0s elsewhere, and it is shown with $I_n$ for $n\geq 1$.
 </div>
 
 <font color='Blue'><b>Example</b></font>: Some identity matrices of various sizes
@@ -104,6 +102,7 @@ called **invertible**.
 <font size="+1"><b>
 Theorem: Uniqueness of Inverse
 </b></font>
+
 If matrix $A$ has an inverse, then its inverse is unique. That is, if $B$ and $C$ are both inverses of $A$, then $B =C$.
 </div>
 
@@ -136,7 +135,7 @@ Remark:
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

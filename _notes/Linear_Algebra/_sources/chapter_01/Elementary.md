@@ -40,7 +40,7 @@ In hand calculations (and in computer programs), we manipulate the rows of the a
 Elementary Row Operations:
 </b></font>
 
-The following operations are called elementary row operations on a matrix:
+Elementary row operations on a matrix:
 
 1.  Interchange two rows.
 1.  Multiply one row by a nonzero number.
@@ -96,8 +96,7 @@ A compact notation to describe elementary operations:
 (Reduced) Row-Echelon Form
 </b></font>
 
-A matrix is said to be in **row-echelon form** (REF) if it satisfies the
-following three conditions:
+A matrix is said to be in **Row-Echelon Form** (REF) if it meets the following three conditions:
 
 1.  All **zero rows** (consisting entirely of zeros) are at the bottom.
 

@@ -1,13 +1,13 @@
-# 2.1.1 Addition of Matrices
+# Addition of Matrices
 
-We can add two matrices only if all matrices in the sum need have the same size.
+We can add/subtract two matrices only if all matrices involved in the addition/subtraction need to have the **same size**.
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Matrix Addition
 </b></font>
 
-If $A$ and $B$ are matrices of the same size, their sum $A+B$ is the matrix formed by adding corresponding entries.
+Assume that $A$ and $B$ are matrices of the same size. The summation of these matrices, $A+B$, is the matrix calculated by adding corresponding entries.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -34,7 +34,9 @@ and $D=\begin{bmatrix}  1 & 1\\ 1 & 3 \end{bmatrix}$, we cannot have $C+D$ since
 Proposition - Properties of Matrix Addition:
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span>,<span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> be matrices. Then, the following properties hold.</p>
+<p>Let <span class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span> and <span
+class="math inline">\(C\)</span> be matrices of the same size. Then,</p>
 <ul>
 <li><p>Commutative Law of Addition: <span class="math display">\[\begin{aligned}
  A+B = B+A \end{aligned}\]</span></p></li>

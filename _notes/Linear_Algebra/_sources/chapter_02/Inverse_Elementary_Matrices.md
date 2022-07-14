@@ -1,26 +1,25 @@
-# 2.1.8 Inverses and Elementary Matrices
+# Inverses and Elementary Matrices
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 B =UA Form
 </b></font>
 
-Let $A$ be an $m\times n$ matrix and $B$ be the reduced row-echelon form of $A$. Then, we can write $B =UA$ where U is the product of all elementary matrices expressing the row operations done to $A$ to obtain $B$.
+Let $A$ be an $m\times n$ matrix, and $B$ be the reduced row-echelon form of $A$. Then, we can write $B =UA$ where U is the product of all elementary matrices representing the row operations applied on $A$ to obtain $B$.
 </div>
 
-Suppose that an $m\times n$ matrix $A$ is carried to a matrix $B$ (written $A \to B$) by a series of $k$ elementary row operations, and let $E_1$, $E_2$, \ldots, $E_k$ denote the corresponding elementary matrices.
+Assume that an $m\times n$ matrix $A$ is carried to a matrix $B$ by a series of $k$ elementary row operations  (this is shown as $A \to B$). Let $E_1$, $E_2$, \ldots, $E_k$ denote the corresponding elementary matrices.
 
 1.  $B =UA$ where $U$ is an $m\times m$ invertible matrix.
 
-2.  $U$ can be computed by $[~A~|~I_m~]\to[~B~|~U]$ using the operations
-    carrying $A \to B$.
+2.  $U$ can be computed by $[~A~|~I_m~]\to[~B~|~U]$.
 
-3.  $U = E _k E_{k-1} \ldots E_2 E_1$ where $E_1$, $E_2$, ..., $E_k$ are
-    the elementary matrices corresponding (in order) to the elementary
-    row operations carrying $A$ to $B$.
+3.  $U = E_{k} E_{k-1} \ldots E_2 E_1$ where $E_1$, $E_2$, ..., $E_k$ are the elementary matrices corresponding (in order) to the elementary row operations carrying $A$ to $B$.
 
 <font color='Blue'><b>Example</b></font>:
-Let $A =\begin{bmatrix}2 & 3 & 1\\ 1 & 2 & 1\end{bmatrix}$. Find $B$, the reduced row-echelon form of $A$ and write it in the form $B =UA$.
+Let 
+\begin{align*}A =\begin{bmatrix}2 & 3 & 1\\ 1 & 2 & 1\end{bmatrix}.\end{align*}
+Find $B$, the reduced row-echelon form of $A$ and write it in the form $B =UA$.
 
 <font color='Green'><b>Solution</b></font>:
 Reduce the double matrix $[~A~|~I_2~]\to[~B~|~U]$ as follows:
@@ -84,7 +83,7 @@ Let $A$ be an $n\times n$ matrix (square matrix). Then $A$ is invertible if and 
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

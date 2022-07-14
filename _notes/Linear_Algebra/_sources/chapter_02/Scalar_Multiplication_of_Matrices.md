@@ -1,4 +1,4 @@
-# 2.1.2 Scalar Multiplication of Matrices
+# Scalar Multiplication of Matrices
 
 
 <div class="alert alert-info" role="alert">
@@ -15,9 +15,9 @@ If $A =\left[a_{i,j}\right]$ and $k$ is a scalar (a number), then $kA = \left[k~
 <font color='Green'><b>Solution</b></font>:
 
 \begin{align*}
-3A&=\begin{bmatrix}1 & 2 \\ 3 & 4\end{bmatrix}=\begin{bmatrix}(3)(1) & (3)(2) \\ (3)(3) & (3)(4)\end{bmatrix}
+3A&=3\begin{bmatrix}1 & 2 \\ 3 & 4\end{bmatrix}=\begin{bmatrix}(3)(1) & (3)(2) \\ (3)(3) & (3)(4)\end{bmatrix}
 =\begin{bmatrix}3 & 6\\ 9 & 12\end{bmatrix},\\
--A&=\begin{bmatrix}1 & 2 \\ 3 & 4\end{bmatrix}=\begin{bmatrix}(-1)(1) & (-1)(2) \\ (-1)(3) & (-1)(4)\end{bmatrix}
+-A&=(-1)\begin{bmatrix}1 & 2 \\ 3 & 4\end{bmatrix}=\begin{bmatrix}(-1)(1) & (-1)(2) \\ (-1)(3) & (-1)(4)\end{bmatrix}
 =\begin{bmatrix}-1 & -2\\ -3 & -4\end{bmatrix}.\end{align*}
 ***
 
@@ -26,7 +26,7 @@ If $A =\left[a_{i,j}\right]$ and $k$ is a scalar (a number), then $kA = \left[k~
 Remark:
 </b></font>
     
-The subtraction of matrices is similar to the addition of matrices (since $A-B=A+(-B)$). However, subtraction is not commutative which means, in general, for two matrices $A$ and $B$
+The subtraction of matrices is comparable to the addition of matrices (since $A-B=A+(-B)$). However, subtraction is not commutative which means, in general, for two matrices $A$ and $B$
 
 \begin{align*}
 A-B\neq B-A.

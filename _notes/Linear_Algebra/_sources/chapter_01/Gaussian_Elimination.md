@@ -6,7 +6,7 @@
 Equivalent Matrices
 </b></font>
 
-The matrix $B$ is equivalent to the matrix $A$ if $B$ can be obtained from $A$ by performing a sequence of elementary row operations starting with $A$.
+The matrix $B$ is equivalent to the matrix $A$ if $B$ can be produced by a sequence of elementary row operations starting with $A$.
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -14,19 +14,19 @@ The matrix $B$ is equivalent to the matrix $A$ if $B$ can be obtained from $A$ b
 Theorem:
 </b></font>
 
-* If corresponding augmented matrices of two linear systems of equations are equivalent, then those two linear systems have exactly the same solutions.
-* Every matrix $A$ is equivalent to a unique matrix in RREF.
+* Two linear systems have exactly the same solutions if corresponding augmented matrices of two linear systems of equations are equivalent.
+* Every matrix is equivalent to a unique matrix in RREF.
 </div>
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
-Gaussian Algorithm:
+Gaussian Algorithm: For a matrix <span class="math inline">\(A\)</span>, 
 </b></font>
-<p><strong>Step 1</strong>: If the matrix consists entirely of zeros, stop. It is already in row-echelon form.</p>
-<p><strong>Step 2</strong>: Otherwise, find the first column from the left containing a nonzero entry (call it <span class="math inline">\(a\)</span>), and move the row containing that entry to the top position.</p>
+<p><strong>Step 1</strong>: If the matrix <span class="math inline">\(A\)</span> only consists entirely of zeros, stop. It is already in REF.
+<p><strong>Step 2</strong>: Otherwise, identify the first column from the left comprising a nonzero entry (let's call this entry <span class="math inline">\(a\)</span>) and move the row containing that entry to the top position.</p>
 <p><strong>Step 3</strong>: Now multiply the new top row by <span class="math inline">\(1/a\)</span> to create a leading 1 .</p>
-<p><strong>Step 4</strong>: By subtracting multiples of that row from rows below it, make each entry below the leading 1 zero. This completes the first row, and all further row operations are carried out on the remaining rows.</p>
-<p><strong>Step 5</strong>: Repeat steps 1-4 on the matrix consisting of the remaining rows. The process stops when either no rows remain at step 5 or the remaining rows consist entirely of zeros.</p>
+<p><strong>Step 4</strong>: By subtracting multiples of that row from rows underneath it, make each entry below the leading 1 zero. This completes the first row, and all additional row operations are conducted on the rest of the rows.</p>
+<p><strong>Step 5</strong>: Repeat steps 1-4 on the matrix consisting of the remaining rows. The process is carried out iteratively until either no rows remain at step 5 or the remaining rows consist entirely of zeros.</p>
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -34,7 +34,7 @@ Gaussian Algorithm:
 Back-Substitution
 </b></font>
 
-Back-substitution is a process of solving a linear system of equations using its transformed into a row-echelon form or the reduced row-echelon form. In this process, the last equation is solved first, then the second last equation is solved next, etc.
+Back-substitution is a process of solving a linear system of equations using its REF or RREF. In this process, the last equation is solved first, then the second last equation is solved next, etc.
 </div>
 
 <font color='Blue'><b>Example</b></font>: Solve the following linear system using back-substitution.

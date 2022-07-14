@@ -1,4 +1,4 @@
-# 1.1 Systems of Equations, Geometry
+# Systems of Equations, Geometry
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -6,9 +6,9 @@ Linear Equation
 </b></font>
 
 Let $a$, $b$, and $c$ be real numbers ($a$ and $b$ are not both zero). Then, the graph of an equation with the following form
-\begin{equation*}
+\begin{align*}
 ax+by = c
-\end{equation*}
+\end{align*}
 is a straight line. Such an equation is called a **linear equation**, and the **variables** of this linear equation are $x$ and $y$.
 </div>
 
@@ -19,19 +19,19 @@ For example, $x-y=0$ is a linear equation.
 </center>
 
 Note that, here, $x$ and $y$ are the variables. However, in general, when more than two variables are involved, variables are often demonstrated with some subscripts. For example, $x_1$, $x_2$, ..., $x_n$ are variables for an equation of the form
-\begin{equation*}
+\begin{align*}
 a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
-\end{equation*}
+\end{align*}
 
 Moreover, $\Sigma$ (Sigma) is often used to demonstrate a sum of some terms. For example,
-\begin{equation*}
+\begin{align*}
 a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
-\end{equation*}
-also can be shows as follows
-\begin{equation*}
-\sum_{j = 1}^{n}  a_j\,x_j  = b
-\end{equation*}
-which shows a sumation of $n$ terms. This also know as **summation notation**.
+\end{align*}
+also can be shown as follows
+\begin{align*}
+\sum_{j = 1}^{n}  a_j\,x_j  = b.
+\end{align*}
+This also know as **summation notation** (a summation of $n$ terms).
 
 
 <div class="alert alert-info" role="alert">
@@ -39,8 +39,7 @@ which shows a sumation of $n$ terms. This also know as **summation notation**.
 System of Linear Equations
 </b></font>
 
-A system of equations is a collection of equations. For example, for linear equations $a_{11}x_1+\ldots+a_{1n}x_{n}=b_1$, $a_{21}x_1+\ldots+a_{2n}x_{n}=b_2$, $\ldots$, $a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m$.
-
+A system of equations is a collection of equations. For example, the following $m$ equations form a system of (linear) equations.
 \begin{align*}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
@@ -143,7 +142,7 @@ Basically, we need to plug each solution into the system of equation.
 \end{cases},\end{align*}
 ***
 
-## 1.1.1 Possible sets of solution for two equations and two variables
+## Possible sets of solution for two equations and two variables
 
 When a system of linear equations has only two variables, then the solutions to that system of linear equations can be explained geometrically using a graph. The graph of an equation $ax+by = c$ is a straight line when $a$ and $b$ are not both zero at the same time.
 
@@ -155,9 +154,6 @@ a_{11}x+a_{12}y=b_1\\
 a_{21}x+a_{22}y=b_2\\
 \end{cases}
 \end{align*} 
-
-Note that each equation can be shown on a graph using a straight line, and there are three possibilities for the
-corresponding straight lines:
 
 1.  The lines intersect at a only one point. Then the system has a **unique solution** corresponding to that point.
 
@@ -208,11 +204,11 @@ we have,
 <iframe src="https://www.desmos.com/calculator/vtceot3sfb?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
 </center>
 
-## 1.1.2 Consistent and inconsistent linear systems
+## Consistent and inconsistent linear systems
 
 A system of equations is called **inconsistent** when there is no solution for this system of equations, and it is called **consistent** when there is at least one solution for it.
 
-The graph of $ax+by+cz = d$ (it has hree variables) is a plane.
+The graph of $ax+by+cz = d$ (it has three variables) is a plane.
 
 <center>
 
@@ -230,7 +226,7 @@ This graphical method has its limitations. When more than three variables are in
 
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "[A First Course in Linear Algebra (Lyryx)](https://lyryx.com/first-course-linear-algebra/)." (2021).
 1. Nicholson, W. Keith. "[Linear Algebra with Applications (Lyryx)](https://lyryx.com/linear-algebra-applications/)." (2021).
 ***

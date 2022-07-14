@@ -1,4 +1,4 @@
-# 4.3 Geometric Meaning of Vector Addition and  Scalar Multiplication
+# Geometric Meaning of Vector Addition and  Scalar Multiplication
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -50,7 +50,7 @@ Examples of scalar multiples of a vector $\vec{v}$:
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

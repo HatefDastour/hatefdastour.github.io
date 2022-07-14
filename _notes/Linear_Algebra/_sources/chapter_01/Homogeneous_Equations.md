@@ -18,15 +18,9 @@ a_{m1}x_1+\ldots+a_{mn}x_{n}=0.
 \end{align*} 
 </div>
 
-Clearly, $x_1=0$, $x_2=0$, ..., $x_n=0$ is a solution to such a system;
-it is called the **trivial solution**. Any solution in which at least
-one variable has a nonzero value is called a **nontrivial solution**.
+Clearly, $x_1=0$, $x_2=0$, ..., $x_n=0$ is a solution to such a system which is also known as the **trivial solution**. Note that any solution that has a nonzero component is called a  **nontrivial solution**.
 
-<font color='Blue'><b>Example</b></font>: The linear system 
-$\begin{cases}x_{1}+2\,x_{2}=0\\ x_{1}-x_{2}=0\end{cases}$ is
-homogeneous. Clearly, $x_1 = 0$ and $x_2 = 0$ is a solution to such a
-system; it is called the **trivial solution**. Any solution in which at
-least one variable has a nonzero value is called a **nontrivial
+<font color='Blue'><b>Example</b></font>: The linear system $\begin{cases}x_{1}+2\,x_{2}=0\\ x_{1}-x_{2}=0\end{cases}$ is homogeneous. Clearly, $x_1 = 0$ and $x_2 = 0$ is a solution to such a system; it is called the **trivial solution**. Any solution in which at least one variable has a nonzero value is called a **nontrivial
 solution**.
 
 <div class="alert alert-block alert-warning">
@@ -37,14 +31,16 @@ Remark:
 A homogeneous system of linear equations always has a trivial solution (consistent).
 </div>
 
-**Basic and free variables**: To solve a linear system, the augmented matrix is carried to a reduced
-row-echelon form (RREF), and the variables corresponding to the leading
-ones are called **basic variables** (leading variables). Because the
-matrix is in reduced form, each basic variables occurs in exactly one
-equation, so that equation can be solved to give a formula for the basic
-variables in terms of the **free variables** (non-leading variables). It
-is customary to label-free variables by new variables $s$, $t$, ...,
-called parameters.
+Solving a linear system using an augmented matrix requires a reduced
+row-echelon form (RREF). In this form, the variables corresponding to
+the leading ones are called <strong>basic variables</strong> (leading
+variables) and each basic variable emerges in exactly one equation
+(because the matrix is in reduced form). Therefore, each equation can be
+solved to provide a formula for the basic variables in terms of the
+<strong>free variables</strong> (non-leading variables). It is standard
+to label these free variables by new variables <span
+class="math inline">\(s\)</span>, <span
+class="math inline">\(t\)</span>, …, called parameters.
 
 <font color='Blue'><b>Example</b></font>: Find the basic and
 free variables in the following linear system

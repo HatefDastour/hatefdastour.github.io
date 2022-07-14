@@ -1,4 +1,4 @@
-# Chapter 4: $\mathbb{R}^n$
+# $\mathbb{R}^n$
 
 Content:
 * Vectors in $\mathbb{R}^n$
