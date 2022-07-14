@@ -23,7 +23,7 @@ Let $P$ and $Q$ be two points in $\mathbb{R}^n$,
 Distance Between Points
 </b></font>
 
-For any two points $P = (p_1,\ldots,p_n)$ and $Q=(q_1,\ldots,q_n)$ in $\R^n$, the distance between these points is defined as follows
+For any two points $P = (p_1,\ldots,p_n)$ and $Q=(q_1,\ldots,q_n)$ in $\mathbb{R}^n$, the distance between these points is defined as follows
 \begin{align*}
 %\text{distance between $P$ and $Q$}=
 d(P,Q)=%\left(\sum_{k=1}^{n}|p_k-q_k|^2\right)^{\frac{1}{2}}
@@ -46,7 +46,7 @@ Find the distance between the points $P$ and $Q$ in $\mathbb{R}^6$ , where $P$ a
 Theorem:
 </b></font>
     
-For two points $P$ and $Q$ from $R^n$,
+For two points $P$ and $Q$ from $\mathbb{R}^n$,
 
 * $d(P,Q) = d(Q,P)$,
 * $d(P,Q) \geq 0$,
@@ -72,7 +72,7 @@ where $\|\vec{u}\|$ shows the length of $\vec{u}$.
 Length of <span class="math inline">\(\overrightarrow{PQ}\)</span>
 </b></font>
 
-For two points $P = (p_1,\ldots,p_n)$ and $Q=(q_1,\ldots,q_n)$ in $\R^n$, the length of $\overrightarrow{PQ}$ can be regarded as the distance between $\vec{P}$ and $\vec{Q}$. Thus,
+For two points $P = (p_1,\ldots,p_n)$ and $Q=(q_1,\ldots,q_n)$ in $\mathbb{R}^n$, the length of $\overrightarrow{PQ}$ can be regarded as the distance between $\vec{P}$ and $\vec{Q}$. Thus,
 \begin{align*}
 \|\overrightarrow{PQ}\|=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2+\ldots+(p_n-q_n)^2}
 \end{align*}
@@ -83,7 +83,7 @@ For two points $P = (p_1,\ldots,p_n)$ and $Q=(q_1,\ldots,q_n)$ in $\R^n$, the le
 Remark:
 </b></font>
     
-Assume that $\vec{u}=\begin{bmatrix}u_1 & u_2 & \dots & u_n\end{bmatrix}^T$ is a vector in $\R^n$, and $k\in \R$ is a scalar. Then,
+Assume that $\vec{u}=\begin{bmatrix}u_1 & u_2 & \dots & u_n\end{bmatrix}^T$ is a vector in $\mathbb{R}^n$, and $k\in \mathbb{R}$ is a scalar. Then,
 \begin{align*}
 \|ku\|=|k|\| u \|=|k|\sqrt{u_1^2+\ldots+u_n^2}
 \end{align*}
@@ -105,9 +105,14 @@ Let $\vec{u}=\begin{bmatrix}1 & 2 & 2\end{bmatrix}^T$. Then the length of $4\vec
 
 If $\|\vec{v}\|\neq0$, we can normalize a vector $\vec{v} \in \mathbb{R}^n$ by
 
-\begin{align*}\vec{u}=\frac{1}{\|\vec{v}\|}\vec{v},\end{align*}
+\begin{align*}\vec{u}=\frac{1}{\|\vec{v}\|}\vec{v}.\end{align*}
 
-where the vector $\vec{u}$ has the same direction as $\vec{v}$ but length equal to 1.
+Observe that the vector $\vec{u}$ is aligned with $\vec{v}$ (has the same direction), but its length is 1.
+
+```{image} ../Figures/fig4_09a.jpg
+:height: 100px
+:align: center
+```
 
 <font color='Blue'><b>Example</b></font>:
 Let $\vec{v}$ be given by $\vec{v} =\begin{bmatrix} 1 & 2 & 2\end{bmatrix}^{T}$. Find the unit vector $\vec{u}$ which has the same direction as $\vec{v}$.

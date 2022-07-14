@@ -6,8 +6,11 @@
 Dot Product
 </b></font>
 
-Let $\vec{u}=\begin{bmatrix} u_1 & \dots & u_n \end{bmatrix}^T$, $\vec{v}=\begin{bmatrix} v_1 & \dots & v_n \end{bmatrix}^T$ be two vectors in $\mathbb{R}^n$.
-Then, their dot product $\vec{u} \bullet \vec{v}$ is a number defined as
+The dot product of two vectors $\vec{u}=\begin{bmatrix} u_1 & \dots & u_n \end{bmatrix}^T \in \mathbb{R}^n$
+and
+$\vec{v}=\begin{bmatrix} v_1 & \dots & v_n \end{bmatrix}^T \in \mathbb{R}^n$ is shown with
+$\vec{u} \bullet \vec{v}$
+and defined as follows.
 \begin{align*}
 \vec{u} \bullet \vec{v}=\begin{bmatrix} u_1 \\ \vdots \\ u_n \end{bmatrix} \bullet \begin{bmatrix} v_1 \\ \vdots \\ v_n \end{bmatrix}=u_1v_1+u_2v_2+\ldots+u_nv_n.
 \end{align*}

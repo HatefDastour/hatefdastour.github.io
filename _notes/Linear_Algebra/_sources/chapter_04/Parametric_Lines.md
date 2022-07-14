@@ -6,7 +6,7 @@
 Vector Equation of a Line
 </b></font>
 
-Assume that a line $L$ in $\mathbb{R}^n$ passes the two different points $P$ and $P_0$, and let $\vec{p}$ and $\vec{p}_0$ be the position vectors of these two points, respectively. We can definethe **direction vector** as $\vec{d} =\vec{p}-\vec{p}_0$ for $L$. Then, the **vector equation** for $L$ is given by
+Assume that a line $L$ in $\mathbb{R}^n$ passes the two different points $P$ and $P_0$, and let $\vec{p}$ and $\vec{p}_0$ be the position vectors of these two points, respectively. We can define the **direction vector** as $\vec{d} =\vec{p}-\vec{p}_0$ for $L$. Then, the **vector equation** for $L$ is given by
 \begin{align*}
 \vec{p} = \vec{p_0} +t\,\vec{d},\quad t \in \mathbb{R}.
 \end{align*}
@@ -38,7 +38,7 @@ This is the vector equation of $L$ written in **component form**.
 Parametric Equation of a Line
 </b></font>
 
-The line through $P_0=(x_0 , y_0 , z_0 )$ with direction vector $\vec{d}=\begin{bmatrix} a & b & c \end{bmatrix}^T\neq0$ is given by
+The line that passes through $P_0=(x_0 , y_0 , z_0 )$ in the direction of $\vec{d}=\begin{bmatrix} a & b & c \end{bmatrix}^T\neq0$ ($\vec{d}$ is the direction vector) can be found as follows.
 \begin{align*}
 \begin{cases}
 x=x_0+t\,a,\\
@@ -47,11 +47,20 @@ z=z_0+t\,c,\\
 \end{cases}
 \quad t \in \mathbb{R}.
 \end{align*}
-
-This is called a **parametric equation** of the line $L$.
+This presentation is known as the **parametric equation** of the line $L$.
 </div>
 
-In other words, the point $P=(x, y, z)$ is on this line if and only if a real number t exists such that $x=x_0+t\,a$ , $y=y_0+t\,b$, and $z=z_0+t\,c$.
+<div class="alert alert-block alert-warning">
+<font size="+1"><b>
+Remark:
+</b></font>
+    
+Observe that the point $P=(x, y, z)$ is on this line if and only if a real number $t \in \mathbb{R}$ exists such that
+\begin{align*}
+x=x_0+t\,a,~y=y_0+t\,b,\text{ and }z=z_0+t\,c
+\end{align*}
+    
+</div>
 
 <font color='Blue'><b>Example</b></font>:
 Find a vector equation for the line which contains the point $P_0 = (1,1,2)$ and has direction vector
@@ -78,8 +87,7 @@ z=2+t,\\
 
 ## Symmetric Form
 
-There is one other form for a line which is useful. We can solve parametric equation form for the parameter $t$,
-
+The **symmetric form** of a line can be found by solving the parametric equation of a line for  the parameter $t$. We have,
 \begin{align*}
 \begin{cases}
 x=x_0+t\,a,\\
@@ -87,7 +95,7 @@ y=y_0+t\,b,\\
 z=z_0+t\,c,\\
 \end{cases}
 \quad t \in \mathbb{R},
-\quad \Rightarrow{\text{Solve for $t$}}\Rightarrow
+\quad \xRightarrow[]{\text{~~~Solve for $t$~~~}}
 \begin{cases}
 t=\dfrac{x-x_0}{a},\\
 t=\dfrac{y-y_0}{b},\\
@@ -107,7 +115,7 @@ t=\dfrac{z-z_0}{c},\\
 Remark:
 </b></font>
     
-If one of $a$, $b$, or $c$ does happen to be zero, we can still write down the symmetric equations.  For example, suppose that $b=0$.  In this case $t$ will not exist in the parametric equation for $y$, and so we will only solve the parametric equations for $x$ and $z$ for $t$.  We then set those equal and acknowledge the parametric equation for $y$ as follows,
+In case either of  $a$, $b$, or $c$ is zero, there will be a specific form of symmetric equations representation. As a case in point, let $b=0$. Then, $t$ will not exist in the parametric equation for $y$, and we only solve the parametric equations for $x$ and $z$ for $t$. Then,
 \begin{align*}\frac{x-x_0}{a}=\frac{z-z_0}{c},~y=y_0.\end{align*}
 </div>
 
