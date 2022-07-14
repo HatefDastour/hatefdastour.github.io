@@ -1,4 +1,4 @@
-# Chapter 6: Complex Numbers
+# Complex Numbers
 
 Content:
 * Complex Numbers

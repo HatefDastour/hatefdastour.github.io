@@ -1,4 +1,4 @@
-# Chapter 5: Linear Transformations
+# Linear Transformations
 
 Content:
 * Linear Transformations

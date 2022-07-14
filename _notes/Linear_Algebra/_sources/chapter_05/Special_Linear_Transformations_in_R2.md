@@ -1,4 +1,4 @@
-# 5.4 Special Linear Transformations in $\mathbb{R}^2$
+# Special Linear Transformations in $\mathbb{R}^2$
 
 ## Rotation
 
@@ -257,7 +257,7 @@ On the other hand, the transformation obtained by reflecting vectors in the $x$ 
 Thus, $T$ is a reflection in the $x-$axis.
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

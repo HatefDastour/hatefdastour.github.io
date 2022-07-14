@@ -1,6 +1,6 @@
-# 7.1 Eigenvalues and Eigenvectors of a Matrix
+# Eigenvalues and Eigenvectors of a Matrix
 
-## 7.1.1 Definition of Eigenvectors and Eigenvalues
+## Definition of Eigenvectors and Eigenvalues
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -90,7 +90,7 @@ Theorem: The Existence of an Eigenvector
 
 </div>
 
-## 7.1.2 Finding Eigenvectors and Eigenvalues
+## Finding Eigenvectors and Eigenvalues
 
 <div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
@@ -434,7 +434,7 @@ t \begin{bmatrix} 1\\0\\0 \end{bmatrix}+s \begin{bmatrix} 0\\-2\\1 \end{bmatrix}
 Therefore, we can use $X_2 =\begin{bmatrix} 1\\0\\0\end{bmatrix}$ and $X_3 =\begin{bmatrix} 0\\-2\\1\end{bmatrix}$ as the basic eigenvectors corresponding to $\lambda_2 = \lambda_3=4$.
 ***
 
-## 7.1.3 Eigenvalues and Eigenvectors for Special Types of Matrices
+## Eigenvalues and Eigenvectors for Special Types of Matrices
 
 
 Let $A$, and $B$ be $n \times n$ matrices. Suppose there exists an invertible matrix $P$ such that
@@ -584,7 +584,7 @@ The corresponding augmented matrix:
 We can see that this system has two eigenvectors only if the RREF has two rows of zero. This means $-k-12=0$ and $k=-12$.
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

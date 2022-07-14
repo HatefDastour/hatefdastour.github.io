@@ -1,6 +1,6 @@
-# 7.2 Diagonalization
+# Diagonalization
 
-## 7.2.1 Similarity and Diagonalization
+## Similarity and Diagonalization
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -122,7 +122,7 @@ $A$.
 
 Note that the above equation can be rearranged as $A = PDP^{-1}$ . Suppose we wanted to compute $A^{100}$. By diagonalizing A first it suffices to then compute $\left(PDP^{-1}\right)^{100}$, which reduces to $PD^{100} P^{-1}$. This last computation is much simpler than $A^{100}$.
 
-## 7.2.2 Diagonalizing a Matrix
+## Diagonalizing a Matrix
 
 Let $A$ be an $n\times n$ matrix. The process of finding an
 **invertible** matrix $P$ and a **diagonal** matrix $D$ so that
@@ -350,7 +350,7 @@ this matrix is \textbf{not} diagonalizable.
 The matrix $A$ has one eigenvalue of multiplicity two, but only one basic eigenvector. In order to diagonalize $A$, we need to construct an invertible $2\times 2$ matrix $P$. However, because $A$ only has one basic eigenvector, we cannot construct this $P$. Note that if we were to use $X_1$ as both columns of $P$, $P$ would not be invertible ($\det(P)=0$). For this reason, we cannot repeat eigenvectors in $P$.
 ***
 
-## 7.2.3 Complex Eigenvalues
+## Complex Eigenvalues
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
@@ -499,7 +499,7 @@ This can be easily verified, observe that
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

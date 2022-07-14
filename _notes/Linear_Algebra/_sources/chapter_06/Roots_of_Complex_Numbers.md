@@ -1,4 +1,4 @@
-# 6.3 Roots of Complex Numbers
+# Roots of Complex Numbers
 
 
 A fundamental identity is the formula of De Moivre with which we begin this section.
@@ -230,7 +230,7 @@ Therefore,
 </center>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 1. Stewart, James, Daniel K. Clegg, and Saleem Watson. Calculus: early transcendentals. Cengage Learning, 2020.

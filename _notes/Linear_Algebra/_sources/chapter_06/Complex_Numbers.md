@@ -1,4 +1,4 @@
-# 6.1 Complex Numbers
+# Complex Numbers
 
 Complex numbers have two components real part and the imaginary part. A complex number is usually expressed as $z = a+b\,i$, where $a$ and $b$ are real numbers, and $i$ is a symbol for indicating the imaginary part ($i^2=-1$). The real part of the complex number $z = a+b\,i$ is the real number $a$, and the imaginary part is the real number $b$.
 
@@ -343,7 +343,7 @@ Therefore,
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 1. Stewart, James, Daniel K. Clegg, and Saleem Watson. Calculus: early transcendentals. Cengage Learning, 2020.

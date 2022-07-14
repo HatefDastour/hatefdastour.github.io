@@ -1,6 +1,6 @@
-# 7.3 Applications of Spectral Theory
+# Applications of Spectral Theory
 
-## 7.3.1 Raising a Matrix to a High Power
+## Raising a Matrix to a High Power
 
 Suppose we have a matrix $A$ and we want to find $A^{20}$. You could try to multiply A with itself 20 times; however, this is computationally extremely intensive and it is not recommended. We also can diagonalization to compute high powers of a matrix relatively easily.
 
@@ -143,7 +143,7 @@ A^{10}=PD^{10}P^{-1}&=
 \end{align*}
 ***
 
-## 7.3.2 Raising a Symmetric Matrix to a High Power
+## Raising a Symmetric Matrix to a High Power
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -652,7 +652,7 @@ We can find solutions for various values of $n$.
 
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

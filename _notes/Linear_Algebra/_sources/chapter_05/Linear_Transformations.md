@@ -1,4 +1,4 @@
-# 5.1 Linear Transformations
+# Linear Transformations
 
 ## Transformation
 
@@ -141,7 +141,7 @@ Remark:
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

@@ -1,4 +1,4 @@
-# Chapter 7: Spectral Theory
+# Spectral Theory
 
 Content:
 * Eigenvalues and Eigenvectors of a Matrix

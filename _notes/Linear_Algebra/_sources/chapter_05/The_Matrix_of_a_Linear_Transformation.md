@@ -1,4 +1,4 @@
-# 5.2 The Matrix of a Linear Transformation
+# The Matrix of a Linear Transformation
 
 If $T$ is any linear transformation which maps $\mathbb{R}^n$ to $\mathbb{R}^m$, there is \textbf{always} an $m\times n$ matrix $A$ with the property that
 \begin{align*}
@@ -68,7 +68,7 @@ A transformation $T :~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation 
 </div>
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

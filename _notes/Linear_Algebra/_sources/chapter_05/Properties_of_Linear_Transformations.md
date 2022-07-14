@@ -1,4 +1,4 @@
-# 5.3 Properties of Linear Transformations
+# Properties of Linear Transformations
 
 
 <div class="alert alert-secondary" role="alert">
@@ -383,7 +383,7 @@ A=\begin{bmatrix}| & | & | \\ T\left(\vec{e}_1\right) & T\left(\vec{e}_2\right) 
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

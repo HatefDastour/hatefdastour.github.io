@@ -1,4 +1,4 @@
-# 6.2 Polar Form
+# Polar Form
 
 Let $z=a+bi$ be a complex number, and let $r$ be the distance from $z$ to the origin, i.e. $r=|z|=\sqrt{a^2+b^2}$. Moreover, let $\theta$ represent the angle that the line through $0$ and $z$ makes with the positive $x$-axis (measured clockwise). See the following diagram. Then $\theta$ is an angle defined by $\cos\theta = \dfrac{a}{r}$ and $\sin\theta=\dfrac{b}{r}$.
 
@@ -197,7 +197,7 @@ a+b\,i&=\left(r\,\cos(\theta)\right)+\left(r\,\sin(\theta)\right)i=r\left(\cos(\
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 1. Stewart, James, Daniel K. Clegg, and Saleem Watson. Calculus: early transcendentals. Cengage Learning, 2020.

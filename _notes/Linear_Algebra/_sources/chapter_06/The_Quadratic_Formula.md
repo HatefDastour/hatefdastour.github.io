@@ -1,4 +1,4 @@
-# 6.4 The Quadratic Formula
+# The Quadratic Formula
 
 
 Since $i^2=-1$, we can think of as a square root of $-1$. But notice that we also have $(-i)^2=i^2=-1$ and so $-i$ is also a square root of
@@ -103,7 +103,7 @@ x=\frac{(3-2i) \pm(1-4i)}{2}=
 Thus, the roots of $x^2-(3-2i)x+(5-i)$ are $2-3i$ and $1+i$.
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 1. Stewart, James, Daniel K. Clegg, and Saleem Watson. Calculus: early transcendentals. Cengage Learning, 2020.
