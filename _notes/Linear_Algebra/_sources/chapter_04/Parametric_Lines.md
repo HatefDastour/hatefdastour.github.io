@@ -1,4 +1,4 @@
-# 4.5 Parametric Lines
+# Parametric Lines
 
 ## Vector Equation
 <div class="alert alert-info" role="alert">
@@ -219,7 +219,7 @@ z_0 & = 3+3(-1)=0.
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

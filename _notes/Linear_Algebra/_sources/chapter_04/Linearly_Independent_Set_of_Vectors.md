@@ -1,4 +1,4 @@
-# 4.10 Linearly Independent Set of Vectors
+# Linearly Independent Set of Vectors
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
@@ -77,7 +77,7 @@ If the matrix with these vectors as columns has a **non-zero determinant**, a se
     \left|\begin{array}{ccc}1 & 0 & 1\\ 1 & 2 & 1\\ 2 & 1 & 1 \end{array}\right|-2\neq 0.\end{aligned}$$
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

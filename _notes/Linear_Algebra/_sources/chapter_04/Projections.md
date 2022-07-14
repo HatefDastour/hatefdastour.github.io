@@ -1,4 +1,4 @@
-# 4.7 Projections
+# Projections
 
 
 ```{image} ../Figures/fig4_15.png
@@ -140,7 +140,7 @@ point (any point!) on $L$, for example, $P_0=(1,1,1)$. To find $Q$:
 Hence, $Q=\left(\dfrac{1}{2}, 2, \dfrac{1}{2}\right)$.
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

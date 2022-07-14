@@ -1,4 +1,4 @@
-# 4.8 Planes in $\mathbb{R}^n$
+# Planes in $\mathbb{R}^n$
 
 ## Normal Vector
 A nonzero vector $n$ is called a normal for a plane if it is orthogonal to every vector in the plane.
@@ -131,7 +131,7 @@ x+y+z=1.
 \end{equation*}
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

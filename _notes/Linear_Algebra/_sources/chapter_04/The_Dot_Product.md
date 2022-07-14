@@ -1,4 +1,4 @@
-# 4.6 The Dot Product
+# The Dot Product
 
 ## Dot Product
 <div class="alert alert-info" role="alert">
@@ -187,7 +187,7 @@ and
 
 
 ***
-## Refrences
+**Refrences**
 1. Kuttler, Kenneth. "A First Course in Linear Algebra (Lyryx)." (2018).
 1. Nicholson, W. Keith. "Linear Algebra with Applications (Lyryx)." (2018).
 ***

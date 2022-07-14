@@ -44,7 +44,7 @@ For three vectors $\vec{u}$, $\vec{v}$ and $\vec{w}$ from $\mathbb{R}^n$, we hav
 Scalar Multiplication of Vectors in <span class="math inline">\(\mathbb{R}^n\)</span>
 </b></font>
 
-For a vector $\vec{u}=\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}$ and a scalar(number) $k\in \R$, we have $k \vec{u} \in \R^n$ and
+For a vector $\vec{u}=\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}$ and a scalar(number) $k\in \mathbb{R}$, we have $k \vec{u} \in \mathbb{R}^n$ and
 \begin{align*}
 k\vec{u}=k\,\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}=\begin{bmatrix}ku_1\\ku_2\\\vdots\\ku_n\end{bmatrix}.
 \end{align*}
@@ -57,7 +57,7 @@ k\vec{u}=k\,\begin{bmatrix}u_1\\u_2\\\vdots\\u_n\end{bmatrix}=\begin{bmatrix}ku_
 Theorem: Properties of Scalar Multiplication
 </b></font>
     
-For vectors $\vec{u},~\vec{v} \in \R^n$ and  scalars $k,~p$, we have
+For vectors $\vec{u},~\vec{v} \in \mathbb{R}^n$ and  scalars $k,~p$, we have
 \begin{equation*}
 \begin{array}{llc}
 \bullet &\text{The Distributive Law over Vector Addition} & k(\vec{u}+\vec{v}) = k\vec{u}+k\vec{v}, \\
