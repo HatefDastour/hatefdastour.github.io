@@ -10,7 +10,11 @@ T(\vec{x}) = A \vec{x},\quad \text{for all }x\in \mathbb{R}^n.
 Theorem: Matrix of a Linear Transformation
 </b></font>
     
-Let $T :~\mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation. Then we can find a matrix $A$ such that $T(\vec{x}) = A \vec{x}$. In this case, we say that $T$ is determined or induced by the matrix $A$.    
+If $T$ is any linear transformation which maps $\mathbb{R}^n$ to $\mathbb{R}^m$, there is **always** an $m\times n$ matrix $A$ with the property that
+\begin{align*}
+T(\vec{x}) = A \vec{x},\quad \text{for all }x\in \mathbb{R}^n.
+\end{align*}
+
 </div>
 
 Let $T :~\mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation and we want to identify the matrix defined by this linear transformation $T(\vec{x}) = A \vec{x}$. Note that for any $\vec{x}\in \mathbb{R}^n$,

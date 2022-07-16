@@ -297,13 +297,16 @@ The Box Product
 Proposition: 
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> be vectors. Then <span class="math inline">\((\vec{u}\times \vec{v})\bullet \vec{w}=\vec{u}\bullet( \vec{v}\times \vec{w})\)</span>.</p>
-
+Assume that three vectors $\vec{u}$, $\vec{v}$, and $\vec{w}$ in $\mathbb{R}^3$ that form a parallelepiped. The volume of this parallelepiped is given by:
+\begin{align*}|(\vec{u}\times \vec{v})\bullet \vec{w}|.\end{align*}
     
 </div>
 
-<div class="alert alert-block alert-success">
-<p>Let <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> be three vectors in <span class="math inline">\(\mathbb{R}^n\)</span> that define a parallelepiped. Then the volume of theparallelepiped is the absolute value of the box product, given by <span class="math display">\[|(\vec{u}\times \vec{v})\bullet \vec{w}|.\]</span></p>
+Note that  for two vectors $\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}$ and $\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}$ and $\vec{w} = w_1 \vec{i}+w_2\vec{j}+w_3\vec{k}$, we have
+\begin{align*}
+\vec{u}\bullet( \vec{v}\times \vec{w}) &=
+\left|\begin{array}{ccc} u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3\\ w_1 & w_2 & w_3 \end{array}\right|
+\end{align*}
 
 ```{image} ../Figures/fig4_30.png
 :width: 320px
@@ -316,11 +319,8 @@ Proposition:
 Remark:
 </b></font>
     
-<p>Given <span class="math inline">\(\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}\)</span>, <span class="math inline">\(\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}\)</span> and <span class="math inline">\(\vec{w} = w_1 \vec{i}+w_2\vec{j}+w_3\vec{k}\)</span>: <span class="math display">\[\begin{aligned}
-\vec{u}\bullet( \vec{v}\times \vec{w}) &=
-\left|\begin{array}{ccc} u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3\\ w_1 & w_2 & w_3 \end{array}\right|\end{aligned}\]</span></p>
+Note that for three vectors $\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}$, $\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}$ and $\vec{w} = w_1 \vec{i}+w_2\vec{j}+w_3\vec{k}$, we have
 
-    
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -366,9 +366,7 @@ and $\begin{bmatrix} 3 & 2 &3 \end{bmatrix}^T$.
 Lemma:
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span>, <span class="math inline">\(\vec{v}\)</span>, <span class="math inline">\(\vec{w}\)</span> be three vectors in <span class="math inline">\(\mathbb{R}^n\)</span> that define a parallelepiped. If the volume of the parallelepiped is zero they lie in the same plane and if the volume is not zero they do not lie in the same plane.</p>
-
-
+Three vectors $\vec{u}$, $\vec{v}$, and $\vec{w}$ in $\mathbb{R}^3$ are in the same plane if the volume of parallelepiped formed by these vectors is equal to zero.
     
 </div>
 

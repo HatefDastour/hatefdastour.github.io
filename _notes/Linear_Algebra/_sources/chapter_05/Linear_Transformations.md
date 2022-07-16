@@ -7,15 +7,13 @@
 Transformation
 </b></font>
 
-A transformation is a function $T:\mathbb{R}^n\rightarrow \mathbb{R}^m$, sometimes written
-\begin{align*}
-\mathbb{R}^n\stackrel{T}{\rightarrow} \mathbb{R}^m,
-\end{align*}
-and is called a **transformation from $\mathbb{R}^n$ to $\mathbb{R}^m$**. If $m=n$, then we say **$T$ is a transformation of $\mathbb{R}^n$.**
+A function from $\mathbb{R}^n$ to $\mathbb{R}^m$ is called a **transformation from $\R^n$ to $\R^m$**, and it can be written as
+follows 
+\begin{aligned}\mathbb{R}^n\stackrel{T}{\rightarrow} \mathbb{R}^m.\end{aligned}
+Here, **$T$ is a transformation of $\mathbb{R}^n$** if $m = n$.
+
 </div>
 
-Roughly speaking, a function $T:\mathbb{R}^n\to\mathbb{R}^m$ is a rule that assigns exactly one vector of $\mathbb{R}^m$ to each vector of
-$\mathbb{R}^n$. We use the notation $T(\vec{x})$ to mean the transformation $T$ applied to the vector $\vec{x}$.
 
 <font color='Blue'><b>Example</b></font>:
 Consider the matrix $A = \left[
@@ -23,8 +21,6 @@ Consider the matrix $A = \left[
 1 & 0 & 1\\ 2 & 2 & 1
 \end{array}
 \right]$. By matrix multiplication, $A$ transforms vectors in $\mathbb{R}^3$ into vectors in $\mathbb{R}^2$.
-
-
 
 Consider the vector $\left[
 \begin{array}{c}
@@ -38,23 +34,23 @@ z
 =\left[\begin{array}{c}x + z \\2x + 2y+z\end{array}\right]
 \end{align*}
 
-If $T$ acts by matrix multiplication of a matrix $A$ (such as the previous example), we call $T$ a \textbf{matrix transformation},
-and write $T_A(\vec{x}) = A\vec{x}$. Hence, a transformation achieved by matrix multiplication can be written as
-\begin{align*}
-T_A (\vec{x}) = A\vec{x}
-\end{align*}
-Therefore, $T_A$ is the transformation determined by the matrix $A$. In the previous example, a linear transformation from $\mathbb{R}^3$ into $\mathbb{R}^2$:
-\begin{align*}
+If $T$ acts by matrix multiplication of a matrix $A$ (such as the
+previous example), we call $T$ a **matrix transformation**, and write
+$T_A(\vec{x}) = A\vec{x}$. The matrix transformation of vector $\vec{x}$
+is written as follows. \begin{align*}
+T_A (\vec{x}) = A\vec{x}\end{align*}
+
+In the previous example, a linear transformation from $\mathbb{R}^3$
+into $\mathbb{R}^2$: \begin{align*}
 \begin{cases}
 T:~\mathbb{R}^3 \to \mathbb{R}^2,\\
 T_A (\vec{x}) = A\vec{x},
-\end{cases}
-\end{align*}
-where $A=\begin{bmatrix}1 & 0 & 1\\ 2 & 2 & 1\end{bmatrix}$.
-This transformation can for example transform $\begin{bmatrix}1\\ 2\\ 3\end{bmatrix}$ into $\begin{bmatrix}4\\ 9\end{bmatrix}$
-\begin{align*}
-\begin{bmatrix}1 & 0 & 1\\ 2 & 2 & 1\end{bmatrix}\begin{bmatrix}1\\ 2\\ 3\end{bmatrix}=\begin{bmatrix}4\\ 9\end{bmatrix}
-\end{align*}
+\end{cases}\end{align*} where
+$A=\begin{bmatrix}1 & 0 & 1\\ 2 & 2 & 1\end{bmatrix}$. This
+transformation can for example transform
+$\begin{bmatrix}1\\ 2\\ 3\end{bmatrix}$ into
+$\begin{bmatrix}4\\ 9\end{bmatrix}$ \begin{align*}
+\begin{bmatrix}1 & 0 & 1\\ 2 & 2 & 1\end{bmatrix}\begin{bmatrix}1\\ 2\\ 3\end{bmatrix}=\begin{bmatrix}4\\ 9\end{bmatrix}\end{align*}
 
 ## Linear Transformation
 
@@ -75,13 +71,7 @@ $\vec{x},\vec{y}\in\mathbb{R}^n$ and all (scalars) $k\in\mathbb{R}$.\
 
 </div>
 
-<div class="alert alert-block alert-warning">
-<font size="+1"><b>
-Remark:
-</b></font>
-    
-Some important examples of linear transformations are the zero transformation and identity transformation. The zero transformation defined by $T (\vec{x}) = \vec{0}$ for all $\vec{x}$ is an example of a linear transformation. Similarly, the identity transformation defined by $T (\vec{x}) = \vec{x}$ is also linear.
-</div>
+Some important examples of linear transformations are the **zero transformation** and **identity transformation**. The zero transformation defined by $T (\vec{x}) = \vec{0}$ for all $\vec{x}$ is an example of a linear transformation. Similarly, the identity transformation defined by $T (\vec{x}) = \vec{x}$ is also linear.
 
 <font color='Blue'><b>Example</b></font>:
 \begin{align*}
@@ -129,16 +119,9 @@ Therefore, $T$ is a linear transformation.
 Matrix Transformations are Linear Transformations
 </b></font>
 
-Let $T :~\mathbb{R}^n \to \mathbb{R}^m$ be a transformation defined by $T(\vec{x}) = A\vec{x}$, where $A$ is a matrix. Then $T$ is a linear transformation.
+Every linear transformation can be expressed as a matrix transformation. if $T :~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation , then it can be written as $T(\vec{x}) = A\vec{x}$, where $A$ is a matrix.
 </div>
 
-<div class="alert alert-block alert-warning">
-<font size="+1"><b>
-Remark:
-</b></font>
-    
-**Every linear transformation** can be expressed as a matrix transformation, and thus \linebreak linear transformations are exactly the same as matrix transformations.
-</div>
 
 ***
 **Refrences**

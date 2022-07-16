@@ -18,7 +18,7 @@ then $a_1 =a_2 = \ldots =a_k = 0.$
 Linearly Independence Test:
 </b></font>
 
-To verify that a set $\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}$ of vectors in $\R^n$ is linearly independent, proceed as follows:
+We can verify whether a set $\{ \vec{u}_1 ,~\vec{u}_2, \ldots,~\vec{u}_k\}$ of vectors in $\mathbb{R}^n$ is linearly independent or not. A common used approach:
 \begin{enumerate}
 1. Set a linear combination equal to zero: $a_1 \vec{u}_1 +a_2\vec{u}_2 +\ldots+ a_k \vec{u}_k = 0$.
 1. Show that $a_1 =a_2 = \ldots =a_k = 0.$ (that is, the linear combination is trivial).
@@ -62,7 +62,10 @@ This means that $a_1=a_2=a_3=0$. Therefore,  these vectors are linearly independ
 Lemma:
 </b></font>
 
-If the matrix with these vectors as columns has a **non-zero determinant**, a set of $n$ vectors of length $n$ (a set of $n$ vectors in $\mathbb{R}^n$) is linearly independent. The set is of course linearly dependent if the determinant is zero.
+A set of vectors $\{\vec{v}_1 ,\ldots ,\vec{v}_n \}$ in $\mathbb{R}^n$ is linearly independent if the determinant of the  matrix formed with these vectors as columns is **non-zero**. That is
+\begin{align*}
+\left|\begin{array}{cccc}| & | & \dots & |\\ \vec{v}_1 & \vec{v}_2 & \dots & \vec{v}_n \\ | & | & \dots & | \end{array}\right| \neq 0
+\end{align*}
 </div>
 
 <font color='Blue'><b>Example</b></font>:
