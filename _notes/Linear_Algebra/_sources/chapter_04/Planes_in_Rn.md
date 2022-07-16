@@ -1,19 +1,21 @@
 # Planes in $\mathbb{R}^n$
 
 ## Normal Vector
-A nonzero vector $n$ is called a normal for a plane if it is orthogonal to every vector in the plane.
+If a nonzero vector $\vec{n}$ is perpendicular to every vector from a plane, then vector $\vec{n}$ is called a **normal** for the plane. We know that two nonzero vectors $\vec{v}$ and $\vec{n}$ are perpendicular when their dot product is zero. That is,
+\begin{equation*}
+\vec{v} \bullet \vec{n}=0 \quad \text{or}\quad \vec{n} \bullet \vec{v}=0.
+\end{equation*}
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Normal Vector
 </b></font>
 
-$\vec{n}$ (a nonzero vector in $\mathbb{R}^n$) is called a **normal vector** to a plane if and only if
+A nonzero vector in $\vec{n} \in \mathbb{R}^n$) is called a \textbf{normal vector} to a plane if and only if
 \begin{align*}
 \vec{n}\bullet \vec{v} = 0
 \end{align*}
-for every vector $\vec{v}$ in the plane. This means that $\vec{n}$ is perpendicular to **every point** on that plane.
-
+for every vector $\vec{v}$ in the plane.
 ```{image} ../Figures/fig4_18.png
 :width: 220px
 :align: center
@@ -21,12 +23,14 @@ for every vector $\vec{v}$ in the plane. This means that $\vec{n}$ is perpendicu
   
 </div>
 
+## Vector Equation of a Plane
+
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Vector Equation of a Plane
 </b></font>
 
-Let $P_0$ on a plane with the normal vector $\vec{n}$. Any point $P$ on this plane can be expressed as follows,
+Consider a plane with the normal vector $\vec{n}$. Let point $P_0$ be on this plane. Then, any point $P$ on this plane can be expressed as follows,
 \begin{equation*}
 \vec{n}\bullet \left(\overrightarrow{0P}-\overrightarrow{0P_0}\right)=0.
 \quad \text{or} \quad
@@ -72,7 +76,7 @@ Here $P_0=(1,-1,0)$ and $\vec{n} =(\pi,0,3)$
 Scalar Equation of a Plane
 </b></font>
 
-Let $\vec{n} = \begin{bmatrix}  a & b & c \end{bmatrix}^T$ be the normal vector for a plane which contains the point $P_0 = (x_0,~y_0,~z_0)$. Then, the scalar equation of the plane for any arbitrary point $P = (x,~y,~z)$ on the plane is given by
+Assume that $\vec{n} = \begin{bmatrix}  a & b & c \end{bmatrix}^T$ is a normal vector of a plance and this plance also includes points $P_0 = (x_0,~y_0,~z_0)$. Then, for any given point $P = (x,~y,~z)$ on this plane, the **scalar equation** of the plane is given by
 \begin{equation*}
 ax+by+cz = d
 \end{equation*}

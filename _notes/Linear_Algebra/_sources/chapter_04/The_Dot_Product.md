@@ -37,7 +37,7 @@ $\vec{u} \bullet \vec{v}= \begin{bmatrix} 3 \\ 13 \\ 3 \end{bmatrix} \bullet \be
 Theorem: Properties of the Dot Product
 </b></font>
     
-Let $k$ and $p$ denote scalars and $\vec{u}$, $\vec{v}$, $\vec{w}$ denote vectors. Then the dot product $\vec{u} \bullet \vec{v}$ satisfies the following properties.
+Assume that $\vec{u}$, $\vec{v}$, and $\vec{w}$ are vectors in $\mathbb{R}^n$ and $k, p$ be real numbers. The following properties are valid for the dot product (inner product).
 
 * $\vec{u} \bullet \vec{v}= \vec{v} \bullet \vec{u}$,
 * $\vec{u} \bullet \vec{u} \geq 0$,
@@ -53,9 +53,9 @@ Remark:
 </b></font>
     
 From the above Theorem, we have $\|\vec{u}\|^2=\vec{u} \bullet \vec{u}$. Therefore, the length of vector $\vec{u}$ can also be found using
-\begin{equation*}
+\begin{align*}
 \|\vec{u}\|=\sqrt{\vec{u} \bullet \vec{u}}.
-\end{equation*}  
+\end{align*} 
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -70,10 +70,10 @@ For $\vec{v}$, $\vec{w} \in \mathbb{R}^n$
 :width: 300px
 :align: center
 ```
-and equality holds if and only if one of the vectors is a non-negative scalar multiple of the other.
+The two sides of the above inequality can become equal if either  $\vec{v}$ or $\vec{W}$ can be obtained by multiplying 
+Moreover, the following inequality is also valid
+\begin{align*}\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|\end{align*}
 
-Furthermore,
-\begin{align*}\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|.\end{align*}  
 </div>
 
 ## The Included Angle
@@ -82,7 +82,13 @@ Furthermore,
 The Included Angle
 </b></font>
 
-For two vectors $\vec{u}$ and $\vec{v}$, the ***included angle*** is the angle between these two vectors and is given by $\theta$ such that $0 \leq \theta \leq \pi$.
+For two vectors $\vec{u}$ and $\vec{v}$, the ***included angle*** is the angle available between these two vectors and is given by $\theta$ such that $0 \leq \theta \leq \pi$.
+
+```{image} ../Figures/fig4_12.png
+:width: 150px
+:align: center
+```
+
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -90,8 +96,10 @@ For two vectors $\vec{u}$ and $\vec{v}$, the ***included angle*** is the angle b
 Theorem: The Dot Product and the Included Angle
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span> be two vectors in <span class="math inline">\(\mathbb{R}^n\)</span> , and let <span class="math inline">\(\theta\)</span> be the included angle. Then the following equation holds, <span class="math display">\[\begin{aligned}
-\vec{u} \bullet \vec{v}=\|\vec{u}\| \|\vec{v}\|\cos(\theta).\end{aligned}\]</span></p>
+For two vectors  $\vec{u}$ and $\vec{v}$ in $\mathbb{R}^n$ and their included angle $\theta$, the following equation is valid.
+\begin{align*}
+\vec{u} \bullet \vec{v}=\|\vec{u}\| \|\vec{v}\|\cos(\theta).
+\end{align*}
     
 </div>
 
@@ -113,7 +121,10 @@ Therefore, $\theta=\pi/4$.
 Theorem: Perpendicular Vectors
 </b></font>
     
-<p>Let <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span> be nonzero vectors in <span class="math inline">\(\mathbb{R}^n\)</span>. Then, <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span> are said to be perpendicular exactly when <span class="math display">\[\vec{u} \bullet \vec{v}=0.\]</span></p>
+Two nonzero vectors $\vec{u}$ and $\vec{v}$ are perpendicular when their dot product is zero. That is,
+\begin{align*}
+\vec{u} \bullet \vec{v}=0.
+\end{align*}
     
 </div>
 

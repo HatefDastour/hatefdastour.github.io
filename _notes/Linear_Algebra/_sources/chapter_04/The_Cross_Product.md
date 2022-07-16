@@ -6,7 +6,7 @@
 Right Hand System of Vectors
 </b></font>
 
-Three vectors, $\vec{u}$, $\vec{v}$, $\vec{w}$ form a right-hand system if when you extend the fingers of your right hand along the direction of vector $\vec{u}$ and close them in the direction of $\vec{v}$, the thumb points roughly in the direction of $\vec{w}$.
+We say that three vectors $\vec{u}$, $\vec{v}$, $\vec{w}$ form a right-hand system if we align vector $\vec{u}$ alongside the index finger and align $\vec{v}$ in the direction of the next finger after the index finger, then the thumb stays in the direction of vector $\vec{w}$.
 
 ```{image} ../Figures/fig4_37.png
 :width: 200px
@@ -14,21 +14,12 @@ Three vectors, $\vec{u}$, $\vec{v}$, $\vec{w}$ form a right-hand system if when 
 ```
 </div>
 
-For an example of a right handed system of vectors, see the following picture.
-```{image} ../Figures/fig4_20.png
-:width: 160px
+For example, the following vectors form a right-handed system.
+```{image} ../Figures/fig4_right_hand_combined.png
+:width: 400px
 :align: center
 ```
-
-
-In this picture the vector $\vec{w}$ points upwards from the plane determined by the other two vectors. Point the fingers of your right hand along $\vec{u}$, and close them in the direction of $\vec{v}$. Notice that if you extend the thumb on your right hand, it points in the direction of $\vec{w}$.
-
-```{image} ../Figures/fig4_37.png
-:width: 160px
-:align: center
-```
-
-Try using your left hand and you will see that the vector $\vec{w}$ would need to point in the opposite direction.
+We could also use our left hand and in that case, we could see that the vector $\vec{w}$ would need to point in the opposite direction (See the following Figure).
 
 ```{image} ../Figures/fig4_38.png
 :width: 160px
@@ -41,7 +32,7 @@ Try using your left hand and you will see that the vector $\vec{w}$ would need t
 Coordinate Vectors
 </b></font>
 
-The coordinate vectors are unit vectors in the direction of the $x$, $y$, and $z$ axes of a three dimensional Cartesian coordinate system.
+Unit vectors (vectors with the length of 1) in the directions of the $x$, $y$, and $z$ axes of a three-dimensional Cartesian coordinate system are known as the coordinate vectors.
 \begin{align*}
 \vec{i}=\begin{bmatrix}1\\0\\0\end{bmatrix},\quad \vec{j}=\begin{bmatrix}0\\1\\0\end{bmatrix} ,\quad \text{and}\quad  \vec{k}=\begin{bmatrix}0\\0\\1\end{bmatrix}.
 \end{align*}
@@ -57,10 +48,8 @@ The coordinate vectors are unit vectors in the direction of the $x$, $y$, and $z
 <font size="+1"><b>
 Remark:
 </b></font>
-    
-Note that the special vectors, $\vec{i}$, $\vec{j}$, $\vec{k}$ will always form a right handed system. If you extend the fingers
-of your right hand along $\vec{i}$ and close them in the direction $\vec{j}$, the thumb points in the direction of $\vec{k}$.
 
+The coordinate vectors $\vec{i}$, $\vec{j}$, $\vec{k}$ always forms a right-handed system.
 ```{image} ../Figures/fig4_22.png
 :width: 450px
 :align: center
@@ -73,9 +62,7 @@ of your right hand along $\vec{i}$ and close them in the direction $\vec{j}$, th
 Geometric Definition of Cross Product
 </b></font>
 
-Let $\vec{u}$ and $\vec{v}$ be two vectors in $\mathbb{R}^3$. Then the
-cross product, written $\vec{u}\times \vec{v}$, is defined by the
-following two rules:
+For two vectors $\vec{u}$ and $\vec{v}$ in $\R^3$. The cross product of $\vec{u}$ and $\vec{v}$ is shown with $\vec{u}\times \vec{v}$ and is  defined by the following two rules:
 
 1.  Its length is
     $\|\vec{u}\times \vec{v}\| = \|\vec{u}\|\|\vec{v}\|\sin(\theta)$,
@@ -104,8 +91,7 @@ and magnitude).
 
 <div class="alert alert-block alert-success">
 
-The cross product of the special vectors $\vec{i}$, $\vec{j}$ and $\vec{k}$ is as follows.
-
+The cross product of the coordinate vectors $\vec{i}$, $\vec{j}$ and $\vec{k}$:
 \begin{align*}
 \begin{array}{cc}
 \vec{i}\times \vec{j} = \vec{k}, & \vec{j}\times \vec{i} = - \vec{k} \\
@@ -128,10 +114,9 @@ Not that a vector $\vec{u} =\begin{bmatrix}u_1 & u_2  &u_3\end{bmatrix}^T$ can b
 Proposition: Coordinate Description of Cross Product
 </b></font>
     
-Let $\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}$ and $\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}$ be two vectors. Then
+For two vectors $\vec{u}= u_1 \vec{i}+u_2\vec{j}+u_3 \vec{k}$ and $\vec{v} = v_1 \vec{i}+v_2\vec{j}+v_3\vec{k}$, the cross product can be seen as:
 \begin{align*}
-\vec{u} \times \vec{v} &=\begin{bmatrix}u_2 v_3 -u_3 v_2\\-(u_1v_3 -u_3 v_1 )\\u_1 v_2 -u_2 v_1\end{bmatrix}\\
-&=(u_2 v_3 -u_3 v_2)\vec{i}-(u_1v_3 -u_3 v_1 )\vec{j}+(u_1 v_2 -u_2 v_1)\vec{k}
+\vec{u} \times \vec{v} &=\begin{bmatrix}u_2 v_3 -u_3 v_2\\-(u_1v_3 -u_3 v_1 )\\u_1 v_2 -u_2 v_1\end{bmatrix}=(u_2 v_3 -u_3 v_2)\vec{i}-(u_1v_3 -u_3 v_1 )\vec{j}+(u_1 v_2 -u_2 v_1)\vec{k}
 \end{align*}    
 </div>
 
@@ -152,7 +137,7 @@ We also can express the cross product as the determinant of a matrix,
 Proposition: Properties of the Cross Product
 </b></font>
     
-Let $\vec{u}$, $\vec{v}$, $\vec{w}$ be vectors in $\mathbb{R}^3$, and $k$ a scalar. Then, the following properties of the cross product hold.
+For three vectors  $\vec{u}$, $\vec{v}$, and $\vec{w}$ in $\mathbb{R}^3$, and scaler $k$ in $\mathbb{R}$ scalar, the following properties of the cross product hold.
 1. $\vec{u}\times \vec{v} = -(\vec{v}\times \vec{u})$, and $\vec{u}\times \vec{u}=0$,
 2. $(k\vec{u})\times \vec{v} = k(\vec{u}\times \vec{v}) = \vec{u}\times (k\vec{v})$,
 3. $\vec{u}\times (\vec{v}+\vec{w}) = \vec{u}\times \vec{v}+\vec{u}\times  \vec{w}$,
@@ -281,8 +266,7 @@ $\|\vec{u}\times \vec{v}\| = \|\vec{u}\|\|\vec{v}\|\sin(\theta)$ implies that $\
 Lemma:
 </b></font>
     
-<p>If <span class="math inline">\(\vec{u}\times \vec{v}=\vec{0}\)</span>, <span class="math inline">\(\vec{u}\)</span> and <span class="math inline">\(\vec{v}\)</span> are parallel vectors.</p>
-
+$\vec{u}$ and $\vec{v}$ are parallel vectors if $\vec{u}\times \vec{v}=\vec{0}$.
     
 </div>
 

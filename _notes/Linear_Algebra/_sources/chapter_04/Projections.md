@@ -6,26 +6,24 @@
 :align: center
 ```
 
-The key idea of projection is to be able to write a vector as a sum of two vectors. For a nonzero vector $\vec{d}$ and an arbitrary vector $u$, we have,
+The key idea of projection is writing a vector as a sum of two vectors. For a nonzero vector $\vec{d}$ and an arbitrary vector $\vec{u}$, we have,
 \begin{equation*}
 \vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}.
 \end{equation*}
-where $\vec{u}_{\parallel}$ is a parallel to $\vec{d}$ , and $\vec{u}_{\perp}=\vec{u}-\vec{u}_{\parallel}$ is perpendicular to $\vec{d}$.
+where $\vec{u}_{\parallel}$ is a vector parallel to vector $\vec{d}$ ($\parallel$ here denotes parallel) , and $\vec{u}_{\perp}=\vec{u}-\vec{u}_{\parallel}$ is a vector perpendicular to vector $\vec{d}$ ($\perp$ here shows perpendicular).
 
-Suppose that $\vec{u}$ and $\vec{d}\neq 0$ emanate from a common tail $Q$. Let $P$ be the tip of $\vec{u}$, and let $P_1$ denote the foot of the perpendicular from $P$ to the line through $Q$ parallel to $\vec{d}$.
+Assume that two vectors  $\vec{u}$ and $\vec{d}\neq 0$ ($\vec{d}$ is nonzero) emanate from the same tail (point $Q$). Let point $P$ be the tip of vector  $\vec{u}$, and also $P_1$ denote the foot of the perpendicular from $P$ to the line through $Q$ parallel to $\vec{d}$.
 
 <div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Vector Projections
 </b></font>
 
-Let $\vec{u}$ and $\vec{d}$ be nonzero vectors. Then there exist unique vectors $\vec{u}_{\parallel}$ and $\vec{u}_{\perp}$ such that
+For two nonzero vectors $\vec{u}$ and $\vec{d}$, there exist \textbf{unique} vectors $\vec{u}_{\parallel}$ and $\vec{u}_{\perp}$ such that
 \begin{equation*}
 \vec{u}=\vec{u}_{\parallel}+\vec{u}_{\perp}.
 \end{equation*}
-where $\vec{u}_{\parallel}$ is a scalar multiple of $\vec{d}$ ($\vec{u}_{\parallel}$ is parallel
- to $\vec{d}$), and $\vec{u}_{\perp}$ is perpendicular to $\vec{d}$ ($\vec{u}_{\perp}$ is perpendicular
- to $\vec{d}$).
+where $\vec{u}_{\parallel}$ is parallel to vector $\vec{d}$ (is a scalar multiplied by $\vec{d}$), and $\vec{u}_{\perp}$ is perpendicular to $\vec{d}$.
 
 ```{image} ../Figures/fig4_15.png
 :width: 200px
@@ -38,7 +36,7 @@ where $\vec{u}_{\parallel}$ is a scalar multiple of $\vec{d}$ ($\vec{u}_{\parall
 Vector Projection
 </b></font>
 
-Let $\vec{u}$ and $\vec{d}$ be vectors. Then, the projection of $\vec{u}$ onto $\vec{d}$ is denoted by $\vec{u}_{\parallel}$ and is defined as follows
+The projection of vector $\vec{u}$ onto vector $\vec{d}$, denoted by $\vec{u}_{\parallel}$, is defined as follows
 \begin{equation*}
 \vec{u}_{\parallel}=proj_{\vec{d}}{\vec{u}}=
 \left( \frac{\vec{u} \bullet \vec{d}}{\vec{d} \bullet \vec{d}}\right)\vec{d}=
