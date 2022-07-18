@@ -1,7 +1,6 @@
 # Roots of Complex Numbers
 
 
-A fundamental identity is the formula of De Moivre with which we begin this section.
 
 <div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
@@ -14,7 +13,7 @@ or
 \begin{align*}\left(r\left(\cos(\theta) +i\sin(\theta)\right)\right)^n=r^n\left(\cos(n\theta) +i\sin(n\theta)\right).\end{align*}
 </div>
 
-This says that to take the $n^{\text{th}}$ power of a complex number, we take the $n^{\text{th}}$ power of the modulus and multiply the argument by $n$.
+Using this theorem, instead of taking the $n^{\text{th}}$ power of a complex number, we can simply multiply the argument by $n$.
 
 <font color='Blue'><b>Example</b></font>:
 1.  Find $z^{10}=\left(\dfrac{1}{2}+\dfrac{1}{2}i\right)^{10}$.
@@ -62,7 +61,10 @@ This says that to take the $n^{\text{th}}$ power of a complex number, we take th
 Theorem: Multiplication Rule
 </b></font>
     
-If $z_1 = r_1 e^{i\theta_1}$ and $z_2 = r_2 e^{i\theta_2}$ are complex numbers in polar form, then $z_1 z_2 = r_1 r_2 e^{i(\theta_1+\theta_2)}$.
+For two complex numbers $z_1 = r_1 e^{i\theta_1}$ and $z_2 = r_2 e^{i\theta_2}$ in polar form, we have
+\begin{align*}
+z_1 z_2 = r_1 r_2 e^{i(\theta_1+\theta_2)}.
+\end{align*}
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -94,49 +96,45 @@ z^6w^3 & = & (\sqrt{2}e^{-i\pi /4})^6(2e^{i\pi /6})^3 \\
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
-<span class="math inline">\(n^{th}\)</span> root of <span class="math inline">\(q\)</span>
+Theorem: <span class="math inline">\(n^{th}\)</span> root of <span class="math inline">\(q\)</span>
 </b></font>
 
-Let $z$ and $q$ be complex numbers, and let $n$ be a positive integer. Then $z$ is called an **$n^{th}$ root of $q$** if $z^n=q$.
+Complex number $z$ is called \textbf{an $n^{th}$ root of $q$} if $z^n=q$ for some $n\in\mathbb{N}$.
 </div>
 
 
-
 <font color='Blue'><b>Example</b></font>:
-For any positive real number $a$, $z^2=a$ has two complex (in this case,
-real) solution, $z=\sqrt{a}$ and $z=-\sqrt{a}$. This is equivalent to
-the statement that $a$ has two complex (in this case, real) square
-roots.
 
--   One particular example: $25$ has two square roots, $5$ and $-5$, and
-    these are the two solutions to $z^2=25$.
-
--   But we all knew that. A more interesting example is that $-1$ has no
-    real square roots, but suddenly it has two (complex) square roots,
-    $i$ and $-i$. These are the two (complex) solutions to $z^2=-1$.
+-   $25$ has two square roots, $5$ and $-5$, and these are the two solutions to $z^2=25$.
+-   $-1$ has no real square roots, but it has two complex square roots, $i$ and $-i$. These are the two (complex) solutions to $z^2=-1$.
+-   $-4$ has two square roots, $2i$ and $-2i$, and these are the two solutions to $z^2=25$.
 
 <div class="alert alert-block alert-warning">
 <font size="+1"><b>
 Corollary:
 </b></font>
     
-Let $q$ be a nonzero complex number and $n$ a positive integer. Then $z^n=q$ has exactly $n$ complex solutions, i.e., $q$ has exactly $n$ complex $n^{th}$ roots.    
+For a nonzero complex number $q$, $z^n=q$ has exactly $n$ different complex $n^{th}$ roots.   
 </div>
 
-Let $z = a+b\,i$ and let $z=|z|\left(\cos(\theta) +i\sin(\theta)\right)$ be the polar form of the complex number. By De
-Moivre’s theorem, there are precisely $n$ different complex numbers
-$w_0,w_1,\ldots,w_{n-1}$ that are $n^{\text{th}}$ roots of $z$. In particular, a complex number
-$w = r e^{i\,\alpha}=r\left(\cos(\alpha)+i\sin(\alpha)\right)$ is an $n^{\text{th}}$ root of $z$. This means,
-\begin{align*}
-w^n = \left(r e^{i\,\alpha}\right)^n=r^n \left(\cos(n\alpha)+i\sin(n\alpha)\right)=|z|\left(\cos(\theta) +i\sin(\theta)\right).
-\end{align*}
-It follows from the last equality that $r^n=|z|$, and $\begin{cases}\cos(n\alpha)=\cos(\theta),\\ \sin(n\alpha)=\sin(\theta).\end{cases}$
+It follows from Moivre’s theorem that, for a complex number $z = a+b\,i$ with polar form $z=|z|\left(\cos(\theta) +i\sin(\theta)\right)$, there are precisely $n$ different complex numbers. Let $w_0,~w_1,\ldots,~w_{n-1}$ be $n^{\text{th}}$ roots of $z$.
 
+In particular, let $w = r e^{i\,\alpha}=r\left(\cos(\alpha)+i\sin(\alpha)\right)$ be one of these $n^{\text{th}}$ roots of $z$. In other words,
+\begin{align*}
+\textcolor{blue}{w^n} &= \textcolor{green}{z}\\
+\textcolor{blue}{\left(r e^{i\,\alpha}\right)^n} &= \textcolor{green}{|z|\left(\cos(\theta) +i\sin(\theta)\right)}\\
+\textcolor{blue}{r^n \left(\cos(n\alpha)+i\sin(n\alpha)\right)} &= \textcolor{green}{|z|\left(\cos(\theta) +i\sin(\theta)\right)}.
+\end{align*}
+It follows from the last equality that $\textcolor{blue}{r^n}=\textcolor{green}{|z|}$ and
+$\begin{cases}
+\textcolor{blue}{\cos(n\alpha)}=\textcolor{green}{\cos(\theta)},\\
+\textcolor{blue}{\sin(n\alpha)}=\textcolor{green}{\sin(\theta)}.
+\end{cases}$
 This means $\alpha=\theta+2k\pi$, for $k$ an integer. Therefore,
 \begin{align*}
-\begin{cases}r=|z|^{1/n},
-\\
-\alpha=\dfrac{\theta+2k\pi}{n},
+\begin{cases}\textcolor{blue}{r}=\textcolor{green}{|z|^{1/n}},
+\\ \vspace{-0.5cm}\\
+\textcolor{blue}{\alpha} = \textcolor{green}{\dfrac{\theta+2k\pi}{n}},
 \end{cases}
 \end{align*}
 and the $n^{\text{th}}$ root of $z$ are of the form
@@ -150,10 +148,10 @@ k=0,1,2,\ldots,n-1.
 Roots of A Complex Number:
 </b></font>
     
-Let $q$ be a nonzero complex number and $n$ a positive integer. We wish to find the $n^{\text{th}}$ roots of $w$, that is all $z$ such that $z^n = q$. According to
-Corollary \ref{cor6.1}, there are $n$ distinct $n^{\text{th}}$ roots and they can be found as follows:
+Assume that $q$ is a nonzero complex number and $n$ is a positive integer. Then, all $n$ distinct $z$ roots such that $z^n = q$ can be find as follows,
 \begin{align*}
-w_k=&r^{1/n}e^{i\left(\theta+2k\pi\right)/n}=r^{1/n}\left(\cos\left(\frac{\theta+2k\pi}{n}\right)+i\sin\left(\frac{\theta+2k\pi}{n}\right)\right),&
+w_k=&r^{1/n}e^{i\left(\theta+2k\pi\right)/n}\\
+&=r^{1/n}\left(\cos\left(\frac{\theta+2k\pi}{n}\right)+i\sin\left(\frac{\theta+2k\pi}{n}\right)\right),&
 k=0,1,2,\ldots,n-1,
 \end{align*}
 where $r=|q|$ and $w_k$ with $k=0,1,2,\ldots,n-1$ are $n$ distinct $n^{\text{th}}$ roots.

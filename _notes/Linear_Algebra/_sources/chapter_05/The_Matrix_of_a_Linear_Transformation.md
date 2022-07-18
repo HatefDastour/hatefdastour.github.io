@@ -17,7 +17,7 @@ T(\vec{x}) = A \vec{x},\quad \text{for all }x\in \mathbb{R}^n.
 
 </div>
 
-Let $T :~\mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation and we want to identify the matrix defined by this linear transformation $T(\vec{x}) = A \vec{x}$. Note that for any $\vec{x}\in \mathbb{R}^n$,
+Let $T :~\mathbb{R}^n \to \mathbb{R}^m$ be a linear transformation, and we want to identify the matrix defined by this linear transformation $T(\vec{x}) = A \vec{x}$. Note that for any $\vec{x}\in \mathbb{R}^n$,
 
 \begin{align*}
 \vec{x}=
@@ -68,7 +68,8 @@ A=\begin{bmatrix}| & | & |\\T\left(\vec{e}_1\right) & T\left(\vec{e}_2\right) & 
 Corollary: Matrix and Linear Transformation
 </b></font>
     
-A transformation $T :~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation if and only if it is a matrix transformation.
+A transformation $T$ from $\mathbb{R}^n$ to $\mathbb{R}^m$, i.e. $T :~\mathbb{R}^n \to \mathbb{R}^m$, is a linear transformation if and only if it is a matrix transformation.
+
 </div>
 
 ***

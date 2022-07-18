@@ -1,41 +1,10 @@
 # Polar Form
 
-Let $z=a+bi$ be a complex number, and let $r$ be the distance from $z$ to the origin, i.e. $r=|z|=\sqrt{a^2+b^2}$. Moreover, let $\theta$ represent the angle that the line through $0$ and $z$ makes with the positive $x$-axis (measured clockwise). See the following diagram. Then $\theta$ is an angle defined by $\cos\theta = \dfrac{a}{r}$ and $\sin\theta=\dfrac{b}{r}$.
+Let $z=a+bi$ be a complex number and $r$ denote the distance $z$ from the origin, i.e. $r=|z|=\sqrt{a^2+b^2}$. Also, let $\theta$ represent the angle between the line through $0$ and $z$ and the positive $x$-axis (this angle is measured clockwise direction). See the following figure. Then, $\theta$ is defined by $\cos\theta = \dfrac{a}{r}$ and $\sin\theta=\dfrac{b}{r}$. This angle $\theta$ is called the argument of $z$, and it is shown by $\arg z=\theta$.
 
 <center>
 <iframe src="https://www.geogebra.org/classic/jqkh34yt?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
 </center>
-
-In addition, we know that any complex number $z=a+b\,i$ can be considered as a point $(a,b)$. Any such point can be represented by polar coordinates $(r,\theta)$ with $r\geq 0$.
-
-In other words $\theta$ is an angle such that $a = r\,\cos(\theta)$ and $b = r\,\sin(\theta)$.
-Therefore,
-\begin{align*}
-z=r\cos\theta +r\sin\theta i=r(\cos\theta + i\sin\theta).
-\end{align*}
-
-## Polar Form of a Complex Number
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Polar Form of a Complex Number
-</b></font>
-
-Let $z$ be a complex number with $|z|=r$ and $\arg z=\theta$. Then
-\begin{align*}
-z=re^{i\theta} =r(\cos\theta + i\sin\theta )
-\end{align*}
-is called **a polar form** of $z$.
-</div>
-
-We have
-\begin{align*}
-a+b\,i=\left(r\,\cos(\theta)\right)+\left(r\,\sin(\theta)\right)i.
-\end{align*}
-Thus, we can write any complex number in the form
-\begin{align*}
-z=r\left(\cos(\theta)+i\,\sin(\theta)\right)
-\end{align*}
-where $\theta$ is the argument of $z$.
 
 ## Euler's formula
 
@@ -47,14 +16,11 @@ Euler's formula
 \begin{align*}
 e^{i\theta}=\cos(\theta)+i\,\sin(\theta)
 \end{align*}
+
 </div>
 
-The polar form of the complex number $z = a+b\,i = r(\cos(\theta) +i\sin(\theta) )$ is for convenience written as:
-
-\begin{align*}
-z =re^{i\theta}
-\end{align*}
-
+The polar form of the complex number $z = a+b\,i = r(\cos(\theta) +i\sin(\theta) )$ can be also written as follows,
+\begin{align*} z =re^{i\theta} \end{align*}
 where $\theta$ is the argument of $z$.
 
 <font color='Blue'><b>Example</b></font>:
@@ -70,7 +36,11 @@ Now $r=|z|=\sqrt{1^2}=1$, and $\theta=0$ is an argument for $z=1$. However, we m
 Since sine and cosine have periodicity $2\pi$, we may add (or subtract) multiples of $2\pi$ to any argument.
 
 ## Principal Argument
-This angle $\theta$ is referred as the **argument** of $z$ and is denoted $\arg(z)$. Note that is not unique; any two arguments of differ by an integer multiple of $2\pi$. Therefore, we often speak of the **principal argument** of $z$. This is the unique angle $\theta \in (- \pi , \pi]$ such that
+Angle $\theta$ is known as the argument of $z$ (denoted by $\arg(z)$). This angle is not unique as 
+\begin{align*}
+\theta = \theta  + 2\pi = \theta + 4\pi = \ldots = \theta + 2k\pi,~k\in \mathbb{N}
+\end{align*}
+The principal argument of $z$, on the other hand, is the unique angle $\theta \in (- \pi , \pi]$ such that
 \begin{align*}
 \begin{cases}
 \cos(\theta)=\dfrac{a}{r},\\
@@ -83,7 +53,7 @@ This angle $\theta$ is referred as the **argument** of $z$ and is denoted $\arg(
 Principal Argument
 </b></font>
 
-Let $z$ be a complex number with $|z|=r$. The \textbf{principal argument} of $z$ is the unique angle $\theta=\arg (z)$ (measured in radians) such that
+For a complex number $z$ with $|z|=r$, the \textbf{principal argument} of $z$ is the unique angle $\theta=\arg (z)$ (measured in radians) such that
 \begin{align*}
 -\pi < \theta \leq \pi.
 \end{align*}
@@ -118,35 +88,22 @@ r=\sqrt{(-2)^2 + (2\sqrt{3})^2}
  = \sqrt{16}  = 4
 \end{align*}
 
-There are two approaches to finding an argument, $\theta$.
-
-One is to graph $-2+2\sqrt{3}$ in the complex plane.
+There are two approaches to finding an argument, $\theta$. The first approach to plot $-2+2\sqrt{3}$ in the complex plane.
 
 <center>
 <iframe src="https://www.geogebra.org/classic/bpj9qvay?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
 </center>
 
-The triangle sitting on the negative half of the real axis has sides of length $2$, $2\sqrt 3$, and $4$;
+<center>
 
-you should recognize this as a right triangle whose other two angles measure $\dfrac{\pi}{3}$ and $\dfrac{\pi}{6}$.
+|    $\theta$    | $0$ |    $\frac{\pi}{6}$   |    $\frac{\pi}{4}$   |    $\frac{\pi}{3}$   | $\frac{\pi}{2}$ |   $\frac{2\pi}{3}$   |    $\frac{3\pi}{4}$   |    $\frac{5\pi}{6}$   | $\pi$ | $\frac{3\pi}{2}$ | $2\pi$ |
+|:--------------:|:---:|:--------------------:|:--------------------:|:--------------------:|:---------------:|:--------------------:|:---------------------:|:---------------------:|:-----:|:----------------:|:------:|
+| $\sin(\theta)$ | $0$ |     $\frac{1}{2}$    | $\frac{\sqrt{2}}{2}$ | $\frac{\sqrt{3}}{2}$ |       $1$       | $\frac{\sqrt{3}}{2}$ |  $\frac{\sqrt{2}}{2}$ |     $\frac{1}{2}$     |  $0$  |       $-1$       |   $0$  |
+| $\cos(\theta)$ | $1$ | $\frac{\sqrt{3}}{2}$ | $\frac{\sqrt{2}}{2}$ |     $\frac{1}{2}$    |       $0$       |    $-\frac{1}{2}$    | $-\frac{\sqrt{2}}{2}$ | $-\frac{\sqrt{3}}{2}$ |  $-1$ |        $0$       |   $1$  |
 
-From this, we see that $\theta=\dfrac{2\pi}{3}$ is an argument of $z$.
+</center>
 
-Therefore, $z$ can be written in polar form as $z=4e^{i(2\pi/3)}.$
-
-The other approach to finding an argument, $\theta$, for $z=-2+2\sqrt{3}i$ is as follows.
-We have already calculated $|z|=r=4$.
-By definition, $\theta$ is an angle satisfying
-
-\begin{align*}
-\cos\theta=\frac{-2}{4}  = -\frac{1}{2}
-\mbox{ and }
-\sin\theta=\frac{2\sqrt{3}}{4}  = \frac{\sqrt{3}}{2}.
-\end{align*}
-
-By graphing the point $(-\frac{1}{2}, \frac{\sqrt{3}}{2})$,
-we again determine that $\theta=\frac{2\pi}{3}$, and thus
-$z$ can be written in polar form as $z=4e^{i(2\pi/3)}.$
+From the above table, it can be seen that $\theta = \frac{2\pi}{3}$, and $z$ can be written in polar form as $z=4e^{i(2\pi/3)}$.
 ***
 
 <font color='Blue'><b>Example</b></font>:

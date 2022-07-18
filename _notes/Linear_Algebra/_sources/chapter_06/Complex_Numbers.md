@@ -14,7 +14,7 @@ A Complex number can be expressed by the ordered pair. This representation can b
 Remark:
 </b></font>
     
-The field of real numbers denoted as $\mathbb{R}$ and the field of complex numbers denoted $\mathbb{C}$.
+The field of real numbers denoted as $\mathbb{R}$, and the field of complex numbers denoted $\mathbb{C}$.
 </div>
 
 ## Addition and Subtraction of Complex Numbers
@@ -43,14 +43,15 @@ Now, for two complex numbers $z_1=a+bi$ and $z_2=c+di$, we have
 Proposition: Properties of Addition
 </b></font>
     
+For three given complex numbers $z$, $w$, and $v$, we have
+
 * $z + w = w + z$. <font color='Blue'>(addition is commutative)</font>
 
 * $(z + w) + v = z + (w + v)$. <font color='Blue'>(addition is associative)</font>
 
 * $z + 0 =0+z= z$. <font color='Blue'>(existence of an additive identity)</font>
 
-* For every $z=a+bi$ there exists a complex number $-z = -a -bi$ such that
-\\$z + (-z) =(-z)+z=0.$ <font color='Blue'>(existence of an additive inverse)</font>
+* For every $z=a+bi$ there exists a complex number $-z = -a -bi$ such that $z + (-z) =(-z)+z=0.$ <font color='Blue'>(existence of an additive inverse)</font>
 </div>
 
 If $z=a+bi$ and $w=c+di$, then $z+w=(a+c)+(b+d)i$.
@@ -65,7 +66,7 @@ We can see that $0$, $z$, $w$, and $z+w$ are the vertices of a parallelogram.
 
 ## Multiplication of Complex Numbers
 
-The product of complex numbers two complex numbers $z_1=a+b\,i$ and $z_2=c+d\,i$, we have,
+Let $z_1=a+b\,i$ and $z_2=c+d\,i$ be two complex numbers. The product of these complex numbers:
 \begin{align*}
 z_1z_2=\left(a+b\,i\right)\left(c+d\,i\right)=a\left(c+d\,i\right)+b\,i\left(c+d\,i\right)=
 ac+ad\,i+bc\,i+bd\,i^2.
@@ -150,8 +151,8 @@ Therefore, if $z^2=-3+4i$, then $z=1+2i$ or $z=-1-2i$.
 Conjugate of a Complex Number
 </b></font>
 
-For the complex number $z = a+b\,i$, we define its \textbf{complex conjugate} to be $\overline{z} = a-b\,i$.
-$$\overline{z} = \overline{a+b\,i}=a-b\,i.$$
+The **complex conjugate** of complex number $z = a+b\,i$ is defined as $\overline{z} = a-b\,i$.
+\begin{align*}\overline{z} = \overline{a+b\,i}=a-b\,i\end{align*}
 
 <font color='Blue'><b>Example</b></font>:
 Conjugate of a Complex Number
@@ -164,10 +165,10 @@ Conjugate of a Complex Number
 \end{align*}
 </div>
 
-The geometric interpretation of the complex conjugate is shown in Figure following figure.
+The geometric interpretation of the complex conjugate:
 
 <center>
-<iframe src="https://www.geogebra.org/classic/uxsbnzbk?embed" width="800" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+<iframe src="https://www.desmos.com/calculator/au25dbys2v?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
 </center>
 
 Some of the properties of the complex conjugate are listed in the following theorem.
@@ -177,7 +178,7 @@ Some of the properties of the complex conjugate are listed in the following theo
 Theorem: Properties of the Conjugate
 </b></font>
     
-Let $z$ and $w$ be complex numbers. Then, the following properties of the conjugate hold.
+For two complex numbers, $z$ and $w$, the following properties of the conjugate hold.
 
 * $\overline{z\pm w}=\overline{z}\pm \overline{w}$,
 * $\overline{zw} = \overline{z}\, \overline{w}$,
@@ -191,17 +192,13 @@ Let $z$ and $w$ be complex numbers. Then, the following properties of the conjug
 Remark:
 </b></font>
     
-Let $z=a+b\,i$ be a complex number. Then,
+For a complex number $z=a+b\,i$, we have
 \begin{align*}
 z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=\left(a^2+b^2\right)+\left(ab-ab\right)\,i=a^2+b^2.
 \end{align*}
 </div>
 
-<div class="alert alert-block alert-warning">
-<font size="+1"><b>
-Remark:
-</b></font>
-    
+   
 The quotient $z=a+b\,i$ divided by $w=c+d\,i$, where $c^2+d^2\neq0$, is
 \begin{align*}
 \dfrac{z}{w}&=\dfrac{a+b\,i}{c+d\,i}=\dfrac{\left(a+b\,i\right)}{\left(c+d\,i\right)}\times\dfrac{\left(c-d\,i\right)}{\left(c-d\,i\right)}=
@@ -211,7 +208,6 @@ The quotient $z=a+b\,i$ divided by $w=c+d\,i$, where $c^2+d^2\neq0$, is
 =\dfrac{1}{c^2+d^2}\left(a+b\,i\right)\left(c-d\,i\right)=
 \left(\dfrac{ac+bd}{c^2+d^2}\right)+\left(\dfrac{bc-ad}{c^2+d^2}\right)\,i
 \end{align*}
-</div>
 
 <font color='Blue'><b>Example</b></font>:
 \begin{align*}
@@ -232,9 +228,10 @@ The quotient $z=a+b\,i$ divided by $w=c+d\,i$, where $c^2+d^2\neq0$, is
 Inverse of a Complex Number
 </b></font>
 
-Let $z=a+b\,i$ be a complex number. Then the multiplicative inverse of $z$, written $z^{-1}$ exists if and only if $a^2 +b^2 \neq 0$ and is given by
+For a complex number $z=a+b\,i$, the multiplicative inverse of $z$, expressed as $z^{-1}$, exists if and only if $a^2 +b^2 \neq 0$, and it is given by
 \begin{align*}
 z^{-1}&=\frac{1}{a+b\,i}=\frac{1}{\left(a+b\,i\right)}\times\frac{\left(a-b\,i\right)}{\left(a-b\,i\right)}
+\\ &
 =\frac{\left(a-b\,i\right)}{\left(a+b\,i\right)\left(a-b\,i\right)}=\frac{1}{a^2+b^2}\left(a-b\,i\right)
 \\ &
 =\frac{a}{a^2+b^2}-\frac{b}{a^2+b^2}i.
@@ -254,8 +251,7 @@ Note that we can always check that $zz^{-1}=1$.
 
 ## The Absolute Value (Modulus) of a Complex Number
 
-**Absolute Value**: The **modulus**, or **absolute value,** of a complex number$z=a+b\,i$ is
-its distance from the origin.
+The distance of a complex number $z=a+b\,i$ from the origin is called the **modulus** or **absolute value**, and it is defined as follows.
 \begin{align*}
 |z|=|a+b\,i| = \sqrt{a^2+b^2}.
 \end{align*}
@@ -268,6 +264,7 @@ its distance from the origin.
 <font size="+1"><b>
 Theorem: Properties of the Modulus
 </b></font>
+For complex numbers $z$ and $w$, we have,
     
 * $z\overline{z}=\left(a+b\,i\right)\left(a-b\,i\right)=a^2+ab\,i-ab\,i-b\,i^2=a^2+b^2=|z|^2$.
 * $\dfrac{1}{z}= \dfrac{\overline{z}}{|z|^2}$.
@@ -287,13 +284,11 @@ Theorem: Properties of the Modulus
 <font size="+1"><b>
 Theorem:
 </b></font>
-    
-* For complex numbers $z=a+b\,i$ and $w=c+d\,i$,
-$$|zw|=|z||w|.$$
-* For complex numbers $z=a+b\,i$ and $w=c+d\,i$ such that $c^2+d^2\neq0$
-$$\left|\frac{z}{w}\right|=\frac{|z|}{|w|}.$$
-* For complex numbers $z=a+b\,i$ and $c\in \mathbb{R}$,
-$$|cz|=|c||z|.$$
+
+For complex numbers $z=a+b\,i$ and $w=c+d\,i$,
+* $|zw|=|z||w|.$
+* also if $c^2+d^2\neq0$, $\left|\dfrac{z}{w}\right|=\dfrac{|z|}{|w|}.$
+* for $c\in \mathbb{R}$, $|cz|=|c||z|.$
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -301,9 +296,12 @@ $$|cz|=|c||z|.$$
 Theorem: Triangle Inequality
 </b></font>
     
-<p>Let <span class="math inline">\(z\)</span>, <span class="math inline">\(w\)</span> be complex numbers. The following two inequalities hold for any complex numbers <span class="math inline">\(z\)</span>, <span class="math inline">\(w\)</span>: <span class="math display">\[\begin{aligned}
+For two complex numbers $z$ and $w$, the following two inequalities hold:
+\begin{align*}
 |z+w| \leq |z|+|w|,\\
-\left||z|-|w|\right| \leq |z-w|\end{aligned}\]</span> The first one is called the Triangle Inequality.</p>
+\left||z|-|w|\right| \leq |z-w|.
+\end{align*}
+The first one is called the **Triangle Inequality**.
     
 </div>
 
@@ -331,9 +329,11 @@ We are going to use the following fact,
 
 \begin{align*}
 \dfrac{w-\overline{wu}}{zu}&=\dfrac{(1+i)-\overline{(1+i)(2-2i)}}{(4-3i)(2-2i)}=
+\\ &
 \dfrac{(1+i)-\overline{4}}{2-14i}=\dfrac{(1+i)-4}{2-14i}=\dfrac{-3+i}{2-14i}
 \\ &
 =\dfrac{(-3+i)}{(2-14i)}\dfrac{(2+14i)}{(2+14i)}=\dfrac{1}{10\,\sqrt{2}}\left(-20-40i\right)
+\\ &
 =-\frac{1}{10}-\frac{1}{5}i=-\frac{1}{10}\left(1+2i\right).
 \end{align*}
 Therefore,

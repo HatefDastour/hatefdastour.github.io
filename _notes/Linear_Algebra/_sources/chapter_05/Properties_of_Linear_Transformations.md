@@ -46,7 +46,7 @@ Therefore, $T$ is **not** a linear transformation.
 Remark
 </b></font>
     
-<p>If <span class="math inline">\(T\)</span> preserves the zero vector, <span class="math inline">\(T\)</span> is not necessarily a linear transformation. However, if <span class="math inline">\(T\)</span> does not preserve the zero vector, <span class="math inline">\(T\)</span> definitely is not a linear transformation.</p>
+Observe that if $T$ is not a linear transformation if it cannot preserve at least one of the three conditions from the above theorem.
 
 
 </div>
@@ -136,20 +136,19 @@ T\left(\vec{x}\right)&=T\left(x_1 \vec{e}_1+x_2 \vec{e}_2\right)=x_1 T\left(\vec
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
-Procedure: Finding the Matrix of Inconveniently Defined Linear Transformation
+Procedure: Finding the corresponding matrix for a linear transformation
 </b></font>
     
-Suppose $T:~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation. Suppose there exist vectors $\{\vec{x}_1 ,\ldots ,\vec{x}_n \}$ in $\mathbb{R}^n$
-such that the inverse of
+Assume that $T:~\mathbb{R}^n \to \mathbb{R}^m$ is a linear transformation, and there exist vectors $\{\vec{x}_1 ,\ldots ,\vec{x}_n \}$ in $\mathbb{R}^n$ such that the inverse of
 $X=\begin{bmatrix}| & | & \dots & |\\
 \vec{x}_1 & \vec{x}_2 & \dots & \vec{x}_n\\
 | & | & \dots & | \end{bmatrix}$
-exists, and $\{T (\vec{x}_1) ,\ldots ,T (\vec{x}_n) \}$ in $\mathbb{R}^m$.
+exists, and $\{T (\vec{x}_1) ,\ldots ,T (\vec{x}_n) \}$ in $\mathbb{R}^m$. Now, we want to identify the corresponding matrix for this linear transformation, matrix $A$,
 
-Set $Y=\begin{bmatrix}| & | & \dots & |\\
+1. Set $Y=\begin{bmatrix}| & | & \dots & |\\
 T (\vec{x}_1) & T (\vec{x}_2) & \dots & T (\vec{x}_n)\\
 | & | & \dots & | \end{bmatrix}$.
-Then, the matrix of $A$ is of the form
+1. Then, the matrix of $A$ is of the form
 \begin{align*}
 A=Y\,X^{-1}=
 \begin{bmatrix}| & | & \dots & |\\
@@ -235,8 +234,9 @@ The linear transformation is given by $T (\vec{x}) = A\vec{x}$ for all $\vec{x}\
 Equal Transformations
 </b></font>
 
-Let $S$ and $T$ be linear transformations from $\mathbb{R}^n$ to $\mathbb{R}^m$. Then $S = T$ if and only if for every $\vec{x}\in \mathbb{R}^n$,
-$$S(\vec{x}) = T (\vec{x})$$
+Two liner transformations $S$ and $T$ from $\mathbb{R}^n$ to $\mathbb{R}^m$ are equal, $S = T$, if and only if
+\begin{align*}S(\vec{x}) = T (\vec{x}),\end{align*}
+for every $\vec{x}\in \mathbb{R}^n$.
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -244,15 +244,14 @@ $$S(\vec{x}) = T (\vec{x})$$
 Composition of Linear Transformations
 </b></font>
 
-Suppose $T:\mathbb{R}^k\rightarrow \mathbb{R}^n$ and $S:\mathbb{R}^n\rightarrow \mathbb{R}^m$ are linear transformations. The composition of $S$ and $T$ is
-$S\circ T: \mathbb{R}^k\rightarrow \mathbb{R}^m,$
+The composition of $S:\mathbb{R}^n\rightarrow \mathbb{R}^m$ and $T:\mathbb{R}^k\rightarrow \mathbb{R}^n$ is $S\circ T: \mathbb{R}^k\rightarrow \mathbb{R}^m,$
 is defined by
 \begin{align*}
 (S\circ T)(\vec{x}) = S(T(\vec{x}))\quad \text{ for all } \vec{x} \in \mathbb{R}^n
 \end{align*}
 
-```{image} ../Figures/fig5_01.png
-:width: 300px
+```{image} ../Figures/fig5_02.png
+:width: 500px
 :align: center
 ```
 </div>
@@ -262,7 +261,8 @@ is defined by
 Theorem: Composition of Transformations
 </b></font>
     
-Let $T:~\mathbb{R}^k \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^m$ be linear transformations such that $T$ is induced by the matrix $A$ and $S$ is induced by the matrix $B$. Then $S\circ T$ is a linear transformation which is induced by the matrix $BA$.
+The linear transformation $S\circ T$ is induced by the matrix $BA$ where
+$T:~\mathbb{R}^k \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^m$ are linear transformations induced by matrices $A$ and $B$, respectively.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -283,11 +283,11 @@ AB=\begin{bmatrix}1 & 1\\ 2 & 0\end{bmatrix}\begin{bmatrix}1 & 0\\ 2 & 1\end{bma
 Inverse of a Transformation
 </b></font>
 
-Let $T:~\mathbb{R}^n \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^n$ be linear transformations. Suppose that for each $\vec{x}\in \mathbb{R}^n$,
+Assume that $T:~\mathbb{R}^n \to \mathbb{R}^n$ and $S:~\mathbb{R}^n \to \mathbb{R}^n$ are linear transformations. Then, if for each $\vec{x}\in \mathbb{R}^n$,
 \begin{align*}
 (S\circ T)(\vec{x}) =\vec{x} \quad \text{and} \quad (T\circ S)(\vec{x}) =\vec{x}.
 \end{align*}
-Then, $S$ is called an inverse of $T$ and $T$ is called an inverse of $S$. Geometrically, they reverse the action of each other.
+$S$ is called an inverse of $T$, and $T$ is called an inverse of $S$.
 ```{image} ../Figures/fig5_03.png
 :width: 300px
 :align: center
@@ -299,7 +299,15 @@ Then, $S$ is called an inverse of $T$ and $T$ is called an inverse of $S$. Geome
 Theorem: Inverse of a Transformation
 </b></font>
     
-Let $T:~\mathbb{R}^n \to \mathbb{R}^n$  n be a linear transformation induced by the matrix $A$. Then $T$ has an inverse transformation if and only if the matrix $A$ is \underline{invertible}. In this case, the inverse transformation is unique and denoted $T^{-1}:~\mathbb{R}^n \to \mathbb{R}^n$. $T^{-1}$ is induced by the matrix $A^{-1}$.    
+Assume that $T:~\mathbb{R}^n \to \mathbb{R}^n$  is a linear transformation induced by the matrix $A$. Then, this linear transformation is invertible (has an inverse transformation), $T$, if only if $A$ is invertible. The inverse transformation is unique and denoted by $T^{-1}:~\mathbb{R}^n \to \mathbb{R}^n$.   
+</div>
+
+<div class="alert alert-block alert-warning">
+<font size="+1"><b>
+Remark:
+</b></font>
+    
+If transformation by $T$ is induced by matrix $A$, then $T^{-1}$ is induced by the matrix $A^{-1}$. 
 </div>
 
 <font color='Blue'><b>Example</b></font>:

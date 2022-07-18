@@ -63,17 +63,17 @@ From the above Theorem, we have $\|\vec{u}\|^2=\vec{u} \bullet \vec{u}$. Therefo
 Theorem: Triangle Inequality
 </b></font>
     
-For $\vec{v}$, $\vec{w} \in \mathbb{R}^n$
-\begin{align*}\|\vec{v}+\vec{w}\| \leq \|\vec{v}\|+\|\vec{w}\|\end{align*}
+For $\vec{v}$, $\vec{w} \in \mathbb{R}^n$, the following two inequalities hold:
+\begin{align*}
+\|\vec{v}+\vec{w}\| \leq \|\vec{v}\|+\|\vec{w}\|,\\
+\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|.
+\end{align*}
 
 ```{image} ../Figures/fig4_11.png
 :width: 300px
 :align: center
 ```
-The two sides of the above inequality can become equal if either  $\vec{v}$ or $\vec{W}$ can be obtained by multiplying 
-Moreover, the following inequality is also valid
-\begin{align*}\|\|\vec{v}\|-\|\vec{w}\|\| \leq \|\vec{v}-\vec{w}\|\end{align*}
-
+The first one is called the **Triangle Inequality**.
 </div>
 
 ## The Included Angle
