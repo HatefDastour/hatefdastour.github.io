@@ -1,14 +1,13 @@
 # The Quadratic Formula
 
+Observe that, on one hand, we have $i^2=-1$; on the other hand, $(-i)^2=i^2=-1$. In other words, both $i$ and $-i$ are the square roots of $-1$. $i$ is sometimes called the **principal square root** of $-1$, and for a positive number $c$, we have,
 
-Since $i^2=-1$, we can think of as a square root of $-1$. But notice that we also have $(-i)^2=i^2=-1$ and so $-i$ is also a square root of
-$-1$. We say that is the **principal square root** of $-1$ and write $\sqrt{-1}=i$. In general, if $c$ is any positive number, we write
 \begin{align*}
 \sqrt{-c}=\sqrt{c}i
 \end{align*}
-With this convention, the usual
-derivation and formula for the roots of the quadratic equation
-$ax^2+bx+c=0$ are valid even when $b^2-4ac<0$,
+
+Therefore, the roots of the quadratic equation $ax^2+bx+c=0$ are still valid even for the case that $b^2-4ac<0$,
+
 \begin{align*}
 x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
 =\left\{ \begin{array}{l}
@@ -18,9 +17,9 @@ x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
 \end{array}\right.
 \end{align*}
 
--   if $b^2-4ac\geq 0$, then the roots of the quadratic are **real**;
+-  $b^2-4ac\geq 0$: the roots of the quadratic are **real**;
 
--   if $b^2-4ac<0$, then the quadratic has **no real roots**.
+-  $b^2-4ac<0$: the quadratic has **no real roots**.
 
 <font color='Blue'><b>Example</b></font>:
 Find the roots of the equation $x^2+x+1=0$.
@@ -28,8 +27,8 @@ Find the roots of the equation $x^2+x+1=0$.
 <font color='Green'><b>Solution</b></font>: 
 Using the quadratic formula, we have
 \begin{align*}
-x=\frac{-1\pm\sqrt{1^2-4(1)(1)}}{2(1)}=\frac{-1\pm\sqrt{1-4}}{2}=\frac{-1\pm\sqrt{3}i}{2}
-=\begin{cases}
+\text{The roots }&=\frac{-1\pm\sqrt{1^2-4(1)(1)}}{2(1)}=\frac{-1\pm\sqrt{1-4}}{2}=\frac{-1\pm\sqrt{3}i}{2}\\
+&=\begin{cases}
 \dfrac{-1+\sqrt{3}i}{2}
 \\
 \dfrac{-1-\sqrt{3}i}{2}
@@ -46,7 +45,7 @@ x=\frac{-1\pm\sqrt{1^2-4(1)(1)}}{2(1)}=\frac{-1\pm\sqrt{1-4}}{2}=\frac{-1\pm\sqr
 Theorem: The Fundamental Theorem of Algebra
 </b></font>
     
-Every polynomial of positive degree with complex coefficients has a complex root.
+Every positive degree polynomial with complex coefficients has a complex root.
 </div>
 
 <font color='Blue'><b>Example</b></font>:

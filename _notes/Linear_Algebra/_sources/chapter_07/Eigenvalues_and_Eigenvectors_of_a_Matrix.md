@@ -7,12 +7,12 @@
 Eigenvalues and Eigenvectors of a Matrix
 </b></font>
     
-Let $A$ be an $n\times n$ matrix and let $X \in \mathbb{C}^n$  be a **nonzero vector** for which
+Scalar $\lambda$ is called an **eigenvalue** of an $n\times n$ matrix $A$ (square matrix) if
 \begin{align*}
-AX = \lambda X
+AX = \lambda X,
 \end{align*}
-for some scalar $\lambda$ . Then $\lambda$ is called an **eigenvalue** of the matrix $A$ and $X$ is called an **eigenvector** of
-$A$ associated with $\lambda$, or a $\lambda$-eigenvector of $A$.
+for a non-zero vector $X \in \mathbb{C}^n$. $X$ is also called an **eigenvector** of
+$A$ associated with $\lambda$. This is often called $\lambda$-eigenvector of $A$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -34,22 +34,17 @@ $\left[\begin{array}{c} 2\\ 1 \end{array}\right]$ is an **eigenvector of $A$ cor
 The Spectrum of a Matrix
 </b></font>
     
-The set of all eigenvalues of an $n\times n$ matrix $A$ is denoted by
-$\sigma(A)$ and is referred to as the **spectrum** of $A$.
+The **spectrum** of $A$, denoted by $\sigma(A)$, is the set of all eigenvalues of an $n\times n$ matrix $A$.
 </div>
 
-Suppose that $A$ is an $n\times n$ matrix, with eigenvalue
-$\lambda$ and corresponding eigenvector $X$.
+Assume that $\lambda\in \mathbb{R}$ and a non-zero vector $X$ (with the size of $n$) are an eigenvalue and an eigenvector of $A$, respectively. Then,
+\begin{align*}
+\lambda X - AX & =  0 \\
+\lambda I X - AX & =  0 \\
+(\lambda I - A)X & =  0
+\end{align*}
 
-Then, $X\neq 0$ is an $n$-vector, $\lambda\in \mathbb{R}$, and $AX=\lambda X$. It follows that
-\begin{eqnarray*}
-\lambda X - AX & = & 0 \\
-\lambda I X - AX & = & 0 \\
-(\lambda I - A)X & = & 0
-\end{eqnarray*}
-
-
-Since $X\neq 0$, $X$ is a \textbf{nontrivial} solution to the linear system with coefficient matrix $\lambda I-A$, and therefore the matrix **$\lambda I-A$ is not invertible**. Since a matrix is invertible if and only if its determinant is not equal to zero, it follows that
+Observe that since $X$ is nonzero, $X$ is a **nontrivial** solution to the linear system with the coefficient matrix $\lambda I-A$. Therefore, the matrix $\lambda I-A$ is not invertible. We also know that a matrix is invertible if and only if its determinant is not equal to zero. Thus,
 \begin{align*}
 \det(\lambda I - A)=0.
 \end{align*}
@@ -59,11 +54,11 @@ Since $X\neq 0$, $X$ is a \textbf{nontrivial} solution to the linear system with
 The Characteristic Polynomial and the Characteristic Equation
 </b></font>
     
-If $A$ is an $n\times n$  matrix, the characteristic polynomial $c_A (\lambda)$ of $A$ is defined by
+For an $n\times n$ matrix $A$, the characteristic polynomial $c_A (\lambda)$ of $A$ can be defined by 
 \begin{align*}
 c_A (\lambda) = \det(\lambda I-A).
 \end{align*}
-Moreover, $\det(\lambda I-A)=0$ is usually referred as the \textbf{characteristic equation}.
+Moreover, $\det(\lambda I-A)=0$ is known as the **characteristic equation**.
 </div>
 
 
@@ -86,22 +81,22 @@ c_A(\lambda) & = \det(\lambda I-A)
 Theorem: The Existence of an Eigenvector
 </b></font>
     
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix and suppose<span class="math inline">\(c_A (\lambda)\)</span> = 0 for some <span class="math inline">\(\lambda \in \mathbb{C}\)</span>. Then <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(A\)</span> and thus there exists a nonzero vector <span class="math inline">\(X \in C^n\)</span> such that <span class="math inline">\(AX = \lambda X\)</span>.</p>
+For an $n\times n$ matrix $A$ , asumme that $c_A (\lambda)$ = 0 for some $\lambda \in \mathbb{C}$. Then, $\lambda$ is an eigenvalue of $A$, and a nonzero vector $X \in \mathbb{C}^n$ exists such that
+\begin{align*}
+AX = \lambda
+\end{align*}
 
 </div>
 
 ## Finding Eigenvectors and Eigenvalues
 
-<div class="alert alert-secondary" role="alert">
-<font size="+1"><b>
-Theorem: The Existence of an Eigenvector
-</b></font>
-    
-<p>Let <span class="math inline">\(A\)</span> be an <span class="math inline">\(n\times n\)</span> matrix.</p>
-<ol>
-<li><p>The eigenvalues of <span class="math inline">\(A\)</span> are the roots of <span class="math inline">\(c_A(x)\)</span>.</p></li>
-<li><p>The <span class="math inline">\(\lambda\)</span>-eigenvectors <span class="math inline">\(X\)</span> are the nontrivial solutions to <span class="math inline">\((\lambda I-A)X=0\)</span>.</p></li>
-</ol>
+<div class="alert alert-block alert-warning">
+
+For an $n\times n$ matrix $A$, we have,
+
+* The roots of $c_A(x)$ are the eigenvalues of $A$.
+
+* The non-trivial solutions to $(\lambda I-A)X=0$ are $\lambda$-eigenvectors $X$.
 
 </div>
 
@@ -158,8 +153,7 @@ X = \left[\begin{array}{c} -s\\ s \end{array}\right]=s\left[\begin{array}{c} -1\
 Basic Eigenvector
 </b></font>
     
-A **basic eigenvector** of an $n\times n$ matrix $A$ is any nonzero multiple of a basic solution to $(\lambda I-A)X=0$, where $\lambda$ is
-an eigenvalue of $A$.
+For an $n\times n$ matrix $A$ and its eigenvalue $\lambda$, any non-zero multiple of a basic solution of $(\lambda I-A)X=0$ is a **basic eigenvector**.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -177,7 +171,7 @@ $A=\left[\begin{array}{rr} 2 & -2\\ -1 & 3 \end{array}\right]$:
 Multiplicity of an Eigenvalue
 </b></font>
     
-The multiplicity of an eigenvalue $\lambda$ of $A$ is the number of times $\lambda$ occurs as a root of $c_A(x)$.
+The number of times $\lambda$ appears as a root of $c_A(x)$ is the multiplicity of an eigenvalue $\lambda$ of $A$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -205,10 +199,18 @@ an eigenvalue of **multiplicity two**.
 Finding Eigenvectors and Eigenvalues
 </b></font>
 
-Let $A$ be an $n\times n$ matrix.
-* Find the eigenvalues $\lambda$ of $A$ by solving the characteristic equation, $\det(\lambda I-A)=0$.
+For an $n\times n$ matrix $A$:
+* Solve the characteristic equation, $\det(\lambda I-A)=0$, to identify the eigenvalues $\lambda$ of $A$.
 * For each $\lambda$, find the basic eigenvectors $X\neq 0$ by finding the basic solutions to $(\lambda I-A)X =0$.
 * To verify your work, make sure that $AX = \lambda X$ for each $\lambda$ and associated eigenvector $X$ .
+</div>
+
+<div class="alert alert-block alert-warning">
+<font size="+1"><b>
+Remark:
+</b></font>
+
+We always can verify our work by testing $AX = \lambda X$ for each $\lambda$ and its associated eigenvector $X$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:

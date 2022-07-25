@@ -163,8 +163,7 @@ where $r=|q|$ and $w_k$ with $k=0,1,2,\ldots,n-1$ are $n$ distinct $n^{\text{th}
 Remark:
 </b></font>
     
-Notice that each of the $n^{\text{th}}$ roots of has modulus $|w_k|=r^{1/n}$. Thus all the $n^{\text{th}}$ roots of lie on the circle of radius $r^{1/n}$ in the complex plane. Also, since the argument of each
-successive $n^{\text{th}}$ root exceeds the argument of the previous root by $2\pi/n$, we see that the $n^{\text{th}}$ roots of are equally spaced on this circle.    
+Observe that each of the $n^{\text{th}}$ roots of has modulus $|w_k|=r^{1/n}$. Therefore, all the $n^{\text{th}}$ roots of lie on the circle of radius $r^{1/n}$ in the complex plane.   
 </div>
 
 <font color='Blue'><b>Example</b></font>:
