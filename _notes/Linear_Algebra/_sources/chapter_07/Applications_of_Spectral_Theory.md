@@ -6,9 +6,9 @@ Suppose $A$ is diagonalizable and there is an invertible matrix $P$ such that $P
 
 \begin{align*}
 &P^{-1} AP = D,\\
-\xRightarrow[]{\text{Multiplying from left by }P}\quad & PP^{-1} AP = PD,\\
+\text{Multiplying from left by }P~\Rightarrow \quad & PP^{-1} AP = PD,\\
 \Rightarrow \quad &  AP=PD,\\
-\xRightarrow[]{\text{Multiplying from right by }P^{-1}}\quad & APP^{-1}=PDP^{-1},\\
+\text{Multiplying from right by }P^{-1}~\Rightarrow \quad & APP^{-1}=PDP^{-1},\\
 \Rightarrow \quad &  A=PDP^{-1}.
 \end{align*}
 Now, consider $A^2$. Since $A=PDP^{-1}$, it follows that
