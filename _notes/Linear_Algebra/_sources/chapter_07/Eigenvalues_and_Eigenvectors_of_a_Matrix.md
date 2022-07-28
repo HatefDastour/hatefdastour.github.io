@@ -439,18 +439,23 @@ Therefore, we can use $X_2 =\begin{bmatrix} 1\\0\\0\end{bmatrix}$ and $X_3 =\beg
 ## Eigenvalues and Eigenvectors for Special Types of Matrices
 
 
-Let $A$, and $B$ be $n \times n$ matrices. Suppose there exists an invertible matrix $P$ such that
+<div class="alert alert-info" role="alert">
+<font size="+1"><b>
+Similar Matrices
+</b></font>
+    
+Two $n \times n$ matrices $A$ and $B$ are called **similar matrices** if there exists an invertible matrix $P$ such that
 \begin{align*}
 A = P^{-1} BP
 \end{align*}
-Then $A$ and $B$ are called \textbf{similar matrices}.
+</div>
 
 <div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem
 </b></font>
     
-Let $A$ and $B$ be similar matrices, so that $A = P^{-1}BP$ where $A$ and $B$ are $n\times n$ matrices, and $P$ is **invertible**. Then $A$ and $B$ have the **same eigenvalues**.
+Similar matrices $A$ and $B$ have the  **same eigenvalues**.
 </div>
 
 **Proof**: 
@@ -459,8 +464,7 @@ Assume $BX=\lambda X$. Let $Y=P^{-1}X$. Then
 AY=(P^{-1}B P) P^{-1} X=P^{-1}B (P P^{-1}) X=P^{-1}BI X=P^{-1} BX=P^{-1} \lambda X=\lambda Y.
 \end{align*}
 
-It is possible to use elementary matrices to simplify a matrix before searching for its eigenvalues and
-eigenvectors. This is illustrated in the following example.
+We can use elementary matrices to facilitate finding eigenvalues and eigenvectors of a matrix. This is illustrated in the following example.
 
 <font color='Blue'><b>Example</b></font>:
 Find the eigenvalues for the matrix
@@ -477,23 +481,24 @@ A =
 
 
 <font color='Green'><b>Solution</b></font>:
-We will use elementary matrices to simplify $A$ before finding the eigenvalues. Right multiply $A$ by $E_{1}=E(-2\times 2+3)$, and left multiply $A$ by the inverse of $E_{1}$.
+We use elementary matrices to simplify $A$ before finding the eigenvalues. From right, multiply $A$ by $E_{1}=E(-2\times 2+3)$, and from left, multiply $A$ by the inverse of $E_{1}$. That is,
 \begin{align*}
 \underbrace{\left[\begin{array}{rrr}1 & 0 & 0 \\0 & 1 & 0 \\0 & 2 & 1\end{array}\right]}_{\color{red}{E_{1}^{-1}}}
 \left[\begin{array}{rrr}33 & 105 & 105 \\10 & 28 & 30 \\-20 & -60 & -62\end{array}\right]
 \underbrace{\left[\begin{array}{rrr}1 & 0 & 0 \\0 & 1 & 0 \\0 & -2 & 1\end{array}\right]}_{\color{red}{E_{1}}}
 =\left[\begin{array}{rrr}33 & -105 & 105 \\10 & -32 & 30 \\0 & 0 & -2\end{array}\right].
 \end{align*}
-Note that the resulting matrix and $A$ are similar matrices (with $E_1$ playing the role of $P$) so they have the same eigenvalues.
 
-We do this step again, on the resulting matrix above. This time, right multiply $A$ by\linebreak $E_{2}=E(3\times 2+1)$, and left multiply $A$ by the inverse of $E_{2}$.
+Observe that the resulting matrix on the right-hand side and matrix $A$ are similar matrices (with $E_1$ playing the role of $P$). Therefore, they have the same eigenvalues.
+
+Repeating the above step one more time, we can right multiply $A$ by $E_{2}=E(3\times 2+1)$, and left multiply $A$ by the inverse of $E_{2}$.
 \begin{align*}
 \underbrace{\left[\begin{array}{rrr}1 & -3 & 0 \\0 &  1 & 0 \\0 &  0 & 1\end{array}\right]}_{\color{red}{E_{2}^{-1}}}
 \left[\begin{array}{rrr}33 & -105 & 105 \\10 & -32  & 30 \\0  &   0  & -2\end{array}\right]
 \underbrace{\left[\begin{array}{rrr}1 & 3 & 0 \\0 & 1 & 0 \\0 & 0 & 1\end{array}\right]}_{\color{red}{E_{2}}}
 =\left[\begin{array}{rrr}3  & 0  & 15 \\10 & -2 & 30 \\0  & 0  & -2\end{array}\right] = B
 \end{align*}
-Again by properties of similar matrices, the resulting matrix here (labeled $B$) has the same eigenvalues as our original matrix $A$. The advantage is that it is much simpler to find the eigenvalues of $B$ than $A$.
+Now, the matrix $B$ (the resulting matrix) has the same eigenvalues as matrix $A$. The advantage is that it is much simpler to find the eigenvalues of $B$ than $A$.
 
 Finding these eigenvalues follows the usual procedure and is left as an exercise.
 ***
@@ -502,7 +507,7 @@ Finding these eigenvalues follows the usual procedure and is left as an exercise
 <font size="+1"><b>
 Remark:
 </b></font>
-The eigenvalues of a triangular matrix are the entries on the main diagonal.
+For triangular matrices, the entries on the main diagonal are the eigenvalues.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -516,7 +521,7 @@ The characteristic polynomial of $A$ is
 \left|\begin{array}{cccc} \lambda -1 & 1 & 0 & -3\\ 0 & \lambda -2 & -1 & 2\\ 0 & 0 & \lambda -3 & -5\\ 0 & 0 & 0 & \lambda -4 \end{array}\right|=
 (\lambda -1) ( \lambda -2 )( \lambda -3) ( \lambda -4)
 \end{align*}
-Therefore the eigenvalues of $A$ are $1, 2, 3$ and $4$, exactly the entries on the main diagonal of $A$.
+The eigenvalues of $A$: $1, 2, 3$ and $4$.
 ***
 
 <font color='Blue'><b>Example</b></font>:

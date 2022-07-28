@@ -2,14 +2,13 @@
 
 ## Raising a Matrix to a High Power
 
-Suppose we have a matrix $A$ and we want to find $A^{20}$. You could try to multiply A with itself 20 times; however, this is computationally extremely intensive and it is not recommended. We also can diagonalization to compute high powers of a matrix relatively easily.
+Suppose $A$ is diagonalizable and there is an invertible matrix $P$ such that $P^{-1} AP = D$. Observe that $P^{-1} AP = D$ can be rearranged as $A = PDP^{-1}$. We have,
 
-Suppose $A$ is diagonalizable, so there is an invertible matrix $P$ such that $P^{-1} AP = D$. We can rearrange this equation to
 \begin{align*}
 &P^{-1} AP = D,\\
-\Rightarrow \quad&PP^{-1} AP = PD,\\
+\xRightarrow[]{\text{Multiplying from left by }P}\quad & PP^{-1} AP = PD,\\
 \Rightarrow \quad &  AP=PD,\\
-\Rightarrow \quad&APP^{-1}=PDP^{-1},\\
+\xRightarrow[]{\text{Multiplying from right by }P^{-1}}\quad & APP^{-1}=PDP^{-1},\\
 \Rightarrow \quad &  A=PDP^{-1}.
 \end{align*}
 Now, consider $A^2$. Since $A=PDP^{-1}$, it follows that
@@ -25,6 +24,8 @@ In general,
 A^n=\underbrace{PDP^{-1}PDP^{-1}\ldots PDP^{-1}}_{n\text{ times}}=PD^nP^{-1}.
 \end{align*}
 Therefore, we have reduced the problem to finding $D^n$. In order to compute $D^n$ , then because $D$ is diagonal we only need to raise every entry on the main diagonal of $D$ to the power of $n$.
+
+This can be useful if we wanted to compute $A^{100}$. By diagonalizing A first it suffices to then compute $\left(PDP^{-1}\right)^{100}$, which reduces to $PD^{100} P^{-1}$. This last computation is much simpler than $A^{100}$.
 
 <font color='Blue'><b>Example</b></font>:
 Let $A =\begin{bmatrix} 1 & 1 & 0\\ 0 & 2 & 0\\ 0 & 2 & 1 \end{bmatrix}$. Find $A^{10}$.
@@ -150,7 +151,9 @@ A^{10}=PD^{10}P^{-1}&=
 Symmetric and Skew Symmetric Matrices
 </b></font>
     
-$A$ real $n\times n$ matrix $A$, is symmetric if $A^T = A$. If $A = -A^T$, then $A$ is called skew symmetric.
+$A$ real $n\times n$ matrix $A$, 
+* is **symmetric** if $A^T = A$.
+*is **skew-symmetric** if $A = -A^T$.
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -158,15 +161,7 @@ $A$ real $n\times n$ matrix $A$, is symmetric if $A^T = A$. If $A = -A^T$, then 
 Theorem: Properties of Trace
 </b></font>
     
-The eigenvalues of any real symmetric matrix are real. 
-</div>
-
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Similar Matrices
-</b></font>
-    
-If $A$ and $B$ be $n\times n$, we say that $A$ and $B$ are similar, and write $A \sim B$, if $B = P^{-1} AP$ for some invertible matrix $P$.
+Any real symmetric matrix are only has real eigenvalues.
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -174,7 +169,10 @@ If $A$ and $B$ be $n\times n$, we say that $A$ and $B$ are similar, and write $A
 Orthogonal Matrices
 </b></font>
     
-$A$ real $n\times n$ matrix $U$ is called an orthogonal matrix if $UU^T =U^T U = I$.
+$A$ real $n\times n$ matrix $U$ is called an orthogonal matrix if 
+\begin{align*}
+UU^T =U^T U = I.
+\end{align*}
 </div>
 
 
@@ -199,7 +197,7 @@ Hence, this matrix is orthogonal.
 Theorem: Determinant of Orthogonal Matrices
 </b></font>
     
-Suppose $U$ is an orthogonal matrix. Then, $det(U) = 1$ or $det(U) = -1$.  
+The determinant of an orthogolan matrix $U$ is 1 or -1. That is $det(U) = 1$ or $det(U) = -1$.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -208,15 +206,14 @@ We can see that
 \det(U)=\left|\begin{array}{ccc} 1 & 0 & 0\\ 0 & 0 & -1\\ 0 & -1 & 0 \end{array}\right|=-1.
 \end{align*}
 
-We know that a matrix $A$ is called symmetric if $A = A^T$. If the matrix $A$ is symmetric, then we can actually find such a matrix $P$ that is an orthogonal matrix of eigenvectors. Thus $P^{-1}$ is simply its transpose $P^T$, and $P^T AP$ is diagonal. When this happens we say
-that $A$ is **orthogonally diagonalizable**.
+Recall that a matrix $A$ is called symmetric if $A = A^T$. Now, if the matrix $A$ is also symmetric, then we can identify a matrix $P$ that is an orthogonal matrix of eigenvectors. $P^{-1}$ would be the transpose $P^T$, and $P^T AP$ is diagonal. In this case $A$ is called **orthogonally diagonalizable**.
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Orthogonally Diagonalizable
 </b></font>
-    
-An $n\times n$ matrix $A$ is said to be **orthogonally diagonalizable** when an orthogonal matrix $P$ can be found such that $P^{-1} AP = P^T AP$ is diagonal.
+
+An $n\times n$ matrix $A$ is said to be **orthogonally diagonalizable** if an orthogonal matrix $P$ can be found such that $P^{-1} AP = P^T AP$ is diagonal.
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -234,7 +231,7 @@ For the next example and similar examples for symmetric matrices, we need to \te
 Markov Chain
 </b></font>
     
-A Markov chain is such an evolving system in which the next state only depends on its present state (not the earlier history of the system).
+A Markov chain is a progressive system in which the next state only depends on its current/present state.
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -242,13 +239,13 @@ A Markov chain is such an evolving system in which the next state only depends o
 Transition Matrix
 </b></font>
     
-A transition Matrix comprised of non-negative numbers which the sum of each column is equal to one.
+A transition Matrix is comprised of non-negative numbers in which the sum of each column is equal to one.
 </div>
 
 This matrix matrix can be shown as $A =[a_{ij}]_{n\times n}$ where $a_{ij}$ denotes the probability of transition to state $i$ from state $j$.
 
 ```{image} ../Figures/fig7_01.png
-:width: 300px
+:width: 320px
 :align: center
 ```
 
@@ -257,11 +254,22 @@ This matrix matrix can be shown as $A =[a_{ij}]_{n\times n}$ where $a_{ij}$ deno
 State Vector
 </b></font>
     
-Let $x_{in}$ denote the probability that the system is in state $i$ after $m$ transitions. The $n\times 1$ matrices
+Let $x_{in}$ denote the probability that the system is in state $i$ after $m$ transitions. Then, $n\times 1$ matrices
 \begin{align*}
-X_n=\begin{bmatrix}x_{1n}\\x_{2n}\\ \vdots \\ x_{mn}\end{bmatrix}.
+X_n=\begin{bmatrix}x_{1n} & x_{2n} & \dots & x_{mn}\end{bmatrix}^T
 \end{align*}
-is called the **state vector at period** $n$. Similarly, $X_0$ is called the **initial state vector** for the Markov chain.
+are called the **state vector at period** $n$. Likewise, $X_0$ is known as the **initial state vector** for the Markov chain.
+</div>
+
+<div class="alert alert-secondary" role="alert">
+<font size="+1"><b>
+Theorem:
+</b></font>
+
+Assume that $A$ is the transition matrix of a Markov chain and $X_n$ is the state vector at period $n$. Then, $X_{n+1}$ is the state vector at period $n+1$, and it is give by
+\begin{align*}
+&X_{n+1} = AX_n, & n=0,1,2,\ldots.
+\end{align*}   
 </div>
 
 <div class="alert alert-block alert-warning">
@@ -270,19 +278,6 @@ Remark:
 </b></font>
     
 The transition matrix also is known as the Migration matrix.
-    
-</div>
-
-<div class="alert alert-secondary" role="alert">
-<font size="+1"><b>
-Theorem:
-</b></font>
-
-<p>Let <span class="math inline">\(A\)</span> be the transition matrix for a <span class="math inline">\(m\)</span>-state Markov chain, and let <span class="math inline">\(X_n\)</span> be the vector whose entries give the population of each location at time period <span class="math inline">\(n\)</span>. Then <span class="math inline">\(X_n\)</span> is the state vector at period <span class="math inline">\(n\)</span> and it follows that</p>
-<p><span class="math display">\[\begin{aligned}
-&X_{n+1} = AX_n, & n=0,1,2,\ldots.\end{aligned}\]</span></p>
-
-
     
 </div>
 
@@ -308,41 +303,33 @@ X_4&=AX_3=\left[\begin{array}{ccc} 0.5 & 0.2 & 0.4\\ 0.3 & 0.4 & 0\\ 0.2 & 0.4 &
 X_5&=AX_4=\left[\begin{array}{ccc} 0.5 & 0.2 & 0.4\\ 0.3 & 0.4 & 0\\ 0.2 & 0.4 & 0.6 \end{array}\right]\left[\begin{array}{c} 200.375\\ 99.375\\ 200.25 \end{array}\right]=\left[\begin{array}{c} 200.1625\\ 99.8625\\ 199.975 \end{array}\right]
 \begin{array}{c} \leftarrow~\text{Population in location 1}\\ \leftarrow~\text{Population in location 2}\\ \leftarrow~\text{Population in location 3} \end{array}.
 \end{align*}
+
 Since we are speaking about populations, we would need to round these numbers to provide a logical answer. Therefore, we can say that after 5 units of time, there will be 200 residents in location one, 100 in location two, and 200 in location three.
 
-Note that the total population is **unchanged**, it simply migrates
-within the given locations.
+Note that the total population is **unchanged**, it simply migrates within the given locations.
+
 ***
 
-### Simplified Weather Model
+### Simplified Weather Example
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
 Simplified Weather Model:
 </b></font>
 
-<p>On any particular day, the weather is said to occupy one of three possible states:</p>
-<ul>
-<li><p>Sunny (S),</p></li>
-<li><p>Cloudy (C),</p></li>
-<li><p>Rainy (R).</p></li>
-</ul>
-<p>In this case, the <strong>stages</strong> are the days.</p>
+For sake of simplicity, let's assume that the weather can only be in one of three possible states,
+* Sunny (S),
+* Cloudy (C),
+* Rainy (R).
+
+In this case, the **states** are the days.
     
 </div>
 
 <font color='Blue'><b>Example</b></font>:
--   If it is sunny one day, then there is a 40% chance it will be sunny
-    the next day, and a 40% chance that it will be cloudy the next day
-    (and a 20% chance it will be rainy the next day).
 
-The values 40%, 40% and 20% are transition probabilities, and are
-assumed to be known.
-
--   If it is cloudy one day, then there is a 40% chance it will be rainy
-    the next day, and a 25% chance that it will be sunny the next day.
-
--   If it is rainy one day, then there is a 30% chance it will be rainy
-    the next day, and a 50% chance that it will be cloudy the next day.
+* If the present day is sunny, there is a 40% possibility of a sunny day for the next day and a 40% chance of a cloudy day for the next day (and a 20% chance it will be rainy the next day).
+* If the present day is cloudy, then there is a 40% chance of having a rainy next day, and a 25% chance that it will be sunny the next day.
+* If the present day is rainy, then there is a 30% chance it will be rainy the next day, and a 50% chance that it will be cloudy the next day.
 
 suppose that it is cloudy on Wednesday. What is the probability that it will be rainy on Friday?
 
@@ -379,22 +366,22 @@ Therefore, the probability that it will be rainy on Sunday is 31.00\%.
 ***
 
 ### Random Walks
-Suppose a walker has $m$ locations to choose from, denoted by $1,2,\ldots ,m$. Let $a_{ij}$ denote the probability that the person will travel to location $i$ from location $j$. Again, this requires that
+Assume that someone is walking and there are $m$ locations that they can go next, denoted by $1,2,\ldots ,m$. Assume that $a_{ij}$ is the probability that the person will travel to location $i$ from location $j$. Again, this requires that
 
 \begin{align*}
-\sum_{i=1}^{k} a_{ij}= 1
+\sum_{i=1}^{k} x_{ij}= 1
 \end{align*}
 In this context, the vector
 \begin{align*}
-X_{{\color{red}n}}=\begin{bmatrix}x_{{\color{blue}1}{\color{red}n}}
-\\x_{{\color{blue}2}{\color{red}n}}
-\\x_{{\color{blue}3}{\color{red}n}}
-\\ \vdots
-\\x_{{\color{blue}m}{\color{red}n}}
-\end{bmatrix}
+X_{{\color{red}n}}= \begin{bmatrix}
+x_{{\color{blue}1}{\color{red}n}}
+& x_{{\color{blue}2}{\color{red}n}}
+& x_{{\color{blue}3}{\color{red}n}}
+& \dots
+& x_{{\color{blue}m}{\color{red}n}}
+\end{bmatrix}^T
 \end{align*}
-contains the probabilities $x_{in}$ the walker ends up in location
-$i$, $1 \leq i \leq m$ at time $n$.
+contains the probabilities $x_{in}$ the walker ends up in location $i$ with $1 \leq i \leq m$ at time $n$.
 
 <font color='Blue'><b>Example</b></font>:
 A person sets off on a random walk with three possible locations. The Markov matrix of
@@ -436,6 +423,8 @@ Note that we only need location $3$ at $n=3$ ($x_{{\color{blue}3}{\color{red}3}}
 \end{align*}
 ***
 
+### Steady Vector
+
 When the state vector remains unchanged from a step to the next step, this vector is called the **Steady State Vector**.
 
 \begin{align*}
@@ -456,7 +445,7 @@ Note that the condition in above theorem can be written as $(I-A)X_s = 0$, repre
 Proposition: Eigenvalues of a Transition Matrix
 </b></font>
 
-Let $A = [a_{ij}]$ be a transition (or migration) matrix. Then $\lambda=1$ is always an eigenvalue for $A$.    
+$\lambda=1$ is always an eigenvalue for transition matrix $A$. 
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -507,23 +496,29 @@ X_s= 200 \left[\begin{array}{c}1 \\ 1 \\ 1 \end{array}\right]=\left[\begin{array
 
 ### Dynamical Systems
 
-If $A$ is an $n\times n$ matrix, a sequence $V_0, V_1 , V_2 , \ldots$ of columns in $\mathbb{R}^n$ is called a linear dynamical system if $v_0$ is specified and
-$V_1, V_2 ,\ldots$ are given by the matrix recurrence $V_{n+1}= AV_n$ for each $n \geq 0$.
+A sequence $V_0, V_1 , V_2 , \ldots$ of vectors in $\mathbb{R}^n$ is called a linear **dynamical system** if $V_0$ is specified and $V_1, V_2 ,\ldots$ are given by an $n\times n$ matrix $A$ is as follows,
+\begin{align*}
+V_{n+1}= AV_n,
+\end{align*}
+for each $n \geq 0$.
 
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
 Matrix Recurrence
 </b></font>
     
-Suppose a dynamical system is given by
+The following linear dynamical system
 \begin{align*}
 \begin{cases}
 x_{n+1} = ax_n +by_n,\\
 y_{n+1} = cx_n +dy_n.
 \end{cases}
 \end{align*}
-This system can be expressed as $V_{n+1} = AV_n$ where $V_n =\begin{bmatrix}x_{n}\\y_{n}\end{bmatrix}$ and
-$A =\begin{bmatrix}a & b\\c & d\end{bmatrix}$.
+can be expressed as 
+\begin{align*}
+V_{n+1} = AV_{n} = A^{2}V_{n-1}= A^{3}V_{n-2} = A^{n}V_{0}
+\end{align*}
+where $V_n =\begin{bmatrix}x_{n}\\y_{n}\end{bmatrix}$ and $A =\begin{bmatrix}a & b\\c & d\end{bmatrix}$.
 </div>
 
 <div class="alert alert-block alert-success">
@@ -531,20 +526,19 @@ $A =\begin{bmatrix}a & b\\c & d\end{bmatrix}$.
 Solving a Dynamical System:
 </b></font>
 
-Suppose a dynamical system is given by
+For the following linear dynamical system
 \begin{align*}
 \begin{cases}
 x_{n+1} = ax_n +by_n,\\
 y_{n+1} = cx_n +dy_n.
 \end{cases}
 \end{align*}
-Given initial conditions $x_0$ and $y_0$ , the solutions to the system are found as follows:
+where $x_0$ and $y_0$ are available, the solutions to this system can be found as follows,
 
-* Express the dynamical system in the form $V_{n+1} = AV_n$.
-* Diagonalize $A$ to be written as $A = PDP^{-1}$.
-* Then $V_{n} = \underbrace{PD^nP^{-1}}_{A^n}V_0$ where $V_0$ is the vector containing the initial conditions.
-* If given specific values for $n$, substitute into this equation. Otherwise, find a general solution
-for $n$. 
+* Form $V_{n+1} = AV_n = \ldots = A^{n}V_{0}$ where $V_n =\begin{bmatrix}x_{n}\\y_{n}\end{bmatrix}$ and $A =\begin{bmatrix}a & b\\c & d\end{bmatrix}$,
+* Diagonalize $A$ and form $A = PDP^{-1}$,
+* $V_{n} = \underbrace{PD^nP^{-1}}_{A^n}V_0$ where $V_n =\begin{bmatrix}x_{0}\\y_{0}\end{bmatrix}$,
+* Find a general solution for $n$. This general solution can produce $V_{n}$ for any given $n$.
 </div>
 
 <font color='Blue'><b>Example 7.42 - from the textbook</b></font>:

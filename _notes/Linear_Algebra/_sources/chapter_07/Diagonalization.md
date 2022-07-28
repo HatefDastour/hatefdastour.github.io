@@ -7,8 +7,7 @@
 Trace of a Matrix
 </b></font>
     
-The trace of an $n\times n$ matrix $A$ is defined to be the sum of the
-main diagonal elements of $A$
+The sum of the main diagonal elements of $n\times n$ matrix $A$ is the trace of the matrix $A$.
 \begin{align*}
 tr(A) = \sum_{i=1}^{n}a_{ii}.
 \end{align*}
@@ -28,20 +27,16 @@ tr(A)=1+4+3=8.
 Theorem: Properties of Trace
 </b></font>
     
-For $n\times n$ matrices $A$ and $B$, and any $k \in \mathbb{R}$,
+For $n\times n$ matrices $A$ and $B$, and any scaller $k \in \mathbb{R}$, we have
 * $tr (A+B) = tr (A)+ tr (B)$,
 * $tr (kA) = k\, tr (A)$
 * $tr (AB) = tr (BA)$
 </div>
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Similar Matrices
-</b></font>
-    
-If $A$ and $B$ be $n\times n$, we say that $A$ and $B$ are similar, and write $A \sim B$, if $B = P^{-1} AP$ for some invertible matrix $P$.
-</div>
-
+Recall that two $n \times n$ matrices $A$ and $B$ are called \textbf{similar matrices}if there exists an invertible matrix $P$ such that
+\begin{align*}
+A = P^{-1} BP
+\end{align*}
 
 <div class="alert alert-block alert-success">
 <font size="+1"><b>
@@ -72,11 +67,7 @@ If $A$ and $B$ are $n\times n$ matrices and $A \sim B$, then
 Diagonal Matrix
 </b></font>
     
-An $n\times n$ matrix $A$ is diagonal if it is both upper triangular and lower triangular.
-
-Equivalently, all entries except those on the main diagonal are zeros.
-
-An $n\times n$ diagonal matrix:
+An $n\times n$ matrix $A$ is called diagonal if all entries of the matrix except those on the main diagonal are zeros. An $n\times n$ diagonal matrix
 \begin{align*}
 D=
 \left[\begin{array}{cccccc}
@@ -88,7 +79,7 @@ D=
 0 & 0 & 0 & \cdots & 0 & {\color{red}a_{n}}
 \end{array}\right]
 \end{align*}
-is written $D=\mathrm{Diag}(a_1, a_2, a_3, \ldots, a_{n-1}, a_n)$.
+can be written as $D=\mathrm{Diag}(a_1, a_2, a_3, \ldots, a_{n-1}, a_n)$.
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -96,10 +87,7 @@ is written $D=\mathrm{Diag}(a_1, a_2, a_3, \ldots, a_{n-1}, a_n)$.
 Diagonalizable
 </b></font>
     
-Let $A$ be an $n\times n$ matrix. Then $A$ is said to be \textbf{diagonalizable} if there exists an invertible matrix $P$
-such that $P^{-1} AP = D$ where $D$ is a diagonal matrix.
-\\~\\
-Here the invertible matrix $P$ is called a \textbf{diagonalizing matrix} for $A$.
+An $n\times n$ matrix$A$ be an $n\times n$ matrix is called \textbf{diagonalizable} if there is an invertible matrix $P$ such that $P^{-1} AP = D$ where $D$ is a diagonal matrix. In this case, matrix $P$ is called a **diagonalizing matrix** for $A$.
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -107,7 +95,7 @@ Here the invertible matrix $P$ is called a \textbf{diagonalizing matrix} for $A$
 Proposition:
 </b></font>
     
-An $n\times n$ matrix $A$ is \textbf{diagonalizable} if $A\sim D$ for some \textbf{diagonal matrix} $D$.
+An $n\times n$ matrix $A$ is \textbf{diagonalizable} if $A$ is similar to some \textbf{diagonal matrix} $D$ ($A\sim D$).
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -115,33 +103,21 @@ An $n\times n$ matrix $A$ is \textbf{diagonalizable} if $A\sim D$ for some \text
 Dominant Eigenvalue
 </b></font>
     
-If $\lambda$ is an eigenvalue of $A$ that is larger in absolute value
-than any other eigenvalue, it is called the **dominant eigenvalue** of
-$A$.
+The **dominant eigenvalue** of $A$ is the largest eigenvalue of $A$ in absolute value.
 </div>
-
-Note that the above equation can be rearranged as $A = PDP^{-1}$ . Suppose we wanted to compute $A^{100}$. By diagonalizing A first it suffices to then compute $\left(PDP^{-1}\right)^{100}$, which reduces to $PD^{100} P^{-1}$. This last computation is much simpler than $A^{100}$.
 
 ## Diagonalizing a Matrix
 
-Let $A$ be an $n\times n$ matrix. The process of finding an
-**invertible** matrix $P$ and a **diagonal** matrix $D$ so that
-$A=PDP^{-1}$ is referred to as **diagonalizing** the matrix $A$, and $P$
-is called the **diagonalizing** matrix for $A$.
-
-The key to diagonalizing a matrix (finding the matrices $P$ and $D$)
-lies in the eigenvectors and eigenvalues of the matrix $A$.
+The process of finding an \textbf{invertible} matrix $P$ and a \textbf{diagonal} matrix $D$ in a way that $A=PDP^{-1}$ is called \textbf{diagonalizing} the matrix $A$.
 
 <div class="alert alert-secondary" role="alert">
 <font size="+1"><b>
 Theorem: Eigenvectors and Diagonalizable Matrices
 </b></font>
     
-Let $A$ be an $n\times n$ matrix.
-1. $A$ is diagonalizable if and only if it has eigenvectors $X_1, X_2, \ldots, X_n$ so that \linebreak
-$P = \left[\begin{array}{cccc} X_1 & X_2 & \cdots & X_n \end{array}\right]$ is invertible.
-
-2. If $P$ is invertible, then
+An $n\times n$ matrix $A$ be is diagonalizable if and only if it has eigenvectors $X_1, X_2, \ldots, X_n$ so that
+\begin{align*}P = \left[\begin{array}{cccc} X_1 & X_2 & \cdots & X_n \end{array}\right]\end{align*}
+is invertible. Then, $P$ is invertible and
 \begin{align*}P^{-1}AP=\mathrm{Diag}(\lambda_1, \lambda_2, \ldots, \lambda_n )\end{align*}
 where $\lambda_i$ is the eigenvalue of $A$ corresponding to
 the eigenvector $X_i$, i.e., $AX_i=\lambda_i X_i$.
@@ -257,15 +233,7 @@ Remark:
 Theorem: 
 </b></font>
     
-Let $A$ be an $n\times n$ matrix, and suppose that $A$ has distinct eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_m$. For each $i$, let $X_i$ be a $\lambda_i$-eigenvector of $A$. Then $\{ X_1, X_2, \ldots, X_m\}$ is linearly independent.
-</div>
-
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Diagonalizability
-</b></font>
-    
-Determining whether or not a square matrix $A$ is diagonalizable can be done using eigenvalues and eigenvectors of the matrix $A$.
+Suppose that an $n\times n$ matrix $A$ has distinct eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_m$. Let $X_i$ corresponding eigenvector to $\lambda_i$ ($\lambda_i$-eigenvector of $A$). Then $\{ X_1, X_2, \ldots, X_m\}$ is linearly independent.
 </div>
 
 <div class="alert alert-secondary" role="alert">
@@ -273,7 +241,7 @@ Determining whether or not a square matrix $A$ is diagonalizable can be done usi
 Theorem: 
 </b></font>
     
-Let $A$ be an $n \times n$ matrix and suppose it has $n$ distinct eigenvalues. Then it follows that $A$ is diagonalizable.
+If an $n \times n$ matrix $A$ has $n$ distinct eigenvalues, then $A$ is diagonalizable.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
@@ -298,11 +266,10 @@ and thus $A$ has distinct eigenvalues $0, 2$ and $3$. Since $A$ is $3 \times 3$ 
 Lemma: 
 </b></font>
     
-Let $A$ be an $n \times n$ matrix $A$. Then $A$ is diagonalizable if and only if for each eigenvalue $\lambda$ of A,
-the set of all linearly independent eigenvectors corresponding to $\lambda$ has the same number vectors as the multiplicity of $\lambda$.
+An $n \times n$ matrix $A$ is diagonalizable if and only if the set of all linearly independent eigenvectors corresponding to eigenvalue $\lambda$ has the same number of vectors as the multiplicity of eigenvalue  $\lambda$.
 </div>
 
-It is possible that a matrix $A$ cannot be diagonalized. In other words, we cannot find an invertible matrix P so that $P^{-1} AP = D$.
+It is possible that a matrix $A$ cannot be diagonalized. In other words, we cannot find an invertible matrix $P$ so that $P^{-1} AP = D$.
 
 <font color='Blue'><b>Example</b></font>:
 Let $A =\begin{bmatrix} 1 &  1 \\ 0 & 1 \end{bmatrix}$. If possible, find an invertible matrix $P$ and diagonal matrix $D$ so that $P^{-1} AP = D$ .
@@ -342,23 +309,14 @@ Hence, the general solution $X$ to $(0 I-A)X =0$ is
 \begin{align*}
 t \begin{bmatrix} 1\\0 \end{bmatrix},\quad t\neq0.
 \end{align*}
-Therefore, we can only use $X_1 =\begin{bmatrix} 1\\0\end{bmatrix}$ as the basic eigenvector corresponding to $\lambda_1 =\lambda_2= 1$.
+Only $X_1 =\begin{bmatrix} 1\\0\end{bmatrix}$ is usuable as the basic eigenvector corresponding to $\lambda_1 =\lambda_2= 1$. 
 
-We only have found one basic eigenvector corresponding to $\lambda_1 =\lambda_2= 1$, but the multiplicity of $\lambda_1 =\lambda_2=1$ is 2. Therefore
-this matrix is \textbf{not} diagonalizable.
-
-The matrix $A$ has one eigenvalue of multiplicity two, but only one basic eigenvector. In order to diagonalize $A$, we need to construct an invertible $2\times 2$ matrix $P$. However, because $A$ only has one basic eigenvector, we cannot construct this $P$. Note that if we were to use $X_1$ as both columns of $P$, $P$ would not be invertible ($\det(P)=0$). For this reason, we cannot repeat eigenvectors in $P$.
+Observe that we have only found one basic eigenvector corresponding to an eigenvalue with a multiplicity of two ($\lambda_1 =\lambda_2= 1$). Thus, this matrix is **not** diagonalizable.
 ***
 
 ## Complex Eigenvalues
 
-<div class="alert alert-block alert-warning">
-<font size="+1"><b>
-Remark:
-</b></font>
-
-Let $z$ denote the conjugate of a complex number $z$. If $A$ is a complex matrix, the conjugate matrix $A$ is defined to be the matrix obtained from $A$ by **conjugating every entry**.
-</div>
+Let $A$ be a complex matrix, then the conjugate matrix $A$ can be acquired from $A$ by **conjugating every entry**.
 
 <font color='Blue'><b>Example</b></font>:
 1.  If $A=\begin{bmatrix} 1 & 1+i \\ 2i & 1\end{bmatrix}$, then
@@ -412,10 +370,10 @@ Therefore, $\sigma(A)=\{1,1+ i,1- i\}$.
 Proposition: 
 </b></font>
     
-Let $A$  be a matrix with \underline{real entries}. If $\lambda$ is a complex eigenvalue with eigenvector $X$, then
+Assume matrix $A$ has only \underline{real entries}. If $\lambda$ is a complex eigenvalue with eigenvector $X$, then
 $\overline{\lambda}$ is a complex eigenvalue with eigenvector $\overline{X}$.
 
-In other words, both eigenvalues and eigenvectors come in conjugate pairs.
+This means both eigenvalues and eigenvectors come in conjugate pairs.
 </div>
 
 <font color='Blue'><b>Example</b></font>:
