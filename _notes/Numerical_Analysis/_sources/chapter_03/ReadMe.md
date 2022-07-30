@@ -1,4 +1,4 @@
-# Chapter 3: Interpolations
+# Interpolations
 
 Content:
 * Vandermonde Method

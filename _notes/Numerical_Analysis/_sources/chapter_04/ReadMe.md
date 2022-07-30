@@ -1,4 +1,4 @@
-# Chapter 4: Numerical Differentiation
+# Numerical Differentiation
 
 Content:
 * Approximation of the first derivative of a function

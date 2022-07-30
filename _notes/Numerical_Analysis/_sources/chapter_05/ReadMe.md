@@ -1,4 +1,4 @@
-# Chapter 5: Numerical Integration
+# Numerical Integration
 
 Content:
 * Trapezoidal rule

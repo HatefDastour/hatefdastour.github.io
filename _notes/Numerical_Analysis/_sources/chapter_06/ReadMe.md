@@ -1,4 +1,4 @@
-# Chapter 6: Initial-Value Problems for Ordinary Differential Equations
+# Initial-Value Problems for Ordinary Differential Equations
 
 Content:
 * First-order methods

@@ -1,4 +1,4 @@
-# Chapter 2: Numerical linear algebra
+# Numerical linear algebra
 
 Content:
 * U decomposition

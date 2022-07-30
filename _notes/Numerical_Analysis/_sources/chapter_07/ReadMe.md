@@ -1,4 +1,4 @@
-# Chapter 7: Regularization Methods
+# Regularization Methods
 
 Content:
 * Trapezoidal rule

@@ -1,4 +1,4 @@
-# Chapter 1: Root-finding algorithms
+# Root-finding algorithms
 
 Content:
 * Bracketing Methods
