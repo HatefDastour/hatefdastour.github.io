@@ -3,7 +3,7 @@ title: "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of
 collection: publications
 permalink: /publication/dastour2022combined
 date: 2022-08-01
-venue: 'IEEE Journal of Selected Topics in Applied Earth Observations and Remote'
+venue: 'IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing'
 paperurl: 'https://ieeexplore.ieee.org/document/9850369'
 citation: '<b>H. Dastour</b>, E. Ghaderpour and Q. K. Hassan, "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of Lesser Slave Lake Via Earth Observation Data," <i>IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing</i>, 2022, doi: 10.1109/JSTARS.2022.3196611.'
 
