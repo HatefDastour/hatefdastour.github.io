@@ -1,7 +1,4 @@
-# Numerical linear algebra
+# Root-finding algorithms
 
-Content:
-* U decomposition
-* Cholesky factorization
-* LDL decomposition
-* QR factorization
+```{tableofcontents}
+```

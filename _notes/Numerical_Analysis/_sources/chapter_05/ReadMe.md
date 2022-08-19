@@ -1,10 +1,7 @@
 # Numerical Integration
 
-Content:
-* Trapezoidal rule
-* Simpsons_rule
-* Midpoint rule
-* Gaussian quadrature
+```{tableofcontents}
+```
 
 
 In many practical applications, an approximation of the integral of some functions is needed. In many cases, the definite integral of some functions is not possible as the antiderivatives of these functions are not easy to obtain.
