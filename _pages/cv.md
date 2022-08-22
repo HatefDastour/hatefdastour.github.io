@@ -20,8 +20,10 @@ Education
 
 Working Experience
 ======
-*  <p style="text-align:left;"> Sessional Instructor <span style="float:right;"> August 2022 - Present,</span></p>
+*  <p style="text-align:left;"> Sessional Instructor <span style="float:right;"> August 2022 - Present,</span>
+<br>
 [Department of Mathematics & Computing](https://www.mtroyal.ca/ProgramsCourses/FacultiesSchoolsCentres/ScienceTechnology/Departments/MathematicsComputing/index.htm){:target="_blank"}, Mount Royal University, Calgary, AB, Canada
+</p>
 
 *  <p style="text-align:left;"> Research Associate <span style="float:right;"> May 2022 - Present,</span></p>
 [Department of Geomatics Engineering](https://schulich.ucalgary.ca/geomatics/){:target="_blank"}, Schulich School of Engineering, University of Calgary, Alberta, Canada
