@@ -21,20 +21,23 @@ Education
 Working Experience
 ======
 * <p style="text-align:left;"> Sessional Instructor <span style="float:right;"> August 2022 - Present,</span>
-<br>
-<a href="https://www.mtroyal.ca/ProgramsCourses/FacultiesSchoolsCentres/ScienceTechnology/Departments/MathematicsComputing/index.htm" target="_blank">Department of Mathematics & Computing</a>, Mount Royal University, Calgary, AB, Canada</p>
+<br><a href="https://www.mtroyal.ca/ProgramsCourses/FacultiesSchoolsCentres/ScienceTechnology/Departments/MathematicsComputing/index.htm" target="_blank">Department of Mathematics & Computing</a>, Mount Royal University, Calgary, AB, Canada</p>
 
-*  <p style="text-align:left;"> Research Associate <span style="float:right;"> May 2022 - Present,</span></p>
-[Department of Geomatics Engineering](https://schulich.ucalgary.ca/geomatics/){:target="_blank"}, Schulich School of Engineering, University of Calgary, Alberta, Canada
+*  <p style="text-align:left;"> Research Associate <span style="float:right;"> May 2022 - Present,</span>
+<br><a href="https://schulich.ucalgary.ca/geomatics/" target="_blank">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada</p>
 
-*  <p style="text-align:left;"> Sessional Lecturer I/Tutorial instructor <span style="float:right;"> August 2021 - Present,</span></p>
-Department of Mathematics & Computer Science, Faculty  of Arts & Science, [University of Lethbridge (Calgary Campus)](https://www.ulethbridge.ca/calgary/){:target="_blank"}, Calgary, AB, Canada
+*  <p style="text-align:left;"> Sessional Lecturer I/Tutorial instructor <span style="float:right;"> August 2021 - Present,</span>
+<br>Department of Mathematics & Computer Science, Faculty  of Arts & Science,
+<a href="https://www.ulethbridge.ca/calgary/" target="_blank">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada/p>
 
-*  <p style="text-align:left;"> Data Scientist/Research Scientist <span style="float:right;"> July 2020 - Present,</span></p>
-[Earth & Space Inc.](https://earthspace.ca/){:target="_blank"}, Calgary, AB, Canada
+*  <p style="text-align:left;"> Data Scientist/Research Scientist <span style="float:right;"> July 2020 - Present,</span>
+<br><a href="https://earthspace.ca/" target="_blank">Earth & Space Inc.</a>, Calgary, AB, Canada</p>
 
-*  <p style="text-align:left;"> Data Science Developer <span style="float:right;"> January 2020 - March 25, 2020,</span></p>
-[StellarAlgo Corp](https://stellaralgo.com/){:target="_blank"}, Calgary, AB, Canada
+*  <p style="text-align:left;"> Research Associate <span style="float:right;"> November 2021 - March 31, 2022,</span>
+<br><a href="https://schulich.ucalgary.ca/geomatics/" target="_blank">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada</p>
+
+*  <p style="text-align:left;"> Data Science Developer <span style="float:right;"> January 2020 - March 25, 2020,</span>
+<br><a href="https://stellaralgo.com/" target="_blank">StellarAlgo Corp.</a>, Calgary, AB, Canada</p>
 
 * Sessional Instructor<br/>
 [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"}, University of Calgary, Calgary, AB, Canada
@@ -42,17 +45,18 @@ Department of Mathematics & Computer Science, Faculty  of Arts & Science, [Unive
 	* [MATH 211 - Linear Methods I - Spring 2019](https://hatefdastour.github.io/teaching/2019-spring-teaching-2){:target="_blank"}
 	* [MATH 275 - Calculus for Engineers and Scientists - Fall 2017](http://contacts.ucalgary.ca/info/math/courses/f17/MATH275){:target="_blank"} (Through Instructor Training Program)
 
-*  <p style="text-align:left;"> Graduate Teaching Assistant <span style="float:right;"> January 2016 - December 2019,</span></p>
-[Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"}, University of Calgary, Calgary, AB, Canada
+*  <p style="text-align:left;"> Graduate Teaching Assistant <span style="float:right;"> January 2016 - December 2019,</span>
+<br><a href="https://science.ucalgary.ca/mathematics-statistics" target="_blank">Department of Mathematics and Statistics</a>, University of Calgary, Calgary, AB, Canada</p>
 
-*  <p style="text-align:left;">Research Associate <span style="float:right;"> February 2012 - May 2015,</span></p>
-School of Mathematics, Iran University of Science and Technology, Tehran, Iran
+*  <p style="text-align:left;">Research Associate <span style="float:right;"> February 2012 - May 2015,</span>
+<br>School of Mathematics, Iran University of Science and Technology, Tehran, Iran</p>
 
-*  <p style="text-align:left;">Graduate Student <span style="float:right;"> October 2010 - August 2012,</span></p>
-School of Mathematics and Computer science, Damghan University, Damghan, Iran
+*  <p style="text-align:left;">Graduate Student <span style="float:right;"> October 2010 - August 2012,</span>
+<br>School of Mathematics and Computer science, Damghan University, Damghan, Iran</p>
 
-*  <p style="text-align:left;">Self-employed Mathematics <span style="float:right;"> October 2010 - August 2015,</span></p>
-Tehran, Iran
+*  <p style="text-align:left;">Self-employed Mathematics <span style="float:right;"> October 2010 - August 2015,</span>
+<br>Tehran, Iran</p>
+
 
   
 Computer Skills
