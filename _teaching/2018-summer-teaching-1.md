@@ -8,7 +8,7 @@ date: 2018-07-01
 location: "Calgary, Alberta"
 ---
 
-Systems of equations and matrices, vectors, matrix representations and determinants. Complex numbers, polar form, eigenvalues, eigenvectors. Applications.
+Systems of equations and matrices, vectors, matrix representations, and determinants. Complex numbers, polar form, eigenvalues, eigenvectors, Applications.
 
 * [Lecture Notes](/notes/Linear_Algebra/){:target="_blank"}
 * [Textbook: A First Course in Linear Algebra](https://lyryx.com/first-course-linear-algebra/)
