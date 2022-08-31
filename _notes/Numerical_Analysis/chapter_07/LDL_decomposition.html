@@ -315,7 +315,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="LU_decomposition.html">
-     7.2. LU decomposition
+     7.2. Matrix Factorization
     </a>
    </li>
    <li class="toctree-l2">
@@ -538,9 +538,9 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="ldl-decomposition">
 <h1><span class="section-number">7.4. </span>LDL decomposition<a class="headerlink" href="#ldl-decomposition" title="Permalink to this headline">#</a></h1>
-<p>A closely related variant of the <a class="reference external" href="https://hatefdastour.github.io/notes/Numerical_Analysis/NLA_Cholesky_factorization.html">Cholesky factorization</a> is the LDL decomposition. In this decomposition, a (real) symmetric positive definite matrix <span class="math notranslate nohighlight">\(A\)</span> is decomposed as follows</p>
-<div class="math notranslate nohighlight">
-\[ A =LDL^{*},\]</div>
+<p>LDL decomposition is very similar to <a class="reference external" href="https://hatefdastour.github.io/notes/Numerical_Analysis/NLA_Cholesky_factorization.html">Cholesky factorization</a>; however, there are some subtle differences. In this decomposition, a (real) symmetric positive definite matrix <span class="math notranslate nohighlight">\(A\)</span> is decomposed as follows</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}A =LDL^{*},\end{align*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(L\)</span> is a lower triangular matrix, and <span class="math notranslate nohighlight">\(D\)</span> is a diagonal matrix.</p>
 <p>Furthermore, We have,</p>
 <div class="amsmath math notranslate nohighlight">
@@ -558,10 +558,12 @@ title="Print to PDF"
 d_{ii} &amp;= a_{ii} - \sum_{k=1}^{i-1} l_{ij}^{2}d_{jj},\\
 l_{ii} &amp;= \frac{1}{d_{ii}}\left( a_{ij} - \sum_{k=1}^{i-1} l_{ik} l_{jk} d_{kk}\right),\\
 \end{align*}\]</div>
-<p>See [1] for the full derivation of this algorithm. Furthermore, we can prepare a Python code using the above algorithm.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<p>See [1] for the full derivation of this algorithm.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="143acea6-810d-4161-8513-3184ffc2c553" name="9291d09c-bb3c-453d-8f6d-23e2174a807b" type="radio">
+</input><label class="sd-tab-label" for="143acea6-810d-4161-8513-3184ffc2c553">
+Python Code</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="k">def</span> <span class="nf">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
@@ -569,84 +571,87 @@ l_{ii} &amp;= \frac{1}{d_{ii}}\left( a_{ij} - \sum_{k=1}^{i-1} l_{ik} l_{jk} d_{
 <span class="sd">    Assuming that the matrix A is symmetric and positive definite,</span>
 <span class="sd">    this function computes a unit lower triangular matrix L, and</span>
 <span class="sd">    a diagonal matrix D, such that A = LDL^t</span>
-<span class="sd">    Input: A the nxn matrix to be factorized</span>
-<span class="sd">    n the number of rows and columns A has</span>
-<span class="sd">    Output: L an nxn unit lower triangular matrix</span>
-<span class="sd">    D an nxn diagonal matrix</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix A</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    L : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix L from A = LDL^t</span>
+<span class="sd">    D : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix L from A = LDL^t</span>
+
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># create an nxn matrix U that holds L below its main diagonal</span>
-    <span class="c1"># and D on its main diagonal</span>
+    
     <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="c1"># define the first diagonal entry of D</span>
     <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># define the first column of L</span>
     <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="c1"># define the jth diagonal entry of D</span>
         <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
             <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-        <span class="c1"># define the jth column of L</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
             <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
                 <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
             <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-    <span class="c1"># Extract L and D from U</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span>
 </pre></div>
 </div>
 </div>
-</div>
-<p><font color='Blue'><b>Example</b></font>: Apply <span class="math notranslate nohighlight">\(LU\)</span> decomposition on the following matrix.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\end{split}\]</div>
-<p>We have,</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">L</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;L =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;D =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;LD L^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)),</span> <span class="mi">2</span><span class="p">)))</span>
+<input id="149c7c9c-54ca-418d-8abe-ade5695d80e8" name="9291d09c-bb3c-453d-8f6d-23e2174a807b" type="radio">
+</input><label class="sd-tab-label" for="149c7c9c-54ca-418d-8abe-ade5695d80e8">
+MATLAB Code</label><div class="sd-tab-content docutils">
+<div class="highlight-MATLAB notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="nf">[L, D] = myLDL</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="cm">%{</span>
+<span class="cm">Assuming that the matrix A is symmetric and positive definite,</span>
+<span class="cm">this function computes a unit lower triangular matrix L, and</span>
+<span class="cm">a diagonal matrix D, such that A = LDL^t</span>
+<span class="cm">Parameters</span>
+<span class="cm">----------</span>
+<span class="cm">L : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix L from A = LDL^t</span>
+<span class="cm">D : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix L from A = LDL^t</span>
+<span class="cm">%}</span><span class="w"></span>
+<span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">U</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">U</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">j</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">   </span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">       </span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="n">k</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">end</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="nb">j</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">       </span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">           </span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="n">k</span><span class="p">);</span><span class="w"></span>
+<span class="w">       </span><span class="k">end</span><span class="w"></span>
+<span class="w">       </span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">/</span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">end</span><span class="w"></span>
+<span class="c">%</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+<span class="n">L</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">D</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="nb">diag</span><span class="p">(</span><span class="n">U</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_latex math notranslate nohighlight">
-\[L =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0.43 &amp; 1.0 &amp; 0 &amp; 0\\-0.14 &amp; 0.21 &amp; 1.0 &amp; 0\\0.29 &amp; -0.72 &amp; 0.09 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[D =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 6.71 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 3.55 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.89\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[LD L^T =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This part is used for producing tables and figures</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">hd_tools</span> <span class="k">as</span> <span class="nn">hd</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\hatef\anaconda3\envs\jbook_env\lib\site-packages\scipy\__init__.py:146: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.23.1
-  warnings.warn(f&quot;A NumPy version &gt;={np_minversion} and &lt;{np_maxversion}&quot;
-</pre></div>
-</div>
 <div class="output text_html"><div class="bk-root">
         <a href="https://bokeh.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
         <span id="1002">Loading BokehJS ...</span>
@@ -930,14 +935,49 @@ if (force === true) {
   }
 }(window));</script></div>
 </div>
+<p><font color='Blue'><b>Example</b></font>: Apply LDL decomposition on the following matrix and identify <span class="math notranslate nohighlight">\(L\)</span>, <span class="math notranslate nohighlight">\(D\)</span>, and <span class="math notranslate nohighlight">\(L\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right].\end{align*}\]</div>
+<p><font color='Green'><b>Solution</b></font>: We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$L$&#39;</span><span class="p">,</span> <span class="s1">&#39;$D$&#39;</span><span class="p">,</span><span class="s1">&#39;$L^T$&#39;</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hd_Matrix_Decomposition</span> <span class="kn">import</span> <span class="n">myLDL</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">L</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;L =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;D =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;LD L^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)),</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/LDL_decomposition_6_0.png" src="../_images/LDL_decomposition_6_0.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[L =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0.43 &amp; 1.0 &amp; 0 &amp; 0\\-0.14 &amp; 0.21 &amp; 1.0 &amp; 0\\0.29 &amp; -0.72 &amp; 0.09 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[D =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 6.71 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 3.55 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.89\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[LD L^T =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">)),</span> <span class="mi">2</span><span class="p">)],</span>
+                     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$L$&#39;</span><span class="p">,</span> <span class="s1">&#39;$D$&#39;</span><span class="p">,</span><span class="s1">&#39;$L^T$&#39;</span><span class="p">,</span> <span class="s1">&#39;$LD L^T$&#39;</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/LDL_decomposition_5_0.png" src="../_images/LDL_decomposition_5_0.png" />
 </div>
 </div>
 <p>Note that we could get a similar results using function, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.ldl.html"><code class="docutils literal notranslate"><span class="pre">scipy.linalg.ldl</span></code></a>.</p>
@@ -964,18 +1004,28 @@ if (force === true) {
 <section id="solving-linear-systems-using-ldl-decomposition">
 <h2><span class="section-number">7.4.1. </span>Solving Linear systems using LDL decomposition<a class="headerlink" href="#solving-linear-systems-using-ldl-decomposition" title="Permalink to this headline">#</a></h2>
 <p>We can solve the linear system <span class="math notranslate nohighlight">\(Ax=b\)</span> for <span class="math notranslate nohighlight">\(x\)</span> using LDL decomposition. To demonstrate this, we use the following example,</p>
-<p>Let
-$<span class="math notranslate nohighlight">\(A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]
-\quad \text{and}\quad
-b=\left[\begin{array}{c} 7\\ 1\\ 11\\ 15 \end{array}\right].\)</span><span class="math notranslate nohighlight">\(
-Then, this linear system can be also expressed as
-\)</span><span class="math notranslate nohighlight">\(Ax=(LDL^T)x=L(D(L^Tx))=b,\)</span>$ 	
-we have,</p>
+<p><font color='Blue'><b>Example</b></font>:
+Solve the following linear system using LDL decomposition.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{cases}
+7\,x_{1}+3\,x_{2}-x_{3}+2\,x_{4}=18\\ 3\,x_{1}+8\,x_{2}+x_{3}-4\,x_{4}=6\\ x_{2}-x_{1}+4\,x_{3}-x_{4}=9\\ 2\,x_{1}-4\,x_{2}-x_{3}+6\,x_{4}=15
+\end{cases}
+\end{align*}\]</div>
+<p><font color='Green'><b>Solution</b></font>:</p>
+<p>Let <span class="math notranslate nohighlight">\(A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\)</span>
+and <span class="math notranslate nohighlight">\(b=\left[\begin{array}{c} 18\\ 6\\ 9\\ 15 \end{array}\right]\)</span>.
+Then, this linear system can be also expressed as follows,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Ax=(LDL^T)x=L(D(L^Tx))=b.
+\end{align*}\]</div>
+<p>We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">11</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
-<span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">ldl</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">],[</span> <span class="mi">6</span><span class="p">],[</span> <span class="mi">9</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
+<span class="n">L</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">myLDL</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;L =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;D =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1000,7 +1050,17 @@ B^Tx=y.
 \end{cases}\)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving Lz=b for z</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$L$&#39;</span><span class="p">,</span> <span class="s1">&#39;$D$&#39;</span><span class="p">,</span><span class="s1">&#39;$L^T$&#39;</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/LDL_decomposition_11_0.png" src="../_images/LDL_decomposition_11_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving for z</span>
 <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;z =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1010,12 +1070,12 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[z =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.0\\-2.0\\12.43\\10.44\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}18.0\\-1.71\\11.94\\7.54\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving Lz=b for z</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving y</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;y =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1025,12 +1085,12 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[y =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\-0.3\\3.5\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}2.57\\-0.26\\3.36\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving Ux=y for x</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving for x</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1040,14 +1100,14 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <p>Let’s now solve the linear system directly and compare the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_new</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1055,7 +1115,7 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <hr class="docutils" />

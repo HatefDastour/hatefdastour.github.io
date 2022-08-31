@@ -315,7 +315,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="LU_decomposition.html">
-     7.2. LU decomposition
+     7.2. Matrix Factorization
     </a>
    </li>
    <li class="toctree-l2">
@@ -538,68 +538,89 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="qr-factorization">
 <h1><span class="section-number">7.5. </span>QR factorization<a class="headerlink" href="#qr-factorization" title="Permalink to this headline">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(A\)</span> be a square matrix. This matrix can be decomposed as <span class="math notranslate nohighlight">\(A=QR\)</span>
-where <span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix (<span class="math notranslate nohighlight">\(Q^{*}Q=QQ^{*}=I\)</span>) and <span class="math notranslate nohighlight">\(R\)</span> is an upper triangular matrix. Moreover,  if A is invertible and if <span class="math notranslate nohighlight">\(R\)</span> is required to be positive, then the factorization is unique.</p>
-<p>Furthermore, there are several methods for computing the QR decomposition such as  Gram–Schmidt process, Householder transformations, … Here, we use Gram–Schmidt process.</p>
-<p>Consider matrix <span class="math notranslate nohighlight">\(A = \begin{bmatrix}| &amp; | &amp;  &amp; | \\ \vec{a}_1 &amp; \vec{a}_2 &amp; \dots &amp; \vec{a}_n\\
-| &amp; | &amp;  &amp; | \end{bmatrix}\)</span> were <span class="math notranslate nohighlight">\( \vec{a}_i\)</span> are the columns of the full column rank matrix <span class="math notranslate nohighlight">\(A\)</span>. Now, define the <a class="reference external" href="https://hatefdastour.github.io/notes/Linear_Algebra/Projections.html">projection</a> as follows:</p>
-<div class="math notranslate nohighlight">
-\[\operatorname {proj} _{\vec{u} }\vec{a} ={\frac {\left\langle \vec{u} ,\vec{a} \right\rangle }{\left\langle \vec{u} ,\vec{u}\right\rangle }}{\vec{u}}\]</div>
+<p>Square matrix <span class="math notranslate nohighlight">\(A\)</span> can be decomposed as <span class="math notranslate nohighlight">\(A=QR\)</span>
+where <span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix (<span class="math notranslate nohighlight">\(Q^{*}Q=QQ^{*}=I\)</span>) and <span class="math notranslate nohighlight">\(R\)</span> is an upper triangular matrix. If <span class="math notranslate nohighlight">\(A\)</span> is invertible and <span class="math notranslate nohighlight">\(R\)</span> is positive, then the factorization is unique.</p>
+<p>Furthermore, there are several methods for computing the <span class="math notranslate nohighlight">\(QR\)</span> decomposition such as the Gram–Schmidt process, and the Householder transformations, … Here, we use the Gram–Schmidt process.</p>
+<p>Consider matrix <span class="math notranslate nohighlight">\(A = \begin{bmatrix}| &amp; | &amp;  &amp; | \\ \vec{a}_1 &amp; \vec{a}_2 &amp; \dots &amp; \vec{a}_n \\ | &amp; | &amp;  &amp; | \end{bmatrix}\)</span> were <span class="math notranslate nohighlight">\( \vec{a}_i\)</span> are the columns of the full column rank matrix <span class="math notranslate nohighlight">\(A\)</span>. Now, define the projection as follows:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\operatorname{proj}_{\vec{u}}\vec{a} =
+\frac{ \left\langle \vec{u},~\vec{a} \right\rangle }{\left\langle \vec{u},~\vec{u}\right\rangle} \vec{u}
+\end{align*}\]</div>
 <p>Therefore,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\begin{cases}
-\vec{u}_{1}&amp;=\vec{a}_{1}, &amp;\vec{e}_{1}&amp;={\vec{u}_{1} \over \|\vec{u}_{1}\|}\\
-\vec{u}_{2}&amp;=\vec{a}_{2}-\operatorname {proj} _{\vec{u}_{1}}\,\vec{a}_{2},&amp;\vec{e}_{2}&amp;={\vec{u}_{2} \over \|\vec{u}_{2}\|}\\
-\vec{u}_{3}&amp;=\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{1}}\,\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{2}}\,\vec{a}_{3},&amp;\vec{e}_{3}&amp;={\vec{u}_{3} \over \|\vec{u}_{3}\|}\\&amp;\vdots &amp;&amp;\vdots \\
-\vec{u}_{k}&amp;=\vec{a}_{k}-\sum _{j=1}^{k-1}\operatorname {proj} _{\vec{u}_{j}}\,\vec{a}_{k},&amp;\vec{e}_{k}&amp;={\vec{u}_{k} \over \|\vec{u}_{k}\|}
-\end{cases}
+\vec{u}_{1} &amp; = \vec{a}_{1}, &amp;\vec{e}_{1}&amp; = \frac{\vec{u}_{1}}{\|\vec{u}_{1}\|},\\
+\vec{u}_{2} &amp; = \vec{a}_{2} - \operatorname{proj}_{\vec{u}_{1}}\,\vec{a}_{2},&amp;\vec{e}_{2} &amp;=
+\frac{\vec{u}_{2}}{\|\vec{u}_{2}\|},\\
+\vec{u}_{3}&amp;=\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{1}}\,\vec{a}_{3}-\operatorname {proj} _{\vec{u}_{2}}\,\vec{a}_{3},&amp;\vec{e}_{3}&amp;=
+\frac{\vec{u}_{3}}{\|\vec{u}_{3}\|},\\
+&amp;\vdots &amp; &amp;\vdots \\
+\vec{u}_{k}&amp;=\vec{a}_{k}-\sum _{j=1}^{k-1}\operatorname {proj} _{\vec{u}_{j}}\,\vec{a}_{k},&amp;\vec{e}_{k}&amp;=
+\frac{\vec{u}_{k}}{\|\vec{u}_{k}\|}.
 \end{align*}\]</div>
 <p>Now, <span class="math notranslate nohighlight">\(\vec{a}_{i}\)</span> can be expressed as</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 \begin{cases}
-\vec{a}_{1}&amp;=\langle \vec{e}_{1},\vec{a}_{1}\rangle \vec{e}_{1}\\
-\vec{a}_{2}&amp;=\langle \vec{e}_{1},\vec{a}_{2}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{2}\rangle \vec{e}_{2}\\
-\vec{a}_{3}&amp;=\langle \vec{e}_{1},\vec{a}_{3}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{3}\rangle \vec{e}_{2}+\langle \vec{e}_{3},\vec{a}_{3}\rangle \vec{e}_{3}\\&amp;\vdots \\
-\vec{a}_{k}&amp;=\sum _{j=1}^{k}\langle \vec{e}_{j},\vec{a}_{k}\rangle \vec{e}_{j}
+\vec{a}_{1}=\langle \vec{e}_{1},\vec{a}_{1}\rangle \vec{e}_{1}\\
+\vec{a}_{2}=\langle \vec{e}_{1},\vec{a}_{2}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{2}\rangle \vec{e}_{2}\\
+\vec{a}_{3}=\langle \vec{e}_{1},\vec{a}_{3}\rangle \vec{e}_{1}+\langle \vec{e}_{2},\vec{a}_{3}\rangle \vec{e}_{2}+\langle \vec{e}_{3},\vec{a}_{3}\rangle \vec{e}_{3}\\&amp;\vdots \\
+\vec{a}_{k}=\sum _{j=1}^{k}\langle \vec{e}_{j},\vec{a}_{k}\rangle \vec{e}_{j}
 \end{cases}
 \end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\left\langle \vec{e}_{i},\vec{a}_{i}\right\rangle =\left\|\vec{u}_{i}\right\|\)</span>.</p>
-<p>This can be written in matrix form:</p>
+<p>where <span class="math notranslate nohighlight">\(\left\langle \vec{e}_{i},\vec{a}_{i}\right\rangle =\left\|\vec{u}_{i}\right\|\)</span>. This can be written in matrix form:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 A&amp;=QR
-\\
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 \begin{bmatrix}a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\
 a_{31} &amp; a_{32} &amp; \dots &amp; a_{3n} \\
 \vdots &amp; \vdots &amp;   &amp; \vdots \\ a_{n1} &amp; a_{n2} &amp; \dots &amp; a_{nn} \end{bmatrix} &amp;=
 \begin{bmatrix}| &amp; | &amp;  &amp; | \\ \vec{e}_1 &amp; \vec{e}_2 &amp; \dots &amp; \vec{e}_n\\
 | &amp; | &amp;  &amp; | \end{bmatrix}
 \begin{bmatrix}
-\langle \vec{e}_{1},\vec{a}_{1}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{2}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{3}\rangle &amp;\ldots 
+\langle \vec{e}_{1},\vec{a}_{1}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{2}\rangle &amp;\langle \vec{e}_{1},\vec{a}_{3}\rangle &amp;\ldots
 &amp; \langle \vec{e}_{1},\vec{a}_{n}\rangle \\
 0&amp;\langle \vec{e}_{2},\vec{a}_{2}\rangle &amp;\langle \vec{e}_{2},\vec{a}_{3}\rangle &amp;\ldots &amp; \langle \vec{e}_{2},\vec{a}_{n}\rangle\\
 0&amp;0&amp;\langle \vec{e}_{3},\vec{a}_{3}\rangle &amp;\ldots &amp; \langle \vec{e}_{3},\vec{a}_{n}\rangle\\
 \vdots &amp;\vdots &amp;\vdots &amp;\ddots &amp;\vdots\\
 0 &amp; 0 &amp; \dots &amp; \dots &amp; \langle \vec{e}_{n},\vec{a}_{n} \rangle \end{bmatrix}.
 \end{align*}\]</div>
-<p>See [1] for the full derivation of this algorithm. Furthermore, we can prepare a Python code using the above algorithm.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<p>See [1] for the full derivation of this algorithm.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="d9b3aa8c-4f2e-4621-859b-91d55d1b8e77" name="de2b1694-3a0e-4743-b980-047c464e7b01" type="radio">
+</input><label class="sd-tab-label" for="d9b3aa8c-4f2e-4621-859b-91d55d1b8e77">
+Python Code</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="k">def</span> <span class="nf">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Input: A</span>
-<span class="sd">    Applies the Gram-Schmidt method to A.</span>
-<span class="sd">    Output: Q, R</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Square matrix $A$ can be decomposed as A=QR</span>
+<span class="sd">    where Q is an orthogonal matrix and</span>
+<span class="sd">    R is an upper triangular matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix A</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Q : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix Q from A = QR</span>
+<span class="sd">    R : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix R from A = QR</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">T</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
             <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
@@ -611,61 +632,53 @@ a_{31} &amp; a_{32} &amp; \dots &amp; a_{3n} \\
 </pre></div>
 </div>
 </div>
-</div>
-<p><font color='Blue'><b>Example</b></font>: Apply <span class="math notranslate nohighlight">\(LU\)</span> decomposition on the following matrix.
-$<span class="math notranslate nohighlight">\(A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\)</span>$</p>
-<p>We have,</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;R =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QR =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="nd">@R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QQ^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q^TQ =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<input id="25c51ad2-9824-4aff-94af-9539594233bc" name="de2b1694-3a0e-4743-b980-047c464e7b01" type="radio">
+</input><label class="sd-tab-label" for="25c51ad2-9824-4aff-94af-9539594233bc">
+MATLAB Code</label><div class="sd-tab-content docutils">
+<div class="highlight-MATLAB notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="nf">[Q, R] = myQR</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="cm">%{</span>
+<span class="cm">Square matrix $A$ can be decomposed as A=QR</span>
+<span class="cm">where Q is an orthogonal matrix and</span>
+<span class="cm">R is an upper triangular matrix.</span>
+
+<span class="cm">Parameters</span>
+<span class="cm">----------</span>
+<span class="cm">A : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix A</span>
+
+<span class="cm">Returns</span>
+<span class="cm">-------</span>
+<span class="cm">Q : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix Q from A = QR</span>
+<span class="cm">R : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix R from A = QR</span>
+
+<span class="cm">%}</span><span class="w"></span>
+<span class="n">n</span><span class="p">=</span><span class="nb">length</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">Q</span><span class="w"> </span><span class="p">=</span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">j</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="w"> </span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="w"></span>
+<span class="w">        </span><span class="n">R</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="w"> </span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">(:,</span><span class="w"> </span><span class="nb">i</span><span class="p">),</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="w"> </span><span class="nb">j</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">T</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">R</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="w"> </span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Q</span><span class="p">(:,</span><span class="w"> </span><span class="nb">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="n">R</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="w"> </span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sqrt</span><span class="p">(</span><span class="nb">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">Q</span><span class="p">(:,</span><span class="w"> </span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">/</span><span class="n">R</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="w"> </span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_latex math notranslate nohighlight">
-\[Q =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}0.88 &amp; -0.12 &amp; 0.11 &amp; -0.44\\0.38 &amp; 0.75 &amp; -0.06 &amp; 0.53\\-0.13 &amp; 0.19 &amp; 0.97 &amp; -0.06\\0.25 &amp; -0.62 &amp; 0.2 &amp; 0.72\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[R =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.94 &amp; 4.54 &amp; -1.26 &amp; 1.89\\0 &amp; 8.33 &amp; 2.25 &amp; -7.15\\0 &amp; 0 &amp; 3.52 &amp; 0.69\\0 &amp; 0 &amp; 0 &amp; 1.35\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[QR =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[QQ^T =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 1.0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[Q^TQ =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 1.0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This part is used for producing tables and figures</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">hd_tools</span> <span class="k">as</span> <span class="nn">hd</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\hatef\anaconda3\envs\jbook_env\lib\site-packages\scipy\__init__.py:146: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.23.1
-  warnings.warn(f&quot;A NumPy version &gt;={np_minversion} and &lt;{np_maxversion}&quot;
-</pre></div>
-</div>
 <div class="output text_html"><div class="bk-root">
         <a href="https://bokeh.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
         <span id="1002">Loading BokehJS ...</span>
@@ -949,24 +962,66 @@ if (force === true) {
   }
 }(window));</script></div>
 </div>
+<p><font color='Blue'><b>Example</b></font>: Apply QR decomposition on the following matrix and identify <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(R\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right].\end{align*}\]</div>
+<p><font color='Green'><b>Solution</b></font>: We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
-                     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Q$&#39;</span><span class="p">,</span> <span class="s1">&#39;$R$&#39;</span><span class="p">,</span> <span class="s1">&#39;$QQ^T$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Q^TQ$&#39;</span><span class="p">],</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hd_Matrix_Decomposition</span> <span class="kn">import</span> <span class="n">myQR</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;R =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QR =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="nd">@R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QQ^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q^TQ =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[Q =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}0.88 &amp; -0.12 &amp; 0.11 &amp; -0.44\\0.38 &amp; 0.75 &amp; -0.06 &amp; 0.53\\-0.13 &amp; 0.19 &amp; 0.97 &amp; -0.06\\0.25 &amp; -0.62 &amp; 0.2 &amp; 0.72\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[R =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7.94 &amp; 4.54 &amp; -1.26 &amp; 1.89\\0 &amp; 8.33 &amp; 2.25 &amp; -7.15\\0 &amp; 0 &amp; 3.52 &amp; 0.69\\0 &amp; 0 &amp; 0 &amp; 1.35\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[QR =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[QQ^T =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 1.0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[Q^TQ =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 1.0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 1.0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">),</span> <span class="mi">2</span><span class="p">)],</span>
+                     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$Q$&#39;</span><span class="p">,</span> <span class="s1">&#39;$R$&#39;</span><span class="p">,</span> <span class="s1">&#39;$QQ^T$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Q^TQ$&#39;</span><span class="p">,</span> <span class="s1">&#39;$QR$&#39;</span><span class="p">],</span>
                      <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/QR_factorization_7_0.png" src="../_images/QR_factorization_7_0.png" />
+<img alt="../_images/QR_factorization_5_0.png" src="../_images/QR_factorization_5_0.png" />
 </div>
 </div>
 <p>Note that we could get a similar results using function, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html"><code class="docutils literal notranslate"><span class="pre">np.linalg.qr</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">linalg</span>
-
-<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;R =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QR =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="nd">@R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
@@ -1001,18 +1056,28 @@ if (force === true) {
 <section id="solving-linear-systems-using-qr-factorization">
 <h2><span class="section-number">7.5.1. </span>Solving Linear systems using QR factorization<a class="headerlink" href="#solving-linear-systems-using-qr-factorization" title="Permalink to this headline">#</a></h2>
 <p>We can solve the linear system <span class="math notranslate nohighlight">\(Ax=b\)</span> for <span class="math notranslate nohighlight">\(x\)</span> using QR factorization. To demonstrate this, we use the following example,</p>
-<p>Let
-$<span class="math notranslate nohighlight">\(A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]
-\quad \text{and}\quad
-b=\left[\begin{array}{c} 7\\ 1\\ 11\\ 15 \end{array}\right].\)</span><span class="math notranslate nohighlight">\(
-Then, this linear system can be also expressed as
-\)</span><span class="math notranslate nohighlight">\(Ax=(QR)x=Q(Rx)=b,\)</span>$ 	
-we have,</p>
+<p><font color='Blue'><b>Example</b></font>:
+Solve the following linear system using QR decomposition.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{cases}
+7\,x_{1}+3\,x_{2}-x_{3}+2\,x_{4}=18\\ 3\,x_{1}+8\,x_{2}+x_{3}-4\,x_{4}=6\\ x_{2}-x_{1}+4\,x_{3}-x_{4}=9\\ 2\,x_{1}-4\,x_{2}-x_{3}+6\,x_{4}=15
+\end{cases}
+\end{align*}\]</div>
+<p><font color='Green'><b>Solution</b></font>:</p>
+<p>Let <span class="math notranslate nohighlight">\(A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\)</span>
+and <span class="math notranslate nohighlight">\(b=\left[\begin{array}{c} 18\\ 6\\ 9\\ 15 \end{array}\right]\)</span>.
+Then, this linear system can be also expressed as follows,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Ax=(QR)x=Q(Rx)=b.
+\end{align*}\]</div>
+<p>We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">11</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
-<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">],[</span> <span class="mi">6</span><span class="p">],[</span> <span class="mi">9</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">myQR</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Q =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;R =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1022,21 +1087,31 @@ we have,</p>
 <div class="output text_latex math notranslate nohighlight">
 \[Q =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-0.88 &amp; 0.12 &amp; -0.11 &amp; -0.44\\-0.38 &amp; -0.75 &amp; 0.06 &amp; 0.53\\0.13 &amp; -0.19 &amp; -0.97 &amp; -0.06\\-0.25 &amp; 0.62 &amp; -0.2 &amp; 0.72\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}0.88 &amp; -0.12 &amp; 0.11 &amp; -0.44\\0.38 &amp; 0.75 &amp; -0.06 &amp; 0.53\\-0.13 &amp; 0.19 &amp; 0.97 &amp; -0.06\\0.25 &amp; -0.62 &amp; 0.2 &amp; 0.72\end{matrix}\right]\end{split}\]</div>
 <div class="output text_latex math notranslate nohighlight">
 \[R =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-7.94 &amp; -4.54 &amp; 1.26 &amp; -1.89\\0 &amp; -8.33 &amp; -2.25 &amp; 7.15\\0 &amp; 0 &amp; -3.52 &amp; -0.69\\0 &amp; 0 &amp; 0 &amp; 1.35\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}7.94 &amp; 4.54 &amp; -1.26 &amp; 1.89\\0 &amp; 8.33 &amp; 2.25 &amp; -7.15\\0 &amp; 0 &amp; 3.52 &amp; 0.69\\0 &amp; 0 &amp; 0 &amp; 1.35\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
-<p>Now we can solve the following linear systems instead
-$<span class="math notranslate nohighlight">\(\begin{cases}
-Qy = b,\\
-Rx=y.
-\end{cases}\)</span>$</p>
+<p>Now we can solve the following linear systems instead</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}\begin{cases}Qy = b,\\Rx=y.\end{cases}\end{align*}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving Lz=b for z</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Q</span><span class="o">@</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@Q</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Q$&#39;</span><span class="p">,</span> <span class="s1">&#39;$R$&#39;</span><span class="p">,</span> <span class="s1">&#39;$QQ^T$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Q^TQ$&#39;</span><span class="p">],</span>
+                     <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/QR_factorization_11_0.png" src="../_images/QR_factorization_11_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving y</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;y =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1046,7 +1121,7 @@ Rx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[y =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-8.95\\7.27\\-14.39\\7.49\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}20.79\\-5.19\\13.32\\5.42\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1061,14 +1136,14 @@ Rx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <p>Let’s now solve the linear system directly and compare the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_new</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1076,7 +1151,7 @@ Rx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <hr class="docutils" />

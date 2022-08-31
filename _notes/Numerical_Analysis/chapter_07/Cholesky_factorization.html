@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="7.4. LDL decomposition" href="LDL_decomposition.html" />
-    <link rel="prev" title="7.2. LU decomposition" href="LU_decomposition.html" />
+    <link rel="prev" title="7.2. Matrix Factorization" href="LU_decomposition.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -315,7 +315,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="LU_decomposition.html">
-     7.2. LU decomposition
+     7.2. Matrix Factorization
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -538,9 +538,36 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="cholesky-factorization">
 <h1><span class="section-number">7.3. </span>Cholesky factorization<a class="headerlink" href="#cholesky-factorization" title="Permalink to this headline">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(A\)</span> be a real symmetric positive definite matrix. Then, a unique real lower triangular matrix B with positive diagonal entries exists such that
-$<span class="math notranslate nohighlight">\(A = BB^∗,\)</span><span class="math notranslate nohighlight">\(
-where \)</span>B^*<span class="math notranslate nohighlight">\( denotes the conjugate transpose of \)</span>B$.</p>
+<div class="admonition-definition-the-transpose-of-a-matrix admonition">
+<p class="admonition-title">Definition: The Transpose of a Matrix</p>
+<p>Transpose of a matrix is formed by turning rows into columns and vice versa. For a matrix <span class="math notranslate nohighlight">\(A\)</span>, we denote the transpose of <span class="math notranslate nohighlight">\(A\)</span> by <span class="math notranslate nohighlight">\(A^T\)</span>.</p>
+</div>
+<div class="admonition-definition-symmetric-and-skew-symmetric-matrices admonition">
+<p class="admonition-title">Definition: Symmetric and Skew Symmetric Matrices</p>
+<p>An <span class="math notranslate nohighlight">\(n\times n\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> is</p>
+<ul class="simple">
+<li><p>Symmetric if <span class="math notranslate nohighlight">\(A = A^T\)</span>.</p></li>
+<li><p>Skew-symmetric if <span class="math notranslate nohighlight">\(A = -A^T\)</span>.</p></li>
+</ul>
+</div>
+<div class="admonition-definition-positive-definite admonition">
+<p class="admonition-title">Definition: Positive Definite</p>
+<p>An <span class="math notranslate nohighlight">\(n\times n\)</span> complex matrix <span class="math notranslate nohighlight">\(A\)</span> is <strong>positive definite</strong> if</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+x^TAx &gt; 0,
+\end{align*}\]</div>
+<p>for all nonzero vectors x in <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
+</div>
+<div class="admonition-theorem admonition">
+<p class="admonition-title">Theorem</p>
+<p>Assume that <span class="math notranslate nohighlight">\(A\)</span> is a real and symmetric positive definite matrix. Then, a unique real lower triangular matrix B with positive diagonal entries exists such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+A = BB^T,
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B^T\)</span> denotes the conjugate transpose of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</div>
 <p>Furthermore, We have,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -551,92 +578,123 @@ where \)</span>B^*<span class="math notranslate nohighlight">\( denotes the conj
 \begin{bmatrix}b_{11} &amp; b_{12} &amp; \dots &amp; b_{1n} \\ 0 &amp; b_{22} &amp; \dots &amp; b_{2n} \\
 \vdots &amp; \vdots &amp;   &amp; \vdots \\ 0 &amp; 0 &amp; \dots &amp; b_{nn} \end{bmatrix}.
 \end{align*}\]</div>
-<p>Solving this system, <span class="math notranslate nohighlight">\(b_{ij}\)</span> can be identified as follows</p>
+<p>Observe that <span class="math notranslate nohighlight">\(L\)</span> is lower triangular and <span class="math notranslate nohighlight">\(U\)</span> upper triangular. Thus,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+a_{ij} = \sum_{k = 1}^{n} b_{ik} b_{jk} = \sum_{k = 1}^{\min(i,j)} b_{ik} b_{jk}, \quad 1\leq i,j\leq n.
+\end{align*}\]</div>
+<p>Solving this system:</p>
+<ul class="simple">
+<li><p><strong>Column 1.</strong> Set <span class="math notranslate nohighlight">\(j = 1\)</span> and for <span class="math notranslate nohighlight">\(1\leq i\leq n\)</span>, we have,</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{array}{lcl}
+a_{11} = (b_{11})^2 &amp; \Rightarrow &amp; b_{11} = \sqrt{a_{11}},\\
+a_{21} = b_{11}\,b_{21}&amp; \Rightarrow &amp; b_{21} = a_{21}/b_{11},\\
+\vdots &amp;  &amp; \vdots\\
+a_{n1} = b_{11}\,b_{n1}&amp; \Rightarrow &amp; b_{n1} = a_{n1}/b_{11},
+\end{array}
+\end{align*}\]</div>
+<ul class="simple">
+<li><p><strong>Column j.</strong> For a fixed <span class="math notranslate nohighlight">\(j\)</span> and for <span class="math notranslate nohighlight">\(1\leq i\leq n\)</span>, we have,</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{array}{lcl}
+a_{jj} = (b_{j1})^2 + (b_{j2})^2 + \ldots + (b_{jj})^2 &amp; \Rightarrow &amp; b_{jj} = \sqrt{a_{jj} - \sum_{k = 1}^{j-1} (b_{jk})^2},\\
+a_{j+1,j} = b_{j1}\,b_{j+1,1} + \ldots + b_{jj}\,b_{j+1,j} &amp; \Rightarrow &amp; b_{j+1,j} = \frac{1}{b_{jj}}
+\left( a_{j+1,j} - \sum_{k = 1}^{j-1} b_{jk}\,b_{j+1,k} \right),\\
+\vdots &amp;  &amp; \vdots\\
+a_{nj} = b_{j,1}\,b_{n1} + \ldots + b_{jj}\,b_{nj} &amp; \Rightarrow &amp; b_{nj} = \frac{1}{b_{jj}}
+\left( a_{nj} - \sum_{k = 1}^{j-1} b_{jk}\,b_{nk} \right).
+\end{array}
+\end{align*}\]</div>
+<p>Thus,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
 b_{j,j} &amp;={\sqrt {a_{j,j}-\sum _{k=1}^{j-1}b_{j,k}^{2}}},\\
 b_{i,j}&amp;={\frac {1}{a_{j,j}}}\left(a_{i,j}-\sum _{k=1}^{j-1}b_{i,k}b_{j,k}\right)\quad {\text{for }}i&gt;j.
 \end{align*}\]</div>
-<p>See [1] for the full derivation of this algorithm. Furthermore, we can prepare a Python code using the above algorithm.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="k">def</span> <span class="nf">myCholesky</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<p>See [1] for the full derivation of this algorithm.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="b46fa0c4-8da7-4a3a-a261-de7a309e9c38" name="6e7ac845-2623-4cf1-b45f-0e3b39fc060c" type="radio">
+</input><label class="sd-tab-label" for="b46fa0c4-8da7-4a3a-a261-de7a309e9c38">
+Python Code</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="k">def</span> <span class="nf">myCholesky</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Assuming that the matrix A is symmetric and positive definite,</span>
-<span class="sd">    this function computes a lower triangular matrix G with positive</span>
-<span class="sd">    diagonal entries, such that A = GG^t</span>
-<span class="sd">    Input: A the nxn matrix to be factorized</span>
-<span class="sd">    n the number of rows and columns A has</span>
-<span class="sd">    Output: B the nxn lower triangular matrix with positive</span>
-<span class="sd">    entries on its main diagonal</span>
+<span class="sd">    this function calculates a lower triangular matrix G with positive</span>
+<span class="sd">    diagonal entries, such that A = BB^T</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix A</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    B : numpy array</span>
+<span class="sd">        DESCRIPTION. Matrix B from A = BB*</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
+    
     <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="c1"># allocate space for the matrix B</span>
     <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">);</span>
-    <span class="c1"># define the first column of B</span>
     <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
     <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
-    <span class="c1"># loop through the columns of B from 2nd to last</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="c1"># define the jth diagonal entry of B</span>
         <span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
             <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">],</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]))</span><span class="o">/</span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">B</span>        
+    <span class="k">return</span> <span class="n">B</span>   
+</pre></div>
+</div>
+</div>
+<input id="a065d0b6-c779-49fb-b7ba-215dadec0b85" name="6e7ac845-2623-4cf1-b45f-0e3b39fc060c" type="radio">
+</input><label class="sd-tab-label" for="a065d0b6-c779-49fb-b7ba-215dadec0b85">
+MATLAB Code</label><div class="sd-tab-content docutils">
+<div class="highlight-MATLAB notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[B]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">myCholesky</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="cm">%{</span>
+<span class="cm">Assuming that the matrix A is symmetric and positive definite,</span>
+<span class="cm">this function calculates a lower triangular matrix G with positive</span>
+<span class="cm">diagonal entries, such that A = BB^T</span>
+
+<span class="cm">Parameters</span>
+<span class="cm">----------</span>
+<span class="cm">A : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix A</span>
+
+<span class="cm">Returns</span>
+<span class="cm">-------</span>
+<span class="cm">B : numpy array</span>
+<span class="cm">    DESCRIPTION. Matrix B from A = BB*</span>
+<span class="cm">%}</span><span class="w"></span>
+
+<span class="n">B</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">B</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+<span class="n">B</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)=</span><span class="n">A</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">B</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">j</span><span class="p">=</span><span class="mi">2</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">)=</span><span class="nb">sqrt</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="nb">dot</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">B</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)));</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="nb">j</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)=(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="o">-</span><span class="nb">dot</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">B</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span><span class="o">/</span><span class="n">B</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><font color='Blue'><b>Example</b></font>: Apply <span class="math notranslate nohighlight">\(LU\)</span> decomposition on the following matrix.
-$<span class="math notranslate nohighlight">\(A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\)</span>$</p>
-<p>We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">myCholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;A =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;B =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;B  B^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_latex math notranslate nohighlight">
-\[A =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7 &amp; 3 &amp; -1 &amp; 2\\3 &amp; 8 &amp; 1 &amp; -4\\-1 &amp; 1 &amp; 4 &amp; -1\\2 &amp; -4 &amp; -1 &amp; 6\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[B =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}2.65 &amp; 0 &amp; 0 &amp; 0\\1.13 &amp; 2.59 &amp; 0 &amp; 0\\-0.38 &amp; 0.55 &amp; 1.88 &amp; 0\\0.76 &amp; -1.87 &amp; 0.17 &amp; 1.37\end{matrix}\right]\end{split}\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[B  B^T =\]</div>
-<div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This part is used for producing tables and figures</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">hd_tools</span> <span class="k">as</span> <span class="nn">hd</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\hatef\anaconda3\envs\jbook_env\lib\site-packages\scipy\__init__.py:146: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.23.1
-  warnings.warn(f&quot;A NumPy version &gt;={np_minversion} and &lt;{np_maxversion}&quot;
-</pre></div>
-</div>
 <div class="output text_html"><div class="bk-root">
         <a href="https://bokeh.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
         <span id="1002">Loading BokehJS ...</span>
@@ -920,14 +978,49 @@ if (force === true) {
   }
 }(window));</script></div>
 </div>
+<p><font color='Blue'><b>Example</b></font>: Apply Cholesky decomposition on the following matrix and identify <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}A = \left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right].\end{align*}\]</div>
+<p><font color='Green'><b>Solution</b></font>: We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B^T$&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hd_Matrix_Decomposition</span> <span class="kn">import</span> <span class="n">myCholesky</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Latex</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">init_session</span><span class="p">,</span> <span class="n">init_printing</span><span class="p">,</span> <span class="n">Matrix</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">myCholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;A =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;B =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;B  B^T =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Cholesky_factorization_6_0.png" src="../_images/Cholesky_factorization_6_0.png" />
+<div class="output text_latex math notranslate nohighlight">
+\[A =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7 &amp; 3 &amp; -1 &amp; 2\\3 &amp; 8 &amp; 1 &amp; -4\\-1 &amp; 1 &amp; 4 &amp; -1\\2 &amp; -4 &amp; -1 &amp; 6\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[B =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}2.65 &amp; 0 &amp; 0 &amp; 0\\1.13 &amp; 2.59 &amp; 0 &amp; 0\\-0.38 &amp; 0.55 &amp; 1.88 &amp; 0\\0.76 &amp; -1.87 &amp; 0.17 &amp; 1.37\end{matrix}\right]\end{split}\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[B  B^T =\]</div>
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}7.0 &amp; 3.0 &amp; -1.0 &amp; 2.0\\3.0 &amp; 8.0 &amp; 1.0 &amp; -4.0\\-1.0 &amp; 1.0 &amp; 4.0 &amp; -1.0\\2.0 &amp; -4.0 &amp; -1.0 &amp; 6.0\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B  B^T$&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Cholesky_factorization_5_0.png" src="../_images/Cholesky_factorization_5_0.png" />
 </div>
 </div>
 <p>Note that we could get a similar results using function, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.cholesky.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg.cholesky</span></code></a>.</p>
@@ -948,23 +1041,29 @@ if (force === true) {
 </div>
 <section id="solving-linear-systems-using-cholesky-factorization">
 <h2><span class="section-number">7.3.1. </span>Solving Linear systems using Cholesky factorization<a class="headerlink" href="#solving-linear-systems-using-cholesky-factorization" title="Permalink to this headline">#</a></h2>
-<p>We can solve the linear system <span class="math notranslate nohighlight">\(Ax=b\)</span> for <span class="math notranslate nohighlight">\(x\)</span> using Cholesky factorization. To demonstrate this, we use the following example,</p>
-<p>Let</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]
-\quad \text{and}\quad
-b=\left[\begin{array}{c} 7\\ 1\\ 11\\ 15 \end{array}\right].\end{align*}\]</div>
-<p>Then, this linear system can be also expressed as</p>
+<p>We can solve the linear system <span class="math notranslate nohighlight">\(Ax=b\)</span> for <span class="math notranslate nohighlight">\(x\)</span> using Cholesky decomposition. To demonstrate this, we use the following example,</p>
+<p><font color='Blue'><b>Example</b></font>:
+Solve the following linear system using Cholesky decomposition.</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-Ax=(BB^T)x=B(B^Tx)=b,
+\begin{cases}
+7\,x_{1}+3\,x_{2}-x_{3}+2\,x_{4}=18\\ 3\,x_{1}+8\,x_{2}+x_{3}-4\,x_{4}=6\\ x_{2}-x_{1}+4\,x_{3}-x_{4}=9\\ 2\,x_{1}-4\,x_{2}-x_{3}+6\,x_{4}=15
+\end{cases}
 \end{align*}\]</div>
-<p>we have,</p>
+<p><font color='Green'><b>Solution</b></font>:</p>
+<p>Let <span class="math notranslate nohighlight">\(A=\left[\begin{array}{cccc} 7 &amp; 3 &amp; -1 &amp; 2\\ 3 &amp; 8 &amp; 1 &amp; -4\\ -1 &amp; 1 &amp; 4 &amp; -1\\ 2 &amp; -4 &amp; -1 &amp; 6 \end{array}\right]\)</span>
+and <span class="math notranslate nohighlight">\(b=\left[\begin{array}{c} 18\\ 6\\ 9\\ 15 \end{array}\right]\)</span>.
+Then, this linear system can be also expressed as follows,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+Ax=(BB^T)x=B(B^Tx)=b.
+\end{align*}\]</div>
+<p>We have,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="p">])</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">11</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">],[</span> <span class="mi">6</span><span class="p">],[</span> <span class="mi">9</span><span class="p">],[</span><span class="mi">15</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">myCholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;B =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -976,14 +1075,23 @@ Ax=(BB^T)x=B(B^Tx)=b,
 \[\begin{split}\displaystyle \left[\begin{matrix}2.65 &amp; 0 &amp; 0 &amp; 0\\1.13 &amp; 2.59 &amp; 0 &amp; 0\\-0.38 &amp; 0.55 &amp; 1.88 &amp; 0\\0.76 &amp; -1.87 &amp; 0.17 &amp; 1.37\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
-<p>Now we can solve the following linear systems instead
-$<span class="math notranslate nohighlight">\(\begin{cases}
-By=b,\\
-B^Tx=y.
-\end{cases}\)</span>$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving Ly=b for y</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="o">.</span><span class="n">matrix_decomp_fig</span><span class="p">(</span><span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$A$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B$&#39;</span><span class="p">,</span> <span class="s1">&#39;$B^T$&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Cholesky_factorization_10_0.png" src="../_images/Cholesky_factorization_10_0.png" />
+</div>
+</div>
+<p>Now we can solve the following linear systems instead</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}\begin{cases}By=b,\\
+B^Tx=y.\end{cases}\end{align*}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving y</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;y =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -993,12 +1101,12 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[y =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}2.65\\-0.77\\6.59\\7.6\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}6.8\\-0.66\\6.33\\5.49\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving B^Tx=y for x</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solving x</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
@@ -1008,14 +1116,14 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <p>Let’s now solve the linear system directly and compare the results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_new</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;x =&#39;</span><span class="p">),</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1023,7 +1131,7 @@ B^Tx=y.
 <div class="output text_latex math notranslate nohighlight">
 \[x =\]</div>
 <div class="output text_latex math notranslate nohighlight">
-\[\begin{split}\displaystyle \left[\begin{matrix}-1.47\\3.07\\3.0\\5.53\end{matrix}\right]\end{split}\]</div>
+\[\begin{split}\displaystyle \left[\begin{matrix}1.0\\2.0\\3.0\\4.0\end{matrix}\right]\end{split}\]</div>
 </div>
 </div>
 <hr class="docutils" />
@@ -1069,7 +1177,7 @@ B^Tx=y.
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">7.2. </span>LU decomposition</p>
+            <p class="prev-next-title"><span class="section-number">7.2. </span>Matrix Factorization</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="LDL_decomposition.html" title="next page">
