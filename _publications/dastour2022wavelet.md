@@ -5,7 +5,7 @@ permalink: /publication/dastour2022wavelet
 date: 2022-11-01
 venue: 'International Journal of Applied Earth Observation and Geoinformation'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S1569843222002321'
-citation: '<b>H. Dastour</b>, E. Ghaderpour M. S. Zaghloul, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of Lesser Slave Lake Via Earth Observation Data," <i>IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing</i>, 2022, doi: 10.1016/j.jag.2022.103044.'
+citation: '<b>H. Dastour</b>, E. Ghaderpour, M. S. Zaghloul, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of Lesser Slave Lake Via Earth Observation Data," <i>IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing</i>, 2022, doi: 10.1016/j.jag.2022.103044.'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
