@@ -2,7 +2,7 @@
 title: "Long Term Trend Analysis of River Flow and Climate in Northern Canada"
 collection: publications
 permalink: /publication/zaghloul2022longterm
-date: 2022-11-01
+date: 2022-11-04
 venue: 'Hydrology'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S1569843222002321'
 citation: ' M. S. Zaghloul, E. Ghaderpour, <b>H. Dastour</b>, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "Long Term Trend Analysis of River Flow and Climate in Northern Canada," <i>Hydrology</i>, 2022, doi: 10.3390/hydrology9110197.'
