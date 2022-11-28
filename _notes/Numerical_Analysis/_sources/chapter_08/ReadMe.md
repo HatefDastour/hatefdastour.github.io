@@ -1,4 +1,0 @@
-# Regularization Methods
-
-```{tableofcontents}
-```

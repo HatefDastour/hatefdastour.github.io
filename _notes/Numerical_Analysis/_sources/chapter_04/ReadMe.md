@@ -1,4 +1,0 @@
-# Numerical Differentiation
-
-```{tableofcontents}
-```

@@ -1,4 +1,0 @@
-# Root-finding algorithms
-
-```{tableofcontents}
-```
