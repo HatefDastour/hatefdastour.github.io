@@ -5,7 +5,7 @@ permalink: /publication/liao2018efficient
 date: 2018-03-15
 venue: 'Applied Mathematics and Computation'
 paperurl: 'https://www.sciencedirect.com/science/article/abs/pii/S0096300317307610'
-citation: 'W. Liao, P. Yong, <b>H. Dastour</b>, and J. Huang. Efficient and accurate numerical simulation of acoustic wave propagation in a 2d heterogeneous media. <i>Applied Mathematics and Computation</i> 321:385-400, 2018.'
+citation: 'W. Liao, P. Yong, <b>H. Dastour</b>, and J. Huang. Efficient and accurate numerical simulation of acoustic wave propagation in a 2d heterogeneous media. <i>Applied Mathematics and Computation</i> 321:385-400, 2018. [JIF: 4.397; JIF Quartile: Q1]'
 ---
 <b>Abstract:</b>
 <p style='text-align: justify;'>

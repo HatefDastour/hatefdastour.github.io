@@ -5,7 +5,7 @@ permalink: /publication/garshasbi2016mollified
 date: 2016-04-01
 venue: 'Computational and Applied Mathematics'
 paperurl: 'https://link.springer.com/article/10.1007/s40314-014-0180-5'
-citation: 'M. Garshasbi and <b>H. Dastour</b>.  A mollified marching solution of an inverse ablation-type moving boundary problem. <i>Computational and Applied Mathematics</i>,  35(1):61-73, 2016.'
+citation: 'M. Garshasbi and <b>H. Dastour</b>.  A mollified marching solution of an inverse ablation-type moving boundary problem. <i>Computational and Applied Mathematics</i>,  35(1):61-73, 2016. [JIF: 2.872; JIF Quartile: Q1]'
 ---
 <b>Abstract:</b>
 <p style='text-align: justify;'>
