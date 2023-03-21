@@ -26,7 +26,7 @@ Working Experience
 *  <p style="text-align:left;"> Research Associate <span style="float:right;"> May 2022 - Present,</span>
 <br><a href="https://schulich.ucalgary.ca/geomatics/" target="_blank">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada</p>
 
-*  <p style="text-align:left;"> Sessional Lecturer I/Tutorial instructor <span style="float:right;"> August 2021 - Present,</span>
+*  <p style="text-align:left;"> Sessional Lecturer I/Tutorial instructor <span style="float:right;"> August 2021 - May 2022,</span>
 <br>Department of Mathematics & Computer Science, Faculty  of Arts & Science,
 <a href="https://www.ulethbridge.ca/calgary/" target="_blank">University of Lethbridge (Calgary Campus)</a>, Calgary, AB, Canada/p>
 
