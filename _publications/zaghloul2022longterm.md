@@ -4,8 +4,8 @@ collection: publications
 permalink: /publication/zaghloul2022longterm
 date: 2022-11-04
 venue: 'Hydrology'
-paperurl: 'https://www.mdpi.com/2306-5338/9/11/197/htm'
-citation: ' M. S. Zaghloul, E. Ghaderpour, <b>H. Dastour</b>, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "Long Term Trend Analysis of River Flow and Climate in Northern Canada," <i>Hydrology</i>, 2022, doi: 10.3390/hydrology9110197.'
+paperurl: 'https://www.mdpi.com/2306-5338/9/11/197'
+citation: ' M. S. Zaghloul, E. Ghaderpour, <b>H. Dastour</b>, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "Long Term Trend Analysis of River Flow and Climate in Northern Canada," <i>Hydrology</i>, 2022; 9(11):197.'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>

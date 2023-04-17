@@ -1,0 +1,14 @@
+---
+title: "A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series"
+collection: publications
+permalink: /publication/hydrology-10-00095
+date: 2023-04-17
+venue: 'Hydrology'
+paperurl: 'https://www.mdpi.com/2306-5338/10/4/95'
+citation: '<b>H. Dastour</b> and Q. K. Hassan, "A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series," <i>Hydrology</i>, 2023, 10(4):95.'
+---
+<b>Abstract:</b> 
+<p style='text-align: justify;'>
+Having a complete hydrological time series is crucial for water-resources management and modeling. However, this can pose a challenge in data-scarce environments where data gaps are widespread. In such situations, recurring data gaps can lead to unfavorable outcomes such as loss of critical information, ineffective model calibration, inaccurate timing of peak flows, and biased statistical analysis in various applications. Despite its importance, predicting monthly streamflow can be a complex task due to its connection to random dynamics and uncertain phenomena, posing significant challenges. This study introduces an ensemble machine-learning regression framework for modeling and predicting monthly streamflow time series with a high degree of accuracy. The framework utilizes historical data from multiple monthly streamflow datasets in the same region to predict missing monthly streamflow data. The framework selects the best features from all available gap-free monthly streamflow time-series combinations and identifies the optimal model from a pool of 12 machine-learning models, including random forest regression, gradient boosting regression, and extra trees regressor, among others. The model selection is based on cross-validation train-and-test set scores, as well as the coefficient of determination. We conducted modeling on 26 monthly streamflow time series and found that the gradient boosting regressor with bagging regressor produced the highest accuracy in 7 of the 26 instances. Across all instances, the models using this method exhibited an overall accuracy range of 0.9737 to 0.9968. Additionally, the use of either a bagging regressor or an AdaBoost regressor improved both the tree-based and gradient-based models, resulting in these methods accounting for nearly 80% of the best models. Between January 1960 and December 2021, an average of 40% of the monthly streamflow data was missing for each of the 26 stations. Notably, two crucial stations located in the economically significant lower Athabasca Basin River in Alberta province, Canada, had approximately 70% of their monthly streamflow data missing. To address this issue, we employed our framework to accurately extend the missing data for all 26 stations. These accurate extensions also allow for further analysis, including grouping stations with similar monthly streamflow behavior using Pearson correlation.
+</p>
+[PDF file](/files/hydrology-10-00095.pdf){:target="_blank"}
