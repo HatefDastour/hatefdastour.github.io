@@ -5,7 +5,7 @@ permalink: /publication/sustainability-15-07854
 date: 2023-05-11
 venue: 'Sustainability'
 paperurl: 'https://www.mdpi.com/2071-1050/15/10/7854'
-citation: '<b>H. Dastour</b> and Q. K. Hassan, "Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification", <i>Sustainability</i>, 15(10), 7854, 2023. [JIF: 3.889; JIF Quartile: Q2]'
+citation: '<b>H. Dastour</b> and Q. K. Hassan, "Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification", <i>Sustainability</i>, 15(10):7854, 2023. [JIF: 3.889; JIF Quartile: Q2]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>

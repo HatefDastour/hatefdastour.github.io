@@ -5,7 +5,7 @@ permalink: /publication/hydrology-10-00095
 date: 2023-04-17
 venue: 'Hydrology'
 paperurl: 'https://www.mdpi.com/2306-5338/10/4/95'
-citation: '<b>H. Dastour</b> and Q. K. Hassan, "A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series," <i>Hydrology</i>, 2023, 10(4):95.'
+citation: '<b>H. Dastour</b> and Q. K. Hassan, "A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series," <i>Hydrology</i>, 10(4):95, 2023.'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
