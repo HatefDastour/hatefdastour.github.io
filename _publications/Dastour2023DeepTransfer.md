@@ -1,7 +1,7 @@
 ---
 title: "Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification"
 collection: publications
-permalink: /publication/sustainability-15-07854
+permalink: /publication/Dastour2023DeepTransfer
 date: 2023-05-11
 venue: 'Sustainability'
 paperurl: 'https://www.mdpi.com/2071-1050/15/10/7854'

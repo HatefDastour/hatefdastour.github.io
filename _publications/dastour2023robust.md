@@ -1,7 +1,7 @@
 ---
 title: "A Robust Regime Shift Change Detection Algorithm for Water-Flow Dynamics"
 collection: publications
-permalink: /publication/water-15-01571
+permalink: /publication/dastour2023robust
 date: 2023-04-17
 venue: 'Water'
 paperurl: 'https://www.mdpi.com/2073-4441/15/8/1571'

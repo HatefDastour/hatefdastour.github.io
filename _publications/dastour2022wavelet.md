@@ -5,7 +5,7 @@ permalink: /publication/dastour2022wavelet
 date: 2022-11-01
 venue: 'International Journal of Applied Earth Observation and Geoinformation'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S1569843222002321'
-citation: '<b>H. Dastour</b>, E. Ghaderpour, M. S. Zaghloul, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada" <i>International Journal of Applied Earth Observation and Geoinformation</i>, 2022, doi: 10.1016/j.jag.2022.103044. [JIF: 7.672; JIF Quartile: Q1]'
+citation: '<b>H. Dastour</b>, E. Ghaderpour, M. S. Zaghloul, B. Farjad, A. Gupta, H. Eum, G. Achari, and Q. K. Hassan, "Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada" <i>International Journal of Applied Earth Observation and Geoinformation</i>, 114:103044, 2022. [JIF: 7.672; JIF Quartile: Q1]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
