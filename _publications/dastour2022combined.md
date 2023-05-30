@@ -5,7 +5,7 @@ permalink: /publication/dastour2022combined
 date: 2022-08-01
 venue: 'IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing'
 paperurl: 'https://ieeexplore.ieee.org/document/9850369'
-citation: '<b>H. Dastour</b>, E. Ghaderpour and Q. K. Hassan, "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of Lesser Slave Lake Via Earth Observation Data," <i>IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing</i>, 15:6402--6417, 2022. [JIF: 4.715; JIF Quartile: Q1]'
+citation: '<b>H. Dastour</b>, E. Ghaderpour and Q. K. Hassan, "A Combined Approach for Monitoring Monthly Surface Water/Ice Dynamics of Lesser Slave Lake Via Earth Observation Data," <i>IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing</i>, 15:6402--6417, 2022. [IF: 4.715; IF Quartile: Q1]'
 
 ---
 <b>Abstract:</b> 

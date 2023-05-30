@@ -5,7 +5,7 @@ permalink: /dastour2019generalized
 date: 2021-03-09
 venue: 'Journal of Computational and Applied Mathematics'
 paperurl: 'https://www.sciencedirect.com/science/article/abs/pii/S0377042721001631'
-citation: '<b>H. Dastour</b> and W. Liao. A generalized optimal fourth-order finite difference scheme for a 2D Helmholtz equation with the perfectly matched layer boundary condition. <i>Journal of Computational and Applied Mathematics</i>, 113544, 2021. [JIF: 2.998; JIF Quartile: Q1]'
+citation: '<b>H. Dastour</b> and W. Liao. A generalized optimal fourth-order finite difference scheme for a 2D Helmholtz equation with the perfectly matched layer boundary condition. <i>Journal of Computational and Applied Mathematics</i>, 113544, 2021. [IF: 2.998; IF Quartile: Q1]'
 
 ---
 <b>Abstract:</b>

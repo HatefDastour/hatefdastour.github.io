@@ -5,7 +5,7 @@ permalink: /publication/garshasbi2015estimation
 date: 2015-04-01
 venue: 'Numerical Algorithms'
 paperurl: 'https://link.springer.com/article/10.1007/s11075-014-9871-7'
-citation: 'M. Garshasbi and <b>H. Dastour</b>. Estimation of unknown boundary functions in an inverse heat conduction problem using a mollified marching scheme. <i>Numerical Algorithms</i>,  68(4):769-790, 2015. [JIF: 2.370; JIF Quartile: Q1]'
+citation: 'M. Garshasbi and <b>H. Dastour</b>. Estimation of unknown boundary functions in an inverse heat conduction problem using a mollified marching scheme. <i>Numerical Algorithms</i>,  68(4):769-790, 2015. [IF: 2.370; IF Quartile: Q1]'
 ---
 <b>Abstract:</b>
 <p style='text-align: justify;'>
