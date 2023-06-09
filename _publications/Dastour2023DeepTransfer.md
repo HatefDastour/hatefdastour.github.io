@@ -1,5 +1,5 @@
 ---
-title: "Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification"
+title: "A Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification"
 collection: publications
 permalink: /publication/Dastour2023DeepTransfer
 date: 2023-05-11
