@@ -5,7 +5,7 @@ type: "Conference proceedings talk"
 permalink: /talks/CAIMS_2016
 venue: "University of Alberta"
 date: 2016-06-28
-location: "Edmonton, Alberta"
+location: "Edmonton, Alberta, Canada"
 ---
 
 Conference page: [http://www.caims2016.caims.ca/welcome2016.html](http://www.caims2016.caims.ca/welcome2016.html)
