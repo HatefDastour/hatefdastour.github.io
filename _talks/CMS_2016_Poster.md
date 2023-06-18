@@ -5,7 +5,7 @@ type: "Conference proceedings poster"
 permalink: /talks/CMS_2016_Poster
 venue: "University of Alberta"
 date: 2016-06-25
-location: "Edmonton, Alberta"
+location: "Edmonton, Alberta, Canada"
 ---
 
 
