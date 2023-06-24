@@ -1,5 +1,5 @@
 ---
-title: "2016 CMS Summer Meeting: A Computational Method for Solving an Inverse Heat Conduction Problem"
+title: "2016 Canadian Mathematical Society (CMS) Summer Meeting: A Computational Method for Solving an Inverse Heat Conduction Problem"
 collection: talks
 type: "Conference proceedings poster"
 permalink: /talks/CMS_2016_Poster
