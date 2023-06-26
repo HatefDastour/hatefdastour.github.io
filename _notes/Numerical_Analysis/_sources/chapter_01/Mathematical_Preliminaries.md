@@ -61,7 +61,7 @@ Furthermore, if the function $f$ is continuous at every point in the set $X$, it
 `````{admonition} Limit of a sequence
 :class: important
 
-A sequence of real numbers can be defined as an ordered set of real numbers, denoted as ${x_0,x_1,x_2,\ldots}$ and represented as $\{x_n\}_{n=1}^{\infty}$. According to {cite}`burden2005numerical`, this sequence is said to converge to a point $x$ if, for any positive arbitrary number $\varepsilon$, there exists an integer $N\varepsilon$ such that
+A sequence of real numbers can be defined as an ordered set of real numbers, denoted as ${x_0,x_1,x_2,\ldots}$ and represented as $\{x_n\}_{n=1}^{\infty}$. According to {cite:ps}`burden2005numerical`, this sequence is said to converge to a point $x$ if, for any positive arbitrary number $\varepsilon$, there exists an integer $N\varepsilon$ such that
 \begin{equation}
 |x_n - x| < \varepsilon,
 \end{equation}
@@ -83,7 +83,7 @@ Assume that function $f$ is defined on a set of real numbers $X$ and for some va
 `````{admonition} Differentiability
 :class: important
 
-Let's consider a function $f$ defined on an open interval $(a, b)$ that contains a point $x_{0}$. We can determine if the function is differentiable at $x_{0}$ by checking the existence of the following limit {cite}`burden2005numerical`:
+Let's consider a function $f$ defined on an open interval $(a, b)$ that contains a point $x_{0}$. We can determine if the function is differentiable at $x_{0}$ by checking the existence of the following limit {cite:ps}`burden2005numerical`:
 
 \begin{equation}
 f'(x_{0})=\lim_{x\to x_{0}} \frac{f(x)-f(x_{0})}{x - x_{0}}.
@@ -102,7 +102,7 @@ If this limit exists, it implies that the function $f$ is differentiable at the 
 * $f$ is continuous at point $x_{0}$ if the function $f$ is differentiable at at point $x_{0}$.
 `````
 
-The following theorem is **Theorem 1.7** from {cite}`burden2005numerical`.
+The following theorem is **Theorem 1.7** from {cite:ps}`burden2005numerical`.
 
 ```{admonition} Rolle's Theorem
 
@@ -113,7 +113,7 @@ In other words, if $f(a) = f(b)$ under the given conditions, we can conclude tha
 <iframe src="https://www.geogebra.org/classic/afngnve8?embed" width="600" height="350" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
 
 ```
-The following theorem is **Theorem 1.8** from {cite}`burden2005numerical`.
+The following theorem is **Theorem 1.8** from {cite:ps}`burden2005numerical`.
 
 ```{admonition} Mean Value Theorem
 
@@ -127,7 +127,7 @@ f'(c) = \frac{f(b) - f(a)}{b - a}
 
 ```
 
-The following theorem is **Theorem 1.9** from {cite}`burden2005numerical`.
+The following theorem is **Theorem 1.9** from {cite:ps}`burden2005numerical`.
 
 ```{admonition} Extreme Value Theorem
 
@@ -143,7 +143,7 @@ Thus, we can establish that there exist points $c_1$ and $c_2$ in the closed int
 
 ```
 
-The following theorem is **Theorem 1.11** from {cite}`burden2005numerical`.
+The following theorem is **Theorem 1.11** from {cite:ps}`burden2005numerical`.
 
 ```{admonition} Intermediate Value Theorem
 
@@ -201,7 +201,7 @@ Here, as $n$ approaches infinity, $\frac{b-a}{n}$ represents the width of each s
 
 `````
 
-The following theorem is **Theorem 1.13** from {cite}`burden2005numerical`.
+The following theorem is **Theorem 1.13** from {cite:ps}`burden2005numerical`.
 
 ```{admonition} Weighted Mean Value Theorem for Integrals
 
@@ -219,7 +219,7 @@ It is important to note that the theorem guarantees the existence of such a poin
 
 ```{admonition} Mean Value Theorem for Integrals
 
-Consider a continuous function $f(x)$ defined over an interval $[a,~b]$. In this case, there exists (at least) a point $c$ within the interval $[a,~b]$ such that {cite}`strang2016calculus`
+Consider a continuous function $f(x)$ defined over an interval $[a,~b]$. In this case, there exists (at least) a point $c$ within the interval $[a,~b]$ such that {cite:ps}`strang2016calculus`
 
 \begin{equation}
 f(c) = \frac{1}{b-a}\int_{a}^{b} f(x)\ dx.
@@ -259,7 +259,7 @@ Assume that $f : \mathbb{R} \rightarrow \mathbb{R}$ be $k + 1$ times differentia
 R_{k}(x)={\frac {f^{(k+1)}(\xi)}{(k+1)!}}(x-a)^{k+1}
 ```
 
-for some real number $\xi$ between $a$ and $x$. This $R_{k}(x)$ from equation {eq}`Taylor_remainder` is also known as the Lagrange form of the remainder {cite}`hirschman2014infinite`.
+for some real number $\xi$ between $a$ and $x$. This $R_{k}(x)$ from equation {eq}`Taylor_remainder` is also known as the Lagrange form of the remainder {cite:ps}`hirschman2014infinite`.
 `````
 <font color='Blue'><b>Example</b></font>: Let $f (x) = \sin (x)$ and $x_0 = 0$. Determine the Taylor polynomial for $f$ about $x_0 = 0$ for any given values on $n\in \mathbb{N}$.
 
@@ -289,7 +289,3 @@ P_{n}(x) &= f(0) + \frac{1}{1!} f'(0)\,x + \frac{1}{2!}f''(0)\,x^{2} + \frac{1}{
 \notag \\ &
 = \sum_{j = 0}^{n} \frac{(-1)^{j}}{(2j +1)!}x^{2j+1}
 \end{align*}
-
-## References
-```{bibliography}
-```
