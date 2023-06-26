@@ -424,12 +424,21 @@ $a_{0},~a_{1},~\ldots,~a_{n}$ are numbers and $x$ is a variable. If the coeficie
 $n$ is called the **degree of the polynomial**, and $a_n$ is called the leading coefficient.
 </div>
 
+|                             |                                                              |
+|-----------------------------|--------------------------------------------------------------|
+|  A polynomial of degree $1$ |                            $ax+b$                            |
+| A polynomial of degree  $2$ |                          $ax^2+bx+c$                         |
+| A polynomial of degree  $3$ |                       $ax^3+bx^2+cx+d$                       |
+|           $\vdots$          |                           $\vdots$                           |
+|  A polynomial of degree $n$ | $a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0$ |
+
+
 <div class="alert alert-info" role="alert">
 <font size="+1"><b>
-*Interpolating Polynomial
+Interpolating Polynomial
 </b></font>
 
-Assume that $n$ data pairs $(x_1,y_1 )$, $(x_2 , y_2 )$, \ldots, $(x_n , y_n )$ are available in a way that the $x_i$ are distinct. Then, there exists a unique polynomial
+Assume that $n$ data pairs $(x_1,y_1 )$, $(x_2 , y_2 )$, ..., $(x_n , y_n )$ are available in a way that the $x_i$ are distinct. Then, there exists a unique polynomial
 \begin{equation*}
 p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}
 \end{equation*}
@@ -438,12 +447,11 @@ such that $p(x_i ) = y_i$ for each $i = 1, 2, \ldots, n$.
 For this data, this polynomial is called the **interpolating polynomial**.
 </div>
 
-
 <div class="alert alert-success" role="alert">
 
 The procedure to find $p(x)$ for given $x_1 , x_2 , \ldots, x_n$ and their corresponding $y_1 , y_2 , \ldots, y_n$:
 
-1.  Assume that desired polynomial $p(x)$ is given by \begin{align*}p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}.\end{align*}
+1.  Assume that desired polynomial $p(x)$ is given by $p(x) = r_0 +r_1 x+r_2 x^2 +\ldots+r_{n-1} x^{n-1}$.
 
 2.  $p(x_i ) = y_i$ for all $i = 1, 2, \ldots, n$ so that
     \begin{align*}
