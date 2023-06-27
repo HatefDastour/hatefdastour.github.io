@@ -25,7 +25,7 @@ whenever $0 < |x - x_{0}| < \delta$ for all $x\in X$. In other words, as $x$ app
 `````{admonition} Continuous functions
 :class: important
 
-Let's assume that a function $f$ is defined on a set of real numbers $X$. We say that function $f$ is \textbf{continuous} at a specific point $x_0$ if, according to \cite{burden2005numerical},
+Let's assume that a function $f$ is defined on a set of real numbers $X$. We say that function $f$ is \textbf{continuous} at a specific point $x_0$ if, according to {cite:ps}`burden2005numerical`,
 \begin{equation}
 \lim_{x \to x_{0}} f (x) = f (x_{0}).
 \end{equation}
