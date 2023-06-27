@@ -23,7 +23,7 @@ $n$ is called the **degree of the polynomial**, and $c_n$ is called the
 |  A polynomial of degree $n$ | $a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0$ |
 
 
-```{admonition} Weierstrass Approximation Theorem {cite}`burden2005numerical`
+```{admonition} Weierstrass Approximation Theorem
 
 Let $g\in C[a,b]$. Then for each $\varepsilon>0$, there is a polynomial
 $P(x)$ such that
@@ -35,10 +35,10 @@ $P(x)$ such that
 
 ```{figure} ../Figs/Weierstrass_App.jpg
 ---
-height: 150px
+height: 300px
 name: directive-fig
 ---
-Weierstrass Approximation Theorem. Figure is from \cite{burden2005numerical} with minor modifications.
+Weierstrass Approximation Theorem. Figure is from {cite}`burden2005numerical` with minor modifications.
 ```
 
 
