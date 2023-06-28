@@ -29,7 +29,7 @@ Let's assume that a function $f$ is defined on a set of real numbers $X$. We say
 \begin{equation}
 \lim_{x \to x_{0}} f (x) = f (x_{0}).
 \end{equation}
-Furthermore, if the function $f$ is continuous at every point in the set $X$, it is considered to be continuous on the entire set $X."
+Furthermore, if the function $f$ is continuous at every point in the set $X$, it is considered to be continuous on the entire set $X$.
 
 `````
 
