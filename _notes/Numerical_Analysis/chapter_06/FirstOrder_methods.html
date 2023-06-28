@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6.1. First-order methods &#8212; Numerical_Analysis</title>
+    <title>6.3. First-order methods &#8212; Numerical_Analysis</title>
   
   
   
@@ -64,8 +64,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_06/FirstOrder_methods';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.2. Second-order methods" href="SecondOrder_methods.html" />
-    <link rel="prev" title="6. Initial-Value Problems for Ordinary Differential Equations" href="ReadMe.html" />
+    <link rel="next" title="6.4. Higher-Order Taylor Methods" href="HigherOrder_Taylor_Methods.html" />
+    <link rel="prev" title="6.2. The elementary theory of initial-value problem" href="Elementary_theory_of_initial_value_problem.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -196,9 +196,11 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="ReadMe.html">6. Initial-Value Problems for Ordinary Differential Equations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.1. First-order methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SecondOrder_methods.html">6.2. Second-order methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="RungeKutta_methods.html">6.3. Runge–Kutta methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html">6.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Elementary_theory_of_initial_value_problem.html">6.2. The elementary theory of initial-value problem</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3. First-order methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HigherOrder_Taylor_Methods.html">6.4. Higher-Order Taylor Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RungeKutta_methods.html">6.5. Runge–Kutta methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ReadMe.html">7. Numerical Linear Algebra</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -375,11 +377,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-euler-method">6.1.1. (Forward) Euler method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">6.1.1.1. Error Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-euler-method">6.3.1. (Forward) Euler method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-bounds-for-forward-eulers-method">6.3.1.1. Error Bounds for (Forward) Euler’s Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-implicit-euler-method">6.1.2. Backward (Implicit) Euler method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-implicit-euler-method">6.3.2. Backward (Implicit) Euler method</a></li>
 </ul>
             </nav>
         </div>
@@ -392,38 +394,41 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <div class="tex2jax_ignore mathjax_ignore section" id="first-order-methods">
-<h1><span class="section-number">6.1. </span>First-order methods<a class="headerlink" href="#first-order-methods" title="Permalink to this headline">#</a></h1>
-<p>Let <span class="math notranslate nohighlight">\(y_{j}\)</span> denote approximation <span class="math notranslate nohighlight">\(y\)</span> at grid points for <span class="math notranslate nohighlight">\(j = 1,2,3,\ldots,N\)</span> and some positive integer values of <span class="math notranslate nohighlight">\(N\)</span>, we can use several methods. Consider the following IVP:</p>
+<h1><span class="section-number">6.3. </span>First-order methods<a class="headerlink" href="#first-order-methods" title="Permalink to this headline">#</a></h1>
+<p>Let <span class="math notranslate nohighlight">\(y_{j}\)</span> denote approximation <span class="math notranslate nohighlight">\(y\)</span> at grid points for <span class="math notranslate nohighlight">\(j = 1,2,3,\ldots,n\)</span> (i.e. <span class="math notranslate nohighlight">\(y_{j} = y(t_{j})\)</span>) and some positive integer values of <span class="math notranslate nohighlight">\(n\)</span>, we can use several methods. Consider the following IVP:</p>
 <div class="math notranslate nohighlight" id="equation-ivp-01">
-<span class="eqno">(6.1)<a class="headerlink" href="#equation-ivp-01" title="Permalink to this equation">#</a></span>\[\frac{dy}{dt} = f(t,y),\quad a \leq t \leq b,~y(a) = y_{0},\]</div>
-<p>In this section, we focus on several first-order methods to approximate the solution of this IVP numerically.</p>
-<p>Here it is assumed that the grid points are equally distributed throughout the interval <span class="math notranslate nohighlight">\([a, b]\)</span>. Let <span class="math notranslate nohighlight">\(N\)</span> be a positive integer, we have, the following step size</p>
+<span class="eqno">(6.11)<a class="headerlink" href="#equation-ivp-01" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{cases}
+\dfrac{dy}{dt} = f(t,y),&amp; a \leq t \leq b,
+\\ 
+y(a) = \alpha,&amp;
+\end{cases}\end{split}\]</div>
+<p>In this section, we focus on several first-order methods to approximate the solution of this IVP numerically. Here, it is assumed that the grid points are equally distributed throughout the interval <span class="math notranslate nohighlight">\([a, b]\)</span>. Let <span class="math notranslate nohighlight">\(n\)</span> be a positive integer, we have, the following step size</p>
 <div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-h = \Delta t = \frac{b-a}{N}
-\end{align*}\]</div>
+\[\begin{equation*}
+h = \Delta t = \frac{b-a}{n}
+\end{equation*}\]</div>
 <p>and each grid point can be identified as</p>
 <div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-t_{j} &amp;= a +jh,&amp; j = 0,1,2,\ldots,N.
-\end{align*}\]</div>
+\[\begin{equation*}
+t_{j} = a +jh,\qquad j = 0,1,2,\ldots,n.
+\end{equation*}\]</div>
 <div class="section" id="forward-euler-method">
-<h2><span class="section-number">6.1.1. </span>(Forward) Euler method<a class="headerlink" href="#forward-euler-method" title="Permalink to this headline">#</a></h2>
-<p>Assume that <span class="math notranslate nohighlight">\(y\in C^{2}[a,b]\)</span>. Then, using Taylor’s Theorem, for <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots,N - 1\)</span>, we have,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+<h2><span class="section-number">6.3.1. </span>(Forward) Euler method<a class="headerlink" href="#forward-euler-method" title="Permalink to this headline">#</a></h2>
+<p>Assume that <span class="math notranslate nohighlight">\(y\in C^{2}[a,~b]\)</span>. Then, using Taylor polynomials and series from Section \ref{Taylor_Polynomials}, for <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots,n - 1\)</span>, we have,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7cc12c8e-c9b2-4bc1-8da2-61a58fb8d75d">
+<span class="eqno">(6.12)<a class="headerlink" href="#equation-7cc12c8e-c9b2-4bc1-8da2-61a58fb8d75d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y(t_{j+1}) = y(t_{j}) + hy'(t_{j}) + \frac{h^2}{2} y''(\xi_{j}),
-\end{align*}\]</div>
-<p>for some <span class="math notranslate nohighlight">\(\xi_{j} \in(t_{j},t_{j+1})\)</span>.Since <span class="math notranslate nohighlight">\(y(t)\)</span> satisfies the differential equation <a class="reference internal" href="#equation-ivp-01">(6.1)</a>,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-y(t_{j+1}) = y(t_{j}) + hf(t_{j}, y(t_{j})) + \frac{h^2}{2} y''(\xi_{j}).
-\end{align*}\]</div>
-<p>Therefore, Euler’s method approximates the solution of the IVP <a class="reference internal" href="#equation-ivp-01">(6.1)</a> at each grid point starting from <span class="math notranslate nohighlight">\(x_0 = a\)</span> where the solution is known as <span class="math notranslate nohighlight">\(y_0\)</span>. This process is carried forward iteratively until point <span class="math notranslate nohighlight">\(x_{n-1}\)</span>.</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-y_{j+1} = y(t_{j}) + hf(t_{j}, y_{j}).
-\end{align*}\]</div>
+\end{equation}\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\xi_{j} \in(t_{j},~t_{j+1})\)</span>. Since <span class="math notranslate nohighlight">\(y(t)\)</span> satisfies the differential equation \eqref{IVP_01},</p>
+<div class="math notranslate nohighlight" id="equation-euler-method-tp-eq01">
+<span class="eqno">(6.13)<a class="headerlink" href="#equation-euler-method-tp-eq01" title="Permalink to this equation">#</a></span>\[y(t_{j+1}) = y(t_{j}) + hf(t_{j}, y(t_{j})) + \underbrace{\frac{h^2}{2} y''(\xi_{j})}_{\text{Remainder Term}}.\]</div>
+<p>Deleting the remainder term, Euler’s method generates <span class="math notranslate nohighlight">\(w_{i} \approx y(t_i)\)</span> for <span class="math notranslate nohighlight">\(i = 1,~2,~3,\ldots,~n\)</span>. Therefore, Euler’s method approximates the solution of the IVP <a class="reference internal" href="#equation-ivp-01">(6.11)</a> at each grid point starting from <span class="math notranslate nohighlight">\(t_0 = a\)</span> where the solution is known as <span class="math notranslate nohighlight">\(\alpha\)</span>. This process is carried forward iteratively until point <span class="math notranslate nohighlight">\(t_{n-1}\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(w_{i} \approx y(t_i)\)</span> for <span class="math notranslate nohighlight">\(i = 1,~2,~3,\ldots,~n\)</span>, then the (Forward) Euler’s method is</p>
+<div class="math notranslate nohighlight" id="equation-eq-06-02">
+<span class="eqno">(6.14)<a class="headerlink" href="#equation-eq-06-02" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{cases}
+w_{j+1} = w_{j} + hf(t_{j},~w_{j}),\quad j = 0,~1,~2,\ldots,~n-1\\
+w_{0} = \alpha.
+\end{cases}\end{split}\]</div>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-0">
@@ -515,314 +520,59 @@ MATLAB Code</label><div class="sd-tab-content docutils">
 </div>
 <p><font color='Blue'><b>Example</b></font>: Consider the following IVP,</p>
 <div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+\[\begin{equation*}
 \begin{cases}
-y'+2ty=te^{-t^2},\quad 0 \leq t \leq 1,\\
+y'+2ty=te^{-t^2},&amp; 0 \leq t \leq 1,\\
 y(0) = 1,
 \end{cases}
-\end{align*}\]</div>
-<p>with exact solution</p>
+\end{equation*}\]</div>
+<p>with exact solution <span class="math notranslate nohighlight">\(\displaystyle y\left(t \right) = \left(1 + \dfrac{t^{2}}{2}\right) e^{- t^{2}}\)</span>. Use the forward Euler method with <span class="math notranslate nohighlight">\(n = 10\)</span> for solving this IVP.</p>
+<p><font color='Green'><b>Solution</b></font>:</p>
+<p>For <strong><span class="math notranslate nohighlight">\(n = 10\)</span></strong>: <span class="math notranslate nohighlight">\([0,~1]\)</span> can be discretized using</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+h = \frac{b - a}{n} = \frac{1 - 0}{10} = 0.1
+\end{equation*}\]</div>
+<p>as follows,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\left\{
+0,~0.1,~0.2,~0.3,~0.4,~0.5,~0.6,~0.7,~0.8,~0.9,~1.0
+\right\}
+\end{equation*}\]</div>
+<p>Observe that, here,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-y\left(t \right) = \left(1 + \dfrac{t^{2}}{2}\right) e^{- t^{2}}.
+y'= \underbrace{te^{-t^2}-2ty}_{f(t,~y)},\quad 0 \leq t \leq 1.
 \end{align*}\]</div>
-<p>Use the forward Euler method for solving this IVP.</p>
-<p><font color='Green'><b>Solution</b></font>:</p>
+<p>Now using \eqref{eq.06.02}, we get,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+w_{0} &amp;= 1,\\
+w_{1} &amp;= w_{0} + hf(t_{0}, w_{0}) = 1 + (0.1)\,f(0,~1) = 1,\\
+w_{2} &amp;= w_{1} + hf(t_{1}, w_{1}) = 1 + (0.1)\,f(0.1,~1) = 0.9899004983,\\
+\vdots &amp;\\
+w_{10} &amp;= w_{9} + hf(t_{9}, w_{9}) = 0.6468407511 + (0.1)\,f(0.9,~0.6468407511) = 0.5704466419.
+\end{align*}\]</div>
+<p>Furthermore, using the exact solution, we can calculate the exact values at these discretized points. Let <span class="math notranslate nohighlight">\(y_{j} = y(t_{j})\)</span> for <span class="math notranslate nohighlight">\(0 \leq j \leq 10\)</span> denote the exact values at the discretized points. Using</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+y\left(t_{j} \right) = \left(1 + \dfrac{t_{j}^{2}}{2}\right) e^{-t_{j}^{2}},
+\quad j = 0,1,2,\ldots,10
+\end{equation*}\]</div>
+<p>we have,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+y_{0} = 1.000000,~y_{1} = 0.995000,~y_{2} = 0.980005,~\dots,~y_{10} = 0.551819.
+\end{equation*}\]</div>
+<p>Finally, the absolute error can be calculated using <span class="math notranslate nohighlight">\(| w_{i}- y_{i}|\)</span> for <span class="math notranslate nohighlight">\(j = 0,1,2,\ldots,10\)</span>. The results can be summarized as follows,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">hd_tools</span> <span class="k">as</span> <span class="nn">hd</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div class="bk-root">
-        <a href="https://bokeh.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-        <span id="1002">Loading BokehJS ...</span>
-    </div>
-</div><script type="application/javascript">(function(root) {
-  function now() {
-    return new Date();
-  }
 
-  const force = true;
-
-  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
-    root._bokeh_onload_callbacks = [];
-    root._bokeh_is_loading = undefined;
-  }
-
-const JS_MIME_TYPE = 'application/javascript';
-  const HTML_MIME_TYPE = 'text/html';
-  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
-  const CLASS_NAME = 'output_bokeh rendered_html';
-
-  /**
-   * Render data to the DOM node
-   */
-  function render(props, node) {
-    const script = document.createElement("script");
-    node.appendChild(script);
-  }
-
-  /**
-   * Handle when an output is cleared or removed
-   */
-  function handleClearOutput(event, handle) {
-    const cell = handle.cell;
-
-    const id = cell.output_area._bokeh_element_id;
-    const server_id = cell.output_area._bokeh_server_id;
-    // Clean up Bokeh references
-    if (id != null && id in Bokeh.index) {
-      Bokeh.index[id].model.document.clear();
-      delete Bokeh.index[id];
-    }
-
-    if (server_id !== undefined) {
-      // Clean up Bokeh references
-      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
-      cell.notebook.kernel.execute(cmd_clean, {
-        iopub: {
-          output: function(msg) {
-            const id = msg.content.text.trim();
-            if (id in Bokeh.index) {
-              Bokeh.index[id].model.document.clear();
-              delete Bokeh.index[id];
-            }
-          }
-        }
-      });
-      // Destroy server and session
-      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
-      cell.notebook.kernel.execute(cmd_destroy);
-    }
-  }
-
-  /**
-   * Handle when a new output is added
-   */
-  function handleAddOutput(event, handle) {
-    const output_area = handle.output_area;
-    const output = handle.output;
-
-    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
-    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
-      return
-    }
-
-    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
-
-    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
-      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
-      // store reference to embed id on output_area
-      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
-    }
-    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
-      const bk_div = document.createElement("div");
-      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
-      const script_attrs = bk_div.children[0].attributes;
-      for (let i = 0; i < script_attrs.length; i++) {
-        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
-        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
-      }
-      // store reference to server id on output_area
-      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
-    }
-  }
-
-  function register_renderer(events, OutputArea) {
-
-    function append_mime(data, metadata, element) {
-      // create a DOM node to render to
-      const toinsert = this.create_output_subarea(
-        metadata,
-        CLASS_NAME,
-        EXEC_MIME_TYPE
-      );
-      this.keyboard_manager.register_events(toinsert);
-      // Render to node
-      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
-      render(props, toinsert[toinsert.length - 1]);
-      element.append(toinsert);
-      return toinsert
-    }
-
-    /* Handle when an output is cleared or removed */
-    events.on('clear_output.CodeCell', handleClearOutput);
-    events.on('delete.Cell', handleClearOutput);
-
-    /* Handle when a new output is added */
-    events.on('output_added.OutputArea', handleAddOutput);
-
-    /**
-     * Register the mime type and append_mime function with output_area
-     */
-    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
-      /* Is output safe? */
-      safe: true,
-      /* Index of renderer in `output_area.display_order` */
-      index: 0
-    });
-  }
-
-  // register the mime type if in Jupyter Notebook environment and previously unregistered
-  if (root.Jupyter !== undefined) {
-    const events = require('base/js/events');
-    const OutputArea = require('notebook/js/outputarea').OutputArea;
-
-    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
-      register_renderer(events, OutputArea);
-    }
-  }
-  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
-    root._bokeh_timeout = Date.now() + 5000;
-    root._bokeh_failed_load = false;
-  }
-
-  const NB_LOAD_WARNING = {'data': {'text/html':
-     "<div style='background-color: #fdd'>\n"+
-     "<p>\n"+
-     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
-     "may be due to a slow or bad network connection. Possible fixes:\n"+
-     "</p>\n"+
-     "<ul>\n"+
-     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
-     "<li>use INLINE resources instead, as so:</li>\n"+
-     "</ul>\n"+
-     "<code>\n"+
-     "from bokeh.resources import INLINE\n"+
-     "output_notebook(resources=INLINE)\n"+
-     "</code>\n"+
-     "</div>"}};
-
-  function display_loaded() {
-    const el = document.getElementById("1002");
-    if (el != null) {
-      el.textContent = "BokehJS is loading...";
-    }
-    if (root.Bokeh !== undefined) {
-      if (el != null) {
-        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
-      }
-    } else if (Date.now() < root._bokeh_timeout) {
-      setTimeout(display_loaded, 100)
-    }
-  }
-
-  function run_callbacks() {
-    try {
-      root._bokeh_onload_callbacks.forEach(function(callback) {
-        if (callback != null)
-          callback();
-      });
-    } finally {
-      delete root._bokeh_onload_callbacks
-    }
-    console.debug("Bokeh: all callbacks have finished");
-  }
-
-  function load_libs(css_urls, js_urls, callback) {
-    if (css_urls == null) css_urls = [];
-    if (js_urls == null) js_urls = [];
-
-    root._bokeh_onload_callbacks.push(callback);
-    if (root._bokeh_is_loading > 0) {
-      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
-      return null;
-    }
-    if (js_urls == null || js_urls.length === 0) {
-      run_callbacks();
-      return null;
-    }
-    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
-    root._bokeh_is_loading = css_urls.length + js_urls.length;
-
-    function on_load() {
-      root._bokeh_is_loading--;
-      if (root._bokeh_is_loading === 0) {
-        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
-        run_callbacks()
-      }
-    }
-
-    function on_error(url) {
-      console.error("failed to load " + url);
-    }
-
-    for (let i = 0; i < css_urls.length; i++) {
-      const url = css_urls[i];
-      const element = document.createElement("link");
-      element.onload = on_load;
-      element.onerror = on_error.bind(null, url);
-      element.rel = "stylesheet";
-      element.type = "text/css";
-      element.href = url;
-      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
-      document.body.appendChild(element);
-    }
-
-    for (let i = 0; i < js_urls.length; i++) {
-      const url = js_urls[i];
-      const element = document.createElement('script');
-      element.onload = on_load;
-      element.onerror = on_error.bind(null, url);
-      element.async = false;
-      element.src = url;
-      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
-      document.head.appendChild(element);
-    }
-  };
-
-  function inject_raw_css(css) {
-    const element = document.createElement("style");
-    element.appendChild(document.createTextNode(css));
-    document.body.appendChild(element);
-  }
-
-  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-2.4.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.3.min.js"];
-  const css_urls = [];
-
-  const inline_js = [    function(Bokeh) {
-      Bokeh.set_log_level("info");
-    },
-function(Bokeh) {
-    }
-  ];
-
-  function run_inline_js() {
-    if (root.Bokeh !== undefined || force === true) {
-          for (let i = 0; i < inline_js.length; i++) {
-      inline_js[i].call(root, root.Bokeh);
-    }
-if (force === true) {
-        display_loaded();
-      }} else if (Date.now() < root._bokeh_timeout) {
-      setTimeout(run_inline_js, 100);
-    } else if (!root._bokeh_failed_load) {
-      console.log("Bokeh: BokehJS failed to load within specified timeout.");
-      root._bokeh_failed_load = true;
-    } else if (force !== true) {
-      const cell = $(document.getElementById("1002")).parents('.cell').data().cell;
-      cell.output_area.append_execute_result(NB_LOAD_WARNING)
-    }
-  }
-
-  if (root._bokeh_is_loading === 0) {
-    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
-    run_inline_js();
-  } else {
-    load_libs(css_urls, js_urls, function() {
-      console.debug("Bokeh: BokehJS plotting callback run at", now());
-      run_inline_js();
-    });
-  }
-}(window));</script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">hd_IVP_Algorithms</span> <span class="kn">import</span> <span class="n">ForwardEuler</span>  
 
@@ -837,139 +587,443 @@ if (force === true) {
 <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Exact&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
 <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Exact&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
 <span class="n">display</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">],</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;Lavender&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;Navy&#39;</span><span class="p">,</span>
-                                                <span class="s1">&#39;border-color&#39;</span><span class="p">:</span> <span class="s1">&#39;DarkGreen&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Error&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.4e}</span><span class="s2">&quot;</span><span class="p">}))</span>
+                                                <span class="s1">&#39;border-color&#39;</span><span class="p">:</span> <span class="s1">&#39;DarkGreen&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Error&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.6e}</span><span class="s2">&quot;</span><span class="p">}))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_f279f_row0_col3, #T_f279f_row1_col3, #T_f279f_row2_col3, #T_f279f_row3_col3, #T_f279f_row4_col3, #T_f279f_row5_col3, #T_f279f_row6_col3, #T_f279f_row7_col3, #T_f279f_row8_col3, #T_f279f_row9_col3 {
+#T_45ca5_row0_col3, #T_45ca5_row1_col3, #T_45ca5_row2_col3, #T_45ca5_row3_col3, #T_45ca5_row4_col3, #T_45ca5_row5_col3, #T_45ca5_row6_col3, #T_45ca5_row7_col3, #T_45ca5_row8_col3, #T_45ca5_row9_col3 {
   background-color: Lavender;
   color: Navy;
   border-color: DarkGreen;
 }
 </style>
-<table id="T_f279f">
+<table id="T_45ca5">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_f279f_level0_col0" class="col_heading level0 col0" >t</th>
-      <th id="T_f279f_level0_col1" class="col_heading level0 col1" >y</th>
-      <th id="T_f279f_level0_col2" class="col_heading level0 col2" >Exact</th>
-      <th id="T_f279f_level0_col3" class="col_heading level0 col3" >Error</th>
+      <th id="T_45ca5_level0_col0" class="col_heading level0 col0" >t</th>
+      <th id="T_45ca5_level0_col1" class="col_heading level0 col1" >y</th>
+      <th id="T_45ca5_level0_col2" class="col_heading level0 col2" >Exact</th>
+      <th id="T_45ca5_level0_col3" class="col_heading level0 col3" >Error</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_f279f_level0_row0" class="row_heading level0 row0" >1</th>
-      <td id="T_f279f_row0_col0" class="data row0 col0" >0.100000</td>
-      <td id="T_f279f_row0_col1" class="data row0 col1" >1.000000</td>
-      <td id="T_f279f_row0_col2" class="data row0 col2" >0.995000</td>
-      <td id="T_f279f_row0_col3" class="data row0 col3" >4.9999e-03</td>
+      <th id="T_45ca5_level0_row0" class="row_heading level0 row0" >1</th>
+      <td id="T_45ca5_row0_col0" class="data row0 col0" >0.100000</td>
+      <td id="T_45ca5_row0_col1" class="data row0 col1" >1.000000</td>
+      <td id="T_45ca5_row0_col2" class="data row0 col2" >0.995000</td>
+      <td id="T_45ca5_row0_col3" class="data row0 col3" >4.999917e-03</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row1" class="row_heading level0 row1" >2</th>
-      <td id="T_f279f_row1_col0" class="data row1 col0" >0.200000</td>
-      <td id="T_f279f_row1_col1" class="data row1 col1" >0.989900</td>
-      <td id="T_f279f_row1_col2" class="data row1 col2" >0.980005</td>
-      <td id="T_f279f_row1_col3" class="data row1 col3" >9.8953e-03</td>
+      <th id="T_45ca5_level0_row1" class="row_heading level0 row1" >2</th>
+      <td id="T_45ca5_row1_col0" class="data row1 col0" >0.200000</td>
+      <td id="T_45ca5_row1_col1" class="data row1 col1" >0.989900</td>
+      <td id="T_45ca5_row1_col2" class="data row1 col2" >0.980005</td>
+      <td id="T_45ca5_row1_col3" class="data row1 col3" >9.895270e-03</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row2" class="row_heading level0 row2" >3</th>
-      <td id="T_f279f_row2_col0" class="data row2 col0" >0.300000</td>
-      <td id="T_f279f_row2_col1" class="data row2 col1" >0.969520</td>
-      <td id="T_f279f_row2_col2" class="data row2 col2" >0.955058</td>
-      <td id="T_f279f_row2_col3" class="data row2 col3" >1.4462e-02</td>
+      <th id="T_45ca5_level0_row2" class="row_heading level0 row2" >3</th>
+      <td id="T_45ca5_row2_col0" class="data row2 col0" >0.300000</td>
+      <td id="T_45ca5_row2_col1" class="data row2 col1" >0.969520</td>
+      <td id="T_45ca5_row2_col2" class="data row2 col2" >0.955058</td>
+      <td id="T_45ca5_row2_col3" class="data row2 col3" >1.446218e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row3" class="row_heading level0 row3" >4</th>
-      <td id="T_f279f_row3_col0" class="data row3 col0" >0.400000</td>
-      <td id="T_f279f_row3_col1" class="data row3 col1" >0.938767</td>
-      <td id="T_f279f_row3_col2" class="data row3 col2" >0.920315</td>
-      <td id="T_f279f_row3_col3" class="data row3 col3" >1.8452e-02</td>
+      <th id="T_45ca5_level0_row3" class="row_heading level0 row3" >4</th>
+      <td id="T_45ca5_row3_col0" class="data row3 col0" >0.400000</td>
+      <td id="T_45ca5_row3_col1" class="data row3 col1" >0.938767</td>
+      <td id="T_45ca5_row3_col2" class="data row3 col2" >0.920315</td>
+      <td id="T_45ca5_row3_col3" class="data row3 col3" >1.845169e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row4" class="row_heading level0 row4" >5</th>
-      <td id="T_f279f_row4_col0" class="data row4 col0" >0.500000</td>
-      <td id="T_f279f_row4_col1" class="data row4 col1" >0.897751</td>
-      <td id="T_f279f_row4_col2" class="data row4 col2" >0.876151</td>
-      <td id="T_f279f_row4_col3" class="data row4 col3" >2.1600e-02</td>
+      <th id="T_45ca5_level0_row4" class="row_heading level0 row4" >5</th>
+      <td id="T_45ca5_row4_col0" class="data row4 col0" >0.500000</td>
+      <td id="T_45ca5_row4_col1" class="data row4 col1" >0.897751</td>
+      <td id="T_45ca5_row4_col2" class="data row4 col2" >0.876151</td>
+      <td id="T_45ca5_row4_col3" class="data row4 col3" >2.160050e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row5" class="row_heading level0 row5" >6</th>
-      <td id="T_f279f_row5_col0" class="data row5 col0" >0.600000</td>
-      <td id="T_f279f_row5_col1" class="data row5 col1" >0.846916</td>
-      <td id="T_f279f_row5_col2" class="data row5 col2" >0.823258</td>
-      <td id="T_f279f_row5_col3" class="data row5 col3" >2.3658e-02</td>
+      <th id="T_45ca5_level0_row5" class="row_heading level0 row5" >6</th>
+      <td id="T_45ca5_row5_col0" class="data row5 col0" >0.600000</td>
+      <td id="T_45ca5_row5_col1" class="data row5 col1" >0.846916</td>
+      <td id="T_45ca5_row5_col2" class="data row5 col2" >0.823258</td>
+      <td id="T_45ca5_row5_col3" class="data row5 col3" >2.365822e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row6" class="row_heading level0 row6" >7</th>
-      <td id="T_f279f_row6_col0" class="data row6 col0" >0.700000</td>
-      <td id="T_f279f_row6_col1" class="data row6 col1" >0.787147</td>
-      <td id="T_f279f_row6_col2" class="data row6 col2" >0.762720</td>
-      <td id="T_f279f_row6_col3" class="data row6 col3" >2.4427e-02</td>
+      <th id="T_45ca5_level0_row6" class="row_heading level0 row6" >7</th>
+      <td id="T_45ca5_row6_col0" class="data row6 col0" >0.700000</td>
+      <td id="T_45ca5_row6_col1" class="data row6 col1" >0.787147</td>
+      <td id="T_45ca5_row6_col2" class="data row6 col2" >0.762720</td>
+      <td id="T_45ca5_row6_col3" class="data row6 col3" >2.442705e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row7" class="row_heading level0 row7" >8</th>
-      <td id="T_f279f_row7_col0" class="data row7 col0" >0.800000</td>
-      <td id="T_f279f_row7_col1" class="data row7 col1" >0.719830</td>
-      <td id="T_f279f_row7_col2" class="data row7 col2" >0.696026</td>
-      <td id="T_f279f_row7_col3" class="data row7 col3" >2.3804e-02</td>
+      <th id="T_45ca5_level0_row7" class="row_heading level0 row7" >8</th>
+      <td id="T_45ca5_row7_col0" class="data row7 col0" >0.800000</td>
+      <td id="T_45ca5_row7_col1" class="data row7 col1" >0.719830</td>
+      <td id="T_45ca5_row7_col2" class="data row7 col2" >0.696026</td>
+      <td id="T_45ca5_row7_col3" class="data row7 col3" >2.380419e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row8" class="row_heading level0 row8" >9</th>
-      <td id="T_f279f_row8_col0" class="data row8 col0" >0.900000</td>
-      <td id="T_f279f_row8_col1" class="data row8 col1" >0.646841</td>
-      <td id="T_f279f_row8_col2" class="data row8 col2" >0.625026</td>
-      <td id="T_f279f_row8_col3" class="data row8 col3" >2.1815e-02</td>
+      <th id="T_45ca5_level0_row8" class="row_heading level0 row8" >9</th>
+      <td id="T_45ca5_row8_col0" class="data row8 col0" >0.900000</td>
+      <td id="T_45ca5_row8_col1" class="data row8 col1" >0.646841</td>
+      <td id="T_45ca5_row8_col2" class="data row8 col2" >0.625026</td>
+      <td id="T_45ca5_row8_col3" class="data row8 col3" >2.181517e-02</td>
     </tr>
     <tr>
-      <th id="T_f279f_level0_row9" class="row_heading level0 row9" >10</th>
-      <td id="T_f279f_row9_col0" class="data row9 col0" >1.000000</td>
-      <td id="T_f279f_row9_col1" class="data row9 col1" >0.570447</td>
-      <td id="T_f279f_row9_col2" class="data row9 col2" >0.551819</td>
-      <td id="T_f279f_row9_col3" class="data row9 col3" >1.8627e-02</td>
+      <th id="T_45ca5_level0_row9" class="row_heading level0 row9" >10</th>
+      <td id="T_45ca5_row9_col0" class="data row9 col0" >1.000000</td>
+      <td id="T_45ca5_row9_col1" class="data row9 col1" >0.570447</td>
+      <td id="T_45ca5_row9_col2" class="data row9 col2" >0.551819</td>
+      <td id="T_45ca5_row9_col3" class="data row9 col3" >1.862748e-02</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
-<div class="section" id="error-analysis">
-<h3><span class="section-number">6.1.1.1. </span>Error Analysis<a class="headerlink" href="#error-analysis" title="Permalink to this headline">#</a></h3>
+<div class="section" id="error-bounds-for-forward-eulers-method">
+<h3><span class="section-number">6.3.1.1. </span>Error Bounds for (Forward) Euler’s Method<a class="headerlink" href="#error-bounds-for-forward-eulers-method" title="Permalink to this headline">#</a></h3>
+<p>The following lemma is <strong>Lemma 5.7</strong> from <span id="id1">[<a class="reference internal" href="../References.html#id2" title="Richard L. Burden and J. Douglas Faires. Numerical analysis 8th ed. Thomson Brooks/Cole, 2005.">Burden and Faires, 2005</a>]</span>.</p>
 <div class="tip admonition">
 <p class="admonition-title">Lemma</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-0 \leq (1 + x)^m \leq \exp(mx),\quad x \geq -1,~m&gt;0.
-\end{align*}\]</div>
+<p>For all <span class="math notranslate nohighlight">\(x \geq -1\)</span> and any positive <span class="math notranslate nohighlight">\(m\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a3d6a4e9-bf89-4296-8ce3-a91ca419c5b4">
+<span class="eqno">(6.15)<a class="headerlink" href="#equation-a3d6a4e9-bf89-4296-8ce3-a91ca419c5b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+0 \leq (1 + x)^m \leq \exp(mx),\quad x \geq - 1,~m&gt;0.
+\end{equation}\]</div>
 </div>
-<div class="tip admonition">
+<p><font color='Green'><b>Proof</b></font>:
+Using Taylor’s Theorem from \eqref{Taylor_App} with <span class="math notranslate nohighlight">\(f(x) = e^{x}\)</span>, <span class="math notranslate nohighlight">\(x_0 = 0\)</span>, and <span class="math notranslate nohighlight">\(n = 1\)</span>, we have,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-896ac234-663d-4584-a1ab-491664b5a719">
+<span class="eqno">(6.16)<a class="headerlink" href="#equation-896ac234-663d-4584-a1ab-491664b5a719" title="Permalink to this equation">#</a></span>\[\begin{equation}
+e^x = 1 + x + \frac{1}{2}x^2 e^{\xi},
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi\)</span> is a number between <span class="math notranslate nohighlight">\(x\)</span> and zero. Therefore,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-568a03f0-b430-44ee-9d46-fec4255e0334">
+<span class="eqno">(6.17)<a class="headerlink" href="#equation-568a03f0-b430-44ee-9d46-fec4255e0334" title="Permalink to this equation">#</a></span>\[\begin{equation}
+0 \leq 1 + x \leq 1 + x + \frac{1}{2}x^2e^{\xi} = e^{x}.
+\end{equation}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(1 + x \geq 0\)</span>, we have</p>
+<div class="amsmath math notranslate nohighlight" id="equation-98e876e9-f02b-47d9-84c6-c1854d957fda">
+<span class="eqno">(6.18)<a class="headerlink" href="#equation-98e876e9-f02b-47d9-84c6-c1854d957fda" title="Permalink to this equation">#</a></span>\[\begin{equation}
+0\leq (1 + x)^m \leq (e^{x})^{m} = e^{mx}.
+\end{equation}\]</div>
+<p>The following lemma is <strong>Lemma 5.8</strong> from <span id="id2">[<a class="reference internal" href="../References.html#id2" title="Richard L. Burden and J. Douglas Faires. Numerical analysis 8th ed. Thomson Brooks/Cole, 2005.">Burden and Faires, 2005</a>]</span>.</p>
+<div class="admonition-lemma admonition">
 <p class="admonition-title">Lemma</p>
-<p>Assume that <span class="math notranslate nohighlight">\(\{ a_{i} \}_{i =0}^{k}\)</span> is a sequence satisfying <span class="math notranslate nohighlight">\(a_{0} \geq -t/s\)</span> for some positive values <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>, and</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+<p>Assume that <span class="math notranslate nohighlight">\(\{ a_{i} \}_{i =0}^{k}\)</span> is a sequence satisfying <span class="math notranslate nohighlight">\( a_{0} \geq -t/s\)</span> for some positive values <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(t\)</span>, and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c09194c0-b9de-405b-81f2-dbdd62629faa">
+<span class="eqno">(6.19)<a class="headerlink" href="#equation-c09194c0-b9de-405b-81f2-dbdd62629faa" title="Permalink to this equation">#</a></span>\[\begin{equation}\label{Lemma5.9_eq01}
 a_{i+1} \leq (1 + s)a_{i} + t,\quad i = 0,1,2,\ldots, k-1,
-\end{align*}\]</div>
+\end{equation}\]</div>
 <p>then,</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+<div class="amsmath math notranslate nohighlight" id="equation-e3a0541d-7def-4230-a236-a8775efbe4bb">
+<span class="eqno">(6.20)<a class="headerlink" href="#equation-e3a0541d-7def-4230-a236-a8775efbe4bb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 a_{i+1} \leq \exp((i+1)s) \left( a_{0} + \frac{t}{s} \right) - \frac{t}{s}.
-\end{align*}\]</div>
+\end{equation}\]</div>
 </div>
+<p><font color='Green'><b>Proof</b></font>:
+Let’s fixed index <span class="math notranslate nohighlight">\(i\)</span> and then if follows from the above lemma that,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4177eef0-620d-4615-b7cb-f3e82b316c4b">
+<span class="eqno">(6.21)<a class="headerlink" href="#equation-4177eef0-620d-4615-b7cb-f3e82b316c4b" title="Permalink to this equation">#</a></span>\[\begin{align}
+a_{i+1} &amp;\leq (1 + s)a_{i} + t
+\notag \\
+&amp;\leq  (1 + s)[(1 + s)a_{i-1} + t] + t = (1 + s)^{2}a_{i-1} + [1 + (1 + s)]t
+\notag \\
+&amp;\leq  (1 + s)^3a_{i-2} + \left[ 1 + (1 + s) + (1 + s)^{2}\right]t
+\notag \\
+&amp;\vdots
+\\
+&amp;\leq (1 + s)^{i+1}a_{0} + \left[1 + (1 + s) + (1 + s)^2 +\ldots + (1 + s)^{i}\right]t.
+\end{align}\]</div>
+<p>On the other hand,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2f1e6ae2-20f4-4c27-94f9-236d0888be3f">
+<span class="eqno">(6.22)<a class="headerlink" href="#equation-2f1e6ae2-20f4-4c27-94f9-236d0888be3f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+1 + (1 + s) + (1 + s)^2 +\ldots + (1 + s)^{i} = \sum_{j = 1}^{i}(1 + s)^{j}
+\end{equation}\]</div>
+<p>represent a geometric series with ratio <span class="math notranslate nohighlight">\((1 + s)\)</span>. Thus,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-75ee0d17-a684-499b-97aa-5c5b6f25b2d6">
+<span class="eqno">(6.23)<a class="headerlink" href="#equation-75ee0d17-a684-499b-97aa-5c5b6f25b2d6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\frac{1 - (1+s)^{i+1}}{1 - (1+s)} = \frac{1}{s}\left[(1 + s)^{i+1} -1 \right].
+\end{equation}\]</div>
+<p>Therefore,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b1b17feb-2942-4aa4-8f46-9bb21c00e7e8">
+<span class="eqno">(6.24)<a class="headerlink" href="#equation-b1b17feb-2942-4aa4-8f46-9bb21c00e7e8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+a_{i+1} \leq (1+ s)^{i+1} a_{0} + \frac{(1+s)^{i+1} - 1}{s}t = (1+s)^{i+1}\left(a_{0} + \frac{t}{s} \right)
+- \frac{t}{s}.
+\end{equation}\]</div>
+<p>Now, it follows from using Lemma \ref{lemma_5.7} with <span class="math notranslate nohighlight">\(x = 1 + s\)</span> that,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e6151553-2ea9-408e-92b6-0a2a68676720">
+<span class="eqno">(6.25)<a class="headerlink" href="#equation-e6151553-2ea9-408e-92b6-0a2a68676720" title="Permalink to this equation">#</a></span>\[\begin{equation}
+a_{i+1} \leq \exp((i+1)s) \left( a_{0} + \frac{t}{s} \right) - \frac{t}{s}.
+\end{equation}\]</div>
+<p>\end{proof}</p>
+<p>The following theorem is <strong>Theorem 5.9</strong> from <span id="id3">[<a class="reference internal" href="../References.html#id2" title="Richard L. Burden and J. Douglas Faires. Numerical analysis 8th ed. Thomson Brooks/Cole, 2005.">Burden and Faires, 2005</a>]</span>.</p>
 <div class="admonition-theorem admonition">
 <p class="admonition-title">Theorem</p>
-<p>Assume that domain <span class="math notranslate nohighlight">\(D = \{ (t, y):~a\leq t \leq b,~\infty&lt;y \infty\}\)</span> and <span class="math notranslate nohighlight">\(f\in C(D)\)</span>. If <span class="math notranslate nohighlight">\(f\)</span> satisfies a Lipschitz condition on <span class="math notranslate nohighlight">\(D\)</span> in the variable <span class="math notranslate nohighlight">\(y\)</span> with constant <span class="math notranslate nohighlight">\(L\)</span> and assume that constant <span class="math notranslate nohighlight">\(M\)</span> exists such that</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
+<p>Assume that domain <span class="math notranslate nohighlight">\(D = \{ (t, y):~a\leq t \leq b,~-\infty&lt;y &lt;\infty\}\)</span> and <span class="math notranslate nohighlight">\(f\in C(D)\)</span>. If <span class="math notranslate nohighlight">\(f\)</span> satisfies a Lipschitz condition on <span class="math notranslate nohighlight">\(D\)</span> in the variable <span class="math notranslate nohighlight">\(y\)</span> with constant <span class="math notranslate nohighlight">\(L\)</span> and assume that constant <span class="math notranslate nohighlight">\(M\)</span> exists such that</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7decceb7-3212-45ec-b97b-36c77d090ca1">
+<span class="eqno">(6.26)<a class="headerlink" href="#equation-7decceb7-3212-45ec-b97b-36c77d090ca1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 | y''(t)| \leq M, \quad t\in [a, b],
-\end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(y(t)\)</span> denotes the unique solution to the IVP <a class="reference internal" href="#equation-ivp-01">(6.1)</a>.</p>
-<p>Assume that <span class="math notranslate nohighlight">\(w_0\)</span>, <span class="math notranslate nohighlight">\(w_1\)</span>, …, <span class="math notranslate nohighlight">\(w_N\)</span> are the approximations generated by Euler’s method for some positive integer <span class="math notranslate nohighlight">\(N.\)</span> Then, for each</p>
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(y(t)\)</span> denotes the unique solution to the IVP <a class="reference internal" href="#equation-ivp-01">(6.11)</a>.</p>
+<p>Assume that <span class="math notranslate nohighlight">\(w_0\)</span>, <span class="math notranslate nohighlight">\(w_1\)</span>, \ldots , <span class="math notranslate nohighlight">\(w_n\)</span> are the approximations generated by Euler’s method for some positive
+integer <span class="math notranslate nohighlight">\(n\)</span>. Therefore,</p>
+<div class="math notranslate nohighlight" id="equation-eulermethod-errorbound-eq01">
+<span class="eqno">(6.27)<a class="headerlink" href="#equation-eulermethod-errorbound-eq01" title="Permalink to this equation">#</a></span>\[| y(t_{i}) - w_{i}| \leq \frac{hM}{2L}\left[ \exp(L(t_{i} - a)) -1 \right],\quad  i = 0,~1,~2, \ldots ,~n.\]</div>
+</div>
+<p><font color='Green'><b>Proof</b></font>:</p>
+<p>In case \hlg{<span class="math notranslate nohighlight">\(i = 0\)</span>}, the result is true since <span class="math notranslate nohighlight">\(y(t_{0}) = w_{0} = \alpha\)</span>. From <a class="reference internal" href="#equation-euler-method-tp-eq01">(6.13)</a> that,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-088a29a1-9621-41da-b91f-eb294685db24">
+<span class="eqno">(6.28)<a class="headerlink" href="#equation-088a29a1-9621-41da-b91f-eb294685db24" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y(t_{j+1}) = y(t_{j}) + hf(t_{j}, y(t_{j})) + \frac{h^2}{2} y''(\xi_{i}),
+\end{equation}\]</div>
+<p>for <span class="math notranslate nohighlight">\(i = 0, 1, . . . , n - 1\)</span>, and from the equations in <a class="reference internal" href="#equation-eq-06-02">(6.14)</a>,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-14477c72-793c-48f0-b192-35667a9221bf">
+<span class="eqno">(6.29)<a class="headerlink" href="#equation-14477c72-793c-48f0-b192-35667a9221bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+w_{i+1} = w_{i} + hf(t_{i},~w_{i})\quad i = 0,~1,~2,\ldots,~n-1.
+\end{equation}\]</div>
+<p>Now, let <span class="math notranslate nohighlight">\(y_{i} = y(t_{i})\)</span> and <span class="math notranslate nohighlight">\(y_{i+1} = y(t_{i+1})\)</span>, then</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2e7b7527-a642-4640-abcb-b6772e265d80">
+<span class="eqno">(6.30)<a class="headerlink" href="#equation-2e7b7527-a642-4640-abcb-b6772e265d80" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y_{i+1} - w_{i+1} =  y_{i} - w_{i} + hf(t_{i},~y_{i}) - hf(t_{i},~w_{i}) + \frac{h^2}{2} y''(\xi_{i}).
+\end{equation}\]</div>
+<p>Therefore,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d47b8f2a-98ed-4f6a-bbe6-b3770b045aa7">
+<span class="eqno">(6.31)<a class="headerlink" href="#equation-d47b8f2a-98ed-4f6a-bbe6-b3770b045aa7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+|y_{i+1} - w_{i+1}| \leq  |y_{i} - w_{i}| + h|f(t_{i},~y_{i}) - f(t_{i},~w_{i})| + \frac{h^2}{2} y''(\xi_{i}).
+\end{equation}\]</div>
+<p>As <span class="math notranslate nohighlight">\(f\)</span> satisfies a Lipschits condition in the second variable, <span class="math notranslate nohighlight">\(y\)</span>, with constant <span class="math notranslate nohighlight">\(L\)</span>, and <span class="math notranslate nohighlight">\(|y''(t)|\leq M\)</span>. Therefore,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d9b8c0ee-66c0-4ef8-883d-b8fd65292a78">
+<span class="eqno">(6.32)<a class="headerlink" href="#equation-d9b8c0ee-66c0-4ef8-883d-b8fd65292a78" title="Permalink to this equation">#</a></span>\[\begin{equation}
+|y_{i+1} - w_{i+1}| \leq  ( 1 + hL)|y_{i} - w_{i}| + \frac{h^2\,M}{2}.
+\end{equation}\]</div>
+<p>At this point, we use Lemma \ref{lemma_5.8} and let <span class="math notranslate nohighlight">\(s = hL\)</span>, <span class="math notranslate nohighlight">\(t = (h^2\, M)/2\)</span>, and <span class="math notranslate nohighlight">\(a_{j} = |y_{j} - w_{j}|\)</span>, for reach <span class="math notranslate nohighlight">\(j = 0,1,\ldots, n\)</span>, it follows that</p>
+<div class="amsmath math notranslate nohighlight" id="equation-90e8e3dc-f980-43da-ad24-df85d3087188">
+<span class="eqno">(6.33)<a class="headerlink" href="#equation-90e8e3dc-f980-43da-ad24-df85d3087188" title="Permalink to this equation">#</a></span>\[\begin{equation}
+|y_{i+1} - w_{i+1}| \leq  e^{(i+1)hL} \left( |y_{0} - w_{0} | + \frac{h^2\,M}{2hL} \right) - \frac{h^2\,M}{2hL}.
+\end{equation}\]</div>
+<p>As <span class="math notranslate nohighlight">\(|y_{0} - w_{0}| = 0\)</span> and <span class="math notranslate nohighlight">\((i+1)h = t_{i+1} - t_{0} = t_{i+1} - a\)</span>. Therefore,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9604c01b-1190-4b30-89a9-2595257646fd">
+<span class="eqno">(6.34)<a class="headerlink" href="#equation-9604c01b-1190-4b30-89a9-2595257646fd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+| y(t_{i+1}) - w_{i+1}| \leq \frac{hM}{2L}\left[ \exp(L(t_{i+1} - a)) -1 \right],\quad  i = 1,~ 2, \ldots , n-1.
+\end{equation}\]</div>
+<p>and</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f76cf144-b0bc-48b1-9c24-ff6e8f4ff756">
+<span class="eqno">(6.35)<a class="headerlink" href="#equation-f76cf144-b0bc-48b1-9c24-ff6e8f4ff756" title="Permalink to this equation">#</a></span>\[\begin{equation}
+| y(t_{i}) - w_{i}| \leq \frac{hM}{2L}\left[ \exp(L(t_{i} - a)) -1 \right],\quad  i = 0,~1,~2, \ldots ,~n.
+\end{equation}\]</div>
+<p><font color='Blue'><b>Example</b></font>:
+Consider the following IVP,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\begin{cases}
+y' = y - t^2 + 1,&amp; 0 \leq t \leq 2,\\
+y(0) = 0.5,
+\end{cases}
+\end{equation*}\]</div>
+<p>with exact solution</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+y(t) = (t + 1)^2 - 0.5\,\exp(t).
+\end{equation*}\]</div>
+<ul class="simple">
+<li><p>a. Use the forward Euler method with <span class="math notranslate nohighlight">\(h = 0.2\)</span> and solve this IVP.</p></li>
+<li><p>b. Find bounds for the approximation errors and compare these bounds to the absolute errors.</p></li>
+</ul>
+<p><font color='Green'><b>Solution</b></font>:</p>
+<p>a.
+Discretizing <span class="math notranslate nohighlight">\([0,~2]\)</span> using <span class="math notranslate nohighlight">\(h = 0.2\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\left\{0,~0.2,~0.4,~0.6,~0.8,~1.0,~1.2,~1.4,~1.6,~1.8,~2.0\right\}
+\end{equation*}\]</div>
+<p>Note that here <strong><span class="math notranslate nohighlight">\(n = 10\)</span></strong> as <span class="math notranslate nohighlight">\(\displaystyle{ n = \frac{b - a}{h} = \frac{2 - 0}{0.2} =  10}\)</span>.
+On the other hand,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+f(t, y) = y - t^2 + 1,\quad 0 \leq t \leq 2,\\
+\end{equation*}\]</div>
+<p>Therefore,</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-| y(t_{i}) - w_{i}| \leq \frac{hM}{2L}\left[ \exp(L(t_{i} - a)) -1 \right],\quad  i = 0, 1, 2, \ldots , N.
+w_{0} &amp;= 0.5,\\
+w_{1} &amp;= w_{0} + hf(t_{0}, w_{0}) = 0.8000000000 ,\\
+w_{2} &amp;= w_{1} + hf(t_{1}, w_{1}) = 1.1520000000,\\
+\vdots &amp;\\
+w_{10} &amp;= w_{9} + hf(t_{9}, w_{9}) = 4.8657845043.
 \end{align*}\]</div>
+<p>Similarly, the exact values at the discretized points can be calculated using the exact solution at <span class="math notranslate nohighlight">\(t_0 = 0\)</span>, <span class="math notranslate nohighlight">\(t_1 = 0.2\)</span>, <span class="math notranslate nohighlight">\(t_2 = 0.4\)</span>,\ldots, <span class="math notranslate nohighlight">\(t_8 = 1.6\)</span>, <span class="math notranslate nohighlight">\(t_9 = 1.8\)</span>, <span class="math notranslate nohighlight">\(t_{10} = 2.0\)</span>. The results can be summarized as follows,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># f(t, y(t)):</span>
+<span class="n">cot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># the exact solution y(t)</span>
+<span class="n">y_exact</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="c1"># Table</span>
+<span class="n">Table</span> <span class="o">=</span> <span class="n">ForwardEuler</span><span class="p">(</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">y0</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Exact&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+<span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="nb">abs</span><span class="p">(</span><span class="n">Table</span><span class="p">[</span><span class="s1">&#39;Exact&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">Table</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">],</span>
+                                   <span class="o">**</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;PaleGreen&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
+                                      <span class="s1">&#39;border-color&#39;</span><span class="p">:</span> <span class="s1">&#39;DarkGreen&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Error&#39;</span><span class="p">:</span><span class="s1">&#39;</span><span class="si">{:.6e}</span><span class="s1">&#39;</span><span class="p">}))</span>
+</pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_10d02_row0_col0, #T_10d02_row1_col0, #T_10d02_row2_col0, #T_10d02_row3_col0, #T_10d02_row4_col0, #T_10d02_row5_col0, #T_10d02_row6_col0, #T_10d02_row7_col0, #T_10d02_row8_col0, #T_10d02_row9_col0, #T_10d02_row10_col0 {
+  background-color: PaleGreen;
+  color: Black;
+  border-color: DarkGreen;
+}
+</style>
+<table id="T_10d02">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_10d02_level0_col0" class="col_heading level0 col0" >t</th>
+      <th id="T_10d02_level0_col1" class="col_heading level0 col1" >y</th>
+      <th id="T_10d02_level0_col2" class="col_heading level0 col2" >Exact</th>
+      <th id="T_10d02_level0_col3" class="col_heading level0 col3" >Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_10d02_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_10d02_row0_col0" class="data row0 col0" >0.000000</td>
+      <td id="T_10d02_row0_col1" class="data row0 col1" >0.500000</td>
+      <td id="T_10d02_row0_col2" class="data row0 col2" >0.500000</td>
+      <td id="T_10d02_row0_col3" class="data row0 col3" >0.000000e+00</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_10d02_row1_col0" class="data row1 col0" >0.200000</td>
+      <td id="T_10d02_row1_col1" class="data row1 col1" >0.800000</td>
+      <td id="T_10d02_row1_col2" class="data row1 col2" >0.829299</td>
+      <td id="T_10d02_row1_col3" class="data row1 col3" >2.929862e-02</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_10d02_row2_col0" class="data row2 col0" >0.400000</td>
+      <td id="T_10d02_row2_col1" class="data row2 col1" >1.152000</td>
+      <td id="T_10d02_row2_col2" class="data row2 col2" >1.214088</td>
+      <td id="T_10d02_row2_col3" class="data row2 col3" >6.208765e-02</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_10d02_row3_col0" class="data row3 col0" >0.600000</td>
+      <td id="T_10d02_row3_col1" class="data row3 col1" >1.550400</td>
+      <td id="T_10d02_row3_col2" class="data row3 col2" >1.648941</td>
+      <td id="T_10d02_row3_col3" class="data row3 col3" >9.854060e-02</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_10d02_row4_col0" class="data row4 col0" >0.800000</td>
+      <td id="T_10d02_row4_col1" class="data row4 col1" >1.988480</td>
+      <td id="T_10d02_row4_col2" class="data row4 col2" >2.127230</td>
+      <td id="T_10d02_row4_col3" class="data row4 col3" >1.387495e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_10d02_row5_col0" class="data row5 col0" >1.000000</td>
+      <td id="T_10d02_row5_col1" class="data row5 col1" >2.458176</td>
+      <td id="T_10d02_row5_col2" class="data row5 col2" >2.640859</td>
+      <td id="T_10d02_row5_col3" class="data row5 col3" >1.826831e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_10d02_row6_col0" class="data row6 col0" >1.200000</td>
+      <td id="T_10d02_row6_col1" class="data row6 col1" >2.949811</td>
+      <td id="T_10d02_row6_col2" class="data row6 col2" >3.179942</td>
+      <td id="T_10d02_row6_col3" class="data row6 col3" >2.301303e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_10d02_row7_col0" class="data row7 col0" >1.400000</td>
+      <td id="T_10d02_row7_col1" class="data row7 col1" >3.451773</td>
+      <td id="T_10d02_row7_col2" class="data row7 col2" >3.732400</td>
+      <td id="T_10d02_row7_col3" class="data row7 col3" >2.806266e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_10d02_row8_col0" class="data row8 col0" >1.600000</td>
+      <td id="T_10d02_row8_col1" class="data row8 col1" >3.950128</td>
+      <td id="T_10d02_row8_col2" class="data row8 col2" >4.283484</td>
+      <td id="T_10d02_row8_col3" class="data row8 col3" >3.333557e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row9" class="row_heading level0 row9" >9</th>
+      <td id="T_10d02_row9_col0" class="data row9 col0" >1.800000</td>
+      <td id="T_10d02_row9_col1" class="data row9 col1" >4.428154</td>
+      <td id="T_10d02_row9_col2" class="data row9 col2" >4.815176</td>
+      <td id="T_10d02_row9_col3" class="data row9 col3" >3.870225e-01</td>
+    </tr>
+    <tr>
+      <th id="T_10d02_level0_row10" class="row_heading level0 row10" >10</th>
+      <td id="T_10d02_row10_col0" class="data row10 col0" >2.000000</td>
+      <td id="T_10d02_row10_col1" class="data row10 col1" >4.865785</td>
+      <td id="T_10d02_row10_col2" class="data row10 col2" >5.305472</td>
+      <td id="T_10d02_row10_col3" class="data row10 col3" >4.396874e-01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>b. Note that,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(t, y) = y - t^2 + 1
+\quad \Rightarrow \quad
+\frac{\partial}{\partial y} f(t, y) = 1,
+\end{align*}\]</div>
+<p>for all values of <span class="math notranslate nohighlight">\(y\)</span>. On the other hand,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+y(t) = (t + 1)^2 - 0.5\,\exp(t)
+\quad \Rightarrow \quad
+y'(t) = 2\,t-\frac{{\mathrm{e}}^t}{2}+2
+\quad \Rightarrow \quad
+y''(t) = 2-\frac{{\mathrm{e}}^t}{2}.
+\end{align*}\]</div>
+<p>The maximum <span class="math notranslate nohighlight">\(\left|2-\dfrac{e^t}{2}\right|\)</span> on <span class="math notranslate nohighlight">\([0,~2]\)</span> takes place at <span class="math notranslate nohighlight">\(t = 2\)</span> (why!?), and</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\max_{0\leq t \leq 2}|y''(t)| = \left|2-\frac{{\mathrm{e}}^2}{2}\right| = \dfrac{e^2}{2} - 2.
+\end{align*}\]</div>
+<p>Using the inequality in the error bound <a class="reference internal" href="#equation-eulermethod-errorbound-eq01">(6.27)</a> for Euler’s method with <span class="math notranslate nohighlight">\(h = 0.2\)</span>, <span class="math notranslate nohighlight">\(L = 1\)</span>, and
+<span class="math notranslate nohighlight">\(M = \dfrac{e^2}{2} - 2\)</span> gives</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+| y_{i} - w_{i}| \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_i} - 1\right)\quad i = 0,1,2,\ldots,10.
+\end{align*}\]</div>
+<p>Therefore,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+| y(0) - w_{0}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_0} - 1\right) = 0,\\
+| y(0.2) - w_{1}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_1} - 1\right) = 0.0375173000,\\
+| y(0.4) - w_{2}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_2} - 1\right) = 0.0833411000,\\
+| y(0.6) - w_{3}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_3} - 1\right) = 0.1393100000,\\
+| y(0.8) - w_{4}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_4} - 1\right) = 0.2076710000,\\
+| y(1.0) - w_{5}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_5} - 1\right) = 0.2911680000,\\
+| y(1.2) - w_{6}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_6} - 1\right) = 0.3931500000,
+\end{align*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+| y(1.4) - w_{7}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_7} - 1\right) = 0.5177120000,\\
+| y(1.6) - w_{8}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_8} - 1\right) = 0.6698520000,\\
+| y(1.8) - w_{9}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_9} - 1\right) = 0.8556770000,\\
+| y(2.0) - w_{10}| &amp; \leq 0.1 \left( \frac{e^2}{2} - 2\right) \left(e^{t_{10}} - 1\right) = 1.0826400000.
+\end{align*}\]</div>
+<p>Now, we can compare the absolute error from above table with these error bounds.</p>
 <p><font color='Blue'><b>Example</b></font>: In the previous example, investigate the order of convergence numerically.</p>
 <p><font color='Green'><b>Solution</b></font>:</p>
 <p>For measuring error, we use the following measurement tool:</p>
@@ -997,75 +1051,75 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_d62b8_row0_col0, #T_d62b8_row0_col1, #T_d62b8_row1_col0, #T_d62b8_row1_col1, #T_d62b8_row2_col0, #T_d62b8_row2_col1, #T_d62b8_row3_col0, #T_d62b8_row3_col1, #T_d62b8_row4_col0, #T_d62b8_row4_col1, #T_d62b8_row5_col0, #T_d62b8_row5_col1, #T_d62b8_row6_col0, #T_d62b8_row6_col1, #T_d62b8_row7_col0, #T_d62b8_row7_col1, #T_d62b8_row8_col0, #T_d62b8_row8_col1 {
+#T_0e737_row0_col0, #T_0e737_row0_col1, #T_0e737_row1_col0, #T_0e737_row1_col1, #T_0e737_row2_col0, #T_0e737_row2_col1, #T_0e737_row3_col0, #T_0e737_row3_col1, #T_0e737_row4_col0, #T_0e737_row4_col1, #T_0e737_row5_col0, #T_0e737_row5_col1, #T_0e737_row6_col0, #T_0e737_row6_col1, #T_0e737_row7_col0, #T_0e737_row7_col1, #T_0e737_row8_col0, #T_0e737_row8_col1 {
   background-color: PaleGreen;
   color: Black;
   border-color: DarkGreen;
 }
 </style>
-<table id="T_d62b8">
+<table id="T_0e737">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d62b8_level0_col0" class="col_heading level0 col0" >h</th>
-      <th id="T_d62b8_level0_col1" class="col_heading level0 col1" >N</th>
-      <th id="T_d62b8_level0_col2" class="col_heading level0 col2" >Eh</th>
+      <th id="T_0e737_level0_col0" class="col_heading level0 col0" >h</th>
+      <th id="T_0e737_level0_col1" class="col_heading level0 col1" >N</th>
+      <th id="T_0e737_level0_col2" class="col_heading level0 col2" >Eh</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_d62b8_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_d62b8_row0_col0" class="data row0 col0" >0.125000</td>
-      <td id="T_d62b8_row0_col1" class="data row0 col1" >8</td>
-      <td id="T_d62b8_row0_col2" class="data row0 col2" >3.0904e-02</td>
+      <th id="T_0e737_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_0e737_row0_col0" class="data row0 col0" >1.2500e-01</td>
+      <td id="T_0e737_row0_col1" class="data row0 col1" >16</td>
+      <td id="T_0e737_row0_col2" class="data row0 col2" >2.9500e-01</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_d62b8_row1_col0" class="data row1 col0" >0.062500</td>
-      <td id="T_d62b8_row1_col1" class="data row1 col1" >16</td>
-      <td id="T_d62b8_row1_col2" class="data row1 col2" >1.4889e-02</td>
+      <th id="T_0e737_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_0e737_row1_col0" class="data row1 col0" >6.2500e-02</td>
+      <td id="T_0e737_row1_col1" class="data row1 col1" >32</td>
+      <td id="T_0e737_row1_col2" class="data row1 col2" >1.5722e-01</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_d62b8_row2_col0" class="data row2 col0" >0.031250</td>
-      <td id="T_d62b8_row2_col1" class="data row2 col1" >32</td>
-      <td id="T_d62b8_row2_col2" class="data row2 col2" >7.2969e-03</td>
+      <th id="T_0e737_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_0e737_row2_col0" class="data row2 col0" >3.1250e-02</td>
+      <td id="T_0e737_row2_col1" class="data row2 col1" >64</td>
+      <td id="T_0e737_row2_col2" class="data row2 col2" >8.1306e-02</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_d62b8_row3_col0" class="data row3 col0" >0.015625</td>
-      <td id="T_d62b8_row3_col1" class="data row3 col1" >64</td>
-      <td id="T_d62b8_row3_col2" class="data row3 col2" >3.6122e-03</td>
+      <th id="T_0e737_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_0e737_row3_col0" class="data row3 col0" >1.5625e-02</td>
+      <td id="T_0e737_row3_col1" class="data row3 col1" >128</td>
+      <td id="T_0e737_row3_col2" class="data row3 col2" >4.1364e-02</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_d62b8_row4_col0" class="data row4 col0" >0.007812</td>
-      <td id="T_d62b8_row4_col1" class="data row4 col1" >128</td>
-      <td id="T_d62b8_row4_col2" class="data row4 col2" >1.7972e-03</td>
+      <th id="T_0e737_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_0e737_row4_col0" class="data row4 col0" >7.8125e-03</td>
+      <td id="T_0e737_row4_col1" class="data row4 col1" >256</td>
+      <td id="T_0e737_row4_col2" class="data row4 col2" >2.0865e-02</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_d62b8_row5_col0" class="data row5 col0" >0.003906</td>
-      <td id="T_d62b8_row5_col1" class="data row5 col1" >256</td>
-      <td id="T_d62b8_row5_col2" class="data row5 col2" >8.9636e-04</td>
+      <th id="T_0e737_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_0e737_row5_col0" class="data row5 col0" >3.9062e-03</td>
+      <td id="T_0e737_row5_col1" class="data row5 col1" >512</td>
+      <td id="T_0e737_row5_col2" class="data row5 col2" >1.0479e-02</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_d62b8_row6_col0" class="data row6 col0" >0.001953</td>
-      <td id="T_d62b8_row6_col1" class="data row6 col1" >512</td>
-      <td id="T_d62b8_row6_col2" class="data row6 col2" >4.4762e-04</td>
+      <th id="T_0e737_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_0e737_row6_col0" class="data row6 col0" >1.9531e-03</td>
+      <td id="T_0e737_row6_col1" class="data row6 col1" >1024</td>
+      <td id="T_0e737_row6_col2" class="data row6 col2" >5.2510e-03</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row7" class="row_heading level0 row7" >7</th>
-      <td id="T_d62b8_row7_col0" class="data row7 col0" >0.000977</td>
-      <td id="T_d62b8_row7_col1" class="data row7 col1" >1024</td>
-      <td id="T_d62b8_row7_col2" class="data row7 col2" >2.2367e-04</td>
+      <th id="T_0e737_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_0e737_row7_col0" class="data row7 col0" >9.7656e-04</td>
+      <td id="T_0e737_row7_col1" class="data row7 col1" >2048</td>
+      <td id="T_0e737_row7_col2" class="data row7 col2" >2.6284e-03</td>
     </tr>
     <tr>
-      <th id="T_d62b8_level0_row8" class="row_heading level0 row8" >8</th>
-      <td id="T_d62b8_row8_col0" class="data row8 col0" >0.000488</td>
-      <td id="T_d62b8_row8_col1" class="data row8 col1" >2048</td>
-      <td id="T_d62b8_row8_col2" class="data row8 col2" >1.1180e-04</td>
+      <th id="T_0e737_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_0e737_row8_col0" class="data row8 col0" >4.8828e-04</td>
+      <td id="T_0e737_row8_col1" class="data row8 col1" >4096</td>
+      <td id="T_0e737_row8_col2" class="data row8 col2" >1.3150e-03</td>
     </tr>
   </tbody>
 </table>
@@ -1079,17 +1133,17 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|
                             <span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$$i$$&quot;</span><span class="p">,</span>
                             <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$$\ln \left( E_{h_</span><span class="si">{i}</span><span class="s2">} / E_{h_{i-1}}  \right)$$&quot;</span><span class="p">,</span>
                             <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Order of convergence: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="s1">&#39;Forward Euler method&#39;</span><span class="p">,</span>
-                            <span class="n">legend_orientation</span> <span class="o">=</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+                            <span class="n">legend_orientation</span> <span class="o">=</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-  <div class="bk-root" id="9dc18563-5b96-43c9-aebf-14beda95408e" data-root-id="1003"></div>
+  <div id="cc549fbc-3cac-4902-9aed-700150a5a1e6" data-root-id="p1292" style="display: contents;"></div>
 </div><script type="application/javascript">(function(root) {
   function embed_document(root) {
-  const docs_json = {"148e903a-648d-4992-aaa6-62b0087637db":{"defs":[],"roots":{"references":[{"attributes":{"below":[{"id":"1014"}],"center":[{"id":"1017"},{"id":"1021"},{"id":"1052"}],"height":400,"left":[{"id":"1018"}],"renderers":[{"id":"1040"}],"title":{"id":"1004"},"toolbar":{"id":"1029"},"x_range":{"id":"1006"},"x_scale":{"id":"1010"},"y_range":{"id":"1054"},"y_scale":{"id":"1012"}},"id":"1003","subtype":"Figure","type":"Plot"},{"attributes":{"fill_alpha":{"value":0.4},"fill_color":{"value":"RoyalBlue"},"hatch_color":{"value":"RoyalBlue"},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1037","type":"Scatter"},{"attributes":{"fill_alpha":{"value":0.2},"fill_color":{"value":"RoyalBlue"},"hatch_alpha":{"value":0.2},"hatch_color":{"value":"RoyalBlue"},"line_alpha":{"value":0.2},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1039","type":"Scatter"},{"attributes":{"coordinates":null,"group":null,"items":[{"id":"1053"}],"location":"bottom_right","orientation":"horizontal"},"id":"1052","type":"Legend"},{"attributes":{},"id":"1049","type":"UnionRenderers"},{"attributes":{"bottom_units":"screen","coordinates":null,"fill_alpha":0.5,"fill_color":"lightgrey","group":null,"left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1028","type":"BoxAnnotation"},{"attributes":{},"id":"1048","type":"AllLabels"},{"attributes":{},"id":"1027","type":"HelpTool"},{"attributes":{},"id":"1050","type":"Selection"},{"attributes":{"axis_label":"$$\\ln \\left( E_{h_{i}} / E_{h_{i-1}}  \\right)$$","coordinates":null,"formatter":{"id":"1044"},"group":null,"major_label_policy":{"id":"1045"},"ticker":{"id":"1019"}},"id":"1018","type":"LinearAxis"},{"attributes":{},"id":"1026","type":"ResetTool"},{"attributes":{"end":1.1,"start":0.9},"id":"1054","type":"Range1d"},{"attributes":{"tools":[{"id":"1022"},{"id":"1023"},{"id":"1024"},{"id":"1025"},{"id":"1026"},{"id":"1027"}]},"id":"1029","type":"Toolbar"},{"attributes":{},"id":"1010","type":"LinearScale"},{"attributes":{"source":{"id":"1036"}},"id":"1041","type":"CDSView"},{"attributes":{"coordinates":null,"group":null,"text":"Order of convergence: Forward Euler method"},"id":"1004","type":"Title"},{"attributes":{},"id":"1025","type":"SaveTool"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"RoyalBlue"},"hatch_alpha":{"value":0.1},"hatch_color":{"value":"RoyalBlue"},"line_alpha":{"value":0.1},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1038","type":"Scatter"},{"attributes":{"axis":{"id":"1014"},"coordinates":null,"group":null,"ticker":null},"id":"1017","type":"Grid"},{"attributes":{},"id":"1012","type":"LinearScale"},{"attributes":{},"id":"1045","type":"AllLabels"},{"attributes":{"coordinates":null,"data_source":{"id":"1036"},"glyph":{"id":"1037"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"1039"},"nonselection_glyph":{"id":"1038"},"view":{"id":"1041"}},"id":"1040","type":"GlyphRenderer"},{"attributes":{"overlay":{"id":"1028"}},"id":"1024","type":"BoxZoomTool"},{"attributes":{},"id":"1047","type":"BasicTickFormatter"},{"attributes":{"axis":{"id":"1018"},"coordinates":null,"dimension":1,"group":null,"ticker":null},"id":"1021","type":"Grid"},{"attributes":{"label":{"value":"Forward Euler method"},"renderers":[{"id":"1040"}]},"id":"1053","type":"LegendItem"},{"attributes":{},"id":"1022","type":"PanTool"},{"attributes":{"data":{"x":{"__ndarray__":"AQAAAAIAAAADAAAABAAAAAUAAAAGAAAABwAAAAgAAAA=","dtype":"int32","order":"little","shape":[8]},"y":{"__ndarray__":"1yN5MB/b8D/1nrN+h3bwP03/YmANO/A/bUmUkTUd8D9Z5xArqQ7wP+3f7nRjB/A/Kztkd7ED8D/oJd+q2AHwPw==","dtype":"float64","order":"little","shape":[8]}},"selected":{"id":"1050"},"selection_policy":{"id":"1049"}},"id":"1036","type":"ColumnDataSource"},{"attributes":{},"id":"1006","type":"DataRange1d"},{"attributes":{"axis_label":"$$i$$","coordinates":null,"formatter":{"id":"1047"},"group":null,"major_label_policy":{"id":"1048"},"ticker":{"id":"1015"}},"id":"1014","type":"LinearAxis"},{"attributes":{},"id":"1044","type":"BasicTickFormatter"},{"attributes":{},"id":"1019","type":"BasicTicker"},{"attributes":{},"id":"1023","type":"WheelZoomTool"},{"attributes":{},"id":"1015","type":"BasicTicker"}],"root_ids":["1003"]},"title":"Bokeh Application","version":"2.4.3"}};
-  const render_items = [{"docid":"148e903a-648d-4992-aaa6-62b0087637db","root_ids":["1003"],"roots":{"1003":"9dc18563-5b96-43c9-aebf-14beda95408e"}}];
+  const docs_json = {"bb2a65e1-830d-461d-b6ba-a8f320681558":{"version":"3.1.1","title":"Bokeh Application","defs":[],"roots":[{"type":"object","name":"Figure","id":"p1292","attributes":{"height":400,"x_range":{"type":"object","name":"DataRange1d","id":"p1293"},"y_range":{"type":"object","name":"Range1d","id":"p1350","attributes":{"start":0.9,"end":1.02}},"x_scale":{"type":"object","name":"LinearScale","id":"p1306"},"y_scale":{"type":"object","name":"LinearScale","id":"p1308"},"title":{"type":"object","name":"Title","id":"p1295","attributes":{"text":"Order of convergence: Forward Euler method"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1345","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1339","attributes":{"selected":{"type":"object","name":"Selection","id":"p1341","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1340"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AQAAAAIAAAADAAAABAAAAAUAAAAGAAAABwAAAAgAAAA="},"shape":[8],"dtype":"int32","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"l3yVC78N7T/MXypmmHHuP7XH2jAOM+8/ZUjc0giY7z+hQ5bposvvPwlQmNW45e8/k9r/Otby7z+PuY2QafnvPw=="},"shape":[8],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1346","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1347"}}},"glyph":{"type":"object","name":"Scatter","id":"p1342","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.4},"hatch_color":{"type":"value","value":"RoyalBlue"}}},"nonselection_glyph":{"type":"object","name":"Scatter","id":"p1343","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.1},"hatch_color":{"type":"value","value":"RoyalBlue"},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Scatter","id":"p1344","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.2},"hatch_color":{"type":"value","value":"RoyalBlue"},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1301","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1324"},{"type":"object","name":"WheelZoomTool","id":"p1325"},{"type":"object","name":"BoxZoomTool","id":"p1326","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1327","attributes":{"syncable":false,"level":"overlay","visible":false,"left_units":"canvas","right_units":"canvas","bottom_units":"canvas","top_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1328"},{"type":"object","name":"ResetTool","id":"p1329"},{"type":"object","name":"HelpTool","id":"p1330"}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1317","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1319","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1318"},"axis_label":"$$\\ln \\left( E_{h_{i}} / E_{h_{i-1}}  \\right)$$","major_label_policy":{"type":"object","name":"AllLabels","id":"p1320"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1310","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1312","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1311"},"axis_label":"$$i$$","major_label_policy":{"type":"object","name":"AllLabels","id":"p1313"}}}],"center":[{"type":"object","name":"Grid","id":"p1316","attributes":{"axis":{"id":"p1310"}}},{"type":"object","name":"Grid","id":"p1323","attributes":{"dimension":1,"axis":{"id":"p1317"}}},{"type":"object","name":"Legend","id":"p1348","attributes":{"location":"bottom_right","orientation":"horizontal","items":[{"type":"object","name":"LegendItem","id":"p1349","attributes":{"label":{"type":"value","value":"Forward Euler method"},"renderers":[{"id":"p1345"}]}}]}}]}}],"callbacks":{"type":"map"}}};
+  const render_items = [{"docid":"bb2a65e1-830d-461d-b6ba-a8f320681558","roots":{"p1292":"cc549fbc-3cac-4902-9aed-700150a5a1e6"},"root_ids":["p1292"]}];
   root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
   }
   if (root.Bokeh !== undefined) {
@@ -1114,14 +1168,13 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|
 </div>
 </div>
 <div class="section" id="backward-implicit-euler-method">
-<h2><span class="section-number">6.1.2. </span>Backward (Implicit) Euler method<a class="headerlink" href="#backward-implicit-euler-method" title="Permalink to this headline">#</a></h2>
-<p>The backward Euler’s method begins using the derivative at the next point <span class="math notranslate nohighlight">\(y(t_{i+1})\)</span> instead of the current
-point <span class="math notranslate nohighlight">\(y(t_{i})\)</span>:</p>
-<div class="amsmath math notranslate nohighlight">
-\[\begin{align*}
-y_{j+1} = y_{j} + hf(t_{j+1}, y_{j+1}).
-\end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(y_{j+1}\)</span> for <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots ,N - 1\)</span> are approximated by solving the above equation in each step.</p>
+<h2><span class="section-number">6.3.2. </span>Backward (Implicit) Euler method<a class="headerlink" href="#backward-implicit-euler-method" title="Permalink to this headline">#</a></h2>
+<p>The backward Euler’s method can be used to approximate the solution of the IVP <a class="reference internal" href="#equation-ivp-01">(6.11)</a>. This method utilizes <span class="math notranslate nohighlight">\(f(t_{j+1}, w_{j+1})\)</span> instead of the current
+point <span class="math notranslate nohighlight">\(f(t_{j}, w_{j})\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-06-03">
+<span class="eqno">(6.36)<a class="headerlink" href="#equation-eq-06-03" title="Permalink to this equation">#</a></span>\[w_{j+1} = w_{j} + hf(t_{j+1},~w_{j+1}).\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_{0} = \alpha\)</span> and <span class="math notranslate nohighlight">\(w_{j+1}\)</span> for <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots ,n - 1\)</span> are approximated by solving the above equation in each step.</p>
+<p>Observe that <span class="math notranslate nohighlight">\(w_{j+1}\)</span> appears on both sides of the equation <a class="reference internal" href="#equation-eq-06-03">(6.36)</a> which necessitates the solution of an algebraic equation for the unknown <span id="id4">[<a class="reference internal" href="../References.html#id41" title="K. Atkinson, W. Han, and D.E. Stewart. Numerical Solution of Ordinary Differential Equations. Pure and Applied Mathematics: A Wiley Series of Texts, Monographs and Tracts. Wiley, 2011. ISBN 9781118164525. URL: https://books.google.ca/books?id=QzjGgLlKCYQC.">Atkinson, Han, and Stewart, 2011</a>]</span>.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-2">
@@ -1227,7 +1280,44 @@ y(0) = 1,
 y\left(t \right) = \left(1 + \dfrac{t^{2}}{2}\right) e^{- t^{2}}.
 \end{align*}\]</div>
 <p>Use the backward Euler method for solving this IVP. Also, investigate the order of convergence numerically.</p>
-<p><font color='Green'><b>Solution</b></font>:</p>
+<p><font color='Green'><b>Solution</b></font>:
+From one of our previous examples, we have,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\begin{cases}
+y'+2ty=te^{-t^2},\quad 0 \leq t \leq 1,\\
+y(0) = 1,
+\end{cases}
+\end{align*}\]</div>
+<p>with exact solution <span class="math notranslate nohighlight">\(\displaystyle{y\left(t \right) = \left(1 + \dfrac{t^{2}}{2}\right) e^{- t^{2}}}\)</span>. For \hlg{<span class="math notranslate nohighlight">\(n = 10\)</span>}: <span class="math notranslate nohighlight">\([0,~1]\)</span> can be discretized using</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+h = \frac{b - a}{n} = \frac{1 - 0}{10} = 0.1
+\end{align*}\]</div>
+<p>as follows,</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\left\{
+0,~0.1,~0.2,~0.3,~0.4,~0.5,~0.6,~0.7,~0.8,~0.9,~1.0
+\right\}
+\end{align*}\]</div>
+<p>and using <a class="reference internal" href="#equation-eq-06-03">(6.36)</a> and <span class="math notranslate nohighlight">\(y_{0} = 1\)</span>, have</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+w_{1} &amp;= w_{0} + hf(t_{1}, w_{1})
+\quad \Rightarrow \quad 1.0099004983374917 = 1.02\,w_{1}
+\quad \Rightarrow \quad w_{1} = 0.990099,
+\\
+w_{2} &amp;= w_{1} + hf(t_{2}, w_{2})
+\quad \Rightarrow \quad 1.009314316564901 =1.04\,w_{2}
+\quad \Rightarrow \quad w_{2} = 0.980005,\\
+\vdots
+\\
+w_{10} &amp;= w_{9} + hf(t_{10}, w_{10})
+\quad \Rightarrow \quad 0.6430689394047624 =1.2\,w_{10}
+\quad \Rightarrow \quad w_{10} = 0.551819.
+\end{align*}\]</div>
+<p>The results can be summarized as follows,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hd_IVP_Algorithms</span> <span class="kn">import</span> <span class="n">BackwardEuler</span>  
@@ -1250,92 +1340,92 @@ y\left(t \right) = \left(1 + \dfrac{t^{2}}{2}\right) e^{- t^{2}}.
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_f68ec_row0_col3, #T_f68ec_row1_col3, #T_f68ec_row2_col3, #T_f68ec_row3_col3, #T_f68ec_row4_col3, #T_f68ec_row5_col3, #T_f68ec_row6_col3, #T_f68ec_row7_col3, #T_f68ec_row8_col3, #T_f68ec_row9_col3 {
+#T_35b50_row0_col3, #T_35b50_row1_col3, #T_35b50_row2_col3, #T_35b50_row3_col3, #T_35b50_row4_col3, #T_35b50_row5_col3, #T_35b50_row6_col3, #T_35b50_row7_col3, #T_35b50_row8_col3, #T_35b50_row9_col3 {
   background-color: Lavender;
   color: Navy;
   border-color: DarkGreen;
 }
 </style>
-<table id="T_f68ec">
+<table id="T_35b50">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_f68ec_level0_col0" class="col_heading level0 col0" >t</th>
-      <th id="T_f68ec_level0_col1" class="col_heading level0 col1" >y</th>
-      <th id="T_f68ec_level0_col2" class="col_heading level0 col2" >Exact</th>
-      <th id="T_f68ec_level0_col3" class="col_heading level0 col3" >Error</th>
+      <th id="T_35b50_level0_col0" class="col_heading level0 col0" >t</th>
+      <th id="T_35b50_level0_col1" class="col_heading level0 col1" >y</th>
+      <th id="T_35b50_level0_col2" class="col_heading level0 col2" >Exact</th>
+      <th id="T_35b50_level0_col3" class="col_heading level0 col3" >Error</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_f68ec_level0_row0" class="row_heading level0 row0" >1</th>
-      <td id="T_f68ec_row0_col0" class="data row0 col0" >0.100000</td>
-      <td id="T_f68ec_row0_col1" class="data row0 col1" >0.990099</td>
-      <td id="T_f68ec_row0_col2" class="data row0 col2" >0.995000</td>
-      <td id="T_f68ec_row0_col3" class="data row0 col3" >4.9016e-03</td>
+      <th id="T_35b50_level0_row0" class="row_heading level0 row0" >1</th>
+      <td id="T_35b50_row0_col0" class="data row0 col0" >0.100000</td>
+      <td id="T_35b50_row0_col1" class="data row0 col1" >0.990099</td>
+      <td id="T_35b50_row0_col2" class="data row0 col2" >0.995000</td>
+      <td id="T_35b50_row0_col3" class="data row0 col3" >4.9016e-03</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row1" class="row_heading level0 row1" >2</th>
-      <td id="T_f68ec_row1_col0" class="data row1 col0" >0.200000</td>
-      <td id="T_f68ec_row1_col1" class="data row1 col1" >0.970495</td>
-      <td id="T_f68ec_row1_col2" class="data row1 col2" >0.980005</td>
-      <td id="T_f68ec_row1_col3" class="data row1 col3" >9.5107e-03</td>
+      <th id="T_35b50_level0_row1" class="row_heading level0 row1" >2</th>
+      <td id="T_35b50_row1_col0" class="data row1 col0" >0.200000</td>
+      <td id="T_35b50_row1_col1" class="data row1 col1" >0.970495</td>
+      <td id="T_35b50_row1_col2" class="data row1 col2" >0.980005</td>
+      <td id="T_35b50_row1_col3" class="data row1 col3" >9.5107e-03</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row2" class="row_heading level0 row2" >3</th>
-      <td id="T_f68ec_row2_col0" class="data row2 col0" >0.300000</td>
-      <td id="T_f68ec_row2_col1" class="data row2 col1" >0.941427</td>
-      <td id="T_f68ec_row2_col2" class="data row2 col2" >0.955058</td>
-      <td id="T_f68ec_row2_col3" class="data row2 col3" >1.3631e-02</td>
+      <th id="T_35b50_level0_row2" class="row_heading level0 row2" >3</th>
+      <td id="T_35b50_row2_col0" class="data row2 col0" >0.300000</td>
+      <td id="T_35b50_row2_col1" class="data row2 col1" >0.941427</td>
+      <td id="T_35b50_row2_col2" class="data row2 col2" >0.955058</td>
+      <td id="T_35b50_row2_col3" class="data row2 col3" >1.3631e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row3" class="row_heading level0 row3" >4</th>
-      <td id="T_f68ec_row3_col0" class="data row3 col0" >0.400000</td>
-      <td id="T_f68ec_row3_col1" class="data row3 col1" >0.903252</td>
-      <td id="T_f68ec_row3_col2" class="data row3 col2" >0.920315</td>
-      <td id="T_f68ec_row3_col3" class="data row3 col3" >1.7063e-02</td>
+      <th id="T_35b50_level0_row3" class="row_heading level0 row3" >4</th>
+      <td id="T_35b50_row3_col0" class="data row3 col0" >0.400000</td>
+      <td id="T_35b50_row3_col1" class="data row3 col1" >0.903252</td>
+      <td id="T_35b50_row3_col2" class="data row3 col2" >0.920315</td>
+      <td id="T_35b50_row3_col3" class="data row3 col3" >1.7063e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row4" class="row_heading level0 row4" >5</th>
-      <td id="T_f68ec_row4_col0" class="data row4 col0" >0.500000</td>
-      <td id="T_f68ec_row4_col1" class="data row4 col1" >0.856539</td>
-      <td id="T_f68ec_row4_col2" class="data row4 col2" >0.876151</td>
-      <td id="T_f68ec_row4_col3" class="data row4 col3" >1.9612e-02</td>
+      <th id="T_35b50_level0_row4" class="row_heading level0 row4" >5</th>
+      <td id="T_35b50_row4_col0" class="data row4 col0" >0.500000</td>
+      <td id="T_35b50_row4_col1" class="data row4 col1" >0.856539</td>
+      <td id="T_35b50_row4_col2" class="data row4 col2" >0.876151</td>
+      <td id="T_35b50_row4_col3" class="data row4 col3" >1.9612e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row5" class="row_heading level0 row5" >6</th>
-      <td id="T_f68ec_row5_col0" class="data row5 col0" >0.600000</td>
-      <td id="T_f68ec_row5_col1" class="data row5 col1" >0.802142</td>
-      <td id="T_f68ec_row5_col2" class="data row5 col2" >0.823258</td>
-      <td id="T_f68ec_row5_col3" class="data row5 col3" >2.1116e-02</td>
+      <th id="T_35b50_level0_row5" class="row_heading level0 row5" >6</th>
+      <td id="T_35b50_row5_col0" class="data row5 col0" >0.600000</td>
+      <td id="T_35b50_row5_col1" class="data row5 col1" >0.802142</td>
+      <td id="T_35b50_row5_col2" class="data row5 col2" >0.823258</td>
+      <td id="T_35b50_row5_col3" class="data row5 col3" >2.1116e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row6" class="row_heading level0 row6" >7</th>
-      <td id="T_f68ec_row6_col0" class="data row6 col0" >0.700000</td>
-      <td id="T_f68ec_row6_col1" class="data row6 col1" >0.741251</td>
-      <td id="T_f68ec_row6_col2" class="data row6 col2" >0.762720</td>
-      <td id="T_f68ec_row6_col3" class="data row6 col3" >2.1469e-02</td>
+      <th id="T_35b50_level0_row6" class="row_heading level0 row6" >7</th>
+      <td id="T_35b50_row6_col0" class="data row6 col0" >0.700000</td>
+      <td id="T_35b50_row6_col1" class="data row6 col1" >0.741251</td>
+      <td id="T_35b50_row6_col2" class="data row6 col2" >0.762720</td>
+      <td id="T_35b50_row6_col3" class="data row6 col3" >2.1469e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row7" class="row_heading level0 row7" >8</th>
-      <td id="T_f68ec_row7_col0" class="data row7 col0" >0.800000</td>
-      <td id="T_f68ec_row7_col1" class="data row7 col1" >0.675374</td>
-      <td id="T_f68ec_row7_col2" class="data row7 col2" >0.696026</td>
-      <td id="T_f68ec_row7_col3" class="data row7 col3" >2.0652e-02</td>
+      <th id="T_35b50_level0_row7" class="row_heading level0 row7" >8</th>
+      <td id="T_35b50_row7_col0" class="data row7 col0" >0.800000</td>
+      <td id="T_35b50_row7_col1" class="data row7 col1" >0.675374</td>
+      <td id="T_35b50_row7_col2" class="data row7 col2" >0.696026</td>
+      <td id="T_35b50_row7_col3" class="data row7 col3" >2.0652e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row8" class="row_heading level0 row8" >9</th>
-      <td id="T_f68ec_row8_col0" class="data row8 col0" >0.900000</td>
-      <td id="T_f68ec_row8_col1" class="data row8 col1" >0.606281</td>
-      <td id="T_f68ec_row8_col2" class="data row8 col2" >0.625026</td>
-      <td id="T_f68ec_row8_col3" class="data row8 col3" >1.8745e-02</td>
+      <th id="T_35b50_level0_row8" class="row_heading level0 row8" >9</th>
+      <td id="T_35b50_row8_col0" class="data row8 col0" >0.900000</td>
+      <td id="T_35b50_row8_col1" class="data row8 col1" >0.606281</td>
+      <td id="T_35b50_row8_col2" class="data row8 col2" >0.625026</td>
+      <td id="T_35b50_row8_col3" class="data row8 col3" >1.8745e-02</td>
     </tr>
     <tr>
-      <th id="T_f68ec_level0_row9" class="row_heading level0 row9" >10</th>
-      <td id="T_f68ec_row9_col0" class="data row9 col0" >1.000000</td>
-      <td id="T_f68ec_row9_col1" class="data row9 col1" >0.535891</td>
-      <td id="T_f68ec_row9_col2" class="data row9 col2" >0.551819</td>
-      <td id="T_f68ec_row9_col3" class="data row9 col3" >1.5928e-02</td>
+      <th id="T_35b50_level0_row9" class="row_heading level0 row9" >10</th>
+      <td id="T_35b50_row9_col0" class="data row9 col0" >1.000000</td>
+      <td id="T_35b50_row9_col1" class="data row9 col1" >0.535891</td>
+      <td id="T_35b50_row9_col2" class="data row9 col2" >0.551819</td>
+      <td id="T_35b50_row9_col3" class="data row9 col3" >1.5928e-02</td>
     </tr>
   </tbody>
 </table>
@@ -1374,60 +1464,60 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|,
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_588b6_row0_col0, #T_588b6_row0_col1, #T_588b6_row1_col0, #T_588b6_row1_col1, #T_588b6_row2_col0, #T_588b6_row2_col1, #T_588b6_row3_col0, #T_588b6_row3_col1, #T_588b6_row4_col0, #T_588b6_row4_col1 {
+#T_3a44a_row0_col0, #T_3a44a_row0_col1, #T_3a44a_row1_col0, #T_3a44a_row1_col1, #T_3a44a_row2_col0, #T_3a44a_row2_col1, #T_3a44a_row3_col0, #T_3a44a_row3_col1, #T_3a44a_row4_col0, #T_3a44a_row4_col1 {
   background-color: PaleGreen;
   color: Black;
   border-color: DarkGreen;
 }
 </style>
-<table id="T_588b6">
+<table id="T_3a44a">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_588b6_level0_col0" class="col_heading level0 col0" >h</th>
-      <th id="T_588b6_level0_col1" class="col_heading level0 col1" >N</th>
-      <th id="T_588b6_level0_col2" class="col_heading level0 col2" >Eh</th>
+      <th id="T_3a44a_level0_col0" class="col_heading level0 col0" >h</th>
+      <th id="T_3a44a_level0_col1" class="col_heading level0 col1" >N</th>
+      <th id="T_3a44a_level0_col2" class="col_heading level0 col2" >Eh</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_588b6_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_588b6_row0_col0" class="data row0 col0" >0.125000</td>
-      <td id="T_588b6_row0_col1" class="data row0 col1" >8</td>
-      <td id="T_588b6_row0_col2" class="data row0 col2" >2.6255e-02</td>
+      <th id="T_3a44a_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_3a44a_row0_col0" class="data row0 col0" >1.2500e-01</td>
+      <td id="T_3a44a_row0_col1" class="data row0 col1" >8</td>
+      <td id="T_3a44a_row0_col2" class="data row0 col2" >2.6255e-02</td>
     </tr>
     <tr>
-      <th id="T_588b6_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_588b6_row1_col0" class="data row1 col0" >0.062500</td>
-      <td id="T_588b6_row1_col1" class="data row1 col1" >16</td>
-      <td id="T_588b6_row1_col2" class="data row1 col2" >1.3750e-02</td>
+      <th id="T_3a44a_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_3a44a_row1_col0" class="data row1 col0" >6.2500e-02</td>
+      <td id="T_3a44a_row1_col1" class="data row1 col1" >16</td>
+      <td id="T_3a44a_row1_col2" class="data row1 col2" >1.3750e-02</td>
     </tr>
     <tr>
-      <th id="T_588b6_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_588b6_row2_col0" class="data row2 col0" >0.031250</td>
-      <td id="T_588b6_row2_col1" class="data row2 col1" >32</td>
-      <td id="T_588b6_row2_col2" class="data row2 col2" >7.0121e-03</td>
+      <th id="T_3a44a_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_3a44a_row2_col0" class="data row2 col0" >3.1250e-02</td>
+      <td id="T_3a44a_row2_col1" class="data row2 col1" >32</td>
+      <td id="T_3a44a_row2_col2" class="data row2 col2" >7.0121e-03</td>
     </tr>
     <tr>
-      <th id="T_588b6_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_588b6_row3_col0" class="data row3 col0" >0.015625</td>
-      <td id="T_588b6_row3_col1" class="data row3 col1" >64</td>
-      <td id="T_588b6_row3_col2" class="data row3 col2" >3.5410e-03</td>
+      <th id="T_3a44a_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_3a44a_row3_col0" class="data row3 col0" >1.5625e-02</td>
+      <td id="T_3a44a_row3_col1" class="data row3 col1" >64</td>
+      <td id="T_3a44a_row3_col2" class="data row3 col2" >3.5410e-03</td>
     </tr>
     <tr>
-      <th id="T_588b6_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_588b6_row4_col0" class="data row4 col0" >0.007812</td>
-      <td id="T_588b6_row4_col1" class="data row4 col1" >128</td>
-      <td id="T_588b6_row4_col2" class="data row4 col2" >1.7793e-03</td>
+      <th id="T_3a44a_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_3a44a_row4_col0" class="data row4 col0" >7.8125e-03</td>
+      <td id="T_3a44a_row4_col1" class="data row4 col1" >128</td>
+      <td id="T_3a44a_row4_col2" class="data row4 col2" >1.7793e-03</td>
     </tr>
   </tbody>
 </table>
 </div><div class="output text_html">
-  <div class="bk-root" id="9f94126e-bdad-4cad-b713-0db83b57cc28" data-root-id="1115"></div>
+  <div id="c9294867-d92e-4612-8ec8-4ffe31d22157" data-root-id="p1457" style="display: contents;"></div>
 </div><script type="application/javascript">(function(root) {
   function embed_document(root) {
-  const docs_json = {"d7a69b11-c11a-4060-8ed3-dec25b966879":{"defs":[],"roots":{"references":[{"attributes":{"below":[{"id":"1126"}],"center":[{"id":"1129"},{"id":"1133"},{"id":"1164"}],"height":400,"left":[{"id":"1130"}],"renderers":[{"id":"1152"}],"title":{"id":"1116"},"toolbar":{"id":"1141"},"x_range":{"id":"1118"},"x_scale":{"id":"1122"},"y_range":{"id":"1166"},"y_scale":{"id":"1124"}},"id":"1115","subtype":"Figure","type":"Plot"},{"attributes":{"fill_alpha":{"value":0.2},"fill_color":{"value":"RoyalBlue"},"hatch_alpha":{"value":0.2},"hatch_color":{"value":"RoyalBlue"},"line_alpha":{"value":0.2},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1151","type":"Scatter"},{"attributes":{},"id":"1160","type":"AllLabels"},{"attributes":{"data":{"x":{"__ndarray__":"AQAAAAIAAAADAAAABAAAAA==","dtype":"int32","order":"little","shape":[4]},"y":{"__ndarray__":"V6EuvjTc7T/r84Hf2RbvP3DfUPHhiu8/6K8wKKbF7z8=","dtype":"float64","order":"little","shape":[4]}},"selected":{"id":"1162"},"selection_policy":{"id":"1161"}},"id":"1148","type":"ColumnDataSource"},{"attributes":{},"id":"1137","type":"SaveTool"},{"attributes":{"end":1.1,"start":0.9},"id":"1166","type":"Range1d"},{"attributes":{},"id":"1131","type":"BasicTicker"},{"attributes":{},"id":"1162","type":"Selection"},{"attributes":{},"id":"1124","type":"LinearScale"},{"attributes":{"fill_alpha":{"value":0.4},"fill_color":{"value":"RoyalBlue"},"hatch_color":{"value":"RoyalBlue"},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1149","type":"Scatter"},{"attributes":{},"id":"1122","type":"LinearScale"},{"attributes":{},"id":"1127","type":"BasicTicker"},{"attributes":{"overlay":{"id":"1140"}},"id":"1136","type":"BoxZoomTool"},{"attributes":{"coordinates":null,"group":null,"text":"Order of convergence:  Backward Euler method"},"id":"1116","type":"Title"},{"attributes":{"axis_label":"$$i$$","coordinates":null,"formatter":{"id":"1159"},"group":null,"major_label_policy":{"id":"1160"},"ticker":{"id":"1127"}},"id":"1126","type":"LinearAxis"},{"attributes":{"tools":[{"id":"1134"},{"id":"1135"},{"id":"1136"},{"id":"1137"},{"id":"1138"},{"id":"1139"}]},"id":"1141","type":"Toolbar"},{"attributes":{"coordinates":null,"group":null,"items":[{"id":"1165"}],"location":"bottom_right","orientation":"horizontal"},"id":"1164","type":"Legend"},{"attributes":{},"id":"1161","type":"UnionRenderers"},{"attributes":{"coordinates":null,"data_source":{"id":"1148"},"glyph":{"id":"1149"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"1151"},"nonselection_glyph":{"id":"1150"},"view":{"id":"1153"}},"id":"1152","type":"GlyphRenderer"},{"attributes":{},"id":"1138","type":"ResetTool"},{"attributes":{"axis":{"id":"1130"},"coordinates":null,"dimension":1,"group":null,"ticker":null},"id":"1133","type":"Grid"},{"attributes":{"axis_label":"$$\\ln \\left( E_{h_{i}} / E_{h_{i-1}}  \\right)$$","coordinates":null,"formatter":{"id":"1156"},"group":null,"major_label_policy":{"id":"1157"},"ticker":{"id":"1131"}},"id":"1130","type":"LinearAxis"},{"attributes":{"source":{"id":"1148"}},"id":"1153","type":"CDSView"},{"attributes":{"axis":{"id":"1126"},"coordinates":null,"group":null,"ticker":null},"id":"1129","type":"Grid"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"RoyalBlue"},"hatch_alpha":{"value":0.1},"hatch_color":{"value":"RoyalBlue"},"line_alpha":{"value":0.1},"line_color":{"value":"RoyalBlue"},"size":{"value":12},"x":{"field":"x"},"y":{"field":"y"}},"id":"1150","type":"Scatter"},{"attributes":{},"id":"1118","type":"DataRange1d"},{"attributes":{},"id":"1135","type":"WheelZoomTool"},{"attributes":{},"id":"1134","type":"PanTool"},{"attributes":{},"id":"1157","type":"AllLabels"},{"attributes":{},"id":"1159","type":"BasicTickFormatter"},{"attributes":{"label":{"value":"Backward Euler method"},"renderers":[{"id":"1152"}]},"id":"1165","type":"LegendItem"},{"attributes":{"bottom_units":"screen","coordinates":null,"fill_alpha":0.5,"fill_color":"lightgrey","group":null,"left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1140","type":"BoxAnnotation"},{"attributes":{},"id":"1139","type":"HelpTool"},{"attributes":{},"id":"1156","type":"BasicTickFormatter"}],"root_ids":["1115"]},"title":"Bokeh Application","version":"2.4.3"}};
-  const render_items = [{"docid":"d7a69b11-c11a-4060-8ed3-dec25b966879","root_ids":["1115"],"roots":{"1115":"9f94126e-bdad-4cad-b713-0db83b57cc28"}}];
+  const docs_json = {"2114cfca-db84-4200-9f96-a90640d33ab5":{"version":"3.1.1","title":"Bokeh Application","defs":[],"roots":[{"type":"object","name":"Figure","id":"p1457","attributes":{"height":400,"x_range":{"type":"object","name":"DataRange1d","id":"p1458"},"y_range":{"type":"object","name":"Range1d","id":"p1515","attributes":{"start":0.9,"end":1.1}},"x_scale":{"type":"object","name":"LinearScale","id":"p1471"},"y_scale":{"type":"object","name":"LinearScale","id":"p1473"},"title":{"type":"object","name":"Title","id":"p1460","attributes":{"text":"Order of convergence:  Backward Euler method"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1510","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1504","attributes":{"selected":{"type":"object","name":"Selection","id":"p1506","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1505"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AQAAAAIAAAADAAAABAAAAA=="},"shape":[4],"dtype":"int32","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"V6EuvjTc7T/r84Hf2RbvP3DfUPHhiu8/6K8wKKbF7z8="},"shape":[4],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1511","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1512"}}},"glyph":{"type":"object","name":"Scatter","id":"p1507","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.4},"hatch_color":{"type":"value","value":"RoyalBlue"}}},"nonselection_glyph":{"type":"object","name":"Scatter","id":"p1508","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.1},"hatch_color":{"type":"value","value":"RoyalBlue"},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Scatter","id":"p1509","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":12},"line_color":{"type":"value","value":"RoyalBlue"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"RoyalBlue"},"fill_alpha":{"type":"value","value":0.2},"hatch_color":{"type":"value","value":"RoyalBlue"},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1466","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1489"},{"type":"object","name":"WheelZoomTool","id":"p1490"},{"type":"object","name":"BoxZoomTool","id":"p1491","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1492","attributes":{"syncable":false,"level":"overlay","visible":false,"left_units":"canvas","right_units":"canvas","bottom_units":"canvas","top_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1493"},{"type":"object","name":"ResetTool","id":"p1494"},{"type":"object","name":"HelpTool","id":"p1495"}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1482","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1484","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1483"},"axis_label":"$$\\ln \\left( E_{h_{i}} / E_{h_{i-1}}  \\right)$$","major_label_policy":{"type":"object","name":"AllLabels","id":"p1485"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1475","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1477","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1476"},"axis_label":"$$i$$","major_label_policy":{"type":"object","name":"AllLabels","id":"p1478"}}}],"center":[{"type":"object","name":"Grid","id":"p1481","attributes":{"axis":{"id":"p1475"}}},{"type":"object","name":"Grid","id":"p1488","attributes":{"dimension":1,"axis":{"id":"p1482"}}},{"type":"object","name":"Legend","id":"p1513","attributes":{"location":"bottom_right","orientation":"horizontal","items":[{"type":"object","name":"LegendItem","id":"p1514","attributes":{"label":{"type":"value","value":"Backward Euler method"},"renderers":[{"id":"p1510"}]}}]}}]}}],"callbacks":{"type":"map"}}};
+  const render_items = [{"docid":"2114cfca-db84-4200-9f96-a90640d33ab5","roots":{"p1457":"c9294867-d92e-4612-8ec8-4ffe31d22157"},"root_ids":["p1457"]}];
   root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
   }
   if (root.Bokeh !== undefined) {
@@ -1449,17 +1539,6 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|,
   }
 })(window);</script></div>
 </div>
-<hr class="docutils" />
-<p><strong>References:</strong></p>
-<ol class="arabic simple">
-<li><p>Allaire, Grégoire, et al. Numerical linear algebra. Vol. 55. New York: Springer, 2008.</p></li>
-<li><p>Burden, Richard L., and J. Douglas Faires. “Numerical analysis 8th ed.” Thomson Brooks/Cole (2005).</p></li>
-<li><p>Atkinson, Kendall E. An introduction to numerical analysis. John wiley &amp; sons, 2008.</p></li>
-<li><p>Khoury, Richard, and Douglas Wilhelm Harder. Numerical methods and modelling for engineering. Springer, 2016.</p></li>
-<li><p>Zarowski, Christopher J. An introduction to numerical analysis for electrical and computer engineers. John Wiley &amp; Sons, 2004.</p></li>
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Euler_method">Euler method</a></p></li>
-</ol>
-<hr class="docutils" />
 </div>
 </div>
 
@@ -1495,20 +1574,20 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|,
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="ReadMe.html"
+       href="Elementary_theory_of_initial_value_problem.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Initial-Value Problems for Ordinary Differential Equations</p>
+        <p class="prev-next-title"><span class="section-number">6.2. </span>The elementary theory of initial-value problem</p>
       </div>
     </a>
     <a class="right-next"
-       href="SecondOrder_methods.html"
+       href="HigherOrder_Taylor_Methods.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6.2. </span>Second-order methods</p>
+        <p class="prev-next-title"><span class="section-number">6.4. </span>Higher-Order Taylor Methods</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1530,11 +1609,11 @@ E_{h} = \max_{1 \leq j \leq \frac{b-a}{h}}\left| y(t_{j}) - y_{j}\right|,
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-euler-method">6.1.1. (Forward) Euler method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">6.1.1.1. Error Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-euler-method">6.3.1. (Forward) Euler method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-bounds-for-forward-eulers-method">6.3.1.1. Error Bounds for (Forward) Euler’s Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-implicit-euler-method">6.1.2. Backward (Implicit) Euler method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-implicit-euler-method">6.3.2. Backward (Implicit) Euler method</a></li>
 </ul>
   </nav></div>
 
