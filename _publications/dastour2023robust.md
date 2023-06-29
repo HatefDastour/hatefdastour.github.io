@@ -5,7 +5,7 @@ permalink: /publication/dastour2023robust
 date: 2023-04-17
 venue: 'Water'
 paperurl: 'https://www.mdpi.com/2073-4441/15/8/1571'
-citation: '<b>H. Dastour</b>, A. Gupta, G. Achari, and Q. K. Hassan, "A Robust Regime Shift Change Detection Algorithm for Water-Flow Dynamics," <i>Water</i>, 15(8):1571, 2023. [IF: 3.530; IF Quartile: Q2]'
+citation: '<b>H. Dastour</b>, A. Gupta, G. Achari, and Q. K. Hassan, "A Robust Regime Shift Change Detection Algorithm for Water-Flow Dynamics," <i>Water</i>, 15(8):1571, 2023. [IF: 3.4; IF Quartile: Q2]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>

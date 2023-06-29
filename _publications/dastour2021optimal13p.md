@@ -5,7 +5,7 @@ permalink: /publication/dastour2019optimal13p
 date: 2020-05-02
 venue: 'Numerical Algorithms'
 paperurl: 'https://link.springer.com/article/10.1007/s11075-020-00926-5'
-citation: '<b>H. Dastour</b> and W. Liao. An optimal 13-point finite difference scheme for a 2D Helmholtz equation with a perfectly matched layer boundary condition. <i>Numerical Algorithms</i>, 86(3):1109–1141, 2021. [IF: 2.370; IF Quartile: Q1]'
+citation: '<b>H. Dastour</b> and W. Liao. "An optimal 13-point finite difference scheme for a 2D Helmholtz equation with a perfectly matched layer boundary condition". <i>Numerical Algorithms</i>, 86(3):1109–1141, 2021. [IF: 2.1; IF Quartile: Q1]'
 ---
 <b>Abstract:</b>
 <p style='text-align: justify;'>
