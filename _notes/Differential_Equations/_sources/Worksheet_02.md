@@ -8,19 +8,39 @@
     
 <font color='Green'><b>Solution</b></font>:
 
-<div class="alert alert-block alert-success">
-<font size="+1"><b>
-For a first order linear ODE
-</b></font>
+`````{admonition} For a first order linear ODE
+:class: important
     
-Let $\mu(x) = \exp\left( p(x) dx \right)$ be an integrating factor for the first order linear ODE.
-\begin{align*}y' + p(x) y = q(x).\end{align*}
-    
-Then,
-\begin{align*}\mu(x)y' + \mu(x)p(x) y = \mu(x)q(x),\end{align*}
-and
-\begin{align*} \frac{d}{dx}\left(\mu(x)y\right) = \mu(x)q(x).\end{align*} 
-</div>
+Consider the first order linear ordinary differential equation (ODE):
+
+\begin{align*}
+y' + p(x) y = q(x).
+\end{align*}
+
+Let's introduce an integrating factor $\mu(x) = \exp\left(p(x)dx\right)$ for this ODE.
+
+Using this integrating factor, we can rewrite the equation as follows:
+
+\begin{align*}
+\mu(x)y' + \mu(x)p(x) y = \mu(x)q(x).
+\end{align*}
+
+Now, let's simplify this expression further. Note that $\mu(x) = \exp\left(p(x)dx\right)$, so we have:
+
+\begin{align*}
+\mu(x)y' + \mu(x)p(x) y &= \exp\left(p(x)dx\right)y' + \exp\left(p(x)dx\right)p(x) y \\
+&= \frac{d}{dx}\left(\exp\left(p(x)dx\right)y\right).
+\end{align*}
+
+Thus, we can rewrite the equation as:
+
+\begin{align*}
+\frac{d}{dx}\left(\mu(x)y\right) = \mu(x)q(x).
+\end{align*}
+
+This is a convenient form of the equation that allows us to solve it more easily.
+
+`````
 
 * *a)* Note that $p(x) = a$ and $q(x) = 0$. Therefore,
 
@@ -126,6 +146,7 @@ c = \dfrac{\pi^3 - 8}{8}.
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

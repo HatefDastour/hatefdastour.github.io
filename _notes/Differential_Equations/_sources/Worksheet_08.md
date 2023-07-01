@@ -23,15 +23,32 @@ The characteristic polynomial: $p(r)=r^4-4r^3+7r^2-6r+2=(r-1)^2(r^2-2r+2)$. Then
 
 ## Undetermined Coefficients For Higher Order Equations
 
-<div class="alert alert-block alert-success">
-<font size="+0"><b>
-Undetermined Coefficients For Higher Order Equations
-</b></font>
-    
-<p>Consider the constant coefficient equation <span class="math display">\[\label{eq:9.3.1} a_0y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=F(x),\]</span> where <span class="math inline">\(n\ge3\)</span> and <span class="math inline">\(F\)</span> is a linear combination of functions of the form <span class="math display">\[e^{\alpha x}\left(p_0+p_1x+\cdots+p_kx^k\right)\]</span> or <span class="math display">\[e^{\lambda x}\left[\left(p_0+p_1x+\cdots+p_kx^k\right)\cos\omega x+\left(q_0+q_1x+\cdots+q_kx^k\right)\sin\omega x\right].\]</span></p>
-    
-<p>The general solution of is <span class="math inline">\(y=y_p+y_c\)</span>, where <span class="math inline">\(y_p\)</span> is a particular solution and <span class="math inline">\(y_c\)</span> is the general solution of the complementary equation <span class="math display">\[a_0y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=0.\]</span></p>
-</div>
+`````{admonition} Undetermined Coefficients For Higher Order Equations
+:class: important
+Consider the constant coefficient equation:
+
+\begin{equation}
+ \label{eq:9.3.1} a_0y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=F(x),
+\end{equation}
+
+where $n\ge3$ and $F$ is a linear combination of functions of the form:
+
+$$
+e^{\alpha x}\left(p_0+p_1x+\cdots+p_kx^k\right)
+$$
+
+or
+
+$$
+e^{\lambda x}\left[\left(p_0+p_1x+\cdots+p_kx^k\right)\cos(\omega x)+\left(q_0+q_1x+\cdots+q_kx^k\right)\sin(\omega x)\right].
+$$
+
+According to Theorem 9.1.5, the general solution of equation \eqref{eq:9.3.1} is given by $y=y_p+y_c$, where $y_p$ is a particular solution of equation \eqref{eq:9.3.1} and $y_c$ is the general solution of the complementary equation:
+
+$$
+a_0y^{(n)}+a_1y^{(n-1)}+\cdots+a_ny=0.
+$$
+`````
 
 
 

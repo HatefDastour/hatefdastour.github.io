@@ -395,6 +395,7 @@ and   $y=\displaystyle-{1\over4}e^{2t}+{17\over
 20}e^{-2t}+{2\over5}e^{3t}$.
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

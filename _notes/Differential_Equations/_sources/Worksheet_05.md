@@ -1,19 +1,44 @@
 # Worksheet 05
 
-<div class="alert alert-block alert-success">
-<font size="+0"><b>
-Theorem 2.6.1 from the textbook
-</b></font>
+```{admonition} Theorem
     
-<p>Consider the following ODE <span class="math display">\[\label{eq:2.6.11}
-M(x,y)\,dx+N(x,y)\,dy=0,\]</span> where <span class="math inline">\(M,\)</span> <span class="math inline">\(N,\)</span> <span class="math inline">\(M_y,\)</span> and <span class="math inline">\(N_x\)</span> be continuous on an open rectangle <span class="math inline">\(\mathbb{R}.\)</span> Then<span class="math inline">\(:\)</span></p>
-<ol>
-<li><p>If <span class="math inline">\((M_y-N_x)/N\)</span> is independent of <span class="math inline">\(y\)</span> on <span class="math inline">\(R\)</span> and we define <span class="math inline">\(p(x)=\frac{M_y-N_x}{N},\)</span> then <span class="math display">\[\label{eq:2.6.10}
-\mu(x)=\pm e^{\int p(x)\,dx}\]</span> is an integrating factor for the ODE on <span class="math inline">\(R.\)</span></p></li>
-<li><p>If <span class="math inline">\((N_x-M_y)/M\)</span> is independent of <span class="math inline">\(x\)</span> on <span class="math inline">\(R\)</span> and we define <span class="math inline">\(q(y)=\frac{N_x-M_y}{M},\)</span> then <span class="math display">\[\label{eq:2.6.12}
-\mu(y)=\pm e^{\int q(y)\,dy}\]</span> is an integrating factor for the ODE on <span class="math inline">\(\mathbb{R}.\)</span></p></li>
-</ol>
-</div>
+Consider the following ordinary differential equation (ODE):
+
+\begin{equation}\label{eq:2.6.11}
+M(x,y)\,dx+N(x,y)\,dy=0,
+\end{equation}
+
+where $M,$ $N,$ $M_y,$ and $N_x$ are continuous functions defined on an open rectangle $\mathbb{R}$.
+
+We can rewrite this ODE using integrating factors as follows:
+
+a. If $\frac{M_y-N_x}{N}$ is independent of $y$ on $\mathbb{R}$ and we define $p(x)=\frac{M_y-N_x}{N}$, then the integrating factor for the ODE on $\mathbb{R}$ is given by:
+
+\begin{equation}\label{eq:2.6.10}
+\mu(x)=\pm e^{\int p(x)\,dx}.
+\end{equation}
+
+Using this integrating factor, the ODE becomes:
+
+\begin{equation}
+\mu(x)M(x,y)\,dx + \mu(x)N(x,y)\,dy = 0.
+\end{equation}
+
+b. If $\frac{N_x-M_y}{M}$ is independent of $x$ on $\mathbb{R}$ and we define $q(y)=\frac{N_x-M_y}{M}$, then the integrating factor for the ODE on $\mathbb{R}$ is given by:
+
+\begin{equation}\label{eq:2.6.12}
+\mu(y)=\pm e^{\int q(y)\,dy}.
+\end{equation}
+
+Using this integrating factor, the ODE becomes:
+
+\begin{equation}
+M(x,y)\,dx + N(x,y)\,dy = 0.
+\end{equation}
+
+These integrating factors provide a convenient way to solve the given ODE on the entire open rectangle $\mathbb{R}$.
+
+```
 
 1. Find an integrating factor, and solve the given equation.
 \begin{align*}(5xy+2y+5)\,dx+2x\,dy=0.\end{align*}
@@ -112,6 +137,7 @@ Therefore,
 \begin{align*}-\frac{2}{x} + y^3 + \ln|y|=c, \quad c \in \mathbb{R}.\end{align*}
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

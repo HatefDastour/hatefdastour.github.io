@@ -1,19 +1,28 @@
 # Worksheet 09
 
-<div class="alert alert-block alert-success">
-<p>Conisder the following power series <span class="math display">\[\sum_{n=0}^\infty a_n(x-x_0)^n,\]</span> where <span class="math inline">\(x_0\)</span> and <span class="math inline">\(a_0\)</span>, <span class="math inline">\(a_1,\)</span> …, <span class="math inline">\(a_n,\)</span> …are constants.</p>
-<p>For this power series exactly one of the these statements is true:</p>
-<ol>
-<li><p>The power series converges only for <span class="math inline">\(x=x_0.\)</span></p></li>
-<li><p>The power series converges for all values of <span class="math inline">\(x.\)</span></p></li>
-<li><p>There’s a positive number <span class="math inline">\(R\)</span> such that the power series converges if <span class="math inline">\(|x-x_0|&lt;R\)</span> and diverges if <span class="math inline">\(|x-x_0|&gt;R.\)</span></p></li>
-</ol>
-<p>In case (iii) we say that <span class="math inline">\(R\)</span> is the <span><em>radius of convergence</em></span> of the power series. For convenience, we include the other two cases in this definition by defining <span class="math inline">\(R=0\)</span> in case (i) and <span class="math inline">\(R=\infty\)</span> in case (ii). We define the <span><em>open interval of convergence</em></span> of <span class="math inline">\(\sum_{n=0}^\infty a_n(x-x_0)^n\)</span> to be <span class="math display">\[(x_0-R,x_0+R)\quad\mbox{ if }\quad  0&lt;R&lt;\infty,\quad \mbox{ or
-}\quad(-\infty,\infty) \quad\mbox{ if }\quad R=\infty.\]</span> If <span class="math inline">\(R\)</span> is finite, no general statement can be made concerning convergence at the endpoints <span class="math inline">\(x=x_0\pm R\)</span> of the open interval of convergence; the series may converge at one or both points, or diverge at both.</p>
-<p>Suppose there’s an integer <span class="math inline">\(N\)</span> such that <span class="math inline">\(a_n\ne0\)</span> if <span class="math inline">\(n\ge N\)</span> and <span class="math display">\[\lim_{n\to\infty}\left|a_{n+1}\over a_n\right|=L,\]</span> where <span class="math inline">\(0\le L\le\infty.\)</span> Then the radius of convergence of <span class="math inline">\(\sum_{n=0}^\infty a_n(x-x_0)^n\)</span> is <span class="math inline">\(R=1/ L,\)</span> which should be interpreted to mean that <span class="math inline">\(R=0\)</span> if <span class="math inline">\(L=\infty,\)</span> or <span class="math inline">\(R=\infty\)</span> if <span class="math inline">\(L=0.\)</span></p>
-</div>
+`````{admonition} Power Series
+:class: important
 
+For any power series of the form:
 
+\begin{align*}
+\sum_{n=0}^\infty a_n(x-x_0)^n,
+\end{align*}
+
+exactly one of the following statements is true:
+
+* (i) The power series converges only for $x=x_0$.
+* (ii) The power series converges for all values of $x$.
+* (iii) There exists a positive number $R$ such that the power series converges if $|x-x_0|<R$ and diverges if $|x-x_0|>R$.
+
+In case (iii), we refer to $R$ as the \textcolor{blue}{radius of convergence} of the power series. For convenience, we include the other two cases in this definition by defining $R=0$ in case (i) and $R=\infty$ in case (ii). We define the \textcolor{blue}{open interval of convergence} of $\sum_{n=0}^\infty a_n(x-x_0)^n$ as follows:
+
+\begin{align*}
+(x_0-R,x_0+R) \quad \text{if} \quad 0<R<\infty, \quad \text{or} \quad (-\infty,\infty) \quad \text{if} \quad R=\infty.
+\end{align*}
+
+If $R$ is finite, no general statement can be made regarding the convergence at the endpoints $x=x_0\pm R$ of the open interval of convergence. The series may converge at one or both points, or diverge at both.
+`````
 
 1. For each power series, find the radius of convergence $R$. If $R>0$, find the open interval of convergence.
 
@@ -51,16 +60,35 @@ Therefore, $R = \infty$, $I = (-\infty,\infty)$,
 * h)  $R = \infty$, $I = (-\infty,\infty)$,
 ***
 
-<div class="alert alert-block alert-success">
-<p>The coefficients <span class="math inline">\(\{a_n\}\)</span> in any solution <span class="math inline">\(y=\sum_{n=0}^\infty a_n(x-x_0)^n\)</span> of <span class="math display">\[\label{eq:7.2.23}
-\left(1+\alpha(x-x_0)^2\right)y&#39;&#39;+\beta(x-x_0) y&#39;+\gamma y=0\]</span> satisfy the recurrence relation <span class="math display">\[\label{eq:7.2.24}
-a_{n+2}=-{p(n) \over(n+2)(n+1)}a_n,\quad  n\ge0,\]</span> where <span class="math display">\[\label{eq:7.2.25}
-p(n)=\alpha n(n-1) +\beta n+\gamma.\]</span> Moreover<span class="math inline">\(,\)</span> the coefficients of the even and odd powers of <span class="math inline">\(x-x_0\)</span> can be computed separately as</p>
-<p><span class="math display">\[\begin{aligned}
-a_{2m+2}&=-{p(2m)\over(2m+2)(2m+1)}a_{2m},& m\ge 0,\\
-a_{2m+3}&=-{p(2m+1)\over(2m+3)(2m+2)}a_{2m+1},& m\ge 0,\end{aligned}\]</span></p>
-<p>where <span class="math inline">\(a_0\)</span> and <span class="math inline">\(a_1\)</span> are arbitrary.</p>
-</div>
+`````{admonition} Theorem
+
+\textbf{Theorem 7.2.2}: Consider the coefficients $\{a_n\}$ in any solution of the form $y=\sum_{n=0}^\infty a_n(x-x_0)^n$ for the differential equation:
+
+\begin{equation}
+\left(1+\alpha(x-x_0)^2\right)y''+\beta(x-x_0) y'+\gamma y=0 \quad \text{(1)}
+\end{equation}
+
+The coefficients satisfy the recurrence relation:
+
+\begin{equation}
+a_{n+2}=-\frac{p(n)}{(n+2)(n+1)}a_n, \quad n\geq 0 \quad \text{(2)}
+\end{equation}
+
+where
+
+\begin{equation}
+p(n)=\alpha n(n-1) +\beta n+\gamma \quad \text{(3)}
+\end{equation}
+
+Furthermore, the coefficients of the even and odd powers of $(x-x_0)$ can be computed separately as:
+
+\begin{eqnarray}
+a_{2m+2}&=&-\frac{p(2m)}{(2m+2)(2m+1)}a_{2m}, \quad m\geq 0 \quad \text{(4)}\\
+a_{2m+3}&=&-\frac{p(2m+1)}{(2m+3)(2m+2)}a_{2m+1}, \quad m\geq 0 \quad \text{(5)}
+\end{eqnarray}
+
+Here, $a_0$ and $a_1$ are arbitrary.
+`````
 
 
 
@@ -183,11 +211,41 @@ y & =2-(x-1)-{1\over2}(x-1)^2+{5\over3}(x-1)^3-{19\over12}(x-1)^4
 \end{align*}
 ***
 
-<div class="alert alert-block alert-success">
-<p>Suppose the roots of the indicial equation <span class="math display">\[\label{eq:7.4.11} ar(r-1)+br+c=0\]</span> are <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>. Then the general solution of the Euler equation <span class="math display">\[\label{eq:7.4.12}
-ax^2y&#39;&#39;+bxy&#39;+cy=0\]</span> on <span class="math inline">\((0,\infty)\)</span> is</p>
-<p>if <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are distinct real numbers: <span class="math display">\[y=c_1x^{r_1}+c_2x^{r_2},\]</span> if <span class="math inline">\(r_1=r_2\)</span> <span class="math display">\[y=x^{r_1}(c_1+c_2\ln x),\]</span> if <span class="math inline">\(r_1,r_2=\lambda\pm i\omega\)</span> with <span class="math inline">\(\omega&gt;0\)</span> <span class="math display">\[y=x^{\lambda}\left[c_1\cos\left(\omega\ln x\right)+ c_2\sin\left(\omega\ln x \right)\right].\]</span></p>
-</div>
+`````{admonition} Theorem
+
+Let's consider the given equations and rewrite the solution statement in a clearer manner:
+
+Suppose the indicial equation is given by:
+
+\[
+ar(r-1)+br+c=0 \quad \text{(1)}
+\]
+
+with roots $r_1$ and $r_2$. Then, the general solution of the Euler equation:
+
+\[
+ax^2y''+bxy'+cy=0 \quad \text{(2)}
+\]
+
+on the interval $(0,\infty)$ can be expressed as follows:
+
+1. If $r_1$ and $r_2$ are distinct real numbers:
+\[
+y=c_1x^{r_1}+c_2x^{r_2} \quad \text{(3)}
+\]
+
+2. If $r_1=r_2$:
+\[
+y=x^{r_1}(c_1+c_2\ln x) \quad \text{(4)}
+\]
+
+3. If $r_1$ and $r_2$ are complex numbers of the form $\lambda\pm i\omega$ with $\omega>0$:
+\[
+y=x^{\lambda}\left[c_1\cos(\omega\ln x)+ c_2\sin(\omega\ln x)\right] \quad \text{(5)}
+\]
+
+Let me know if there's anything else I can help you with!
+`````
 
 5. Find the general solution of the given Euler equation on $(0,\infty)$.
 
@@ -225,9 +283,12 @@ ax^2y&#39;&#39;+bxy&#39;+cy=0\]</span> on <span class="math inline">\((0,\infty)
 \begin{align*}y=x\left[c_1\cos(3 \ln x)+c_2\sin(3 \ln x)\right].\end{align*}
 * h) $p(r)=2r(r-1)+3r-1=(r+1)(2r-1)$
 
-\begin{align*}y={{c_1\over x}+c_2 x^{1/2}}.\end{align*}
+\begin{align*}
+y={{c_1\over x}+c_2 x^{1/2}}.
+\end{align*}
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

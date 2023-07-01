@@ -25,18 +25,32 @@ W(x)=\begin{vmatrix}
 
 ***
 
-<div class="alert alert-block alert-success">
-<font size="+0"><b>
-The Abel's formula
-</b></font>
-    
-<p>Suppose <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span> are continuous on <span class="math inline">\((a,b),\)</span> let <span class="math inline">\(y_1(x)\)</span> and <span class="math inline">\(y_2(x)\)</span> be solutions of <span class="math display">\[\label{eq:5.1.27}
-y&#39;&#39;+p(x)y&#39;+q(x)y=0\]</span> on <span class="math inline">\((a,b)\)</span>, and define <span class="math display">\[\label{eq:5.1.28}
-W=y_1y_2&#39;-y_1&#39;y_2.\]</span> Let <span class="math inline">\(x_0\)</span> be any point in <span class="math inline">\((a,b).\)</span> Then <span class="math display">\[\label{eq:5.1.29}
-W(x)=W(x_0) e^{-\int^x_{x_0}p(t)\,
-dt}, \quad a&lt;x&lt;b.\]</span> Therefore either <span class="math inline">\(W\)</span> has no zeros in <span class="math inline">\((a,b)\)</span> or <span class="math inline">\(W\equiv0\)</span> on <span class="math inline">\((a,b).\)</span></p>
-</div>
+`````{admonition} Abel's Formula
+:class: important
 
+Consider the second-order linear homogeneous differential equation:
+
+\begin{equation}\label{eq:5.1.27}
+y''+p(x)y'+q(x)y=0,
+\end{equation}
+
+where $p(x)$ and $q(x)$ are continuous functions defined on the interval $(a,b)$. Let $y_1(x)$ and $y_2(x)$ be two solutions of this equation on $(a,b)$. We define the Wronskian as:
+
+\begin{equation}\label{eq:5.1.28}
+W=y_1y_2'-y_1'y_2.
+\end{equation}
+
+For any point $x_0$ in the interval $(a,b)$, Abel's formula states:
+
+\begin{equation} \label{eq:5.1.29}
+W(x)=W(x_0) e^{-\int_{x_0}^x p(t)\, dt}, \quad a<x<b.
+\end{equation}
+
+Consequently, either the Wronskian $W$ has no zeros in the interval $(a,b)$, or it is identically equal to zero on $(a,b)$.
+
+This result, known as Abel's formula, provides a useful relationship between the Wronskian and the integrating factor involving the function $p(x)$ in the given differential equation. For further information on Abel and his contributions, you can refer to [Abel's
+biography](http://www-history.mcs.st-and.ac.uk/Mathematicians/Abel.html).
+`````
 
 
 2. Find the Wronskian of a given set $\{y_1,y_2\}$ of solutions of
@@ -57,18 +71,29 @@ formula yields
 
 ***
 
-<div class="alert alert-block alert-success">
-<font size="+0"><b>
-Fundamental Set of Solutions
-</b></font>
+`````{admonition} Fundamental Set of Solutions
+:class: important
     
-<p>Suppose <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are continuous and <span class="math inline">\(y_1\)</span> is a solution of <span class="math display">\[y&#39;&#39;+p(x)y&#39;+q(x)y=0\qquad (A)\]</span> that has no zeros on <span class="math inline">\((a,b)\)</span>. Let <span class="math inline">\(P(x)=\int p(x)\,dx\)</span> be any antiderivative of <span class="math inline">\(p\)</span> on <span class="math inline">\((a,b)\)</span>.</p>
-<ol>
-<li><p>If <span class="math inline">\(K\)</span> is an arbitrary nonzero constant and <span class="math inline">\(y_2\)</span> satisfies <span class="math display">\[y_1y_2&#39;-y_1&#39;y_2=Ke^{-P(x)}
-\qquad (B)\]</span> on <span class="math inline">\((a,b)\)</span>, then <span class="math inline">\(y_2\)</span> also satisfies (A) on <span class="math inline">\((a,b)\)</span>, and <span class="math inline">\(\{y_1,y_2\}\)</span> is a fundamental set of solutions on (A) on <span class="math inline">\((a,b)\)</span>.</p></li>
-<li><p>If <span class="math inline">\(y_2=uy_1\)</span> where <span class="math inline">\(u&#39;=K\dfrac{e^{-P(x)}}{y_1^2(x)}\)</span>, then <span class="math inline">\(\{y_1,y_2\}\)</span> is a fundamental set of solutions of (A) on <span class="math inline">\((a,b)\)</span>.</p></li>
-</ol>
-</div>
+Suppose $p$ and $q$ are continuous functions, and $y_1$ is a solution of the second-order linear homogeneous differential equation:
+
+$$
+y''+p(x)y'+q(x)y=0 \quad \text{(A)}
+$$
+
+with no zeros on the interval $(a,b)$. Let $P(x)$ be any antiderivative of $p(x)$ on $(a,b)$.
+
+* (a) If $K$ is a nonzero constant and $y_2$ satisfies the following equation on $(a,b)$:
+
+$$
+y_1y_2'-y_1'y_2=Ke^{-P(x)} \quad \text{(B)}
+$$
+
+then $y_2$ also satisfies equation (A) on $(a,b)$, and the pair $\{y_1,y_2\}$ forms a fundamental set of solutions for equation (A) on $(a,b)$.
+
+* (b) If $y_2=uy_1$, where $u'=K\frac{e^{-P(x)}}{y_1^2(x)}$, then $\{y_1,y_2\}$ forms a fundamental set of solutions for equation (A) on $(a,b)$.
+
+In both cases, the given conditions and relationships ensure that $y_1$ and $y_2$ satisfy equation (A) on the interval $(a,b)$ and together form a fundamental set of solutions.
+`````
 
 
 
@@ -98,25 +123,45 @@ Thus, $u=K\ln x$. Letting $K=1$, then $y_2=x\ln x$.
 
 ***
 
-<div class="alert alert-block alert-success">
-<font size="+0"><b>
-General solution for the second-order homogeneous linear ODE
-</b></font>
+
+`````{admonition} General solution for the second-order homogeneous linear ODE
+:class: important
     
-<p>Consider the second-order homogeneous linear ODE with <u>constant</u> coefficients, <span class="math display">\[\label{eq2.1.01}
-a_{2} y&#39;&#39;(x)+a_{1} y&#39;(x)+a_{0} y(x)=0,\]</span> where <span class="math inline">\(a_0,~a_1\)</span> and <span class="math inline">\(a_2\)</span> are arbitrary constants.</p>
-<p>The <em>characteristic equation</em> corresponding to the ODE can be found as follows, <span class="math display">\[\label{HOL-eq.02}
-a_{2} r^2+a_{1} r+a_{0}=0.\]</span></p>
-<p>Let <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> be the two roots of this characteristic equation. The following cases can be considered to find a general solution for the corresponding ODE.</p>
-<ol>
-<li><p>The characteristic equation has <u>distinct</u> real roots: <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span><br />
-</p></li>
-<li><p>The characteristic equation has a pair of complex roots: <span class="math inline">\(\alpha \pm \beta i\)</span><br />
-</p></li>
-<li><p>Let <span class="math inline">\(r_1\)</span> be a root of the characteristic equation with the multiplicity of <span class="math inline">\(2\)</span> (i.e. <span class="math inline">\(r_1=r_2\)</span>).<br />
-</p></li>
-</ol>
-</div>
+Consider the second-order homogeneous linear ordinary differential equation with constant coefficients:
+
+\begin{equation}\label{eq2.1.01}
+a_{2} y''(x)+a_{1} y'(x)+a_{0} y(x)=0,
+\end{equation}
+
+where $a_0$, $a_1$, and $a_2$ are arbitrary constants.
+
+To find the characteristic equation corresponding to the ODE \eqref{eq2.1.01}, we can set up the following equation:
+
+\begin{equation}\label{HOL-eq.02}
+a_{2} r^2+a_{1} r+a_{0}=0.
+\end{equation}
+
+Let $r_1$ and $r_2$ be the two roots of this characteristic equation. Depending on the nature of the roots, we can consider the following cases to find a general solution for the corresponding ODE:
+
+* (a) If the characteristic equation has distinct real roots, $r_1$ and $r_2$, the general solution is given by:
+
+\begin{equation}
+y(x) = c_1 e^{r_1 x} +c_2 e^{r_2 x}.
+\end{equation}
+
+* (b) If the characteristic equation has a pair of complex roots, $\alpha \pm \beta i$, the general solution is given by:
+
+\begin{equation}
+y(x) = e^{\alpha x}\left(c_1 \cos(\beta x)+c_2\sin(\beta x)\right).
+\end{equation}
+
+* (c) If $r_1$ is a repeated root of the characteristic equation (i.e., $r_1=r_2$), the general solution is given by:
+
+\begin{equation}
+y(x) = c_1 e^{r_1 x} +c_2 x e^{r_1 x}.
+\end{equation}
+
+`````
 
 
 
@@ -161,6 +206,7 @@ Hence, $c_1=6, c_2=4$, and $y=4e^{x/2}+6e^{-x/3}$.
 
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

@@ -87,6 +87,7 @@ and
 \begin{align*}3y\sin x+3y+2x^2e^x=c, \quad c \in \mathbb{R}.\end{align*}
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***

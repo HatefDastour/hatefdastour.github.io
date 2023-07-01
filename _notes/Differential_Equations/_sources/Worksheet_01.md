@@ -143,6 +143,7 @@ It follows from $y(0)=1$,
 \end{align*}
 
 ***
-## Refrences
+**Refrences**
+
 1. Trench, William F. "Elementary differential equations with boundary value problems." (2018).
 ***
