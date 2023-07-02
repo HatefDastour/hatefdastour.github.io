@@ -19,7 +19,7 @@ title: "Teaching"
 ### University of Lethbridge (Calgary Campus), Calgary, AB, Canada
 
 * **Fall 2021 - Fall 2022:**
-	* Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences).
+	* [Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences).](/teaching/ULETH_MATH1510Y_2021F)
 
 ### University of Calgary, Calgary, AB, Canada
 
@@ -30,9 +30,7 @@ title: "Teaching"
 	* [MATH 211 (Linear Methods I)](/teaching/UC_MATH211_2018S)
 
 * **Fall 2017:**
-	* [Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)](/teaching/ULETH_MATH1510Y_2021F)
+	* [Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)](/teaching/UC_MATH275_2017F)
 
 * **Winter 2016 - Fall 2019:**
-<p style='text-align: justify;'>
 Gained teaching experience serving as a teaching assistant for Introductory Calculus (MATH 249), University Calculus I (MATH 265), Calculus for Engineers and Scientists (MATH 275), Multivariable Calculus for Engineers (MATH 277), Differential Equations for Engineers and Scientists (MATH 375), Numerical Analysis I (MATH 391), Numerical Analysis I (AMAT 491) and Numerical Analysis II (AMAT 493).
-</p>
