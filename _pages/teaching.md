@@ -6,20 +6,20 @@ title: "Teaching"
 ### Mount Royal University, Calgary, AB, Canada
 
 * **Spring 2023:**
-	* [MATH 2333 (Statistics for Life Sciences).](/teaching/MRU_MATH2333_2023S)
+	* [MATH 2333 (Statistics for Life Sciences)](/teaching/MRU_MATH2333_2023S)
 	
 * **Winter 2023:**
-	* [MATH 2233 (Statistics for Biological Sciences).](/teaching/MRU_MATH2233_2023W)
-	* [MATH 2234 (Concepts of Mathematical Statistics).](/teaching/MRU_MATH2234_2023W)
+	* [MATH 2233 (Statistics for Biological Sciences)](/teaching/MRU_MATH2233_2023W)
+	* [MATH 2234 (Concepts of Mathematical Statistics)](/teaching/MRU_MATH2234_2023W)
 
 * **Fall 2022:**
-	* [MATH 3101 (Numerical Analysis).](/teaching/MRU_MATH3101_2022F)
-	* [MATH 1203 (Linear Algebra for Scientists and Engineers).](/teaching/MRU_MATH1203_2022F)
+	* [MATH 3101 (Numerical Analysis)](/teaching/MRU_MATH3101_2022F)
+	* [MATH 1203 (Linear Algebra for Scientists and Engineers)](/teaching/MRU_MATH1203_2022F)
 
 ### University of Lethbridge (Calgary Campus), Calgary, AB, Canada
 
 * **Fall 2021 - Fall 2022:**
-	* [Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences).](/teaching/ULETH_MATH1510Y_2021F)
+	* [Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences)](/teaching/ULETH_MATH1510Y_2021F)
 
 ### University of Calgary, Calgary, AB, Canada
 
