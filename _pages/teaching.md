@@ -6,7 +6,7 @@ title: "Teaching"
 ### Mount Royal University, Calgary, AB, Canada
 
 * **Spring 2023:**
-	* MATH 2333 (Statistics for Life Sciences).
+	* [MATH 2333 (Statistics for Life Sciences).](/teaching/MRU_MATH2333_2023S)
 	
 * **Winter 2023:**
 	* [MATH 2233 (Statistics for Biological Sciences).](/teaching/MRU_MATH2233_2023W)
@@ -30,7 +30,9 @@ title: "Teaching"
 	* [MATH 211 (Linear Methods I)](/teaching/UC_MATH211_2018S)
 
 * **Fall 2017:**
-	* Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)
+	* [Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)](/teaching/ULETH_MATH1510Y_2021F)
 
 * **Winter 2016 - Fall 2019:**
+<p style='text-align: justify;'>
 Gained teaching experience serving as a teaching assistant for Introductory Calculus (MATH 249), University Calculus I (MATH 265), Calculus for Engineers and Scientists (MATH 275), Multivariable Calculus for Engineers (MATH 277), Differential Equations for Engineers and Scientists (MATH 375), Numerical Analysis I (MATH 391), Numerical Analysis I (AMAT 491) and Numerical Analysis II (AMAT 493).
+</p>
