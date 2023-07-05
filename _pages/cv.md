@@ -7,6 +7,11 @@ redirect_from:
   - /resume
 ---
 
+<iframe src="/files/Hatef_Dastour_CV.pdf" width="100%" height="600" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
+
+[See my full CV in PDF format](/files/Hatef_Dastour_CV.pdf).
+
+<!---
 {% include base_path %}
 
 * [See my full CV in PDF format](/files/Hatef_Dastour_CV.pdf).
@@ -126,4 +131,4 @@ Professional Services and Committees
  Calgary, Canada, February 2017 - April 2018,
 
 * Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc){:target="_blank"}, Calgary, Canada, May 21, 2017 - May 22, 2017.
-  
+-->
