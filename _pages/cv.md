@@ -13,7 +13,7 @@ redirect_from:
 
 Education
 ======
-* Ph.D. in Mathematics and Statistics, University of Calgary, Canada, May 2022 - Present,
+* Ph.D. in Geomatics Engineering, University of Calgary, Canada, May 2022 - Present,
 * Ph.D. in Mathematics and Statistics, University of Calgary, Canada, January 2016 - December 2019,
 * M.S. in Applied Mathematics, Damghan University, September 2010 - September 2012,
 * B.S. in Applied Mathematics, Payam Noor University, Iran, September 2006 - July 2010.
