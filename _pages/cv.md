@@ -91,10 +91,9 @@ Awards
 ======
 * NSERC Doctoral Scholarship. 2023 - 2025
 * Ian N. McKinnon Memorial Fellowship. 2023 - 2024
-* PIMS Doctoral Recruitment Scholarship. 2015 - 2016
+* Alberta Innovates Graduate Student Scholarship. 2017 - 2019
 * Eric Milner Graduate Scholarship. 2016 - 2017
-* Alberta Innovates Graduate Student Scholarship. 2017 - 2018
-* Alberta Innovates Graduate Student Scholarship. 2018 - 2019
+* PIMS Doctoral Recruitment Scholarship. 2015 - 2016
 
 Publications
 ======
