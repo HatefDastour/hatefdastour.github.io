@@ -9,16 +9,16 @@ redirect_from:
 ---
 
 <p style='text-align: justify;'>
-My name is Hatef Dastour, and I am a Data Science enthusiast. After completing my BSc and MSc degrees in Applied Mathematics in Iran, I joined the <a href="https://www.ucalgary.ca/">University of Calgary</a> to pursue my Ph.D. studies in January 2016.
+My name is Hatef Dastour, and I have expertise in diverse areas of research, specializing in Environmental Modeling, Remote Sensing, Mathematical Modelling, and the application of Data Science and Big Data Analysis within these domains.  I obtained my BSc and MSc degrees in Applied Mathematics from Iran before joining the <a href="https://www.ucalgary.ca/">University of Calgary</a> in January 2016 to pursue my Ph.D. studies.
 <br>
 <br>
-Before completing my Ph.D. in Mathematics and Statistics at the end of December 2019, I had finished a number of research projects in the fields of Applied Numerical Analysis and Mathematics, and I had worked as a sessional instructor for a few semesters at the University of Calgary. My current research interests focus on the applications of the wave equation in industrial problems and topics in data science.
+During my time at the University of Calgary, I completed my Ph.D. in Mathematics and Statistics in December 2019. Throughout my academic journey, I engaged in several research projects focused on Applied Numerical Analysis and Mathematics. Additionally, I gained teaching experience as a sessional instructor at the University of Calgary for multiple semesters.
 <br>
 <br>
-I finished my Ph.D. program at the end of December 2019, and then I joined <a href="https://stellaralgo.com/">StellarAlgo</a> as a Data Science Developer on January 06, 2020. After that, I joined <a href="https://earthspace.ca/">Earth & Space Inc</a> to assist them with various Data Science related tasks. I am also working as a Sessional Lecturer/Tutorial Instructor at the <a href="https://www.mtroyal.ca/">Mount Royal University</a> and the <a href="https://www.ulethbridge.ca/calgary/">University of Lethbridge (Calgary Campus)</a> and as a Research Associate at the Department of <a href="https://schulich.ucalgary.ca/geomatics/">Geomatical Engineering</a> from Schulich School of Engineering at the <a href="https://www.ucalgary.ca/">University of Calgary</a>.
+Following the completion of my Ph.D. program, I joined <a href="https://stellaralgo.com/">StellarAlgo</a> as a Data Science Developer on January 06, 2020. Subsequently, I joined <a href="https://earthspace.ca/">Earth & Space Inc</a>, where I contributed my expertise in Data Science to assist them with various tasks. Furthermore, I am currently involved as a Sessional Lecturer/Tutorial Instructor at <a href="https://www.mtroyal.ca/">Mount Royal University</a> and the <a href="https://www.ulethbridge.ca/calgary/">University of Lethbridge (Calgary Campus)</a>. Additionally, I hold a position as a Research Associate at the Department of <a href="https://schulich.ucalgary.ca/geomatics/">Geomatical Engineering</a> in the Schulich School of Engineering at the <a href="https://www.ucalgary.ca/">University of Calgary</a>.
 <br>
 <br>
-I am a tech enthusiast driven to learn about new advancements in technology. I also enjoy working out, hiking, and spending time with family and friends.
+Beyond my professional pursuits, I am a tech enthusiast with a strong drive to stay informed about new advancements in technology. In my leisure time, I enjoy working out, hiking, and spending quality time with my family and friends.
 </p>
 
 <!---
