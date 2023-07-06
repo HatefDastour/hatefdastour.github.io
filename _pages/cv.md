@@ -62,19 +62,19 @@ redirect_from:
 	* **Fall 2017:**
 		* [Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)](/teaching/UC_MATH275_2017F){:target="_blank"}
 
-	* **Winter 2016 - Fall 2019:** Gained teaching experience serving as a teaching assistant for Introductory Calculus (MATH 249), University Calculus I (MATH 265), Calculus for Engineers and Scientists (MATH 275), Multivariable Calculus for Engineers (MATH 277), Differential Equations for Engineers and Scientists (MATH 375), Numerical Analysis I (MATH 391), Numerical Analysis I (AMAT 491) and Numerical Analysis II (AMAT 493).
----
+	* <p><strong>Winter 2016 - Fall 2019:</strong> Gained teaching experience serving as a teaching assistant for Introductory Calculus (MATH 249), University Calculus I (MATH 265), Calculus for Engineers and Scientists (MATH 275), Multivariable Calculus for Engineers (MATH 277), Differential Equations for Engineers and Scientists (MATH 375), Numerical Analysis I (MATH 391), Numerical Analysis I (AMAT 491) and Numerical Analysis II (AMAT 493).</p> 
+	
+	---
 
 # Computer Skills
-* Proficiency with computer programming including MATLAB, Python (TensorFlow, Keras, Scikit-Learn, NLP, ...), R, Julia Programming, and others.
+* Proficiency with computer programming including MATLAB, Python (TensorFlow, PyTorch, Keras, Scikit-Learn, NLP, Pandas, Dask, ...), R, Julia Programming, and others.
 
 * Proficiency with SQL Server Analysis Services (SSAS).
 
-* Proficiency with office applications, such as Microsoft Office, LaTeX editors, and more.
+* Proficiency with visualization tools such as Plotly, Power BI, etc.
 
-* Proficiency with advanced graphical applications, such as Adobe Photoshop, 3D Studio Max, Blender, and more.
+* Proficiency with Microsoft Windows, mac-OS, and various Linux distributions as well as office applications, such as Microsoft Office, LaTeX editors, and more.
 
-* Proficiency with Microsoft Windows, mac-OS, and various Linux distributions.
 ---
 
 # Group Projects
@@ -95,7 +95,7 @@ redirect_from:
 
 *  <p style="text-align:left;"> <a href="https://science.ucalgary.ca/mathematics-statistics/current-students/graduate/awards-and-scholarships" target="_blank">Eric Milner Graduate Scholarship.</a> <span style="float:right;"> 2016 - 2017,</span></p>
 
-*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship.</a> <span style="float:right;"> 2016 - 2017,</span></p>
+*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship.<span style="float:right;"> 2016 - 2017,</span></p>
 
 
 ---
