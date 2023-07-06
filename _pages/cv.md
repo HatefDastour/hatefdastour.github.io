@@ -12,10 +12,11 @@ redirect_from:
 * [See my full CV in PDF format](/files/Hatef_Dastour_CV.pdf){:target="_blank"}.
 
 # Education
-* Ph.D. in Geomatics Engineering, University of Calgary, Canada, May 2022 - Present,
-* Ph.D. in Mathematics and Statistics, University of Calgary, Canada, January 2016 - December 2019,
-* M.S. in Applied Mathematics, Damghan University, September 2010 - September 2012,
-* B.S. in Applied Mathematics, Payam Noor University, Iran, September 2006 - July 2010.
+*  <p style="text-align:left;"> Ph.D. in Geomatics Engineering, University of Calgary, Canada,<span style="float:right;">May 2022 - Present,</span></p> 
+*  <p style="text-align:left;"> Ph.D. in Mathematics and Statistics, University of Calgary, Canada,<span style="float:right;">January 2016 - December 2019,</span></p>
+*  <p style="text-align:left;"> M.S. in Applied Mathematics, Damghan University, Iran,<span style="float:right;">September 2010 - September 2012,</span></p>
+*  <p style="text-align:left;"> B.S. in Applied Mathematics, Payam Noor University, Iran,<span style="float:right;">September 2006 - July 2010.</span></p>
+
 ---
 
 # Working and Research Experience
@@ -48,10 +49,10 @@ redirect_from:
 
 *   University of Lethbridge (Calgary Campus), Calgary, AB, Canada
 
-* **Fall 2021 - Fall 2022:**
-	* [Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences)](/teaching/ULETH_MATH1510Y_2021F){:target="_blank"}
+	* **Fall 2021 - Fall 2022:**
+		* [Co-Instructor for MATH 1510Y (Calculus for Management and Social Sciences)](/teaching/ULETH_MATH1510Y_2021F){:target="_blank"}
 
-	*   University of Calgary, Calgary, AB, Canada
+*   University of Calgary, Calgary, AB, Canada
 
 	* **Spring 2019:**
 		* [MATH 211 (Linear Methods I)](/teaching/UC_MATH211_2019P){:target="_blank"}
@@ -84,6 +85,7 @@ redirect_from:
 * 2016 Industrial Problem Solving Workshop, University of Toronto, Toronto, ON, Canada, August 15, 2016 - August 19, 2016,
 <br/>
 **Project:**  [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016){:target="_blank"} by Internal Ratings Management, Global Risk Management, Scotiabank.
+
 ---
 
 # Awards
@@ -95,7 +97,7 @@ redirect_from:
 
 *  <p style="text-align:left;"> <a href="https://science.ucalgary.ca/mathematics-statistics/current-students/graduate/awards-and-scholarships" target="_blank">Eric Milner Graduate Scholarship.</a> <span style="float:right;"> 2016 - 2017,</span></p>
 
-*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship.<span style="float:right;"> 2016 - 2017,</span></p>
+*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship.<span style="float:right;"> 2016 - 2017.</span></p>
 
 
 ---
