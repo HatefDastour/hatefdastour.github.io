@@ -89,15 +89,15 @@ redirect_from:
 ---
 
 # Awards
-*  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/nserc" target="_blank">NSERC Doctoral Scholarship.</a> <span style="float:right;"> 2023 - 2025,</span></p>
+*  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/nserc" target="_blank">NSERC Doctoral Scholarship,</a> <span style="float:right;"> 2023 - 2025,</span></p>
 
-*  <p style="text-align:left;"> Ian N. McKinnon Memorial Fellowship. <span style="float:right;"> 2023 - 2024,</span></p>
+*  <p style="text-align:left;"> Ian N. McKinnon Memorial Fellowship, <span style="float:right;"> 2023 - 2024,</span></p>
 
-*  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/alberta-innovates" target="_blank">Alberta Innovates Graduate Student Scholarship.</a> <span style="float:right;"> 2017 - 2019,</span></p>
+*  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/alberta-innovates" target="_blank">Alberta Innovates Graduate Student Scholarship,</a> <span style="float:right;"> 2017 - 2019,</span></p>
 
-*  <p style="text-align:left;"> <a href="https://science.ucalgary.ca/mathematics-statistics/current-students/graduate/awards-and-scholarships" target="_blank">Eric Milner Graduate Scholarship.</a> <span style="float:right;"> 2016 - 2017,</span></p>
+*  <p style="text-align:left;"> <a href="https://science.ucalgary.ca/mathematics-statistics/current-students/graduate/awards-and-scholarships" target="_blank">Eric Milner Graduate Scholarship,</a> <span style="float:right;"> 2016 - 2017,</span></p>
 
-*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship.<span style="float:right;"> 2016 - 2017.</span></p>
+*  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship,<span style="float:right;"> 2016 - 2017.</span></p>
 
 
 ---
@@ -119,14 +119,14 @@ redirect_from:
 
 * Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
 
-* Contribution to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw){:target="_blank"}, University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
+* Contributed to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw){:target="_blank"}, University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
 
 * Served as a member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Head Search Committee, University of Calgary, Calgary, Canada, March 2018.
 
 * Instructor of Programming Workshop at [2017 CMS Math Camp (Alberta)](https://cms.math.ca/MathCamps/){:target="_blank"}, University of Calgary,
  Calgary, Canada, July 2017,
 
-* Contribution to the June 2016 convocation ceremonies, University of Calgary, Calgary, Canada, June 2016,
+* Contributed to the June 2016 convocation ceremonies, University of Calgary, Calgary, Canada, June 2016,
 
 * The vice-president academic of Graduate University Mathematics Society (GUMS), University of Calgary,
  Calgary, Canada, September 2016 - September 2018,
