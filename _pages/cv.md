@@ -65,13 +65,11 @@ redirect_from:
 {% include archive-single-cv.html %}
 {% endfor %}</ul>
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Selected Presentations
-</b></font></div>
+## Selected Presentations
 
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
+<ul>{% for post in site.talks reversed %}
+{% include archive-single-talk-cv.html %}
+{% endfor %}</ul>
   
 ---
 
