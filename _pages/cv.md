@@ -62,7 +62,7 @@ redirect_from:
 ## Peer-reviewed Journal Publications
 
 <ul>{% for post in site.publications reversed %}
-{% include archive-single-cv.html %}
+  {% include archive-single-cv.html %}
 {% endfor %}</ul>
 
 ---
@@ -70,7 +70,7 @@ redirect_from:
 ## Selected Presentations
 
 <ul>{% for post in site.talks reversed %}
-{% include archive-single-talk-cv.html %}
+  {% include archive-single-talk-cv.html %}
 {% endfor %}</ul>
   
 ---
