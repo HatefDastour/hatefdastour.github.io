@@ -65,6 +65,8 @@ redirect_from:
 {% include archive-single-cv.html %}
 {% endfor %}</ul>
 
+---
+
 ## Selected Presentations
 
 <ul>{% for post in site.talks reversed %}
