@@ -11,18 +11,16 @@ redirect_from:
 
 * [See my full CV in PDF format](/files/Hatef_Dastour_CV.pdf){:target="_blank"}.
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Education
-</b></font></div>
+## Education
 
 *  <p style="text-align:left;"> Ph.D. in Geomatics Engineering, University of Calgary, Canada,<span style="float:right;">May 2022 - Present,</span></p> 
 *  <p style="text-align:left;"> Ph.D. in Mathematics and Statistics, University of Calgary, Canada,<span style="float:right;">January 2016 - December 2019,</span></p>
 *  <p style="text-align:left;"> M.S. in Applied Mathematics, Damghan University, Iran,<span style="float:right;">September 2010 - September 2012,</span></p>
 *  <p style="text-align:left;"> B.S. in Applied Mathematics, Payam Noor University, Iran,<span style="float:right;">September 2006 - July 2010.</span></p>
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Working and Research Experience
-</b></font></div>
+---
+
+## Working and Research Experience
 
 *  <p style="text-align:left;"> Research Associate <span style="float:right;"> May 2022 - Present,</span>
 <br><a href="https://schulich.ucalgary.ca/geomatics/" target="_blank">Department of Geomatics Engineering</a>, Schulich School of Engineering, University of Calgary, Alberta, Canada</p>
@@ -33,9 +31,9 @@ Working and Research Experience
 *  <p style="text-align:left;"> Data Science Developer <span style="float:right;"> January 2020 - March 25, 2020,</span>
 <br><a href="https://stellaralgo.com/" target="_blank">StellarAlgo Corp.</a>, Calgary, AB, Canada</p>
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Teaching Experience
-</b></font></div>
+---
+
+## Teaching Experience
 
 *   Mount Royal University, Calgary, AB, Canada
 	* **Spring 2023:**
@@ -59,9 +57,9 @@ Teaching Experience
 		* [Co-Instructor for MATH 275 (Calculus for Engineers and Scientists)](/teaching/UC_MATH275_2017F){:target="_blank"}
 	* <p><strong>Winter 2016 - Fall 2019:</strong> Gained teaching experience serving as a teaching assistant for Introductory Calculus (MATH 249), University Calculus I (MATH 265), Calculus for Engineers and Scientists (MATH 275), Multivariable Calculus for Engineers (MATH 277), Differential Equations for Engineers and Scientists (MATH 375), Numerical Analysis I (MATH 391), Numerical Analysis I (AMAT 491) and Numerical Analysis II (AMAT 493).</p> 
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Peer-reviewed Journal Publications
-</b></font></div>
+---
+
+## Peer-reviewed Journal Publications
 
 <ul>{% for post in site.publications reversed %}
 {% include archive-single-cv.html %}
@@ -75,22 +73,18 @@ Selected Presentations
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
   
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Computer Skills
-</b></font></div>
+---
+
+## Computer Skills
 
 * Proficiency with computer programming including MATLAB, Python (TensorFlow, PyTorch, Keras, Scikit-Learn, NLP, Pandas, Dask, ...), R, Julia Programming, and others.
 * Proficiency with SQL Server Analysis Services (SSAS).
 * Proficiency with visualization tools such as Plotly, Power BI, etc.
 * Proficiency with Microsoft Windows, mac-OS, and various Linux distributions as well as office applications, such as Microsoft Office, LaTeX editors, and more.
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Scholarships
-</b></font></div>
+---
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Awards and Distinctions
-</b></font></div>
+## Scholarships
 
 *  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/nserc" target="_blank">NSERC Doctoral Scholarship,</a> <span style="float:right;"> 2023 - 2025,</span></p>
 *  <p style="text-align:left;"> Ian N. McKinnon Memorial Fellowship, <span style="float:right;"> 2023 - 2024,</span></p>
@@ -98,17 +92,17 @@ Awards and Distinctions
 *  <p style="text-align:left;"> <a href="https://science.ucalgary.ca/mathematics-statistics/current-students/graduate/awards-and-scholarships" target="_blank">Eric Milner Graduate Scholarship,</a> <span style="float:right;"> 2016 - 2017,</span></p>
 *  <p style="text-align:left;"> PIMS Doctoral Recruitment Scholarship,<span style="float:right;"> 2016 - 2017.</span></p>
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Awards and Distinctions
-</b></font></div>
+---
 
-*  <p style="text-align:left;"> Certificate of Appreciation for having made valuable contributions to the June 2016 Convocation Ceremonies,<span style="float:right;"> June 2016,</span></p>
-*  <p style="text-align:left;"> Recognition of the Completion of the Instructional Skills Workshop (ISW),<span style="float:right;"> September 2016,</span></p>
-*  <p style="text-align:left;"> Recognition of outstanding efforts and accomplishments on behalf of the SIAM Chapter at the University of Calgary, Canada,<span style="float:right;"> May 2017.</span></p>
+## Awards and Distinctions
 
-<div class="alert alert-block alert-info"><font size="+1"><b>
-Professional Services and Committees
-</b></font></div>
+*  <p style="text-align:left;"> Certificate of Appreciation for having made valuable contributions to the June 2016 Convocation Ceremonies, <span style="float:right;"> June 2016,</span></p>
+*  <p style="text-align:left;"> Recognition of the Completion of the Instructional Skills Workshop (ISW), <span style="float:right;"> September 2016,</span></p>
+*  <p style="text-align:left;"> Recognition of outstanding efforts and accomplishments on behalf of the SIAM Chapter at the University of Calgary, Canada, <span style="float:right;"> May 2017.</span></p>
+
+---
+
+## Professional Services and Committees
 
 * Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/){:target="_blank"}, University of Calgary, Calgary, Canada, October 2019
 * Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
