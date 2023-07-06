@@ -31,7 +31,7 @@ redirect_from:
 
 ---
 
-# Teaching Experience
+## Teaching Experience
 *   Mount Royal University, Calgary, AB, Canada
 	* **Spring 2023:**
 		* [MATH 2333 (Statistics for Life Sciences)](/teaching/MRU_MATH2333_2023S){:target="_blank"}
@@ -56,21 +56,21 @@ redirect_from:
 
 ---
 
-# Publications
+## Peer-reviewed Journal Publications
   <ul>{% for post in site.publications reversed %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
 
 ---
   
-# Talks
+## Selected Presentations
   <ul>{% for post in site.talks reversed %}
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
   
 ---  
 
-# Computer Skills
+## Computer Skills
 * Proficiency with computer programming including MATLAB, Python (TensorFlow, PyTorch, Keras, Scikit-Learn, NLP, Pandas, Dask, ...), R, Julia Programming, and others.
 * Proficiency with SQL Server Analysis Services (SSAS).
 * Proficiency with visualization tools such as Plotly, Power BI, etc.
@@ -78,7 +78,7 @@ redirect_from:
 
 ---
 
-# Awards
+## Awards
 *  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/nserc" target="_blank">NSERC Doctoral Scholarship,</a> <span style="float:right;"> 2023 - 2025,</span></p>
 *  <p style="text-align:left;"> Ian N. McKinnon Memorial Fellowship, <span style="float:right;"> 2023 - 2024,</span></p>
 *  <p style="text-align:left;"> <a href="https://grad.ucalgary.ca/awards/award-opportunities/alberta-innovates" target="_blank">Alberta Innovates Graduate Student Scholarship,</a> <span style="float:right;"> 2017 - 2019,</span></p>
@@ -87,7 +87,14 @@ redirect_from:
 
 ---
 
-# Professional Services and Committees
+## Awards and Distinctions
+*  <p style="text-align:left;"> Certificate of Appreciation for having made valuable contributions to the June 2016 Convocation Ceremonies,<span style="float:right;"> June 2016,</span></p>
+*  <p style="text-align:left;"> Recognition of the Completion of the Instructional Skills Workshop (ISW),<span style="float:right;"> September 2016,</span></p>
+*  <p style="text-align:left;"> Recognition of outstanding efforts and accomplishments on behalf of the SIAM Chapter at the University of Calgary, Canada,<span style="float:right;"> May 2017.</span></p>
+
+---
+
+## Professional Services and Committees
 * Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/){:target="_blank"}, University of Calgary, Calgary, Canada, October 2019
 * Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
 * Contributed to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw){:target="_blank"}, University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
@@ -102,15 +109,5 @@ redirect_from:
 * Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/){:target="_blank"},
  Calgary, Canada, February 2017 - April 2018,
 * Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc){:target="_blank"}, Calgary, Canada, May 21, 2017 - May 22, 2017.
-
----
-
-# Group Projects
-* 2016 Graduate Mathematical Modelling in Industry Workshop, University of British Columbia, Vancouver, BC, Canada, August 08, 2016 - August 13, 2016,
-<br/>
-**Project:** [Modelling the performance of the rechargeable Li-Ion batteries](https://github.com/HatefDastour/GMMIW-2016){:target="_blank"}
-* 2016 Industrial Problem Solving Workshop, University of Toronto, Toronto, ON, Canada, August 15, 2016 - August 19, 2016,
-<br/>
-**Project:**  [How to combine two relative rankings of credit risk into one ranking?](https://github.com/HatefDastour/IPSW2016){:target="_blank"} by Internal Ratings Management, Global Risk Management, Scotiabank.
 
 ---
