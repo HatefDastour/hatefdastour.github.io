@@ -1,16 +1,16 @@
 # Systems of Equations, Geometry
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Linear Equation
-</b></font>
+`````{admonition} Linear Equation
+:class: tip
 
-Let $a$, $b$, and $c$ be real numbers ($a$ and $b$ are not both zero). Then, the graph of an equation with the following form
-\begin{align*}
+A linear equation in two variables is expressed as
+\begin{align}
 ax+by = c
-\end{align*}
-is a straight line. Such an equation is called a **linear equation**, and the **variables** of this linear equation are $x$ and $y$.
-</div>
+\end{align}
+where $a$, $b$, and $c$ are constants, and $a$ and $b$ are not both zero. The graph of such an equation is a line that represents all the points $(x, y)$ satisfying the equation.
+
+`````
+Understanding linear equations and their graphs is essential in mathematics, as they play a fundamental role in various applications such as modeling real-world relationships, solving systems of equations, and analyzing geometric shapes and transformations.
 
 For example, $x-y=0$ is a linear equation.
 
@@ -19,41 +19,54 @@ For example, $x-y=0$ is a linear equation.
 </center>
 
 Note that, here, $x$ and $y$ are the variables. However, in general, when more than two variables are involved, variables are often demonstrated with some subscripts. For example, $x_1$, $x_2$, ..., $x_n$ are variables for an equation of the form
-\begin{align*}
+
+\begin{align}
 a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
-\end{align*}
+\end{align}
 
 Moreover, $\Sigma$ (Sigma) is often used to demonstrate a sum of some terms. For example,
-\begin{align*}
+\begin{align}
 a_1 x_1 +a_2 x_2 +\ldots+a_n x_n = b
-\end{align*}
+\end{align}
 also can be shown as follows
-\begin{align*}
+\begin{align}
 \sum_{j = 1}^{n}  a_j\,x_j  = b.
-\end{align*}
+\end{align}
 This also know as **summation notation** (a summation of $n$ terms).
 
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-System of Linear Equations
-</b></font>
+`````{admonition} System of Linear Equations
+:class: tip
 
-A system of equations is a collection of equations. For example, the following $m$ equations form a system of (linear) equations.
-\begin{align*}
+A **system of equations** is a collection of equations. For instance, the following $m$ equations form a system of (linear) equations:
+
+\begin{align}
 \begin{cases}
-a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
-a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
+a_{11}x_1 + \ldots + a_{1n}x_n = b_1 \\
+a_{21}x_1 + \ldots + a_{2n}x_n = b_2 \\
 \vdots \\
-a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m.
+a_{m1}x_1 + \ldots + a_{mn}x_n = b_m \\
 \end{cases}
-\end{align*} 
-</div>
+\end{align}
 
-In terms of summation notation, the above linear equation can be written as
-\begin{align*}
-\sum_{j = 1}^{n}  a_{ij}\,x_{ij}  = b_{i},\quad i = 1, 2, 3, \ldots, m.
-\end{align*} 
+In this system, there are $m$ equations and $n$ variables, $x_1, x_2, \ldots, x_n$. Each equation contains a linear combination of these variables with coefficients $a_{ij}$, and the right-hand side of each equation is given by $b_i$.
+
+`````
+
+Solving a system of equations involves finding the values of the variables $x_1, x_2, \ldots, x_n$ that satisfy all the equations in the system simultaneously. The solution to the system is the set of values for the variables that make each equation true.
+
+Systems of equations have broad applications across various fields, such as engineering, physics, economics, and optimization problems. They are fundamental in understanding and modeling complex relationships and interactions between different variables in real-world scenarios.
+
+
+Using summation notation, the given linear equation can be expressed as:
+
+\begin{align}
+\sum_{j=1}^{n} a_{ij}x_{j} = b_i, \quad i = 1, 2, 3, \ldots, m.
+\end{align}
+
+In this notation, $i$ represents the index of each equation in the system (from 1 to $m$), while $j$ represents the index of each variable (from 1 to $n$). The coefficients $a_{ij}$ and the variables $x_j$ are combined in the summation on the left-hand side of each equation. The right-hand side of each equation is represented by $b_i$.
+
+Using summation notation allows us to concisely represent a system of linear equations with multiple variables and equations. It is a powerful mathematical tool that simplifies the expression and makes it easier to work with complex systems of equations.
 
 <font color='Blue'><b>Example</b></font>:
 The following system of equation,
@@ -77,14 +90,24 @@ is linear and has
 -   **Constant term** (the second equation): $25\pi$.
 
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Homogeneous System of Equations
-</b></font>
-<p style='text-align: justify;'>
-A system of equations is called homogeneous if all the right hand side values are zero (each equation in the system is equal to zero).
-</p>
-</div>
+`````{admonition} Homogeneous System of Equations
+:class: tip
+
+A system of equations is called **homogeneous** if all the right-hand side values are zero (each equation in the system is equal to zero). In a homogeneous system, the equations have the following form:
+
+\begin{align}
+a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n &= 0 \\
+a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n &= 0 \\
+&\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n &= 0 \\
+\end{align}
+
+where all $b_i$ (right-hand side values) are zero.
+
+
+`````
+
+Homogeneous systems of equations are of particular interest in linear algebra and have important applications in various areas, such as linear transformations, eigenvalues, and eigenvectors. Solving homogeneous systems often involves finding non-trivial solutions, meaning solutions where not all variables are equal to zero. The existence and properties of non-trivial solutions can provide valuable insights into the behavior of certain mathematical structures and physical phenomena.
 
 <font color='Blue'><b>Example</b></font>:
 The system of equation,
@@ -97,12 +120,12 @@ x-y=0,\\
 is homogeneous.
 
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Solution of a Linear System
-</b></font>
-If $(x_1,~x_2,~x_3,\ldots,~x_n)$ is a solution for a linear system, then it satisfies every equation of that linear system.
-</div>
+`````{admonition} Solution of a Linear System
+:class: tip
+
+If $(x_1, x_2, x_3, \ldots, x_n)$ is a solution for a linear system, it means that when these values are substituted into each equation of the linear system, every equation holds true. In other words, the solution satisfies every equation in the linear system..
+
+`````
 
 <font color='Blue'><b>Example</b></font>:
 Show that $x = -2$, $y = 5$, $z = 0$ and $x = 0$, $y = 4$, $z = -1$ are
@@ -148,12 +171,12 @@ When a system of linear equations has only two variables, then the solutions to 
 
 For the following system of linear equations (with two variables), there are three possibilities.
 
-\begin{align*}
+\begin{align}
 \begin{cases}
 a_{11}x+a_{12}y=b_1\\
 a_{21}x+a_{22}y=b_2\\
 \end{cases}
-\end{align*} 
+\end{align} 
 
 1.  The lines intersect at a only one point. Then the system has a **unique solution** corresponding to that point.
 
@@ -223,10 +246,3 @@ a) three planes intersecting in a line, b) three planes intersecting in a point,
 </center>
 
 This graphical method has its limitations. When more than three variables are involved, we can not graph the planes anymore.
-
-
-***
-**Refrences**
-1. Kuttler, Kenneth. "[A First Course in Linear Algebra (Lyryx)](https://lyryx.com/first-course-linear-algebra/)." (2021).
-1. Nicholson, W. Keith. "[Linear Algebra with Applications (Lyryx)](https://lyryx.com/linear-algebra-applications/)." (2021).
-***
