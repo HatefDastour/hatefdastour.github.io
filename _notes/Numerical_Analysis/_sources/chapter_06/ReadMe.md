@@ -83,18 +83,8 @@ The IVP $$\begin{aligned}
 `````
 
 `````{admonition} Remark
-:class: tip
+:class: important
 Roughly speaking, an IVP is said to be a **well-posed** problem if it
 has a unique solution whose value varies only negligibly if initial
 conditions change by a small value.
 `````
-
-***
-**References:**
-1. Allaire, Grégoire, et al. Numerical linear algebra. Vol. 55. New York: Springer, 2008.
-1. Burden, Richard L., and J. Douglas Faires. "Numerical analysis 8th ed." Thomson Brooks/Cole (2005).
-1. Atkinson, Kendall E. An introduction to numerical analysis. John wiley & sons, 2008.
-1. Khoury, Richard, and Douglas Wilhelm Harder. Numerical methods and modelling for engineering. Springer, 2016.
-1. Zarowski, Christopher J. An introduction to numerical analysis for electrical and computer engineers. John Wiley & Sons, 2004.
-1. [Euler method](https://en.wikipedia.org/wiki/Euler_method)
-***

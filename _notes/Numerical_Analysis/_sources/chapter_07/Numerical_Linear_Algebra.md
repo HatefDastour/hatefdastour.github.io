@@ -1,16 +1,17 @@
 # Gaussian elimination for Linear Systems of Equations
 
 ```{admonition} Definition: System of linear equations
+:class: tip
 
 A system of equations is a collection of equations. For example, the following $m$ equations form a system of (linear) equations.
-\begin{align*}
+\begin{align}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
 a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
 \vdots \\
 a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m.
 \end{cases}
-\end{align*}
+\end{align}
 ```
 
 In terms of summation notation, the above linear equation can be written as
@@ -19,6 +20,7 @@ In terms of summation notation, the above linear equation can be written as
 \end{align*}
 
 ```{admonition} Definition: Consistent and inconsistent linear systems
+:class: tip
 
 A system of equations is called **inconsistent** when there is no solution for this system of equations, and it is called **consistent** when there is at least one solution for it.
 ```
@@ -38,9 +40,10 @@ This system of linear equations has three equations and four variables. We can e
 This matrix is called the **augmented matrix** of the system.
 
 ```{admonition} Definition: Augmented Matrix of a Linear System
+:class: tip
 
 For the following system of equations
-\begin{align*}
+\begin{align}
 \begin{cases}
 a_{11}x_1+\ldots+a_{1n}x_{n}=b_1\\
 a_{21}x_1+\ldots+a_{2n}x_{n}=b_2\\
@@ -49,7 +52,7 @@ a_{m1}x_1+\ldots+a_{mn}x_{n}=b_m,
 \end{cases}
 \end{align*}
 the augmented matrix can be expressed as follows
-\begin{align*}
+\begin{align}
 \left[\begin{array}{cccc|c}
 a_{11} & a_{12} & \dots & a_{1n} & b_{1} \\
 a_{21} & a_{22} & \dots & a_{2n} & b_{2} \\
@@ -82,6 +85,7 @@ We have,
 
 
 ```{admonition} Definition: Elementary Operations
+:class: tip
 
 The following operations, called elementary operations, can routinely be performed on systems
 of linear equations to produce equivalent systems.
@@ -93,6 +97,7 @@ of linear equations to produce equivalent systems.
 In hand calculations (and in computer programs) we manipulate the rows of the augmented matrix rather than the equations.
 
 ```{admonition} Definition: Elementary row operations
+:class: tip
 
 Elementary row operations on a matrix:
 
@@ -130,6 +135,8 @@ The process is carried out iteratively until either no rows remain at step 5 or 
 
 
 ```{admonition} Definition: Back-Substitution
+:class: tip
+
 Back-substitution is a process of solving a linear system of equations using its REF or RREF. In this process, the last equation is solved first, then the second last equation is solved next, etc.
 ```
 
@@ -199,10 +206,12 @@ x_{1}+2\,x_{2}+3\,x_{3}=2,\\ x_{2}+x_{3}=1,\\ x_{3}=1.
 Therefore, $x_{1}=-1$, $x_{2}=0$ and $x_{3}=1$.
 
 ```{admonition} Theorem: Gaussian elimination
+:class: tip
+
 For a square matrix $A$, there exists at least one non-singular matrix $M$ such that
-\begin{align*}
+\begin{align}
  U = E\,A.
-\end{align*}
+\end{align}
 where $U$ is an upper triangular matrix.
 ```
 First, assume that $A$ is a given $n\times n$ square matrix as follows with none of the entries on its main diagonal is zero. Then, let $\tilde{A}^{(1)}$ be the augmented matrix defined as follows,

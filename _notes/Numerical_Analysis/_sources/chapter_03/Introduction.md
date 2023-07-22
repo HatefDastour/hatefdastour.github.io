@@ -4,7 +4,7 @@ Recall that an expression of the form
 ```{math}
 :label: eq3.1
 P(x) = c_0+c_{1}x^{1}+\ldots+c_{n-2}x^{n-2}+c_{n-1}x^{n-1}+c_nx^n
-```{
+```
 
 is called a **polynomial**. In this expression, $c_{0}$, $c_{1}$, ...,
 $c_{n}$ are numbers and $x$ is a variable. If $c_n \neq 0$, the integer
@@ -41,7 +41,7 @@ Weierstrass Approximation Theorem. Figure is from {cite}`burden2005numerical` wi
 
 
 `````{admonition} Interpolating Polynomial
-:class: important
+:class: tip
 
 Assume that $n+1$ data pairs $(x_0,y_0 )$, $(x_1,y_1 )$, $(x_2 , y_2 )$, \ldots, $(x_n , y_n )$ are available in a way that the $x_i$s are distinct. Then, there exists a polynomial such that
 

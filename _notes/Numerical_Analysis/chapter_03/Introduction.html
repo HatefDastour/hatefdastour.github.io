@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -178,7 +179,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="Vandermonde_Method.html">3.2. Vandermonde Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Lagrange_polynomial.html">3.3. Interpolation and Lagrange polynomial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Newton_Polynomials.html">3.4. Newton Polynomial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.html">3.5. Newton Polynomial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linear_Regression.html">3.5. Linear Regression</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Numerical Differentiation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -383,32 +384,53 @@ document.write(`
 <h1><span class="section-number">3.1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h1>
 <p>Recall that an expression of the form</p>
 <div class="math notranslate nohighlight" id="equation-eq3-1">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-eq3-1" title="Permalink to this equation">#</a></span>\[ \begin{align}\begin{aligned}P(x) = c_0+c_{1}x^{1}+\ldots+c_{n-2}x^{n-2}+c_{n-1}x^{n-1}+c_nx^n
-```{\\is called a **polynomial**. In this expression, $c_{0}$, $c_{1}$, ...,
-$c_{n}$ are numbers and $x$ is a variable. If $c_n \neq 0$, the integer
-$n$ is called the **degree of the polynomial**, and $c_n$ is called the
-**leading coefficient**.\\
-|                             |                                                              |
-|-----------------------------|--------------------------------------------------------------|
-|  A polynomial of degree $1$ |                            $ax+b$                            |
-| A polynomial of degree  $2$ |                          $ax^2+bx+c$                         |
-| A polynomial of degree  $3$ |                       $ax^3+bx^2+cx+d$                       |
-|           $\vdots$          |                           $\vdots$                           |
-|  A polynomial of degree $n$ | $a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0$ |\\
-```{admonition} Weierstrass Approximation Theorem\\Let $g\in C[a,b]$. Then for each $\varepsilon&gt;0$, there is a polynomial
-$P(x)$ such that
-\begin{equation*}
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-eq3-1" title="Permalink to this equation">#</a></span>\[P(x) = c_0+c_{1}x^{1}+\ldots+c_{n-2}x^{n-2}+c_{n-1}x^{n-1}+c_nx^n\]</div>
+<p>is called a <strong>polynomial</strong>. In this expression, <span class="math notranslate nohighlight">\(c_{0}\)</span>, <span class="math notranslate nohighlight">\(c_{1}\)</span>, …,
+<span class="math notranslate nohighlight">\(c_{n}\)</span> are numbers and <span class="math notranslate nohighlight">\(x\)</span> is a variable. If <span class="math notranslate nohighlight">\(c_n \neq 0\)</span>, the integer
+<span class="math notranslate nohighlight">\(n\)</span> is called the <strong>degree of the polynomial</strong>, and <span class="math notranslate nohighlight">\(c_n\)</span> is called the
+<strong>leading coefficient</strong>.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A polynomial of degree <span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(ax+b\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>A polynomial of degree  <span class="math notranslate nohighlight">\(2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(ax^2+bx+c\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>A polynomial of degree  <span class="math notranslate nohighlight">\(3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(ax^3+bx^2+cx+d\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\vdots\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\vdots\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>A polynomial of degree <span class="math notranslate nohighlight">\(n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(a_nx^n+a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\ldots+a_{1}x^{1}+a_0\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-weierstrass-approximation-theorem admonition">
+<p class="admonition-title">Weierstrass Approximation Theorem</p>
+<p>Let <span class="math notranslate nohighlight">\(g\in C[a,b]\)</span>. Then for each <span class="math notranslate nohighlight">\(\varepsilon&gt;0\)</span>, there is a polynomial
+<span class="math notranslate nohighlight">\(P(x)\)</span> such that</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 |g (x) - P(x)| &lt; \varepsilon,\quad x\in[a,b].
-\end{equation*}\end{aligned}\end{align} \]</div>
+\end{equation*}\]</div>
+</div>
 <div class="figure align-default" id="directive-fig">
 <a class="reference internal image-reference" href="../_images/Weierstrass_App.jpg"><img alt="../_images/Weierstrass_App.jpg" src="../_images/Weierstrass_App.jpg" style="height: 300px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Weierstrass Approximation Theorem. Figure is from <span id="id1">[<a class="reference internal" href="../References.html#id2" title="Richard L. Burden and J. Douglas Faires. Numerical analysis 8th ed. Thomson Brooks/Cole, 2005.">Burden and Faires, 2005</a>]</span> with minor modifications.</span><a class="headerlink" href="#directive-fig" title="Permalink to this image">#</a></p>
 </div>
-<div class="important admonition">
+<div class="tip admonition">
 <p class="admonition-title">Interpolating Polynomial</p>
 <p>Assume that <span class="math notranslate nohighlight">\(n+1\)</span> data pairs <span class="math notranslate nohighlight">\((x_0,y_0 )\)</span>, <span class="math notranslate nohighlight">\((x_1,y_1 )\)</span>, <span class="math notranslate nohighlight">\((x_2 , y_2 )\)</span>, \ldots, <span class="math notranslate nohighlight">\((x_n , y_n )\)</span> are available in a way that the <span class="math notranslate nohighlight">\(x_i\)</span>s are distinct. Then, there exists a polynomial such that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f7d3895b-4ba9-4e53-ba65-dc40ab213c2a">
-<span class="eqno">(3.2)<a class="headerlink" href="#equation-f7d3895b-4ba9-4e53-ba65-dc40ab213c2a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-08e10386-a0c7-4f7b-ba79-9b8e92444895">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-08e10386-a0c7-4f7b-ba79-9b8e92444895" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(x_i ) = y_i,\quad \text{for }i = 0, 1, 2, \ldots, n.
 \end{equation}\]</div>
 <p>For this data, this polynomial is called the <strong>interpolating polynomial</strong>.</p>

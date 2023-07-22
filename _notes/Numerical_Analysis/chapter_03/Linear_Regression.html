@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3.5. Newton Polynomial &#8212; Numerical_Analysis</title>
+    <title>3.5. Linear Regression &#8212; Numerical_Analysis</title>
   
   
   
@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -178,7 +179,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="Vandermonde_Method.html">3.2. Vandermonde Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Lagrange_polynomial.html">3.3. Interpolation and Lagrange polynomial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Newton_Polynomials.html">3.4. Newton Polynomial</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Newton Polynomial</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Linear Regression</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Numerical Differentiation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -367,7 +368,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Newton Polynomial</h1>
+    <h1>Linear Regression</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,26 +390,26 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="tex2jax_ignore mathjax_ignore section" id="newton-polynomial">
-<h1><span class="section-number">3.5. </span>Newton Polynomial<a class="headerlink" href="#newton-polynomial" title="Permalink to this headline">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="linear-regression">
+<h1><span class="section-number">3.5. </span>Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h1>
 <p>Interpolation finds a polynomial of degree <span class="math notranslate nohighlight">\(n\)</span> that fits precisely all of the points given a collection of <span class="math notranslate nohighlight">\(n+1\)</span> points. However, that is not always the model necessary for a problem. There might be several causes for this. For instance, the number of measurements obtained from the system may be significantly more than the predicted degree of the model polynomial. In practice, measurements are frequently imperfect due to variables such as noise, errors in observation, or the inherent limits of the equipment used. Because it fits erroneous data, a model that exactly matches these points is the improper model for the system!</p>
 <p>Regression, or the process of determining the polynomial that closely approximates (rather than fits) the measurement data, is the answer to this problem. When this polynomial is linear, as in equation <a class="reference internal" href="Introduction.html#equation-eq3-1">(3.1)</a>, the method is known as linear regression (the term “linear” here refers to whether the polynomial is for a straight line or not). Simple linear regression is used when the regression is looking for a straight line (a polynomial of degree 1).</p>
 <p>Certain estimates may be a better match for a portion of the set of points and reduce errors over that area of the data, whilst others may be better fits for other portions of the measurements. In the context of regression, the optimal approximation is the one that leads to the lowest overall errors, not the one that minimizes errors across a subset of the points. The model’s measurement error is the difference between the observed value <span class="math notranslate nohighlight">\(y_{i}\)</span> (which, while erroneous, is still the best available knowledge at that point) and the value predicted by the model polynomial <span class="math notranslate nohighlight">\(f(x_{i})\)</span>. The overall error of the model on the set of measurements will thus equal the sum of square errors (SSE) of each point, which may be stated as follows.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-48bf4097-0e2b-4e09-ab6e-32a9a51d5a19">
-<span class="eqno">(3.55)<a class="headerlink" href="#equation-48bf4097-0e2b-4e09-ab6e-32a9a51d5a19" title="Permalink to this equation">#</a></span>\[\begin{equation}\label{SSE_eq}
+<div class="amsmath math notranslate nohighlight" id="equation-5cccd8bc-b486-49a1-adf9-7195dbbd16ad">
+<span class="eqno">(3.55)<a class="headerlink" href="#equation-5cccd8bc-b486-49a1-adf9-7195dbbd16ad" title="Permalink to this equation">#</a></span>\[\begin{equation}\label{SSE_eq}
 SSE = \sum_{j = 0}^{n}\left(y_{i} - f(x_{i})\right)^2.
 \end{equation}\]</div>
 <p>The optimum polynomial for regressing is the one that minimizes the SSE value.</p>
 <div class="section" id="method-of-least-squares">
 <h2><span class="section-number">3.5.1. </span>Method of Least Squares<a class="headerlink" href="#method-of-least-squares" title="Permalink to this headline">#</a></h2>
 <p>Through a mathematical formalism process, the technique of least squares computes the polynomial that minimizes the SSE. Consider the simplest scenario of a basic linear regression to illustrate the evolution. In that scenario, equation <a class="reference internal" href="Introduction.html#equation-eq3-1">(3.1)</a> is transformed into:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d92d5d76-f293-44f5-ae03-e3987cc5625e">
-<span class="eqno">(3.56)<a class="headerlink" href="#equation-d92d5d76-f293-44f5-ae03-e3987cc5625e" title="Permalink to this equation">#</a></span>\[\begin{equation}\label{LS.eq.01}
+<div class="amsmath math notranslate nohighlight" id="equation-b54c827a-9845-42b8-aac5-013df165556c">
+<span class="eqno">(3.56)<a class="headerlink" href="#equation-b54c827a-9845-42b8-aac5-013df165556c" title="Permalink to this equation">#</a></span>\[\begin{equation}\label{LS.eq.01}
 SSE = \sum_{j = 0}^{n}\left(y_{j} -c_{0} - c_{1}x_{j}\right)^2.
 \end{equation}\]</div>
 <p>The approach seeks the polynomial, or the <span class="math notranslate nohighlight">\(c_{0}\)</span> and <span class="math notranslate nohighlight">\(c_{1}\)</span> values that minimize the SSE. To find the minimum for each coefficient, compute the partial derivative of the equation with respect to that coefficient and set it to 0:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-75e141d8-f140-430b-883f-d1c5e50a6ed5">
-<span class="eqno">(3.57)<a class="headerlink" href="#equation-75e141d8-f140-430b-883f-d1c5e50a6ed5" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d47f2548-27d1-4160-a68d-a7254aa3e0f4">
+<span class="eqno">(3.57)<a class="headerlink" href="#equation-d47f2548-27d1-4160-a68d-a7254aa3e0f4" title="Permalink to this equation">#</a></span>\[\begin{align}
 \begin{cases}
 \displaystyle{\frac{\partial}{\partial c_{0}} SSE} &amp;= \displaystyle{-2\,\sum_{j = 0}^{n}\left(y_{j} -c_{0} - c_{1}x_{j}\right) = 0},
 \\

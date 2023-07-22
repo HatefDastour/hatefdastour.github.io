@@ -3,7 +3,7 @@
 ## Limits and Continuity
 
 `````{admonition} Limit of a function
-:class: important
+:class: tip
 
 
 Let's consider a function $f$ defined on a set of real numbers $X$. We say that $f$ has a **limit** $L$ at the point $x_0\in X$ if, for any positive value $\varepsilon$, there exists a real number $\delta > 0$ such that the following condition is satisfied:
@@ -23,7 +23,7 @@ whenever $0 < |x - x_{0}| < \delta$ for all $x\in X$. In other words, as $x$ app
 `````
 
 `````{admonition} Continuous functions
-:class: important
+:class: tip
 
 Let's assume that a function $f$ is defined on a set of real numbers $X$. We say that function $f$ is \textbf{continuous} at a specific point $x_0$ if, according to {cite:ps}`burden2005numerical`,
 \begin{equation}
@@ -34,7 +34,7 @@ Furthermore, if the function $f$ is continuous at every point in the set $X$, it
 `````
 
 `````{admonition} Remark
-:class: tip
+:class: important
 
 * The set of all natural numbers: $\mathbb{N}$.
 
@@ -59,7 +59,7 @@ Furthermore, if the function $f$ is continuous at every point in the set $X$, it
 `````
 
 `````{admonition} Limit of a sequence
-:class: important
+:class: tip
 
 A sequence of real numbers can be defined as an ordered set of real numbers, denoted as ${x_0,x_1,x_2,\ldots}$ and represented as $\{x_n\}_{n=1}^{\infty}$. According to {cite:ps}`burden2005numerical`, this sequence is said to converge to a point $x$ if, for any positive arbitrary number $\varepsilon$, there exists an integer $N\varepsilon$ such that
 \begin{equation}
@@ -81,7 +81,7 @@ Assume that function $f$ is defined on a set of real numbers $X$ and for some va
 ## Differentiability
 
 `````{admonition} Differentiability
-:class: important
+:class: tip
 
 Let's consider a function $f$ defined on an open interval $(a, b)$ that contains a point $x_{0}$. We can determine if the function is differentiable at $x_{0}$ by checking the existence of the following limit {cite:ps}`burden2005numerical`:
 
@@ -96,7 +96,7 @@ If this limit exists, it implies that the function $f$ is differentiable at the 
 `````
 
 `````{admonition} Remark
-:class: tip
+:class: important
 
 * A function $f$ is differentiable at point $x_{0}$ if $f'(x_{0})$ exists.
 * $f$ is continuous at point $x_{0}$ if the function $f$ is differentiable at at point $x_{0}$.
@@ -168,7 +168,7 @@ Thus, within the interval $(a, b)$, there exists at least one point $c$ where th
 ## Integration
 
 `````{admonition} Riemann integral
-:class: important
+:class: tip
 
 Let's consider a function $f$ defined on a closed interval $[a, b]$ and a sequence of points $x_{0}$, $x_{1}$, $\ldots$, $x_{n}$ satisfying the following conditions:
 
@@ -187,7 +187,7 @@ In this expression, $\Delta x_j = x_j - x_{j-1}$ for $j \in {1, 2, \ldots, n}$ r
 `````
 
 `````{admonition} Riemann integral (Equally Spaced)
-:class: important
+:class: tip
 
 Suppose we have a function $f$ that belongs to the set of continuous functions $C[a, b]$. We can also assume that this function is Riemann integrable on the closed interval $[a, b]$. Additionally, let $x_i$ for $i = 1, 2, \ldots, n$ be equally spaced points within the interval $[a, b]$ with a spacing of $\Delta x = \frac{b-a}{n}$.
 
@@ -234,7 +234,7 @@ The above can be also formulated as follows,
 ## Taylor Polynomials and Series
 
 `````{admonition} Taylor series, Maclaurin series,  and Maclaurin polynomial
-:class: important
+:class: tip
 
 Let us assume that $f$ is a function belonging to the class $C^n[a, b]$, where $n$ denotes the number of continuous derivatives of the function $f$ on the interval $[a, b]$. The notation $f^{(n)}$ represents the $n$th derivative of $f$. If $f^{(n)}$ exists on the interval $[a, b]$, then for any $x$ within this interval, there exists a point $x_0$ such that $x_0 \leq \xi(x) \leq x$. This point $x_0$ satisfies the following expression:
 
@@ -250,7 +250,7 @@ By taking the limit of $P_n(x)$ as $n$ approaches infinity, we obtain an infinit
 `````
 
 `````{admonition} Remark: Mean-value forms of the remainder
-:class: tip
+:class: important
 
 Assume that $f : \mathbb{R} \rightarrow \mathbb{R}$ be $k + 1$ times differentiable on the open interval and $f^{(k)}$ is continuous on the closed interval between $a$ and $x$ \cite{apostol1991calculus}. Then
 
