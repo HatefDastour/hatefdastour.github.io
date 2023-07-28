@@ -253,7 +253,7 @@ b).
 -   The first nonzero entry from the left in each nonzero row is a 1.
     $\surd$
 
--   Each leading 1 is to the right of all leading 1 s in the rows above
+-   Each leading 1 is to the right of all leading 1s in the rows above
     it. $\surd$
 
 Therefore, it is a REF. However, Each leading 1 is not the only nonzero entry in its column. Therefore, it is not RREF.
@@ -277,7 +277,7 @@ The matrix $B$ is equivalent to the matrix $A$ if $B$ can be produced by a seque
 `````{admonition} Gaussian Algorithm: For a matrix $A$, 
 :class: caution
 
-**Step 1**: If the matrix A only consists entirely of zeros, stop. It is already in REF.
+**Step 1**: If matrix A only consists entirely of zeros, stop. It is already in REF.
 
 **Step 2**: Otherwise, identify the first column from the left comprising a nonzero entry (let's call this entry a) and move the row containing that entry to the top position.
 
@@ -314,7 +314,7 @@ x_{2}-2\,x_{1}+3\,x_{3}=5
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 4 & -3 & 1 & -3\\ -2 & 1 & 3 & 5 \end{array}\right].
 \end{align*}
-Use the first row to make the first entry of the second row and third row zero. That is
+Use the first row to make the first entry of the second row and the third row zero. That is
 
 \begin{align*}
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ {4} & -3 & 1 & -3\\ -2 & 1 & 3 & 5 \end{array}\right]
@@ -338,7 +338,7 @@ Multiply the second row by -1/11 to create a leading 1. We have
 \left[\begin{array}{ccc|c} 1 & 2 & 3 & 2\\ 0 & 1 & 1 & 1\\ 0 & 5 & 9 & 9 \end{array}\right]
 \end{align*}
 
-By subtracting 5 times of the second row from the third row, make entry
+By subtracting 5 times of the second row from the third row, make the entry
 below the leading 1 zero.
 
 \begin{align*}
@@ -402,7 +402,7 @@ However, any solution that contains at least one nonzero component is known as a
 It is important to distinguish between the trivial and nontrivial solutions, as the presence of nontrivial solutions indicates that the homogeneous system has alternative solutions beyond the obvious all-zero solution. These nontrivial solutions hold significant importance in various mathematical applications and analyses.
 
 
-<font color='Blue'><b>Example</b></font>: The linear system $\begin{cases}x_{1}+2\,x_{2}=0\\ x_{1}-x_{2}=0\end{cases}$ is homogeneous. Clearly, $x_1 = 0$ and $x_2 = 0$ is a solution to such a system; it is called the **trivial solution**. Any solution in which at least one variable has a nonzero value is called a **nontrivial
+<font color='Blue'><b>Example</b></font>: The linear system $\begin{cases}x_{1}+2\,x_{2}=0\\ x_{1}-x_{2}=0\end{cases}$ is homogeneous. $x_1 = 0$ and $x_2 = 0$ is a solution to such a system; it is called the **trivial solution**. Any solution in which at least one variable has a nonzero value is called a **nontrivial
 solution**.
 
 `````{admonition} Remark
@@ -456,7 +456,7 @@ This is in row-echelon form, and we take it to reduced form by adding row 2 to r
 &\Rightarrow{R_{1} +R_{2} \rightarrow R_{1}} \Rightarrow
 \left[\begin{array}{ccc|c} {1} & -2 & 0 & 2\\ 0 & 0 & {1} & 1\\ 0 & 0 & 0 & 0 \end{array}\right]\end{align*}
 
-We can see that columns 1 and 3 are pivot columns. These columns correspond to variables $x_{1}$ and $x_{3}$ , making these the basic variables. Column 2 is not a pivot column, which means that $x_{2}$ is a
+We can see that columns 1 and 3 are pivot columns. These columns correspond to variables $x_{1}$ and $x_{3}$, making these the basic variables. Column 2 is not a pivot column, which means that $x_{2}$ is a
 free variable. We set $x_2={t}$ where $t$ is an arbitrary real number. Therefore,
 
 \begin{align*}
@@ -570,7 +570,7 @@ This means that we need to have
 
 `````{admonition} Definition
 :class: tip
-Rank of a Matrix
+The rank of a Matrix
 
 The **rank** of a matrix $A$ is defined as the number of leading 1s in its Reduced Row-Echelon Form (RREF). When we perform Gaussian elimination or use other row-reduction techniques to convert the matrix $A$ into its RREF, we can count the number of leading 1s to determine its rank.
 
@@ -623,14 +623,14 @@ From previous examples, we know the RREF of this matrix is
 \left[\begin{array}{ccc|c} {1} & -2 & 0 & 2\\ 0 & 0 & {1} & 1\\ 0 & 0 & 0 & 0 \end{array}\right]\end{align*}
 
 It can be seen that $r=Rank(A)=2$ and the number of variables is $n=3$.
-From the above theorem, we know that if $r < n$ , the system has
+From the above theorem, we know that if $r < n$, the system has
 **infinitely many solutions**.
 ***
 
 `````{admonition} Linear Combinations
 :class: tip
 
-Let $X_1,~X_2,~\ldots,~X_n$ and $V$ be column matrices (each consisting of only one column). We say that $V$ is a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if there exist scalars $a_1,~a_2,~\ldots,~a_n$ such that:
+Let $X_1,~X_2,~\ldots,~X_n$, and $V$ be column matrices (each consisting of only one column). We say that $V$ is a **linear combination** of the columns $X_1,~X_2,~\ldots,~X_n$ if there exist scalars $a_1,~a_2,~\ldots,~a_n$ such that:
 
 \[
 V = a_1X_1 + a_2X_2 + \ldots + a_nX_n.

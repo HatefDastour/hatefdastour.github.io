@@ -2,13 +2,51 @@
 
 We can add/subtract two matrices only if all matrices involved in the addition/subtraction need to have the **same size**.
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Matrix Addition
-</b></font>
+`````{admonition} Matrix Addition
+:class: tip
 
-Assume that $A$ and $B$ are matrices of the same size. The summation of these matrices, $A+B$, is the matrix calculated by adding corresponding entries.
-</div>
+Assume that $A$ and $B$ are matrices of the same size, both having $m$ rows and $n$ columns. The summation of these matrices, denoted as $A + B$, is a new matrix calculated by adding the corresponding entries of matrices $A$ and $B$.
+
+Mathematically, if $A$ and $B$ are $m\times n$ matrices, then the matrix $A + B$ is also an $m\times n$ matrix, and its entries are obtained as follows:
+
+\begin{align*} (A + B)_{ij} = A_{ij} + B_{ij} \end{align*}
+
+Where:
+- $(A + B)_{ij}$ is the entry in the $i$-th row and $j$-th column of the matrix $A + B$.
+- $A_{ij}$ is the entry in the $i$-th row and $j$-th column of matrix $A$.
+- $B_{ij}$ is the entry in the $i$-th row and $j$-th column of matrix $B$.
+
+To put it simply, to get the entry in the resulting matrix $A + B$ at position $(i,j)$, we add the corresponding entries from matrices $A$ and $B$ that are in the same position.
+
+
+`````
+
+<font color='Blue'><b>Example</b></font>:
+For example, consider the following matrices:
+
+\begin{align*} A = \begin{bmatrix}
+2 & 4 \\
+1 & 3
+\end{bmatrix} \end{align*}
+
+\begin{align*} B = \begin{bmatrix}
+1 & 0 \\
+2 & -1
+\end{bmatrix} \end{align*}
+
+The summation of matrices $A$ and $B$, denoted as $A + B$, will be:
+
+\begin{align*} A + B = \begin{bmatrix}
+2+1 & 4+0 \\
+1+2 & 3+(-1)
+\end{bmatrix}
+= \begin{bmatrix}
+3 & 4 \\
+3 & 2
+\end{bmatrix} \end{align*}
+
+So, the resulting matrix $A + B$ is a $2\times 2$ matrix with entries obtained by adding the corresponding entries of matrices $A$ and $B$.
+
 
 <font color='Blue'><b>Example</b></font>:
 Let $A=\begin{bmatrix}  1 & -2 & 4\\ 3 & 0 & 7 \end{bmatrix}$
@@ -29,23 +67,13 @@ A+B &=\begin{bmatrix}  1 & -2 & 4\\ 3 & 0 & 7 \end{bmatrix}+\begin{bmatrix}  6 &
 If $C=\begin{bmatrix}  1 & -3 & 4\\ 0 & 1 & 2 \end{bmatrix}$
 and $D=\begin{bmatrix}  1 & 1\\ 1 & 3 \end{bmatrix}$, we cannot have $C+D$ since $C$ is $2\times 3$ and $D$ is $2\times 2$.
 
-<div class="alert alert-secondary" role="alert">
-<font size="+1"><b>
-Proposition - Properties of Matrix Addition:
-</b></font>
-    
-<p>Let <span class="math inline">\(A\)</span>, <span
-class="math inline">\(B\)</span> and <span
-class="math inline">\(C\)</span> be matrices of the same size. Then,</p>
-<ul>
-<li><p>Commutative Law of Addition: <span class="math display">\[\begin{aligned}
- A+B = B+A \end{aligned}\]</span></p></li>
-<li><p>Associative Law of Addition: <span class="math display">\[\begin{aligned}
- (A+B)+C = A+(B+C) \end{aligned}\]</span></p></li>
-<li><p>Existence of an Additive Identity: There exists a zero matrix 0 such that <span class="math display">\[\begin{aligned}
- A+0 = A \end{aligned}\]</span></p></li>
-<li><p>Existence of an Additive Inverse: There exists a matrix <span class="math inline">\(-A\)</span> such that <span class="math display">\[\begin{aligned}
- A+(-A) = 0 \end{aligned}\]</span></p></li>
-</ul>
-    
-</div>
+```{admonition} Proposition - Properties of Matrix Addition:
+
+Let $A$, $B$, and $C$ be matrices of the same size. Then,
+
+- Commutative Law of Addition: $A+B = B+A$
+- Associative Law of Addition: $(A+B)+C = A+(B+C)$
+- Existence of an Additive Identity: There exists a zero matrix 0 such that $A+0 = A$
+- Existence of an Additive Inverse: There exists a matrix $-A$ such that $A+(-A) = 0$
+
+```

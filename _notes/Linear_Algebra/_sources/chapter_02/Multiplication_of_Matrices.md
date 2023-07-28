@@ -1,14 +1,48 @@
 # Multiplication of Matrices
 
-<div class="alert alert-info" role="alert">
-<font size="+1"><b>
-Row and Column Vectors
-</b></font>
+`````{admonition} Row and Column Vectors
+:class: tip
 
-Column matrices, matrices of size $n\times 1$, (or row matrices with a size of $1\times n$) are called vectors. If $X$ is such a matrix,
-* If $A = \begin{bmatrix}a_{1} \\ a_{2} \\ \vdots\\ a_{n}\end{bmatrix}$ (a column matrix), $a_i$ denotes the entry of $A$ in the $i^{th}$ row.
-* If $B = \begin{bmatrix}b_{1} & b_{2} & \dots & b_{n}\end{bmatrix}$ ( a row matrix), $b_i$ denotes the entry of $B$ in the $i^{th}$ column.
-</div>
+**Column Matrices (Vectors):**
+Column matrices, also known as column vectors, are matrices of size $n \times 1$. In other words, they have $n$ rows and only one column. Similarly, row matrices of size $1 \times n$ are also referred to as row vectors. Vectors are essential objects in linear algebra and have various applications in mathematics, physics, computer science, and engineering.
+
+For a column matrix $A$ of size $n \times 1$:
+\begin{align*} A = \begin{bmatrix}
+a_{1} \\
+a_{2} \\
+\vdots \\
+a_{n}
+\end{bmatrix} \end{align*}
+
+- Each entry $a_i$ in the column matrix $A$ represents the element in the $i^{th}$ row of the matrix.
+
+
+
+**Row Matrices (Row Vectors):**
+For a row matrix $B$ of size $1 \times n$:
+\begin{align*} B = \begin{bmatrix}
+b_{1} & b_{2} & \dots & b_{n}
+\end{bmatrix} \end{align*}
+
+- Each entry $b_i$ in the row matrix $B$ represents the element in the $i^{th}$ column of the matrix.
+
+`````
+
+<font color='Blue'><b>Example</b></font>: For example, if $A$ is a column matrix of size $3 \times 1$, it would look like this:
+\begin{align*} A = \begin{bmatrix}
+a_{1} \\
+a_{2} \\
+a_{3}
+\end{bmatrix} \end{align*}
+
+
+Likewise, if $B$ is a row matrix of size $1 \times 4$, it would look like this:
+\begin{align*} B = \begin{bmatrix}
+b_{1} & b_{2} & b_{3} & b_{4}
+\end{bmatrix} \end{align*}
+
+Both column matrices (vectors) and row matrices (row vectors) play a crucial role in linear algebra, and they are used to represent quantities such as position, velocity, and forces in physics, as well as data in various applications like machine learning and statistics.
+
 
 Before we explain multiplying matrices. Let's explain the multiplication of a row vector by a column vector. For row vector $X$ and a column vector $Y$. we have,
 
@@ -17,13 +51,64 @@ Before we explain multiplying matrices. Let's explain the multiplication of a ro
 \begin{bmatrix}    y_1\\ y_2 \\ \vdots \\ y_n \\  \end{bmatrix}=
 x_1y_1+x_2y_2+\ldots+x_ny_n=\sum_{j=1}^{n}x_jy_j.\end{align*}
 
+
+For a row vector $X$ and a column vector $Y$, where both have the same size $n \times 1$, we perform the multiplication as follows:
+
+\begin{align*} X = \begin{bmatrix} x_1 & x_2 & \dots & x_n \end{bmatrix} \end{align*}
+
+\begin{align*} Y = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} \end{align*}
+
+The multiplication of the row vector $X$ and column vector $Y$ is given by the sum of the products of their corresponding entries:
+
+\begin{align*} \begin{bmatrix} x_1 & x_2 & \dots & x_n \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} = x_1y_1 + x_2y_2 + \ldots + x_ny_n \end{align*}
+
+This can be represented using summation notation as:
+
+\begin{align*} \begin{bmatrix} x_1 & x_2 & \dots & x_n \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} = \sum_{j=1}^{n} x_j y_j \end{align*}
+
+Where:
+- $x_j$ represents the $j$-th entry in the row vector $X$.
+- $y_j$ represents the $j$-th entry in the column vector $Y$.
+- The summation symbol $\sum$ denotes the sum of the products of the corresponding entries, ranging from $j=1$ to $j=n$.
+
+In other words, we multiply each entry in the row vector $X$ by the corresponding entry in the column vector $Y$, and then sum up these products to get the final result.
+
+<font color='Blue'><b>Example</b></font>: For example, if we have:
+
+\begin{align*} X = \begin{bmatrix} 2 & 3 & 4 \end{bmatrix} \end{align*}
+
+\begin{align*} Y = \begin{bmatrix} 1 \\ -1 \\ 2 \end{bmatrix} \end{align*}
+
+The multiplication of the row vector $X$ and column vector $Y$ is:
+
+\begin{align*} \begin{bmatrix} 2 & 3 & 4 \end{bmatrix} \begin{bmatrix} 1 \\ -1 \\ 2 \end{bmatrix} = (2 \cdot 1) + (3 \cdot (-1)) + (4 \cdot 2) = 2 - 3 + 8 = 7 \end{align*}
+
+***
+
 <font color='Blue'><b>Example</b></font>: Evaluate $\begin{bmatrix}    1 & 2 & 3  \end{bmatrix}\begin{bmatrix}    -2 \\ 1 \\ 4  \end{bmatrix}$.
 
 <font color='Green'><b>Solution</b></font>:
 
-\begin{align*}
-\begin{bmatrix}    {1} & {2} & {3}  \end{bmatrix}\begin{bmatrix}    {-2} \\ {1} \\ {4}  \end{bmatrix}
-=(1)(-2)+(2)(1)+(3)(4)=-2+2+12=12.\end{align*}
+We have the row vector:
+\begin{align*} X = \begin{bmatrix} 1 & 2 & 3 \end{bmatrix} \end{align*}
+
+And the column vector:
+\begin{align*} Y = \begin{bmatrix} -2 \\ 1 \\ 4 \end{bmatrix} \end{align*}
+
+To multiply the row vector $X$ by the column vector $Y$, we follow these steps:
+
+1. Take the first entry of the row vector ($1$) and the first entry of the column vector ($-2$), then multiply them together: $(1) \times (-2) = -2$.
+2. Take the second entry of the row vector ($2$) and the second entry of the column vector ($1$), then multiply them together: $(2) \times (1) = 2$.
+3. Take the third entry of the row vector ($3$) and the third entry of the column vector ($4$), then multiply them together: $(3) \times (4) = 12$.
+
+Finally, add up the results of these individual multiplications:
+
+\begin{align*} (-2) + 2 + 12 = 12 \end{align*}
+
+So, the result of multiplying the row vector $X$ and the column vector $Y$ is $12$.
+
+In summary, the multiplication of a row vector by a column vector is obtained by taking the dot product of the vectors. It involves multiplying each corresponding pair of entries and then summing up these products. The dot product is a common operation in linear algebra and has various applications in vector calculations and geometry.
+
 ***
 
 <div class="alert alert-warning" role="alert">

@@ -32,7 +32,7 @@ also can be shown as follows
 \begin{align}
 \sum_{j = 1}^{n}  a_j\,x_j  = b.
 \end{align}
-This also know as **summation notation** (a summation of $n$ terms).
+This is also known as **summation notation** (a summation of $n$ terms).
 
 
 `````{admonition} System of Linear Equations
@@ -69,7 +69,7 @@ In this notation, $i$ represents the index of each equation in the system (from 
 Using summation notation allows us to concisely represent a system of linear equations with multiple variables and equations. It is a powerful mathematical tool that simplifies the expression and makes it easier to work with complex systems of equations.
 
 <font color='Blue'><b>Example</b></font>:
-The following system of equation,
+The following system of equations,
 
 \begin{align*}
 \begin{cases}
@@ -110,7 +110,7 @@ where all $b_i$ (right-hand side values) are zero.
 Homogeneous systems of equations are of particular interest in linear algebra and have important applications in various areas, such as linear transformations, eigenvalues, and eigenvectors. Solving homogeneous systems often involves finding non-trivial solutions, meaning solutions where not all variables are equal to zero. The existence and properties of non-trivial solutions can provide valuable insights into the behavior of certain mathematical structures and physical phenomena.
 
 <font color='Blue'><b>Example</b></font>:
-The system of equation,
+The system of equations,
 \begin{align*}
 \begin{cases}
 x+y=0\\
@@ -123,7 +123,7 @@ is homogeneous.
 `````{admonition} Solution of a Linear System
 :class: tip
 
-If $(x_1, x_2, x_3, \ldots, x_n)$ is a solution for a linear system, it means that when these values are substituted into each equation of the linear system, every equation holds true. In other words, the solution satisfies every equation in the linear system..
+If $(x_1, x_2, x_3, \ldots, x_n)$ is a solution for a linear system, it means that when these values are substituted into each equation of the linear system, every equation holds. In other words, the solution satisfies every equation in the linear system.
 
 `````
 
@@ -137,7 +137,7 @@ x+y+ z=3,\\
 \end{cases}
 \end{align*}
 
-Basically, we need to plug each solution into the system of equation.
+We need to plug each solution into the system of equations.
 
 * Try $x = -2,~y = 5,~z = 0$
 
@@ -165,7 +165,7 @@ Basically, we need to plug each solution into the system of equation.
 \end{cases},\end{align*}
 ***
 
-## Possible sets of solution for two equations and two variables
+## Possible sets of solutions for two equations and two variables
 
 When a system of linear equations has only two variables, then the solutions to that system of linear equations can be explained geometrically using a graph. The graph of an equation $ax+by = c$ is a straight line when $a$ and $b$ are not both zero at the same time.
 
@@ -178,7 +178,7 @@ a_{21}x+a_{22}y=b_2\\
 \end{cases}
 \end{align} 
 
-1.  The lines intersect at a only one point. Then the system has a **unique solution** corresponding to that point.
+1.  The lines intersect at only one point. Then the system has a **unique solution** corresponding to that point.
 
 <font color='Blue'><b>Example</b></font>: For the following system of linear equations,
 \begin{align*}
