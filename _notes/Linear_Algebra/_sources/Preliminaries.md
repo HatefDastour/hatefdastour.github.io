@@ -31,11 +31,11 @@ is a mathematical equation where $x$ is a variable (an unknown value).
 A plane is a zero thickness surface with an infinitely large area.
 
 `````
-Let's break it down to understand it better:
+Let's break it down to understand it better {cite:p}`kuttler2020first`:
 
-1. Zero thickness: In mathematics, a plane is considered to have zero thickness. This means that a plane does not have any measurable depth; it is essentially a two-dimensional object.
+1. **Zero thickness**: In mathematics, a plane is considered to have zero thickness. This means that a plane does not have any measurable depth; it is essentially a two-dimensional object.
 
-2. Infinitely large area: A plane extends infinitely in all directions. It has an unbounded area, meaning it continues indefinitely without any boundary. In practice, of course, we cannot have a truly infinite plane, but mathematically, we can work with the concept of an infinitely large plane for theoretical purposes.
+2. **Infinitely large area**: A plane extends infinitely in all directions. It has an unbounded area, meaning it continues indefinitely without any boundary. In practice, of course, we cannot have a truly infinite plane, but mathematically, we can work with the concept of an infinitely large plane for theoretical purposes.
 
 So, a plane can be visualized as a flat, unending surface that extends infinitely in both length and width, but it has no depth. Planes are a fundamental concept in geometry and are used to define and analyze various geometric shapes and concepts. We will discuss planes more in Chapter 4.
 
@@ -45,11 +45,9 @@ For two planes in three-dimensional space, we can have either **parallel planes*
 `````{admonition} Parallel planes
 :class: tip
 
-The distance between parallel planes is always the same, and they never have any intersections.
+The distance between parallel planes is always the same, and they never have any intersections {cite:p}`kuttler2020first`.
 
-
-
-When two planes are parallel, they never intersect, and the distance between them remains constant throughout their entire length. This fundamental property is one of the defining characteristics of parallel planes.
+When two planes are parallel, they never intersect, and the distance between them remains constant throughout their entire length. This fundamental property is one of the defining characteristics of parallel planes {cite:p}`kuttler2020first`.
 
 ```{figure} Figures/fig0_01.png
 ---
@@ -64,7 +62,7 @@ Two parallel planes.
 `````{admonition} Intersecting planes
 :class: tip
 
-If two planes are not parallel (the distance between them is not always the same), they will have an intersection. The intersection of two planes always happens in the form of a line.
+If two planes are not parallel (the distance between them is not always the same), they will have an intersection. The intersection of two planes always happens in the form of a line {cite:p}`kuttler2020first`.
 
 ```{figure} Figures/fig0_02.png
 ---
@@ -85,14 +83,14 @@ Note that two planes intersect at a line, and two lines intersect at a point.
 `````{admonition} Hyperplane
 :class: tip
 
-A hyperplane is a plane with one less dimension than the dimension of its ambient space. For example, if space is 3-dimensional, then its hyperplanes are 2-dimensional planes. Moreover, if the space is 2-dimensional, its hyperplanes are the 1-dimensional lines.
+A hyperplane is a plane with one less dimension than the dimension of its ambient space. For example, if space is 3-dimensional, then its hyperplanes are 2-dimensional planes. Moreover, if the space is 2-dimensional, its hyperplanes are the 1-dimensional lines {cite:p}`kuttler2020first`.
 
 `````
 
 `````{admonition} Matrix
 :class: tip
 
-A matrix is a mathematical way of presenting a set of numbers in a  tabular form (in rows and columns). A matrix can contain real numbers such as $1$, $5$, $\sqrt{2}$, $\frac{2}{3}$, ..., or complex numbers such as $1+i$, $i$, $1-i$, ....
+A matrix is a mathematical way of presenting a set of numbers in a  tabular form (in rows and columns) {cite:p}`kuttler2020first`. A matrix can contain real numbers such as $1$, $5$, $\sqrt{2}$, $\frac{2}{3}$, ..., or complex numbers such as $1+i$, $i$, $1-i$, ....
 
 `````
 

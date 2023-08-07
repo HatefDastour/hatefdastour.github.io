@@ -1,0 +1,14 @@
+---
+title: "Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in Athabasca River Basin"
+collection: publications
+permalink: /publication/Ghaderpour2023TripleCrossWavelet
+date: 2023-08-04
+venue: 'Journal of Hydrometeorology'
+paperurl: 'https://doi.org/10.1175/JHM-D-23-0013.1'
+citation: 'E. Ghaderpour, M. S. Zaghloul, <b>H. Dastour</b>, A. Gupta, Achari, and Q. K. Hassan, "Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in Athabasca River Basin", <i>Journal of Hydrometeorology</i>, https://doi.org/10.1175/JHM-D-23-0013.1. [IF: 3.8; IF Quartile: Q2]'
+---
+<b>Abstract:</b> 
+<p style='text-align: justify;'>
+River flow monitoring is a critical task for land management, agriculture, fishery, industry, and others. Herein, a robust least-squares triple cross-wavelet analysis is proposed to investigate possible relationships between river flow, temperature, and precipitation in the time-frequency domain. The Athabasca River Basin (ARB) in Canada is selected as a case study to investigate such relationships. The historical climate and river flow datasets since 1950 for three homogeneous subregions of ARB were analyzed using a traditional multivariate regression model and the proposed wavelet analysis. The highest Pearson correlation (0.87) was estimated between all the monthly averaged river flow, temperature, and accumulated precipitation for the subregion between Hinton and Athabasca. The highest and lowest correlations between climate and river flow were found to be during the open warm season and cold season, respectively. Particularly, the highest correlations between temperature, precipitation, and river flow were in May (0.78) for Hinton, July (0.54) for Athabasca, and September (0.44) for Fort McMurray. The new wavelet analysis revealed significant coherency between annual cycles of climate and river flow for the three subregions, with the highest of 33.7% for Fort McMurray and the lowest of 4.7% for Hinton with more coherency since 1991. The phase delay analysis showed that annual and semiannual cycles of precipitation generally led the ones in river flow by a few weeks mainly for upper and middle ARB since 1991. The climate and river flow anomalies were also demonstrated using the baseline period 1961-1990, showing a significant increase in temperature and decrease in precipitation since 1991 for all the three subregions. Unlike the multivariate regression, the proposed wavelet method can analyze any hydrometeorological time series in the time-frequency domain without any need for resampling, interpolation, or gap filling.
+</p>
+[PDF file](/files/JHM-MS-Accepted.pdf){:target="_blank"}
