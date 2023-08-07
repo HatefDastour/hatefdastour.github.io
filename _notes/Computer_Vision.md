@@ -1,13 +1,4 @@
 ---
 title: "Computer Vision"
-excerpt: "Using Python to interpret and understand the visual world"
+excerpt: "This course introduces Python and OpenCV for computer vision tasks. Learn image and video manipulation, object detection, and deep learning integration. Gain practical skills for real-world applications in robotics, automation, and more."
 ---
-## Table of contents
-### OpenCV
-[OpenCV](http://opencv.org) is an open-source BSD-licensed library that includes several hundreds of computer vision algorithms.
-* [Getting Started with Open CV](/notes/Computer_Vision/Getting_Started_with_Open_CV.html)
-* [Geometric Transformations](/notes/Computer_Vision/OpenCV_Geometric_Image_Transformations)
-* [Drawing Functions](/notes/Computer_Vision/OpenCV_Drawing_Functions.html)
-* [Image Thresholding](/notes/Computer_Vision/OpenCV_Image_Thresholding.html)
-* [Image Filtering](/notes/Computer_Vision/OpenCV_Image_Filtering.html)
-* [Morphological Transformations](/notes/Computer_Vision/OpenCV_Morphological_Transformations.html)

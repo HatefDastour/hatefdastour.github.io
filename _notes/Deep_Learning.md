@@ -1,6 +1,6 @@
 ---
 title: "Deep Learning"
-excerpt: "Deep Learning with Python"
+excerpt: "Delve into the world of deep learning with this comprehensive course on PyTorch, TensorFlow, and Keras. Explore the strengths of each framework and learn how to build neural networks for various applications."
 collection: notes
 ---
 

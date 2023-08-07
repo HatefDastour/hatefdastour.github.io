@@ -1,5 +1,5 @@
 ---
 title: "Numerical Analysis"
-excerpt: "Root-finding algorithms, Fixed-point iteration, Polynomial Interpolation, Numerical Integration, Numerical Differentiation, Linear Systems, and Numerical Solution of ODEs"
+excerpt: "This course covers root-finding algorithms, interpolation, integration, differentiation, linear systems, and numerical ODE solutions for practical problem-solving. Gain vital skills for diverse applications in science and engineering."
 collection: notes
 ---
