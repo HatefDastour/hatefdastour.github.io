@@ -2,10 +2,11 @@
 
 The following textbooks were used in preparations of the notes:
 
-1. Kuttler, Kenneth. "[A First Course in Linear Algebra (Lyryx)](https://lyryx.com/first-course-linear-algebra/)." (2021).
-1. Nicholson, W. Keith. "[Linear Algebra with Applications (Lyryx)](https://lyryx.com/linear-algebra-applications/)." (2021).
-1. Stewart, James, Daniel K. Clegg, and Saleem Watson. [Calculus: early transcendentals](https://books.google.ca/books/about/Calculus_Early_Transcendentals.html). Cengage Learning, 2020.
+1. Kuttler, K., Farah, I. (2020). [A First Course in Linear Algebra. Canada: Lyryx Learning Incorporated](https://lyryx.com/first-course-linear-algebra/).
 
+1. Nicholson, W. K. (2020). [Linear Algebra with Applications. Canada: Lyryx Learning Incorporated](https://lyryx.com/linear-algebra-applications/).
+
+1. Stewart, J., Clegg, D. K., Watson, S. (2020). [Calculus: Early Transcendentals. United States: Cengage Learning](https://books.google.ca/books/about/Calculus_Early_Transcendentals.html).
 
 Throughout Chapter 1 of the textbook, A First Course in Linear Algebra by K. Kuttler {cite:p}`kuttler2020first`, there are several notations and terminologies that are introduced from Chapter 2 onwards. Therefore, in this prologue, we set the stage by briefly discussing some points of notation and terminology that will be used throughout this semester.
 
