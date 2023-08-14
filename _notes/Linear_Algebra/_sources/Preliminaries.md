@@ -7,7 +7,7 @@ The following textbooks were used in preparations of the notes:
 1. Stewart, James, Daniel K. Clegg, and Saleem Watson. [Calculus: early transcendentals](https://books.google.ca/books/about/Calculus_Early_Transcendentals.html). Cengage Learning, 2020.
 
 
-Throughout Chapter 1 of the textbook, A First Course in Linear Algebra by K. Kuttler {cite}`kuttler2017first`, there are several notations and terminologies that are introduced from Chapter 2 onwards. Therefore, in this prologue, we set the stage by briefly discussing some points of notation and terminology that will be used throughout this semester.
+Throughout Chapter 1 of the textbook, A First Course in Linear Algebra by K. Kuttler {cite:p}`kuttler2020first`, there are several notations and terminologies that are introduced from Chapter 2 onwards. Therefore, in this prologue, we set the stage by briefly discussing some points of notation and terminology that will be used throughout this semester.
 
 
 `````{admonition} Equation
