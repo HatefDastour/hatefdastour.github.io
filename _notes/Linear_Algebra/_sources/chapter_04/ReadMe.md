@@ -1,4 +1,0 @@
-# $\mathbb{R}^n$
-
-```{tableofcontents}
-```

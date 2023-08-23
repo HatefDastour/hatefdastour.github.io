@@ -1,4 +1,0 @@
-# Systems of Equations
-
-```{tableofcontents}
-```

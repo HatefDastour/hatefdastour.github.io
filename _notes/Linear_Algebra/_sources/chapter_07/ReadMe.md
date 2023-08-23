@@ -1,4 +1,0 @@
-# Spectral Theory
-
-```{tableofcontents}
-```
