@@ -1,4 +1,0 @@
-# Numerical Linear Algebra
-
-```{tableofcontents}
-```
