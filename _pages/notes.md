@@ -27,16 +27,6 @@ This course introduces Python and OpenCV for computer vision tasks. Learn image 
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Deep_Learning/" target="_blank" rel="noopener noreferrer">Deep Learning</a>
-</b></font>
-<br>
-Delve into the world of deep learning with this comprehensive course on PyTorch, TensorFlow, and Keras. Explore the strengths of each framework and learn how to build neural networks for various applications.
-</p>
-
-<hr style="height:2px; visibility:hidden;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
 <a href="https://hatefdastour.github.io/notes/Differential_Equations/" target="_blank" rel="noopener noreferrer">Differential Equations</a>
 </b></font>
 <br>
