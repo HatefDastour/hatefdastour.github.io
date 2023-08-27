@@ -7,16 +7,6 @@ author_profile: true
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Introduction_to_Digital_Engineering/" target="_blank" rel="noopener noreferrer">Introduction to Digital Engineering</a>
-</b></font>
-<br>
-This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
-</p>
-
-<hr style="height:2px; visibility:hidden;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
 <a href="https://hatefdastour.github.io/notes/Computer_Vision/" target="_blank" rel="noopener noreferrer">Computer Vision</a>
 </b></font>
 <br>
@@ -41,6 +31,16 @@ Classification of ordinary differential equations, first and second order equati
 </b></font>
 <br>
 Finite Difference Method for solving PDEs.
+</p>
+
+<hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Digital_Engineering/" target="_blank" rel="noopener noreferrer">Introduction to Digital Engineering</a>
+</b></font>
+<br>
+This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
 </p>
 
 <hr style="height:2px; visibility:hidden;" />
