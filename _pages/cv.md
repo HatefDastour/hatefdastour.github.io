@@ -103,7 +103,7 @@ redirect_from:
 ---
 
 ## Professional Services and Committees
-
+* Academic journal reviewer for academic journals in the fields of remote sensing, environmental modeling, applied mathematics, and data science. Recently reviewed articles for Remote Sensing, Sensors, Water, Image, and vision computing.
 * Student researcher speaker in the open educational resource videos for [Taylor Institute for Teaching and Learning](https://taylorinstitute.ucalgary.ca/){:target="_blank"}, University of Calgary, Calgary, Canada, October 2019
 * Committee member of the [Department of Mathematics and Statistics](https://science.ucalgary.ca/mathematics-statistics){:target="_blank"} Graduate committee, University of Calgary, Calgary, Canada, October 2016 - September 2018
 * Contributed to [2018 Industrial Problem Solving Workshop (IPSW)](https://www.pims.math.ca/industrial-event/180819-ipsw){:target="_blank"}, University of Calgary, Calgary, Canada, August 19, 2018 - August 24, 2018.
