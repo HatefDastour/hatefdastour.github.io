@@ -5,7 +5,7 @@ permalink: /publication/Ghaderpour2023TripleCrossWavelet
 date: 2023-08-04
 venue: 'Journal of Hydrometeorology'
 paperurl: 'https://doi.org/10.1175/JHM-D-23-0013.1'
-citation: 'E. Ghaderpour, M. S. Zaghloul, <b>H. Dastour</b>, A. Gupta, Achari, and Q. K. Hassan, "Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in Athabasca River Basin", <i>Journal of Hydrometeorology</i>, https://doi.org/10.1175/JHM-D-23-0013.1. [IF: 3.8; IF Quartile: Q2]'
+citation: 'E. Ghaderpour, M. S. Zaghloul, <b>H. Dastour</b>, A. Gupta, G. Achari, and Q. K. Hassan, "Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in Athabasca River Basin", <i>Journal of Hydrometeorology</i>, https://doi.org/10.1175/JHM-D-23-0013.1. [IF: 3.8; IF Quartile: Q2]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
