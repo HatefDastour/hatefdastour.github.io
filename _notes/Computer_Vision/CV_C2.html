@@ -263,18 +263,9 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images-with-opencv">2.2. Resizing Images with OpenCV</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-transformation">2.3.1. Perspective Transformation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">2.3.2. Parameters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-signature">2.3.3. Function Signature</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-and-importance">2.3.4. Usage and Importance</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration">2.4. Camera Calibration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-lens-distortion-with-cv2-undistort">2.4.1. Correcting Lens Distortion with <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4.2. Function Signature</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-in-computer-vision">2.4.3. Importance in Computer Vision</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.4. cv2.calibrateCamera() function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.1. cv2.calibrateCamera() function</a></li>
 </ul>
 </li>
 </ul>
@@ -299,23 +290,23 @@ document.write(`
 <li><p><strong>Scale Operations</strong>: Applying linear transformations to resize the image.</p></li>
 </ol>
 <p>At its core, an affine transformation describes the relationship between two images. This transformation is typically represented by a 2x3 matrix <span id="id2">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-464fc0d5-b9e6-410e-a1bc-bbd6f377f083">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-464fc0d5-b9e6-410e-a1bc-bbd6f377f083" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2c4227ea-9cbd-4d94-b032-75482737f439">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-2c4227ea-9cbd-4d94-b032-75482737f439" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A = \begin{bmatrix} a_{00} &amp; a_{01} \\ a_{10} &amp; a_{11} \end{bmatrix}_{2 \times 2} \quad B = \begin{bmatrix} b_{00} \\ b_{10} \end{bmatrix}_{2 \times 1}
 \end{equation}\]</div>
 <p>We combine these matrices to form a 2x3 matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8a72ffd9-a738-42c0-bae1-d57a588a2e13">
-<span class="eqno">(2.2)<a class="headerlink" href="#equation-8a72ffd9-a738-42c0-bae1-d57a588a2e13" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-04f32704-81d4-41c1-b194-abb9db4b85bf">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-04f32704-81d4-41c1-b194-abb9db4b85bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
 M = \begin{bmatrix} A &amp; B \end{bmatrix} = \begin{bmatrix} a_{00} &amp; a_{01} &amp; b_{00} \\ a_{10} &amp; a_{11} &amp; b_{10} \end{bmatrix}_{2 \times 3}
 \end{equation}\]</div>
 <p>To transform a 2D vector <span class="math notranslate nohighlight">\(X = \begin{bmatrix} x \\ y \end{bmatrix}\)</span> using A and B, we can use:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-033fa678-d234-4f61-9e45-3056e46576c4">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-033fa678-d234-4f61-9e45-3056e46576c4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-50e0a562-ee35-46c1-bb1b-fd020250e4d7">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-50e0a562-ee35-46c1-bb1b-fd020250e4d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 T = A \cdot \begin{bmatrix} x \\ y \end{bmatrix} + B
 \end{equation}\]</div>
 <p>This results in:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d2fd958b-82b9-47b7-b01b-a8a030feaaaf">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-d2fd958b-82b9-47b7-b01b-a8a030feaaaf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dbce5df9-ee60-43e2-ad94-154487f01bc8">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-dbce5df9-ee60-43e2-ad94-154487f01bc8" title="Permalink to this equation">#</a></span>\[\begin{equation}
 T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \end{bmatrix}
 \end{equation}\]</div>
 <p>Affine transformations provide a powerful framework for image manipulation, enabling operations such as rotation, translation, scaling, and more. They form the basis for transforming images efficiently and systematically.</p>
@@ -327,9 +318,9 @@ T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \en
 <li><p><strong>When We Know M and X</strong>: If we have information about the transformation matrix M and the original set of points X, we can easily obtain the transformed set of points T by applying the transformation equation T = M⋅X. This information for M can either be explicit, represented as a 2-by-3 matrix, or it may be inferred from a geometric relationship between points.</p></li>
 </ol>
 <p>To elucidate the concept further, let’s delve into the scenario described in point (b). When M is the relationship that connects two images, we can analyze the simplest case where M relates three distinct points in both images. Consider the visual representation below <span id="id4">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
-<div class="figure align-center" id="id14">
+<div class="figure align-center" id="id13">
 <a class="reference internal image-reference" href="_images/Warp_Affine_0.png"><img alt="_images/Warp_Affine_0.png" src="_images/Warp_Affine_0.png" style="width: 500px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Image courtesy of <span id="id5">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Image courtesy of <span id="id5">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
 </div>
 <p>In the image, points 1, 2, and 3 form a triangle in image 1. This same triangle, when mapped into image 2 through the Affine Transformation, undergoes a noticeable change. By determining the Affine Transformation using these three chosen points (which can be selected as needed), we can establish this discovered relationship for all pixels within an image.</p>
 <p>This methodology empowers us to apply the same transformation across the entire image, enabling geometric alterations such as rotations, translations, and scaling. Understanding this relationship between points and the transformation matrix forms the foundation for systematically manipulating images with Affine Transformations.</p>
@@ -346,34 +337,30 @@ T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \en
 <p>To use the Affine Transformation matrix obtained from <code class="docutils literal notranslate"><span class="pre">cv2.getAffineTransform()</span></code>, you’ll typically apply it to an image or points using the <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine()</span></code> function, which performs the actual transformation. This function uses the calculated matrix to apply the transformation to the image or points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_sample_image</span>
-
-<span class="c1"># Import necessary libraries</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>  <span class="c1"># Import the plotting library</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.family&#39;</span> <span class="p">:</span> <span class="s1">&#39;Calibri&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.titlesize&#39;</span> <span class="p">:</span> <span class="mi">16</span><span class="p">})</span>  <span class="c1"># Set font properties for plots</span>
-<span class="kn">import</span> <span class="nn">cv2</span>  <span class="c1"># Import the OpenCV library</span>
+
+<span class="c1"># Set font properties for plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;Calibri&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.titlesize&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
 
 <span class="c1"># Define a function to display images with titles and optional settings</span>
 <span class="k">def</span> <span class="nf">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Images&#39;</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="c1"># Create a figure with two subplots</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>  <span class="c1"># Create a figure with 1 row and 2 columns of subplots</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># Create a figure with 1 row and 2 columns of subplots</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># Flatten the subplots for easier manipulation</span>
 
     <span class="c1"># Iterate over the first two images</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">grayscale</span><span class="p">:</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span>  <span class="c1"># Display the image in grayscale</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># Display the image in color</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>  <span class="c1"># Turn off axis</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">Names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>  <span class="c1"># Set image title with bold font</span>
+        <span class="c1"># Display the image in grayscale if grayscale is True, otherwise in color</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span> <span class="k">if</span> <span class="n">grayscale</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>  <span class="c1"># Turn off axis</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">Names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>  <span class="c1"># Set image title with bold font</span>
 
     <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
-        <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>  <span class="c1"># Set main title if provided</span>
-    
+        <span class="c1"># Set main title if provided</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  <span class="c1"># Adjust layout for better spacing</span>
 
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
@@ -385,7 +372,7 @@ T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \en
 <div class="section" id="image-wrap">
 <h3><span class="section-number">2.1.3. </span>Image Wrap<a class="headerlink" href="#image-wrap" title="Permalink to this headline">#</a></h3>
 <p>The function you’re referring to, <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine()</span></code>, is part of the OpenCV library, which is a popular computer vision and image processing library in Python. This specific function is used for geometric image transformations, particularly affine transformations. Let’s break down the parameters and its purpose:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>cv2.warpAffine(src, M, dsize[, dst[, flags[, borderMode[, borderValue]]]]) → dst
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cv2.warpAffine(src, M, dsize[, dst[, flags[, borderMode[, borderValue]]]]) → dst
 </pre></div>
 </div>
 <p>Here’s what each parameter does:</p>
@@ -445,7 +432,7 @@ In this illustrative code snippet, we showcase Affine Image Transformation using
  [ -0.33333333   1.          66.66666667]]
 </pre></div>
 </div>
-<img alt="_images/c97e8b957629a32b46fa8b3ea2a390fca7b124afe161541bf4eb4424f245b3f2.png" src="_images/c97e8b957629a32b46fa8b3ea2a390fca7b124afe161541bf4eb4424f245b3f2.png" />
+<img alt="_images/e1518b1d3c06261d141c6031a32c6dffbbaec3160265cfe2df73905f53400a1b.png" src="_images/e1518b1d3c06261d141c6031a32c6dffbbaec3160265cfe2df73905f53400a1b.png" />
 </div>
 </div>
 <p>This code demonstrates how to perform an affine transformation on an image using OpenCV. Let’s break down the code and explain each part:</p>
@@ -549,7 +536,7 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
  [ 0.  1. 20.]]
 </pre></div>
 </div>
-<img alt="_images/d27a528526cdb44d8334b978a59e1e55bd2193b7bc8169086c2cd8260c1c5f9d.png" src="_images/d27a528526cdb44d8334b978a59e1e55bd2193b7bc8169086c2cd8260c1c5f9d.png" />
+<img alt="_images/4d466692b81654a6bf2fa5461234a8e272e534ed0d2eb5a710b285fde92bee55.png" src="_images/4d466692b81654a6bf2fa5461234a8e272e534ed0d2eb5a710b285fde92bee55.png" />
 </div>
 </div>
 <p>This code demonstrates how to perform a 2D translation transformation on an image using OpenCV. Let’s break down the code and explain each part:</p>
@@ -604,8 +591,8 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
 </ol>
 <p>The function returns a 2x3 transformation matrix commonly referred to as the “rotation matrix.” This matrix encapsulates the geometric transformations necessary to achieve the specified rotation and scaling effects.</p>
 <p>Mathematically, the rotation matrix is expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f7553d03-a890-4d9b-be40-e4e50ed8ae77">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-f7553d03-a890-4d9b-be40-e4e50ed8ae77" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-935a7865-c2db-4a67-a671-688b4907501b">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-935a7865-c2db-4a67-a671-688b4907501b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
 \alpha &amp; \beta &amp; (1 - \alpha) \cdot \texttt{center.x} - \beta \cdot \texttt{center.y} \\
 - \beta &amp; \alpha &amp; \beta \cdot \texttt{center.x} + (1 - \alpha) \cdot \texttt{center.y}
@@ -660,7 +647,7 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
  [ -0.42261826   0.90630779 155.24113122]]
 </pre></div>
 </div>
-<img alt="_images/a5cc87d086488052457cc64da90c7bc2f4ac4c9687abe001f6239bb806998f5c.png" src="_images/a5cc87d086488052457cc64da90c7bc2f4ac4c9687abe001f6239bb806998f5c.png" />
+<img alt="_images/1c39971741a528009fc10dba559752f1e4520c3fca422fb21d2fadabbd447be9.png" src="_images/1c39971741a528009fc10dba559752f1e4520c3fca422fb21d2fadabbd447be9.png" />
 </div>
 </div>
 <p>This code performs image rotation using OpenCV in Python. Here’s a step-by-step explanation:</p>
@@ -735,7 +722,7 @@ When shrinking an image, the <code class="docutils literal notranslate"><span cl
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">resize</span></code> function allows you to resize images while maintaining control over the output size and selecting appropriate interpolation methods to achieve the desired quality.</p>
 <p><strong>Syntax:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>cv2.resize(src, dsize[, dst[, fx[, fy[, interpolation]]]]) → dst
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cv2.resize(src, dsize[, dst[, fx[, fy[, interpolation]]]]) → dst
 </pre></div>
 </div>
 <p>Here’s what each parameter does:</p>
@@ -776,7 +763,7 @@ When shrinking an image, the <code class="docutils literal notranslate"><span cl
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c2a6fb72fe62cab499bc771e85de74a78b836df6b86edddffc56e62defe3411b.png" src="_images/c2a6fb72fe62cab499bc771e85de74a78b836df6b86edddffc56e62defe3411b.png" />
+<img alt="_images/f1ea65fc3f3f63461b81772922f9c93a21dd39888d6bb9351c51ae09bf2b97fc.png" src="_images/f1ea65fc3f3f63461b81772922f9c93a21dd39888d6bb9351c51ae09bf2b97fc.png" />
 </div>
 </div>
 <p>This code demonstrates how to load an image, resize it using cubic interpolation, and then display both the original and resized images with their sizes indicated in the plots. Here’s a breakdown of the code:</p>
@@ -795,23 +782,20 @@ When shrinking an image, the <code class="docutils literal notranslate"><span cl
 <div class="section" id="warp-perspective">
 <h2><span class="section-number">2.3. </span>Warp Perspective<a class="headerlink" href="#warp-perspective" title="Permalink to this headline">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">cv2.warpPerspective()</span></code> function in the Python OpenCV library is a powerful tool used for performing perspective transformations on an input image. These transformations allow you to change the perspective view of an object within an image, simulating effects like changing the viewpoint or correcting for distortions caused by the camera’s perspective. The primary purpose of this function is to apply a given 3x3 transformation matrix to the input image, resulting in a transformed output image <span id="id8">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
-<div class="section" id="perspective-transformation">
-<h3><span class="section-number">2.3.1. </span>Perspective Transformation<a class="headerlink" href="#perspective-transformation" title="Permalink to this headline">#</a></h3>
+<p><strong>Perspective Transformation</strong></p>
 <p>Perspective transformations are essential for various computer vision tasks, including image rectification, object recognition, and more. They involve manipulating the positions of points in an image, effectively warping the image based on a specified transformation matrix. This matrix, denoted as <code class="docutils literal notranslate"><span class="pre">M</span></code>,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3d6993d5-29c7-4d19-b7e1-0144f97ae3ee">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-3d6993d5-29c7-4d19-b7e1-0144f97ae3ee" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a984ac34-9a8c-42ca-9ad0-fbad3cdf8b62">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-a984ac34-9a8c-42ca-9ad0-fbad3cdf8b62" title="Permalink to this equation">#</a></span>\[\begin{equation}
 M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp; M_{23}  \\M_{31} &amp; M_{32} &amp; M_{33} \end{bmatrix}
 \end{equation}\]</div>
 <p>describes how the points in the source image (<code class="docutils literal notranslate"><span class="pre">src</span></code>) should be transformed to obtain their corresponding positions in the destination image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>).</p>
 <p>The transformation is defined by the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8a3a1155-b865-4913-baa0-ba79a6161611">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-8a3a1155-b865-4913-baa0-ba79a6161611" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c0ccf682-f084-4903-894f-d27e0bfe6bda">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-c0ccf682-f084-4903-894f-d27e0bfe6bda" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \texttt{dst} (x,y) = \texttt{src} \left ( \frac{M_{11} x + M_{12} y + M_{13}}{M_{31} x + M_{32} y + M_{33}} , \frac{M_{21} x + M_{22} y + M_{23}}{M_{31} x + M_{32} y + M_{33}} \right )
 \end{equation}\]</div>
 <p>When the flag <code class="docutils literal notranslate"><span class="pre">WARP_INVERSE_MAP</span></code> is set, the function uses the inverse of the transformation matrix for the calculation. Otherwise, the transformation is inverted using the <code class="docutils literal notranslate"><span class="pre">invert</span></code> function before being applied. The function does not operate in-place; it generates a new transformed image as the output.</p>
-</div>
-<div class="section" id="parameters">
-<h3><span class="section-number">2.3.2. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">#</a></h3>
+<p><strong>Parameters</strong></p>
 <p>Here’s a detailed explanation of the parameters used in the <code class="docutils literal notranslate"><span class="pre">cv2.warpPerspective()</span></code> function:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">src</span></code>: This parameter represents the input image you want to transform using the perspective transformation. It should be a numpy array, representing the image you wish to warp.</p></li>
@@ -822,16 +806,12 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 <li><p><code class="docutils literal notranslate"><span class="pre">borderMode</span></code> (optional): The <code class="docutils literal notranslate"><span class="pre">borderMode</span></code> parameter specifies how the border of the output image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>) should be filled. It can be set to different border modes, such as <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_CONSTANT</span></code> or <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_REPLICATE</span></code>, depending on the desired behavior.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">borderValue</span></code> (optional): The <code class="docutils literal notranslate"><span class="pre">borderValue</span></code> parameter is used to specify the value used for padding if the <code class="docutils literal notranslate"><span class="pre">borderMode</span></code> is set to <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_CONSTANT</span></code>.</p></li>
 </ul>
-</div>
-<div class="section" id="function-signature">
-<h3><span class="section-number">2.3.3. </span>Function Signature<a class="headerlink" href="#function-signature" title="Permalink to this headline">#</a></h3>
+<p><strong>Function Signature</strong></p>
 <p>Here’s the structure of the function signature:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dsize</span><span class="p">[,</span> <span class="n">dst</span><span class="p">[,</span> <span class="n">flags</span><span class="p">[,</span> <span class="n">borderMode</span><span class="p">[,</span> <span class="n">borderValue</span><span class="p">]]]])</span> <span class="o">-&gt;</span> <span class="n">dst</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dsize</span><span class="p">[,</span> <span class="n">dst</span><span class="p">[,</span> <span class="n">flags</span><span class="p">[,</span> <span class="n">borderMode</span><span class="p">[,</span> <span class="n">borderValue</span><span class="p">]]]])</span> <span class="o">-&gt;</span> <span class="n">dst</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage-and-importance">
-<h3><span class="section-number">2.3.4. </span>Usage and Importance<a class="headerlink" href="#usage-and-importance" title="Permalink to this headline">#</a></h3>
+<p><strong>Usage and Importance</strong></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cv2.warpPerspective()</span></code> function is a fundamental component in many image processing pipelines. It enables handling perspective effects, correcting image distortions, and preparing images for further analysis or visualization. By understanding and utilizing perspective transformations, you can significantly enhance the capabilities of your computer vision applications.</p>
 <p>For more detailed information and examples of using <code class="docutils literal notranslate"><span class="pre">warpPerspective</span></code>, you can refer to the <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#cv2.warpPerspective">OpenCV documentation</a>. This function is essential for tasks that require precise geometric adjustments in images, making it a valuable tool in various computer vision scenarios.</p>
 <p><font color='Blue'><b>Example</b></font>: In this example, we explore perspective transformation, a crucial concept in image processing. We define source and destination points to describe how we want to alter the image’s perspective. Using these points, we calculate a transformation matrix (M). Then, we apply this matrix to the input image, transforming its perspective. We visualize both the original and transformed images, including annotations for size reference and marked points to show the transformation’s effect.</p>
@@ -867,7 +847,7 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a4e90b9bb3661616ed7d196e2398d24a60830f32db083aebb814f8d873a40e80.png" src="_images/a4e90b9bb3661616ed7d196e2398d24a60830f32db083aebb814f8d873a40e80.png" />
+<img alt="_images/b079d3729b7c4349449502bf92fcd97a23cb180ef729a9a56f9e8509389077a9.png" src="_images/b079d3729b7c4349449502bf92fcd97a23cb180ef729a9a56f9e8509389077a9.png" />
 </div>
 </div>
 <p>This code performs a perspective transformation on an input image using OpenCV. Let’s break down the code step by step:</p>
@@ -913,47 +893,45 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 </li>
 </ol>
 </div>
-</div>
 <div class="section" id="camera-calibration">
 <h2><span class="section-number">2.4. </span>Camera Calibration<a class="headerlink" href="#camera-calibration" title="Permalink to this headline">#</a></h2>
 <p>In computer vision, camera calibration is a crucial process that aims to correct lens distortions and determine intrinsic and extrinsic camera parameters. Cameras often introduce two significant types of distortion: radial distortion and tangential distortion <span id="id9">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p><strong>Radial Distortion</strong>: Radial distortion causes straight lines to appear curved. It becomes more pronounced the farther points are from the center of the image. For instance, in the image below, the red lines indicate expected straight lines on the chessboard, but they appear distorted. This distortion is especially noticeable along the chessboard’s edges, which curve outward.</p>
-<div class="figure align-center" id="id15">
+<div class="figure align-center" id="id14">
 <a class="reference internal image-reference" href="_images/calib_radial.jpg"><img alt="_images/calib_radial.jpg" src="_images/calib_radial.jpg" style="width: 350px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Image courtesy of <span id="id10">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id15" title="Permalink to this image">#</a></p>
+<p class="caption"><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Image courtesy of <span id="id10">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
 </div>
 <p>Mathematically, radial distortion can be represented as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e41b28d0-1e64-4de0-b6b3-7bf568b20b37">
-<span class="eqno">(2.8)<a class="headerlink" href="#equation-e41b28d0-1e64-4de0-b6b3-7bf568b20b37" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-073f166f-7dee-4864-a954-b77b31da07ba">
+<span class="eqno">(2.8)<a class="headerlink" href="#equation-073f166f-7dee-4864-a954-b77b31da07ba" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{\text{distorted}} = x \times (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-b5fe6858-79cf-40b5-a08f-56d0b43e91ea">
-<span class="eqno">(2.9)<a class="headerlink" href="#equation-b5fe6858-79cf-40b5-a08f-56d0b43e91ea" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-66823a74-9d89-4e5c-8821-307cfcd7e636">
+<span class="eqno">(2.9)<a class="headerlink" href="#equation-66823a74-9d89-4e5c-8821-307cfcd7e636" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{\text{distorted}} = y \times (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
 \end{equation}\]</div>
 <p><strong>Tangential Distortion</strong>: Tangential distortion arises when the camera’s imaging lens is not perfectly aligned parallel to the imaging plane. This can cause certain areas in the image to appear closer than expected. The amount of tangential distortion can be represented as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8a50dbf0-97fe-4784-8717-74520f719c78">
-<span class="eqno">(2.10)<a class="headerlink" href="#equation-8a50dbf0-97fe-4784-8717-74520f719c78" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-25490988-5449-496a-8c83-e69ef5db20f1">
+<span class="eqno">(2.10)<a class="headerlink" href="#equation-25490988-5449-496a-8c83-e69ef5db20f1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{\text{distorted}} = x + (2p_1xy + p_2(r^2 + 2x^2))
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-1095ba5a-f624-4163-bf13-75c8f1e03e5c">
-<span class="eqno">(2.11)<a class="headerlink" href="#equation-1095ba5a-f624-4163-bf13-75c8f1e03e5c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9224d317-0aa8-4427-9f9f-87bbad6df8da">
+<span class="eqno">(2.11)<a class="headerlink" href="#equation-9224d317-0aa8-4427-9f9f-87bbad6df8da" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 \end{equation}\]</div>
 <p>To correct these distortions, five distortion coefficients are needed:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-069c7345-a4ce-4a6f-81bd-84b9f6b3a187">
-<span class="eqno">(2.12)<a class="headerlink" href="#equation-069c7345-a4ce-4a6f-81bd-84b9f6b3a187" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c7e2ca86-27ad-45f7-9825-0915e2d18ee0">
+<span class="eqno">(2.12)<a class="headerlink" href="#equation-c7e2ca86-27ad-45f7-9825-0915e2d18ee0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Distortion coefficients} = (k_1, k_2, p_1, p_2, k_3)
 \end{equation}\]</div>
 <p>In addition to distortion coefficients, camera calibration requires knowledge of intrinsic and extrinsic parameters. <strong>Intrinsic parameters</strong> are specific to a camera and include focal length (<span class="math notranslate nohighlight">\(f_x\)</span>, <span class="math notranslate nohighlight">\(f_y\)</span>) and optical centers (<span class="math notranslate nohighlight">\(c_x\)</span>, <span class="math notranslate nohighlight">\(c_y\)</span>). These parameters contribute to the camera matrix, which is used to rectify lens distortions. The camera matrix, expressed as a 3x3 matrix, is defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-933bb28f-9b86-47cf-b987-ee512cad925b">
-<span class="eqno">(2.13)<a class="headerlink" href="#equation-933bb28f-9b86-47cf-b987-ee512cad925b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1f831084-683c-4e50-be03-8a2cfd27c950">
+<span class="eqno">(2.13)<a class="headerlink" href="#equation-1f831084-683c-4e50-be03-8a2cfd27c950" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{camera matrix} = \begin{bmatrix} f_x &amp; 0 &amp; c_x \\ 0 &amp; f_y &amp; c_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
 \end{equation}\]</div>
 <p><strong>Extrinsic parameters</strong> correspond to rotation and translation vectors, mapping a 3D point’s coordinates to a coordinate system.</p>
 <p>To perform camera calibration, sample images of a well-defined pattern (e.g., a chessboard) are required. By identifying known points in both the real world and the image, distortion coefficients can be computed. For accurate results, at least 10 test patterns are recommended.</p>
-<div class="section" id="correcting-lens-distortion-with-cv2-undistort">
-<h3><span class="section-number">2.4.1. </span>Correcting Lens Distortion with <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code><a class="headerlink" href="#correcting-lens-distortion-with-cv2-undistort" title="Permalink to this headline">#</a></h3>
+<p><strong>Correcting Lens Distortion with <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code></strong></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code> function in the Python OpenCV library serves as a powerful tool for addressing lens distortion present in input images. Lens distortion is a common concern in photography, arising from the inherent curvature of camera lenses. This distortion can significantly impact image accuracy, making it particularly relevant in computer vision applications. The function provides a means to rectify lens-induced distortions, leveraging a specified camera calibration that includes both the camera matrix and distortion coefficients <span id="id11">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p>Here’s a comprehensive explanation of the function’s parameters and its primary purpose:</p>
 <ul class="simple">
@@ -963,16 +941,12 @@ y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 <li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code> (optional): The <code class="docutils literal notranslate"><span class="pre">dst</span></code> parameter serves as the output image container, where the undistorted result will be stored. If this parameter is not provided, the function creates a new image specifically to hold the undistorted version.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">newCameraMatrix</span></code> (optional): The <code class="docutils literal notranslate"><span class="pre">newCameraMatrix</span></code> parameter is an additional, optional parameter. It allows you to specify a new camera matrix for the undistorted image. This parameter gives you control over the output image’s aspect ratio or focal length, offering flexibility in customization.</p></li>
 </ul>
-</div>
-<div class="section" id="id12">
-<h3><span class="section-number">2.4.2. </span>Function Signature<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
+<p><strong>Function Signature</strong></p>
 <p>Here’s the structure of the function signature:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cv2</span><span class="o">.</span><span class="n">undistort</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">[,</span> <span class="n">dst</span><span class="p">[,</span> <span class="n">newCameraMatrix</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">dst</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv2</span><span class="o">.</span><span class="n">undistort</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">[,</span> <span class="n">dst</span><span class="p">[,</span> <span class="n">newCameraMatrix</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">dst</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="importance-in-computer-vision">
-<h3><span class="section-number">2.4.3. </span>Importance in Computer Vision<a class="headerlink" href="#importance-in-computer-vision" title="Permalink to this headline">#</a></h3>
+<p><strong>Importance in Computer Vision</strong></p>
 <p>Lens distortion correction plays a pivotal role in various computer vision tasks, such as object tracking, feature matching, and 3D reconstruction. By applying the <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code> function, you can obtain undistorted images that more accurately represent the real-world scene, significantly enhancing the reliability and accuracy of subsequent computer vision operations.</p>
 <p>This function is a critical component of the camera calibration process, where the camera matrix and distortion coefficients are determined through calibration techniques. These parameters are then employed to eliminate distortion effects from captured images, resulting in improved precision in subsequent computer vision tasks.</p>
 <p>For more comprehensive information and practical examples of using the <code class="docutils literal notranslate"><span class="pre">undistort</span></code> function, you can refer to the <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#cv2.undistort">OpenCV documentation</a>. A solid understanding and effective utilization of lens distortion correction are essential skills for achieving high-quality results in computer vision applications that involve image analysis using cameras with distortion.</p>
@@ -1126,10 +1100,9 @@ y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 </ul>
 </li>
 </ol>
-</div>
 <div class="section" id="cv2-calibratecamera-function">
-<h3><span class="section-number">2.4.4. </span>cv2.calibrateCamera() function<a class="headerlink" href="#cv2-calibratecamera-function" title="Permalink to this headline">#</a></h3>
-<p>For the calibration process, the essential tool at our disposal is the <a class="reference external" href="https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#calibratecamera">cv2.calibrateCamera()</a> function. This function plays a pivotal role in camera calibration, providing a comprehensive set of results, including the camera matrix, distortion coefficients, as well as rotation and translation vectors, among other critical information. The function serves as the cornerstone for calibrating a camera system, enabling accurate and reliable image analysis in computer vision applications <span id="id13">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
+<h3><span class="section-number">2.4.1. </span>cv2.calibrateCamera() function<a class="headerlink" href="#cv2-calibratecamera-function" title="Permalink to this headline">#</a></h3>
+<p>For the calibration process, the essential tool at our disposal is the <a class="reference external" href="https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#calibratecamera">cv2.calibrateCamera()</a> function. This function plays a pivotal role in camera calibration, providing a comprehensive set of results, including the camera matrix, distortion coefficients, as well as rotation and translation vectors, among other critical information. The function serves as the cornerstone for calibrating a camera system, enabling accurate and reliable image analysis in computer vision applications <span id="id12">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p>Through the <code class="docutils literal notranslate"><span class="pre">cv2.calibrateCamera()</span></code> function, we gain access to the following essential parameters:</p>
 <ul class="simple">
 <li><p><strong>Camera Matrix</strong>: The camera matrix, which is crucial for undistorting images and contains critical information about the camera’s intrinsic properties, such as focal length, principal point, and more.</p></li>
@@ -1308,18 +1281,9 @@ y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images-with-opencv">2.2. Resizing Images with OpenCV</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-transformation">2.3.1. Perspective Transformation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">2.3.2. Parameters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-signature">2.3.3. Function Signature</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-and-importance">2.3.4. Usage and Importance</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration">2.4. Camera Calibration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-lens-distortion-with-cv2-undistort">2.4.1. Correcting Lens Distortion with <code class="docutils literal notranslate"><span class="pre">cv2.undistort()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.4.2. Function Signature</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-in-computer-vision">2.4.3. Importance in Computer Vision</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.4. cv2.calibrateCamera() function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.1. cv2.calibrateCamera() function</a></li>
 </ul>
 </li>
 </ul>
