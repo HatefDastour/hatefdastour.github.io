@@ -264,7 +264,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images-with-opencv">2.2. Resizing Images with OpenCV</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration">2.4. Camera Calibration</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration-optional-section">2.4. Camera Calibration (Optional Section)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.1. cv2.calibrateCamera() function</a></li>
 </ul>
 </li>
@@ -290,36 +290,57 @@ document.write(`
 <li><p><strong>Scale Operations</strong>: Applying linear transformations to resize the image.</p></li>
 </ol>
 <p>At its core, an affine transformation describes the relationship between two images. This transformation is typically represented by a 2x3 matrix <span id="id2">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2c4227ea-9cbd-4d94-b032-75482737f439">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-2c4227ea-9cbd-4d94-b032-75482737f439" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5a200567-be6e-4f4d-8620-3e0344f4c223">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-5a200567-be6e-4f4d-8620-3e0344f4c223" title="Permalink to this equation">#</a></span>\[\begin{equation}
 A = \begin{bmatrix} a_{00} &amp; a_{01} \\ a_{10} &amp; a_{11} \end{bmatrix}_{2 \times 2} \quad B = \begin{bmatrix} b_{00} \\ b_{10} \end{bmatrix}_{2 \times 1}
 \end{equation}\]</div>
 <p>We combine these matrices to form a 2x3 matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-04f32704-81d4-41c1-b194-abb9db4b85bf">
-<span class="eqno">(2.2)<a class="headerlink" href="#equation-04f32704-81d4-41c1-b194-abb9db4b85bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-74869222-84a7-403d-b3cf-b6bda35c20c2">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-74869222-84a7-403d-b3cf-b6bda35c20c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 M = \begin{bmatrix} A &amp; B \end{bmatrix} = \begin{bmatrix} a_{00} &amp; a_{01} &amp; b_{00} \\ a_{10} &amp; a_{11} &amp; b_{10} \end{bmatrix}_{2 \times 3}
 \end{equation}\]</div>
 <p>To transform a 2D vector <span class="math notranslate nohighlight">\(X = \begin{bmatrix} x \\ y \end{bmatrix}\)</span> using A and B, we can use:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-50e0a562-ee35-46c1-bb1b-fd020250e4d7">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-50e0a562-ee35-46c1-bb1b-fd020250e4d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
-T = A \cdot \begin{bmatrix} x \\ y \end{bmatrix} + B
+<div class="amsmath math notranslate nohighlight" id="equation-b3ab5897-2889-41eb-a5dc-c877a2cd17fd">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-b3ab5897-2889-41eb-a5dc-c877a2cd17fd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+T = A \cdot X + B
 \end{equation}\]</div>
 <p>This results in:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dbce5df9-ee60-43e2-ad94-154487f01bc8">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-dbce5df9-ee60-43e2-ad94-154487f01bc8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d6cebd8e-723c-4a34-90f8-56f701b764bb">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-d6cebd8e-723c-4a34-90f8-56f701b764bb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \end{bmatrix}
 \end{equation}\]</div>
 <p>Affine transformations provide a powerful framework for image manipulation, enabling operations such as rotation, translation, scaling, and more. They form the basis for transforming images efficiently and systematically.</p>
+<ul class="simple">
+<li><p><strong>Translation Transformations:</strong></p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-20f96990-1008-45bf-8be4-4ccc98f92d9e">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-20f96990-1008-45bf-8be4-4ccc98f92d9e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+A = \begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix}_{2 \times 2} \quad B = \begin{bmatrix} b_{00} \\ b_{10} \end{bmatrix}_{2 \times 1}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><strong>Rotation Transformations (for positive angles being clockwise rotations:)</strong></p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-6b6cf7a3-f349-4ec9-89eb-91303e5dd390">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-6b6cf7a3-f349-4ec9-89eb-91303e5dd390" title="Permalink to this equation">#</a></span>\[\begin{equation}
+A = \begin{bmatrix} \cos(\theta) &amp; -\sin(\theta) \\ \sin(\theta) &amp; \cos(\theta) \end{bmatrix}_{2 \times 2} \quad B = \begin{bmatrix} 0 \\ 0 \end{bmatrix}_{2 \times 1}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><strong>Scaling Transformations:</strong></p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-2d30b1da-3175-44e3-be84-786f90f5ceaa">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-2d30b1da-3175-44e3-be84-786f90f5ceaa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+A = \begin{bmatrix} a_{00} &amp; 0 \\ 0 &amp; a_{11} \end{bmatrix}_{2 \times 2} \quad B = \begin{bmatrix} b_{00} \\ b_{10} \end{bmatrix}_{2 \times 1}
+\end{equation}\]</div>
 <div class="section" id="how-to-derive-an-affine-transformation">
 <h3><span class="section-number">2.1.1. </span>How to Derive an Affine Transformation?<a class="headerlink" href="#how-to-derive-an-affine-transformation" title="Permalink to this headline">#</a></h3>
 <p>An Affine Transformation represents a fundamental relationship between two images. This connection can be established through different means, generally falling into two categories <span id="id3">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
 <ol class="arabic simple">
 <li><p><strong>When We Know Both X and T</strong>: In this scenario, we possess knowledge about both sets of points, X and T, and we are aware that these points are related. Our objective is to find the transformation matrix, denoted as M.</p></li>
-<li><p><strong>When We Know M and X</strong>: If we have information about the transformation matrix M and the original set of points X, we can easily obtain the transformed set of points T by applying the transformation equation T = M⋅X. This information for M can either be explicit, represented as a 2-by-3 matrix, or it may be inferred from a geometric relationship between points.</p></li>
+<li><p><strong>When We Know X and M</strong>: If we have information about the transformation matrix M and the original set of points X, we can easily obtain the transformed set of points T by applying the transformation equation T = M⋅X. This information for M can either be explicit, represented as a 2-by-3 matrix, or it may be inferred from a geometric relationship between points.</p></li>
 </ol>
 <p>To elucidate the concept further, let’s delve into the scenario described in point (b). When M is the relationship that connects two images, we can analyze the simplest case where M relates three distinct points in both images. Consider the visual representation below <span id="id4">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
 <div class="figure align-center" id="id13">
-<a class="reference internal image-reference" href="_images/Warp_Affine_0.png"><img alt="_images/Warp_Affine_0.png" src="_images/Warp_Affine_0.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/Warp_Affine_0.png"><img alt="_images/Warp_Affine_0.png" src="_images/Warp_Affine_0.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Image courtesy of <span id="id5">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
 </div>
 <p>In the image, points 1, 2, and 3 form a triangle in image 1. This same triangle, when mapped into image 2 through the Affine Transformation, undergoes a noticeable change. By determining the Affine Transformation using these three chosen points (which can be selected as needed), we can establish this discovered relationship for all pixels within an image.</p>
@@ -334,7 +355,7 @@ T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \en
 <li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: The destination points, which is also a 3x2 array of floating-point coordinates. These represent the corresponding points in the destination plane. Just like the source points, it should contain three points with two coordinates each.</p></li>
 </ol>
 <p>The function calculates the Affine Transformation matrix that best maps the source points to the destination points. This matrix is denoted by the return value <code class="docutils literal notranslate"><span class="pre">retval</span></code>, which is a 2x3 floating-point matrix representing the transformation. The <code class="docutils literal notranslate"><span class="pre">retval</span></code> matrix can be used for various purposes, such as warping images using <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine()</span></code> or transforming sets of points.</p>
-<p>To use the Affine Transformation matrix obtained from <code class="docutils literal notranslate"><span class="pre">cv2.getAffineTransform()</span></code>, you’ll typically apply it to an image or points using the <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine()</span></code> function, which performs the actual transformation. This function uses the calculated matrix to apply the transformation to the image or points.</p>
+<p>To use the Affine Transformation matrix obtained from <code class="docutils literal notranslate"><span class="pre">cv2.getAffineTransform()</span></code>, you’ll typically apply it to an image or points using the <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine()</span></code> function, which performs the actual transformation. This function uses the calculated matrix to apply the transformation to the image or points. You can find the full description of this function <a class="reference external" href="https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html">here</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
@@ -386,6 +407,7 @@ T = \begin{bmatrix} a_{00}x + a_{01}y + b_{00} \\ a_{10}x + a_{11}y + b_{10} \en
 <li><p><code class="docutils literal notranslate"><span class="pre">borderValue</span></code> (optional): When a pixel is outside the source image boundaries, this parameter specifies the value that should be used for the pixel.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">→</span> <span class="pre">dst</span></code>: This indicates that the function returns the destination image, which contains the result of the affine transformation.</p></li>
 </ol>
+<p>You can find the full description of this function <a class="reference external" href="https://docs.opencv.org/3.4/d4/d61/tutorial_warp_affine.html">here</a>.</p>
 <p><font color='Blue'><b>Example</b></font>:
 In this illustrative code snippet, we showcase Affine Image Transformation using <code class="docutils literal notranslate"><span class="pre">cv2.getAffineTransform</span></code> in Python, including the definition of source and destination points, calculation of the Affine Transformation matrix, and visualization of the original and transformed images. We use the sklearn <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_sample_images.html#sklearn.datasets.load_sample_images">image dataset</a> to demonstrate basic operations using Open CV.</p>
 <div class="cell docutils container">
@@ -410,7 +432,7 @@ In this illustrative code snippet, we showcase Affine Image Transformation using
                       <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">]])</span>
 
 <span class="c1"># Calculate the Affine Transformation matrix using cv2.getAffineTransform</span>
-<span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getAffineTransform</span><span class="p">(</span><span class="n">src_pts</span><span class="p">,</span> <span class="n">dst_pts</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getAffineTransform</span><span class="p">(</span><span class="n">src_pts</span><span class="p">,</span> <span class="n">dst_pts</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Affine Transformation Matrix (M) =&#39;</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 
 <span class="c1"># Apply the Affine Transformation to the image</span>
@@ -419,7 +441,7 @@ In this illustrative code snippet, we showcase Affine Image Transformation using
 <span class="c1"># Display the original and transformed images with titles</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span>
                  <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Original Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Transformed Image&#39;</span><span class="p">],</span>
-                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;cv2.getAffineTransform Example&#39;</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Example: Affine Transformation&#39;</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Mark the source and destination points on the images</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">src_pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">src_pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>  <span class="c1"># Mark source points on the original image</span>
@@ -428,13 +450,72 @@ In this illustrative code snippet, we showcase Affine Image Transformation using
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Affine Transformation Matrix (M) = [[  1.26666667   0.6        -83.33333333]
- [ -0.33333333   1.          66.66666667]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Affine Transformation Matrix (M) = [[  1.27   0.6  -83.33]
+ [ -0.33   1.    66.67]]
 </pre></div>
 </div>
-<img alt="_images/e1518b1d3c06261d141c6031a32c6dffbbaec3160265cfe2df73905f53400a1b.png" src="_images/e1518b1d3c06261d141c6031a32c6dffbbaec3160265cfe2df73905f53400a1b.png" />
+<img alt="_images/6c91314ea8f8d21f6eb6bd9972962cc5ba62a36d48734ec2fd598efc902c3072.png" src="_images/6c91314ea8f8d21f6eb6bd9972962cc5ba62a36d48734ec2fd598efc902c3072.png" />
 </div>
 </div>
+<p>Given an input 2D vector <span class="math notranslate nohighlight">\(\mathbf{X} = \begin{bmatrix} x \\ y \end{bmatrix}\)</span>, the transformation <span class="math notranslate nohighlight">\(T\)</span> can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-940e59c5-b2bf-4665-9fd8-b6b1cb1f38cb">
+<span class="eqno">(2.8)<a class="headerlink" href="#equation-940e59c5-b2bf-4665-9fd8-b6b1cb1f38cb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix}
+=
+M \cdot \mathbf{X}
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M\)</span> is the 2x3 matrix you provided:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-ed0a99a9-25be-4c1d-9908-eea00ce58264">
+<span class="eqno">(2.9)<a class="headerlink" href="#equation-ed0a99a9-25be-4c1d-9908-eea00ce58264" title="Permalink to this equation">#</a></span>\[\begin{equation}
+M =
+\begin{bmatrix}
+1.27 &amp; 0.6 &amp; -83.33 \\
+-0.33 &amp; 1.0 &amp; 66.67
+\end{bmatrix}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is the input vector:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-3f48b661-cc44-4b2e-bb08-86b4edbf5770">
+<span class="eqno">(2.10)<a class="headerlink" href="#equation-3f48b661-cc44-4b2e-bb08-86b4edbf5770" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathbf{X} =
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span> are the transformed coordinates, which are the result of applying the affine transformation <span class="math notranslate nohighlight">\(T\)</span> to the input vector <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
+</ul>
+<p>To calculate <span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span>, you perform the matrix multiplication as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-da96b1d4-891c-4a62-95e0-1c75964016f7">
+<span class="eqno">(2.11)<a class="headerlink" href="#equation-da96b1d4-891c-4a62-95e0-1c75964016f7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix}
+=
+\begin{bmatrix}
+1.27 &amp; 0.6 &amp; -83.33 \\
+-0.33 &amp; 1.0 &amp; 66.67
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\([x, y]\)</span> represents a point in the original 2D plane, typically corresponding to a pixel location in the original image.</p></li>
+<li><p><span class="math notranslate nohighlight">\([x', y']\)</span> represents the transformed point in the 2D plane, which corresponds to the new location of the pixel after applying the affine transformation.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\([x, y]\)</span> are the coordinates of a point in the original image, and <span class="math notranslate nohighlight">\([x', y']\)</span> are the coordinates of the corresponding point in the transformed image after the affine transformation has been applied using the matrix <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<hr class="docutils" />
 <p>This code demonstrates how to perform an affine transformation on an image using OpenCV. Let’s break down the code and explain each part:</p>
 <ol class="arabic simple">
 <li><p><strong>Importing Libraries</strong>:</p>
@@ -521,7 +602,7 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
 <span class="c1"># Display the original and transformed images with titles</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">([</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> 
                  <span class="p">[</span><span class="s1">&#39;Original Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Translated Image ($b_</span><span class="si">{00}</span><span class="s1">$ = </span><span class="si">%i</span><span class="s1">, $b_</span><span class="si">{01}</span><span class="s1">$ = </span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">)],</span>
-                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Image Wrap&#39;</span><span class="p">)</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Example: Translation Transformation&#39;</span><span class="p">)</span>
     
 <span class="c1"># Add text indicating the size of the original and transformed images</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -536,9 +617,53 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
  [ 0.  1. 20.]]
 </pre></div>
 </div>
-<img alt="_images/4d466692b81654a6bf2fa5461234a8e272e534ed0d2eb5a710b285fde92bee55.png" src="_images/4d466692b81654a6bf2fa5461234a8e272e534ed0d2eb5a710b285fde92bee55.png" />
+<img alt="_images/25ec2f2aa0892a716c2898d53b14a22728313d8a62395bfa3b08ab05208f463a.png" src="_images/25ec2f2aa0892a716c2898d53b14a22728313d8a62395bfa3b08ab05208f463a.png" />
 </div>
 </div>
+<p>Given an input 2D vector <span class="math notranslate nohighlight">\(\mathbf{X} = \begin{bmatrix} x \\ y \end{bmatrix}\)</span>, the transformation <span class="math notranslate nohighlight">\(T\)</span> can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e2f29f42-1d08-47b2-adf6-23a8c6c70a9b">
+<span class="eqno">(2.12)<a class="headerlink" href="#equation-e2f29f42-1d08-47b2-adf6-23a8c6c70a9b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix}
+=
+M \cdot \mathbf{X}
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M\)</span> is the 2x3 translation matrix created in the <code class="docutils literal notranslate"><span class="pre">map_matrix</span></code> function:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-be98e16a-aef9-4a4f-9fef-6bbd85765c80">
+<span class="eqno">(2.13)<a class="headerlink" href="#equation-be98e16a-aef9-4a4f-9fef-6bbd85765c80" title="Permalink to this equation">#</a></span>\[\begin{equation}
+M =
+\begin{bmatrix}
+1 &amp; 0 &amp; tx \\
+0 &amp; 1 &amp; ty
+\end{bmatrix}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is the input vector:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-6b77207c-c9f0-45e3-ac4c-53a9ff42f8c2">
+<span class="eqno">(2.14)<a class="headerlink" href="#equation-6b77207c-c9f0-45e3-ac4c-53a9ff42f8c2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathbf{X} =
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+\end{equation}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x'\)</span> and <span class="math notranslate nohighlight">\(y'\)</span> are the transformed coordinates, which are the result of applying the translation transformation <span class="math notranslate nohighlight">\(T\)</span> to the input vector <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
+</ul>
+<p>In this specific code:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(tx\)</span> and <span class="math notranslate nohighlight">\(ty\)</span> are the translation amounts in the x and y directions, respectively. These values are set to 10 and 20 in the code.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">map_matrix</span></code> function creates the translation matrix <span class="math notranslate nohighlight">\(M\)</span> with the specified translation values (tx, ty).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">cv2.warpAffine</span></code> function applies the translation transformation to the image using the matrix <span class="math notranslate nohighlight">\(M\)</span>.</p></li>
+</ul>
+<p>The result is a translated image where each pixel has been shifted by <span class="math notranslate nohighlight">\(tx\)</span> units in the x-direction and <span class="math notranslate nohighlight">\(ty\)</span> units in the y-direction.</p>
+<hr class="docutils" />
 <p>This code demonstrates how to perform a 2D translation transformation on an image using OpenCV. Let’s break down the code and explain each part:</p>
 <ol class="arabic simple">
 <li><p><strong>Importing Libraries</strong>:</p>
@@ -591,8 +716,8 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
 </ol>
 <p>The function returns a 2x3 transformation matrix commonly referred to as the “rotation matrix.” This matrix encapsulates the geometric transformations necessary to achieve the specified rotation and scaling effects.</p>
 <p>Mathematically, the rotation matrix is expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-935a7865-c2db-4a67-a671-688b4907501b">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-935a7865-c2db-4a67-a671-688b4907501b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8bfdcf4b-7d40-4dc0-b160-2c4e51c947ad">
+<span class="eqno">(2.15)<a class="headerlink" href="#equation-8bfdcf4b-7d40-4dc0-b160-2c4e51c947ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \begin{bmatrix}
 \alpha &amp; \beta &amp; (1 - \alpha) \cdot \texttt{center.x} - \beta \cdot \texttt{center.y} \\
 - \beta &amp; \alpha &amp; \beta \cdot \texttt{center.x} + (1 - \alpha) \cdot \texttt{center.y}
@@ -620,7 +745,7 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
 <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">angle</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># Specify the rotation angle</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Scale factor (1.0 maintains the original size)</span>
-<span class="n">rotation_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">cols</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Center of the image</span>
+<span class="n">rotation_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">cols</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rows</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Center of the image</span>
 
 <span class="c1"># Get the rotation matrix using cv2.getRotationMatrix2D</span>
 <span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getRotationMatrix2D</span><span class="p">(</span><span class="n">rotation_center</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
@@ -643,13 +768,53 @@ In this example, we demonstrate 2D Image Translation using <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Affine Transformation Matrix (M) = [[  0.90630779   0.42261826 -60.24749073]
- [ -0.42261826   0.90630779 155.24113122]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Affine Transformation Matrix (M) = [[  0.90630779   0.42261826 -60.0361816 ]
+ [ -0.42261826   0.90630779 155.19428512]]
 </pre></div>
 </div>
-<img alt="_images/1c39971741a528009fc10dba559752f1e4520c3fca422fb21d2fadabbd447be9.png" src="_images/1c39971741a528009fc10dba559752f1e4520c3fca422fb21d2fadabbd447be9.png" />
+<img alt="_images/33feffa3c59d688b6ab8bb1bdae70e624fdeddcd5109f0646f4a6bab4b93b5dd.png" src="_images/33feffa3c59d688b6ab8bb1bdae70e624fdeddcd5109f0646f4a6bab4b93b5dd.png" />
 </div>
 </div>
+<p>Based on the provided values of <span class="math notranslate nohighlight">\(\theta = 25\)</span> (in degrees) and <span class="math notranslate nohighlight">\(\text{scale} = 1\)</span>, the resulting 2D rotation matrix <span class="math notranslate nohighlight">\(M\)</span> can be calculated as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fdbf8fc0-722d-4193-9304-83958414d9a7">
+<span class="eqno">(2.16)<a class="headerlink" href="#equation-fdbf8fc0-722d-4193-9304-83958414d9a7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\begin{bmatrix}
+\alpha &amp; \beta &amp; (1 - \alpha) \cdot \text{center.x} - \beta \cdot \text{center.y} \\
+- \beta &amp; \alpha &amp; \beta \cdot \text{center.x} + (1 - \alpha) \cdot \text{center.y}
+\end{bmatrix}
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha = \text{scale} \cdot \cos(\theta)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta = \text{scale} \cdot \sin(\theta)\)</span></p></li>
+</ul>
+<p>Given that <span class="math notranslate nohighlight">\(\theta = 25\)</span> degrees and <span class="math notranslate nohighlight">\(\text{scale} = 1\)</span>, you can calculate <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-12b2d7a0-b05a-4965-a21c-d5c3b2102f09">
+<span class="eqno">(2.17)<a class="headerlink" href="#equation-12b2d7a0-b05a-4965-a21c-d5c3b2102f09" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\alpha = 1 \cdot \cos(25^\circ) \approx 0.90630779
+\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-b40af385-7659-4770-8519-13664aea0a7e">
+<span class="eqno">(2.18)<a class="headerlink" href="#equation-b40af385-7659-4770-8519-13664aea0a7e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\beta = 1 \cdot \sin(25^\circ) \approx 0.42261826
+\end{equation}\]</div>
+<p>Now, you can calculate the elements of the rotation matrix <span class="math notranslate nohighlight">\(M\)</span> using these values and the center point:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-56cfb637-8f9e-4583-9c47-060d543f7c8c">
+<span class="eqno">(2.19)<a class="headerlink" href="#equation-56cfb637-8f9e-4583-9c47-060d543f7c8c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+M = \begin{bmatrix}
+0.90630779 &amp; 0.42261826 &amp; (1 - 0.90630779) \cdot \text{center.x} - 0.42261826 \cdot \text{center.y} \\
+-0.42261826 &amp; 0.90630779 &amp; 0.42261826 \cdot \text{center.x} + (1 - 0.90630779) \cdot \text{center.y}
+\end{bmatrix}
+\end{equation}\]</div>
+<p>The resulting matrix <span class="math notranslate nohighlight">\(M\)</span> will be:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-024c57a8-abfd-4751-95a4-917ec5d982fc">
+<span class="eqno">(2.20)<a class="headerlink" href="#equation-024c57a8-abfd-4751-95a4-917ec5d982fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+M = \begin{bmatrix}
+0.90630779 &amp; 0.42261826 &amp; -60.0361816 \\
+-0.42261826 &amp; 0.90630779 &amp; 155.19428512
+\end{bmatrix}
+\end{equation}\]</div>
+<p>This is the 2D rotation matrix <span class="math notranslate nohighlight">\(M\)</span> corresponding to a rotation angle of 25 degrees and a scale factor of 1.</p>
+<hr class="docutils" />
 <p>This code performs image rotation using OpenCV in Python. Here’s a step-by-step explanation:</p>
 <ol class="arabic simple">
 <li><p><strong>Importing Libraries</strong>: The code begins by importing the necessary libraries:</p>
@@ -784,14 +949,14 @@ When shrinking an image, the <code class="docutils literal notranslate"><span cl
 <p>The <code class="docutils literal notranslate"><span class="pre">cv2.warpPerspective()</span></code> function in the Python OpenCV library is a powerful tool used for performing perspective transformations on an input image. These transformations allow you to change the perspective view of an object within an image, simulating effects like changing the viewpoint or correcting for distortions caused by the camera’s perspective. The primary purpose of this function is to apply a given 3x3 transformation matrix to the input image, resulting in a transformed output image <span id="id8">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p><strong>Perspective Transformation</strong></p>
 <p>Perspective transformations are essential for various computer vision tasks, including image rectification, object recognition, and more. They involve manipulating the positions of points in an image, effectively warping the image based on a specified transformation matrix. This matrix, denoted as <code class="docutils literal notranslate"><span class="pre">M</span></code>,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a984ac34-9a8c-42ca-9ad0-fbad3cdf8b62">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-a984ac34-9a8c-42ca-9ad0-fbad3cdf8b62" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f7bbaaf4-6f72-4ac9-9303-fdfbd3c1a96b">
+<span class="eqno">(2.21)<a class="headerlink" href="#equation-f7bbaaf4-6f72-4ac9-9303-fdfbd3c1a96b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp; M_{23}  \\M_{31} &amp; M_{32} &amp; M_{33} \end{bmatrix}
 \end{equation}\]</div>
 <p>describes how the points in the source image (<code class="docutils literal notranslate"><span class="pre">src</span></code>) should be transformed to obtain their corresponding positions in the destination image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>).</p>
 <p>The transformation is defined by the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c0ccf682-f084-4903-894f-d27e0bfe6bda">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-c0ccf682-f084-4903-894f-d27e0bfe6bda" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c610780b-3ad8-4598-8e63-8dbffd4d17d2">
+<span class="eqno">(2.22)<a class="headerlink" href="#equation-c610780b-3ad8-4598-8e63-8dbffd4d17d2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \texttt{dst} (x,y) = \texttt{src} \left ( \frac{M_{11} x + M_{12} y + M_{13}}{M_{31} x + M_{32} y + M_{33}} , \frac{M_{21} x + M_{22} y + M_{23}}{M_{31} x + M_{32} y + M_{33}} \right )
 \end{equation}\]</div>
 <p>When the flag <code class="docutils literal notranslate"><span class="pre">WARP_INVERSE_MAP</span></code> is set, the function uses the inverse of the transformation matrix for the calculation. Otherwise, the transformation is inverted using the <code class="docutils literal notranslate"><span class="pre">invert</span></code> function before being applied. The function does not operate in-place; it generates a new transformed image as the output.</p>
@@ -813,7 +978,7 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 </div>
 <p><strong>Usage and Importance</strong></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cv2.warpPerspective()</span></code> function is a fundamental component in many image processing pipelines. It enables handling perspective effects, correcting image distortions, and preparing images for further analysis or visualization. By understanding and utilizing perspective transformations, you can significantly enhance the capabilities of your computer vision applications.</p>
-<p>For more detailed information and examples of using <code class="docutils literal notranslate"><span class="pre">warpPerspective</span></code>, you can refer to the <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#cv2.warpPerspective">OpenCV documentation</a>. This function is essential for tasks that require precise geometric adjustments in images, making it a valuable tool in various computer vision scenarios.</p>
+<p>For more detailed information and examples of using <code class="docutils literal notranslate"><span class="pre">warpPerspective</span></code>, you can refer to the <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#cv2.warpPerspective">OpenCV documentation</a> and the <a class="reference external" href="https://docs.opencv.org/3.4/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87">function description</a>. This function is essential for tasks that require precise geometric adjustments in images, making it a valuable tool in various computer vision scenarios.</p>
 <p><font color='Blue'><b>Example</b></font>: In this example, we explore perspective transformation, a crucial concept in image processing. We define source and destination points to describe how we want to alter the image’s perspective. Using these points, we calculate a transformation matrix (M). Then, we apply this matrix to the input image, transforming its perspective. We visualize both the original and transformed images, including annotations for size reference and marked points to show the transformation’s effect.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -829,7 +994,8 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 <span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getPerspectiveTransform</span><span class="p">(</span><span class="n">src_pts</span><span class="p">,</span> <span class="n">dst_pts</span><span class="p">)</span>
 
 <span class="c1"># Apply the perspective transformation to the input image</span>
-<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">Img</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">))</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">Img</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;M =&#39;</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 
 <span class="c1"># Display the original and transformed images with titles</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">([</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Original Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Warped Image&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Warp Perspective&#39;</span><span class="p">)</span>
@@ -847,6 +1013,11 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>M = [[ 1.52835807e+00  1.43283569e-01 -8.50149178e+01]
+ [ 5.25237016e-02  1.57571105e+00 -9.71688479e+01]
+ [ 3.13555899e-04  6.58838004e-04  1.00000000e+00]]
+</pre></div>
+</div>
 <img alt="_images/b079d3729b7c4349449502bf92fcd97a23cb180ef729a9a56f9e8509389077a9.png" src="_images/b079d3729b7c4349449502bf92fcd97a23cb180ef729a9a56f9e8509389077a9.png" />
 </div>
 </div>
@@ -893,8 +1064,8 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 </li>
 </ol>
 </div>
-<div class="section" id="camera-calibration">
-<h2><span class="section-number">2.4. </span>Camera Calibration<a class="headerlink" href="#camera-calibration" title="Permalink to this headline">#</a></h2>
+<div class="section" id="camera-calibration-optional-section">
+<h2><span class="section-number">2.4. </span>Camera Calibration (Optional Section)<a class="headerlink" href="#camera-calibration-optional-section" title="Permalink to this headline">#</a></h2>
 <p>In computer vision, camera calibration is a crucial process that aims to correct lens distortions and determine intrinsic and extrinsic camera parameters. Cameras often introduce two significant types of distortion: radial distortion and tangential distortion <span id="id9">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p><strong>Radial Distortion</strong>: Radial distortion causes straight lines to appear curved. It becomes more pronounced the farther points are from the center of the image. For instance, in the image below, the red lines indicate expected straight lines on the chessboard, but they appear distorted. This distortion is especially noticeable along the chessboard’s edges, which curve outward.</p>
 <div class="figure align-center" id="id14">
@@ -902,31 +1073,31 @@ M = \begin{bmatrix} M_{11} &amp; M_{12} &amp; M_{13} \\M_{21} &amp; M_{22} &amp;
 <p class="caption"><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Image courtesy of <span id="id10">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
 </div>
 <p>Mathematically, radial distortion can be represented as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-073f166f-7dee-4864-a954-b77b31da07ba">
-<span class="eqno">(2.8)<a class="headerlink" href="#equation-073f166f-7dee-4864-a954-b77b31da07ba" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6b0fede0-37b0-426a-8f23-d94c10c83b63">
+<span class="eqno">(2.23)<a class="headerlink" href="#equation-6b0fede0-37b0-426a-8f23-d94c10c83b63" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{\text{distorted}} = x \times (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-66823a74-9d89-4e5c-8821-307cfcd7e636">
-<span class="eqno">(2.9)<a class="headerlink" href="#equation-66823a74-9d89-4e5c-8821-307cfcd7e636" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e20fd52c-966b-497c-a7b0-e9853460ea32">
+<span class="eqno">(2.24)<a class="headerlink" href="#equation-e20fd52c-966b-497c-a7b0-e9853460ea32" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{\text{distorted}} = y \times (1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
 \end{equation}\]</div>
 <p><strong>Tangential Distortion</strong>: Tangential distortion arises when the camera’s imaging lens is not perfectly aligned parallel to the imaging plane. This can cause certain areas in the image to appear closer than expected. The amount of tangential distortion can be represented as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-25490988-5449-496a-8c83-e69ef5db20f1">
-<span class="eqno">(2.10)<a class="headerlink" href="#equation-25490988-5449-496a-8c83-e69ef5db20f1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-265b2120-65a0-4b45-9687-7654d0b016bb">
+<span class="eqno">(2.25)<a class="headerlink" href="#equation-265b2120-65a0-4b45-9687-7654d0b016bb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{\text{distorted}} = x + (2p_1xy + p_2(r^2 + 2x^2))
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-9224d317-0aa8-4427-9f9f-87bbad6df8da">
-<span class="eqno">(2.11)<a class="headerlink" href="#equation-9224d317-0aa8-4427-9f9f-87bbad6df8da" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f9f60754-1034-4a6b-80d8-1b4a6fb7e05c">
+<span class="eqno">(2.26)<a class="headerlink" href="#equation-f9f60754-1034-4a6b-80d8-1b4a6fb7e05c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 \end{equation}\]</div>
 <p>To correct these distortions, five distortion coefficients are needed:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c7e2ca86-27ad-45f7-9825-0915e2d18ee0">
-<span class="eqno">(2.12)<a class="headerlink" href="#equation-c7e2ca86-27ad-45f7-9825-0915e2d18ee0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-619dcc7e-5112-41d7-8711-da97e1c29a46">
+<span class="eqno">(2.27)<a class="headerlink" href="#equation-619dcc7e-5112-41d7-8711-da97e1c29a46" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Distortion coefficients} = (k_1, k_2, p_1, p_2, k_3)
 \end{equation}\]</div>
 <p>In addition to distortion coefficients, camera calibration requires knowledge of intrinsic and extrinsic parameters. <strong>Intrinsic parameters</strong> are specific to a camera and include focal length (<span class="math notranslate nohighlight">\(f_x\)</span>, <span class="math notranslate nohighlight">\(f_y\)</span>) and optical centers (<span class="math notranslate nohighlight">\(c_x\)</span>, <span class="math notranslate nohighlight">\(c_y\)</span>). These parameters contribute to the camera matrix, which is used to rectify lens distortions. The camera matrix, expressed as a 3x3 matrix, is defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1f831084-683c-4e50-be03-8a2cfd27c950">
-<span class="eqno">(2.13)<a class="headerlink" href="#equation-1f831084-683c-4e50-be03-8a2cfd27c950" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4cd7e103-5fae-47bb-a261-428be7314e80">
+<span class="eqno">(2.28)<a class="headerlink" href="#equation-4cd7e103-5fae-47bb-a261-428be7314e80" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{camera matrix} = \begin{bmatrix} f_x &amp; 0 &amp; c_x \\ 0 &amp; f_y &amp; c_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
 \end{equation}\]</div>
 <p><strong>Extrinsic parameters</strong> correspond to rotation and translation vectors, mapping a 3D point’s coordinates to a coordinate system.</p>
@@ -1282,7 +1453,7 @@ y_{\text{distorted}} = y + (p_1(r^2 + 2y^2) + 2p_2xy)
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images-with-opencv">2.2. Resizing Images with OpenCV</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warp-perspective">2.3. Warp Perspective</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration">2.4. Camera Calibration</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-calibration-optional-section">2.4. Camera Calibration (Optional Section)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cv2-calibratecamera-function">2.4.1. cv2.calibrateCamera() function</a></li>
 </ul>
 </li>
