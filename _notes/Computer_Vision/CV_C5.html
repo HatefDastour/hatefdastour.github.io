@@ -340,14 +340,22 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_sample_image</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">io</span>
 
-<span class="c1"># Load an example image</span>
-<span class="n">Img</span> <span class="o">=</span> <span class="n">load_sample_image</span><span class="p">(</span><span class="s1">&#39;flower.jpg&#39;</span><span class="p">)</span>
+<span class="c1"># Load an image from a URL</span>
+<span class="n">Img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;https://conted.ucalgary.ca/maincampus/maincampus.jpg&#39;</span><span class="p">)</span>
 
 <span class="c1"># Define a function that standardizes image values</span>
 <span class="k">def</span> <span class="nf">ImgStd</span><span class="p">(</span><span class="n">Inp</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;This function standardizes image values.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Standardizes image values.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        Inp (numpy.ndarray): Input image.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: Standardized image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">Out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Inp</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># Round the input values and convert to integers</span>
     <span class="n">Out</span><span class="p">[</span><span class="n">Out</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Set any negative values to 0</span>
     <span class="n">Out</span><span class="p">[</span><span class="n">Out</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>  <span class="c1"># Set any values above 255 to 255 (maximum pixel value)</span>
@@ -357,79 +365,139 @@ document.write(`
 <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Mean of the noise</span>
 <span class="n">sigma</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># Standard deviation of the noise</span>
 
-<span class="c1"># Create a noisy image by adding Gaussian noise to the copy of the original image</span>
+<span class="c1"># Create a noisy image by adding Gaussian noise to a copy of the original image</span>
 <span class="n">Img_noise</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 <span class="c1"># Standardize the noisy image using the defined ImgStd function</span>
-<span class="n">Img_noise</span> <span class="o">=</span> <span class="n">ImgStd</span><span class="p">(</span><span class="n">Img_noise</span><span class="p">)</span>
+<span class="n">Img_noise</span> <span class="o">=</span> <span class="n">ImgStd</span><span class="p">(</span><span class="n">Img_noise</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
 
 <span class="c1"># Display the original image and the noisy image side by side</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img</span><span class="p">,</span> <span class="n">Img_noise</span><span class="p">],</span>
-           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Flower Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Noisy Image&#39;</span><span class="p">],</span>
+           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UofC&#39;</span><span class="p">,</span> <span class="s1">&#39;UofC + Noise&#39;</span><span class="p">],</span>
            <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Show the images without titles</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8e482e862a2a1c7cc7267e34c47d5f1e99daa2bf1b71f2dfc9ad4d16c3b6a629.png" src="_images/8e482e862a2a1c7cc7267e34c47d5f1e99daa2bf1b71f2dfc9ad4d16c3b6a629.png" />
+<img alt="_images/4e9baa0b9ace61527c6402639967e8ba237fe768978bd013359bc88ec1c0c09c.png" src="_images/4e9baa0b9ace61527c6402639967e8ba237fe768978bd013359bc88ec1c0c09c.png" />
 </div>
 </div>
-<p>Let’s break down the code step by step:</p>
+<p>Let’s break down the main steps of the code:</p>
 <ol class="arabic simple">
-<li><p>Importing Libraries:</p>
+<li><p><strong>Load an Image from a URL:</strong></p>
 <ul class="simple">
-<li><p>The code begins by importing the necessary libraries:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (imported as <code class="docutils literal notranslate"><span class="pre">np</span></code>): This library is used for numerical operations and array manipulation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cv2</span></code>: This is the OpenCV library, often used for computer vision tasks.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">load_sample_image</span></code> from <code class="docutils literal notranslate"><span class="pre">sklearn.datasets</span></code>: This function is used to load an example image (‘flower.jpg’).</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">io.imread()</span></code>, the code loads an image from a specified URL (<code class="docutils literal notranslate"><span class="pre">https://conted.ucalgary.ca/maincampus/maincampus.jpg</span></code>) and stores it in the variable <code class="docutils literal notranslate"><span class="pre">Img</span></code>.</p></li>
 </ul>
 </li>
+<li><p><strong>Define a Function for Standardizing Image Values:</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ImgStd</span></code> function takes an input image (<code class="docutils literal notranslate"><span class="pre">Inp</span></code>) and standardizes its pixel values.</p></li>
+<li><p>It rounds the input values to the nearest integer, ensuring that pixel values are integers.</p></li>
+<li><p>Negative values are set to 0, and values greater than 255 are capped at 255, which is the maximum pixel value.</p></li>
+<li><p>The function returns the standardized image.</p></li>
 </ul>
 </li>
-<li><p>Loading an Example Image:</p>
+<li><p><em>Define Parameters for Generating a Noisy Image:</em>*</p>
 <ul class="simple">
-<li><p>The code loads an example image called ‘flower.jpg’ using the <code class="docutils literal notranslate"><span class="pre">load_sample_image</span></code> function. This image is stored in the variable <code class="docutils literal notranslate"><span class="pre">Img</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mu</span></code> represents the mean of the noise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigma</span></code> represents the standard deviation of the noise.</p></li>
 </ul>
 </li>
-<li><p>Defining an Image Standardization Function:</p>
+<li><p><strong>Create a Noisy Image:</strong></p>
 <ul class="simple">
-<li><p>A function named <code class="docutils literal notranslate"><span class="pre">ImgStd</span></code> is defined. This function takes an input image <code class="docutils literal notranslate"><span class="pre">Inp</span></code> and standardizes its pixel values.</p></li>
-<li><p>The function rounds the input values to integers and ensures that pixel values are within the range [0, 255]. Any negative values are set to 0, and any values above 255 are set to 255.</p></li>
-<li><p>The standardized image is returned as <code class="docutils literal notranslate"><span class="pre">Out</span></code>.</p></li>
+<li><p>The code creates a noisy image (<code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>) by adding Gaussian noise to a copy of the original image (<code class="docutils literal notranslate"><span class="pre">Img</span></code>).</p></li>
+<li><p>It uses NumPy’s <code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code> function to generate random Gaussian noise and subtracts it from the original image.</p></li>
 </ul>
 </li>
-<li><p>Setting Parameters for Generating Noisy Image:</p>
+<li><p><strong>Standardize the Noisy Image:</strong></p>
 <ul class="simple">
-<li><p>Two parameters <code class="docutils literal notranslate"><span class="pre">mu</span></code> and <code class="docutils literal notranslate"><span class="pre">sigma</span></code> are defined. These parameters are used for generating Gaussian noise.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mu</span></code> represents the mean of the noise, and <code class="docutils literal notranslate"><span class="pre">sigma</span></code> represents the standard deviation of the noise.</p></li>
-</ul>
-</li>
-<li><p>Creating a Noisy Image:</p>
-<ul class="simple">
-<li><p>A noisy image (<code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>) is created by taking a copy of the original image (<code class="docutils literal notranslate"><span class="pre">Img</span></code>) and subtracting Gaussian noise generated using <code class="docutils literal notranslate"><span class="pre">np.random.normal</span></code>. This operation adds noise to the pixel values of the image.</p></li>
-</ul>
-</li>
-<li><p>Standardizing the Noisy Image:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">ImgStd</span></code> function is applied to the noisy image <code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>. This step ensures that the noisy image’s pixel values are within the valid range of [0, 255].</p></li>
-</ul>
-</li>
-<li><p>Displaying Images:</p>
-<ul class="simple">
-<li><p>The code uses a function called <code class="docutils literal notranslate"><span class="pre">ImShow</span></code> to display the original image (<code class="docutils literal notranslate"><span class="pre">Img</span></code>) and the noisy image (<code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>) side by side without titles. However, there is a missing function called <code class="docutils literal notranslate"><span class="pre">ImShow</span></code> in the provided code snippet, so it would be necessary to define this function for the code to work correctly.</p></li>
+<li><p>The noisy image (<code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>) is standardized using the <code class="docutils literal notranslate"><span class="pre">ImgStd</span></code> function.</p></li>
+<li><p>The pixel values of the noisy image are rounded, negative values are set to 0, and values above 255 are capped at 255.</p></li>
 </ul>
 </li>
 </ol>
 <div class="section" id="d-convolution-image-filtering">
 <h3><span class="section-number">5.1.1. </span>2D Convolution (Image Filtering)<a class="headerlink" href="#d-convolution-image-filtering" title="Permalink to this headline">#</a></h3>
-<p>The function applies an arbitrary linear filter to an image. In-place operation is supported. When the aperture is partially outside the image, the function interpolates outlier pixel values according to the specified border mode.</p>
-<p>The function does actually compute correlation, not the convolution <span id="id1">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-13961009-4182-4732-87b5-a5da1f17511f">
-<span class="eqno">(5.1)<a class="headerlink" href="#equation-13961009-4182-4732-87b5-a5da1f17511f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<ol class="arabic">
+<li><p><strong>Padding</strong>:
+Padding is a technique used in convolutional operations to control the spatial dimensions of the output feature map. It involves adding extra rows and columns of zeros around the input image before applying the convolution operation. Padding is typically used to:</p>
+<ul class="simple">
+<li><p><strong>Preserve Spatial Dimensions</strong>: Padding helps maintain the spatial dimensions of the output feature map, ensuring that it has the same size as the input. This can be important when you want to preserve spatial information.</p></li>
+<li><p><strong>Mitigate Boundary Effects</strong>: Without padding, the convolution operation tends to lose information near the image borders. Padding helps mitigate this issue by allowing the kernel to process pixels at the image boundaries more effectively.</p></li>
+</ul>
+<p>In OpenCV (cv2), you can specify the type of padding you want when using the <code class="docutils literal notranslate"><span class="pre">cv2.filter2D()</span></code> function. Common padding modes include ‘valid’ (no padding), ‘same’ (padding to match the output size with the input size), and ‘full’ (maximum padding to ensure the kernel covers the entire input).</p>
+</li>
+<li><p><strong>Strides</strong>:
+Strides determine how the convolutional kernel moves or steps across the input image during the convolution operation. A stride value of 1 means the kernel moves one pixel at a time, while a stride value greater than 1 means it skips some pixels.</p>
+<ul class="simple">
+<li><p><strong>Stride of 1</strong>: A stride of 1 processes each pixel in the input image, resulting in output feature maps with similar spatial dimensions as the input.</p></li>
+<li><p><strong>Stride greater than 1</strong>: A larger stride value skips pixels, resulting in output feature maps with reduced spatial dimensions. This can be useful for downsampling and reducing computational complexity.</p></li>
+</ul>
+</li>
+</ol>
+<p>In OpenCV (cv2), you can specify the stride when using the <code class="docutils literal notranslate"><span class="pre">cv2.filter2D()</span></code> function. By default, the stride is set to 1, but you can modify it to control the spatial downsampling or upsampling effect.</p>
+<div class="figure align-center" id="id17">
+<a class="reference internal image-reference" href="_images/Conv3by3.gif"><img alt="_images/Conv3by3.gif" src="_images/Conv3by3.gif" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Illustration of the convolution process using a 3 by 3 kernel applied to a 5 by 5 matrix with a stride of 1 and padding of 1. Image courtesy of <span id="id1">[<a class="reference internal" href="References.html#id142" title="Vincent Dumoulin and Francesco Visin. A guide to convolution arithmetic for deep learning. arXiv preprint arXiv:1603.07285, 2016.">Dumoulin and Visin, 2016</a>, <a class="reference internal" href="References.html#id141" title="Irhum Shafkat. Intuitively understanding convolutions for deep learning. https://towardsdatascience.com/intuitively-understanding-convolutions-for-deep-learning-1f6f42faee1, 2023. [Online; accessed 01-August-2023].">Shafkat, 2023</a>]</span>.</span><a class="headerlink" href="#id17" title="Permalink to this image">#</a></p>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>To determine the size of padding required based on the size of the kernel and the desired stride, you can use the following formula:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f7ee6aaa-9289-462e-a857-369bae3d129d">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-f7ee6aaa-9289-462e-a857-369bae3d129d" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Padding size} = \left\lfloor \frac{\text{Kernel size} - 1}{2} \right\rfloor \times \text{Stride} \end{equation}\]</div>
+<p>Here’s what each component means:</p>
+<ul class="simple">
+<li><p><strong>Padding size</strong>: This is the size of the padding you need to add to the input image or matrix.</p></li>
+<li><p><strong>Kernel size</strong>: This refers to the dimensions of your convolutional kernel. For example, a 3x3 kernel has a size of 3.</p></li>
+<li><p><strong>Stride</strong>: The stride determines how much the kernel moves between each convolution operation. A stride of 1 means it moves one step at a time.</p></li>
+</ul>
+<p>Let’s consider an example:</p>
+<p>Suppose you have a 3x3 kernel and you want to apply it with a stride of 2. Using the formula:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7e440785-5e66-4161-869b-459faccd0591">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-7e440785-5e66-4161-869b-459faccd0591" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Padding size} = \left\lfloor \frac{3 - 1}{2} \right\rfloor \times 2 = \left\lfloor \frac{2}{2} \right\rfloor \times 2 = 1 \times 2 = 2 \end{equation}\]</div>
+<p>Thus, in this case, you would need to add a padding of 2 units around your input image or matrix to achieve the desired stride of 2 while maintaining the dimensions.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">cv2.filter2D()</span></code> function applies an arbitrary linear filter to an image. In-place operation is supported. When the aperture is partially outside the image, the function interpolates outlier pixel values according to the specified border mode.</p>
+<p>The function does actually compute correlation, not the convolution <span id="id2">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-48980574-50d7-4dab-a9b1-4cef1861020e">
+<span class="eqno">(5.3)<a class="headerlink" href="#equation-48980574-50d7-4dab-a9b1-4cef1861020e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \texttt{dst} (x,y) = \sum _{ \substack{0\leq x' &lt; \texttt{kernel.cols}\\{0\leq y' &lt; \texttt{kernel.rows}}}} \texttt{kernel} (x',y')* \texttt{src} (x+x'- \texttt{anchor.x} ,y+y'- \texttt{anchor.y} )
 \end{equation}\]</div>
-<p>That is, the kernel is not mirrored around the anchor point. If you need a real convolution, flip the kernel using flip and set the new anchor to (kernel.cols - anchor.x - 1, kernel.rows - anchor.y - 1).</p>
+<p><strong>Notes</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Correlation vs. Convolution</strong>:</p>
+<ul class="simple">
+<li><p>The statement “The function does actually compute correlation, not the convolution” refers to the mathematical operation performed by the <code class="docutils literal notranslate"><span class="pre">cv2.filter2D()</span></code> function. In image processing, correlation and convolution are closely related operations, but they differ in how the kernel is applied to the image.</p></li>
+<li><p>Correlation in this context means that the kernel is applied directly without flipping (mirroring) it. Convolution, on the other hand, involves flipping the kernel before applying it. This distinction can be significant in certain image processing tasks.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dst</span></code> (x, y)</strong>:</p>
+<ul class="simple">
+<li><p>This notation represents a pixel in the destination image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>) that is being calculated or modified. The <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> coordinates indicate the position of this pixel in the output image.</p></li>
+</ul>
+</li>
+<li><p><strong>Summation (Σ)</strong>:</p>
+<ul class="simple">
+<li><p>The summation symbol Σ represents a mathematical sum. In this context, it is used to indicate that a series of calculations are performed, and the results are summed up.</p></li>
+</ul>
+</li>
+<li><p><strong>Subscript Notation (<code class="docutils literal notranslate"><span class="pre">kernel.cols</span></code> and <code class="docutils literal notranslate"><span class="pre">kernel.rows</span></code>)</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel.cols</span></code> and <code class="docutils literal notranslate"><span class="pre">kernel.rows</span></code> refer to the number of columns and rows in the kernel, respectively. These values determine the dimensions of the kernel matrix.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">kernel</span></code> (x’, y’)</strong>:</p>
+<ul class="simple">
+<li><p>This notation signifies a specific element within the kernel matrix. <code class="docutils literal notranslate"><span class="pre">x'</span></code> and <code class="docutils literal notranslate"><span class="pre">y'</span></code> are the indices used to access individual elements within the kernel. The <code class="docutils literal notranslate"><span class="pre">kernel</span></code> matrix contains the values that are applied to the corresponding pixels in the source image during the filtering process.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">src</span></code> (x + x’ - <code class="docutils literal notranslate"><span class="pre">anchor.x</span></code>, y + y’ - <code class="docutils literal notranslate"><span class="pre">anchor.y</span></code>)</strong>:</p>
+<ul class="simple">
+<li><p>Here, <code class="docutils literal notranslate"><span class="pre">src</span></code> represents the source image, and <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> are the coordinates of the pixel in the destination image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>) that is currently being computed. <code class="docutils literal notranslate"><span class="pre">x'</span></code> and <code class="docutils literal notranslate"><span class="pre">y'</span></code> are used to traverse the kernel matrix, and <code class="docutils literal notranslate"><span class="pre">anchor.x</span></code> and <code class="docutils literal notranslate"><span class="pre">anchor.y</span></code> specify the relative position of the anchor point within the kernel. This expression calculates the contribution of a pixel in the source image to the destination image based on the kernel and anchor point positions.</p></li>
+</ul>
+</li>
+</ol>
+<!-- That is, the kernel is not mirrored around the anchor point. If you need a real convolution, flip the kernel using flip and set the new anchor to (kernel.cols - anchor.x - 1, kernel.rows - anchor.y - 1). -->
 <p>The Python function <code class="docutils literal notranslate"><span class="pre">cv2.filter2D()</span></code> is a method from the OpenCV (Open Source Computer Vision Library) used for applying a custom convolutional filter to an input image (source) in order to perform image processing operations. Here’s a refined explanation of its parameters and return value:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cv2.filter2D(src, ddepth, kernel[, dst[, anchor[, delta[, borderType]]]]) → dst
 </pre></div>
@@ -444,6 +512,7 @@ document.write(`
 <li><p><strong>borderType</strong> (optional): This parameter determines the border mode applied when the kernel extends beyond the edges of the source image. Common border types include constant border, replicate border, reflect border, etc.</p></li>
 <li><p><strong>Returns</strong>: The function returns the filtered image, which is the result of applying the specified kernel to the input image. The destination image (dst) contains the filtered output.</p></li>
 </ul>
+<p>You can see the full description of the function <a class="reference external" href="https://docs.opencv.org/2.4/modules/ocl/doc/image_filtering.html?highlight=filter2d#ocl-filter2d">here</a>.</p>
 <p><font color='Blue'><b>Example</b></font>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -452,62 +521,50 @@ document.write(`
 <span class="kn">import</span> <span class="nn">cv2</span>  <span class="c1"># Import OpenCV for image processing</span>
 
 <span class="c1"># Define a kernel for filtering (8x8 averaging kernel)</span>
-<span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">64</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">25</span>
 
-<span class="c1"># Apply the filter2D operation</span>
-<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">Img_noise</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
-<span class="n">Out</span> <span class="o">=</span> <span class="n">ImgStd</span><span class="p">(</span><span class="n">Out</span><span class="p">)</span>
+<span class="c1"># Apply the filter2D operation to the original image</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span>  <span class="c1"># Source image</span>
+                   <span class="n">ddepth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Use the same depth as the source image</span>
+                   <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span>  <span class="c1"># 2D array of filter coefficients</span>
+                   <span class="p">)</span>
 
 <span class="c1"># Display the original noisy image and the filtered image side by side</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span>
-           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Noisy Image&#39;</span><span class="p">,</span> <span class="s1">&#39;filter2D (Noisy Image)&#39;</span><span class="p">],</span>
-           <span class="n">title</span><span class="o">=</span><span class="s1">&#39;cv2.filter2D&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UofC&#39;</span><span class="p">,</span> <span class="s1">&#39;Filter2D (UofC)&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Filter 2D on Original Image&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add text indicating the size of the original and transformed images</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+
+<span class="c1"># Apply the filter2D operation to the noisy image</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img_noise</span><span class="p">,</span>  <span class="c1"># Source image with noise</span>
+                   <span class="n">ddepth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Use the same depth as the source image</span>
+                   <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span>  <span class="c1"># 2D array of filter coefficients</span>
+                   <span class="p">)</span>
+
+<span class="c1"># Display the original noisy image and the filtered image side by side</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img_noise</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UofC + Noise&#39;</span><span class="p">,</span> <span class="s1">&#39;Filter2D (UofC + Noise)&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Filter 2D on Noisy Image&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add text indicating the size of the original and transformed images</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ab6f9308978fb1a0aee671a5812250a9787388e70b085274f5eba4a8cefe29f.png" src="_images/6ab6f9308978fb1a0aee671a5812250a9787388e70b085274f5eba4a8cefe29f.png" />
+<img alt="_images/8a183b0281e9d9e2582da3b705be880ddd01dc65def88271752cacab31c1ca86.png" src="_images/8a183b0281e9d9e2582da3b705be880ddd01dc65def88271752cacab31c1ca86.png" />
+<img alt="_images/8406034ae741ef80586cd8b2b74bae31d2494320d63eec148f25b21584c0e5e0.png" src="_images/8406034ae741ef80586cd8b2b74bae31d2494320d63eec148f25b21584c0e5e0.png" />
 </div>
 </div>
-<p>Let’s break down each part of the code:</p>
-<ol class="arabic simple">
-<li><p><strong>Defining a Kernel</strong>:</p>
-<ul class="simple">
-<li><p>A kernel for filtering is defined as an 8x8 averaging kernel. It is created as a NumPy array of ones divided by 64, which effectively averages pixel values in an 8x8 neighborhood.</p></li>
-<li><p>Kernels are often used in image processing for operations like blurring and smoothing.</p></li>
-</ul>
-</li>
-<li><p><strong>Applying the filter2D Operation</strong>:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">cv2.filter2D</span></code> function is used to apply the defined kernel to an image named “Img_noise.”</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">cv2.filter2D</span></code> function takes the following parameters:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Img_noise</span></code>: The input image to be filtered.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-1</span></code>: The depth of the destination image (here, it is set to -1, which means the output will have the same depth as the input).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kernel</span></code>: The kernel matrix used for convolution.</p></li>
-</ul>
-</li>
-<li><p>The result of the filtering operation is stored in the variable “Out.”</p></li>
-</ul>
-</li>
-<li><p><strong>Standardizing the Output Image</strong>:</p>
-<ul class="simple">
-<li><p>After filtering, the code applies a function called “ImgStd” to the “Out” image.</p></li>
-<li><p>The exact details of what “ImgStd” does are not provided in the code snippet, but it likely involves some form of image standardization or processing.</p></li>
-</ul>
-</li>
-<li><p><strong>Displaying Images</strong>:</p>
-<ul class="simple">
-<li><p>The code concludes by displaying both the original noisy image (“Img”) and the filtered image (“Out”) side by side using the “ImShow” function.</p></li>
-<li><p>Titles are added to the displayed images for clarity.</p></li>
-</ul>
-</li>
-</ol>
 </div>
 </div>
 <div class="section" id="image-blurring-image-smoothing">
 <h2><span class="section-number">5.2. </span>Image Blurring (Image Smoothing)<a class="headerlink" href="#image-blurring-image-smoothing" title="Permalink to this headline">#</a></h2>
-<p>Image blurring, also known as image smoothing or image filtering, is a fundamental image processing technique employed to mitigate high-frequency components within an image, such as noise and edges. Its primary purpose is to eliminate undesired details, resulting in a more visually cohesive and smoother appearance. Various blurring methods exist, each serving distinct purposes <span id="id2">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
+<p>Image blurring, also known as image smoothing or image filtering, is a fundamental image processing technique employed to mitigate high-frequency components within an image, such as noise and edges. Its primary purpose is to eliminate undesired details, resulting in a more visually cohesive and smoother appearance. Various blurring methods exist, each serving distinct purposes <span id="id3">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
 <ol class="arabic simple">
 <li><p><strong>Gaussian Blur</strong>: This technique employs a Gaussian kernel that convolves with the image pixels, producing a weighted average of neighboring pixels. These weights are determined by the Gaussian distribution, making it adept at reducing high-frequency noise while preserving image structure.</p></li>
 <li><p><strong>Median Blur</strong>: In this approach, every pixel in the image is replaced with the median value of its neighboring pixels. It is particularly effective in removing “salt-and-pepper” noise, where isolated pixels have extreme intensity values, leading to a cleaner image.</p></li>
@@ -523,7 +580,7 @@ document.write(`
 <p>For instance, a 3x3 box blur involves averaging the pixel values within the 3x3 vicinity surrounding each pixel. This procedure is replicated for every pixel in the image, leading to the creation of a blurred version of the original image.</p>
 <p>Box blur is renowned for its simplicity and computational efficiency. However, it may entail a certain loss of detail and might not retain sharp edges as effectively as some other blurring methods. It is commonly employed when a moderate level of blurring suffices, such as in image preprocessing tasks or as a foundational element within more intricate blur algorithms.</p>
 <p>Various image processing libraries, including OpenCV in Python, offer functions that allow users to apply box blur filters to images, with the flexibility to adjust the kernel size. This empowers users to tailor the extent of blurring applied based on their specific requirements.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">cv2.blur</span></code> function in Python serves to apply a straightforward averaging or blurring operation to an input image. The function encompasses several essential parameters, each of which governs the behavior of the blurring operation. Here’s an enhanced description of the function signature <span id="id3">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cv2.blur</span></code> function in Python serves to apply a straightforward averaging or blurring operation to an input image. The function encompasses several essential parameters, each of which governs the behavior of the blurring operation. Here’s an enhanced description of the function signature <span id="id4">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ksize</span><span class="p">[,</span> <span class="n">dst</span><span class="p">[,</span> <span class="n">anchor</span><span class="p">[,</span> <span class="n">borderType</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">dst</span>
 </pre></div>
 </div>
@@ -536,68 +593,72 @@ document.write(`
 <li><p><code class="docutils literal notranslate"><span class="pre">-&gt;</span> <span class="pre">dst</span></code>: This indicator signifies that the function yields the blurred output image (<code class="docutils literal notranslate"><span class="pre">dst</span></code>) subsequent to applying the specified blurring operation.</p></li>
 </ul>
 <p>This blurring operation is achieved by convolving the image with a normalized box filter. The process involves calculating the average of all the pixels within the kernel area and subsequently replacing the central element. The function <code class="docutils literal notranslate"><span class="pre">cv2.blur()</span></code> or <code class="docutils literal notranslate"><span class="pre">cv2.boxFilter()</span></code> can be employed for this purpose. For additional kernel details, reference the documentation. It’s important to specify the width and height of the kernel. For instance, a 3x3 normalized box filter appears as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-705a8f3e-19cf-42a5-ad57-a6a56a9eb11f">
-<span class="eqno">(5.2)<a class="headerlink" href="#equation-705a8f3e-19cf-42a5-ad57-a6a56a9eb11f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-381390b9-3611-4611-b556-0bba43d1f670">
+<span class="eqno">(5.4)<a class="headerlink" href="#equation-381390b9-3611-4611-b556-0bba43d1f670" title="Permalink to this equation">#</a></span>\[\begin{equation}
 K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}
 \end{equation}\]</div>
 <p>You can see the full description of the function <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=blur#cv2.blur">here</a>.</p>
 <p><font color='Blue'><b>Example</b></font>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply box blur (average blur) to the noisy image</span>
-<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">Img_noise</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># Import NumPy for array operations</span>
+<span class="kn">import</span> <span class="nn">cv2</span>  <span class="c1"># Import OpenCV for image processing</span>
 
-<span class="c1"># Display the original noisy image and the blurred image side by side</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img_noise</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span>
-           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Noisy Image&#39;</span><span class="p">,</span> <span class="s1">&#39;blur (Noisy Image)&#39;</span><span class="p">],</span>
-           <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Box Blurred (Average Blur)&#39;</span><span class="p">)</span>
+<span class="c1"># Apply the blur filter to the original image</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span>  <span class="c1"># Source image</span>
+               <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Kernel size for blurring</span>
+              <span class="p">)</span>
+
+<span class="c1"># Display the original noisy image and the filtered image side by side</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UofC&#39;</span><span class="p">,</span> <span class="s1">&#39;Blurred (UofC)&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Blur Filter on Original Image&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add text indicating the size of the original and transformed images</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+
+<span class="c1"># Apply the blur filter to the noisy image</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img_noise</span><span class="p">,</span>  <span class="c1"># Source image with noise</span>
+               <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>  <span class="c1"># Kernel size for blurring</span>
+              <span class="p">)</span>
+
+<span class="c1"># Display the original noisy image with noise and the filtered image side by side</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img_noise</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span> <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UofC + Noise&#39;</span><span class="p">,</span> <span class="s1">&#39;Blurred (UofC + Noise)&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Blur Filter on Noisy Image&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add text indicating the size of the original and transformed images</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Size: </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">Out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a1c5b196c55a7538701221751b7d3d44990857f8b430d2a7f3401075f33177ee.png" src="_images/a1c5b196c55a7538701221751b7d3d44990857f8b430d2a7f3401075f33177ee.png" />
+<img alt="_images/33056462405f0d0a4005e7bbc3b343c0a975a25586bb2b19b10ca26a84dc54e9.png" src="_images/33056462405f0d0a4005e7bbc3b343c0a975a25586bb2b19b10ca26a84dc54e9.png" />
+<img alt="_images/b549ce402e508701e0797d31de52ea185770a769ee5f32bc0184367c11aae719.png" src="_images/b549ce402e508701e0797d31de52ea185770a769ee5f32bc0184367c11aae719.png" />
 </div>
 </div>
-<p>Let’s break down each part of the code:</p>
-<ol class="arabic simple">
-<li><p><strong>Blurring Operation</strong>:</p>
-<ul class="simple">
-<li><p>The code uses the <code class="docutils literal notranslate"><span class="pre">cv2.blur</span></code> function to perform a blurring operation on an input image called “Img_noise.”</p></li>
-<li><p>The blurring operation is also known as a “box blur” or “average blur.” It’s a simple blurring technique where each pixel in the output image is replaced with the average value of its neighboring pixels.</p></li>
-<li><p>The kernel size for this operation is specified as (8, 8), which means it takes an 8x8 neighborhood for averaging.</p></li>
-<li><p>The result of the blurring operation is stored in the variable “Out.”</p></li>
-</ul>
-</li>
-<li><p><strong>Displaying Images</strong>:</p>
-<ul class="simple">
-<li><p>After applying the blur, the code displays both the original noisy image (“Img_noise”) and the blurred image (“Out”) side by side.</p></li>
-<li><p>This is achieved using the “ImShow” function, which presumably displays the images.</p></li>
-<li><p>Titles are added to the displayed images for clarity:</p>
-<ul>
-<li><p>“Noisy Image” is the title for the original image.</p></li>
-<li><p>“blur (Noisy Image)” is the title for the image that underwent the blur operation.</p></li>
-</ul>
-</li>
-<li><p>The overall title for this display is “Box Blur (Average Blur).”</p></li>
-</ul>
-</li>
-</ol>
 <p><font color='Blue'><b>Example</b></font>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty black image with a size of 800x800 pixels and 3 color channels</span>
 <span class="n">Img2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
-<span class="c1"># Add text &#39;Sample Text&#39; to the image with specified properties</span>
-<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Sample Text&#39;</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
+<span class="c1"># Define the text to be added to the image</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;Sample Text&#39;</span>
+
+<span class="c1"># Add &#39;Sample Text&#39; to the image with specified properties</span>
+<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
                   <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_TRIPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Colors</span><span class="p">[</span><span class="s1">&#39;Yellow&#39;</span><span class="p">],</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="c1"># Add another instance of &#39;Sample Text&#39; to the image with different color and position</span>
-<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Sample Text&#39;</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+<span class="c1"># Add another instance of &#39;Sample Text&#39; to the image with a different color and position</span>
+<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
                   <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_TRIPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Colors</span><span class="p">[</span><span class="s1">&#39;Red&#39;</span><span class="p">],</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Add one more &#39;Sample Text&#39; to the image with a different color and position</span>
-<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Sample Text&#39;</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+<span class="n">Img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">Img2</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
                   <span class="n">fontFace</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_TRIPLEX</span><span class="p">,</span> <span class="n">fontScale</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Colors</span><span class="p">[</span><span class="s1">&#39;Green&#39;</span><span class="p">],</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Generating a noisy image using mu = 0 and sigma = 80</span>
@@ -614,38 +675,38 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b683bf987956ef687702047860167f24e09ae3119859cac433b3d6dff535de61.png" src="_images/b683bf987956ef687702047860167f24e09ae3119859cac433b3d6dff535de61.png" />
+<img alt="_images/5fa438eec6c05a252adac77af10b76c79bf849ec304963feb6059bd81e2623ff.png" src="_images/5fa438eec6c05a252adac77af10b76c79bf849ec304963feb6059bd81e2623ff.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply box blur (average blur) to the noisy image (Img2_noise)</span>
-<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">Img2_noise</span><span class="p">,</span> <span class="n">ksize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">Out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">Img2_noise</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>  <span class="c1"># Applying an average blur with a kernel size of 8x8 pixels</span>
 
 <span class="c1"># Display both the original noisy image and the blurred image side by side</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="o">=</span><span class="p">[</span><span class="n">Img2_noise</span><span class="p">,</span> <span class="n">Out</span><span class="p">],</span>
-           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Noisy Image&#39;</span><span class="p">,</span> <span class="s1">&#39;blur (Noisy Image)&#39;</span><span class="p">],</span>
+           <span class="n">Names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Noisy Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Blurred (Noisy Image)&#39;</span><span class="p">],</span>
            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Box Blurred (Average Blur)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b6f34866a2cf7477554746d74d8774af5578488eecb3a9333eb225a9a9aec5fd.png" src="_images/b6f34866a2cf7477554746d74d8774af5578488eecb3a9333eb225a9a9aec5fd.png" />
+<img alt="_images/8e65ed43b1c4ed4f7f5ff090cf99a00e45ea6733377ce5c22ce1b286278d4f2f.png" src="_images/8e65ed43b1c4ed4f7f5ff090cf99a00e45ea6733377ce5c22ce1b286278d4f2f.png" />
 </div>
 </div>
 </div>
 <div class="section" id="box-filter">
 <h3><span class="section-number">5.2.2. </span>Box Filter<a class="headerlink" href="#box-filter" title="Permalink to this headline">#</a></h3>
-<p>The box filter is a blurring technique applied to an image using a specific kernel, which has the form of a matrix filled with ones. The primary purpose of this filter is to smooth the image. The blurring operation is performed by averaging the pixel values within a local neighborhood defined by the size of the kernel <span id="id4">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
+<p>The box filter is a blurring technique applied to an image using a specific kernel, which has the form of a matrix filled with ones. The primary purpose of this filter is to smooth the image. The blurring operation is performed by averaging the pixel values within a local neighborhood defined by the size of the kernel <span id="id5">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p>The mathematical representation of the kernel is as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-34f123c5-f56a-4780-94d1-60aad31d9dc1">
-<span class="eqno">(5.3)<a class="headerlink" href="#equation-34f123c5-f56a-4780-94d1-60aad31d9dc1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9f1dbeec-89e8-418a-b3f8-0a0b885eb8f1">
+<span class="eqno">(5.5)<a class="headerlink" href="#equation-9f1dbeec-89e8-418a-b3f8-0a0b885eb8f1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \texttt{K} = \alpha \begin{bmatrix} 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 \\ 
 \vdots &amp; \vdots &amp; \vdots &amp;  &amp; \vdots &amp; \vdots  \\ 1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 &amp; 1 \end{bmatrix}
 \end{equation}\]</div>
 <p>where</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9d932eb0-2ab5-420c-a4b2-79ead533a9c1">
-<span class="eqno">(5.4)<a class="headerlink" href="#equation-9d932eb0-2ab5-420c-a4b2-79ead533a9c1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c54deb32-f4ce-4c75-ae00-37ff70be7885">
+<span class="eqno">(5.6)<a class="headerlink" href="#equation-c54deb32-f4ce-4c75-ae00-37ff70be7885" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \alpha = \begin{cases} \frac{1}{\texttt{ksize.width*ksize.height}} &amp; \texttt{when } \texttt{normalize=true} \\1 &amp; \texttt{otherwise}\end{cases}
 \end{equation}\]</div>
 <p>The unnormalized box filter has a specific utility in computing integral characteristics over each pixel neighborhood. For instance, it can be employed to calculate covariance matrices of image derivatives, which are used in various algorithms like dense optical flow algorithms. However, if the goal is to compute pixel sums over windows of varying sizes, the integral image approach should be utilized.</p>
@@ -663,6 +724,7 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <li><p><code class="docutils literal notranslate"><span class="pre">borderType</span></code>: (Optional) The type of border extrapolation. It determines how to handle pixels at the image borders. Common values are <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_CONSTANT</span></code>, <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_REPLICATE</span></code>, etc. The default value is <code class="docutils literal notranslate"><span class="pre">cv2.BORDER_DEFAULT</span></code>.</p></li>
 </ul>
 <p>The function returns the destination image <code class="docutils literal notranslate"><span class="pre">dst</span></code> after applying the box filter operation on the source image with the specified parameters. The box filter is a simple and commonly used filter for smoothing and blurring images. It computes the average value of pixel intensities in a local neighborhood defined by the kernel size.</p>
+<p>You can see the full description of the function <a class="reference external" href="https://docs.opencv.org/2.4/modules/ocl/doc/image_filtering.html?highlight=filter2d#ocl-boxfilter">here</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2x2 grid of subplots for displaying images</span>
@@ -676,16 +738,16 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <span class="c1"># Loop to display images with box filtering at different kernel sizes</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
     <span class="c1"># Calculate the kernel size based on the loop iteration</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ksize_x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span>
     
     <span class="c1"># Apply box filtering to the image and display it in the corresponding subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">boxFilter</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">ddepth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">)))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">boxFilter</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">ddepth</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ksize</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksize_x</span><span class="p">,</span> <span class="n">ksize_x</span><span class="p">)))</span>
     
     <span class="c1"># Set the title for the subplot with information about the kernel size</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;boxFilter (Image)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;boxFilter (Kernel Size: </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     
     <span class="c1"># Add text to indicate the kernel size used</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                    <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
     
 <span class="c1"># Additional settings for each subplot</span>
@@ -699,14 +761,14 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f0381a08556e71495ff80aa9a5fa89f3d8ca0b3a712fea9b0ff0f65c4a9fe81b.png" src="_images/f0381a08556e71495ff80aa9a5fa89f3d8ca0b3a712fea9b0ff0f65c4a9fe81b.png" />
+<img alt="_images/8ef7a537d1c858be706646a374eea157735d95ff239aaaa68f2c35c2e1f6c372.png" src="_images/8ef7a537d1c858be706646a374eea157735d95ff239aaaa68f2c35c2e1f6c372.png" />
 </div>
 </div>
 <p>This code creates a visual comparison of the original image and the image obtained by applying the <code class="docutils literal notranslate"><span class="pre">cv2.boxFilter</span></code> operation with different kernel sizes. The results are displayed in a 2x2 grid of subplots, each with appropriate titles and annotations indicating the kernel size used.</p>
 </div>
 <div class="section" id="gaussian-blur">
 <h3><span class="section-number">5.2.3. </span>Gaussian Blur<a class="headerlink" href="#gaussian-blur" title="Permalink to this headline">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">cv2.GaussianBlur()</span></code> function in Python is a part of the OpenCV library, widely used for image processing and computer vision tasks. This function applies Gaussian blurring to an input image (source image) and returns the result in the destination image (if provided) <span id="id5">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cv2.GaussianBlur()</span></code> function in Python is a part of the OpenCV library, widely used for image processing and computer vision tasks. This function applies Gaussian blurring to an input image (source image) and returns the result in the destination image (if provided) <span id="id6">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 <p>This function is used to generate a Gaussian kernel, often used in image processing for tasks like blurring and smoothing. Let’s break down the documentation and its parameters academically:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ksize</span></code>: This parameter represents the aperture size of the Gaussian kernel. It should be an odd, positive integer. In mathematical terms, it must satisfy the condition <code class="docutils literal notranslate"><span class="pre">(ksize</span> <span class="pre">%</span> <span class="pre">2)</span> <span class="pre">==</span> <span class="pre">1</span></code>. The kernel size determines the size of the kernel matrix.</p></li>
@@ -714,8 +776,8 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <li><p><code class="docutils literal notranslate"><span class="pre">ktype</span></code>: This parameter specifies the type of filter coefficients. It can take one of two values: <code class="docutils literal notranslate"><span class="pre">cv2.CV_32F</span></code> for 32-bit floating-point coefficients or <code class="docutils literal notranslate"><span class="pre">cv2.CV_64F</span></code> for 64-bit floating-point coefficients. The choice of data type affects the precision of the filter coefficients.</p></li>
 </ul>
 <p>The function <code class="docutils literal notranslate"><span class="pre">cv2.getGaussianKernel</span></code> calculates and returns a <code class="docutils literal notranslate"><span class="pre">ksize</span> <span class="pre">x</span> <span class="pre">1</span></code> matrix (column vector) containing the Gaussian filter coefficients. The coefficients are computed using the Gaussian function formula:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-96ed11fe-f5b7-4412-ace4-05f42599c3a1">
-<span class="eqno">(5.5)<a class="headerlink" href="#equation-96ed11fe-f5b7-4412-ace4-05f42599c3a1" title="Permalink to this equation">#</a></span>\[\begin{equation}G_i = \alpha \cdot \exp\left({-\frac{(i - \frac{{\text{ksize}} - 1}{2})^2}{2 \cdot \text{sigma}^2}}\right)
+<div class="amsmath math notranslate nohighlight" id="equation-01d4969d-1e41-4848-8205-9259193672aa">
+<span class="eqno">(5.7)<a class="headerlink" href="#equation-01d4969d-1e41-4848-8205-9259193672aa" title="Permalink to this equation">#</a></span>\[\begin{equation}G_i = \alpha \cdot \exp\left({-\frac{(i - \frac{{\text{ksize}} - 1}{2})^2}{2 \cdot \text{sigma}^2}}\right)
 \end{equation}\]</div>
 <p>Where:</p>
 <ul class="simple">
@@ -729,8 +791,8 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <li><p><strong>Continuous Gaussian Function</strong>:</p>
 <ul>
 <li><p>The continuous Gaussian function is a mathematical function used to describe the Gaussian probability distribution. It’s defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7bf382d9-82cf-45a6-951a-7a26cd93d941">
-<span class="eqno">(5.6)<a class="headerlink" href="#equation-7bf382d9-82cf-45a6-951a-7a26cd93d941" title="Permalink to this equation">#</a></span>\[\begin{equation}G(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-f8cef9a2-09a6-4948-9fc3-b0c968dffb04">
+<span class="eqno">(5.8)<a class="headerlink" href="#equation-f8cef9a2-09a6-4948-9fc3-b0c968dffb04" title="Permalink to this equation">#</a></span>\[\begin{equation}G(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\end{equation}\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x\)</span> is the continuous independent variable.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mu\)</span> (mu) is the mean (average) value.</p></li>
@@ -744,8 +806,8 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <li><p><strong>Discretized Gaussian Kernel</strong> (from <code class="docutils literal notranslate"><span class="pre">cv2.getGaussianKernel</span></code>):</p>
 <ul>
 <li><p>The formula for computing <span class="math notranslate nohighlight">\(G_i\)</span> in the discretized Gaussian kernel is as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6c09487b-38ba-4230-956b-e86e3691ed07">
-<span class="eqno">(5.7)<a class="headerlink" href="#equation-6c09487b-38ba-4230-956b-e86e3691ed07" title="Permalink to this equation">#</a></span>\[\begin{equation}G_i = \alpha \cdot \exp\left(-\frac{(i - \frac{{\text{ksize}} - 1}{2})^2}{2 \cdot \text{sigma}^2}\right)\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-116992bf-c25a-4274-b0b4-c835fec22314">
+<span class="eqno">(5.9)<a class="headerlink" href="#equation-116992bf-c25a-4274-b0b4-c835fec22314" title="Permalink to this equation">#</a></span>\[\begin{equation}G_i = \alpha \cdot \exp\left(-\frac{(i - \frac{{\text{ksize}} - 1}{2})^2}{2 \cdot \text{sigma}^2}\right)\end{equation}\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(i\)</span> ranges from 0 to <code class="docutils literal notranslate"><span class="pre">ksize</span> <span class="pre">-</span> <span class="pre">1</span></code>, representing discrete positions within the kernel.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\frac{{\text{ksize}} - 1}{2}\)</span> represents the center position of the kernel, ensuring symmetry.</p></li>
@@ -778,16 +840,16 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <span class="c1"># Loop to display images with Gaussian blur at different kernel sizes</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
     <span class="c1"># Calculate the kernel size based on the loop iteration</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ksize_x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span>
     
     <span class="c1"># Apply Gaussian blur to the image and display it in the corresponding subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">sigmaX</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="n">ksize_x</span><span class="p">,</span> <span class="n">ksize_x</span><span class="p">),</span> <span class="n">sigmaX</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
     
     <span class="c1"># Set the title for the subplot with information about the kernel size</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;GaussianBlur (Image)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GaussianBlur (Kernel Size: </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     
     <span class="c1"># Add text to indicate the kernel size used</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                    <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
 
 <span class="c1"># Additional settings for each subplot</span>
@@ -795,22 +857,22 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
     <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>    <span class="c1"># Turn off axis</span>
 
+<span class="c1"># Ensure tight layout for better spacing</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b9189cecf0363d839ef147b136c92aecf9558f9e64842b7cf2d787d0d85b1b93.png" src="_images/b9189cecf0363d839ef147b136c92aecf9558f9e64842b7cf2d787d0d85b1b93.png" />
+<img alt="_images/7fdd806bee998f8c4bdbcff1862ff7015c82eae4bf28e86fe67d828a1b60cf8d.png" src="_images/7fdd806bee998f8c4bdbcff1862ff7015c82eae4bf28e86fe67d828a1b60cf8d.png" />
 </div>
 </div>
 </div>
 <div class="section" id="median-blur">
 <h3><span class="section-number">5.2.4. </span>Median Blur<a class="headerlink" href="#median-blur" title="Permalink to this headline">#</a></h3>
 <p>The median blur technique is a valuable image filtering method primarily used for noise reduction while preserving the edges and finer details in an image. This technique is especially effective at mitigating the impact of “salt-and-pepper” noise, which are isolated, randomly occurring bright or dark pixels that can distort the appearance of an image. The median blur operation computes the median value within a local neighborhood (specified by a kernel) for each pixel, effectively reducing the influence of noise outliers.</p>
-<p>For a more detailed exploration of the median filter, you can refer to the research paper titled “<a class="reference external" href="https://www.uio.no/studier/emner/matnat/ifi/INF2310/v12/undervisningsmateriale/artikler/Huang-etal-median.pdf">A Fast Two-Dimensional Median Filtering Algorithm</a>” by Thomas S. Huang et al. <span id="id6">[<a class="reference internal" href="References.html#id27" title="Thomas Huang, GJTGY Yang, and Greory Tang. A fast two-dimensional median filtering algorithm. IEEE transactions on acoustics, speech, and signal processing, 27(1):13–18, 1979.">Huang <em>et al.</em>, 1979</a>]</span>.</p>
+<p>For a more detailed exploration of the median filter, you can refer to the research paper titled “<a class="reference external" href="https://www.uio.no/studier/emner/matnat/ifi/INF2310/v12/undervisningsmateriale/artikler/Huang-etal-median.pdf">A Fast Two-Dimensional Median Filtering Algorithm</a>” by Thomas S. Huang et al. <span id="id7">[<a class="reference internal" href="References.html#id27" title="Thomas Huang, GJTGY Yang, and Greory Tang. A fast two-dimensional median filtering algorithm. IEEE transactions on acoustics, speech, and signal processing, 27(1):13–18, 1979.">Huang <em>et al.</em>, 1979</a>]</span>.</p>
 <p>In OpenCV, the <a class="reference external" href="https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=cv2.blur#medianblur">Median Blur</a> function, denoted as <code class="docutils literal notranslate"><span class="pre">cv2.medianBlur()</span></code>, provides a convenient way to apply the median blur operation to an image. This function is widely used in computer vision tasks and image processing pipelines to enhance the quality of images by reducing noise while preserving important image structures.</p>
-<p>The key advantage of median blur is its ability to effectively handle various types of noise, making it a crucial tool in image preprocessing and denoising applications. It’s particularly useful when other blurring methods might smear the edges or fine features of an image, which is not the case with median blur.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">cv2.medianBlur()</span></code> function in Python is a part of the OpenCV library, commonly used for image processing tasks. This function applies median blurring to an input image (source image) and returns the result in the destination image (if provided) <span id="id7">[<a class="reference internal" href="References.html#id25" title="G. Bradski. The OpenCV Library. Dr. Dobb's Journal of Software Tools, 2000.">Bradski, 2000</a>, <a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
+<!-- The key advantage of median blur is its ability to effectively handle various types of noise, making it a crucial tool in image preprocessing and denoising applications. It's particularly useful when other blurring methods might smear the edges or fine features of an image, which is not the case with median blur. -->
 <p><strong>Function Signature:</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cv2.medianBlur(src, ksize[, dst]) → dst
 </pre></div>
@@ -821,6 +883,7 @@ K = \frac{1}{9} \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp
 <li><p><code class="docutils literal notranslate"><span class="pre">ksize</span></code>: The size of the median filter kernel. It specifies the window over which the median is computed. The kernel size must be a positive odd integer.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dst</span></code>: (Optional) The destination image where the median-blurred result will be stored. If not provided, a new image will be created to store the result.</p></li>
 </ul>
+<p>The function employs a median filter to smooth an image, utilizing a square aperture of size <code class="docutils literal notranslate"><span class="pre">ksize</span> <span class="pre">x</span> <span class="pre">ksize</span></code>. It’s important to note that each channel of a multi-channel image is processed independently, and the operation can be performed in-place if needed.</p>
 <p><strong>Output:</strong>
 The function returns the destination image <code class="docutils literal notranslate"><span class="pre">dst</span></code> after applying median blurring to the source image with the specified parameters. Median blurring is a non-linear image filtering technique that is particularly effective at reducing salt-and-pepper noise in images.</p>
 <p><strong>Note:</strong></p>
@@ -844,16 +907,16 @@ The function returns the destination image <code class="docutils literal notrans
 <span class="c1"># Loop to display images with median filtering at different kernel sizes</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
     <span class="c1"># Calculate the kernel size based on the loop iteration</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ksize_x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
     
     <span class="c1"># Apply median filtering to the image and display it in the corresponding subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="n">Img</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_DEFAULT</span><span class="p">))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="n">Img</span><span class="p">,</span> <span class="n">ksize_x</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_DEFAULT</span><span class="p">))</span>
     
     <span class="c1"># Set the title for the subplot with information about the kernel size</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;medianBlur (Image)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     
     <span class="c1"># Add text to indicate the kernel size used</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Kernel Size: </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1"> by </span><span class="si">{</span><span class="n">ksize_x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                    <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
     
 <span class="c1"># Additional settings for each subplot</span>
@@ -867,7 +930,7 @@ The function returns the destination image <code class="docutils literal notrans
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f109942d4ae2be3477fddd3715adc09ee1818fe7dbec431d2ae012a0d41ce138.png" src="_images/f109942d4ae2be3477fddd3715adc09ee1818fe7dbec431d2ae012a0d41ce138.png" />
+<img alt="_images/65a911060c9b5dbfc5e522a5dcf2a269e8b2114805901a204fa53a334c2ccb7a.png" src="_images/65a911060c9b5dbfc5e522a5dcf2a269e8b2114805901a204fa53a334c2ccb7a.png" />
 </div>
 </div>
 </div>
@@ -875,8 +938,8 @@ The function returns the destination image <code class="docutils literal notrans
 <h3><span class="section-number">5.2.5. </span>Bilateral Filtering<a class="headerlink" href="#bilateral-filtering" title="Permalink to this headline">#</a></h3>
 <p>A <strong>bilateral filter</strong> is a sophisticated image smoothing technique that is non-linear, preserves edges, and reduces noise. It operates by combining neighboring pixel values in a way that considers both the differences in pixel intensities (referred to as the “range”) and the spatial distances between pixels. This unique combination allows the bilateral filter to effectively smooth an image while retaining important features such as edges.</p>
 <p>The mathematical definition of the bilateral filter can be expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1679ee43-7a00-4172-8af1-6af85ceff9bd">
-<span class="eqno">(5.8)<a class="headerlink" href="#equation-1679ee43-7a00-4172-8af1-6af85ceff9bd" title="Permalink to this equation">#</a></span>\[\begin{equation}I^{\text{filtered}}(x) = \frac{1}{W_{p}} \sum_{x_{i}\in \Omega} I(x_{i}) f_{r}(\|I(x_{i})-I(x)\|) g_{s}(\|x_{i}-x\|).\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-20d87f7d-811f-48c1-834f-67b88165a902">
+<span class="eqno">(5.10)<a class="headerlink" href="#equation-20d87f7d-811f-48c1-834f-67b88165a902" title="Permalink to this equation">#</a></span>\[\begin{equation}I^{\text{filtered}}(x) = \frac{1}{W_{p}} \sum_{x_{i}\in \Omega} I(x_{i}) f_{r}(\|I(x_{i})-I(x)\|) g_{s}(\|x_{i}-x\|).\end{equation}\]</div>
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(I^{\text{filtered}}\)</span> is the resulting filtered image.</p></li>
@@ -924,16 +987,16 @@ The function returns the destination image <code class="docutils literal notrans
 <span class="c1"># Loop to display images with bilateral filtering at different diameters</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
     <span class="c1"># Calculate the diameter based on the loop iteration</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">diameter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span>
     
     <span class="c1"># Apply bilateral filtering to the image and display it in the corresponding subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">bilateralFilter</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">sigmaColor</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">sigmaSpace</span><span class="o">=</span><span class="mi">75</span><span class="p">))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">bilateralFilter</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span> <span class="n">sigmaColor</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">sigmaSpace</span><span class="o">=</span><span class="mi">75</span><span class="p">))</span>
     
     <span class="c1"># Set the title for the subplot with information about the diameter</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;bilateralFilter (Image)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;bilateralFilter (Diameter = </span><span class="si">{</span><span class="n">diameter</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     
     <span class="c1"># Add text to indicate the diameter used</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Diameter = </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Diameter = </span><span class="si">{</span><span class="n">diameter</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                    <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
     
 <span class="c1"># Additional settings for each subplot</span>
@@ -947,7 +1010,46 @@ The function returns the destination image <code class="docutils literal notrans
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7126e4e28d1cf1b241d74921d63dc50856e887598c79fe4c3256472c5cdf3e25.png" src="_images/7126e4e28d1cf1b241d74921d63dc50856e887598c79fe4c3256472c5cdf3e25.png" />
+<img alt="_images/891f33e8ff05a6525e8fa0cc600085cae282d4cbcaf16739e23ad3b7a559531a.png" src="_images/891f33e8ff05a6525e8fa0cc600085cae282d4cbcaf16739e23ad3b7a559531a.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2x2 grid of subplots for displaying images</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># Flatten the subplots for easier manipulation</span>
+
+<span class="c1"># Display the original noisy image in the first subplot</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Img_noise</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original Noisy Image&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Loop to display images with bilateral filtering at different diameters</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="c1"># Calculate the diameter based on the loop iteration</span>
+    <span class="n">diameter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="c1"># Apply bilateral filtering to the noisy image and display it in the corresponding subplot</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">bilateralFilter</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">Img_noise</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span> <span class="n">sigmaColor</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">sigmaSpace</span><span class="o">=</span><span class="mi">75</span><span class="p">))</span>
+    
+    <span class="c1"># Set the title for the subplot with information about the diameter</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;bilateralFilter (Diameter = </span><span class="si">{</span><span class="n">diameter</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    
+    <span class="c1"># Add text to indicate the diameter used</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span><span class="o">*</span><span class="n">Img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Diameter = </span><span class="si">{</span><span class="n">diameter</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                   <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;square&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">))</span>
+    
+<span class="c1"># Additional settings for each subplot</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)):</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>    <span class="c1"># Turn off axis</span>
+
+<span class="c1"># Ensure tight layout for better spacing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/960508af64817065fb2b1323e67cb5291787296bb5efd012ed60919f9fb6676d.png" src="_images/960508af64817065fb2b1323e67cb5291787296bb5efd012ed60919f9fb6676d.png" />
 </div>
 </div>
 </div>
@@ -960,8 +1062,8 @@ The function returns the destination image <code class="docutils literal notrans
 <ol class="arabic">
 <li><p><strong>Noise Reduction</strong>: To mitigate the impact of image noise, a 5x5 Gaussian filter is applied to the image. This step aims to enhance the overall quality of the image by reducing noise artifacts <span id="id11">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p></li>
 <li><p><strong>Intensity Gradient Calculation</strong>: Following noise reduction, the smoothened image undergoes gradient calculations in both horizontal (<span class="math notranslate nohighlight">\(G_x\)</span>) and vertical (<span class="math notranslate nohighlight">\(G_y\)</span>) directions. These gradients are used to determine the edge gradient magnitude (<span class="math notranslate nohighlight">\(G\)</span>) and direction (<span class="math notranslate nohighlight">\(\theta\)</span>) for each pixel <span id="id12">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7c384ac4-3ee4-46fe-a6f1-3e75091a2b26">
-<span class="eqno">(5.9)<a class="headerlink" href="#equation-7c384ac4-3ee4-46fe-a6f1-3e75091a2b26" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1d91301e-7659-4369-acfd-113e18d8e398">
+<span class="eqno">(5.11)<a class="headerlink" href="#equation-1d91301e-7659-4369-acfd-113e18d8e398" title="Permalink to this equation">#</a></span>\[\begin{align}
    G &amp;= \sqrt{G_x^2 + G_y^2}\\
    \theta &amp;= \tan^{-1} \left(\frac{G_y}{G_x}\right)
    \end{align}\]</div>
@@ -969,16 +1071,16 @@ The function returns the destination image <code class="docutils literal notrans
 </li>
 <li><p><strong>Non-maximum Suppression</strong>: In this stage, a comprehensive scan of the image is conducted to eliminate extraneous pixels that do not constitute edges. For each pixel, a check is performed to ascertain if it is a local maximum within its neighborhood along the gradient direction. If a pixel qualifies as a local maximum, it is retained for subsequent stages; otherwise, it is suppressed (set to zero) <span id="id14">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p></li>
 </ol>
-<div class="figure align-center" id="id17">
-<a class="reference internal image-reference" href="_images/nms.jpg"><img alt="_images/nms.jpg" src="_images/nms.jpg" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Point A resides on the edge in the vertical direction, and the gradient direction aligns perpendicularly to this edge. Points B and C lie along the gradient directions. Point A is subject to evaluation by comparing it to points B and C to determine if it qualifies as a local maximum. If it meets this criterion, it proceeds to the subsequent stage of processing; otherwise, it undergoes suppression and is assigned a value of zero. Image courtesy of {cite:p}`OpenCVDocumentation.</span><a class="headerlink" href="#id17" title="Permalink to this image">#</a></p>
+<div class="figure align-center" id="id18">
+<a class="reference internal image-reference" href="_images/nms.jpg"><img alt="_images/nms.jpg" src="_images/nms.jpg" style="width: 450px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Point A resides on the edge in the vertical direction, and the gradient direction aligns perpendicularly to this edge. Points B and C lie along the gradient directions. Point A is subject to evaluation by comparing it to points B and C to determine if it qualifies as a local maximum. If it meets this criterion, it proceeds to the subsequent stage of processing; otherwise, it undergoes suppression and is assigned a value of zero. Image courtesy of {cite:p}`OpenCVDocumentation.</span><a class="headerlink" href="#id18" title="Permalink to this image">#</a></p>
 </div>
 <ol class="arabic simple" start="4">
 <li><p><strong>Hysteresis Thresholding</strong>: This stage is crucial for distinguishing genuine edges from non-edges. It relies on two threshold values, namely, minVal and maxVal. Pixels with intensity gradients exceeding maxVal are unequivocally identified as edges, while those falling below minVal are unequivocally classified as non-edges and discarded. Pixels falling between these two thresholds are assessed based on their connectivity to “sure-edge” pixels. If they are connected to such pixels, they are deemed part of the edges; otherwise, they are also discarded <span id="id15">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p></li>
 </ol>
-<div class="figure align-center" id="id18">
-<a class="reference internal image-reference" href="_images/hysteresis.jpg"><img alt="_images/hysteresis.jpg" src="_images/hysteresis.jpg" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Edge A surpasses the threshold maxVal, categorizing it as a “sure-edge.” Conversely, while edge C falls below maxVal, its connectivity to edge A validates it as a legitimate edge, resulting in the formation of the complete curve. In contrast, edge B, despite exceeding minVal and residing within the same region as edge C, lacks connectivity to any “sure-edge” and is consequently discarded. Consequently, the precise selection of minVal and maxVal is of paramount importance in achieving accurate results. Image courtesy of {cite:p}`OpenCVDocumentation.</span><a class="headerlink" href="#id18" title="Permalink to this image">#</a></p>
+<div class="figure align-center" id="id19">
+<a class="reference internal image-reference" href="_images/hysteresis.jpg"><img alt="_images/hysteresis.jpg" src="_images/hysteresis.jpg" style="width: 450px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 5.3 </span><span class="caption-text">Edge A surpasses the threshold maxVal, categorizing it as a “sure-edge.” Conversely, while edge C falls below maxVal, its connectivity to edge A validates it as a legitimate edge, resulting in the formation of the complete curve. In contrast, edge B, despite exceeding minVal and residing within the same region as edge C, lacks connectivity to any “sure-edge” and is consequently discarded. Consequently, the precise selection of minVal and maxVal is of paramount importance in achieving accurate results. Image courtesy of {cite:p}`OpenCVDocumentation.</span><a class="headerlink" href="#id19" title="Permalink to this image">#</a></p>
 </div>
 <p>It’s imperative to carefully select minVal and maxVal to obtain the desired results and effectively eliminate small pixel noise, as the algorithm assumes that edges correspond to elongated lines <span id="id16">[<a class="reference internal" href="References.html#id26" title="OpenCV Developers. Opencv documentation. https://docs.opencv.org/4.x/index.html, 2023. [Online; accessed 01-August-2023].">OpenCV Developers, 2023</a>]</span>.</p>
 </div>
@@ -1007,41 +1109,48 @@ The function returns the destination image <code class="docutils literal notrans
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>  <span class="c1"># Import the plotting library</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_sample_images</span>  <span class="c1"># Import a function to load sample images</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_sample_images</span> 
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
 
 <span class="c1"># Load sample images</span>
-<span class="n">Images</span> <span class="o">=</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span>  <span class="c1"># Load the sample images</span>
-<span class="c1"># Extract image names from file paths, removing extension and converting to title case</span>
-<span class="n">Names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;filenames&#39;</span><span class="p">]]</span>
+<span class="n">sample_images</span> <span class="o">=</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span>
+<span class="n">sample_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;filenames&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Load the custom image (UofC)</span>
+<span class="n">uofc_img_url</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;https://conted.ucalgary.ca/maincampus/maincampus.jpg&#39;</span>
+<span class="n">uofc_img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">uofc_img_url</span><span class="p">)</span>
+<span class="n">sample_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uofc_img</span><span class="p">)</span>
+<span class="n">sample_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;UofC&#39;</span><span class="p">)</span>
 
 <span class="c1"># Create a 2x2 grid of subplots for displaying images</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_images</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># Flatten the subplots for easier manipulation</span>
 
 <span class="c1"># Loop to display original images and their edges</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">original_img</span> <span class="o">=</span> <span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">edge_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">original_img</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_images</span><span class="p">):</span>
+    <span class="n">edge_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
     
     <span class="c1"># Display the original image in the left subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">original_img</span><span class="p">)</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Original Image - </span><span class="si">{</span><span class="n">Names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Original Image - </span><span class="si">{</span><span class="n">sample_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     
     <span class="c1"># Display the edge-detected image in the right subplot</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">edge_img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Image Edges - </span><span class="si">{</span><span class="n">Names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">edge_img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Image Edges - </span><span class="si">{</span><span class="n">sample_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
+<span class="c1"># Additional settings for each subplot</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)):</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>    <span class="c1"># Turn off axis</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>    <span class="c1"># Turn off axis</span>
     
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0a3d354b0b457539878108cb60d55d7234d07dfdfc1f38d7cccbea4214bd4d4c.png" src="_images/0a3d354b0b457539878108cb60d55d7234d07dfdfc1f38d7cccbea4214bd4d4c.png" />
+<img alt="_images/a6f82dd8f2d3da2bd5653e45e218015292b26ca949bdc2061e9d757aeef9cc9e.png" src="_images/a6f82dd8f2d3da2bd5653e45e218015292b26ca949bdc2061e9d757aeef9cc9e.png" />
 </div>
 </div>
 </div>
