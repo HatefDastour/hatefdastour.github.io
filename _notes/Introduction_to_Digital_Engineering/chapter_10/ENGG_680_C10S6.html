@@ -1,0 +1,1221 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>10.6. Random Forests &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_10/ENGG_680_C10S6';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10.7. Gradient Boosting" href="ENGG_680_C10S7.html" />
+    <link rel="prev" title="10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)" href="ENGG_680_C10S5.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ReadMe.html">1. Introduction to Python Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S1.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S2.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S3.html">1.3. Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ReadMe.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S1.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S2.html">2.2. Iteration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ReadMe.html">3. Data Structures and File Handling in Python</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S1.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S2.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S3.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S4.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S5.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S6.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Classes and Objects</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S1.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S2.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S3.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S4.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S5.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S6.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ReadMe.html">5. Introduction to NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S1.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S2.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S3.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ReadMe.html">6. Working with Data using Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S1.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S2.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S3.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S4.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S5.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S6.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ReadMe.html">7. Data Visualization using Python</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S1.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S2.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S3.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S4.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S5.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S6.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ReadMe.html">8. An Introduction to Computer Vision</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S1.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S2.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S3.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S4.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S5.html">8.5. Drawing Functions (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S6.html">8.6. Morphological Transformations (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ReadMe.html">9. An Introduction to Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S1.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S2.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S3.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S4.html">9.4. Logistic Regression  (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S5.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S6.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S7.html">9.7. Support Vector Machines</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ReadMe.html">10. Tree-Based Methods</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S1.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S2.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S3.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S4.html">10.4. Regression Trees and Linear Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S5.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C10S7.html">10.7. Gradient Boosting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ReadMe.html">11. Dimensionality Reduction and Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S1.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S2.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S3.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S4.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S5.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S6.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_12/ReadMe.html">12. Introduction to Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S1.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S2.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S3.html">12.3. Tensors and Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S4.html">12.4. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S5.html">12.5. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S6.html">12.6. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S7.html">12.7. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG_680_C12S8.html">12.8. Image Augmentations with TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../appendixes/ReadMe.html">13. Appendices</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_1.html">13.1. Sample Questions 1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">14. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Random Forests</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importances">10.6.1. Feature Importances</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="random-forests">
+<h1><span class="section-number">10.6. </span>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">#</a></h1>
+<p>Random forests offer an enhancement to bagged trees through a simple adjustment that introduces tree decorrelation. Like in bagging, we construct multiple decision trees on bootstrapped training samples. However, when constructing these trees, at each split point, only a random subset of m predictors is considered as potential candidates for the split, drawn from the full set of p predictors <span id="id1">[<a class="reference internal" href="../References.html#id3" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<p>The math behind Random Forests involves a few key concepts that contribute to its effectiveness in enhancing decision trees. Let’s break down the main components <span id="id2">[<a class="reference internal" href="../References.html#id50" title="T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning: Data Mining, Inference, and Prediction. Springer Series in Statistics. Springer New York, 2013. ISBN 9780387216065. URL: https://books.google.ca/books?id=yPfZBwAAQBAJ.">Hastie <em>et al.</em>, 2013</a>, <a class="reference internal" href="../References.html#id3" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Bootstrap Sampling:</strong> In Random Forests, multiple decision trees are created, each based on a different subset of the training data. These subsets are obtained through a process called bootstrap sampling. Given a dataset with ‘n’ observations, bootstrap sampling involves randomly selecting ‘n’ observations with replacement. This means that some observations may be included multiple times in the subset, while others may not be included at all. This process generates diverse training subsets for building different trees.</p></li>
+<li><p><strong>Random Feature Selection:</strong> At each split point of a decision tree within a Random Forest, instead of considering all available features (predictors), a random subset of features is selected as candidates for the split. This introduces randomness and diversity among the trees. The number of features in the subset, denoted as ‘m’, is typically smaller than the total number of predictors ‘p’. This process helps decorrelate the trees, reducing the chance of them making similar errors and leading to more accurate predictions.</p></li>
+<li><p><strong>Voting or Averaging:</strong> Once all the trees are constructed, their predictions are combined to make a final prediction. For regression tasks, the predictions from individual trees are usually averaged to obtain the final prediction. For classification tasks, a majority vote among the predictions is often taken to determine the class label. This ensemble approach helps improve the overall accuracy and stability of the model.</p></li>
+</ol>
+<p>Mathematically, the process of Random Forests involves creating ‘B’ decision trees, each constructed using a different bootstrap sample and a random subset of ‘m’ features at each split point. The final prediction for a new observation is obtained by averaging (for regression) or majority voting (for classification) the predictions from all the trees:</p>
+<p>For regression:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d8d42bf5-4b74-4092-8811-5360cc50ad05">
+<span class="eqno">(10.17)<a class="headerlink" href="#equation-d8d42bf5-4b74-4092-8811-5360cc50ad05" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{f}_{rf}(x) = \frac{1}{B}\sum_{b = 1}^{B} \hat{f}^{b}(x)
+\end{equation}\]</div>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/RFR_Fig.jpg"><img alt="../_images/RFR_Fig.jpg" src="../_images/RFR_Fig.jpg" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 10.6 </span><span class="caption-text">A visual of Random Forests Algorithm for regression.</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</div>
+<p>For classification:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-749d18e5-e684-4c91-b7e6-1b179c279b3e">
+<span class="eqno">(10.18)<a class="headerlink" href="#equation-749d18e5-e684-4c91-b7e6-1b179c279b3e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{C}_{rf}(x) = \text{majority vote}\left(\hat{C}^{1}(x), \hat{C}^{2}(x), \ldots, \hat{C}^{B}(x)\right)
+\end{equation}\]</div>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/RFC_Fig.jpg"><img alt="../_images/RFC_Fig.jpg" src="../_images/RFC_Fig.jpg" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 10.7 </span><span class="caption-text">A visual of Random Forests Algorithm for classification.</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
+</div>
+<p>Here, <span class="math notranslate nohighlight">\(\hat{f}^{b}(x)\)</span> represents the prediction of the ‘b’-th tree for observation ‘x’, and <span class="math notranslate nohighlight">\(\hat{C}^{b}(x)\)</span> represents the class predicted by the ‘b’-th tree for observation ‘x’.</p>
+<p>The random forest algorithm’s combination of bootstrap sampling and random feature selection helps create a diverse ensemble of trees that work together to provide more accurate and stable predictions, reducing the likelihood of overfitting and improving the model’s generalization ability.</p>
+<div class="admonition-random-forest-algorithm admonition">
+<p class="admonition-title">Random Forest algorithm </p>
+<ol class="arabic simple">
+<li><p><strong>Data Preparation:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N\)</span> = Number of samples in the dataset</p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span> = Number of features in each sample</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_i\)</span> = Input features for the <span class="math notranslate nohighlight">\(i\)</span>th sample</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> = Output label for regression task (real value)</p></li>
+<li><p><span class="math notranslate nohighlight">\(C_i\)</span> = Output class for classification task (categorical value)</p></li>
+</ul>
+</li>
+<li><p><strong>Bootstrapping:</strong></p>
+<ul class="simple">
+<li><p>Randomly select <span class="math notranslate nohighlight">\(N\)</span> samples with replacement to create multiple bags (bootstrap samples).</p></li>
+<li><p>In scikit-learn’s API, the parameter controlling this is <code class="docutils literal notranslate"><span class="pre">bootstrap=True</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Growing Individual Trees:</strong></p>
+<ul class="simple">
+<li><p>Each individual tree <span class="math notranslate nohighlight">\(t\)</span> is trained on one of the bootstrap samples.</p></li>
+<li><p>At each node of tree <span class="math notranslate nohighlight">\(t\)</span>, consider a random subset of features of size <span class="math notranslate nohighlight">\(m\)</span> for splitting.</p></li>
+<li><p>Stop growing the tree based on stopping criteria like maximum depth or minimum samples per leaf.</p></li>
+<li><p>In scikit-learn, you can control maximum depth with <code class="docutils literal notranslate"><span class="pre">max_depth</span></code> and minimum samples per leaf with <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Voting or Averaging:</strong></p>
+<ul class="simple">
+<li><p>For classification: Let <span class="math notranslate nohighlight">\(k\)</span> be the number of classes. Each tree predicts a class <span class="math notranslate nohighlight">\(C_i\)</span> for input <span class="math notranslate nohighlight">\(x_i\)</span>. Final prediction is the majority class among all trees’ predictions.</p></li>
+<li><p>For regression: Each tree predicts a value <span class="math notranslate nohighlight">\(y_i\)</span> for input <span class="math notranslate nohighlight">\(x_i\)</span>. Final prediction is the average of all trees’ predictions.</p></li>
+<li><p>In scikit-learn, you can set <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> to determine the number of trees.</p></li>
+</ul>
+</li>
+<li><p><strong>Out-of-Bag (OOB) Error:</strong></p>
+<ul class="simple">
+<li><p>For each sample <span class="math notranslate nohighlight">\(i\)</span>, if it’s not in the training set of tree <span class="math notranslate nohighlight">\(t\)</span>, we can use its prediction to calculate the OOB error.</p></li>
+<li><p>In scikit-learn, OOB error can be calculated by setting <code class="docutils literal notranslate"><span class="pre">oob_score=True</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Randomness and Diversity:</strong></p>
+<ul class="simple">
+<li><p>For feature subset selection, <span class="math notranslate nohighlight">\(m\)</span> is typically set to <span class="math notranslate nohighlight">\(\sqrt{M}\)</span> for classification and <span class="math notranslate nohighlight">\(\frac{M}{3}\)</span> for regression.</p></li>
+<li><p>This randomness encourages different trees to focus on different subsets of features, leading to diversity.</p></li>
+</ul>
+</li>
+<li><p><strong>Hyperparameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>: Number of trees in the forest.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: Maximum depth of each tree.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: Minimum number of samples required to split an internal node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>: Minimum number of samples required to be at a leaf node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code>: Number of features to consider for the best split at each node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bootstrap</span></code>: Whether bootstrap samples should be used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">oob_score</span></code>: Whether to calculate out-of-bag score.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+<p>The Random Forests algorithm combines the predictions from multiple decision trees, each constructed on a different bootstrap sample and a subset of features. The diversity introduced by these mechanisms helps to reduce overfitting and improve the generalization performance of the ensemble model. Additionally, Random Forests provide insights into feature importance, which can be used for feature selection and understanding the underlying relationships in the data <span id="id3">[<a class="reference internal" href="../References.html#id52" title="Leo Breiman. Random forests. Machine learning, 45(1):5–32, 2001.">Breiman, 2001</a>, <a class="reference internal" href="../References.html#id3" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<p>Keep in mind that the algorithm can be further customized and optimized with various hyperparameters and techniques, such as adjusting the number of trees, tuning the size of the feature subset, and handling missing values and categorical variables. Implementation details may vary depending on the programming language or library you’re using.</p>
+<p>Here’s how these concepts relate to scikit-learn’s API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="n">RandomForestRegressor</span>
+
+<span class="c1"># Creating a Random Forest Classifier</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                             <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                             <span class="n">oob_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Creating a Random Forest Regressor</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                            <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">oob_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can replace the hyperparameter values above with your desired settings. The scikit-learn API makes it convenient to configure the Random Forest algorithm for your specific task and data.</p>
+<p><font color='Blue'><b>Example</b></font>. Consider the Auto MPG dataset retrieved from the <a class="reference external" href="http://archive.ics.uci.edu/dataset/9/auto+mpg">UCI Machine Learning Repository</a>. We will now apply these concepts by actively engaging with this dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># You can download the dataset from: http://archive.ics.uci.edu/static/public/9/auto+mpg.zip</span>
+
+<span class="c1"># Define column names based on the dataset&#39;s description</span>
+<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">,</span> <span class="s1">&#39;Cylinders&#39;</span><span class="p">,</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Horsepower&#39;</span><span class="p">,</span> <span class="s1">&#39;Weight&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span> <span class="s1">&#39;Model_Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;Car_Name&#39;</span><span class="p">]</span>
+
+<span class="c1"># Read the dataset with column names, treating &#39;?&#39; as missing values, and remove rows with missing values</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;auto-mpg.data&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span>
+                          <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Remove the &#39;Car_Name&#39; column from the DataFrame</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Car_Name&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the resulting DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MPG</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model_Year</th>
+      <th>Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>18.0</td>
+      <td>8</td>
+      <td>307.0</td>
+      <td>130.0</td>
+      <td>3504.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>15.0</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>165.0</td>
+      <td>3693.0</td>
+      <td>11.5</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>18.0</td>
+      <td>8</td>
+      <td>318.0</td>
+      <td>150.0</td>
+      <td>3436.0</td>
+      <td>11.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>16.0</td>
+      <td>8</td>
+      <td>304.0</td>
+      <td>150.0</td>
+      <td>3433.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>17.0</td>
+      <td>8</td>
+      <td>302.0</td>
+      <td>140.0</td>
+      <td>3449.0</td>
+      <td>10.5</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>27.0</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790.0</td>
+      <td>15.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>388</th>
+      <td>44.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130.0</td>
+      <td>24.6</td>
+      <td>82</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>389</th>
+      <td>32.0</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295.0</td>
+      <td>11.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>390</th>
+      <td>28.0</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625.0</td>
+      <td>18.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>391</th>
+      <td>31.0</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720.0</td>
+      <td>19.4</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>392 rows × 8 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_val_score</span>
+
+<span class="c1"># Extract the features (X) and target variable (y)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">MPG</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>  <span class="c1"># Take the natural logarithm of the MPG values</span>
+
+<span class="c1"># Split the dataset into training and testing sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">set_size_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)]},</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="s1">&#39;Test&#39;</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">set_size_df</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Train</th>
+      <th>Test</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Size</th>
+      <td>294</td>
+      <td>98</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a figure and subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">feature_set_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Using all features&#39;</span><span class="p">,</span> <span class="s1">&#39;Using only 2 features: &#39;</span><span class="p">]</span>
+
+<span class="c1"># Loop through different feature sets</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">max_features</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+    <span class="c1"># Create a Random Forest Regressor</span>
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">max_features</span> <span class="o">=</span> <span class="n">max_features</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    
+    <span class="c1"># Create scatter plot and a diagonal reference line</span>
+    <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;medv&#39;</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;SkyBlue&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;MidnightBlue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Get feature importances</span>
+        <span class="n">feature_importances</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">feature_importances_</span>
+
+        <span class="c1"># Get the indices of the top two features</span>
+        <span class="n">top_feature_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">feature_importances</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># Get the feature names from your DataFrame</span>
+        <span class="n">top_features</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">top_feature_indices</span><span class="p">]</span>
+       
+        <span class="n">_title</span> <span class="o">=</span> <span class="n">feature_set_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_features</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_title</span> <span class="o">=</span> <span class="n">feature_set_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># Set title and labels for the current subplot</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">_title</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Predicted Values&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Actual Values&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate and display Mean Squared Error (MSE) with background color</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;MSE = </span><span class="si">{</span><span class="n">mse</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                      <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                      <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;Whitesmoke&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">))</span>  <span class="c1"># Add background color</span>
+    
+    <span class="c1"># Set equal aspect ratio for the subplots</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout and display the plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/147c9bf00823dc6bc8f5b810d7d69dfd8773479935743694086336d47aa21519.png" src="../_images/147c9bf00823dc6bc8f5b810d7d69dfd8773479935743694086336d47aa21519.png" />
+</div>
+</div>
+<p>The code generates two subplots, each presenting the results of a Random Forest Regression analysis with distinct feature settings:</p>
+<ol class="arabic simple">
+<li><p><strong>Using All Features:</strong></p>
+<ul class="simple">
+<li><p>This subplot showcases the results of Random Forest Regression when all available features (max_features=7) are utilized.</p></li>
+<li><p>The scatter plot displays predicted values on the x-axis and actual target values on the y-axis, with each point representing a data point from the test set.</p></li>
+<li><p>A diagonal dashed line (–) serves as a reference, indicating where predicted values align with actual values.</p></li>
+<li><p>The subplot is titled “Using all features,” emphasizing the utilization of all available features for prediction.</p></li>
+</ul>
+</li>
+<li><p><strong>Using Only 2 Features:</strong></p>
+<ul class="simple">
+<li><p>In this subplot, the results of Random Forest Regression are demonstrated using a reduced set of features (max_features=2).</p></li>
+<li><p>Similar to the first subplot, a scatter plot and diagonal reference line are displayed.</p></li>
+<li><p>The subplot title is “Using only 2 features,” highlighting the use of a subset of just two features (Displacement and Weight) for prediction.</p></li>
+</ul>
+</li>
+</ol>
+<p>In both subplots:</p>
+<ul class="simple">
+<li><p>The color of the scattered points reflects the target values (medv, representing housing value in the dataset).</p></li>
+<li><p>The background color of the Mean Squared Error (MSE) text box accentuates the calculated error value. This text box presents the MSE, quantitatively evaluating the model’s performance.</p></li>
+<li><p>The subplots maintain an equal aspect ratio, ensuring that the plot’s aspect ratio remains consistent, preventing distortion.</p></li>
+</ul>
+<p>These subplots facilitate a visual comparison of the model’s performance under different feature settings. By examining how well the predicted values align with the actual values and considering the MSE, you can assess the effectiveness of the Random Forest Regression model in making predictions on the Boston Housing dataset.</p>
+<div class="section" id="feature-importances">
+<h2><span class="section-number">10.6.1. </span>Feature Importances<a class="headerlink" href="#feature-importances" title="Permalink to this headline">#</a></h2>
+<p>In a random forest model, the <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> attribute is used to measure the importance of each feature (predictor) in making accurate predictions. It provides valuable insights into which features have the most influence on the model’s predictions <span id="id4">[<a class="reference internal" href="../References.html#id4" title="F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and E. Duchesnay. Scikit-learn: machine learning in Python. Journal of Machine Learning Research, 12:2825–2830, 2011.">Pedregosa <em>et al.</em>, 2011</a>, <a class="reference internal" href="../References.html#id57" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p><strong>How <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> is calculated:</strong></p>
+<p>The calculation of feature importances in a random forest model involves assessing how much each feature contributes to reducing the impurity (usually measured using metrics like Gini impurity or Mean Squared Error) in the individual decision trees that make up the forest. The impurity reduction that a feature brings is then averaged across all trees in the forest to compute the final importance score for that feature.</p>
+<p>Here’s a step-by-step explanation of how it works <span id="id5">[<a class="reference internal" href="../References.html#id4" title="F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and E. Duchesnay. Scikit-learn: machine learning in Python. Journal of Machine Learning Research, 12:2825–2830, 2011.">Pedregosa <em>et al.</em>, 2011</a>, <a class="reference internal" href="../References.html#id57" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Tree Level Calculation:</strong> In each individual decision tree within the random forest, the algorithm identifies candidate features for splitting based on the impurity reduction that each feature would bring if it were chosen as the split feature. This is typically done using metrics like the Gini impurity or Mean Squared Error.</p></li>
+<li><p><strong>Feature Contribution:</strong> For each candidate feature in each tree, the algorithm calculates how much the feature reduces the impurity in the data. The greater the reduction, the more important the feature is considered to be for that specific tree.</p></li>
+<li><p><strong>Averaging Across Trees:</strong> After building all the individual trees, the importance of each feature is averaged across all the trees in the forest. This results in an importance score for each feature that indicates its overall contribution to the model’s predictions.</p></li>
+<li><p><strong>Normalization:</strong> The importance scores are usually normalized so that they sum up to 1 or 100. This makes it easier to interpret the relative importance of each feature.</p></li>
+<li><p><strong>Interpretation:</strong> A higher importance score indicates that a feature plays a more significant role in the model’s predictions. On the other hand, features with lower importance scores contribute less to the model’s predictions.</p></li>
+</ol>
+<p><strong>Interpretation of <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>:</strong></p>
+<p>The values in the <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> array sum up to 0 or 1, depending on whether they are normalized. The importance values are relative and provide insight into which features have a more pronounced impact on the model’s predictions. Higher importance values suggest that the feature contributes more to the model’s ability to make accurate predictions.</p>
+<p>By analyzing <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>, you can identify key features that drive the model’s performance, focus on relevant variables, and potentially even perform feature selection to improve model efficiency.</p>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> in a random forest model quantifies the contribution of each feature in reducing impurity across individual trees, providing a valuable tool for understanding feature relevance and model behavior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1"># This is for the regression that uses only 6 features</span>
+<span class="c1"># Create a DataFrame with feature importances</span>
+<span class="n">Importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">*</span> <span class="mi">100</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="c1"># Apply the background gradient and round the importance values to 2 decimal places</span>
+<span class="n">styled_importance</span> <span class="o">=</span> <span class="n">Importance</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PuBu&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="p">})</span>
+
+<span class="c1"># Display the styled DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">styled_importance</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">Importance</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">Importance</span><span class="o">.</span><span class="n">Importance</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Purples&#39;</span><span class="p">,</span>
+                <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;Navy&#39;</span><span class="p">,</span> <span class="n">hatch</span><span class="o">=</span><span class="s2">&quot;///&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Variable Importance&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;MidnightBlue&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;MidnightBlue&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Feature Importance in Random Forest Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;DarkSlateGray&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;DimGray&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;DimGray&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;DimGray&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_19a5c_row0_col0 {
+  background-color: #8fb4d6;
+  color: #000000;
+}
+#T_19a5c_row1_col0 {
+  background-color: #023858;
+  color: #f1f1f1;
+}
+#T_19a5c_row2_col0 {
+  background-color: #71a8ce;
+  color: #f1f1f1;
+}
+#T_19a5c_row3_col0 {
+  background-color: #056dab;
+  color: #f1f1f1;
+}
+#T_19a5c_row4_col0, #T_19a5c_row6_col0 {
+  background-color: #fff7fb;
+  color: #000000;
+}
+#T_19a5c_row5_col0 {
+  background-color: #cdd0e5;
+  color: #000000;
+}
+</style>
+<table id="T_19a5c">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_19a5c_level0_col0" class="col_heading level0 col0" >Importance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_19a5c_level0_row0" class="row_heading level0 row0" >Cylinders</th>
+      <td id="T_19a5c_row0_col0" class="data row0 col0" >14.472</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row1" class="row_heading level0 row1" >Displacement</th>
+      <td id="T_19a5c_row1_col0" class="data row1 col0" >28.541</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row2" class="row_heading level0 row2" >Horsepower</th>
+      <td id="T_19a5c_row2_col0" class="data row2 col0" >16.325</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row3" class="row_heading level0 row3" >Weight</th>
+      <td id="T_19a5c_row3_col0" class="data row3 col0" >22.759</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row4" class="row_heading level0 row4" >Acceleration</th>
+      <td id="T_19a5c_row4_col0" class="data row4 col0" >3.856</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row5" class="row_heading level0 row5" >Model_Year</th>
+      <td id="T_19a5c_row5_col0" class="data row5 col0" >10.211</td>
+    </tr>
+    <tr>
+      <th id="T_19a5c_level0_row6" class="row_heading level0 row6" >Origin</th>
+      <td id="T_19a5c_row6_col0" class="data row6 col0" >3.835</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../_images/f471546ac2b712bad31420f23e7a61ee0e17e0a59e30047bfaa5b07f52d0d788.png" src="../_images/f471546ac2b712bad31420f23e7a61ee0e17e0a59e30047bfaa5b07f52d0d788.png" />
+</div>
+</div>
+<p>The model uses all features to predict the logarithm of MPG, and the table shows the relative importance of each feature:</p>
+<ol class="arabic simple">
+<li><p><strong>Cylinders</strong>: This feature has an importance value of 16.038. It suggests that the number of cylinders in the engine is a significant factor in predicting the logarithm of MPG. A higher number of cylinders might result in lower MPG, contributing to a higher importance score.</p></li>
+<li><p><strong>Displacement</strong>: With an importance value of 36.574, the engine displacement is a highly influential feature. It measures the size of the engine, and larger engine displacements tend to consume more fuel, resulting in lower MPG.</p></li>
+<li><p><strong>Horsepower</strong>: This feature has an importance value of 12.197. Horsepower represents the engine’s power, and more powerful engines tend to have lower MPG. Therefore, it is moderately important in the model.</p></li>
+<li><p><strong>Weight</strong>: Weight has an importance value of 25.042, making it a significant predictor. Heavier vehicles typically have lower fuel efficiency, and this feature is given considerable weight in the model.</p></li>
+<li><p><strong>Acceleration</strong>: Acceleration has an importance value of 2.340, indicating that it has a relatively minor impact on predicting MPG. It measures how quickly a vehicle can accelerate, and its effect on MPG is relatively smaller compared to other features.</p></li>
+<li><p><strong>Model_Year</strong>: The model year of the vehicle has an importance value of 7.471. This suggests that the age of the vehicle, represented by the model year, is moderately important in predicting MPG. Newer models tend to have better fuel efficiency.</p></li>
+<li><p><strong>Origin</strong>: The vehicle’s origin has the lowest importance value of 0.338, indicating that it has the least influence on predicting the logarithm of MPG. The origin might represent the manufacturing location or region, but its effect on MPG is relatively minimal in this model.</p></li>
+</ol>
+<p><font color='Blue'><b>Example</b></font>:  In this code example, a Decision Tree Classifier is utilized to illustrate decision boundaries on synthetic data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+
+<span class="c1"># Define a list of color names for the colormap</span>
+<span class="n">cmap_bold</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span> <span class="s2">&quot;Blue&quot;</span><span class="p">,</span> <span class="s2">&quot;Green&quot;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">])</span>
+
+<span class="c1"># Generate synthetic data using make_blobs</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">cluster_std</span> <span class="o">=</span> <span class="mf">1.25</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="n">n_features</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="n">cluster_std</span><span class="p">)</span>
+
+<span class="c1"># Create a DataFrame to hold the data and labels</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Feature </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)])</span>
+<span class="n">Data</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="c1"># Define a light colormap for plotting decision boundaries</span>
+<span class="n">cmap_light</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;MistyRose&quot;</span><span class="p">,</span> <span class="s2">&quot;LightBlue&quot;</span><span class="p">,</span> <span class="s2">&quot;HoneyDew&quot;</span><span class="p">,</span> <span class="s2">&quot;LightGray&quot;</span><span class="p">])</span>
+
+<span class="c1"># Plot decision boundaries</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">alph</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="s1">&#39;abcd&#39;</span><span class="p">):</span>
+    <span class="c1"># Create a RandomForestClassifier with specified max_depth</span>
+    <span class="n">rfc</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+    
+    <span class="c1"># Fit the classifier to the data</span>
+    <span class="n">rfc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># Plot the decision boundary using DecisionBoundaryDisplay</span>
+    <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">rfc</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_light</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                           <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+                                           <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+                                           <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span>
+                                           <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Scatterplot the original data points with color-coded labels</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">Data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Outcome&#39;</span><span class="p">,</span>
+                        <span class="n">palette</span><span class="o">=</span><span class="n">cmap_bold</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    
+    <span class="c1"># Set title, axis limits, and turn off grid</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">alph</span><span class="si">}</span><span class="s1">) max_depth = </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout for better presentation</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/afed802c0311518302784f9a4f194130fe6cb0d3d8ba14287f06f0c16f525ad7.png" src="../_images/afed802c0311518302784f9a4f194130fe6cb0d3d8ba14287f06f0c16f525ad7.png" />
+</div>
+</div>
+<p>The resulting visualization is a grid of subplots, each depicting a different scenario based on the chosen maximum depth value. The arrangement of these subplots allows for a clear comparison of how the complexity of decision boundaries changes with the depth of the decision trees. Through this example, one gains insight into the flexibility and versatility of Random Forests in handling complex classification tasks and capturing intricate decision boundaries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_halving_search_cv</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">HalvingRandomSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+
+<span class="c1"># Set a random seed for reproducibility</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Create a RandomForestClassifier with default parameters</span>
+<span class="n">rfc</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="c1"># Define the hyperparameter search space using param_dist</span>
+<span class="n">param_dist</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+              <span class="s2">&quot;max_depth&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+              <span class="s2">&quot;max_features&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+              <span class="s2">&quot;min_samples_split&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+              <span class="s2">&quot;bootstrap&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+              <span class="s2">&quot;criterion&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gini&quot;</span><span class="p">,</span> <span class="s2">&quot;entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;log_loss&quot;</span><span class="p">]</span>
+              <span class="p">}</span>
+
+<span class="c1"># Initialize HalvingRandomSearchCV with the estimator and parameter distributions</span>
+<span class="n">rsh</span> <span class="o">=</span> <span class="n">HalvingRandomSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">rfc</span><span class="p">,</span>
+                            <span class="n">param_distributions</span><span class="o">=</span><span class="n">param_dist</span><span class="p">,</span>
+                            <span class="n">factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="c1"># Fit the search object to your data</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">rsh</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Get the best hyperparameters found by the search</span>
+<span class="n">best_params_</span> <span class="o">=</span> <span class="n">rsh</span><span class="o">.</span><span class="n">best_params_</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">best_params_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;n_estimators&#39;: 20, &#39;min_samples_split&#39;: 7, &#39;max_features&#39;: 7, &#39;max_depth&#39;: None, &#39;criterion&#39;: &#39;log_loss&#39;, &#39;bootstrap&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The core of this example is the utilization of the <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> technique, which efficiently narrows down the hyperparameter search space. The technique gradually discards suboptimal combinations, ultimately converging on the best configuration. By fitting the search object to a dataset (<code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>), the code extracts and prints the best hyperparameters found by the search process. This example provides a valuable insight into how <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> can significantly speed up the search process while identifying hyperparameters that lead to improved model performance. It’s a demonstration of harnessing cutting-edge techniques to fine-tune machine learning models effectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+
+<span class="c1"># Initialize KFold cross-validator</span>
+<span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Lists to store train and test scores for each fold</span>
+<span class="n">train_scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Perform Cross-Validation</span>
+<span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">rfc</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="o">**</span><span class="n">best_params_</span><span class="p">)</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+    <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+    <span class="n">rfc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="c1"># train</span>
+    <span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">rfc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">train_accuracy</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+    <span class="n">train_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_accuracy</span><span class="p">)</span>
+    <span class="c1"># test</span>
+    <span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">rfc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+    <span class="n">test_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_accuracy</span><span class="p">)</span>
+
+<span class="c1">#  Print the Train and Test Scores for each fold</span>
+<span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fold </span><span class="si">{</span><span class="n">fold</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Train Score = </span><span class="si">{</span><span class="n">train_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test Score = </span><span class="si">{</span><span class="n">test_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate and print the average train and test scores</span>
+<span class="n">average_train_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_scores</span><span class="p">)</span>
+<span class="n">average_test_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">30</span><span class="o">*</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Train Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Test Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">30</span><span class="o">*</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fold 1: Train Score = 0.9500, Test Score = 0.8600
+Fold 2: Train Score = 0.9700, Test Score = 0.8200
+Fold 3: Train Score = 0.9250, Test Score = 0.9800
+Fold 4: Train Score = 0.9600, Test Score = 0.8200
+Fold 5: Train Score = 0.9500, Test Score = 0.9400
+______________________________
+Mean Train Score: 0.9510 ± 0.0150
+Mean Test Score: 0.8840 ± 0.0650
+______________________________
+</pre></div>
+</div>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Let’s explore the upsides and downsides of using the <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> technique for hyperparameter tuning:</p>
+<p><strong>Advantages:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Efficiency:</strong> The essence of <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> lies in its efficiency. It’s tailored to swiftly whittle down the expansive realm of hyperparameters by systematically discarding less promising configurations. This strategic pruning, carried out through successive iterations, outpaces the exhaustive search alternatives.</p></li>
+<li><p><strong>Resource Economy:</strong> The technique progressively slashes the number of candidate parameter combinations, translating to resource savings in comparison to approaches that meticulously explore the entire parameter landscape. This aspect is particularly advantageous when dealing with intricate models and voluminous datasets.</p></li>
+<li><p><strong>Timely Termination:</strong> <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> integrates an ingenious “early stopping” mechanism that halts the search once it detects suboptimal parameter combinations. This prevents unnecessary resource expenditure on subpar candidates.</p></li>
+<li><p><strong>Convergence to Excellence:</strong> As the technique evolves, it homes in on the most auspicious corners of the hyperparameter space. This steady refinement significantly elevates the prospects of identifying configurations that deliver peak model performance.</p></li>
+<li><p><strong>Versatility:</strong> The technique exhibits versatility in accommodating a diverse array of hyperparameters, transcending any restrictions imposed by a predefined search space configuration.</p></li>
+</ol>
+<p><strong>Disadvantages:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Potential Missed Opportunities:</strong> Although efficiency is a hallmark, <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> might inadvertently bypass portions of the hyperparameter space. This possibility of overlooking less apparent optimal configurations necessitates cautious consideration.</p></li>
+<li><p><strong>Sampling Bias:</strong> The involvement of random sampling in each iteration brings forth the potential of sampling bias. This bias might favor certain pockets of the hyperparameter space and thereby impact the holistic quality of the search.</p></li>
+<li><p><strong>Resource Intensiveness:</strong> Despite its enhanced efficiency compared to exhaustive searches, <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> is not without resource demands. For substantial datasets and intricate models, computational resources remain a crucial consideration.</p></li>
+<li><p><strong>Exploration Restraints:</strong> The technique’s concentration on paring down the search space could curtail the breadth of parameter combination exploration, potentially leading to suboptimal selections.</p></li>
+<li><p><strong>Sensitivity to <code class="docutils literal notranslate"><span class="pre">factor</span></code>:</strong> The efficacy of <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> can hinge on the selection of the <code class="docutils literal notranslate"><span class="pre">factor</span></code> parameter, which determines the fraction of parameter sets retained in each iteration. An unsuitable <code class="docutils literal notranslate"><span class="pre">factor</span></code> value might influence the search’s effectiveness.</p></li>
+<li><p><strong>Complexity in High Dimensions:</strong> Navigating high-dimensional hyperparameter spaces might entail a prolonged sequence of iterations to achieve effective convergence. This prolonged trajectory could extend the tuning process.</p></li>
+<li><p><strong>Variable Impact:</strong> The dividends reaped from <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> are contingent on the interplay of dataset and model characteristics. Certain models may not extract the same benefits as others from this technique.</p></li>
+</ol>
+<p>In summation, while <code class="docutils literal notranslate"><span class="pre">HalvingRandomSearchCV</span></code> furnishes efficiency and resource conservation, it also carries the potential of missing optimal configurations and introduces nuances like sampling bias. To adopt or not to adopt this technique hinges on weighing these pros and cons against the backdrop of your specific problem, resources, and requirements.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_10"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG_680_C10S5.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">10.5. </span>Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ENGG_680_C10S7.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10.7. </span>Gradient Boosting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importances">10.6.1. Feature Importances</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

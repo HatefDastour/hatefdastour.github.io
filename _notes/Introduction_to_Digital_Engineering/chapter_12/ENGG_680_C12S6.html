@@ -1,0 +1,1790 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12.6. Multilayer Perceptron (MLP) &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_12/ENGG_680_C12S6';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12.7. Image classification with TensorFlow" href="ENGG_680_C12S7.html" />
+    <link rel="prev" title="12.5. Building a Logistic Regression Model" href="ENGG_680_C12S5.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ReadMe.html">1. Introduction to Python Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S1.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S2.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S3.html">1.3. Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ReadMe.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S1.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S2.html">2.2. Iteration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ReadMe.html">3. Data Structures and File Handling in Python</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S1.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S2.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S3.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S4.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S5.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S6.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Classes and Objects</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S1.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S2.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S3.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S4.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S5.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S6.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ReadMe.html">5. Introduction to NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S1.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S2.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S3.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ReadMe.html">6. Working with Data using Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S1.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S2.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S3.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S4.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S5.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S6.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ReadMe.html">7. Data Visualization using Python</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S1.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S2.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S3.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S4.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S5.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S6.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ReadMe.html">8. An Introduction to Computer Vision</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S1.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S2.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S3.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S4.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S5.html">8.5. Drawing Functions (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S6.html">8.6. Morphological Transformations (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ReadMe.html">9. An Introduction to Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S1.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S2.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S3.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S4.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S5.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S6.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S7.html">9.7. Support Vector Machines</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ReadMe.html">10. Tree-Based Methods</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S1.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S2.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S3.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S4.html">10.4. Regression Trees and Linear Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S5.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S6.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S7.html">10.7. Gradient Boosting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ReadMe.html">11. Dimensionality Reduction and Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S1.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S2.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S3.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S4.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S5.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S6.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ReadMe.html">12. Introduction to Deep Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S1.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S2.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S3.html">12.3. Tensors and Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S4.html">12.4. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S5.html">12.5. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">12.6. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S7.html">12.7. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S8.html">12.8. Image Augmentations with TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../appendixes/ReadMe.html">13. Appendices</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_1.html">13.1. Sample Questions 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_2.html">13.2. Sample Questions 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">14. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multilayer Perceptron (MLP)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-multilayer-perceptron-mlp">12.6.1. Exploring the Multilayer Perceptron (MLP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplified-mathematics-of-the-multilayer-perceptron-mlp">12.6.2. Simplified Mathematics of the Multilayer Perceptron (MLP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">12.6.3. Data Preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-multi-layer-perceptron-mlp">12.6.4. Build the Multi-Layer Perceptron (MLP)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dense-layer">12.6.4.1. The Dense Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-loss-function">12.6.4.2. Define the loss function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-model">12.6.4.3. Train the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-evaluation">12.6.4.4. Performance Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-versatile-prediction-module-data-preprocessing-probability-prediction-and-class-prediction">12.6.5. Creating a Versatile Prediction Module: Data Preprocessing, Probability Prediction, and Class Prediction</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="multilayer-perceptron-mlp">
+<h1><span class="section-number">12.6. </span>Multilayer Perceptron (MLP)<a class="headerlink" href="#multilayer-perceptron-mlp" title="Permalink to this headline">#</a></h1>
+<div class="section" id="exploring-the-multilayer-perceptron-mlp">
+<h2><span class="section-number">12.6.1. </span>Exploring the Multilayer Perceptron (MLP)<a class="headerlink" href="#exploring-the-multilayer-perceptron-mlp" title="Permalink to this headline">#</a></h2>
+<p>The Multilayer Perceptron (MLP) is like a versatile tool in the world of machine learning, especially when it comes to solving problems like sorting things into multiple categories. But to understand how this tool works, let’s break it down into simpler parts: perceptrons, layers, and activation functions <span id="id1">[<a class="reference internal" href="../References.html#id92" title="I. Goodfellow, Y. Bengio, and A. Courville. Deep Learning. Adaptive Computation and Machine Learning series. MIT Press, 2016. ISBN 9780262337373. URL: https://books.google.ca/books?id=omivDQAAQBAJ.">Goodfellow <em>et al.</em>, 2016</a>]</span>.</p>
+<p><strong>Perceptrons</strong>: Think of perceptrons as tiny decision-making units. Each perceptron takes in some information (like numbers) and processes it to make a decision. The process it uses is pretty straightforward. It multiplies the information by some weights (which are like the importance assigned to different bits of information) and adds a bias (a tweak to the decision). All these calculations result in an output.</p>
+<p><strong>Dense Layers</strong>: Now, imagine putting lots of these perceptrons together in a stack. This stack is called a dense layer. A dense layer is a bit like a committee of perceptrons working together. They all have a say in making a decision. But there’s a slight twist: instead of just multiplying and adding, they use a matrix (like a big table of numbers) and a bias vector (a bunch of tweaks) to calculate their output.</p>
+<p><strong>Connecting the Dots</strong>: In the MLP, we connect these dense layers in a clever way. The output of one layer becomes the input for the next. It’s like a relay race where each layer passes on the baton of information. This interconnectedness helps the MLP understand complex patterns in data.</p>
+<p><strong>Activation Functions</strong>: Now, here’s where things get really interesting. We don’t want the MLP to make simple, linear decisions all the time. To tackle tricky problems, we add a special ingredient called activation functions. These functions introduce non-linearity into the MLP. In simpler terms, they let the MLP learn complex stuff, like recognizing handwritten letters or differentiating between cats and dogs. Activation functions make the MLP flexible and capable of understanding intricate patterns and relationships in data.</p>
+<p>So, in a nutshell, an MLP is like a team of decision-makers (perceptrons) organized into layers, working together to solve problems. They learn from data, understand complex patterns, and make predictions. It’s a powerful tool in the world of machine learning!</p>
+</div>
+<div class="section" id="simplified-mathematics-of-the-multilayer-perceptron-mlp">
+<h2><span class="section-number">12.6.2. </span>Simplified Mathematics of the Multilayer Perceptron (MLP)<a class="headerlink" href="#simplified-mathematics-of-the-multilayer-perceptron-mlp" title="Permalink to this headline">#</a></h2>
+<p>The Multilayer Perceptron (MLP) is a type of feedforward neural network that is particularly useful for tackling multiclass classification problems. To effectively build and comprehend an MLP, it’s important to grasp the concepts of perceptrons, layers, and activation functions <span id="id2">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>At the core of Multilayer Perceptrons are functional units known as perceptrons. The equation governing a single perceptron’s behavior is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-263c1641-8d71-4960-a9c2-b1db9badc602">
+<span class="eqno">(12.29)<a class="headerlink" href="#equation-263c1641-8d71-4960-a9c2-b1db9badc602" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Z = \vec{w} \cdot \mathrm{X} + b
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Z\)</span>: represents the output of the perceptron.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{X}\)</span>: denotes the feature matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vec{w}\)</span>: stands for the weight vector.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span>: signifies the bias term.</p></li>
+</ul>
+<p>When these individual perceptrons are arranged in a stack, they collectively form what are known as dense layers. These layers can then be interconnected to construct a neural network. The equation for a dense layer closely resembles that of a single perceptron, but it involves a weight matrix and a bias vector <span id="id3">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4f750151-c24d-490a-a2b5-042bf8427671">
+<span class="eqno">(12.30)<a class="headerlink" href="#equation-4f750151-c24d-490a-a2b5-042bf8427671" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Z = \mathrm{W} \cdot \mathrm{X} + \vec{b}
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Z\)</span>: represents the output of the dense layer.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{X}\)</span>: denotes the feature matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{W}\)</span>: stands for the weight matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vec{b}\)</span>: signifies the bias vector.</p></li>
+</ul>
+<p>In an MLP, numerous dense layers are interlinked in such a manner that the outputs of one layer become inputs to the next layer. To enhance the capabilities of an MLP classifier in capturing intricate decision boundaries and generalizing effectively to new data, non-linear activation functions are applied to the outputs of dense layers. This strategic inclusion of activation functions enables the MLP to learn complex patterns and relationships within the data, ultimately enhancing its classification performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow_datasets</span> <span class="k">as</span> <span class="nn">tfds</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='Blue'><b>Example:</b></font> The MNIST dataset, available through TensorFlow Datasets (TFDS), is a widely used dataset in the field of machine learning. It’s often considered the “Hello World” of computer vision and deep learning due to its simplicity and relevance. The dataset contains images of handwritten digits (0-9) and their corresponding labels. It’s a popular choice for tasks like digit recognition and image classification.</p>
+<p>Here’s a breakdown of the MNIST dataset from TensorFlow Datasets:</p>
+<ol class="arabic simple">
+<li><p><strong>Dataset Source</strong>: The MNIST dataset is hosted and maintained by TensorFlow Datasets (TFDS), which is a library that provides easy access to a wide range of datasets for machine learning projects.</p></li>
+<li><p><strong>Data</strong>: The dataset consists of two main components:</p>
+<ul class="simple">
+<li><p>Images: The images are grayscale, 28x28 pixels in size, and represent handwritten digits.</p></li>
+<li><p>Labels: Each image is associated with a label indicating the digit it represents (0-9).</p></li>
+</ul>
+</li>
+<li><p><strong>Splitting</strong>: The dataset is often split into three subsets:</p>
+<ul class="simple">
+<li><p>Training Set: The largest subset used for training the model.</p></li>
+<li><p>Validation Set: A smaller subset used to fine-tune the model’s hyperparameters and assess its performance during training.</p></li>
+<li><p>Test Set: A separate subset used to evaluate the final performance of the trained model. It’s crucial that the test set remains unseen during training to ensure unbiased evaluation.</p></li>
+</ul>
+</li>
+<li><p><strong>Usage</strong>: Researchers and practitioners use the MNIST dataset to develop and test various machine learning algorithms, especially those related to image classification and digit recognition. It’s a great starting point for experimenting with different models and techniques.</p></li>
+<li><p><strong>Accessibility</strong>: You can easily access the MNIST dataset using TensorFlow Datasets. TFDS provides a convenient interface to download, preprocess, and manage datasets, making it easier to incorporate them into your machine learning projects.</p></li>
+</ol>
+<p>The dataset can be accessed through <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/mnist">TensorFlow Datasets</a>. It is essential to partition the MNIST dataset meticulously into distinct subsets: training, validation, and testing sets. This strategic division serves various purposes in the model development process.</p>
+<p>During training, the training set provides the foundation for the model to learn and adapt its parameters. Simultaneously, the validation set, often referred to as the development set, acts as a vital tool for assessing the model’s performance on data it hasn’t encountered before. This is critical for detecting potential overfitting and ensuring the model’s generalizability to new, unseen data.</p>
+<p>As training progresses, monitoring the model’s performance on the validation set helps in making informed decisions about hyperparameters and model architecture adjustments. Once the model has been fine-tuned using the validation set, the ultimate evaluation of its performance occurs on the test set. The test set’s distinct role lies in providing an unbiased estimate of the model’s effectiveness and generalization capabilities on completely new and previously unseen data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow_datasets</span> <span class="k">as</span> <span class="nn">tfds</span>
+
+<span class="c1"># Set a random seed for reproducibility</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+
+<span class="c1"># Load the MNIST dataset with defined splits</span>
+<span class="c1"># Using &#39;as_supervised=True&#39; to load data as (input, target) pairs</span>
+<span class="c1"># &#39;train[10000:]&#39; loads the training data starting from the 10,000th sample</span>
+<span class="c1"># &#39;train[0:10000]&#39; loads the first 10,000 samples for validation</span>
+<span class="c1"># &#39;test&#39; loads the test dataset</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">val_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span>
+                                            <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train[10000:]&#39;</span><span class="p">,</span> <span class="s1">&#39;train[0:10000]&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span>
+                                            <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Now &#39;train_data&#39;, &#39;val_data&#39;, and &#39;test_data&#39; hold the respective datasets</span>
+<span class="c1"># &#39;train_data&#39; contains batches of training samples and labels</span>
+<span class="c1"># &#39;val_data&#39; contains batches of validation samples and labels</span>
+<span class="c1"># &#39;test_data&#39; contains batches of test samples and labels</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+<span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Use wait=True to clear the output immediately</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The MNIST dataset comprises handwritten digits accompanied by their corresponding true labels. To provide a visual representation, consider the following display of a few selected examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Load MNIST data and preprocess</span>
+<span class="n">x_viz</span><span class="p">,</span> <span class="n">y_viz</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train[:1500]&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x_viz</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">x_viz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Create a layout for visualization</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;MNIST Handwritten Digits&quot;</span><span class="p">,</span>
+             <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span> <span class="mf">0.92</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x_viz</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>  <span class="c1"># Try different colormaps for a touch</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;True Label: </span><span class="si">{</span><span class="n">y_viz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;Blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>  <span class="c1"># Adjust layout for suptitle</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8e9142337edde290fc1a27dc5c6622d23180a662dd234974849640c35ad18294.png" src="../_images/8e9142337edde290fc1a27dc5c6622d23180a662dd234974849640c35ad18294.png" />
+</div>
+</div>
+<p>Additionally, conduct an analysis of the digit distribution within the training data to confirm the balanced representation of each class within the dataset. This step is crucial to ensure that no particular digit is disproportionately favored or neglected during model training and evaluation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Load MNIST data and preprocess</span>
+<span class="n">x_viz</span><span class="p">,</span> <span class="n">y_viz</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train[:1500]&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Create a compact layout for the distribution plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y_viz</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Digits&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution of Digits in MNIST Training Data&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5c60ce0fc17be59b8dfc8ef3f15d57a6f594130c73a46f6429ed69cfdd94947b.png" src="../_images/5c60ce0fc17be59b8dfc8ef3f15d57a6f594130c73a46f6429ed69cfdd94947b.png" />
+</div>
+</div>
+</div>
+<div class="section" id="data-preprocessing">
+<h2><span class="section-number">12.6.3. </span>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this headline">#</a></h2>
+<p>To begin, reshape the feature matrices into a 2-dimensional format by flattening the images. Subsequently, perform data rescaling to map the pixel values originally within the range of [0, 255] into the more suitable interval of [0, 1]. This rescaling operation harmonizes the distribution of input pixels, promoting enhanced convergence during the training process <span id="id4">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess function to reshape and rescale the data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    x (tf.Tensor): Input images.</span>
+<span class="sd">    y (tf.Tensor): Corresponding labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Preprocessed images.</span>
+<span class="sd">    tf.Tensor: Unchanged labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>  <span class="c1"># Reshape to 2D</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">255</span>  <span class="c1"># Rescale pixel values</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># Applying preprocess function to training and validation data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">preprocess</span><span class="p">)</span>
+<span class="n">val_data</span> <span class="o">=</span> <span class="n">val_data</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">preprocess</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="build-the-multi-layer-perceptron-mlp">
+<h2><span class="section-number">12.6.4. </span>Build the Multi-Layer Perceptron (MLP)<a class="headerlink" href="#build-the-multi-layer-perceptron-mlp" title="Permalink to this headline">#</a></h2>
+<p>Let’s revisit the ReLU and Softmax activation functions, which play pivotal roles in neural networks. TensorFlow provides these functions as <code class="docutils literal notranslate"><span class="pre">tf.nn.relu</span></code> and <code class="docutils literal notranslate"><span class="pre">tf.nn.softmax</span></code> respectively.</p>
+<p>The Rectified Linear Unit (ReLU) is a nonlinear activation function that outputs the input if it’s positive, and 0 otherwise <span id="id5">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-003d4c06-7070-478e-bd45-c8d5b0cfd3f8">
+<span class="eqno">(12.31)<a class="headerlink" href="#equation-003d4c06-7070-478e-bd45-c8d5b0cfd3f8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{ReLU}(X) = \max(0, X)
+\end{equation}\]</div>
+<p>On the other hand, the softmax activation function is a normalized exponential function that transforms an array of real numbers into a probability distribution with multiple classes. This is particularly valuable for generating class probabilities from a neural network’s output <span id="id6">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7cdcdfc3-c332-45f0-96c1-b090b715387e">
+<span class="eqno">(12.32)<a class="headerlink" href="#equation-7cdcdfc3-c332-45f0-96c1-b090b715387e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Softmax}(X) = \frac{e^{X}}{\sum_{i=1}^{m}e^{X_i}}
+\end{equation}\]</div>
+<p>These functions are crucial elements that contribute to the expressive power of our neural network architecture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Create the subplots for ReLU and Softmax</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+<span class="c1"># Plot ReLU</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ReLU&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;ReLU(x)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ReLU Activation Function&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Plot Softmax</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Softmax&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span> <span class="s1">&#39;Softmax(x)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Softmax Activation Function&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fb26bcb5a3763e649dbc498d6489ee1868e097155458d96a7aedb77d96593ea6.png" src="../_images/fb26bcb5a3763e649dbc498d6489ee1868e097155458d96a7aedb77d96593ea6.png" />
+</div>
+</div>
+<div class="section" id="the-dense-layer">
+<h3><span class="section-number">12.6.4.1. </span>The Dense Layer<a class="headerlink" href="#the-dense-layer" title="Permalink to this headline">#</a></h3>
+<p>Let’s craft a class to represent the dense layer within our neural network. In a multi-layer perceptron (MLP), the outputs of one layer are fully connected to the inputs of the next layer. In a dense layer, the input dimension can be inferred from the output dimension of the preceding layer. As a result, there’s no need to explicitly provide input dimensions during initialization <span id="id7">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>For stable training dynamics, the proper initialization of weights is crucial. One widely employed technique is the Xavier initialization scheme. It entails sampling each element of the weight matrix from a uniform distribution <span id="id8">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-eb3ddf83-e7a4-427e-ae56-09776a407b91">
+<span class="eqno">(12.33)<a class="headerlink" href="#equation-eb3ddf83-e7a4-427e-ae56-09776a407b91" title="Permalink to this equation">#</a></span>\[\begin{equation}
+W_{ij} \sim \text{Uniform}\left(-\frac{\sqrt{6}}{\sqrt{n + m}}, \frac{\sqrt{6}}{\sqrt{n + m}}\right)
+\end{equation}\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(n\)</span> denotes the number of input neurons, while <span class="math notranslate nohighlight">\(m\)</span> signifies the number of output neurons. To ensure a balanced starting point for activations, the bias vector can be initialized to zeros. By encapsulating these principles within the dense layer class, we lay a robust foundation for the construction of our neural network architecture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">xavier_init</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Xavier weight initialization for a weight matrix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    shape (tuple): Shape of the weight matrix (input_dim, output_dim).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Initialized weight matrix using Xavier initialization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span> <span class="o">=</span> <span class="n">shape</span>
+
+    <span class="c1"># Compute the Xavier initialization bounds</span>
+    <span class="n">xavier_lim</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">6.</span><span class="p">)</span> <span class="o">/</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">in_dim</span> <span class="o">+</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+    <span class="c1"># Generate weight values using uniform distribution within the bounds</span>
+    <span class="n">weight_vals</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">),</span>
+                                    <span class="n">minval</span><span class="o">=-</span><span class="n">xavier_lim</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">xavier_lim</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">weight_vals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The provided code defines a function named <code class="docutils literal notranslate"><span class="pre">xavier_init</span></code> that facilitates the Xavier weight initialization technique. This technique aims to provide appropriate initial values for the weights of a neural network layer, contributing to stable and effective training. Here’s a breakdown of the code and its purpose:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">xavier_init(shape):</span></code>:</p>
+<ul>
+<li><p>This line begins the definition of the function <code class="docutils literal notranslate"><span class="pre">xavier_init</span></code>, which takes a single argument named <code class="docutils literal notranslate"><span class="pre">shape</span></code>. The <code class="docutils literal notranslate"><span class="pre">shape</span></code> argument is expected to be a tuple indicating the shape of the weight matrix to be initialized. The shape should include the dimensions of the input and output of the layer (input_dim, output_dim).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;Xavier</span> <span class="pre">weight</span> <span class="pre">initialization</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">weight</span> <span class="pre">matrix.&quot;&quot;&quot;</span></code>:</p>
+<ul>
+<li><p>This docstring provides a brief explanation of the function’s purpose. It serves as documentation to help users understand what the function does and how to use it.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">in_dim,</span> <span class="pre">out_dim</span> <span class="pre">=</span> <span class="pre">shape</span></code>:</p>
+<ul>
+<li><p>Here, the tuple <code class="docutils literal notranslate"><span class="pre">shape</span></code> is unpacked into <code class="docutils literal notranslate"><span class="pre">in_dim</span></code> and <code class="docutils literal notranslate"><span class="pre">out_dim</span></code>, representing the number of input and output neurons of the layer, respectively.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xavier_lim</span> <span class="pre">=</span> <span class="pre">tf.sqrt(6.)</span> <span class="pre">/</span> <span class="pre">tf.sqrt(tf.cast(in_dim</span> <span class="pre">+</span> <span class="pre">out_dim,</span> <span class="pre">tf.float32))</span></code>:</p>
+<ul>
+<li><p>This line calculates the Xavier initialization bounds for the weight values. It uses the formula: Xavier bounds = sqrt(6) / sqrt(input_dim + output_dim). This is a critical step in ensuring that the initial weight values are within appropriate ranges for effective training.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weight_vals</span> <span class="pre">=</span> <span class="pre">tf.random.uniform(shape=(in_dim,</span> <span class="pre">out_dim),</span> <span class="pre">minval=-xavier_lim,</span> <span class="pre">maxval=xavier_lim,</span> <span class="pre">seed=22)</span></code>:</p>
+<ul>
+<li><p>This line generates random weight values using a uniform distribution. The shape of the weight matrix is specified as <code class="docutils literal notranslate"><span class="pre">(in_dim,</span> <span class="pre">out_dim)</span></code>, and the values are drawn from the interval <code class="docutils literal notranslate"><span class="pre">[-xavier_lim,</span> <span class="pre">xavier_lim]</span></code>. The <code class="docutils literal notranslate"><span class="pre">seed</span></code> parameter ensures reproducibility.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">weight_vals</span></code>:</p>
+<ul>
+<li><p>The function returns the initialized weight matrix, which is a tensor containing the generated weight values.</p></li>
+</ul>
+</li>
+</ul>
+<p>The Xavier initialization method can alternatively be implemented using <code class="docutils literal notranslate"><span class="pre">tf.keras.initializers.GlorotUniform</span></code>. This initializer encapsulates the logic of Xavier initialization, making it even more convenient to apply across different layers of a neural network <span id="id9">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DenseLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">weight_init</span><span class="o">=</span><span class="n">xavier_init</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">identity</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the DenseLayer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        out_dim (int): Number of output neurons.</span>
+<span class="sd">        weight_init (callable): Weight initialization function (default: Xavier initialization).</span>
+<span class="sd">        activation (callable): Activation function (default: identity).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the output dimensions, weight initializer, and activation function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span> <span class="o">=</span> <span class="n">out_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_init</span> <span class="o">=</span> <span class="n">weight_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute a forward pass through the DenseLayer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        x (tf.Tensor): Input tensor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        tf.Tensor: Output tensor after applying activation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">built</span><span class="p">:</span>
+            <span class="c1"># Infer input dimension and initialize weights and biases on the first call</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">in_dim</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_init</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">in_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_dim</span><span class="p">,)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Compute the forward pass</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This code snippet defines a <code class="docutils literal notranslate"><span class="pre">DenseLayer</span></code> class, representing a dense layer within a neural network. Let’s break down its structure and functionality:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">DenseLayer(tf.Module):</span></code>:</p>
+<ul>
+<li><p>This line starts the definition of the <code class="docutils literal notranslate"><span class="pre">DenseLayer</span></code> class, which is derived from <code class="docutils literal notranslate"><span class="pre">tf.Module</span></code>. This inheritance provides certain capabilities and functionalities from TensorFlow.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__init__(self,</span> <span class="pre">out_dim,</span> <span class="pre">weight_init=xavier_init,</span> <span class="pre">activation=tf.identity):</span></code>:</p>
+<ul>
+<li><p>This is the class’s constructor method (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>). It initializes a <code class="docutils literal notranslate"><span class="pre">DenseLayer</span></code> instance with parameters:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">out_dim</span></code>: The number of output neurons for this layer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weight_init</span></code>: A callable representing the weight initialization function. It defaults to <code class="docutils literal notranslate"><span class="pre">xavier_init</span></code>, which was defined earlier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">activation</span></code>: A callable representing the activation function. It defaults to <code class="docutils literal notranslate"><span class="pre">tf.identity</span></code>, which is a linear activation.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">self.out_dim</span> <span class="pre">=</span> <span class="pre">out_dim</span></code>, <code class="docutils literal notranslate"><span class="pre">self.weight_init</span> <span class="pre">=</span> <span class="pre">weight_init</span></code>, <code class="docutils literal notranslate"><span class="pre">self.activation</span> <span class="pre">=</span> <span class="pre">activation</span></code>:</p>
+<ul>
+<li><p>These lines initialize instance variables to store the output dimension, weight initialization function, and activation function.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">self.built</span> <span class="pre">=</span> <span class="pre">False</span></code>:</p>
+<ul>
+<li><p>This initializes an instance variable, <code class="docutils literal notranslate"><span class="pre">built</span></code>, to <code class="docutils literal notranslate"><span class="pre">False</span></code>. It will be used to track whether the layer’s weights and biases have been initialized.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__call__(self,</span> <span class="pre">x):</span></code>:</p>
+<ul>
+<li><p>This method allows the instance to be called as a function. It defines how the layer processes input <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">not</span> <span class="pre">self.built:</span></code>:</p>
+<ul>
+<li><p>This condition checks if the layer’s weights and biases have already been initialized.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">self.in_dim</span> <span class="pre">=</span> <span class="pre">x.shape[1]</span></code>, <code class="docutils literal notranslate"><span class="pre">self.w</span> <span class="pre">=</span> <span class="pre">tf.Variable(self.weight_init(shape=(self.in_dim,</span> <span class="pre">self.out_dim)))</span></code>, <code class="docutils literal notranslate"><span class="pre">self.b</span> <span class="pre">=</span> <span class="pre">tf.Variable(tf.zeros(shape=(self.out_dim,)))</span></code>, <code class="docutils literal notranslate"><span class="pre">self.built</span> <span class="pre">=</span> <span class="pre">True</span></code>:</p>
+<ul>
+<li><p>Within the above condition, these lines infer the input dimension from the shape of <code class="docutils literal notranslate"><span class="pre">x</span></code>, initialize the weight matrix <code class="docutils literal notranslate"><span class="pre">w</span></code> using the specified weight initialization function, initialize the bias vector <code class="docutils literal notranslate"><span class="pre">b</span></code> with zeros, and mark the layer as built.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">tf.add(tf.matmul(x,</span> <span class="pre">self.w),</span> <span class="pre">self.b)</span></code>:</p>
+<ul>
+<li><p>This computes the linear combination of the input <code class="docutils literal notranslate"><span class="pre">x</span></code> with the weights and biases.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">self.activation(z)</span></code>:</p>
+<ul>
+<li><p>The activation function is applied to the linear combination, producing the final output of the layer.</p></li>
+</ul>
+</li>
+</ul>
+<p>Next, build a class for the MLP model that executes layers sequentially.
+Remember that the model variables are only available after the first sequence of dense layer calls due to dimension inference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLP</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Multi-Layer Perceptron (MLP).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        layers (list): List of layers to be used in the MLP.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">preds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the forward pass through the MLP.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        x (tf.Tensor): Input tensor.</span>
+<span class="sd">        preds (bool): If True, return model predictions.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        tf.Tensor: Output tensor after passing through all layers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Execute the model&#39;s layers sequentially</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># If preds is True, return model predictions</span>
+        <span class="k">if</span> <span class="n">preds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This code snippet defines a <code class="docutils literal notranslate"><span class="pre">MLP</span></code> (Multi-Layer Perceptron) class that represents a neural network architecture. Let’s break down its structure and functionality:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">MLP(tf.Module):</span></code>:</p>
+<ul>
+<li><p>This line initiates the definition of the <code class="docutils literal notranslate"><span class="pre">MLP</span></code> class, inheriting from <code class="docutils literal notranslate"><span class="pre">tf.Module</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__init__(self,</span> <span class="pre">layers):</span></code>:</p>
+<ul>
+<li><p>This is the class’s constructor method (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>). It initializes an instance of the <code class="docutils literal notranslate"><span class="pre">MLP</span></code> class with a parameter:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: A list containing the layers that compose the neural network architecture.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">self.layers</span> <span class="pre">=</span> <span class="pre">layers</span></code>:</p>
+<ul>
+<li><p>This line initializes an instance variable, <code class="docutils literal notranslate"><span class="pre">layers</span></code>, to store the provided list of layers.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code>:</p>
+<ul>
+<li><p>This decorator optimizes the performance of the function it decorates by compiling it as a TensorFlow graph for execution speedup.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">__call__(self,</span> <span class="pre">x,</span> <span class="pre">preds=False):</span></code>:</p>
+<ul>
+<li><p>This method allows an instance of the <code class="docutils literal notranslate"><span class="pre">MLP</span></code> class to be called as a function. It defines how the input tensor <code class="docutils literal notranslate"><span class="pre">x</span></code> is processed through the neural network.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">layer</span> <span class="pre">in</span> <span class="pre">self.layers:</span></code>:</p>
+<ul>
+<li><p>This loop iterates over each layer in the list of layers.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">layer(x)</span></code>:</p>
+<ul>
+<li><p>Inside the loop, this line applies the current layer’s computation to the input tensor <code class="docutils literal notranslate"><span class="pre">x</span></code>. The updated <code class="docutils literal notranslate"><span class="pre">x</span></code> becomes the output of this layer, which is then used as input for the next layer.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">preds:</span></code>:</p>
+<ul>
+<li><p>This condition checks whether the <code class="docutils literal notranslate"><span class="pre">preds</span></code> argument is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">x</span></code>:</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">preds</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the method returns the final output tensor, which represents the model’s predictions.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">x</span></code>:</p>
+<ul>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">preds</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> (or not provided), the method returns the final output tensor after passing through all the layers.</p></li>
+</ul>
+</li>
+</ul>
+<p>Overall, this <code class="docutils literal notranslate"><span class="pre">MLP</span></code> class encapsulates the structure of a neural network composed of multiple layers. The class’s <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method performs the forward pass through the network by sequentially applying the layers’ computations to the input tensor. The use of <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code> helps optimize the execution speed of the forward pass. The class provides the flexibility to obtain the final predictions if desired, making it a convenient tool for creating and using neural network architectures.</p>
+<p>Initialize an MLP model with the specified architecture:</p>
+<ul class="simple">
+<li><p>Forward Pass: Dense(784 x 700) x Dense(700 x 500) x Dense(500 x 10)</p></li>
+</ul>
+<p>In this architecture, each layer uses a ReLU activation function except for the final layer, which is linear. The softmax activation function is not applied within the MLP; it’s computed separately in the loss and prediction functions <span id="id10">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the sizes of hidden layers and output</span>
+<span class="n">hidden_layer_1_size</span> <span class="o">=</span> <span class="mi">700</span>
+<span class="n">hidden_layer_2_size</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">output_size</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Initialize the MLP model</span>
+<span class="n">mlp_model</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">([</span>
+    <span class="n">DenseLayer</span><span class="p">(</span><span class="n">out_dim</span><span class="o">=</span><span class="n">hidden_layer_1_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span>
+    <span class="n">DenseLayer</span><span class="p">(</span><span class="n">out_dim</span><span class="o">=</span><span class="n">hidden_layer_2_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span>
+    <span class="n">DenseLayer</span><span class="p">(</span><span class="n">out_dim</span><span class="o">=</span><span class="n">output_size</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="define-the-loss-function">
+<h3><span class="section-number">12.6.4.2. </span>Define the loss function<a class="headerlink" href="#define-the-loss-function" title="Permalink to this headline">#</a></h3>
+<p>For multiclass classification tasks, the cross-entropy loss function is a suitable choice. It quantifies the negative log-likelihood of the data based on the model’s predicted probabilities. Higher probabilities assigned to the true class result in lower loss values. The mathematical formula for the cross-entropy loss is as follows <span id="id11">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-89edf218-db8e-400d-91a3-1ec79633aabf">
+<span class="eqno">(12.34)<a class="headerlink" href="#equation-89edf218-db8e-400d-91a3-1ec79633aabf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+L = -\frac{1}{n}\sum_{i=1}^{n}\sum_{j=1}^{m} y_{j}^{[i]} \cdot \log(\hat{y_{j}}^{[i]})
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{y}\)</span> is a matrix of predicted class distributions of shape <span class="math notranslate nohighlight">\((n \times m)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\)</span> is a one-hot encoded matrix of true classes of shape <span class="math notranslate nohighlight">\((n \times m)\)</span>.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.nn.sparse_softmax_cross_entropy_with_logits</span></code> function can efficiently compute the cross-entropy loss. Importantly, this function doesn’t require the last layer of the model to use the softmax activation. Additionally, it accommodates non-one-hot-encoded class labels.</p>
+<p>This loss function is crucial for guiding the model’s learning process towards improved classification accuracy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cross_entropy_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the cross-entropy loss.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    y_pred (tf.Tensor): Predicted class distributions.</span>
+<span class="sd">    y (tf.Tensor): True class labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Mean cross-entropy loss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compute cross entropy loss with a sparse operation</span>
+    <span class="n">sparse_ce</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sparse_softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the mean of the cross-entropy loss</span>
+    <span class="n">mean_ce</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">sparse_ce</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mean_ce</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a fundamental accuracy function that assesses the ratio of accurately classified instances during training. To transform softmax outputs into class predictions, determine the index associated with the highest class probability. This can be achieved using the <code class="docutils literal notranslate"><span class="pre">tf.argmax</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the accuracy of predictions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    y_pred (tf.Tensor): Predicted class distributions.</span>
+<span class="sd">    y (tf.Tensor): True class labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Accuracy of predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Extract class predictions using softmax outputs</span>
+    <span class="n">class_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">y_pred</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Compare class predictions with true class labels and calculate accuracy</span>
+    <span class="n">is_equal</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">class_preds</span><span class="p">)</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">is_equal</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">accuracy</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-the-model">
+<h3><span class="section-number">12.6.4.3. </span>Train the Model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
+<p>Utilizing an optimizer can lead to considerably faster convergence compared to standard gradient descent. Below, the Adam optimizer is implemented for training the model. To delve deeper into the world of designing custom optimizers with TensorFlow Core, explore the <a class="reference external" href="https://www.tensorflow.org/guide/core/optimizers_core">Optimizers</a> guide <span id="id12">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Adam</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">beta_1</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">beta_2</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Adam optimizer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        learning_rate (float): Learning rate (default: 1e-3).</span>
+<span class="sd">        beta_1 (float): Exponential decay rate for the first moment estimates (default: 0.9).</span>
+<span class="sd">        beta_2 (float): Exponential decay rate for the second moment estimates (default: 0.999).</span>
+<span class="sd">        epsilon (float): Small constant to prevent division by zero (default: 1e-7).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize optimizer parameters and variable slots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span> <span class="o">=</span> <span class="n">beta_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span> <span class="o">=</span> <span class="n">beta_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_dvar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_dvar</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">apply_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grads</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply gradients to update model variables.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        grads (list): List of gradients corresponding to model variables.</span>
+<span class="sd">        vars (list): List of model variables.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize variables on the first call</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">built</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">v_dvar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">s_dvar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Update model variables given gradients</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">d_var</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="nb">vars</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_var</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">d_var</span><span class="p">))</span>
+            <span class="n">v_dvar_bias_corrected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">))</span>
+            <span class="n">s_dvar_bias_corrected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_dvar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">))</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">assign_sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">v_dvar_bias_corrected</span> <span class="o">/</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s_dvar_bias_corrected</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+=</span> <span class="mf">1.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The provided code defines a custom implementation of the Adam optimizer. Below is an explanation of each key component:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialization (<code class="docutils literal notranslate"><span class="pre">__init__</span></code> method):</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Adam</span></code> class is initialized with several hyperparameters: <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_1</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_2</span></code>, and <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>. These hyperparameters control the optimization process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: The step size used for updating the model parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">beta_1</span></code> and <code class="docutils literal notranslate"><span class="pre">beta_2</span></code>: Exponential decay rates for the first and second moment estimates of the gradients.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon</span></code>: A small constant added to prevent division by zero.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">v_dvar</span></code>, and <code class="docutils literal notranslate"><span class="pre">s_dvar</span></code> are used to keep track of the current iteration, first moment estimates, and second moment estimates respectively.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">built</span></code> flag is used to indicate whether the optimizer’s variables have been initialized.</p></li>
+</ul>
+</li>
+<li><p><strong>Gradient Application (<code class="docutils literal notranslate"><span class="pre">apply_gradients</span></code> method):</strong></p>
+<ul class="simple">
+<li><p>This method is responsible for applying gradients to update the model variables.</p></li>
+<li><p>It initializes the optimizer’s variables on the first call, creating slots for first and second moment estimates for each model variable.</p></li>
+<li><p>For each variable, the method updates the first moment estimate (<code class="docutils literal notranslate"><span class="pre">v_dvar</span></code>) and second moment estimate (<code class="docutils literal notranslate"><span class="pre">s_dvar</span></code>) based on the gradients (<code class="docutils literal notranslate"><span class="pre">grads</span></code>) using the Adam update rules.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">t</span></code> counter is used for bias correction to adjust the estimates when they are first initialized.</p></li>
+<li><p>Finally, the model variables are updated using the computed update step.</p></li>
+</ul>
+</li>
+</ol>
+<p>Overall, the <code class="docutils literal notranslate"><span class="pre">Adam</span></code> class encapsulates the Adam optimization algorithm. It initializes necessary variables, applies the optimization updates to model parameters, and includes bias correction mechanisms. It’s a crucial component for training neural networks efficiently.</p>
+<p>Now, create a customized training loop that employs mini-batch gradient descent to update the parameters of the MLP. Utilizing mini-batches for training offers advantages in terms of memory efficiency and quicker convergence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a training step using mini-batch gradient descent.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    x_batch (tf.Tensor): Batch of input data.</span>
+<span class="sd">    y_batch (tf.Tensor): Batch of true labels.</span>
+<span class="sd">    loss (callable): Loss function.</span>
+<span class="sd">    acc (callable): Accuracy function.</span>
+<span class="sd">    model (tf.Module): Model to be trained.</span>
+<span class="sd">    optimizer (Adam): Custom Adam optimizer.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Batch loss.</span>
+<span class="sd">    tf.Tensor: Batch accuracy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Update the model state given a batch of data</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_batch</span><span class="p">)</span>
+        <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+    <span class="n">batch_acc</span> <span class="o">=</span> <span class="n">acc</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">batch_loss</span><span class="p">,</span> <span class="n">batch_acc</span>
+
+<span class="k">def</span> <span class="nf">val_step</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the model on validation data using mini-batches.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    x_batch (tf.Tensor): Batch of validation input data.</span>
+<span class="sd">    y_batch (tf.Tensor): Batch of true labels for validation.</span>
+<span class="sd">    loss (callable): Loss function.</span>
+<span class="sd">    acc (callable): Accuracy function.</span>
+<span class="sd">    model (tf.Module): Model to be evaluated.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Batch loss.</span>
+<span class="sd">    tf.Tensor: Batch accuracy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Evaluate the model on a given batch of validation data</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_batch</span><span class="p">)</span>
+    <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+    <span class="n">batch_acc</span> <span class="o">=</span> <span class="n">acc</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">batch_loss</span><span class="p">,</span> <span class="n">batch_acc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The provided code defines two functions: <code class="docutils literal notranslate"><span class="pre">train_step</span></code> and <code class="docutils literal notranslate"><span class="pre">val_step</span></code>, which are crucial components of a custom training loop. Here’s an explanation of each function:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">train_step</span></code> Function:</strong></p>
+<ul class="simple">
+<li><p>This function performs a single training step using mini-batch gradient descent.</p></li>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">x_batch</span></code>: A batch of input data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_batch</span></code>: A batch of true labels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code>: A callable loss function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acc</span></code>: A callable accuracy function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: The model to be trained (an instance of <code class="docutils literal notranslate"><span class="pre">tf.Module</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code>: The custom Adam optimizer (an instance of the <code class="docutils literal notranslate"><span class="pre">Adam</span></code> class).</p></li>
+</ul>
+</li>
+<li><p>The function starts by creating a gradient tape to record operations during the forward pass.</p></li>
+<li><p>It calculates model predictions <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> on the current batch using the provided <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p></li>
+<li><p>Computes the batch loss using the provided loss function <code class="docutils literal notranslate"><span class="pre">loss</span></code>.</p></li>
+<li><p>Calculates the batch accuracy using the provided accuracy function <code class="docutils literal notranslate"><span class="pre">acc</span></code>.</p></li>
+<li><p>Computes the gradients of the <code class="docutils literal notranslate"><span class="pre">batch_loss</span></code> with respect to the model’s variables using the gradient tape.</p></li>
+<li><p>Updates the model’s variables by applying the computed gradients using the <code class="docutils literal notranslate"><span class="pre">optimizer</span></code>.</p></li>
+<li><p>The function returns both the <code class="docutils literal notranslate"><span class="pre">batch_loss</span></code> and <code class="docutils literal notranslate"><span class="pre">batch_acc</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">val_step</span></code> Function:</strong></p>
+<ul class="simple">
+<li><p>This function evaluates the model’s performance on a validation batch using mini-batches.</p></li>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">x_batch</span></code>: A batch of validation input data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_batch</span></code>: A batch of true labels for validation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code>: A callable loss function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acc</span></code>: A callable accuracy function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: The model to be evaluated (an instance of <code class="docutils literal notranslate"><span class="pre">tf.Module</span></code>).</p></li>
+</ul>
+</li>
+<li><p>The function calculates model predictions <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> on the validation batch using the provided <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p></li>
+<li><p>Computes the batch loss and batch accuracy using the provided loss and accuracy functions, respectively.</p></li>
+<li><p>The function returns both the <code class="docutils literal notranslate"><span class="pre">batch_loss</span></code> and <code class="docutils literal notranslate"><span class="pre">batch_acc</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+<p>These functions are crucial for implementing the training and validation loops of a neural network. They encapsulate the logic for calculating losses, accuracies, gradients, and applying updates, making the custom training loop more organized and efficient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">mlp</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">val_data</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train a given MLP model using mini-batch gradient descent.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    mlp (MLP): Multi-Layer Perceptron model.</span>
+<span class="sd">    train_data (tf.data.Dataset): Training data.</span>
+<span class="sd">    val_data (tf.data.Dataset): Validation data.</span>
+<span class="sd">    loss (callable): Loss function.</span>
+<span class="sd">    acc (callable): Accuracy function.</span>
+<span class="sd">    optimizer (Adam): Custom Adam optimizer.</span>
+<span class="sd">    epochs (int): Number of training epochs.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    list: List of training losses.</span>
+<span class="sd">    list: List of training accuracies.</span>
+<span class="sd">    list: List of validation losses.</span>
+<span class="sd">    list: List of validation accuracies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize data structures to track performance</span>
+    <span class="n">train_losses</span><span class="p">,</span> <span class="n">train_accs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">val_losses</span><span class="p">,</span> <span class="n">val_accs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Begin training loop</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">batch_losses_train</span><span class="p">,</span> <span class="n">batch_accs_train</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">batch_losses_val</span><span class="p">,</span> <span class="n">batch_accs_val</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="c1"># Iterate over the training data</span>
+        <span class="k">for</span> <span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+            <span class="c1"># Perform a training step and update the model</span>
+            <span class="n">batch_loss</span><span class="p">,</span> <span class="n">batch_acc</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">mlp</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
+            <span class="n">batch_losses_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
+            <span class="n">batch_accs_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_acc</span><span class="p">)</span>
+
+        <span class="c1"># Iterate over the validation data</span>
+        <span class="k">for</span> <span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">:</span>
+            <span class="n">batch_loss</span><span class="p">,</span> <span class="n">batch_acc</span> <span class="o">=</span> <span class="n">val_step</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">mlp</span><span class="p">)</span>
+            <span class="n">batch_losses_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
+            <span class="n">batch_accs_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_acc</span><span class="p">)</span>
+
+        <span class="c1"># Calculate epoch-level performance metrics</span>
+        <span class="n">train_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_losses_train</span><span class="p">)</span>
+        <span class="n">train_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_accs_train</span><span class="p">)</span>
+        <span class="n">val_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_losses_val</span><span class="p">)</span>
+        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_accs_val</span><span class="p">)</span>
+
+        <span class="c1"># Append performance metrics to lists</span>
+        <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+        <span class="n">train_accs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+        <span class="n">val_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+        <span class="n">val_accs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+
+        <span class="c1"># Print epoch-level performance</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch: </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Training accuracy: </span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Validation accuracy: </span><span class="si">{</span><span class="n">val_acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">train_accs</span><span class="p">,</span> <span class="n">val_losses</span><span class="p">,</span> <span class="n">val_accs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Train the MLP model for 10 epochs using a batch size of 128. If available, hardware accelerators such as GPUs or TPUs can significantly expedite the training process.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the MLP model</span>
+<span class="c1"># Pass the MLP model, training data, validation data, loss function, accuracy function, optimizer, and number of epochs</span>
+<span class="n">train_losses</span><span class="p">,</span> <span class="n">train_accs</span><span class="p">,</span> <span class="n">val_losses</span><span class="p">,</span> <span class="n">val_accs</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span>
+    <span class="n">mlp_model</span><span class="p">,</span>             <span class="c1"># The MLP model to be trained</span>
+    <span class="n">train_data</span><span class="p">,</span>            <span class="c1"># Training data</span>
+    <span class="n">val_data</span><span class="p">,</span>              <span class="c1"># Validation data</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">cross_entropy_loss</span><span class="p">,</span>  <span class="c1"># Loss function (cross-entropy)</span>
+    <span class="n">acc</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span>          <span class="c1"># Accuracy function</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(),</span>      <span class="c1"># Custom Adam optimizer</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span>              <span class="c1"># Number of training epochs</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0
+Training loss: 0.222, Training accuracy: 0.934
+Validation loss: 0.121, Validation accuracy: 0.963
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1
+Training loss: 0.080, Training accuracy: 0.975
+Validation loss: 0.097, Validation accuracy: 0.971
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2
+Training loss: 0.047, Training accuracy: 0.986
+Validation loss: 0.089, Validation accuracy: 0.974
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 3
+Training loss: 0.033, Training accuracy: 0.990
+Validation loss: 0.106, Validation accuracy: 0.973
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 4
+Training loss: 0.026, Training accuracy: 0.992
+Validation loss: 0.091, Validation accuracy: 0.978
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 5
+Training loss: 0.021, Training accuracy: 0.993
+Validation loss: 0.111, Validation accuracy: 0.972
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 6
+Training loss: 0.020, Training accuracy: 0.994
+Validation loss: 0.092, Validation accuracy: 0.977
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 7
+Training loss: 0.015, Training accuracy: 0.995
+Validation loss: 0.108, Validation accuracy: 0.978
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 8
+Training loss: 0.014, Training accuracy: 0.995
+Validation loss: 0.111, Validation accuracy: 0.977
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 9
+Training loss: 0.015, Training accuracy: 0.995
+Validation loss: 0.104, Validation accuracy: 0.978
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="performance-evaluation">
+<h3><span class="section-number">12.6.4.4. </span>Performance Evaluation<a class="headerlink" href="#performance-evaluation" title="Permalink to this headline">#</a></h3>
+<p>Begin by creating a plotting function that visualizes the loss and accuracy of the model throughout the training process.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_metrics</span><span class="p">(</span><span class="n">train_metric</span><span class="p">,</span> <span class="n">val_metric</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize training and validation metrics over epochs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    train_metric (list): List of training metrics (e.g., loss, accuracy) for each epoch.</span>
+<span class="sd">    val_metric (list): List of validation metrics for each epoch.</span>
+<span class="sd">    metric_type (str): Type of metric being visualized (e.g., &quot;Loss&quot;, &quot;Accuracy&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a figure and axes with some style</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-darkgrid&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot training and validation metrics over epochs with nice colors</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_metric</span><span class="p">)),</span> <span class="n">train_metric</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Training </span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_metric</span><span class="p">)),</span> <span class="n">val_metric</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Validation </span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Add labels and legend with fonts</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">metric_type</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="c1"># Set the title with a larger font</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2"> vs Training epochs&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+    <span class="c1"># Add a grid for better readability</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1"># Show the plot with tight layout</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="c1"># Display the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_metrics</span><span class="p">(</span><span class="n">train_metric</span><span class="p">,</span> <span class="n">val_metric</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize training and validation metrics over epochs using the provided axes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    train_metric (list): List of training metrics (e.g., loss, accuracy) for each epoch.</span>
+<span class="sd">    val_metric (list): List of validation metrics for each epoch.</span>
+<span class="sd">    metric_type (str): Type of metric being visualized (e.g., &quot;Loss&quot;, &quot;Accuracy&quot;).</span>
+<span class="sd">    ax (matplotlib.axes._subplots.AxesSubplot): Axes to use for plotting.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Plot training and validation metrics over epochs with distinctive colors and markers</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_metric</span><span class="p">)),</span> <span class="n">train_metric</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Training </span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_metric</span><span class="p">)),</span> <span class="n">val_metric</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Validation </span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tomato&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="c1"># Add labels and legend with larger fonts</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">metric_type</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="c1"># Set the title with an even larger font and a bold style</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_type</span><span class="si">}</span><span class="s2"> vs Training epochs&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add a grid with a lighter color for better readability</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+    <span class="c1"># Customize ticks and labels with a consistent style</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="c1"># Get the figure instance from the provided axes</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span>
+
+    <span class="c1"># Add a background color to the plot</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;whitesmoke&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-white&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span><span class="p">,</span> <span class="s2">&quot;cross entropy loss&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">train_accs</span><span class="p">,</span> <span class="n">val_accs</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e8b7c74b5d5977daa3b0b1a8c129f8b0e214d35cc5006945912b78ad92cdc85.png" src="../_images/6e8b7c74b5d5977daa3b0b1a8c129f8b0e214d35cc5006945912b78ad92cdc85.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-a-versatile-prediction-module-data-preprocessing-probability-prediction-and-class-prediction">
+<h2><span class="section-number">12.6.5. </span>Creating a Versatile Prediction Module: Data Preprocessing, Probability Prediction, and Class Prediction<a class="headerlink" href="#creating-a-versatile-prediction-module-data-preprocessing-probability-prediction-and-class-prediction" title="Permalink to this headline">#</a></h2>
+<p>Designing a module that accepts raw data and carries out the subsequent tasks <span id="id13">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<ul class="simple">
+<li><p>Preprocessing of data</p></li>
+<li><p>Predicting probabilities</p></li>
+<li><p>Predicting classes</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExportModule</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">preprocess</span><span class="p">,</span> <span class="n">class_pred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the ExportModule.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        model (tf.Module): The trained model for prediction.</span>
+<span class="sd">        preprocess (callable): Preprocessing function for raw data.</span>
+<span class="sd">        class_pred (callable): Function for generating class predictions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span> <span class="o">=</span> <span class="n">preprocess</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_pred</span> <span class="o">=</span> <span class="n">class_pred</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">input_signature</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorSpec</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">uint8</span><span class="p">)])</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform prediction using the ExportModule.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        x (tf.Tensor): Raw input data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        tf.Tensor: Predicted class labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_pred</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+
+<span class="k">def</span> <span class="nf">preprocess_test</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess raw input data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    x (tf.Tensor): Raw input data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Preprocessed data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Reshape and normalize the data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="mi">255</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">class_pred_test</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate class predictions from model&#39;s output.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    y (tf.Tensor): Model&#39;s output.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Predicted class labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Create an instance of ExportModule for prediction</span>
+<span class="n">mlp_model_export</span> <span class="o">=</span> <span class="n">ExportModule</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">mlp_model</span><span class="p">,</span>
+                                <span class="n">preprocess</span><span class="o">=</span><span class="n">preprocess_test</span><span class="p">,</span>
+                                <span class="n">class_pred</span><span class="o">=</span><span class="n">class_pred_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code, the <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code> class is defined, which takes a trained model, preprocessing function, and class prediction function as inputs. The <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method of <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code> preprocesses the input data, gets predictions from the model, and generates class predictions. The <code class="docutils literal notranslate"><span class="pre">preprocess_test</span></code> function reshapes and normalizes raw input data, while the <code class="docutils literal notranslate"><span class="pre">class_pred_test</span></code> function generates class predictions from the model’s output. Finally, an instance of <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code> called <code class="docutils literal notranslate"><span class="pre">mlp_model_export</span></code> is created for prediction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy_score</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate accuracy score between predicted and true labels.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    y_pred (tf.Tensor): Predicted class labels.</span>
+<span class="sd">    y (tf.Tensor): True class labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    tf.Tensor: Accuracy score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compare predicted and true labels element-wise</span>
+    <span class="n">is_equal</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># Calculate mean accuracy</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">is_equal</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+<span class="c1"># Load the test data and true labels</span>
+<span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Perform predictions using the ExportModule</span>
+<span class="n">test_classes</span> <span class="o">=</span> <span class="n">mlp_model_export</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># Calculate test accuracy</span>
+<span class="n">test_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">test_classes</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># Print the test accuracy</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy: 0.980
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code, the <code class="docutils literal notranslate"><span class="pre">accuracy_score</span></code> function calculates the accuracy between predicted and true class labels. The <code class="docutils literal notranslate"><span class="pre">x_test</span></code> and <code class="docutils literal notranslate"><span class="pre">y_test</span></code> data are loaded from the MNIST dataset using TensorFlow Datasets (<code class="docutils literal notranslate"><span class="pre">tfds</span></code>). Predictions are performed using the <code class="docutils literal notranslate"><span class="pre">mlp_model_export</span></code> instance of the <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code>, and then the accuracy is calculated using the <code class="docutils literal notranslate"><span class="pre">accuracy_score</span></code> function. Finally, the test accuracy is printed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy_score</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="c1"># Generic accuracy function</span>
+  <span class="n">is_equal</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">is_equal</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+<span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_classes</span> <span class="o">=</span> <span class="n">mlp_model_export</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">test_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">test_classes</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Accuracy: 0.980
+</pre></div>
+</div>
+</div>
+</div>
+<p>The model exhibits exceptional performance in classifying handwritten digits within both the training dataset and unseen data. To ensure its robustness, let’s delve into the model’s class-wise accuracy, scrutinizing its proficiency in correctly identifying each individual digit. This granular analysis will provide us with insights into its overall reliability and effectiveness across all classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy breakdown by digit:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---------------------------&quot;</span><span class="p">)</span>
+
+<span class="c1"># Initialize a dictionary to store accuracy for each label</span>
+<span class="n">label_accs</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Iterate through each digit label</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># Create a boolean mask for the current digit</span>
+    <span class="n">label_ind</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Extract predictions for the specific true label</span>
+    <span class="n">pred_label</span> <span class="o">=</span> <span class="n">test_classes</span><span class="p">[</span><span class="n">label_ind</span><span class="p">]</span>
+    <span class="n">true_labels</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">label_ind</span><span class="p">]</span>
+
+    <span class="c1"># Compute class-wise accuracy for the current digit</span>
+    <span class="n">label_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">pred_label</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+    <span class="c1"># Store the accuracy in the dictionary with the digit label as the key</span>
+    <span class="n">label_accs</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_acc</span>
+
+<span class="c1"># Create a DataFrame to hold the accuracy breakdown</span>
+<span class="n">accuracy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">label_accs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Digit&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy&#39;</span><span class="p">])</span>
+
+<span class="c1"># Sort the DataFrame by accuracy in ascending order</span>
+<span class="n">accuracy_df</span> <span class="o">=</span> <span class="n">accuracy_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print the accuracy breakdown using the DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">accuracy_df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide</span><span class="p">(</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy breakdown by digit:
+---------------------------
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_60be7">
+  <thead>
+    <tr>
+      <th id="T_60be7_level0_col0" class="col_heading level0 col0" >Digit</th>
+      <th id="T_60be7_level0_col1" class="col_heading level0 col1" >Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_60be7_row0_col0" class="data row0 col0" >8</td>
+      <td id="T_60be7_row0_col1" class="data row0 col1" >0.954825</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row1_col0" class="data row1 col0" >7</td>
+      <td id="T_60be7_row1_col1" class="data row1 col1" >0.969844</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_60be7_row2_col1" class="data row2 col1" >0.973267</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row3_col0" class="data row3 col0" >4</td>
+      <td id="T_60be7_row3_col1" class="data row3 col1" >0.974542</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row4_col0" class="data row4 col0" >6</td>
+      <td id="T_60be7_row4_col1" class="data row4 col1" >0.981211</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row5_col0" class="data row5 col0" >5</td>
+      <td id="T_60be7_row5_col1" class="data row5 col1" >0.984305</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row6_col0" class="data row6 col0" >9</td>
+      <td id="T_60be7_row6_col1" class="data row6 col1" >0.985134</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row7_col0" class="data row7 col0" >2</td>
+      <td id="T_60be7_row7_col1" class="data row7 col1" >0.987403</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row8_col0" class="data row8 col0" >0</td>
+      <td id="T_60be7_row8_col1" class="data row8 col1" >0.990816</td>
+    </tr>
+    <tr>
+      <td id="T_60be7_row9_col0" class="data row9 col0" >1</td>
+      <td id="T_60be7_row9_col1" class="data row9 col1" >0.995595</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>This code snippet calculates and displays the accuracy breakdown for each digit class. It iterates through each digit label, extracts the corresponding predictions and true labels, computes the accuracy for that digit, and stores it in the <code class="docutils literal notranslate"><span class="pre">label_accs</span></code> dictionary. Finally, it prints the accuracy breakdown for each digit in ascending order of accuracy.</p>
+<p>The accuracy values represent the proportion of correctly classified instances for each digit class in the test dataset. Higher accuracy values indicate better performance in correctly predicting the corresponding digit class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="k">def</span> <span class="nf">show_confusion_matrix</span><span class="p">(</span><span class="n">test_labels</span><span class="p">,</span> <span class="n">test_classes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate and visualize the confusion matrix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    test_labels (tf.Tensor): True class labels.</span>
+<span class="sd">    test_classes (tf.Tensor): Predicted class labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate confusion matrix</span>
+    <span class="n">confusion</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">test_labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">test_classes</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+    <span class="c1"># Normalize confusion matrix</span>
+    <span class="n">confusion_normalized</span> <span class="o">=</span> <span class="n">confusion</span> <span class="o">/</span> <span class="n">confusion</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Define axis labels</span>
+    <span class="n">axis_labels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Create a heatmap using seaborn</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">))</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+        <span class="n">confusion_normalized</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">axis_labels</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">axis_labels</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.3f&#39;</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">})</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Predicted label&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;True label&quot;</span><span class="p">,</span>
+               <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Confusion Matrix&quot;</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="c1"># Call the function to display the confusion matrix</span>
+<span class="n">show_confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_classes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bcc1fa4bcee91c830e059d205842559331ccfabbf68cd64405de8cacb35f81a0.png" src="../_images/bcc1fa4bcee91c830e059d205842559331ccfabbf68cd64405de8cacb35f81a0.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG_680_C12S5.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">12.5. </span>Building a Logistic Regression Model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ENGG_680_C12S7.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">12.7. </span>Image classification with TensorFlow</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-the-multilayer-perceptron-mlp">12.6.1. Exploring the Multilayer Perceptron (MLP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplified-mathematics-of-the-multilayer-perceptron-mlp">12.6.2. Simplified Mathematics of the Multilayer Perceptron (MLP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">12.6.3. Data Preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-multi-layer-perceptron-mlp">12.6.4. Build the Multi-Layer Perceptron (MLP)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dense-layer">12.6.4.1. The Dense Layer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-loss-function">12.6.4.2. Define the loss function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-the-model">12.6.4.3. Train the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-evaluation">12.6.4.4. Performance Evaluation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-versatile-prediction-module-data-preprocessing-probability-prediction-and-class-prediction">12.6.5. Creating a Versatile Prediction Module: Data Preprocessing, Probability Prediction, and Class Prediction</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

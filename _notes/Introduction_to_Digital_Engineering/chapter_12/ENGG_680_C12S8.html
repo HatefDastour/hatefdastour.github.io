@@ -1,0 +1,1402 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12.8. Image Augmentations with TensorFlow &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_12/ENGG_680_C12S8';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Appendices" href="../appendixes/ReadMe.html" />
+    <link rel="prev" title="12.7. Image classification with TensorFlow" href="ENGG_680_C12S7.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ReadMe.html">1. Introduction to Python Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S1.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S2.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S3.html">1.3. Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ReadMe.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S1.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S2.html">2.2. Iteration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ReadMe.html">3. Data Structures and File Handling in Python</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S1.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S2.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S3.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S4.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S5.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S6.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Classes and Objects</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S1.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S2.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S3.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S4.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S5.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S6.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ReadMe.html">5. Introduction to NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S1.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S2.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S3.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ReadMe.html">6. Working with Data using Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S1.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S2.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S3.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S4.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S5.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S6.html">6.6. Aggregation and Grouping in Pandas</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ReadMe.html">7. Data Visualization using Python</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S1.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S2.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S3.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S4.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S5.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S6.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ReadMe.html">8. An Introduction to Computer Vision</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S1.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S2.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S3.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S4.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S5.html">8.5. Drawing Functions (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S6.html">8.6. Morphological Transformations (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ReadMe.html">9. An Introduction to Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S1.html">9.1. Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S2.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S3.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S4.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S5.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S6.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG_680_C09S7.html">9.7. Support Vector Machines</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ReadMe.html">10. Tree-Based Methods</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S1.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S2.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S3.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S4.html">10.4. Regression Trees and Linear Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S5.html">10.5. Enhancing Decision Trees with Bagging: An Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S6.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S7.html">10.7. Gradient Boosting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ReadMe.html">11. Dimensionality Reduction and Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S1.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S2.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S3.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S4.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S5.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG_680_C11S6.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ReadMe.html">12. Introduction to Deep Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S1.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S2.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S3.html">12.3. Tensors and Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S4.html">12.4. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S5.html">12.5. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S6.html">12.6. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C12S7.html">12.7. Image classification with TensorFlow</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">12.8. Image Augmentations with TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../appendixes/ReadMe.html">13. Appendices</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_1.html">13.1. Sample Questions 1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">14. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Image Augmentations with TensorFlow</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-adjustments">12.8.1. Image Adjustments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brightness-adjustment-with-tf-image-adjust-brightness">12.8.1.1. Brightness Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_brightness</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contrast-adjustment-with-tf-image-adjust-contrast">12.8.1.2. Contrast Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_contrast</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gamma-correction-with-tf-image-adjust-gamma">12.8.1.3. Gamma Correction with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_gamma</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hue-adjustment-with-tf-image-adjust-hue">12.8.1.4. Hue Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_hue</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jpeg-encoding-and-decoding-with-quality-adjustment">12.8.1.5. JPEG Encoding and Decoding with Quality Adjustment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saturation-adjustment-in-hsv-color-space">12.8.1.6. Saturation Adjustment in HSV Color Space</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cropping-flipping-and-rotating-an-image">12.8.2. Cropping, Flipping and Rotating an Image</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-crop">12.8.2.1. Central Crop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flip-along-width-dimension">12.8.2.2. Flip Along Width Dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-an-image">12.8.2.3. Rotating an Image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rgb-grayscale-and-hsv">12.8.3. RGB, Grayscale and HSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grayscale-and-rgb">12.8.3.1. Grayscale and RGB</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rgb-and-hsv">12.8.3.2. RGB and HSV</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-gradients">12.8.4. Image Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-standardization">12.8.5. Image Standardization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images">12.8.6. Resizing Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-image-adjustments">12.8.7. Random Image Adjustments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="image-augmentations-with-tensorflow">
+<h1><span class="section-number">12.8. </span>Image Augmentations with TensorFlow<a class="headerlink" href="#image-augmentations-with-tensorflow" title="Permalink to this headline">#</a></h1>
+<p>In this section, we delve into the repertoire of TensorFlow tools dedicated to image augmentations. To illustrate these techniques, we employ the sklearn <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_sample_images.html#sklearn.datasets.load_sample_images">image</a> dataset for demonstrative purposes <span id="id1">[<a class="reference internal" href="../References.html#id57" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>  <span class="c1"># Import the plotting library</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;axes.titlesize&#39;</span> <span class="p">:</span> <span class="mi">12</span><span class="p">})</span>  <span class="c1"># Set font properties for plots</span>
+<span class="kn">import</span> <span class="nn">cv2</span>  <span class="c1"># Import the OpenCV library</span>
+
+<span class="c1"># Define a function to display images with titles and optional settings</span>
+<span class="k">def</span> <span class="nf">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Images&#39;</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Create a figure with two subplots</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># Create a figure with 1 row and 2 columns of subplots</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># Flatten the subplots for easier manipulation</span>
+
+    <span class="c1"># Iterate over the first two images</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span> <span class="k">if</span> <span class="n">grayscale</span> <span class="k">else</span> <span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Set aspect ratio to 1 (square aspect)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>  <span class="c1"># Turn off axis</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">Names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>  <span class="c1"># Set image title with bold font</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>  <span class="c1"># Set main title if provided</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  <span class="c1"># Adjust layout for better spacing</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="c1"># Load sample images</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_sample_images</span>  <span class="c1"># Import a function to load sample images</span>
+<span class="n">Images</span> <span class="o">=</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span>  <span class="c1"># Load the sample images</span>
+<span class="c1"># Extract image names from file paths, removing extension and converting to title case</span>
+<span class="n">Names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">load_sample_images</span><span class="p">()[</span><span class="s1">&#39;filenames&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Display the original images</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Original Images&#39;</span><span class="p">)</span>  <span class="c1"># Call the ImShow function to display images</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bd331cb06d2baf31d9d30102a5a329a812bed7095be720ccb6886ab308c38caa.png" src="../_images/bd331cb06d2baf31d9d30102a5a329a812bed7095be720ccb6886ab308c38caa.png" />
+</div>
+</div>
+<div class="section" id="image-adjustments">
+<h2><span class="section-number">12.8.1. </span>Image Adjustments<a class="headerlink" href="#image-adjustments" title="Permalink to this headline">#</a></h2>
+<div class="section" id="brightness-adjustment-with-tf-image-adjust-brightness">
+<h3><span class="section-number">12.8.1.1. </span>Brightness Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_brightness</span></code><a class="headerlink" href="#brightness-adjustment-with-tf-image-adjust-brightness" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_brightness</span></code> function in TensorFlow provides a straightforward way to fine-tune the brightness of RGB images. Here’s how it works:</p>
+<ol class="arabic">
+<li><p><strong>Conversion to Float</strong>: Initially, it converts the image into a floating-point format, where pixel values can have decimal fractions. We’ll denote the original image as <span class="math notranslate nohighlight">\(I\)</span> and the converted floating-point image as <span class="math notranslate nohighlight">\(I_f\)</span>.</p></li>
+<li><p><strong>Brightness Adjustment</strong>: Next, it adjusts the image’s brightness by adding or subtracting a value known as “delta” (<span class="math notranslate nohighlight">\(\Delta\)</span>) to all the color components. In other words, it updates the pixel values in <span class="math notranslate nohighlight">\(I_f\)</span> to create a new image denoted as <span class="math notranslate nohighlight">\(I_{\text{adjusted}}\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f427bd52-bdc5-4854-8bae-e4aa9a092668">
+<span class="eqno">(12.35)<a class="headerlink" href="#equation-f427bd52-bdc5-4854-8bae-e4aa9a092668" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{adjusted}} = I_f + \Delta\end{equation}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\Delta\)</span> is positive, it makes the image brighter; if negative, it makes it darker.</p>
+</li>
+<li><p><strong>Scaling</strong>: If the original image <span class="math notranslate nohighlight">\(I\)</span> used a different numerical representation (not floating-point), the method ensures that both the image and <span class="math notranslate nohighlight">\(\Delta\)</span> are appropriately scaled to be in the same format. This ensures compatibility and consistent adjustments.</p></li>
+<li><p><strong>Delta Range</strong>: It’s crucial to choose <span class="math notranslate nohighlight">\(\Delta\)</span> carefully. For typical images (not using alternative number formats), <span class="math notranslate nohighlight">\(\Delta\)</span> should generally fall within the range of -1 to 1. This range aligns with the floating-point representation used, where pixel values span from 0 to just below 1. Going beyond these limits could result in unusual visual effects or clipped colors.</p></li>
+</ol>
+<p>In essence, this function enables you to control the brightness of an image by adding or subtracting a value (<span class="math notranslate nohighlight">\(\Delta\)</span>). However, it’s important to choose <span class="math notranslate nohighlight">\(\Delta\)</span> thoughtfully, particularly when dealing with standard image representations <span id="id2">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Function to adjust brightness and display images</span>
+<span class="k">def</span> <span class="nf">adjust_and_show_brightness</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">augmented_images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">augmented_images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_brightness</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">augmented_images</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="p">)</span>
+
+<span class="c1"># Increase brightness by 25%</span>
+<span class="n">adjust_and_show_brightness</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Increased Brightness by 25%&#39;</span><span class="p">)</span>
+
+<span class="c1"># Reduce brightness by 25%</span>
+<span class="n">adjust_and_show_brightness</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">delta</span><span class="o">=-</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reduced Brightness by 25%&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/edb0e50c59fc0d4baccf42e3d83223a993053b72dea047e549b7d761a2cbe44d.png" src="../_images/edb0e50c59fc0d4baccf42e3d83223a993053b72dea047e549b7d761a2cbe44d.png" />
+<img alt="../_images/0b693214eec0c83fd484fd4490662e198df94d58f6050a60f6840588056f0b1e.png" src="../_images/0b693214eec0c83fd484fd4490662e198df94d58f6050a60f6840588056f0b1e.png" />
+</div>
+</div>
+</div>
+<div class="section" id="contrast-adjustment-with-tf-image-adjust-contrast">
+<h3><span class="section-number">12.8.1.2. </span>Contrast Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_contrast</span></code><a class="headerlink" href="#contrast-adjustment-with-tf-image-adjust-contrast" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_contrast</span></code> function in TensorFlow offers a convenient way to modify the contrast of images. Let’s break down how it operates:</p>
+<ol class="arabic">
+<li><p><strong>Conversion to Float</strong>: Initially, it transforms RGB images into a floating-point representation. Think of this as allowing pixel values to have decimal fractions. We’ll denote the original image as <span class="math notranslate nohighlight">\(I\)</span> and the converted floating-point image as <span class="math notranslate nohighlight">\(I_f\)</span>.</p></li>
+<li><p><strong>Contrast Adjustment</strong>: Now, let’s delve into adjusting contrast. Contrast refers to the difference between the bright and dark parts of an image. This function performs this adjustment individually for each color channel (e.g., Red, Green, and Blue) within the image.</p>
+<p>The adjustment equation for each channel is as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d431a77c-e07b-4d60-a24d-cbb2bd6b50d2">
+<span class="eqno">(12.36)<a class="headerlink" href="#equation-d431a77c-e07b-4d60-a24d-cbb2bd6b50d2" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{adjusted}} = (I_f - \text{mean}) \times \text{contrast_factor} + \text{mean}\end{equation}\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(I_{\text{adjusted}}\)</span> represents the modified image, <span class="math notranslate nohighlight">\(\text{mean}\)</span> signifies the average pixel value in that particular channel, and <span class="math notranslate nohighlight">\(\text{contrast_factor}\)</span> is a user-defined parameter. A larger <span class="math notranslate nohighlight">\(\text{contrast_factor}\)</span> increases contrast, while a smaller value decreases it.</p>
+</li>
+<li><p><strong>Scaling</strong>: If the original image <span class="math notranslate nohighlight">\(I\)</span> employed a different numerical representation (not floating-point), the function scales both the image and the <span class="math notranslate nohighlight">\(\text{contrast_factor}\)</span> to be in the same format. This ensures compatibility and coherent contrast adjustments.</p></li>
+<li><p><strong>Contrast Factor Range</strong>: It’s noteworthy that the <span class="math notranslate nohighlight">\(\text{contrast_factor}\)</span> can assume any real value spanning from negative infinity to positive infinity. This wide range grants you flexibility in fine-tuning the image’s contrast to suit your specific needs.</p></li>
+</ol>
+<p>In essence, this function empowers you to manipulate the contrast of an image by adjusting the <span class="math notranslate nohighlight">\(\text{contrast_factor}\)</span>. It’s akin to making dark areas darker and bright areas brighter (or vice versa) by tweaking this parameter. Keep in mind that it independently operates on each color channel, preserving the image’s color balance <span id="id3">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Function to adjust contrast and display images</span>
+<span class="k">def</span> <span class="nf">adjust_and_show_contrast</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">contrast_factor</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">augmented_images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">augmented_images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_contrast</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">contrast_factor</span><span class="o">=</span><span class="n">contrast_factor</span><span class="p">)</span>
+    <span class="n">ImShow</span><span class="p">(</span><span class="n">augmented_images</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+
+<span class="c1"># Increase contrast by 1.5 units</span>
+<span class="n">adjust_and_show_contrast</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">contrast_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Increased Contrast by 1.5 Units&#39;</span><span class="p">)</span>
+
+<span class="c1"># Reduce contrast by 0.5 units</span>
+<span class="n">adjust_and_show_contrast</span><span class="p">(</span><span class="n">Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">contrast_factor</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Reduced Contrast by 0.5 Units&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/705ddbd98e8333cabc1884c85a918999070c0a0db189abed2a77130e3fa5dc6f.png" src="../_images/705ddbd98e8333cabc1884c85a918999070c0a0db189abed2a77130e3fa5dc6f.png" />
+<img alt="../_images/674d161b036995e1d4c3518cfa1ef92f401bb2d4063590814e38ff140ad0f509.png" src="../_images/674d161b036995e1d4c3518cfa1ef92f401bb2d4063590814e38ff140ad0f509.png" />
+</div>
+</div>
+</div>
+<div class="section" id="gamma-correction-with-tf-image-adjust-gamma">
+<h3><span class="section-number">12.8.1.3. </span>Gamma Correction with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_gamma</span></code><a class="headerlink" href="#gamma-correction-with-tf-image-adjust-gamma" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_gamma</span></code> function, also known as the Power Law Transform, provides a powerful means to modify how pixel values in an image behave. Let’s break down its operation:</p>
+<ol class="arabic">
+<li><p><strong>Conversion to Float</strong>: Initially, it converts the input images into a floating-point representation. This means that pixel values can now have decimal places, allowing for more precise transformations. We’ll denote the original image as <span class="math notranslate nohighlight">\(I\)</span> and the converted floating-point image as <span class="math notranslate nohighlight">\(I_f\)</span>.</p></li>
+<li><p><strong>Pixelwise Transformation</strong>: The heart of this function lies in its pixelwise transformation. Each pixel in the image is transformed independently, and this transformation follows the mathematical equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ee7e6d3c-2d14-4a0e-98ff-bc24ad99253e">
+<span class="eqno">(12.37)<a class="headerlink" href="#equation-ee7e6d3c-2d14-4a0e-98ff-bc24ad99253e" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Out} = \text{gain} \times \text{In}^\gamma \end{equation}\]</div>
+<p>Here’s what each element represents:</p>
+<ul class="simple">
+<li><p>“Out” is the new pixel value after the transformation.</p></li>
+<li><p>“In” denotes the original pixel value.</p></li>
+<li><p>“gain” is a user-defined parameter that scales pixel intensities. Increasing it brightens the image, while decreasing it darkens the image.</p></li>
+<li><p>“gamma” (<span class="math notranslate nohighlight">\(\gamma\)</span>) is another parameter often referred to as the “gamma” value. Its value influences the shape of the transformation curve. When <span class="math notranslate nohighlight">\(\gamma &lt; 1\)</span>, it enhances the contrast in darker areas, making them more pronounced. When <span class="math notranslate nohighlight">\(\gamma &gt; 1\)</span>, it boosts contrast in brighter areas.</p></li>
+</ul>
+</li>
+<li><p><strong>Conversion Back</strong>: After applying the pixelwise transformation, the images are converted back to their original data type. This ensures that the image maintains its expected data format.</p></li>
+</ol>
+<p>In simpler terms, this function empowers you to modify how pixel values behave in an image. By adjusting the “gain” and “gamma” parameters, you can control brightness, contrast, and the visual characteristics of the image. It’s a versatile tool for enhancing or fine-tuning images to meet specific visual requirements <span id="id4">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Define the gamma and gain values for adjustment</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># Set the gamma value for gamma correction</span>
+<span class="n">gain</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># Set the gain value for intensity scaling</span>
+
+<span class="c1"># Apply gamma correction to each image in the loop</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">Augmented_Images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_gamma</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span> <span class="n">gain</span><span class="o">=</span><span class="n">gain</span><span class="p">)</span>
+
+<span class="c1"># Display the augmented images with increased gamma and gains</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Increased Gamma and Gains&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6e898d4c3b58869bbcd64a66a98a0ed2aeea76a2346ce15e203642560ae8503a.png" src="../_images/6e898d4c3b58869bbcd64a66a98a0ed2aeea76a2346ce15e203642560ae8503a.png" />
+</div>
+</div>
+</div>
+<div class="section" id="hue-adjustment-with-tf-image-adjust-hue">
+<h3><span class="section-number">12.8.1.4. </span>Hue Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_hue</span></code><a class="headerlink" href="#hue-adjustment-with-tf-image-adjust-hue" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_hue</span></code> function provides a convenient method for altering the hue of an RGB image. Hue relates to the color’s “shade” or “tone.” Here’s a breakdown of how it works:</p>
+<ol class="arabic">
+<li><p><strong>Conversion to Float</strong>: To begin, the function converts the input RGB image into a floating-point representation. This conversion allows for more precise adjustments. Let’s denote the original RGB image as <span class="math notranslate nohighlight">\(I\)</span> and the converted floating-point image as <span class="math notranslate nohighlight">\(I_f\)</span>.</p></li>
+<li><p><strong>Conversion to HSV</strong>: Subsequently, <span class="math notranslate nohighlight">\(I_f\)</span> is transformed into the Hue-Saturation-Value (HSV) color space. In this color space, colors are represented differently: Hue (H) defines the color itself, Saturation (S) represents color intensity, and Value (V) signifies brightness. This conversion facilitates the manipulation of the hue channel.</p></li>
+<li><p><strong>Hue Adjustment</strong>: The core of the adjustment lies in modifying the hue. The function rotates the hue channel (H) by an angle designated as “delta.” This rotation effectively alters the color tone of the image.</p>
+<p>Let’s denote the adjusted HSV image as <span class="math notranslate nohighlight">\(I_{\text{adjusted}}\)</span> and the original hue channel as <span class="math notranslate nohighlight">\(H\)</span>. The adjustment can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-132b4ad4-9981-4fb0-8e3c-b5c2b53d135f">
+<span class="eqno">(12.38)<a class="headerlink" href="#equation-132b4ad4-9981-4fb0-8e3c-b5c2b53d135f" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{adjusted}}(H) = H + \delta\end{equation}\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(H + \delta\)</span> signifies the rotated hue channel.</p>
+</li>
+<li><p><strong>Conversion Back to RGB</strong>: After modifying the hue in the HSV color space, the function converts the image back to the RGB color space. This step ensures that the image retains its original data type and format.</p></li>
+<li><p><strong>Delta Range</strong>: It’s important to note that the “delta” parameter must fall within the interval [-1, 1]. This constraint ensures that hue adjustments remain within the range of possible colors, preventing unintended color artifacts.</p></li>
+</ol>
+<p>In simpler terms, this method allows you to change the color tone of an RGB image by rotating its hue channel. The “delta” parameter controls the extent of color shift. A positive delta shifts the colors towards warmer tones, while a negative delta shifts them towards cooler hues <span id="id5">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Create a copy of the image names for augmented images</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Adjust the hue of the first image by increasing it</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_hue</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Increased Hue)&#39;</span>
+
+<span class="c1"># Adjust the hue of the second image by decreasing it</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_hue</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">delta</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Decreased Hue)&#39;</span>
+
+<span class="c1"># Display the augmented images with modified hues</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5802e441111e45e5910ffbca34d4df35a49db239e671ba5097df5f75e1a37faf.png" src="../_images/5802e441111e45e5910ffbca34d4df35a49db239e671ba5097df5f75e1a37faf.png" />
+</div>
+</div>
+</div>
+<div class="section" id="jpeg-encoding-and-decoding-with-quality-adjustment">
+<h3><span class="section-number">12.8.1.5. </span>JPEG Encoding and Decoding with Quality Adjustment<a class="headerlink" href="#jpeg-encoding-and-decoding-with-quality-adjustment" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">tf.image.adjust_jpeg_quality</span></code> offers a convenient way to manipulate image quality by performing JPEG encoding and decoding. Here’s a detailed breakdown of its operation:</p>
+<ol class="arabic simple">
+<li><p><strong>Conversion to uint8</strong>: Initially, the image is transformed into an unsigned 8-bit integer (uint8) representation. This ensures that pixel values are confined within the range [0, 255], maintaining data integrity.</p></li>
+<li><p><strong>JPEG Encoding</strong>: Subsequently, the image is subjected to JPEG encoding, with a critical parameter called <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code> in effect. This parameter serves as the primary means to control the level of compression applied to the image. The value of <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code> plays a pivotal role:</p>
+<ul class="simple">
+<li><p>Higher values of <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code>, when closer to 100, lead to reduced compression, resulting in larger file sizes and superior image fidelity.</p></li>
+<li><p>Conversely, lower values of <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code>, nearing 0, intensify compression, generating smaller file sizes but potentially causing a reduction in image quality.</p></li>
+</ul>
+</li>
+<li><p><strong>JPEG Decoding</strong>: Following the encoding phase, the compressed image is then decoded, effectively reverting it to its original format.</p></li>
+<li><p><strong>Conversion Back</strong>: Upon successful decoding, the image is reconverted back to its initial data type, ensuring that the data format remains consistent.</p></li>
+<li><p><strong>Quality Range</strong>: It’s imperative to note that the <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code> parameter must reside within the defined range of [0, 100]. Any values outside this range are invalid for specifying JPEG encoding quality settings.</p></li>
+</ol>
+<p>In essence, this method empowers users to finely control the level of compression applied to an image, thereby influencing both its visual quality and file size. The <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code> parameter operates as a scalar factor that governs the degree of compression during the JPEG encoding process <span id="id6">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>From a practical standpoint, one can perceive this as a balancing act between image quality and file size. Higher values of <code class="docutils literal notranslate"><span class="pre">jpeg_quality</span></code> prioritize image quality, yielding larger files, while lower values emphasize compression, leading to smaller file sizes with the potential for a reduction in image clarity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Create a copy of the image names for augmented images</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Decrease the JPEG quality of the first image to 50%</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_jpeg_quality</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">jpeg_quality</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Decreased Quality to 50%)&#39;</span>
+
+<span class="c1"># Decrease the JPEG quality of the second image to 5%</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_jpeg_quality</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">jpeg_quality</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Decreased Quality to 5%)&#39;</span>
+
+<span class="c1"># Display the augmented images with modified JPEG quality</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7e5567d457eaee3e738a82f80c3dc84da4806d4c11fd15a511167c5aeb8c9630.png" src="../_images/7e5567d457eaee3e738a82f80c3dc84da4806d4c11fd15a511167c5aeb8c9630.png" />
+</div>
+</div>
+</div>
+<div class="section" id="saturation-adjustment-in-hsv-color-space">
+<h3><span class="section-number">12.8.1.6. </span>Saturation Adjustment in HSV Color Space<a class="headerlink" href="#saturation-adjustment-in-hsv-color-space" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">tf.image.adjust_saturation</span></code> provides a convenient means to adjust the saturation of RGB images. Saturation refers to the intensity or vividness of colors. Here’s a detailed breakdown of how it operates:</p>
+<ol class="arabic">
+<li><p><strong>Conversion to Float</strong>: Initially, the RGB images are converted into a floating-point representation. This conversion allows for precise adjustments and the handling of decimal values. Let’s denote the original RGB image as <span class="math notranslate nohighlight">\(I\)</span> and the converted floating-point image as <span class="math notranslate nohighlight">\(I_f\)</span>.</p></li>
+<li><p><strong>Conversion to HSV</strong>: The method transforms <span class="math notranslate nohighlight">\(I_f\)</span> into the Hue-Saturation-Value (HSV) color space. In HSV, colors are represented differently: Hue (H) represents the color itself, Saturation (S) is the intensity of the color, and Value (V) is the brightness. This conversion facilitates easy manipulation of the saturation channel.</p></li>
+<li><p><strong>Saturation Adjustment</strong>: Now, it’s time to modify the saturation. The method multiplies the saturation channel (S) by a parameter called <code class="docutils literal notranslate"><span class="pre">saturation_factor</span></code>. The result is then clipped to ensure it remains within the valid range.</p>
+<p>Let’s denote the adjusted HSV image as <span class="math notranslate nohighlight">\(I_{\text{adjusted}}\)</span> and the original saturation channel as <span class="math notranslate nohighlight">\(S\)</span>. The adjustment can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-84c93e72-c001-4baa-a540-5838c5abae90">
+<span class="eqno">(12.39)<a class="headerlink" href="#equation-84c93e72-c001-4baa-a540-5838c5abae90" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{adjusted}}(S) = \text{clip}(S \times \text{saturation_factor})\end{equation}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\text{clip}(x)\)</span> ensures that the result remains within the valid range [0, 1].</p>
+</li>
+<li><p><strong>Conversion Back to RGB</strong>: After adjusting the saturation in the HSV color space, the images are converted back to the RGB color space. This step ensures that the images maintain their original data type and format.</p></li>
+<li><p><strong>Saturation Factor Range</strong>: It’s crucial to note that the <code class="docutils literal notranslate"><span class="pre">saturation_factor</span></code> parameter must fall within the interval [0, <span class="math notranslate nohighlight">\(\infty\)</span>]. Values outside this range are not valid for specifying saturation adjustments.</p></li>
+</ol>
+<p>In mathematical terms, this method empowers you to control the saturation of RGB images. The <code class="docutils literal notranslate"><span class="pre">saturation_factor</span></code> parameter acts as a scalar factor that influences the saturation intensity. A higher factor increases saturation, making colors more vivid, while a lower factor decreases saturation, resulting in more muted colors <span id="id7">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>For practical purposes, think of this method as a tool to enhance or reduce the intensity of colors in images. It allows you to bring out vibrant colors or tone them down, depending on your specific image processing needs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Create a copy of the image names for augmented images</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Increase the saturation of the first image by 50%</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_saturation</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">saturation_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Increased Saturation by 50%)&#39;</span>
+
+<span class="c1"># Decrease the saturation of the second image by 50%</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">adjust_saturation</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">saturation_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Decreased Saturation by 50%)&#39;</span>
+
+<span class="c1"># Display the augmented images with modified saturation</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7b420b4a3cb18cd97bc7239e904eefef2d8ea5cf3fd1cf2dc6fac9e4f915b887.png" src="../_images/7b420b4a3cb18cd97bc7239e904eefef2d8ea5cf3fd1cf2dc6fac9e4f915b887.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cropping-flipping-and-rotating-an-image">
+<h2><span class="section-number">12.8.2. </span>Cropping, Flipping and Rotating an Image<a class="headerlink" href="#cropping-flipping-and-rotating-an-image" title="Permalink to this headline">#</a></h2>
+<div class="section" id="central-crop">
+<h3><span class="section-number">12.8.2.1. </span>Central Crop<a class="headerlink" href="#central-crop" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.central_crop</span></code> function is designed to remove the outer parts of an image while retaining the central region of the image along each dimension. Its behavior is determined by the <code class="docutils literal notranslate"><span class="pre">central_fraction</span></code> parameter. When you specify <code class="docutils literal notranslate"><span class="pre">central_fraction</span> <span class="pre">=</span> <span class="pre">0.5</span></code>, this function returns the region marked with “X” in the diagram below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">--------</span>
+<span class="o">|</span>        <span class="o">|</span>
+<span class="o">|</span>  <span class="n">XXXX</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="n">XXXX</span>  <span class="o">|</span>
+<span class="o">|</span>        <span class="o">|</span>
+</pre></div>
+</div>
+<p>In this diagram, “X” represents the central 50% of the image. The larger the value of <code class="docutils literal notranslate"><span class="pre">central_fraction</span></code>, the larger the dimension of the region to be cropped and retained <span id="id8">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>This function can operate on either a single image (where the image is a 3-D Tensor) or a batch of images (where the image is a 4-D Tensor). It provides a convenient way to focus on the central portion of an image, effectively cropping away the outer areas <span id="id9">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">tf.image.central_crop</span></code> allows you to control the size of the central region you want to retain from an image. It’s particularly useful when you want to emphasize or analyze the central content of an image while discarding peripheral information.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Create a copy of the image names for augmented images</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Crop the central 50% of the first image</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">central_crop</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">central_fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (The central 50%)&#39;</span>
+
+<span class="c1"># Crop the central 10% of the second image</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">central_crop</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">central_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (The central 10%)&#39;</span>
+
+<span class="c1"># Display the augmented images with central crops</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0d5d3f1f6f3ee17c5140dd0d1df9291f1e7bbf2388fa7c5b4f6706ccab70d636.png" src="../_images/0d5d3f1f6f3ee17c5140dd0d1df9291f1e7bbf2388fa7c5b4f6706ccab70d636.png" />
+</div>
+</div>
+</div>
+<div class="section" id="flip-along-width-dimension">
+<h3><span class="section-number">12.8.2.2. </span>Flip Along Width Dimension<a class="headerlink" href="#flip-along-width-dimension" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.flip_left_right</span></code> function performs a horizontal flip of an image by reversing the order of its pixels along the width dimension. Mathematically, this operation can be represented as follows:</p>
+<p>Let’s assume we have an image represented as a 2D array with dimensions [height, width]. The pixel values in this array are denoted as <span class="math notranslate nohighlight">\(I[h, w]\)</span>, where <span class="math notranslate nohighlight">\(h\)</span> represents the row index (height) and <span class="math notranslate nohighlight">\(w\)</span> represents the column index (width) <span id="id10">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>The horizontal flip operation can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f8e0cb80-55c9-4e56-bdb7-0dccf8009141">
+<span class="eqno">(12.40)<a class="headerlink" href="#equation-f8e0cb80-55c9-4e56-bdb7-0dccf8009141" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{flipped}}[h, w] = I[h, (width - 1) - w]\end{equation}\]</div>
+<p>In this equation:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(I_{\text{flipped}}[h, w]\)</span> represents the pixel value at position (h, w) in the horizontally flipped image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I[h, w]\)</span> is the original pixel value at position (h, w) in the original image.</p></li>
+<li><p><span class="math notranslate nohighlight">\((width - 1)\)</span> represents the maximum index along the width dimension.</p></li>
+<li><p><span class="math notranslate nohighlight">\((width - 1) - w\)</span> calculates the new width index for the flipped image, effectively reversing the order of pixels along the horizontal axis.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a copy of the original images for augmentation</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Create a copy of the image names for augmented images</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Perform a left-to-right flip on the first image</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">flip_left_right</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (Flipped Left-to-Right)&#39;</span>
+
+<span class="c1"># Perform an up-to-down flip on the second image</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">flip_up_down</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (Flipped Up-to-Down)&#39;</span>
+
+<span class="c1"># Display the augmented images with flip operations</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/30a3403c798d5f4ea4f34b238b89aefb4c6a8d31d370595a054b433edae9ffb6.png" src="../_images/30a3403c798d5f4ea4f34b238b89aefb4c6a8d31d370595a054b433edae9ffb6.png" />
+</div>
+</div>
+</div>
+<div class="section" id="rotating-an-image">
+<h3><span class="section-number">12.8.2.3. </span>Rotating an Image<a class="headerlink" href="#rotating-an-image" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.rot90</span></code> function in TensorFlow is used to rotate an image by 90 degrees counterclockwise. It takes the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span></code>: The input image that you want to rotate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: An integer that determines the number of times the image is rotated by 90 degrees counterclockwise. By default, it is set to 1, which means the image is rotated once. You can set it to 2 to rotate the image 180 degrees counterclockwise or 3 to rotate it 270 degrees counterclockwise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: An optional name for the operation.</p></li>
+</ul>
+<p>Mathematically, rotating an image by 90 degrees counterclockwise involves rearranging the pixel values of the image to achieve the desired rotation. Let’s denote the original image as <span class="math notranslate nohighlight">\(I\)</span> and the rotated image as <span class="math notranslate nohighlight">\(I_{\text{rotated}}\)</span>.</p>
+<p>For a single 90-degree counterclockwise rotation (<span class="math notranslate nohighlight">\(k = 1\)</span>), you can express the rotation mathematically as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-074a87fe-a20e-4ebf-aa2b-8d27eb055093">
+<span class="eqno">(12.41)<a class="headerlink" href="#equation-074a87fe-a20e-4ebf-aa2b-8d27eb055093" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{rotated}}[i, j] = I[j, \text{height} - 1 - i]\end{equation}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(I_{\text{rotated}}[i, j]\)</span> represents the pixel value at position (i, j) in the rotated image, <span class="math notranslate nohighlight">\(I[j, \text{height} - 1 - i]\)</span> represents the pixel value at position (j, height - 1 - i) in the original image, and height is the height of the image.</p>
+<p>This equation essentially swaps the rows and columns of the original image, achieving a 90-degree counterclockwise rotation.</p>
+<p>For other values of <span class="math notranslate nohighlight">\(k\)</span> (2 or 3), multiple rotations are applied accordingly. Each rotation of 90 degrees counterclockwise involves this swapping of rows and columns, and the final rotated image is obtained after applying the specified number of rotations <span id="id11">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize lists to store augmented images and their names</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Rotate the image by 90 degrees counterclockwise and append it to the list</span>
+<span class="n">Augmented_Images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">Aug_Names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (Rotated by 90 Degrees)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Rotate the image by 180 degrees counterclockwise and append it to the list</span>
+<span class="n">Augmented_Images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">Aug_Names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (Rotated by 180 Degrees)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display the augmented images with rotation operations</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2951a96605c17ef7f5f7c5313d81a30925a4c6a95b0e491c53bb8aa51cd7b384.png" src="../_images/2951a96605c17ef7f5f7c5313d81a30925a4c6a95b0e491c53bb8aa51cd7b384.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rgb-grayscale-and-hsv">
+<h2><span class="section-number">12.8.3. </span>RGB, Grayscale and HSV<a class="headerlink" href="#rgb-grayscale-and-hsv" title="Permalink to this headline">#</a></h2>
+<div class="section" id="grayscale-and-rgb">
+<h3><span class="section-number">12.8.3.1. </span>Grayscale and RGB<a class="headerlink" href="#grayscale-and-rgb" title="Permalink to this headline">#</a></h3>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.image.rgb_to_grayscale</span></code></p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.rgb_to_grayscale</span></code> function is used to convert an RGB (Red, Green, Blue) image to grayscale. Grayscale images represent each pixel with a single intensity value, typically ranging from 0 (black) to 255 (white), where 0 represents no intensity (black) and 255 represents full intensity (white).</p>
+<p>Mathematically, this conversion involves a weighted average of the RGB channels to calculate the grayscale intensity. Let’s denote the original RGB image as <span class="math notranslate nohighlight">\(I\)</span> and the resulting grayscale image as <span class="math notranslate nohighlight">\(I_{\text{gray}}\)</span>. The conversion can be represented as follows for each pixel <span class="math notranslate nohighlight">\((x, y)\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-608edba5-f484-4bc8-95b2-0e543e8cf903">
+<span class="eqno">(12.42)<a class="headerlink" href="#equation-608edba5-f484-4bc8-95b2-0e543e8cf903" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{gray}}(x, y) = 0.2989 \cdot I_{\text{red}}(x, y) + 0.5870 \cdot I_{\text{green}}(x, y) + 0.1140 \cdot I_{\text{blue}}(x, y)\end{equation}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(I_{\text{gray}}(x, y)\)</span> is the grayscale intensity at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the resulting grayscale image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{\text{red}}(x, y)\)</span> represents the intensity of the red channel at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the original RGB image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{\text{green}}(x, y)\)</span> represents the intensity of the green channel at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the original RGB image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{\text{blue}}(x, y)\)</span> represents the intensity of the blue channel at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the original RGB image.</p></li>
+</ul>
+<p>The constants 0.2989, 0.5870, and 0.1140 are the weights assigned to the red, green, and blue channels, respectively, based on the human perception of color.</p>
+<ol class="arabic simple" start="2">
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.image.grayscale_to_rgb</span></code></p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">tf.image.grayscale_to_rgb</span></code> function is used to convert a grayscale image back to an RGB image. In this operation, the same grayscale intensity value is used for all three RGB channels, resulting in a grayscale image being transformed into a color image.</p>
+<p>Mathematically, this conversion involves assigning the grayscale intensity to all three RGB channels for each pixel. Let’s denote the grayscale image as <span class="math notranslate nohighlight">\(I_{\text{gray}}\)</span> and the resulting RGB image as <span class="math notranslate nohighlight">\(I_{\text{rgb}}\)</span>. The conversion can be represented as follows for each pixel <span class="math notranslate nohighlight">\((x, y)\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-56de491e-1def-4a24-810a-d855ed5c0b88">
+<span class="eqno">(12.43)<a class="headerlink" href="#equation-56de491e-1def-4a24-810a-d855ed5c0b88" title="Permalink to this equation">#</a></span>\[\begin{equation}I_{\text{rgb}}(x, y) = [I_{\text{gray}}(x, y), I_{\text{gray}}(x, y), I_{\text{gray}}(x, y)]\end{equation}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(I_{\text{rgb}}(x, y)\)</span> is the RGB color value at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the resulting RGB image.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{\text{gray}}(x, y)\)</span> is the grayscale intensity at pixel <span class="math notranslate nohighlight">\((x, y)\)</span> in the original grayscale image.</p></li>
+</ul>
+<p>This operation essentially sets the red, green, and blue channels of each pixel to the same grayscale intensity value, effectively creating a color image where all channels have identical values.</p>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">tf.image.rgb_to_grayscale</span></code> converts an RGB image to grayscale by calculating a weighted average of the RGB channels, while <code class="docutils literal notranslate"><span class="pre">tf.image.grayscale_to_rgb</span></code> converts a grayscale image back to RGB by assigning the same grayscale intensity to all three RGB channels for each pixel <span id="id12">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the necessary module for adding colorbars to subplots</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
+
+<span class="c1"># Create a copy of the original images and their names</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Convert the second image to grayscale and update its name</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rgb_to_grayscale</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (Grayscale)&#39;</span>
+
+<span class="c1"># Convert the grayscale image back to RGB and update its name</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">grayscale_to_rgb</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rgb_to_grayscale</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (Grayscale to RGB)&#39;</span>
+
+<span class="c1"># Create a subplot with two columns for displaying the images and colorbars</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="c1"># Iterate over the augmented images</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="c1"># Display the grayscale image with a colormap and colorbar</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="c1"># Add a colorbar to the current subplot</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">inset_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;2%&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">,</span>
+                                      <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">bbox_transform</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">borderpad</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1"># Configure subplot properties</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">Aug_Names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\IPython\core\formatters.py:340,</span> in <span class="ni">BaseFormatter.__call__</span><span class="nt">(self, obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="k">pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="k">return</span> <span class="n">printer</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span> <span class="c1"># Finally look for special method names</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span> <span class="n">method</span> <span class="o">=</span> <span class="n">get_real_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_method</span><span class="p">)</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\IPython\core\pylabtools.py:152,</span> in <span class="ni">print_figure</span><span class="nt">(fig, fmt, bbox_inches, base64, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">149</span>     <span class="kn">from</span> <span class="nn">matplotlib.backend_bases</span> <span class="kn">import</span> <span class="n">FigureCanvasBase</span>
+<span class="g g-Whitespace">    </span><span class="mi">150</span>     <span class="n">FigureCanvasBase</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">152</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">bytes_io</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">153</span> <span class="n">data</span> <span class="o">=</span> <span class="n">bytes_io</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">154</span> <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;svg&#39;</span><span class="p">:</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\matplotlib\backend_bases.py:2353,</span> in <span class="ni">FigureCanvasBase.print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2350</span>         <span class="n">bbox_inches</span> <span class="o">=</span> <span class="n">bbox_inches</span><span class="o">.</span><span class="n">padded</span><span class="p">(</span><span class="n">pad_inches</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2352</span>     <span class="c1"># call adjust_bbox to save only the given area</span>
+<span class="ne">-&gt; </span><span class="mi">2353</span>     <span class="n">restore_bbox</span> <span class="o">=</span> <span class="n">_tight_bbox</span><span class="o">.</span><span class="n">adjust_bbox</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2354</span>         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">fixed_dpi</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2356</span>     <span class="n">_bbox_inches_restore</span> <span class="o">=</span> <span class="p">(</span><span class="n">bbox_inches</span><span class="p">,</span> <span class="n">restore_bbox</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2357</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\matplotlib\_tight_bbox.py:28,</span> in <span class="ni">adjust_bbox</span><span class="nt">(fig, bbox_inches, fixed_dpi)</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="n">locator</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_axes_locator</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">if</span> <span class="n">locator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">28</span>     <span class="n">ax</span><span class="o">.</span><span class="n">apply_aspect</span><span class="p">(</span><span class="n">locator</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span> <span class="n">locator_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">current_pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">(</span><span class="n">original</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">frozen</span><span class="p">()</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\matplotlib\colorbar.py:156,</span> in <span class="ni">_ColorbarAxesLocator.__call__</span><span class="nt">(self, ax, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">154</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">155</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_locator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">156</span>         <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_locator</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">157</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">158</span>         <span class="n">pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">(</span><span class="n">original</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\mpl_toolkits\axes_grid1\inset_locator.py:73,</span> in <span class="ni">AnchoredLocatorBase.__call__</span><span class="nt">(self, ax, renderer)</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>     <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="n">ax</span>
+<span class="ne">---&gt; </span><span class="mi">73</span>     <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_offset</span><span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>     <span class="n">bbox_canvas</span> <span class="o">=</span> <span class="n">Bbox</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+<span class="nn">File ~\anaconda3\envs\jbook\lib\site-packages\matplotlib\offsetbox.py:399,</span> in <span class="ni">OffsetBox.get_window_extent</span><span class="nt">(self, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span> <span class="k">def</span> <span class="nf">get_window_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">397</span>     <span class="c1"># docstring inherited</span>
+<span class="g g-Whitespace">    </span><span class="mi">398</span>     <span class="k">if</span> <span class="n">renderer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">399</span>         <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">_get_renderer</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">400</span>     <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">401</span>     <span class="k">try</span><span class="p">:</span>  <span class="c1"># Some subclasses redefine get_offset to take no args.</span>
+
+<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;_get_renderer&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 950x450 with 4 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rgb-and-hsv">
+<h3><span class="section-number">12.8.3.2. </span>RGB and HSV<a class="headerlink" href="#rgb-and-hsv" title="Permalink to this headline">#</a></h3>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.image.rgb_to_hsv</span></code></p></li>
+</ol>
+<ul class="simple">
+<li><p>Input: <code class="docutils literal notranslate"><span class="pre">images</span></code> is a tensor containing RGB images. The values in <code class="docutils literal notranslate"><span class="pre">images</span></code> must be in the range [0, 1].</p></li>
+<li><p>Output: A tensor of the same shape as <code class="docutils literal notranslate"><span class="pre">images</span></code> containing the HSV (Hue, Saturation, Value) representation of each pixel.</p></li>
+<li><p>Mathematical Explanation:</p>
+<ul>
+<li><p>For each pixel in the input RGB image, the function calculates the HSV values.</p></li>
+<li><p>The output tensor has the same dimensions as the input, with each pixel represented by a triplet of values [H, S, V].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output[...,</span> <span class="pre">0]</span></code> represents the hue component, which describes the color’s tone. A hue of 0 corresponds to pure red, 1/3 corresponds to pure green, and 2/3 corresponds to pure blue. Hue values are normalized to the range [0, 1].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output[...,</span> <span class="pre">1]</span></code> represents the saturation component, which measures the intensity or vividness of the color. Saturation values are in the range [0, 1], where 0 is completely unsaturated (grayscale) and 1 is fully saturated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output[...,</span> <span class="pre">2]</span></code> represents the value component, which represents the brightness of the color. Value values are in the range [0, 1], where 0 is black (no brightness) and 1 is the full brightness of the color.</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.image.hsv_to_rgb</span></code></p></li>
+</ol>
+<ul class="simple">
+<li><p>Input: <code class="docutils literal notranslate"><span class="pre">images</span></code> is a tensor containing HSV images. The values in <code class="docutils literal notranslate"><span class="pre">images</span></code> must be in the range [0, 1].</p></li>
+<li><p>Output: A tensor of the same shape as <code class="docutils literal notranslate"><span class="pre">images</span></code> containing the RGB (Red, Green, Blue) representation of each pixel.</p></li>
+<li><p>Mathematical Explanation:</p>
+<ul>
+<li><p>For each pixel in the input HSV image, the function calculates the corresponding RGB values.</p></li>
+<li><p>The output tensor has the same dimensions as the input, with each pixel represented by a triplet of values [R, G, B].</p></li>
+<li><p>The conversion from HSV to RGB follows standard color space transformations.</p></li>
+<li><p>The hue value (<code class="docutils literal notranslate"><span class="pre">images[...,</span> <span class="pre">0]</span></code>) is mapped to the RGB color wheel to determine the color.</p></li>
+<li><p>The saturation value (<code class="docutils literal notranslate"><span class="pre">images[...,</span> <span class="pre">1]</span></code>) scales the intensity of the color, with 0 producing grayscale (no color) and 1 producing fully saturated color.</p></li>
+<li><p>The value value (<code class="docutils literal notranslate"><span class="pre">images[...,</span> <span class="pre">2]</span></code>) controls the brightness of the color, where 0 is black and 1 is the full brightness of the color.</p></li>
+<li><p>The resulting RGB values are in the range [0, 1], with 0 being no color or no brightness, and 1 being fully saturated and fully bright.</p></li>
+</ul>
+</li>
+</ul>
+<p>These functions are used for converting between different color representations and are widely used in image processing and computer vision tasks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create copies of the original images and names</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Convert the first image from RGB to HSV</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rgb_to_hsv</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Update the name to indicate RGB to HSV conversion</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (RGB-to-HSV)&#39;</span>
+
+<span class="c1"># Convert the second image from HSV back to RGB</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">hsv_to_rgb</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Update the name to indicate HSV to RGB conversion</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (HSV-to-RGB)&#39;</span>
+
+<span class="c1"># Image Show</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">([</span><span class="n">Augmented_Images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)],</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0f1011cbb3f781a3d3e5eb8eca43774435eb83f860119c6a64949dfa26fcb85c.png" src="../_images/0f1011cbb3f781a3d3e5eb8eca43774435eb83f860119c6a64949dfa26fcb85c.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="image-gradients">
+<h2><span class="section-number">12.8.4. </span>Image Gradients<a class="headerlink" href="#image-gradients" title="Permalink to this headline">#</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">tf.image.image_gradients(image)</span></code> computes image gradients using TensorFlow. It returns two output tensors, both with the same shape as the input image, which is <code class="docutils literal notranslate"><span class="pre">[batch_size,</span> <span class="pre">h,</span> <span class="pre">w,</span> <span class="pre">d]</span></code>.</p>
+<p>The gradient values are organized in such a way that the vertical gradient component, denoted as <code class="docutils literal notranslate"><span class="pre">dy</span></code>, will always have zeros in the last row of the output tensor. Similarly, the horizontal gradient component, denoted as <code class="docutils literal notranslate"><span class="pre">dx</span></code>, will always have zeros in the last column of the output tensor.</p>
+<p>This organization of gradient values facilitates easy alignment with the corresponding pixel locations in the input image, ensuring that the gradient at pixel <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> corresponds to the difference between the neighboring pixels <code class="docutils literal notranslate"><span class="pre">(x+1,</span> <span class="pre">y)</span></code> and <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> for the horizontal component and <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y+1)</span></code> and <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> for the vertical component.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the batch size to 1 (processing one image at a time)</span>
+<span class="n">Batch_Size</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Get the height and width of the first image in the &#39;Images&#39; array</span>
+<span class="n">Image_Height</span> <span class="o">=</span> <span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Image_Width</span> <span class="o">=</span> <span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Specify the number of color channels (typically 3 for RGB)</span>
+<span class="n">Channels</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Create a synthetic image tensor with consecutive values for testing</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">Image_Height</span> <span class="o">*</span> <span class="n">Image_Width</span> <span class="o">*</span> <span class="n">Channels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">Batch_Size</span><span class="p">,</span> <span class="n">Image_Height</span><span class="p">,</span> <span class="n">Image_Width</span><span class="p">,</span> <span class="n">Channels</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Calculate image gradients (dx and dy) using TensorFlow</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">image_gradients</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the given code snippet, several TensorFlow operations are performed to create an image tensor and then calculate its image gradients. Let’s break down the code step by step:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Batch_Size</span> <span class="pre">=</span> <span class="pre">1</span></code>: This line defines the batch size as 1. In deep learning, a batch typically consists of multiple input examples processed together, but in this case, it’s set to 1, meaning only one image is processed at a time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Image_Height</span> <span class="pre">=</span> <span class="pre">Images[0].shape[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">Image_Width</span> <span class="pre">=</span> <span class="pre">Images[0].shape[1]</span></code>: These lines calculate the height and width of the image, which are obtained from the shape of the first image in the <code class="docutils literal notranslate"><span class="pre">Images</span></code> array. It assumes that <code class="docutils literal notranslate"><span class="pre">Images</span></code> is a collection of images, and the first image’s shape is used as a reference for the height and width.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Channels</span> <span class="pre">=</span> <span class="pre">3</span></code>: This line sets the number of color channels in the image to 3, which is typical for RGB color images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">tf.reshape(tf.range(Image_Height</span> <span class="pre">*</span> <span class="pre">Image_Width</span> <span class="pre">*</span> <span class="pre">Channels,</span> <span class="pre">delta=1,</span> <span class="pre">dtype=tf.float32),</span> <span class="pre">shape=(Batch_Size,</span> <span class="pre">Image_Height,</span> <span class="pre">Image_Width,</span> <span class="pre">Channels))</span></code>: This is a complex line of code that does the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.range(...)</span></code> generates a 1D tensor containing consecutive numbers starting from 0 to <code class="docutils literal notranslate"><span class="pre">Image_Height</span> <span class="pre">*</span> <span class="pre">Image_Width</span> <span class="pre">*</span> <span class="pre">Channels</span> <span class="pre">-</span> <span class="pre">1</span></code>. This is essentially creating a flat image where each pixel location has a unique value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tf.reshape(...)</span></code> reshapes this 1D tensor into a 4D tensor with dimensions <code class="docutils literal notranslate"><span class="pre">(Batch_Size,</span> <span class="pre">Image_Height,</span> <span class="pre">Image_Width,</span> <span class="pre">Channels)</span></code>. This results in an image tensor with the specified batch size, height, width, and channels.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dx,</span> <span class="pre">dy</span> <span class="pre">=</span> <span class="pre">tf.image.image_gradients(image)</span></code>: Finally, this line computes the image gradients (<code class="docutils literal notranslate"><span class="pre">dx</span></code> and <code class="docutils literal notranslate"><span class="pre">dy</span></code>) of the generated image tensor using the <code class="docutils literal notranslate"><span class="pre">tf.image.image_gradients()</span></code> function. These gradients represent the rate of change of pixel values in both the horizontal (dx) and vertical (dy) directions.</p></li>
+</ol>
+</div>
+<div class="section" id="image-standardization">
+<h2><span class="section-number">12.8.5. </span>Image Standardization<a class="headerlink" href="#image-standardization" title="Permalink to this headline">#</a></h2>
+<p>The expression <code class="docutils literal notranslate"><span class="pre">tf.image.per_image_standardization(image)</span></code> represents a standardization operation applied to each 3-D image tensor (<code class="docutils literal notranslate"><span class="pre">x</span></code>) within a collection of images represented by the <code class="docutils literal notranslate"><span class="pre">image</span></code> tensor. This operation is commonly used in deep learning for preprocessing input data to ensure that it has a mean of zero and a standard deviation of one. Let’s break down the mathematical steps involved:</p>
+<ol class="arabic">
+<li><p><strong>Calculate the Mean (<code class="docutils literal notranslate"><span class="pre">mean</span></code>):</strong> First, the mean of all values in the 3-D image tensor <code class="docutils literal notranslate"><span class="pre">x</span></code> is computed. This is done by summing up all the pixel values in the image and dividing by the total number of elements in <code class="docutils literal notranslate"><span class="pre">x</span></code>. Mathematically:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the total number of elements in the image.</p>
+</li>
+<li><p><strong>Calculate the Standard Deviation (<code class="docutils literal notranslate"><span class="pre">stddev</span></code>):</strong> Next, the standard deviation of all values in the image tensor <code class="docutils literal notranslate"><span class="pre">x</span></code> is calculated. The standard deviation is a measure of the spread or variability of the pixel values in the image <span id="id13">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p></li>
+<li><p><strong>Calculate <code class="docutils literal notranslate"><span class="pre">adjusted_stddev</span></code>:</strong> <code class="docutils literal notranslate"><span class="pre">adjusted_stddev</span></code> is determined by taking the maximum of <code class="docutils literal notranslate"><span class="pre">stddev</span></code> and <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">/</span> <span class="pre">sqrt(N)</span></code>. This step is introduced to protect against division by zero when handling images with very uniform pixel values. If the standard deviation is too small (close to zero), it could lead to division errors. So, <code class="docutils literal notranslate"><span class="pre">adjusted_stddev</span></code> ensures that there’s a minimum standard deviation of <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">/</span> <span class="pre">sqrt(N)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjusted_stddev</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">stddev</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Perform Standardization:</strong> Finally, the per-image standardization operation is applied to each pixel in the image tensor <code class="docutils literal notranslate"><span class="pre">x</span></code>. It scales each pixel value by <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">-</span> <span class="pre">mean)</span> <span class="pre">/</span> <span class="pre">adjusted_stddev</span></code>. This transformation ensures that the pixel values in the image have a mean of zero and a standard deviation of one, making them suitable for many machine learning algorithms that are sensitive to input data scaling <span id="id14">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">standardized_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">adjusted_stddev</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">tf.image.per_image_standardization(image)</span></code> performs per-image standardization on a collection of images. It calculates the mean and standard deviation of each image and scales the pixel values to have a mean of zero and a standard deviation of one, which is a common preprocessing step to improve the training of deep learning models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create copies of the Images and Names arrays</span>
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="n">Images</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="n">Names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Convert the first image from RGB to HSV color space</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">rgb_to_hsv</span><span class="p">(</span><span class="n">Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Update the name to indicate the RGB-to-HSV transformation</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; (RGB-to-HSV)&#39;</span>
+
+<span class="c1"># Perform per-image standardization on the first augmented image</span>
+<span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">per_image_standardization</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Update the name to indicate the RGB-to-HSV Standardized transformation</span>
+<span class="n">Aug_Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (RGB-to-HSV Standardized)&#39;</span>
+
+<span class="c1"># Display the augmented images with their respective names</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ImShow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">,</span> <span class="n">Aug_Names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+</pre></div>
+</div>
+<img alt="../_images/67c041090e8a20dfdf0edb343956a47202e3bff004b56e446774e0701dda79e5.png" src="../_images/67c041090e8a20dfdf0edb343956a47202e3bff004b56e446774e0701dda79e5.png" />
+</div>
+</div>
+</div>
+<div class="section" id="resizing-images">
+<h2><span class="section-number">12.8.6. </span>Resizing Images<a class="headerlink" href="#resizing-images" title="Permalink to this headline">#</a></h2>
+<p>In the context of image resizing, the “method” argument serves to specify the resampling technique applied during the process. It anticipates an input corresponding to one of the options from the image.ResizeMethod enumeration or a string equivalent of these choices. The available resampling methods are detailed as follows <span id="id15">[<a class="reference internal" href="../References.html#id120" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Bilinear</strong>: This method employs bilinear interpolation. When the “antialias” flag is set to true, it transforms into a hat/tent filter function with a radius of 1, particularly beneficial when downsampling the image.</p></li>
+<li><p><strong>Lanczos3</strong>: Utilizing the Lanczos kernel with a radius of 3, this method offers high-quality practical filtering. However, it may exhibit some ringing artifacts, especially when applied to synthetic images.</p></li>
+<li><p><strong>Lanczos5</strong>: With a Lanczos kernel of radius 5, this method delivers very high-quality filtering but may display stronger ringing artifacts compared to Lanczos3.</p></li>
+<li><p><strong>Bicubic</strong>: Leveraging cubic interpolation using Keys’ cubic interpolant (equivalent to the Catmull-Rom kernel), this method provides reasonably good quality and is notably faster than Lanczos3Kernel, especially when used for upsampling images.</p></li>
+<li><p><strong>Gaussian</strong>: Employing a Gaussian kernel with a radius of 3 and a sigma value of 1.5 / 3.0.</p></li>
+<li><p><strong>Nearest</strong>: Nearest neighbor interpolation. Notably, the “antialias” setting has no effect when used with nearest neighbor interpolation, as it does not involve any smoothing.</p></li>
+<li><p><strong>Area</strong>: This method conducts anti-aliased resampling with area interpolation. Similar to nearest neighbor interpolation, the “antialias” setting has no effect when used with area interpolation; it consistently applies anti-aliasing.</p></li>
+<li><p><strong>Mitchellcubic</strong>: The Mitchell-Netravali Cubic non-interpolating filter is suitable for synthetic images, particularly those lacking proper prefiltering. It tends to exhibit fewer ringing artifacts compared to the Keys cubic kernel but may result in less sharp images.</p></li>
+</ol>
+<p>To facilitate reference, the table below summarizes these resizing methods along with their descriptions:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Resizing Methods</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>area</p></td>
+<td><p>Anti-aliased resampling with area interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>bicubic</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bilinear_interpolation">Bicubic Interpolation</a></p></td>
+</tr>
+<tr class="row-even"><td><p>bilinear</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bilinear_interpolation">Bilinear Interpolation</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>gaussian</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_filter">Gaussian Filter</a></p></td>
+</tr>
+<tr class="row-even"><td><p>lanczos3</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Lanczos_resampling">Lanczos Resampling with Radius 3</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>lanczos5</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Lanczos_resampling">Lanczos Resampling with Radius 5</a></p></td>
+</tr>
+<tr class="row-even"><td><p>mitchellcubic</p></td>
+<td><p><a class="reference external" href="https://pixinsight.com/doc/docs/InterpolationAlgorithms/InterpolationAlgorithms.html">Mitchell-Netravali Cubic Non-Interpolating Filter</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>nearest</p></td>
+<td><p><a class="reference external" href="https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation">Nearest-Neighbor Interpolation</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="random-image-adjustments">
+<h2><span class="section-number">12.8.7. </span>Random Image Adjustments<a class="headerlink" href="#random-image-adjustments" title="Permalink to this headline">#</a></h2>
+<p>A description of various TensorFlow functions for random image adjustments:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Syntax</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_brightness">tf.image.random_brightness</a></p></td>
+<td><p>Randomly adjusts the brightness of images by a factor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_contrast">tf.image.random_contrast</a></p></td>
+<td><p>Randomly adjusts the contrast of an image or images by a factor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_crop">tf.image.random_crop</a></p></td>
+<td><p>Randomly crops a tensor to a specified size.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_flip_left_right">tf.image.random_flip_left_right</a></p></td>
+<td><p>Randomly flips an image horizontally (left to right).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_flip_up_down">tf.image.random_flip_up_down</a></p></td>
+<td><p>Randomly flips an image vertically (upside down).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_hue">tf.image.random_hue</a></p></td>
+<td><p>Randomly adjusts the hue of RGB images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_jpeg_quality">tf.image.random_jpeg_quality</a></p></td>
+<td><p>Randomly changes jpeg encoding quality to introduce jpeg noise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/image/random_saturation">tf.image.random_saturation</a></p></td>
+<td><p>Randomly adjusts the saturation of RGB images.</p></td>
+</tr>
+</tbody>
+</table>
+<p>These functions provide a wide range of random adjustments for enhancing image data augmentation and training deep learning models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">Augmented_Images</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Aug_Names</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">Image</span> <span class="o">=</span> <span class="n">Images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">Name</span> <span class="o">=</span> <span class="n">Names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Define augmentation functions and names</span>
+<span class="n">augmentation_functions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_brightness</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;max_delta&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_contrast</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_crop</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">]}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_flip_left_right</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_flip_up_down</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_hue</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;max_delta&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_jpeg_quality</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;min_jpeg_quality&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;max_jpeg_quality&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_saturation</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">})</span>
+<span class="p">]</span>
+
+<span class="n">augmentation_names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Random Brightness&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Contrast&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Crop&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Flip Left-to-Right&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Flip Up-to-Down&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Hue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random JPEG Quality&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Random Saturation&#39;</span>
+<span class="p">]</span>
+
+<span class="c1"># Apply augmentations</span>
+<span class="k">for</span> <span class="n">func</span><span class="p">,</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">augmentation_functions</span><span class="p">:</span>
+    <span class="n">Augmented_Images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">Image</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">))</span>
+    <span class="n">Aug_Names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Name</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">augmentation_names</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display augmented images</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">)</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">3.5</span> <span class="o">*</span> <span class="n">rows</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Augmented_Images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">Aug_Names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fontproperties</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">},</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/157f717d656470ca1d212cc8af7399cf52f8bb81fa2004bfbcd9157464ef778a.png" src="../_images/157f717d656470ca1d212cc8af7399cf52f8bb81fa2004bfbcd9157464ef778a.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG_680_C12S7.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">12.7. </span>Image classification with TensorFlow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../appendixes/ReadMe.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>Appendices</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-adjustments">12.8.1. Image Adjustments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brightness-adjustment-with-tf-image-adjust-brightness">12.8.1.1. Brightness Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_brightness</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contrast-adjustment-with-tf-image-adjust-contrast">12.8.1.2. Contrast Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_contrast</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gamma-correction-with-tf-image-adjust-gamma">12.8.1.3. Gamma Correction with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_gamma</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hue-adjustment-with-tf-image-adjust-hue">12.8.1.4. Hue Adjustment with <code class="docutils literal notranslate"><span class="pre">tf.image.adjust_hue</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jpeg-encoding-and-decoding-with-quality-adjustment">12.8.1.5. JPEG Encoding and Decoding with Quality Adjustment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saturation-adjustment-in-hsv-color-space">12.8.1.6. Saturation Adjustment in HSV Color Space</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cropping-flipping-and-rotating-an-image">12.8.2. Cropping, Flipping and Rotating an Image</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-crop">12.8.2.1. Central Crop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flip-along-width-dimension">12.8.2.2. Flip Along Width Dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-an-image">12.8.2.3. Rotating an Image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rgb-grayscale-and-hsv">12.8.3. RGB, Grayscale and HSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grayscale-and-rgb">12.8.3.1. Grayscale and RGB</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rgb-and-hsv">12.8.3.2. RGB and HSV</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-gradients">12.8.4. Image Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-standardization">12.8.5. Image Standardization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resizing-images">12.8.6. Resizing Images</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-image-adjustments">12.8.7. Random Image Adjustments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
