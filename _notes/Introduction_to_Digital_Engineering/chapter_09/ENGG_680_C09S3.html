@@ -1,0 +1,2233 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>9.3. Multiple Linear Regression &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_09/ENGG_680_C09S3';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Tree-Based Methods" href="../chapter_10/ReadMe.html" />
+    <link rel="prev" title="9.2. An Introduction to Linear Regression" href="ENGG_680_C09S2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Digital Engineering - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Digital Engineering - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ReadMe.html">1. Introduction to Python Programming</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S1.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S2.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG_680_C01S3.html">1.3. Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ReadMe.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S1.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG_680_C02S2.html">2.2. Iteration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ReadMe.html">3. Data Structures and File Handling in Python</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S1.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S2.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S3.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S4.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S5.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG_680_C03S6.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ReadMe.html">4. Classes and Objects</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S1.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S2.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S3.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S4.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S5.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG_680_C04S6.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ReadMe.html">5. Introduction to NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S1.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S2.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG_680_C05S3.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ReadMe.html">6. Working with Data using Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S1.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S2.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S3.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S4.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S5.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG_680_C06S6.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ReadMe.html">7. Data Visualization using Python</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S1.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S2.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S3.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S4.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S5.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG_680_C07S6.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ReadMe.html">8. An Introduction to Computer Vision</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S1.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S2.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S3.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S4.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG_680_C08S5.html">8.5. Drawing Functions (Optional Section)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ReadMe.html">9. An Introduction to Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C09S1.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG_680_C09S2.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">9.3. Multiple Linear Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ReadMe.html">10. Tree-Based Methods</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG_680_C10S1.html">10.1. Fundamental Structure of Decision Trees</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../appendixes/ReadMe.html">11. Appendices</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_1.html">11.1. Sample Questions 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../appendixes/SampleQuestions_2.html">11.2. Sample Questions 2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">12. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multiple Linear Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-boston-house-price-data">9.3.1. Example: Boston House-Price Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-auto-mpg-dataset">9.3.2. Example: Auto MPG dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression-using-statsmodels-api">9.3.2.1. Linear Regression using statsmodels API</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression-using-the-scikit-learn-api">9.3.2.2. Linear Regression using the scikit-learn API</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-categorical-variables">9.3.3. Handling Categorical Variables</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="multiple-linear-regression">
+<h1><span class="section-number">9.3. </span>Multiple Linear Regression<a class="headerlink" href="#multiple-linear-regression" title="Permalink to this heading">#</a></h1>
+<p>For conducting multiple linear regression through the least squares method in Python, you can leverage the <code class="docutils literal notranslate"><span class="pre">ModelSpec()</span></code> function from suitable libraries like <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> or <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. This function aids in crafting the model matrix and response variables crucial for regression analysis. In the present illustration, we’ll delve into a multiple linear regression model incorporating two predictor variables: <code class="docutils literal notranslate"><span class="pre">lstat</span></code> and <code class="docutils literal notranslate"><span class="pre">age</span></code> <span id="id1">[<a class="reference internal" href="../References.html#id15" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<section id="example-boston-house-price-data">
+<h2><span class="section-number">9.3.1. </span>Example: Boston House-Price Data<a class="headerlink" href="#example-boston-house-price-data" title="Permalink to this heading">#</a></h2>
+<p>The Boston House-Price Data can be revisited for the purpose of multiple linear regression analysis.</p>
+<p>For our purposes, we will focus exclusively on three variables: <code class="docutils literal notranslate"><span class="pre">AGE</span></code>, <code class="docutils literal notranslate"><span class="pre">LSTAT</span></code>, and <code class="docutils literal notranslate"><span class="pre">MEDV</span></code>.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p>Variable</p></th>
+<th class="text-center head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>AGE</p></td>
+<td class="text-center"><p>proportion of owner-occupied units built prior to 1940</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>% lower status of the population</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>MEDV</p></td>
+<td class="text-center"><p>Median value of owner-occupied homes in $1000’s</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recall Boston Dataset</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="n">_url</span> <span class="o">=</span> <span class="s2">&quot;http://lib.stat.cmu.edu/datasets/boston&quot;</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;AGE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">,</span> <span class="s1">&#39;MEDV&#39;</span><span class="p">]</span>
+
+<span class="n">Boston</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="o">=</span> <span class="n">_url</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
+                 <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="c1">#Flatten all the values into a single long list and remove the nulls</span>
+<span class="n">values_w_nulls</span> <span class="o">=</span> <span class="n">Boston</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">all_values</span> <span class="o">=</span> <span class="n">values_w_nulls</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values_w_nulls</span><span class="p">)]</span>
+
+<span class="c1">#Reshape the values to have 14 columns and make a new df out of them</span>
+<span class="n">Boston</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">all_values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)),</span>
+                  <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
+<span class="n">Boston</span> <span class="o">=</span> <span class="n">Boston</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_&#39;</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Boston</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>LSTAT</th>
+      <th>MEDV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>65.2</td>
+      <td>4.98</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>78.9</td>
+      <td>9.14</td>
+      <td>21.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>61.1</td>
+      <td>4.03</td>
+      <td>34.7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>45.8</td>
+      <td>2.94</td>
+      <td>33.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>54.2</td>
+      <td>5.33</td>
+      <td>36.2</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>501</th>
+      <td>69.1</td>
+      <td>9.67</td>
+      <td>22.4</td>
+    </tr>
+    <tr>
+      <th>502</th>
+      <td>76.7</td>
+      <td>9.08</td>
+      <td>20.6</td>
+    </tr>
+    <tr>
+      <th>503</th>
+      <td>91.0</td>
+      <td>5.64</td>
+      <td>23.9</td>
+    </tr>
+    <tr>
+      <th>504</th>
+      <td>89.3</td>
+      <td>6.48</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>505</th>
+      <td>80.8</td>
+      <td>7.88</td>
+      <td>11.9</td>
+    </tr>
+  </tbody>
+</table>
+<p>506 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>The steps for conducting this analysis utilizing the <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> library are elucidated as follows <span id="id2">[<a class="reference internal" href="../References.html#id34" title="Skipper Seabold and Josef Perktold. Statsmodels: econometric and statistical modeling with python. In 9th Python in Science Conference. 2010.">Seabold and Perktold, 2010</a>]</span>:</p>
+<p><strong>Regression model</strong>: <span class="math notranslate nohighlight">\(\text{MEDV} = \beta_0 + \beta_1 \cdot \text{LSTAT}  + \beta_2 \cdot \text{AGE} \)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="c1"># Also recall our Reg_Result for OLS Reression results</span>
+<span class="k">def</span> <span class="nf">Reg_Result</span><span class="p">(</span><span class="n">Inp</span><span class="p">):</span>
+    <span class="n">Temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="n">Inp</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">as_html</span><span class="p">(),</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Temp</span><span class="o">.</span><span class="n">style</span>\
+    <span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;coef&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4e}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;P&gt;|t|&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4e}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;std err&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4e}</span><span class="s1">&#39;</span><span class="p">})</span>\
+    <span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coef&#39;</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Lime&#39;</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;std err&#39;</span><span class="p">],</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;DimGray&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;White&#39;</span><span class="p">}))</span>
+
+<span class="c1"># Step 1: Prepare the predictor variables and target variable</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">Boston</span><span class="p">[[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">,</span> <span class="s1">&#39;AGE&#39;</span><span class="p">]]</span>  <span class="c1"># Predictor variables</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;MEDV&#39;</span><span class="p">]</span>          <span class="c1"># Target variable</span>
+
+<span class="c1"># Step 2: Add a constant term to the predictor variables (intercept)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Fit the multiple linear regression model using ordinary least squares (OLS)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">Results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Step 4: Print the summary of the regression results</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="n">Reg_Result</span><span class="p">(</span><span class="n">Results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   MEDV   R-squared:                       0.551
+Model:                            OLS   Adj. R-squared:                  0.549
+Method:                 Least Squares   F-statistic:                     309.0
+Date:                Thu, 09 Nov 2023   Prob (F-statistic):           2.98e-88
+Time:                        08:45:30   Log-Likelihood:                -1637.5
+No. Observations:                 506   AIC:                             3281.
+Df Residuals:                     503   BIC:                             3294.
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         33.2228      0.731     45.458      0.000      31.787      34.659
+LSTAT         -1.0321      0.048    -21.416      0.000      -1.127      -0.937
+AGE            0.0345      0.012      2.826      0.005       0.011       0.059
+==============================================================================
+Omnibus:                      124.288   Durbin-Watson:                   0.945
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              244.026
+Skew:                           1.362   Prob(JB):                     1.02e-53
+Kurtosis:                       5.038   Cond. No.                         201.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+#T_4b925_row0_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 3.0%, Lime 3.0%, Lime 100.0%, transparent 100.0%);
+}
+#T_4b925_row0_col1, #T_4b925_row1_col1, #T_4b925_row2_col1 {
+  background-color: DimGray;
+  color: White;
+}
+#T_4b925_row1_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, Lime 3.0%, transparent 3.0%);
+}
+#T_4b925_row2_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 3.0%, Lime 3.0%, Lime 3.1%, transparent 3.1%);
+}
+</style>
+<table id="T_4b925">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_4b925_level0_col0" class="col_heading level0 col0" >coef</th>
+      <th id="T_4b925_level0_col1" class="col_heading level0 col1" >std err</th>
+      <th id="T_4b925_level0_col2" class="col_heading level0 col2" >t</th>
+      <th id="T_4b925_level0_col3" class="col_heading level0 col3" >P>|t|</th>
+      <th id="T_4b925_level0_col4" class="col_heading level0 col4" >[0.025</th>
+      <th id="T_4b925_level0_col5" class="col_heading level0 col5" >0.975]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_4b925_level0_row0" class="row_heading level0 row0" >const</th>
+      <td id="T_4b925_row0_col0" class="data row0 col0" >3.3223e+01</td>
+      <td id="T_4b925_row0_col1" class="data row0 col1" >7.3100e-01</td>
+      <td id="T_4b925_row0_col2" class="data row0 col2" >45.458000</td>
+      <td id="T_4b925_row0_col3" class="data row0 col3" >0.0000e+00</td>
+      <td id="T_4b925_row0_col4" class="data row0 col4" >31.787000</td>
+      <td id="T_4b925_row0_col5" class="data row0 col5" >34.659000</td>
+    </tr>
+    <tr>
+      <th id="T_4b925_level0_row1" class="row_heading level0 row1" >LSTAT</th>
+      <td id="T_4b925_row1_col0" class="data row1 col0" >-1.0321e+00</td>
+      <td id="T_4b925_row1_col1" class="data row1 col1" >4.8000e-02</td>
+      <td id="T_4b925_row1_col2" class="data row1 col2" >-21.416000</td>
+      <td id="T_4b925_row1_col3" class="data row1 col3" >0.0000e+00</td>
+      <td id="T_4b925_row1_col4" class="data row1 col4" >-1.127000</td>
+      <td id="T_4b925_row1_col5" class="data row1 col5" >-0.937000</td>
+    </tr>
+    <tr>
+      <th id="T_4b925_level0_row2" class="row_heading level0 row2" >AGE</th>
+      <td id="T_4b925_row2_col0" class="data row2 col0" >3.4500e-02</td>
+      <td id="T_4b925_row2_col1" class="data row2 col1" >1.2000e-02</td>
+      <td id="T_4b925_row2_col2" class="data row2 col2" >2.826000</td>
+      <td id="T_4b925_row2_col3" class="data row2 col3" >5.0000e-03</td>
+      <td id="T_4b925_row2_col4" class="data row2 col4" >0.011000</td>
+      <td id="T_4b925_row2_col5" class="data row2 col5" >0.059000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The output is a summary of the results from an Ordinary Least Squares (OLS) regression analysis. This analysis aims to model the relationship between the dependent variable (<code class="docutils literal notranslate"><span class="pre">MEDV</span></code>, in this case) and two independent variables (<code class="docutils literal notranslate"><span class="pre">LSTAT</span></code> and <code class="docutils literal notranslate"><span class="pre">AGE</span></code>).</p>
+<p>Let’s break down the different components of the summary:</p>
+<ol class="arabic simple">
+<li><p>Dependent Variable: <code class="docutils literal notranslate"><span class="pre">MEDV</span></code>
+The dependent variable is the target variable in the regression analysis. It represents the variable we are trying to predict or explain.</p></li>
+<li><p>R-squared: 0.551
+The R-squared value, also known as the coefficient of determination, measures the proportion of the variance in the dependent variable that is explained by the independent variables. In this case, the R-squared is 0.551, indicating that approximately 55.1% of the variance in <code class="docutils literal notranslate"><span class="pre">MEDV</span></code> can be explained by the predictor variables <code class="docutils literal notranslate"><span class="pre">LSTAT</span></code> and <code class="docutils literal notranslate"><span class="pre">AGE</span></code>.</p></li>
+<li><p>Model: OLS
+The model used for the regression analysis is the Ordinary Least Squares (OLS) model, which is a common method for estimating the coefficients of a linear regression model.</p></li>
+<li><p>Adj. R-squared: 0.549
+The adjusted R-squared adjusts the R-squared value for the number of predictor variables in the model. It penalizes the R-squared for including unnecessary predictors and provides a more appropriate measure of the model’s goodness of fit. In this case, the adjusted R-squared is 0.549.</p></li>
+<li><p>Method: Least Squares
+The method used to estimate the regression coefficients is the method of least squares, which minimizes the sum of the squared differences between the observed and predicted values.</p></li>
+<li><p>F-statistic: 309.0
+The F-statistic is a measure of the overall significance of the regression model. It assesses whether the model as a whole is statistically significant in explaining the variance in the dependent variable. In this case, the F-statistic is 309.0, and the associated probability (Prob (F-statistic)) is very low (2.98e-88), indicating that the model is statistically significant.</p></li>
+<li><p>Date, Time, No. Observations, Df Residuals, Df Model, Covariance Type
+These are additional information about the analysis, including the date and time of the analysis, the number of observations (506), the degrees of freedom for the residuals (503), the degrees of freedom for the model (2), and the covariance type (nonrobust).</p></li>
+<li><p>Coefficients and Associated Statistics:
+The table displays the estimated coefficients for the intercept (<code class="docutils literal notranslate"><span class="pre">const</span></code>) and the predictor variables (<code class="docutils literal notranslate"><span class="pre">LSTAT</span></code> and <code class="docutils literal notranslate"><span class="pre">AGE</span></code>). For each coefficient, the summary provides its estimated value (<code class="docutils literal notranslate"><span class="pre">coef</span></code>), standard error (<code class="docutils literal notranslate"><span class="pre">std</span> <span class="pre">err</span></code>), t-statistic (<code class="docutils literal notranslate"><span class="pre">t</span></code>), probability (P&gt;|t|), and the 95% confidence interval (<code class="docutils literal notranslate"><span class="pre">[0.025</span> <span class="pre">0.975]</span></code>). The t-statistic assesses the significance of each coefficient, and the associated probability (P&gt;|t|) is a two-tailed test p-value. If the p-value is small (typically less than 0.05), the coefficient is considered statistically significant.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+
+<span class="k">def</span> <span class="nf">generate_regression_surface</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">Boston</span><span class="p">):</span>
+    <span class="n">Radio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">TV</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+    <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;AGE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">X1</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">X2</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;AGE&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Z</span>
+
+<span class="k">def</span> <span class="nf">plot_3d</span><span class="p">(</span><span class="n">Results</span><span class="p">,</span> <span class="n">Boston</span><span class="p">):</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">Results</span><span class="o">.</span><span class="n">params</span>
+    <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">generate_regression_surface</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">Boston</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">bet0</span><span class="p">,</span> <span class="n">bet1</span><span class="p">,</span> <span class="n">bet2</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;const&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;AGE&#39;</span><span class="p">]</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Regression: y = </span><span class="si">{</span><span class="n">bet0</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> + </span><span class="si">{</span><span class="n">bet1</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">*LSTAT  + </span><span class="si">{</span><span class="n">bet2</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">*AGE&#39;</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+
+    <span class="c1"># Customize this part if you have the original data points</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;AGE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">Boston</span><span class="p">[</span><span class="s1">&#39;MEDV&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;AGE&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;MEDV&#39;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span> <span class="mi">70</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_3d</span><span class="p">(</span><span class="n">Results</span><span class="p">,</span> <span class="n">Boston</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dd01cdfb5253a4a52fa53120a8a26557606b327cfb5b938465e5b32c486d75ce.png" src="../_images/dd01cdfb5253a4a52fa53120a8a26557606b327cfb5b938465e5b32c486d75ce.png" />
+</div>
+</div>
+<!-- ## plotly
+from plotly.offline import init_notebook_mode, iplot 
+import plotly.graph_objs as go
+import plotly.offline as py
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+def generate_regression_surface(params, Boston):
+    Radio = np.arange(0, 50)
+    TV = np.arange(0, 300)
+    X1, X2 = np.meshgrid(Boston['LSTAT'].values, Boston['AGE'].values, indexing='xy')
+    Z = params['const'] + X1 * params['LSTAT'] + X2 * params['AGE']
+    return X1, X2, Z
+
+def plot_3d(Results, Boston):
+    params = Results.params
+    X1, X2, Z = generate_regression_surface(params, Boston)
+    bet0, bet1, bet2 = params['const'], params['LSTAT'], params['AGE']
+    txt = f'Regression: y = {bet0:.3f} + {bet1:.3f}*LSTAT  + {bet2:.3f}*AGE'
+    
+    fig = go.Figure()
+    fig.add_trace(go.Scatter3d(x= Boston['LSTAT'],
+                               y= Boston['AGE'],
+                               z= Boston['MEDV'],
+                               mode='markers', marker=dict(size=4, color= Boston.MEDV, colorscale='Reds', opacity=0.8)))
+    fig.add_trace(go.Surface(z=Z, x=X1, y=X2, colorscale='Blues', colorbar_len=0.6))
+    fig.update_layout(height = 550, title={'text': '<b>' + txt + '<b>',
+                                       'x':.5, 'y': .85, 'xanchor': 'center', 'yanchor': 'top'},
+                  scene = dict(xaxis = dict(range=[0, 50], title = 'LSTAT'),
+                               yaxis = dict(range=[0, 110], title = 'AGE'),
+                               zaxis = dict(range=[0, 60], title = "MEDV")))
+    fig.show()
+
+plot_3d(Results, Boston) --></section>
+<section id="example-auto-mpg-dataset">
+<h2><span class="section-number">9.3.2. </span>Example: Auto MPG dataset<a class="headerlink" href="#example-auto-mpg-dataset" title="Permalink to this heading">#</a></h2>
+<p><font color='Blue'><b>Example:</b></font>
+In this example, we focus on the Auto MPG dataset, which is sourced from the <a class="reference external" href="http://archive.ics.uci.edu/dataset/9/auto+mpg">UCI Machine Learning Repository</a>. Our objective is to showcase the application of multivariable linear regression using this dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># You can download the dataset from: http://archive.ics.uci.edu/static/public/9/auto+mpg.zip</span>
+
+<span class="c1"># Define column names based on the dataset&#39;s description</span>
+<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">,</span> <span class="s1">&#39;Cylinders&#39;</span><span class="p">,</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Horsepower&#39;</span><span class="p">,</span> <span class="s1">&#39;Weight&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span> <span class="s1">&#39;Model_Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;Car_Name&#39;</span><span class="p">]</span>
+
+<span class="c1"># Read the dataset with column names, treating &#39;?&#39; as missing values, and remove rows with missing values</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;auto-mpg.data&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span>
+                          <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="c1"># Display the resulting DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="p">)</span>
+
+<span class="c1"># Print the data types of columns in the DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;dtype&#39;</span><span class="p">))</span>
+
+<span class="c1"># Remove the &#39;Car_Name&#39; column from the DataFrame</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Car_Name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MPG</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model_Year</th>
+      <th>Origin</th>
+      <th>Car_Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>18.0</td>
+      <td>8</td>
+      <td>307.0</td>
+      <td>130.0</td>
+      <td>3504.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+      <td>chevrolet chevelle malibu</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>15.0</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>165.0</td>
+      <td>3693.0</td>
+      <td>11.5</td>
+      <td>70</td>
+      <td>1</td>
+      <td>buick skylark 320</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>18.0</td>
+      <td>8</td>
+      <td>318.0</td>
+      <td>150.0</td>
+      <td>3436.0</td>
+      <td>11.0</td>
+      <td>70</td>
+      <td>1</td>
+      <td>plymouth satellite</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>16.0</td>
+      <td>8</td>
+      <td>304.0</td>
+      <td>150.0</td>
+      <td>3433.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+      <td>amc rebel sst</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>17.0</td>
+      <td>8</td>
+      <td>302.0</td>
+      <td>140.0</td>
+      <td>3449.0</td>
+      <td>10.5</td>
+      <td>70</td>
+      <td>1</td>
+      <td>ford torino</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>393</th>
+      <td>27.0</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790.0</td>
+      <td>15.6</td>
+      <td>82</td>
+      <td>1</td>
+      <td>ford mustang gl</td>
+    </tr>
+    <tr>
+      <th>394</th>
+      <td>44.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130.0</td>
+      <td>24.6</td>
+      <td>82</td>
+      <td>2</td>
+      <td>vw pickup</td>
+    </tr>
+    <tr>
+      <th>395</th>
+      <td>32.0</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295.0</td>
+      <td>11.6</td>
+      <td>82</td>
+      <td>1</td>
+      <td>dodge rampage</td>
+    </tr>
+    <tr>
+      <th>396</th>
+      <td>28.0</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625.0</td>
+      <td>18.6</td>
+      <td>82</td>
+      <td>1</td>
+      <td>ford ranger</td>
+    </tr>
+    <tr>
+      <th>397</th>
+      <td>31.0</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720.0</td>
+      <td>19.4</td>
+      <td>82</td>
+      <td>1</td>
+      <td>chevy s-10</td>
+    </tr>
+  </tbody>
+</table>
+<p>392 rows × 9 columns</p>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dtype</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>MPG</th>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>Cylinders</th>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <th>Displacement</th>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>Horsepower</th>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>Weight</th>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>Acceleration</th>
+      <td>float64</td>
+    </tr>
+    <tr>
+      <th>Model_Year</th>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <th>Origin</th>
+      <td>int64</td>
+    </tr>
+    <tr>
+      <th>Car_Name</th>
+      <td>object</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>MPG (Miles per Gallon):</strong> This column represents the fuel efficiency of the vehicle in miles per gallon. It indicates how many miles the vehicle can travel on one gallon of fuel. Higher MPG values signify better fuel efficiency.</p></li>
+<li><p><strong>Cylinders:</strong> This column shows the number of cylinders in the engine. It is a measure of the engine’s capacity and power. Common values are 4, 6, and 8 cylinders, indicating four-cylinder, six-cylinder, and eight-cylinder engines, respectively.</p></li>
+<li><p><strong>Displacement:</strong> Displacement refers to the engine’s total volume, typically measured in cubic inches (or cubic centimeters). It’s an indicator of the engine’s size and power. A higher displacement often correlates with more power.</p></li>
+<li><p><strong>Horsepower:</strong> This column indicates the engine’s horsepower, which is a measure of the engine’s ability to perform work. Higher horsepower values usually mean a more powerful engine.</p></li>
+<li><p><strong>Weight:</strong> Weight represents the vehicle’s mass, often in pounds or kilograms. It’s an important factor in fuel efficiency because lighter vehicles tend to have better MPG.</p></li>
+<li><p><strong>Acceleration:</strong> This column shows the vehicle’s acceleration performance, typically measured in seconds to reach 60 miles per hour (or 100 kilometers per hour) from a standstill. Faster acceleration is often associated with sportier or high-performance vehicles.</p></li>
+<li><p><strong>Model Year:</strong> This column specifies the year in which the vehicle model was manufactured. It can be used to track trends in fuel efficiency and technology over time.</p></li>
+<li><p><strong>Origin:</strong> Origin typically refers to the country of origin or manufacturing of the vehicle. It’s often a categorical variable, and values may represent different countries or regions where the vehicle was produced.</p></li>
+<li><p><strong>Car Name:</strong> This column provides the name or model of the car. It can be used for identification and categorization of different car models.</p></li>
+</ol>
+<section id="linear-regression-using-statsmodels-api">
+<h3><span class="section-number">9.3.2.1. </span>Linear Regression using statsmodels API<a class="headerlink" href="#linear-regression-using-statsmodels-api" title="Permalink to this heading">#</a></h3>
+<p>In the following example, we utilize the formula feature of the statsmodels API.</p>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>The formula feature in the statsmodels library is a powerful tool for specifying linear models in a concise and intuitive manner. It allows you to define the relationship between variables using a formula-like syntax, which closely resembles how you might write mathematical equations. This feature is particularly useful for specifying linear regression models and other types of statistical models.</p>
+<p>Key aspects of the formula feature include <span id="id3">[<a class="reference internal" href="../References.html#id34" title="Skipper Seabold and Josef Perktold. Statsmodels: econometric and statistical modeling with python. In 9th Python in Science Conference. 2010.">Seabold and Perktold, 2010</a>, <a class="reference internal" href="../References.html#id157" title="Statsmodels Developers. Statsmodels api reference. https://www.statsmodels.org/stable/api.html, 2023. [Online; accessed 01-August-2023].">Statsmodels Developers, 2023</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Dependent and Independent Variables</strong>: You can easily specify the dependent (target) variable and independent (predictor) variables in your model. For example, in a linear regression model, you can define the dependent variable as a function of one or more independent variables.</p></li>
+<li><p><strong>Formula Syntax</strong>: The formula syntax typically follows the pattern <code class="docutils literal notranslate"><span class="pre">Y</span> <span class="pre">~</span> <span class="pre">X1</span> <span class="pre">+</span> <span class="pre">X2</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">Xn</span></code>, where <code class="docutils literal notranslate"><span class="pre">Y</span></code> represents the dependent variable, and <code class="docutils literal notranslate"><span class="pre">X1</span></code>, <code class="docutils literal notranslate"><span class="pre">X2</span></code>, and so on are the independent variables. You can use operators like <code class="docutils literal notranslate"><span class="pre">+</span></code> for addition, <code class="docutils literal notranslate"><span class="pre">-</span></code> for subtraction, and <code class="docutils literal notranslate"><span class="pre">*</span></code> for interaction terms.</p></li>
+<li><p><strong>Categorical Variables</strong>: Categorical variables and their interactions can be easily included in the model using this syntax. For example, you can use <code class="docutils literal notranslate"><span class="pre">C(category_variable)</span></code> to specify a categorical variable.</p></li>
+<li><p><strong>Model Types</strong>: While commonly used in linear regression, the formula feature is versatile and can be applied to various types of models supported by statsmodels, including generalized linear models (GLMs), logistic regression, and more.</p></li>
+<li><p><strong>Automatic Intercept</strong>: By default, statsmodels automatically includes an intercept (constant) term in the model. You can exclude it by using <code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">1</span></code> in the formula if necessary.</p></li>
+<li><p><strong>Advanced Features</strong>: The formula feature supports more advanced features like handling missing data and specifying custom contrasts for categorical variables.</p></li>
+</ol>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+<span class="n">Results</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s1">&#39;MPG ~ Cylinders + Displacement + Horsepower + Weight + Acceleration + Model_Year + C(Origin)&#39;</span><span class="p">,</span>
+                  <span class="n">auto_mpg_df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="n">Reg_Result</span><span class="p">(</span><span class="n">Results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    MPG   R-squared:                       0.824
+Model:                            OLS   Adj. R-squared:                  0.821
+Method:                 Least Squares   F-statistic:                     224.5
+Date:                Thu, 09 Nov 2023   Prob (F-statistic):          1.79e-139
+Time:                        08:45:31   Log-Likelihood:                -1020.5
+No. Observations:                 392   AIC:                             2059.
+Df Residuals:                     383   BIC:                             2095.
+Df Model:                           8                                         
+Covariance Type:            nonrobust                                         
+==================================================================================
+                     coef    std err          t      P&gt;|t|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept        -17.9546      4.677     -3.839      0.000     -27.150      -8.759
+C(Origin)[T.2]     2.6300      0.566      4.643      0.000       1.516       3.744
+C(Origin)[T.3]     2.8532      0.553      5.162      0.000       1.766       3.940
+Cylinders         -0.4897      0.321     -1.524      0.128      -1.121       0.142
+Displacement       0.0240      0.008      3.133      0.002       0.009       0.039
+Horsepower        -0.0182      0.014     -1.326      0.185      -0.045       0.009
+Weight            -0.0067      0.001    -10.243      0.000      -0.008      -0.005
+Acceleration       0.0791      0.098      0.805      0.421      -0.114       0.272
+Model_Year         0.7770      0.052     15.005      0.000       0.675       0.879
+==============================================================================
+Omnibus:                       23.395   Durbin-Watson:                   1.291
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               34.452
+Skew:                           0.444   Prob(JB):                     3.30e-08
+Kurtosis:                       4.150   Cond. No.                     8.70e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 8.7e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+#T_5f9eb_row0_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, Lime 86.3%, transparent 86.3%);
+}
+#T_5f9eb_row0_col1, #T_5f9eb_row1_col1, #T_5f9eb_row2_col1, #T_5f9eb_row3_col1, #T_5f9eb_row4_col1, #T_5f9eb_row5_col1, #T_5f9eb_row6_col1, #T_5f9eb_row7_col1, #T_5f9eb_row8_col1 {
+  background-color: DimGray;
+  color: White;
+}
+#T_5f9eb_row1_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 98.9%, transparent 98.9%);
+}
+#T_5f9eb_row2_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 100.0%, transparent 100.0%);
+}
+#T_5f9eb_row3_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 83.9%, Lime 83.9%, Lime 86.3%, transparent 86.3%);
+}
+#T_5f9eb_row4_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 86.4%, transparent 86.4%);
+}
+#T_5f9eb_row5_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.2%, Lime 86.2%, Lime 86.3%, transparent 86.3%);
+}
+#T_5f9eb_row6_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 86.3%, transparent 86.3%);
+}
+#T_5f9eb_row7_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 86.7%, transparent 86.7%);
+}
+#T_5f9eb_row8_col0 {
+  width: 10em;
+  background: linear-gradient(90deg, transparent 86.3%, Lime 86.3%, Lime 90.0%, transparent 90.0%);
+}
+</style>
+<table id="T_5f9eb">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_5f9eb_level0_col0" class="col_heading level0 col0" >coef</th>
+      <th id="T_5f9eb_level0_col1" class="col_heading level0 col1" >std err</th>
+      <th id="T_5f9eb_level0_col2" class="col_heading level0 col2" >t</th>
+      <th id="T_5f9eb_level0_col3" class="col_heading level0 col3" >P>|t|</th>
+      <th id="T_5f9eb_level0_col4" class="col_heading level0 col4" >[0.025</th>
+      <th id="T_5f9eb_level0_col5" class="col_heading level0 col5" >0.975]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_5f9eb_level0_row0" class="row_heading level0 row0" >Intercept</th>
+      <td id="T_5f9eb_row0_col0" class="data row0 col0" >-1.7955e+01</td>
+      <td id="T_5f9eb_row0_col1" class="data row0 col1" >4.6770e+00</td>
+      <td id="T_5f9eb_row0_col2" class="data row0 col2" >-3.839000</td>
+      <td id="T_5f9eb_row0_col3" class="data row0 col3" >0.0000e+00</td>
+      <td id="T_5f9eb_row0_col4" class="data row0 col4" >-27.150000</td>
+      <td id="T_5f9eb_row0_col5" class="data row0 col5" >-8.759000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row1" class="row_heading level0 row1" >C(Origin)[T.2]</th>
+      <td id="T_5f9eb_row1_col0" class="data row1 col0" >2.6300e+00</td>
+      <td id="T_5f9eb_row1_col1" class="data row1 col1" >5.6600e-01</td>
+      <td id="T_5f9eb_row1_col2" class="data row1 col2" >4.643000</td>
+      <td id="T_5f9eb_row1_col3" class="data row1 col3" >0.0000e+00</td>
+      <td id="T_5f9eb_row1_col4" class="data row1 col4" >1.516000</td>
+      <td id="T_5f9eb_row1_col5" class="data row1 col5" >3.744000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row2" class="row_heading level0 row2" >C(Origin)[T.3]</th>
+      <td id="T_5f9eb_row2_col0" class="data row2 col0" >2.8532e+00</td>
+      <td id="T_5f9eb_row2_col1" class="data row2 col1" >5.5300e-01</td>
+      <td id="T_5f9eb_row2_col2" class="data row2 col2" >5.162000</td>
+      <td id="T_5f9eb_row2_col3" class="data row2 col3" >0.0000e+00</td>
+      <td id="T_5f9eb_row2_col4" class="data row2 col4" >1.766000</td>
+      <td id="T_5f9eb_row2_col5" class="data row2 col5" >3.940000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row3" class="row_heading level0 row3" >Cylinders</th>
+      <td id="T_5f9eb_row3_col0" class="data row3 col0" >-4.8970e-01</td>
+      <td id="T_5f9eb_row3_col1" class="data row3 col1" >3.2100e-01</td>
+      <td id="T_5f9eb_row3_col2" class="data row3 col2" >-1.524000</td>
+      <td id="T_5f9eb_row3_col3" class="data row3 col3" >1.2800e-01</td>
+      <td id="T_5f9eb_row3_col4" class="data row3 col4" >-1.121000</td>
+      <td id="T_5f9eb_row3_col5" class="data row3 col5" >0.142000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row4" class="row_heading level0 row4" >Displacement</th>
+      <td id="T_5f9eb_row4_col0" class="data row4 col0" >2.4000e-02</td>
+      <td id="T_5f9eb_row4_col1" class="data row4 col1" >8.0000e-03</td>
+      <td id="T_5f9eb_row4_col2" class="data row4 col2" >3.133000</td>
+      <td id="T_5f9eb_row4_col3" class="data row4 col3" >2.0000e-03</td>
+      <td id="T_5f9eb_row4_col4" class="data row4 col4" >0.009000</td>
+      <td id="T_5f9eb_row4_col5" class="data row4 col5" >0.039000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row5" class="row_heading level0 row5" >Horsepower</th>
+      <td id="T_5f9eb_row5_col0" class="data row5 col0" >-1.8200e-02</td>
+      <td id="T_5f9eb_row5_col1" class="data row5 col1" >1.4000e-02</td>
+      <td id="T_5f9eb_row5_col2" class="data row5 col2" >-1.326000</td>
+      <td id="T_5f9eb_row5_col3" class="data row5 col3" >1.8500e-01</td>
+      <td id="T_5f9eb_row5_col4" class="data row5 col4" >-0.045000</td>
+      <td id="T_5f9eb_row5_col5" class="data row5 col5" >0.009000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row6" class="row_heading level0 row6" >Weight</th>
+      <td id="T_5f9eb_row6_col0" class="data row6 col0" >-6.7000e-03</td>
+      <td id="T_5f9eb_row6_col1" class="data row6 col1" >1.0000e-03</td>
+      <td id="T_5f9eb_row6_col2" class="data row6 col2" >-10.243000</td>
+      <td id="T_5f9eb_row6_col3" class="data row6 col3" >0.0000e+00</td>
+      <td id="T_5f9eb_row6_col4" class="data row6 col4" >-0.008000</td>
+      <td id="T_5f9eb_row6_col5" class="data row6 col5" >-0.005000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row7" class="row_heading level0 row7" >Acceleration</th>
+      <td id="T_5f9eb_row7_col0" class="data row7 col0" >7.9100e-02</td>
+      <td id="T_5f9eb_row7_col1" class="data row7 col1" >9.8000e-02</td>
+      <td id="T_5f9eb_row7_col2" class="data row7 col2" >0.805000</td>
+      <td id="T_5f9eb_row7_col3" class="data row7 col3" >4.2100e-01</td>
+      <td id="T_5f9eb_row7_col4" class="data row7 col4" >-0.114000</td>
+      <td id="T_5f9eb_row7_col5" class="data row7 col5" >0.272000</td>
+    </tr>
+    <tr>
+      <th id="T_5f9eb_level0_row8" class="row_heading level0 row8" >Model_Year</th>
+      <td id="T_5f9eb_row8_col0" class="data row8 col0" >7.7700e-01</td>
+      <td id="T_5f9eb_row8_col1" class="data row8 col1" >5.2000e-02</td>
+      <td id="T_5f9eb_row8_col2" class="data row8 col2" >15.005000</td>
+      <td id="T_5f9eb_row8_col3" class="data row8 col3" >0.0000e+00</td>
+      <td id="T_5f9eb_row8_col4" class="data row8 col4" >0.675000</td>
+      <td id="T_5f9eb_row8_col5" class="data row8 col5" >0.879000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>In the context of linear regression modeling using the <code class="docutils literal notranslate"><span class="pre">smf.ols</span></code> function from the Statsmodels library, the notation <code class="docutils literal notranslate"><span class="pre">C(label)</span></code> is used to indicate the treatment of a categorical variable with the specified label as a categorical or factor variable. This notation is relevant when dealing with predictor variables of a categorical nature, such as “Origin,” that are being included in the linear regression analysis.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_MyCountPlot</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Create a figure and axes</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">))</span>
+
+    <span class="c1"># Create a count plot with a specified color palette</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="s1">&#39;pastel&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set labels and title</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Countplot for </span><span class="si">%s</span><span class="s1"> category&#39;</span> <span class="o">%</span> <span class="n">col</span><span class="p">)</span>
+
+    <span class="c1"># Add count values on top of each bar</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">p</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">),</span>
+                        <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;offset points&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Limit x-axis range</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="n">xlim</span><span class="p">)</span>
+
+    <span class="c1"># Add grid lines only if &#39;grid&#39; is True</span>
+    <span class="k">if</span> <span class="n">grid</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To determine the number of vehicles in the Auto MPG dataset by their country of origin, you can group the data by the ‘Origin’ column and then count the number of occurrences for each origin.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_MyCountPlot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="p">[[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;Germany&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;Japan&#39;</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8889e445506dd20aed2472cad79863231475550ec842d79c9dd19477398113ad.png" src="../_images/8889e445506dd20aed2472cad79863231475550ec842d79c9dd19477398113ad.png" />
+</div>
+</div>
+</section>
+<section id="linear-regression-using-the-scikit-learn-api">
+<h3><span class="section-number">9.3.2.2. </span>Linear Regression using the scikit-learn API<a class="headerlink" href="#linear-regression-using-the-scikit-learn-api" title="Permalink to this heading">#</a></h3>
+<p>We aim to apply linear regression while making use of both the training and test sets.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>For a comprehensive understanding of train and test sets, please refer to the “Prologue: Statistical Metrics and Evaluation” section.</p>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>The concepts of training and test datasets are fundamental in machine learning and are used to evaluate and validate the performance of predictive models. Here’s an explanation of each:</p>
+<ol class="arabic simple">
+<li><p><strong>Training Dataset</strong>:
+The training dataset is a subset of the original data that is used to train or build a machine-learning model. It contains both the input features (also known as predictors or independent variables) and their corresponding known output or target values. The model “learns” from this dataset by adjusting its internal parameters to capture the relationships between the input features and the target values. The training process involves feeding the model a variety of examples to enable it to generalize patterns and make accurate predictions on new, unseen data.</p></li>
+<li><p><strong>Test Dataset</strong>:
+The test dataset is a separate subset of the original data that is not used during the training phase. It is employed to evaluate the model’s performance after it has been trained. The test dataset also includes input features and their corresponding known target values, but the target values are kept hidden from the model during evaluation. The model uses its learned parameters to predict the target values based on the input features from the test dataset. The predicted values are then compared with the actual target values to assess the model’s accuracy and ability to generalize to new, unseen data.</p></li>
+</ol>
+<p>The purpose of splitting the data into training and test datasets is to simulate the model’s performance in real-world scenarios. The model’s success on the test dataset reflects its ability to make accurate predictions on new, previously unseen data, which is a key goal in machine learning. It helps to prevent overfitting, where a model becomes too specialized to the training data and performs poorly on new data, by providing an independent evaluation of its performance.</p>
+<p>In some cases, a third subset called the “validation dataset” is also used. This dataset is used during model development to fine-tune hyperparameters and make decisions about model selection and feature engineering. The validation dataset aids in preventing “data leakage” where the model’s performance becomes overly optimistic due to tuning on the test data.</p>
+<p>The division between training and test datasets is typically done randomly to ensure that the datasets are representative of the overall data distribution. Techniques like cross-validation can be used to further assess model performance and robustness.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="c1"># Load your data into the &#39;auto_mpg_df&#39; DataFrame.</span>
+
+<span class="c1"># 1. Converting data into dependent and independent variables</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;MPG&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">]</span>
+
+<span class="c1"># 2. Split the data into training and testing sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of X_train = </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of y_train = </span><span class="si">{</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of X_test = </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of y_test = </span><span class="si">{</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 3. Create and train the linear regression model</span>
+<span class="n">regressor</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 4. Evaluate the model on the training dataset</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># Calculate training performance metrics</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+<span class="n">r2_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training R-squared (R2): </span><span class="si">{</span><span class="n">r2_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 5. Evaluate the model on the test dataset</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Calculate test performance metrics</span>
+<span class="n">mse_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+<span class="n">r2_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test R-squared (R2): </span><span class="si">{</span><span class="n">r2_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of X_train = (313, 7)
+Shape of y_train = (313,)
+Shape of X_test = (79, 7)
+Shape of y_test = (79,)
+Training Mean Squared Error (MSE): 11.233
+Training R-squared (R2): 0.822
+Test Mean Squared Error (MSE): 9.630
+Test R-squared (R2): 0.804
+</pre></div>
+</div>
+</div>
+</div>
+<!-- 
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.style.use('../mystyle.mplstyle')
+
+# Create a figure and two subplots with different widths
+fig, ax = plt.subplots(2, 1, figsize=(9.5, 7), gridspec_kw={'height_ratios': [1, 4]})
+
+# Plot the boxplot on the first subplot
+sns.boxplot(x=auto_mpg_df["Horsepower"], ax=ax[0], color='LawnGreen')
+ax[0].set_title("Boxplot for (Potential) Outliers Detection", fontweight="bold", fontsize=14)
+ax[0].set_xlabel("Horsepower", fontsize=12)
+
+# Plot the histogram with KDE on the second subplot
+sns.histplot(auto_mpg_df["Horsepower"], kde=True, bins=20, color='aqua', ax=ax[1])
+ax[1].lines[0].set_color('red')
+ax[1].set_title("Distribution Plot for Skewness", fontweight="bold", fontsize=14)
+ax[1].set_xlabel("Horsepower", fontsize=12)
+
+# Adjust spacing between subplots
+plt.subplots_adjust(hspace=0.4)
+
+_ = fig.suptitle('Horsepower', weight = 'bold', fontsize =16)
+ --><p>Correlation measures the linear relationship’s strength and direction between two variables. It quantifies the association between changes in one variable and changes in another. The widely used correlation measure is the Pearson correlation coefficient (r), which ranges from -1 to 1. A positive r indicates a positive correlation, signifying that as one variable increases, the other tends to increase. Conversely, a negative r suggests a negative correlation, where as one variable increases, the other tends to decrease. A correlation of 0 denotes no linear relationship.</p>
+<p>Multiple linear regression is a statistical technique for analyzing the relationship between a dependent variable and two or more independent variables. It extends linear regression by considering multiple predictors simultaneously. The model assumes a linear relationship between the dependent variable and independent variables, expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e762d7b7-bda3-4813-b938-023276d53bf8">
+<span class="eqno">(9.74)<a class="headerlink" href="#equation-e762d7b7-bda3-4813-b938-023276d53bf8" title="Permalink to this equation">#</a></span>\[\begin{equation}Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_nX_n + \varepsilon\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y\)</span> represents the dependent variable.</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_1, X_2, ..., X_n\)</span> are the independent variables.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span> is the intercept (constant).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1, \beta_2, ..., \beta_n\)</span> are the coefficients representing the strength and direction of the relationship between each independent variable and the dependent variable.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\varepsilon\)</span> represents the error term.</p></li>
+</ul>
+<p>The correlation coefficient (<span class="math notranslate nohighlight">\(r\)</span>) can serve as an initial tool to assess the relationship between individual independent variables and the dependent variable in multiple linear regression. A strong and significant correlation suggests a potential candidate for inclusion in the regression model. However, correlation alone doesn’t offer a comprehensive understanding in a multivariate context. Multiple linear regression enables the consideration of combined influences of multiple independent variables on the dependent variable, accounting for potential interactions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_corr</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_corr</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_d50e8_row0_col0, #T_d50e8_row1_col1, #T_d50e8_row2_col2, #T_d50e8_row3_col3, #T_d50e8_row4_col4, #T_d50e8_row5_col5, #T_d50e8_row6_col6, #T_d50e8_row7_col7 {
+  background-color: #006837;
+  color: #f1f1f1;
+}
+#T_d50e8_row0_col1, #T_d50e8_row0_col3, #T_d50e8_row1_col0, #T_d50e8_row3_col0 {
+  background-color: #da362a;
+  color: #f1f1f1;
+}
+#T_d50e8_row0_col2, #T_d50e8_row2_col0 {
+  background-color: #d42d27;
+  color: #f1f1f1;
+}
+#T_d50e8_row0_col4, #T_d50e8_row4_col0 {
+  background-color: #ce2827;
+  color: #f1f1f1;
+}
+#T_d50e8_row0_col5, #T_d50e8_row5_col0 {
+  background-color: #9dd569;
+  color: #000000;
+}
+#T_d50e8_row0_col6, #T_d50e8_row6_col0 {
+  background-color: #6bbf64;
+  color: #000000;
+}
+#T_d50e8_row0_col7, #T_d50e8_row7_col0 {
+  background-color: #70c164;
+  color: #000000;
+}
+#T_d50e8_row1_col2, #T_d50e8_row2_col1 {
+  background-color: #06733d;
+  color: #f1f1f1;
+}
+#T_d50e8_row1_col3, #T_d50e8_row3_col1 {
+  background-color: #148e4b;
+  color: #f1f1f1;
+}
+#T_d50e8_row1_col4, #T_d50e8_row2_col3, #T_d50e8_row3_col2, #T_d50e8_row4_col1 {
+  background-color: #0d8044;
+  color: #f1f1f1;
+}
+#T_d50e8_row1_col5, #T_d50e8_row5_col1 {
+  background-color: #f88c51;
+  color: #f1f1f1;
+}
+#T_d50e8_row1_col6, #T_d50e8_row6_col1 {
+  background-color: #fdbb6c;
+  color: #000000;
+}
+#T_d50e8_row1_col7, #T_d50e8_row7_col1 {
+  background-color: #f57748;
+  color: #f1f1f1;
+}
+#T_d50e8_row2_col4, #T_d50e8_row4_col2 {
+  background-color: #08773f;
+  color: #f1f1f1;
+}
+#T_d50e8_row2_col5, #T_d50e8_row5_col2 {
+  background-color: #f67f4b;
+  color: #f1f1f1;
+}
+#T_d50e8_row2_col6, #T_d50e8_row6_col2 {
+  background-color: #fdb567;
+  color: #000000;
+}
+#T_d50e8_row2_col7, #T_d50e8_row7_col2 {
+  background-color: #f26841;
+  color: #f1f1f1;
+}
+#T_d50e8_row3_col4, #T_d50e8_row4_col3 {
+  background-color: #118848;
+  color: #f1f1f1;
+}
+#T_d50e8_row3_col5, #T_d50e8_row5_col3 {
+  background-color: #e65036;
+  color: #f1f1f1;
+}
+#T_d50e8_row3_col6, #T_d50e8_row4_col5, #T_d50e8_row5_col4, #T_d50e8_row6_col3 {
+  background-color: #fca85e;
+  color: #000000;
+}
+#T_d50e8_row3_col7, #T_d50e8_row7_col3 {
+  background-color: #fa9b58;
+  color: #000000;
+}
+#T_d50e8_row4_col6, #T_d50e8_row6_col4 {
+  background-color: #fdc574;
+  color: #000000;
+}
+#T_d50e8_row4_col7, #T_d50e8_row7_col4 {
+  background-color: #f57245;
+  color: #f1f1f1;
+}
+#T_d50e8_row5_col6, #T_d50e8_row6_col5 {
+  background-color: #c1e57b;
+  color: #000000;
+}
+#T_d50e8_row5_col7, #T_d50e8_row7_col5 {
+  background-color: #d5ed88;
+  color: #000000;
+}
+#T_d50e8_row6_col7, #T_d50e8_row7_col6 {
+  background-color: #dcf08f;
+  color: #000000;
+}
+</style>
+<table id="T_d50e8">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_d50e8_level0_col0" class="col_heading level0 col0" >MPG</th>
+      <th id="T_d50e8_level0_col1" class="col_heading level0 col1" >Cylinders</th>
+      <th id="T_d50e8_level0_col2" class="col_heading level0 col2" >Displacement</th>
+      <th id="T_d50e8_level0_col3" class="col_heading level0 col3" >Horsepower</th>
+      <th id="T_d50e8_level0_col4" class="col_heading level0 col4" >Weight</th>
+      <th id="T_d50e8_level0_col5" class="col_heading level0 col5" >Acceleration</th>
+      <th id="T_d50e8_level0_col6" class="col_heading level0 col6" >Model_Year</th>
+      <th id="T_d50e8_level0_col7" class="col_heading level0 col7" >Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_d50e8_level0_row0" class="row_heading level0 row0" >MPG</th>
+      <td id="T_d50e8_row0_col0" class="data row0 col0" >1.0000</td>
+      <td id="T_d50e8_row0_col1" class="data row0 col1" >-0.7776</td>
+      <td id="T_d50e8_row0_col2" class="data row0 col2" >-0.8051</td>
+      <td id="T_d50e8_row0_col3" class="data row0 col3" >-0.7784</td>
+      <td id="T_d50e8_row0_col4" class="data row0 col4" >-0.8322</td>
+      <td id="T_d50e8_row0_col5" class="data row0 col5" >0.4233</td>
+      <td id="T_d50e8_row0_col6" class="data row0 col6" >0.5805</td>
+      <td id="T_d50e8_row0_col7" class="data row0 col7" >0.5652</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row1" class="row_heading level0 row1" >Cylinders</th>
+      <td id="T_d50e8_row1_col0" class="data row1 col0" >-0.7776</td>
+      <td id="T_d50e8_row1_col1" class="data row1 col1" >1.0000</td>
+      <td id="T_d50e8_row1_col2" class="data row1 col2" >0.9508</td>
+      <td id="T_d50e8_row1_col3" class="data row1 col3" >0.8430</td>
+      <td id="T_d50e8_row1_col4" class="data row1 col4" >0.8975</td>
+      <td id="T_d50e8_row1_col5" class="data row1 col5" >-0.5047</td>
+      <td id="T_d50e8_row1_col6" class="data row1 col6" >-0.3456</td>
+      <td id="T_d50e8_row1_col7" class="data row1 col7" >-0.5689</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row2" class="row_heading level0 row2" >Displacement</th>
+      <td id="T_d50e8_row2_col0" class="data row2 col0" >-0.8051</td>
+      <td id="T_d50e8_row2_col1" class="data row2 col1" >0.9508</td>
+      <td id="T_d50e8_row2_col2" class="data row2 col2" >1.0000</td>
+      <td id="T_d50e8_row2_col3" class="data row2 col3" >0.8973</td>
+      <td id="T_d50e8_row2_col4" class="data row2 col4" >0.9330</td>
+      <td id="T_d50e8_row2_col5" class="data row2 col5" >-0.5438</td>
+      <td id="T_d50e8_row2_col6" class="data row2 col6" >-0.3699</td>
+      <td id="T_d50e8_row2_col7" class="data row2 col7" >-0.6145</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row3" class="row_heading level0 row3" >Horsepower</th>
+      <td id="T_d50e8_row3_col0" class="data row3 col0" >-0.7784</td>
+      <td id="T_d50e8_row3_col1" class="data row3 col1" >0.8430</td>
+      <td id="T_d50e8_row3_col2" class="data row3 col2" >0.8973</td>
+      <td id="T_d50e8_row3_col3" class="data row3 col3" >1.0000</td>
+      <td id="T_d50e8_row3_col4" class="data row3 col4" >0.8645</td>
+      <td id="T_d50e8_row3_col5" class="data row3 col5" >-0.6892</td>
+      <td id="T_d50e8_row3_col6" class="data row3 col6" >-0.4164</td>
+      <td id="T_d50e8_row3_col7" class="data row3 col7" >-0.4552</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row4" class="row_heading level0 row4" >Weight</th>
+      <td id="T_d50e8_row4_col0" class="data row4 col0" >-0.8322</td>
+      <td id="T_d50e8_row4_col1" class="data row4 col1" >0.8975</td>
+      <td id="T_d50e8_row4_col2" class="data row4 col2" >0.9330</td>
+      <td id="T_d50e8_row4_col3" class="data row4 col3" >0.8645</td>
+      <td id="T_d50e8_row4_col4" class="data row4 col4" >1.0000</td>
+      <td id="T_d50e8_row4_col5" class="data row4 col5" >-0.4168</td>
+      <td id="T_d50e8_row4_col6" class="data row4 col6" >-0.3091</td>
+      <td id="T_d50e8_row4_col7" class="data row4 col7" >-0.5850</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row5" class="row_heading level0 row5" >Acceleration</th>
+      <td id="T_d50e8_row5_col0" class="data row5 col0" >0.4233</td>
+      <td id="T_d50e8_row5_col1" class="data row5 col1" >-0.5047</td>
+      <td id="T_d50e8_row5_col2" class="data row5 col2" >-0.5438</td>
+      <td id="T_d50e8_row5_col3" class="data row5 col3" >-0.6892</td>
+      <td id="T_d50e8_row5_col4" class="data row5 col4" >-0.4168</td>
+      <td id="T_d50e8_row5_col5" class="data row5 col5" >1.0000</td>
+      <td id="T_d50e8_row5_col6" class="data row5 col6" >0.2903</td>
+      <td id="T_d50e8_row5_col7" class="data row5 col7" >0.2127</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row6" class="row_heading level0 row6" >Model_Year</th>
+      <td id="T_d50e8_row6_col0" class="data row6 col0" >0.5805</td>
+      <td id="T_d50e8_row6_col1" class="data row6 col1" >-0.3456</td>
+      <td id="T_d50e8_row6_col2" class="data row6 col2" >-0.3699</td>
+      <td id="T_d50e8_row6_col3" class="data row6 col3" >-0.4164</td>
+      <td id="T_d50e8_row6_col4" class="data row6 col4" >-0.3091</td>
+      <td id="T_d50e8_row6_col5" class="data row6 col5" >0.2903</td>
+      <td id="T_d50e8_row6_col6" class="data row6 col6" >1.0000</td>
+      <td id="T_d50e8_row6_col7" class="data row6 col7" >0.1815</td>
+    </tr>
+    <tr>
+      <th id="T_d50e8_level0_row7" class="row_heading level0 row7" >Origin</th>
+      <td id="T_d50e8_row7_col0" class="data row7 col0" >0.5652</td>
+      <td id="T_d50e8_row7_col1" class="data row7 col1" >-0.5689</td>
+      <td id="T_d50e8_row7_col2" class="data row7 col2" >-0.6145</td>
+      <td id="T_d50e8_row7_col3" class="data row7 col3" >-0.4552</td>
+      <td id="T_d50e8_row7_col4" class="data row7 col4" >-0.5850</td>
+      <td id="T_d50e8_row7_col5" class="data row7 col5" >0.2127</td>
+      <td id="T_d50e8_row7_col6" class="data row7 col6" >0.1815</td>
+      <td id="T_d50e8_row7_col7" class="data row7 col7" >1.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_corr</span><span class="o">.</span><span class="n">MPG</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;Correlation&#39;</span><span class="p">),</span>
+                         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Coefficient&#39;</span><span class="p">:</span><span class="n">regressor</span><span class="o">.</span><span class="n">coef_</span><span class="p">},</span> <span class="n">index</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_combined</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_98d8a_row0_col0, #T_98d8a_row2_col0 {
+  background-color: #da362a;
+  color: #f1f1f1;
+}
+#T_98d8a_row0_col1 {
+  background-color: #fec877;
+  color: #000000;
+}
+#T_98d8a_row1_col0 {
+  background-color: #d42d27;
+  color: #f1f1f1;
+}
+#T_98d8a_row1_col1 {
+  background-color: #fbfdba;
+  color: #000000;
+}
+#T_98d8a_row2_col1 {
+  background-color: #fffbb8;
+  color: #000000;
+}
+#T_98d8a_row3_col0 {
+  background-color: #ce2827;
+  color: #f1f1f1;
+}
+#T_98d8a_row3_col1 {
+  background-color: #fffebe;
+  color: #000000;
+}
+#T_98d8a_row4_col0 {
+  background-color: #9dd569;
+  color: #000000;
+}
+#T_98d8a_row4_col1 {
+  background-color: #eef8a8;
+  color: #000000;
+}
+#T_98d8a_row5_col0 {
+  background-color: #6bbf64;
+  color: #000000;
+}
+#T_98d8a_row5_col1 {
+  background-color: #279f53;
+  color: #f1f1f1;
+}
+#T_98d8a_row6_col0 {
+  background-color: #70c164;
+  color: #000000;
+}
+#T_98d8a_row6_col1 {
+  background-color: #006837;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_98d8a">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_98d8a_level0_col0" class="col_heading level0 col0" >Correlation</th>
+      <th id="T_98d8a_level0_col1" class="col_heading level0 col1" >Coefficient</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_98d8a_level0_row0" class="row_heading level0 row0" >Cylinders</th>
+      <td id="T_98d8a_row0_col0" class="data row0 col0" >-0.7776</td>
+      <td id="T_98d8a_row0_col1" class="data row0 col1" >-0.2926</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row1" class="row_heading level0 row1" >Displacement</th>
+      <td id="T_98d8a_row1_col0" class="data row1 col0" >-0.8051</td>
+      <td id="T_98d8a_row1_col1" class="data row1 col1" >0.0184</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row2" class="row_heading level0 row2" >Horsepower</th>
+      <td id="T_98d8a_row2_col0" class="data row2 col0" >-0.7784</td>
+      <td id="T_98d8a_row2_col1" class="data row2 col1" >-0.0256</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row3" class="row_heading level0 row3" >Weight</th>
+      <td id="T_98d8a_row3_col0" class="data row3 col0" >-0.8322</td>
+      <td id="T_98d8a_row3_col1" class="data row3 col1" >-0.0062</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row4" class="row_heading level0 row4" >Acceleration</th>
+      <td id="T_98d8a_row4_col0" class="data row4 col0" >0.4233</td>
+      <td id="T_98d8a_row4_col1" class="data row4 col1" >0.0861</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row5" class="row_heading level0 row5" >Model_Year</th>
+      <td id="T_98d8a_row5_col0" class="data row5 col0" >0.5805</td>
+      <td id="T_98d8a_row5_col1" class="data row5 col1" >0.7615</td>
+    </tr>
+    <tr>
+      <th id="T_98d8a_level0_row6" class="row_heading level0 row6" >Origin</th>
+      <td id="T_98d8a_row6_col0" class="data row6 col0" >0.5652</td>
+      <td id="T_98d8a_row6_col1" class="data row6 col1" >1.5638</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We can see that:</p>
+<ol class="arabic simple">
+<li><p><strong>Sign of Coefficients</strong>: If the correlation coefficient for a variable is negative, it means there’s a negative linear relationship between that variable and MPG (as the variable increases, MPG tends to decrease). In this case, you would expect the linear regression coefficient for that variable to be negative as well, indicating that, when controlling for other variables, an increase in that variable results in a decrease in MPG.</p></li>
+<li><p><strong>Magnitude of Coefficients</strong>: The correlation coefficient gives you the strength of the linear relationship between the variable and MPG, <strong>but it doesn’t take into account the influence of other variables</strong>. In contrast, the linear regression coefficient considers the impact of that variable while controlling for other variables in the model. So, if the magnitude of the regression coefficient is larger, it indicates that the variable has a stronger independent effect on MPG, even after accounting for the other variables.</p></li>
+<li><p><strong>Direction of Relationship</strong>: Both coefficients provide information about the direction of the relationship. A negative correlation coefficient and a negative regression coefficient both indicate a negative relationship (as the variable increases, MPG decreases), while positive coefficients indicate a positive relationship.</p></li>
+</ol>
+<p><font color='Blue'><b>Example:</b></font> In this example, we modify the modeling process by taking the natural logarithm of the dependent variable, MPG, before training the linear regression model. This adjustment can allow us to better capture the non-linear relationships present in the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create and train the linear regression model</span>
+<span class="n">regressor</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
+
+<span class="c1"># Evaluate the model on the training dataset</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># Calculate training performance metrics</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="n">y_train_pred</span><span class="p">)</span>
+<span class="n">r2_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="n">y_train_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training R-squared (R2): </span><span class="si">{</span><span class="n">r2_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 5Evaluate the model on the test dataset</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Calculate test performance metrics</span>
+<span class="n">mse_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="n">y_test_pred</span><span class="p">)</span>
+<span class="n">r2_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="n">y_test_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test R-squared (R2): </span><span class="si">{</span><span class="n">r2_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training Mean Squared Error (MSE): 0.014
+Training R-squared (R2): 0.882
+Test Mean Squared Error (MSE): 0.014
+Test R-squared (R2): 0.860
+</pre></div>
+</div>
+</div>
+</div>
+<p>The previous model had training and test Mean Squared Error (MSE) values of 11.233 and 9.630, respectively, along with R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>) values of 0.822 and 0.804. However, after applying the logarithmic transformation to MPG, the model’s performance improved significantly. The training and test MSE reduced to 0.014, and the <span class="math notranslate nohighlight">\(R^2\)</span> values increased to 0.882 for training and 0.860 for the test dataset. These results demonstrate that the logarithmic transformation of the dependent variable enhanced the model’s accuracy, making it a more robust predictor of MPG.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">auto_mpg_df_ln</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">auto_mpg_df_ln</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">auto_mpg_df_ln</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">])</span>
+<span class="n">auto_mpg_df_ln</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MPG&#39;</span> <span class="p">:</span> <span class="s1">&#39;ln(MPG)&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">df_corr</span> <span class="o">=</span> <span class="n">auto_mpg_df_ln</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_corr</span><span class="p">[[</span><span class="s1">&#39;ln(MPG)&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_5ca95_row0_col0 {
+  background-color: #d02927;
+  color: #f1f1f1;
+}
+#T_5ca95_row1_col0 {
+  background-color: #c82227;
+  color: #f1f1f1;
+}
+#T_5ca95_row2_col0 {
+  background-color: #ce2827;
+  color: #f1f1f1;
+}
+#T_5ca95_row3_col0 {
+  background-color: #c21c27;
+  color: #f1f1f1;
+}
+#T_5ca95_row4_col0 {
+  background-color: #96d268;
+  color: #000000;
+}
+#T_5ca95_row5_col0 {
+  background-color: #6ec064;
+  color: #000000;
+}
+#T_5ca95_row6_col0 {
+  background-color: #73c264;
+  color: #000000;
+}
+</style>
+<table id="T_5ca95">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_5ca95_level0_col0" class="col_heading level0 col0" >ln(MPG)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_5ca95_level0_row0" class="row_heading level0 row0" >Cylinders</th>
+      <td id="T_5ca95_row0_col0" class="data row0 col0" >-0.8268</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row1" class="row_heading level0 row1" >Displacement</th>
+      <td id="T_5ca95_row1_col0" class="data row1 col0" >-0.8537</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row2" class="row_heading level0 row2" >Horsepower</th>
+      <td id="T_5ca95_row2_col0" class="data row2 col0" >-0.8302</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row3" class="row_heading level0 row3" >Weight</th>
+      <td id="T_5ca95_row3_col0" class="data row3 col0" >-0.8757</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row4" class="row_heading level0 row4" >Acceleration</th>
+      <td id="T_5ca95_row4_col0" class="data row4 col0" >0.4476</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row5" class="row_heading level0 row5" >Model_Year</th>
+      <td id="T_5ca95_row5_col0" class="data row5 col0" >0.5773</td>
+    </tr>
+    <tr>
+      <th id="T_5ca95_level0_row6" class="row_heading level0 row6" >Origin</th>
+      <td id="T_5ca95_row6_col0" class="data row6 col0" >0.5605</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Let’s summarize the differences:</p>
+<p><strong>Original Correlations:</strong></p>
+<ul class="simple">
+<li><p>Cylinders had a correlation of approximately -0.7776 with MPG.</p></li>
+<li><p>Displacement had a correlation of approximately -0.8051 with MPG.</p></li>
+<li><p>Horsepower had a correlation of approximately -0.7784 with MPG.</p></li>
+<li><p>Weight had a correlation of approximately -0.8322 with MPG.</p></li>
+<li><p>Acceleration had a correlation of approximately 0.4233 with MPG.</p></li>
+<li><p>Model_Year had a correlation of approximately 0.5805 with MPG.</p></li>
+<li><p>Origin had a correlation of approximately 0.5652 with MPG.</p></li>
+</ul>
+<p><strong>Updated Correlations with ln(MPG):</strong></p>
+<ul class="simple">
+<li><p>Cylinders has a correlation of approximately -0.8268 with ln(MPG).</p></li>
+<li><p>Displacement has a correlation of approximately -0.8537 with ln(MPG).</p></li>
+<li><p>Horsepower has a correlation of approximately -0.8302 with ln(MPG).</p></li>
+<li><p>Weight has a correlation of approximately -0.8757 with ln(MPG).</p></li>
+<li><p>Acceleration has a correlation of approximately 0.4476 with ln(MPG).</p></li>
+<li><p>Model_Year has a correlation of approximately 0.5773 with ln(MPG).</p></li>
+<li><p>Origin has a correlation of approximately 0.5605 with ln(MPG).</p></li>
+</ul>
+<p><strong>Comparison:</strong></p>
+<ul class="simple">
+<li><p>In the original correlations, all variables showed a strong negative linear relationship with MPG, as evidenced by their negative correlation coefficients.</p></li>
+<li><p>After transforming the dependent variable to ln(MPG), the correlations remain negative, indicating that as these variables increase, the logarithm of MPG tends to decrease.</p></li>
+<li><p>Notably, the magnitude of the correlations increased in the ln(MPG) table, suggesting a slightly stronger linear relationship between these variables and ln(MPG) compared to the original MPG.</p></li>
+<li><p>Acceleration, Model_Year, and Origin still show positive correlations with ln(MPG), as they did with the original MPG, but the correlations are stronger after the logarithmic transformation.</p></li>
+</ul>
+<p>Overall, the natural logarithm of MPG appears to have strengthened the linear relationships between these variables.</p>
+</section>
+</section>
+<section id="handling-categorical-variables">
+<h2><span class="section-number">9.3.3. </span>Handling Categorical Variables<a class="headerlink" href="#handling-categorical-variables" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pandas.get_dummies</span></code> is a function in the Pandas library used for one-hot encoding categorical variables. It transforms categorical data into a binary matrix representation, where each unique category becomes a column with binary values indicating the presence or absence of that category for each observation.</p>
+<p><font color='Blue'><b>Example:</b></font> The categorical variable ‘Origin’ can be one-hot encoded using <code class="docutils literal notranslate"><span class="pre">pd.get_dummies</span></code>, replacing numerical codes (1, 2, 3) with corresponding country names (USA, Germany, Japan).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">auto_mpg_df_mod</span> <span class="o">=</span> <span class="n">auto_mpg_df_ln</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">origin_dummies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;Germany&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;Japan&#39;</span><span class="p">}),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">auto_mpg_df_mod</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">auto_mpg_df_mod</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]),</span> <span class="n">origin_dummies</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">origin_dummies</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auto_mpg_df_mod</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ln(MPG)</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model_Year</th>
+      <th>Germany</th>
+      <th>Japan</th>
+      <th>USA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.890372</td>
+      <td>8</td>
+      <td>307.0</td>
+      <td>130.0</td>
+      <td>3504.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.708050</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>165.0</td>
+      <td>3693.0</td>
+      <td>11.5</td>
+      <td>70</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.890372</td>
+      <td>8</td>
+      <td>318.0</td>
+      <td>150.0</td>
+      <td>3436.0</td>
+      <td>11.0</td>
+      <td>70</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.772589</td>
+      <td>8</td>
+      <td>304.0</td>
+      <td>150.0</td>
+      <td>3433.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.833213</td>
+      <td>8</td>
+      <td>302.0</td>
+      <td>140.0</td>
+      <td>3449.0</td>
+      <td>10.5</td>
+      <td>70</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>393</th>
+      <td>3.295837</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790.0</td>
+      <td>15.6</td>
+      <td>82</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>394</th>
+      <td>3.784190</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130.0</td>
+      <td>24.6</td>
+      <td>82</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>395</th>
+      <td>3.465736</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295.0</td>
+      <td>11.6</td>
+      <td>82</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>396</th>
+      <td>3.332205</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625.0</td>
+      <td>18.6</td>
+      <td>82</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>397</th>
+      <td>3.433987</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720.0</td>
+      <td>19.4</td>
+      <td>82</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>392 rows × 10 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="c1"># Load your data into the &#39;auto_mpg_df&#39; DataFrame.</span>
+
+<span class="c1"># 1. Converting data into dependent and independent variables</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">auto_mpg_df_mod</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;ln(MPG)&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">auto_mpg_df_mod</span><span class="p">[</span><span class="s1">&#39;ln(MPG)&#39;</span><span class="p">]</span>
+
+<span class="c1"># 2. Split the data into training and testing sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of X_train = </span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of y_train = </span><span class="si">{</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of X_test = </span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Shape of y_test = </span><span class="si">{</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 3. Create and train the linear regression model</span>
+<span class="n">regressor</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 4. Evaluate the model on the training dataset</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># Calculate training performance metrics</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+<span class="n">r2_train</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training R-squared (R2): </span><span class="si">{</span><span class="n">r2_train</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 5. Evaluate the model on the test dataset</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Calculate test performance metrics</span>
+<span class="n">mse_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+<span class="n">r2_test</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test R-squared (R2): </span><span class="si">{</span><span class="n">r2_test</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of X_train = (313, 9)
+Shape of y_train = (313,)
+Shape of X_test = (79, 9)
+Shape of y_test = (79,)
+Training Mean Squared Error (MSE): 0.014
+Training R-squared (R2): 0.885
+Test Mean Squared Error (MSE): 0.014
+Test R-squared (R2): 0.859
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_09"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG_680_C09S2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9.2. </span>An Introduction to Linear Regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_10/ReadMe.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Tree-Based Methods</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-boston-house-price-data">9.3.1. Example: Boston House-Price Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-auto-mpg-dataset">9.3.2. Example: Auto MPG dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression-using-statsmodels-api">9.3.2.1. Linear Regression using statsmodels API</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression-using-the-scikit-learn-api">9.3.2.2. Linear Regression using the scikit-learn API</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-categorical-variables">9.3.3. Handling Categorical Variables</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
