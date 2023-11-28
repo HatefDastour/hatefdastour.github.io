@@ -401,8 +401,8 @@ document.write(`
 </ol>
 <p>Mathematically, the process of Random Forests involves creating <span class="math notranslate nohighlight">\(B\)</span> decision trees, each constructed using a different bootstrap sample and a random subset of <span class="math notranslate nohighlight">\(m\)</span> features at each split point. The final prediction for a new observation is obtained by averaging (for regression) or majority voting (for classification) the predictions from all the trees:</p>
 <p>For regression:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4c5b9980-26b5-4163-bcf1-ab1bb8e7f463">
-<span class="eqno">(10.31)<a class="headerlink" href="#equation-4c5b9980-26b5-4163-bcf1-ab1bb8e7f463" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a48d395e-3623-45f0-8ca0-38bdd27d215c">
+<span class="eqno">(10.31)<a class="headerlink" href="#equation-a48d395e-3623-45f0-8ca0-38bdd27d215c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{f}_{rf}(x) = \frac{1}{B}\sum_{b = 1}^{B} \hat{f}^{b}(x)
 \end{equation}\]</div>
 <figure class="align-center" id="id6">
@@ -412,8 +412,8 @@ document.write(`
 </figcaption>
 </figure>
 <p>For classification:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7dcce3ae-b51d-4a0e-8431-5e7f2ce5ba0a">
-<span class="eqno">(10.32)<a class="headerlink" href="#equation-7dcce3ae-b51d-4a0e-8431-5e7f2ce5ba0a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4b14e5fa-f9e3-4124-9293-c99810543704">
+<span class="eqno">(10.32)<a class="headerlink" href="#equation-4b14e5fa-f9e3-4124-9293-c99810543704" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{C}_{rf}(x) = \text{majority vote}\left(\hat{C}^{1}(x), \hat{C}^{2}(x), \ldots, \hat{C}^{B}(x)\right)
 \end{equation}\]</div>
 <figure class="align-center" id="id7">
@@ -737,12 +737,11 @@ document.write(`
 
 <span class="c1"># Create a figure and subplots</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
-<span class="n">feature_set_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Using all features&#39;</span><span class="p">,</span> <span class="s1">&#39;Using only 2 features: &#39;</span><span class="p">]</span>
 
 <span class="c1"># Loop through different feature sets</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">max_features</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_estimators</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">]):</span>
     <span class="c1"># Create a Random Forest Regressor</span>
-    <span class="n">reg</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">max_features</span> <span class="o">=</span> <span class="n">max_features</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="n">n_estimators</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
     
@@ -750,19 +749,7 @@ document.write(`
     <span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;medv&#39;</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;SkyBlue&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;MidnightBlue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
     <span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
     
-    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="c1"># Get feature importances</span>
-        <span class="n">feature_importances</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">feature_importances_</span>
-
-        <span class="c1"># Get the indices of the top two features</span>
-        <span class="n">top_feature_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">feature_importances</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
-
-        <span class="c1"># Get the feature names from your DataFrame</span>
-        <span class="n">top_features</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">top_feature_indices</span><span class="p">]</span>
-       
-        <span class="n">_title</span> <span class="o">=</span> <span class="n">feature_set_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_features</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">_title</span> <span class="o">=</span> <span class="n">feature_set_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;n_estimators = </span><span class="si">{</span><span class="n">n_estimators</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="c1"># Set title and labels for the current subplot</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">_title</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Predicted Values&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Actual Values&#39;</span><span class="p">)</span>
     
@@ -774,6 +761,7 @@ document.write(`
     
     <span class="c1"># Set equal aspect ratio for the subplots</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_title</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;MSE = </span><span class="si">{</span><span class="n">mse</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Adjust layout and display the plots</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -781,34 +769,21 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/25f0921b5c22610c407477281c9aa75c6ab5b2d1f63c527be0c8eac516428430.png" src="../_images/25f0921b5c22610c407477281c9aa75c6ab5b2d1f63c527be0c8eac516428430.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>n_estimators = 3 MSE = 0.018
+n_estimators = 10 MSE = 0.014
+</pre></div>
+</div>
+<img alt="../_images/a5fc30b6f85c3ad49d0b00d2e359dc12be3f252ce76de97e49cd8ae6c6b42412.png" src="../_images/a5fc30b6f85c3ad49d0b00d2e359dc12be3f252ce76de97e49cd8ae6c6b42412.png" />
 </div>
 </div>
-<p>The code generates two subplots, each presenting the results of a Random Forest Regression analysis with distinct feature settings:</p>
+<p>For each subplot, a diagonal dashed line (–) serves as a reference, indicating where predicted values align with actual values.</p>
+<p>The experiment compares the influence of the number of estimators, as denoted by <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>, on the mean squared error (MSE). Two distinct configurations are assessed:</p>
 <ol class="arabic simple">
-<li><p><strong>Using All Features:</strong></p>
-<ul class="simple">
-<li><p>This subplot showcases the results of Random Forest Regression when all available features (max_features=7) are utilized.</p></li>
-<li><p>The scatter plot displays predicted values on the x-axis and actual target values on the y-axis, with each point representing a data point from the test set.</p></li>
-<li><p>A diagonal dashed line (<strong>–</strong>) serves as a reference, indicating where predicted values align with actual values.</p></li>
-<li><p>The subplot is titled “Using all features,” emphasizing the utilization of all available features for prediction.</p></li>
-</ul>
-</li>
-<li><p><strong>Using Only 2 Features:</strong></p>
-<ul class="simple">
-<li><p>In this subplot, the results of Random Forest Regression are demonstrated using a reduced set of features (max_features=2).</p></li>
-<li><p>Similar to the first subplot, a scatter plot and diagonal reference line are displayed.</p></li>
-<li><p>The subplot title is “Using only 2 features,” highlighting the use of a subset of just two features (Displacement and Weight) for prediction.</p></li>
-</ul>
-</li>
+<li><p><strong>n_estimators = 3</strong>: MSE = 0.018</p></li>
+<li><p><strong>n_estimators = 10</strong>: MSE = 0.014</p></li>
 </ol>
-<p>In both subplots:</p>
-<ul class="simple">
-<li><p>The color of the scattered points reflects the target values (medv, representing housing value in the dataset).</p></li>
-<li><p>The background color of the Mean Squared Error (MSE) text box accentuates the calculated error value. This text box presents the MSE, quantitatively evaluating the model’s performance.</p></li>
-<li><p>The subplots maintain an equal aspect ratio, ensuring that the plot’s aspect ratio remains consistent, preventing distortion.</p></li>
-</ul>
-<p>These subplots facilitate a visual comparison of the model’s performance under different feature settings. By examining how well the predicted values align with the actual values and considering the MSE, you can assess the effectiveness of the Random Forest Regression model in making predictions on the Boston Housing dataset.</p>
+<p>This investigation examines the performance of the model under varying numbers of decision tree estimators. The MSE serves as the evaluation metric, reflecting the average squared difference between observed and predicted values.</p>
+<p>The observed trend suggests that increasing the number of estimators from 3 to 10 results in a reduction in MSE, indicative of improved predictive accuracy. This pattern aligns with the common understanding that an ensemble of more diverse and robust decision trees, as achieved with a greater number of estimators, often leads to enhanced model performance by mitigating overfitting and capturing more nuanced patterns in the data.</p>
 </section>
 <section id="feature-importances">
 <h2><span class="section-number">10.6.2. </span>Feature Importances<a class="headerlink" href="#feature-importances" title="Permalink to this heading">#</a></h2>
@@ -832,112 +807,137 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="c1"># This is for the regression that uses only 6 features</span>
-<span class="c1"># Create a DataFrame with feature importances</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Instantiate a RandomForestRegressor with 100 estimators and a random state of 0</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Fit the RandomForestRegressor model on the training data</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Extract feature importances</span>
+<span class="n">feature_importances</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">feature_importances_</span>
+
+<span class="c1"># Create a DataFrame to store feature importances</span>
 <span class="n">Importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="n">reg</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">*</span> <span class="mi">100</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-<span class="c1"># Apply the background gradient and round the importance values to 2 decimal places</span>
+<span class="c1"># Apply a background gradient to the DataFrame and round importance values to 3 decimal places</span>
 <span class="n">styled_importance</span> <span class="o">=</span> <span class="n">Importance</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PuBu&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="p">})</span>
 
 <span class="c1"># Display the styled DataFrame</span>
 <span class="n">display</span><span class="p">(</span><span class="n">styled_importance</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a bar plot to visualize feature importances</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">Importance</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Importance</span><span class="o">.</span><span class="n">Importance</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#e7d2f3&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;#611589&#39;</span><span class="p">,</span> <span class="n">hatch</span><span class="o">=</span><span class="s2">&quot;///&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Set plot labels and title</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Variable Importance&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;midnightblue&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;midnightblue&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Feature Importance in Random Forest Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkslategray&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set y-axis limits and adjust tick parameters</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;dimgray&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;dimgray&#39;</span><span class="p">)</span>
+
+<span class="c1"># Customize plot aesthetics</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;dimgray&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+
+<span class="c1"># Ensure a tight layout for better visualization</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_a6456_row0_col0 {
-  background-color: #8fb4d6;
-  color: #000000;
+#T_e597c_row0_col0 {
+  background-color: #1e80b8;
+  color: #f1f1f1;
 }
-#T_a6456_row1_col0 {
+#T_e597c_row1_col0 {
   background-color: #023858;
   color: #f1f1f1;
 }
-#T_a6456_row2_col0 {
-  background-color: #71a8ce;
+#T_e597c_row2_col0 {
+  background-color: #81aed2;
   color: #f1f1f1;
 }
-#T_a6456_row3_col0 {
-  background-color: #056dab;
+#T_e597c_row3_col0 {
+  background-color: #023c5f;
   color: #f1f1f1;
 }
-#T_a6456_row4_col0, #T_a6456_row6_col0 {
+#T_e597c_row4_col0 {
+  background-color: #f5eef6;
+  color: #000000;
+}
+#T_e597c_row5_col0 {
+  background-color: #d0d1e6;
+  color: #000000;
+}
+#T_e597c_row6_col0 {
   background-color: #fff7fb;
   color: #000000;
 }
-#T_a6456_row5_col0 {
-  background-color: #cdd0e5;
-  color: #000000;
-}
 </style>
-<table id="T_a6456">
+<table id="T_e597c">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_a6456_level0_col0" class="col_heading level0 col0" >Importance</th>
+      <th id="T_e597c_level0_col0" class="col_heading level0 col0" >Importance</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_a6456_level0_row0" class="row_heading level0 row0" >Cylinders</th>
-      <td id="T_a6456_row0_col0" class="data row0 col0" >14.472</td>
+      <th id="T_e597c_level0_row0" class="row_heading level0 row0" >Cylinders</th>
+      <td id="T_e597c_row0_col0" class="data row0 col0" >19.760</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row1" class="row_heading level0 row1" >Displacement</th>
-      <td id="T_a6456_row1_col0" class="data row1 col0" >28.541</td>
+      <th id="T_e597c_level0_row1" class="row_heading level0 row1" >Displacement</th>
+      <td id="T_e597c_row1_col0" class="data row1 col0" >28.724</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row2" class="row_heading level0 row2" >Horsepower</th>
-      <td id="T_a6456_row2_col0" class="data row2 col0" >16.325</td>
+      <th id="T_e597c_level0_row2" class="row_heading level0 row2" >Horsepower</th>
+      <td id="T_e597c_row2_col0" class="data row2 col0" >13.538</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row3" class="row_heading level0 row3" >Weight</th>
-      <td id="T_a6456_row3_col0" class="data row3 col0" >22.759</td>
+      <th id="T_e597c_level0_row3" class="row_heading level0 row3" >Weight</th>
+      <td id="T_e597c_row3_col0" class="data row3 col0" >28.257</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row4" class="row_heading level0 row4" >Acceleration</th>
-      <td id="T_a6456_row4_col0" class="data row4 col0" >3.856</td>
+      <th id="T_e597c_level0_row4" class="row_heading level0 row4" >Acceleration</th>
+      <td id="T_e597c_row4_col0" class="data row4 col0" >2.141</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row5" class="row_heading level0 row5" >Model_Year</th>
-      <td id="T_a6456_row5_col0" class="data row5 col0" >10.211</td>
+      <th id="T_e597c_level0_row5" class="row_heading level0 row5" >Model_Year</th>
+      <td id="T_e597c_row5_col0" class="data row5 col0" >7.354</td>
     </tr>
     <tr>
-      <th id="T_a6456_level0_row6" class="row_heading level0 row6" >Origin</th>
-      <td id="T_a6456_row6_col0" class="data row6 col0" >3.835</td>
+      <th id="T_e597c_level0_row6" class="row_heading level0 row6" >Origin</th>
+      <td id="T_e597c_row6_col0" class="data row6 col0" >0.225</td>
     </tr>
   </tbody>
 </table>
 </div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<img alt="../_images/0867f5d3d51e61671c885ad3e7ea7967f0bec9dbcc1419fa8104cb86a80c6214.png" src="../_images/0867f5d3d51e61671c885ad3e7ea7967f0bec9dbcc1419fa8104cb86a80c6214.png" />
+<img alt="../_images/b417ab514fe195db0313c19b3c68136b47191c9b782c9bb1dbfe1feda4347a68.png" src="../_images/b417ab514fe195db0313c19b3c68136b47191c9b782c9bb1dbfe1feda4347a68.png" />
 </div>
 </div>
-<p>The model uses all features to predict the logarithm of MPG, and the table shows the relative importance of each feature:</p>
-<ol class="arabic simple">
-<li><p><strong>Cylinders</strong>: This feature has an importance value of 16.038. It suggests that the number of cylinders in the engine is a significant factor in predicting the logarithm of MPG. A higher number of cylinders might result in lower MPG, contributing to a higher importance score.</p></li>
-<li><p><strong>Displacement</strong>: With an importance value of 36.574, the engine displacement is a highly influential feature. It measures the size of the engine, and larger engine displacements tend to consume more fuel, resulting in lower MPG.</p></li>
-<li><p><strong>Horsepower</strong>: This feature has an importance value of 12.197. Horsepower represents the engine’s power, and more powerful engines tend to have lower MPG. Therefore, it is moderately important in the model.</p></li>
-<li><p><strong>Weight</strong>: Weight has an importance value of 25.042, making it a significant predictor. Heavier vehicles typically have lower fuel efficiency, and this feature is given considerable weight in the model.</p></li>
-<li><p><strong>Acceleration</strong>: Acceleration has an importance value of 2.340, indicating that it has a relatively minor impact on predicting MPG. It measures how quickly a vehicle can accelerate, and its effect on MPG is relatively smaller compared to other features.</p></li>
-<li><p><strong>Model_Year</strong>: The model year of the vehicle has an importance value of 7.471. This suggests that the age of the vehicle, represented by the model year, is moderately important in predicting MPG. Newer models tend to have better fuel efficiency.</p></li>
-<li><p><strong>Origin</strong>: The vehicle’s origin has the lowest importance value of 0.338, indicating that it has the least influence on predicting the logarithm of MPG. The origin might represent the manufacturing location or region, but its effect on MPG is relatively minimal in this model.</p></li>
-</ol>
+<p><strong>Interpretation:</strong></p>
+<ul class="simple">
+<li><p>Features such as Displacement and Weight have relatively high importance scores (28.724 and 28.257, respectively), indicating their significant influence on predicting the natural logarithm of MPG.</p></li>
+<li><p>Cylinders and Horsepower also carry substantial importance (19.76 and 13.538, respectively).</p></li>
+<li><p>Acceleration has a comparatively lower importance (2.141).</p></li>
+<li><p>Model_Year contributes with a moderate importance (7.354).</p></li>
+<li><p>Origin has the lowest importance among the features (0.225).</p></li>
+</ul>
+<p>These importance values suggest that, in the context of the model used, Displacement, Weight, and Cylinders play pivotal roles in predicting the natural logarithm of MPG, while other features contribute to varying degrees. It’s essential to note that feature importance is model-specific and doesn’t imply causation. It reflects the contribution of each feature to the model’s predictive performance.</p>
 <p><font color='Blue'><b>Example</b></font>:  In this code example, a Decision Tree Classifier is utilized to illustrate decision boundaries on synthetic data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
