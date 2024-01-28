@@ -381,6 +381,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-logistic-regression">9.4.4. Multiple Logistic Regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-optional-content">9.4.5. Confounding (Optional Content)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-synthetic-dataset">9.4.6. Example: Synthetic Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiclass-classifier">9.4.7. Multiclass Classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-vs-rest-approach">9.4.7.1. One-vs.-Rest Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">9.4.7.2. Multinomial Logistic Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sklearn-logistic-regression">9.4.7.3. Sklearn Logistic Regression</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -414,9 +420,9 @@ document.write(`
 <section id="logistic-model">
 <h3><span class="section-number">9.4.2.1. </span>Logistic Model<a class="headerlink" href="#logistic-model" title="Permalink to this heading">#</a></h3>
 <p>At the core of logistic regression is its ingenious model, which seamlessly integrates predictor variables within a linear framework, further molded by the logistic function. This fusion aims to predict the probability of the positive class (class 1) in a binary response scenario. The model is encapsulated by the following equation <span id="id3">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-673ba6e1-ed24-40fc-9638-4b47e95b0c6d">
-<span class="eqno">(9.76)<a class="headerlink" href="#equation-673ba6e1-ed24-40fc-9638-4b47e95b0c6d" title="Permalink to this equation">#</a></span>\[\begin{align}
-\log\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p,
+<div class="amsmath math notranslate nohighlight" id="equation-511b2ce9-ca5d-4267-a9de-71bd39c34ea7">
+<span class="eqno">(9.80)<a class="headerlink" href="#equation-511b2ce9-ca5d-4267-a9de-71bd39c34ea7" title="Permalink to this equation">#</a></span>\[\begin{align}
+\ln\left(\frac{p(X)}{1 - p(X)}\right) = \log_e\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p,
 \end{align}\]</div>
 <p>In this equation:</p>
 <ul class="simple">
@@ -429,8 +435,8 @@ document.write(`
 <section id="estimating-probabilities">
 <h3><span class="section-number">9.4.2.2. </span>Estimating Probabilities<a class="headerlink" href="#estimating-probabilities" title="Permalink to this heading">#</a></h3>
 <p>The logistic model allows us to deduce the estimated probability of the positive class given the predictor variables (<span class="math notranslate nohighlight">\(p(X)\)</span>) through the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-51dd3398-e172-4db6-b870-148af29a07d9">
-<span class="eqno">(9.77)<a class="headerlink" href="#equation-51dd3398-e172-4db6-b870-148af29a07d9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-fc7f22e4-7daa-47bb-add4-0f674c02d303">
+<span class="eqno">(9.81)<a class="headerlink" href="#equation-fc7f22e4-7daa-47bb-add4-0f674c02d303" title="Permalink to this equation">#</a></span>\[\begin{align}
 p(X) = \frac{e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}}{1 + e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}},
 \end{align}\]</div>
 <p>In this equation, the exponential function (approximately 2.71828) plays a pivotal role in the transformation. This transformation, facilitated by the logistic function, also known as the sigmoid function, molds the linear combination of predictor variables into a probability value that spans the entire spectrum between 0 and 1.</p>
@@ -438,28 +444,28 @@ p(X) = \frac{e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}}{1 + e^{\beta_0 + \
 <section id="sigmoid-logistic-function">
 <h3><span class="section-number">9.4.2.3. </span>Sigmoid (Logistic) Function<a class="headerlink" href="#sigmoid-logistic-function" title="Permalink to this heading">#</a></h3>
 <p>The equation given below:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5793405d-d1d1-46ec-aaed-f2efb4715c33">
-<span class="eqno">(9.78)<a class="headerlink" href="#equation-5793405d-d1d1-46ec-aaed-f2efb4715c33" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\log\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
+<div class="amsmath math notranslate nohighlight" id="equation-bc14f072-80bc-42d0-a4a6-88f376c21f18">
+<span class="eqno">(9.82)<a class="headerlink" href="#equation-bc14f072-80bc-42d0-a4a6-88f376c21f18" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\ln\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
 \end{equation}\]</div>
 <p>is closely connected to the sigmoid (logistic) function within the context of logistic regression, a method used for binary classification.</p>
-<p>In logistic regression, the objective is to estimate the likelihood of the positive outcome (class 1) based on the values of certain predictor variables, such as <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_p\)</span>. The left side of the equation, <span class="math notranslate nohighlight">\(\log\left(\frac{p(X)}{1 - p(X)}\right)\)</span>, signifies the log-odds (logit) of the probability of the positive outcome given the predictor variables. This transformation linearizes the connection between the predictor variables and the probability.</p>
+<p>In logistic regression, the objective is to estimate the likelihood of the positive outcome (class 1) based on the values of certain predictor variables, such as <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_p\)</span>. The left side of the equation, <span class="math notranslate nohighlight">\(\ln\left(\frac{p(X)}{1 - p(X)}\right)\)</span>, signifies the log-odds (logit) of the probability of the positive outcome given the predictor variables. This transformation linearizes the connection between the predictor variables and the probability.</p>
 <p>Now, let’s introduce the sigmoid function. The <a class="reference external" href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid function</a>, denoted as <span class="math notranslate nohighlight">\(f(x) = \dfrac{1}{1 + e^{-x}}\)</span>, converts a real-number <span class="math notranslate nohighlight">\(x\)</span> into a probability ranging from 0 to 1. In the logistic regression model, this can be related to <span class="math notranslate nohighlight">\(p(X)\)</span> as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-647c6bea-e801-42c0-8f4c-6fb20831e48e">
-<span class="eqno">(9.79)<a class="headerlink" href="#equation-647c6bea-e801-42c0-8f4c-6fb20831e48e" title="Permalink to this equation">#</a></span>\[\begin{equation}p(X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p)}}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-9200b8c7-6012-4026-873e-f3eaf3155fb3">
+<span class="eqno">(9.83)<a class="headerlink" href="#equation-9200b8c7-6012-4026-873e-f3eaf3155fb3" title="Permalink to this equation">#</a></span>\[\begin{equation}p(X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p)}}\end{equation}\]</div>
 <p>In this expression, <span class="math notranslate nohighlight">\(p(X)\)</span> represents the probability of the positive outcome. The right-hand side is a linear combination of predictor variables, each multiplied by coefficients <span class="math notranslate nohighlight">\(\beta_0, \beta_1, \ldots, \beta_p\)</span>. The sigmoid function, also known as the logistic function, is applied to this combination, ensuring that the result, <span class="math notranslate nohighlight">\(p(X)\)</span>, remains within the range of 0 to 1.</p>
 <p>In essence, the logistic regression model incorporates the sigmoid function to transform the linear combination of predictor variables into a valid probability value, enabling binary classification decisions based on this probability threshold.</p>
 <div class="warning admonition">
 <p class="admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">scipy.special.expit</span></code> is a function within the SciPy library, a widely recognized open-source resource for scientific and mathematical computations. This function, also known as the “exponential of the logistic function,” serves the purpose of executing a logistic sigmoid transformation. It operates on either a single value or an array as input and employs the logistic sigmoid function, mathematically expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6686af35-1fa5-4cf0-a55b-0cc32b891b2b">
-<span class="eqno">(9.80)<a class="headerlink" href="#equation-6686af35-1fa5-4cf0-a55b-0cc32b891b2b" title="Permalink to this equation">#</a></span>\[\begin{equation}f(x) = \frac{1}{1 + e^{-x}}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-0b818b94-3720-4b1b-9515-313fdc694a22">
+<span class="eqno">(9.84)<a class="headerlink" href="#equation-0b818b94-3720-4b1b-9515-313fdc694a22" title="Permalink to this equation">#</a></span>\[\begin{equation}f(x) = \frac{1}{1 + e^{-x}}\end{equation}\]</div>
 <p>Here, <span class="math notranslate nohighlight">\(e\)</span> signifies the natural logarithm base, while <span class="math notranslate nohighlight">\(x\)</span> denotes the input variable. The fundamental role of the logistic sigmoid function is to transform input values into a bounded range of 0 to 1. This property finds extensive application in various domains, including machine learning, specifically in logistic regression, where it is instrumental in modeling the probability of binary outcomes.</p>
 </div>
 <p><font color='Blue'><b>Example:</b></font>
 Let’s examine a straightforward scenario with a single variable, denoted as X, and a dependent variable, y. In this instance, we generate X values from a normal distribution with a mean (<span class="math notranslate nohighlight">\(\mu\)</span>) of 10 and a standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>) of 2. The variable y is defined as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-43341439-a873-423f-8e7c-8c3bb9f40715">
-<span class="eqno">(9.81)<a class="headerlink" href="#equation-43341439-a873-423f-8e7c-8c3bb9f40715" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-616c2da5-f6eb-41a0-9df2-55b4a88544a2">
+<span class="eqno">(9.85)<a class="headerlink" href="#equation-616c2da5-f6eb-41a0-9df2-55b4a88544a2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y = \begin{cases}
 1, &amp; \text{if } x &gt; \mu \\
 0, &amp; \text{otherwise}.
@@ -675,8 +681,8 @@ At the heart of this panel, a series of boxplots takes prominence, providing ins
 <p><strong>Right Panel:</strong>
 Complementing the center panel, the right panel introduces a pair of boxplots that cast a spotlight on income variation according to default status. These boxplots concisely capture nuanced shifts in income distribution for both defaulters and non-defaulters, offering a visual narrative that illuminates the role income plays in credit card payment outcomes.</p>
 <p>The Student status can be effectively represented using a <a class="reference external" href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variable</a>, which is a common technique in data analysis and machine learning. This involves creating a binary variable that takes the value of 1 if the individual is a student, and 0 if the individual is not a student. In mathematical terms, this encoding can be expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-59339d4a-0354-458c-9577-36dea17e069e">
-<span class="eqno">(9.82)<a class="headerlink" href="#equation-59339d4a-0354-458c-9577-36dea17e069e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2bcd1084-b3e1-4a4e-be2e-1430eea915ac">
+<span class="eqno">(9.86)<a class="headerlink" href="#equation-2bcd1084-b3e1-4a4e-be2e-1430eea915ac" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Student} =
 \begin{cases}
 1, &amp; \text{if Student}, \\
@@ -875,14 +881,14 @@ Complementing the center panel, the right panel introduces a pair of boxplots th
 <section id="simple-logistic-regression">
 <h2><span class="section-number">9.4.3. </span>Simple Logistic Regression<a class="headerlink" href="#simple-logistic-regression" title="Permalink to this heading">#</a></h2>
 <p>Let’s explore a logistic regression approach characterized by the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-50a6f388-cfb9-4276-b5ca-55044cd78b86">
-<span class="eqno">(9.83)<a class="headerlink" href="#equation-50a6f388-cfb9-4276-b5ca-55044cd78b86" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fc49b0b1-170e-4c9c-aade-956809cee64a">
+<span class="eqno">(9.87)<a class="headerlink" href="#equation-fc49b0b1-170e-4c9c-aade-956809cee64a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \log \left( \frac{p(X)}{1 - p(X)} \right) = \beta_0 + \beta_1 \times \text{Balance}
 \end{equation}\]</div>
 <p>This formulation encapsulates the likelihood of default occurrence. It revolves around the effect of the ‘Balance’ predictor. While we initially mentioned ‘Student’ status and ‘Income’ as contributors, for clarity, we’ll focus on ‘Balance’ in this representation.</p>
 <p>The probability of default, denoted as <span class="math notranslate nohighlight">\( p(X) \)</span>, is expressed as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-848b570b-e04b-46e7-a9be-d51389435e0c">
-<span class="eqno">(9.84)<a class="headerlink" href="#equation-848b570b-e04b-46e7-a9be-d51389435e0c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bba84c4d-60bf-45f8-8878-26116a1d854e">
+<span class="eqno">(9.88)<a class="headerlink" href="#equation-bba84c4d-60bf-45f8-8878-26116a1d854e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(X) = \frac{e^{\beta_0 + \beta_1 \times \text{Balance}}}
 {1 + e^{\beta_0 + \beta_1 \times \text{Balance}}}
 \end{equation}\]</div>
@@ -895,8 +901,8 @@ p(X) = \frac{e^{\beta_0 + \beta_1 \times \text{Balance}}}
 </ul>
 <p>In essence, this logistic regression equation dissects the impact of ‘Balance’ on predicting the probability of default, providing a focused lens into this specific predictor’s role in the model.</p>
 <p>Within the context of the Default dataset, logistic regression serves as a potent tool for modeling the probability of encountering default. To illustrate, consider the probability of default given a specific balance, which can be expressed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b5eee5d7-92a6-4b9d-a184-354ad4fd0e4c">
-<span class="eqno">(9.85)<a class="headerlink" href="#equation-b5eee5d7-92a6-4b9d-a184-354ad4fd0e4c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8814da0f-eaa1-4ddc-8705-fe48f4ae9dac">
+<span class="eqno">(9.89)<a class="headerlink" href="#equation-8814da0f-eaa1-4ddc-8705-fe48f4ae9dac" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Pr (Default = Yes | balance)}.
 \end{equation}\]</div>
 <p>In this formulation, logistic regression enables us to quantitatively assess the likelihood of a default occurrence based on the observed balance value. This probability-based perspective provides valuable insights into the potential outcomes within the dataset, shedding light on the dynamics between credit card balances and the probability of encountering default.</p>
@@ -922,8 +928,8 @@ p(X) = \frac{e^{\beta_0 + \beta_1 \times \text{Balance}}}
 <p class="admonition-title">Remark</p>
 <p>Conditional probability is a fundamental concept in probability theory that deals with the likelihood of an event occurring given that another event has already occurred. In other words, it quantifies the probability of an event happening under a specific condition or constraint.</p>
 <p>Mathematically, the conditional probability of event A occurring given event B has occurred is denoted as P(A|B) and is calculated as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4330ac5b-8ff3-4ea2-bb75-a0cac372dcb2">
-<span class="eqno">(9.86)<a class="headerlink" href="#equation-4330ac5b-8ff3-4ea2-bb75-a0cac372dcb2" title="Permalink to this equation">#</a></span>\[\begin{equation} P(A|B) = \frac{P(A \cap B)}{P(B)} \end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-a03d3bf4-8ce5-4d38-92b6-4c276a82815f">
+<span class="eqno">(9.90)<a class="headerlink" href="#equation-a03d3bf4-8ce5-4d38-92b6-4c276a82815f" title="Permalink to this equation">#</a></span>\[\begin{equation} P(A|B) = \frac{P(A \cap B)}{P(B)} \end{equation}\]</div>
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\( P(A|B) \)</span> is the conditional probability of event A given event B.</p></li>
@@ -985,8 +991,8 @@ Model:                            GLM   Df Residuals:                     9998
 Model Family:                Binomial   Df Model:                            1
 Link Function:                  Logit   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -798.23
-Date:                Mon, 20 Nov 2023   Deviance:                       1596.5
-Time:                        20:31:16   Pearson chi2:                 7.15e+03
+Date:                Sat, 27 Jan 2024   Deviance:                       1596.5
+Time:                        23:46:35   Pearson chi2:                 7.15e+03
 No. Iterations:                     9   Pseudo R-squ. (CS):             0.1240
 Covariance Type:            nonrobust                                         
 ==============================================================================
@@ -998,49 +1004,49 @@ Balance        0.0055      0.000     24.952      0.000       0.005       0.006
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_dfe3c_row0_col0 {
+#T_f7a0b_row0_col0 {
   width: 10em;
   background: linear-gradient(90deg, Lime 99.9%, transparent 99.9%);
 }
-#T_dfe3c_row0_col1, #T_dfe3c_row1_col1 {
+#T_f7a0b_row0_col1, #T_f7a0b_row1_col1 {
   background-color: DimGray;
   color: White;
 }
-#T_dfe3c_row1_col0 {
+#T_f7a0b_row1_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 99.9%, Lime 99.9%, Lime 100.0%, transparent 100.0%);
 }
 </style>
-<table id="T_dfe3c">
+<table id="T_f7a0b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_dfe3c_level0_col0" class="col_heading level0 col0" >coef</th>
-      <th id="T_dfe3c_level0_col1" class="col_heading level0 col1" >std err</th>
-      <th id="T_dfe3c_level0_col2" class="col_heading level0 col2" >z</th>
-      <th id="T_dfe3c_level0_col3" class="col_heading level0 col3" >P>|z|</th>
-      <th id="T_dfe3c_level0_col4" class="col_heading level0 col4" >[0.025</th>
-      <th id="T_dfe3c_level0_col5" class="col_heading level0 col5" >0.975]</th>
+      <th id="T_f7a0b_level0_col0" class="col_heading level0 col0" >coef</th>
+      <th id="T_f7a0b_level0_col1" class="col_heading level0 col1" >std err</th>
+      <th id="T_f7a0b_level0_col2" class="col_heading level0 col2" >z</th>
+      <th id="T_f7a0b_level0_col3" class="col_heading level0 col3" >P>|z|</th>
+      <th id="T_f7a0b_level0_col4" class="col_heading level0 col4" >[0.025</th>
+      <th id="T_f7a0b_level0_col5" class="col_heading level0 col5" >0.975]</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_dfe3c_level0_row0" class="row_heading level0 row0" >Intercept</th>
-      <td id="T_dfe3c_row0_col0" class="data row0 col0" >-1.0651e+01</td>
-      <td id="T_dfe3c_row0_col1" class="data row0 col1" >3.6100e-01</td>
-      <td id="T_dfe3c_row0_col2" class="data row0 col2" >-29.491000</td>
-      <td id="T_dfe3c_row0_col3" class="data row0 col3" >0.000000</td>
-      <td id="T_dfe3c_row0_col4" class="data row0 col4" >-11.359000</td>
-      <td id="T_dfe3c_row0_col5" class="data row0 col5" >-9.943000</td>
+      <th id="T_f7a0b_level0_row0" class="row_heading level0 row0" >Intercept</th>
+      <td id="T_f7a0b_row0_col0" class="data row0 col0" >-1.0651e+01</td>
+      <td id="T_f7a0b_row0_col1" class="data row0 col1" >3.6100e-01</td>
+      <td id="T_f7a0b_row0_col2" class="data row0 col2" >-29.491000</td>
+      <td id="T_f7a0b_row0_col3" class="data row0 col3" >0.000000</td>
+      <td id="T_f7a0b_row0_col4" class="data row0 col4" >-11.359000</td>
+      <td id="T_f7a0b_row0_col5" class="data row0 col5" >-9.943000</td>
     </tr>
     <tr>
-      <th id="T_dfe3c_level0_row1" class="row_heading level0 row1" >Balance</th>
-      <td id="T_dfe3c_row1_col0" class="data row1 col0" >5.5000e-03</td>
-      <td id="T_dfe3c_row1_col1" class="data row1 col1" >0.0000e+00</td>
-      <td id="T_dfe3c_row1_col2" class="data row1 col2" >24.952000</td>
-      <td id="T_dfe3c_row1_col3" class="data row1 col3" >0.000000</td>
-      <td id="T_dfe3c_row1_col4" class="data row1 col4" >0.005000</td>
-      <td id="T_dfe3c_row1_col5" class="data row1 col5" >0.006000</td>
+      <th id="T_f7a0b_level0_row1" class="row_heading level0 row1" >Balance</th>
+      <td id="T_f7a0b_row1_col0" class="data row1 col0" >5.5000e-03</td>
+      <td id="T_f7a0b_row1_col1" class="data row1 col1" >0.0000e+00</td>
+      <td id="T_f7a0b_row1_col2" class="data row1 col2" >24.952000</td>
+      <td id="T_f7a0b_row1_col3" class="data row1 col3" >0.000000</td>
+      <td id="T_f7a0b_row1_col4" class="data row1 col4" >0.005000</td>
+      <td id="T_f7a0b_row1_col5" class="data row1 col5" >0.006000</td>
     </tr>
   </tbody>
 </table>
@@ -1059,13 +1065,13 @@ Balance        0.0055      0.000     24.952      0.000       0.005       0.006
 <section id="multiple-logistic-regression">
 <h2><span class="section-number">9.4.4. </span>Multiple Logistic Regression<a class="headerlink" href="#multiple-logistic-regression" title="Permalink to this heading">#</a></h2>
 <p>Let’s delve into an alternative logistic regression approach characterized by the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ab771bb2-9fe9-4bd9-99f3-7db7f703fded">
-<span class="eqno">(9.87)<a class="headerlink" href="#equation-ab771bb2-9fe9-4bd9-99f3-7db7f703fded" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-416a5069-35b9-438a-ae30-a27967ed9897">
+<span class="eqno">(9.91)<a class="headerlink" href="#equation-416a5069-35b9-438a-ae30-a27967ed9897" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \log \left( \frac{p(X)}{1 - p(X)} \right) = \beta_0 + \beta_1 \times \text{Student} + \beta_2 \times \text{Balance} + \beta_3 \times \text{Income}
 \end{equation}\]</div>
 <p>This formulation encapsulates the likelihood of encountering default. It hinges on the contribution of multiple predictors, including ‘Student’ status, ‘Balance’, and ‘Income’. The probability of default, <span class="math notranslate nohighlight">\( p(X) \)</span>, is expressed as follows:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dba86d96-e293-470c-a9cc-7cd5ccb4e095">
-<span class="eqno">(9.88)<a class="headerlink" href="#equation-dba86d96-e293-470c-a9cc-7cd5ccb4e095" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b02e10d6-357e-40c8-9c12-d218553d24f3">
+<span class="eqno">(9.92)<a class="headerlink" href="#equation-b02e10d6-357e-40c8-9c12-d218553d24f3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(X) = \dfrac{e^{\beta_0 + \beta_1 \times \text{Student} + \beta_2 \times \text{Balance} + \beta_3 \times \text{Income}}}
 {1 + e^{\beta_0 + \beta_1 \times \text{Student} + \beta_2 \times \text{Balance} + \beta_3 \times \text{Income}}}
 \end{equation}\]</div>
@@ -1096,8 +1102,8 @@ Model:                            GLM   Df Residuals:                     9996
 Model Family:                Binomial   Df Model:                            3
 Link Function:                  Logit   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -785.77
-Date:                Mon, 20 Nov 2023   Deviance:                       1571.5
-Time:                        20:31:16   Pearson chi2:                 7.00e+03
+Date:                Sat, 27 Jan 2024   Deviance:                       1571.5
+Time:                        23:46:35   Pearson chi2:                 7.00e+03
 No. Iterations:                     9   Pseudo R-squ. (CS):             0.1262
 Covariance Type:            nonrobust                                         
 ==============================================================================
@@ -1111,75 +1117,75 @@ Balance        0.0057      0.000     24.737      0.000       0.005       0.006
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_af380_row0_col0 {
+#T_0185d_row0_col0 {
   width: 10em;
   background: linear-gradient(90deg, Lime 99.9%, transparent 99.9%);
 }
-#T_af380_row0_col1, #T_af380_row1_col1, #T_af380_row2_col1, #T_af380_row3_col1 {
+#T_0185d_row0_col1, #T_0185d_row1_col1, #T_0185d_row2_col1, #T_0185d_row3_col1 {
   background-color: DimGray;
   color: White;
 }
-#T_af380_row1_col0 {
+#T_0185d_row1_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 94.0%, Lime 94.0%, Lime 99.9%, transparent 99.9%);
 }
-#T_af380_row2_col0 {
+#T_0185d_row2_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 99.9%, Lime 99.9%, Lime 99.9%, transparent 99.9%);
 }
-#T_af380_row3_col0 {
+#T_0185d_row3_col0 {
   width: 10em;
   background: linear-gradient(90deg, transparent 99.9%, Lime 99.9%, Lime 100.0%, transparent 100.0%);
 }
 </style>
-<table id="T_af380">
+<table id="T_0185d">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_af380_level0_col0" class="col_heading level0 col0" >coef</th>
-      <th id="T_af380_level0_col1" class="col_heading level0 col1" >std err</th>
-      <th id="T_af380_level0_col2" class="col_heading level0 col2" >z</th>
-      <th id="T_af380_level0_col3" class="col_heading level0 col3" >P>|z|</th>
-      <th id="T_af380_level0_col4" class="col_heading level0 col4" >[0.025</th>
-      <th id="T_af380_level0_col5" class="col_heading level0 col5" >0.975]</th>
+      <th id="T_0185d_level0_col0" class="col_heading level0 col0" >coef</th>
+      <th id="T_0185d_level0_col1" class="col_heading level0 col1" >std err</th>
+      <th id="T_0185d_level0_col2" class="col_heading level0 col2" >z</th>
+      <th id="T_0185d_level0_col3" class="col_heading level0 col3" >P>|z|</th>
+      <th id="T_0185d_level0_col4" class="col_heading level0 col4" >[0.025</th>
+      <th id="T_0185d_level0_col5" class="col_heading level0 col5" >0.975]</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_af380_level0_row0" class="row_heading level0 row0" >Intercept</th>
-      <td id="T_af380_row0_col0" class="data row0 col0" >-1.0869e+01</td>
-      <td id="T_af380_row0_col1" class="data row0 col1" >4.9200e-01</td>
-      <td id="T_af380_row0_col2" class="data row0 col2" >-22.079000</td>
-      <td id="T_af380_row0_col3" class="data row0 col3" >0.000000</td>
-      <td id="T_af380_row0_col4" class="data row0 col4" >-11.834000</td>
-      <td id="T_af380_row0_col5" class="data row0 col5" >-9.904000</td>
+      <th id="T_0185d_level0_row0" class="row_heading level0 row0" >Intercept</th>
+      <td id="T_0185d_row0_col0" class="data row0 col0" >-1.0869e+01</td>
+      <td id="T_0185d_row0_col1" class="data row0 col1" >4.9200e-01</td>
+      <td id="T_0185d_row0_col2" class="data row0 col2" >-22.079000</td>
+      <td id="T_0185d_row0_col3" class="data row0 col3" >0.000000</td>
+      <td id="T_0185d_row0_col4" class="data row0 col4" >-11.834000</td>
+      <td id="T_0185d_row0_col5" class="data row0 col5" >-9.904000</td>
     </tr>
     <tr>
-      <th id="T_af380_level0_row1" class="row_heading level0 row1" >Student</th>
-      <td id="T_af380_row1_col0" class="data row1 col0" >-6.4680e-01</td>
-      <td id="T_af380_row1_col1" class="data row1 col1" >2.3600e-01</td>
-      <td id="T_af380_row1_col2" class="data row1 col2" >-2.738000</td>
-      <td id="T_af380_row1_col3" class="data row1 col3" >0.006000</td>
-      <td id="T_af380_row1_col4" class="data row1 col4" >-1.110000</td>
-      <td id="T_af380_row1_col5" class="data row1 col5" >-0.184000</td>
+      <th id="T_0185d_level0_row1" class="row_heading level0 row1" >Student</th>
+      <td id="T_0185d_row1_col0" class="data row1 col0" >-6.4680e-01</td>
+      <td id="T_0185d_row1_col1" class="data row1 col1" >2.3600e-01</td>
+      <td id="T_0185d_row1_col2" class="data row1 col2" >-2.738000</td>
+      <td id="T_0185d_row1_col3" class="data row1 col3" >0.006000</td>
+      <td id="T_0185d_row1_col4" class="data row1 col4" >-1.110000</td>
+      <td id="T_0185d_row1_col5" class="data row1 col5" >-0.184000</td>
     </tr>
     <tr>
-      <th id="T_af380_level0_row2" class="row_heading level0 row2" >Income</th>
-      <td id="T_af380_row2_col0" class="data row2 col0" >3.0330e-06</td>
-      <td id="T_af380_row2_col1" class="data row2 col1" >8.2000e-06</td>
-      <td id="T_af380_row2_col2" class="data row2 col2" >0.370000</td>
-      <td id="T_af380_row2_col3" class="data row2 col3" >0.712000</td>
-      <td id="T_af380_row2_col4" class="data row2 col4" >-0.000013</td>
-      <td id="T_af380_row2_col5" class="data row2 col5" >0.000019</td>
+      <th id="T_0185d_level0_row2" class="row_heading level0 row2" >Income</th>
+      <td id="T_0185d_row2_col0" class="data row2 col0" >3.0330e-06</td>
+      <td id="T_0185d_row2_col1" class="data row2 col1" >8.2000e-06</td>
+      <td id="T_0185d_row2_col2" class="data row2 col2" >0.370000</td>
+      <td id="T_0185d_row2_col3" class="data row2 col3" >0.712000</td>
+      <td id="T_0185d_row2_col4" class="data row2 col4" >-0.000013</td>
+      <td id="T_0185d_row2_col5" class="data row2 col5" >0.000019</td>
     </tr>
     <tr>
-      <th id="T_af380_level0_row3" class="row_heading level0 row3" >Balance</th>
-      <td id="T_af380_row3_col0" class="data row3 col0" >5.7000e-03</td>
-      <td id="T_af380_row3_col1" class="data row3 col1" >0.0000e+00</td>
-      <td id="T_af380_row3_col2" class="data row3 col2" >24.737000</td>
-      <td id="T_af380_row3_col3" class="data row3 col3" >0.000000</td>
-      <td id="T_af380_row3_col4" class="data row3 col4" >0.005000</td>
-      <td id="T_af380_row3_col5" class="data row3 col5" >0.006000</td>
+      <th id="T_0185d_level0_row3" class="row_heading level0 row3" >Balance</th>
+      <td id="T_0185d_row3_col0" class="data row3 col0" >5.7000e-03</td>
+      <td id="T_0185d_row3_col1" class="data row3 col1" >0.0000e+00</td>
+      <td id="T_0185d_row3_col2" class="data row3 col2" >24.737000</td>
+      <td id="T_0185d_row3_col3" class="data row3 col3" >0.000000</td>
+      <td id="T_0185d_row3_col4" class="data row3 col4" >0.005000</td>
+      <td id="T_0185d_row3_col5" class="data row3 col5" >0.006000</td>
     </tr>
   </tbody>
 </table>
@@ -1428,73 +1434,73 @@ The left-hand panel illustrates default rates for students (orange) and non-stud
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_817d9_row0_col0, #T_817d9_row1_col1, #T_817d9_row2_col2, #T_817d9_row3_col3 {
+#T_79de6_row0_col0, #T_79de6_row1_col1, #T_79de6_row2_col2, #T_79de6_row3_col3 {
   background-color: #006837;
   color: #f1f1f1;
 }
-#T_817d9_row0_col1, #T_817d9_row1_col0 {
+#T_79de6_row0_col1, #T_79de6_row1_col0 {
   background-color: #f8fcb6;
   color: #000000;
 }
-#T_817d9_row0_col2, #T_817d9_row2_col0 {
+#T_79de6_row0_col2, #T_79de6_row2_col0 {
   background-color: #b3df72;
   color: #000000;
 }
-#T_817d9_row0_col3, #T_817d9_row3_col0 {
+#T_79de6_row0_col3, #T_79de6_row3_col0 {
   background-color: #fffcba;
   color: #000000;
 }
-#T_817d9_row1_col2, #T_817d9_row2_col1 {
+#T_79de6_row1_col2, #T_79de6_row2_col1 {
   background-color: #d7ee8a;
   color: #000000;
 }
-#T_817d9_row1_col3, #T_817d9_row3_col1 {
+#T_79de6_row1_col3, #T_79de6_row3_col1 {
   background-color: #dd3d2d;
   color: #f1f1f1;
 }
-#T_817d9_row2_col3, #T_817d9_row3_col2 {
+#T_79de6_row2_col3, #T_79de6_row3_col2 {
   background-color: #fee797;
   color: #000000;
 }
 </style>
-<table id="T_817d9">
+<table id="T_79de6">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_817d9_level0_col0" class="col_heading level0 col0" >Default</th>
-      <th id="T_817d9_level0_col1" class="col_heading level0 col1" >Student</th>
-      <th id="T_817d9_level0_col2" class="col_heading level0 col2" >Balance</th>
-      <th id="T_817d9_level0_col3" class="col_heading level0 col3" >Income</th>
+      <th id="T_79de6_level0_col0" class="col_heading level0 col0" >Default</th>
+      <th id="T_79de6_level0_col1" class="col_heading level0 col1" >Student</th>
+      <th id="T_79de6_level0_col2" class="col_heading level0 col2" >Balance</th>
+      <th id="T_79de6_level0_col3" class="col_heading level0 col3" >Income</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_817d9_level0_row0" class="row_heading level0 row0" >Default</th>
-      <td id="T_817d9_row0_col0" class="data row0 col0" >1.00</td>
-      <td id="T_817d9_row0_col1" class="data row0 col1" >0.04</td>
-      <td id="T_817d9_row0_col2" class="data row0 col2" >0.35</td>
-      <td id="T_817d9_row0_col3" class="data row0 col3" >-0.02</td>
+      <th id="T_79de6_level0_row0" class="row_heading level0 row0" >Default</th>
+      <td id="T_79de6_row0_col0" class="data row0 col0" >1.00</td>
+      <td id="T_79de6_row0_col1" class="data row0 col1" >0.04</td>
+      <td id="T_79de6_row0_col2" class="data row0 col2" >0.35</td>
+      <td id="T_79de6_row0_col3" class="data row0 col3" >-0.02</td>
     </tr>
     <tr>
-      <th id="T_817d9_level0_row1" class="row_heading level0 row1" >Student</th>
-      <td id="T_817d9_row1_col0" class="data row1 col0" >0.04</td>
-      <td id="T_817d9_row1_col1" class="data row1 col1" >1.00</td>
-      <td id="T_817d9_row1_col2" class="data row1 col2" >0.20</td>
-      <td id="T_817d9_row1_col3" class="data row1 col3" >-0.75</td>
+      <th id="T_79de6_level0_row1" class="row_heading level0 row1" >Student</th>
+      <td id="T_79de6_row1_col0" class="data row1 col0" >0.04</td>
+      <td id="T_79de6_row1_col1" class="data row1 col1" >1.00</td>
+      <td id="T_79de6_row1_col2" class="data row1 col2" >0.20</td>
+      <td id="T_79de6_row1_col3" class="data row1 col3" >-0.75</td>
     </tr>
     <tr>
-      <th id="T_817d9_level0_row2" class="row_heading level0 row2" >Balance</th>
-      <td id="T_817d9_row2_col0" class="data row2 col0" >0.35</td>
-      <td id="T_817d9_row2_col1" class="data row2 col1" >0.20</td>
-      <td id="T_817d9_row2_col2" class="data row2 col2" >1.00</td>
-      <td id="T_817d9_row2_col3" class="data row2 col3" >-0.15</td>
+      <th id="T_79de6_level0_row2" class="row_heading level0 row2" >Balance</th>
+      <td id="T_79de6_row2_col0" class="data row2 col0" >0.35</td>
+      <td id="T_79de6_row2_col1" class="data row2 col1" >0.20</td>
+      <td id="T_79de6_row2_col2" class="data row2 col2" >1.00</td>
+      <td id="T_79de6_row2_col3" class="data row2 col3" >-0.15</td>
     </tr>
     <tr>
-      <th id="T_817d9_level0_row3" class="row_heading level0 row3" >Income</th>
-      <td id="T_817d9_row3_col0" class="data row3 col0" >-0.02</td>
-      <td id="T_817d9_row3_col1" class="data row3 col1" >-0.75</td>
-      <td id="T_817d9_row3_col2" class="data row3 col2" >-0.15</td>
-      <td id="T_817d9_row3_col3" class="data row3 col3" >1.00</td>
+      <th id="T_79de6_level0_row3" class="row_heading level0 row3" >Income</th>
+      <td id="T_79de6_row3_col0" class="data row3 col0" >-0.02</td>
+      <td id="T_79de6_row3_col1" class="data row3 col1" >-0.75</td>
+      <td id="T_79de6_row3_col2" class="data row3 col2" >-0.15</td>
+      <td id="T_79de6_row3_col3" class="data row3 col3" >1.00</td>
     </tr>
   </tbody>
 </table>
@@ -1602,7 +1608,7 @@ The left-hand panel illustrates default rates for students (orange) and non-stud
                                    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
                                    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
                                    <span class="n">xlabel</span><span class="o">=</span> <span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span>
-                                   <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+                                   <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">grid_resolution</span> <span class="o">=</span> <span class="mi">300</span><span class="p">)</span>
 <span class="c1"># Scatter plot of data points</span>
 <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span>
@@ -1618,7 +1624,7 @@ The left-hand panel illustrates default rates for students (orange) and non-stud
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1f539576b4ea65043f5ac99221d78f59c43d1a66d105dde8f740f0531a6bdd4b.png" src="../_images/1f539576b4ea65043f5ac99221d78f59c43d1a66d105dde8f740f0531a6bdd4b.png" />
+<img alt="../_images/8c2566aab2d8113d0565db38e8bd603f6569b350a7078f617f10f01406f6486a.png" src="../_images/8c2566aab2d8113d0565db38e8bd603f6569b350a7078f617f10f01406f6486a.png" />
 </div>
 </div>
 <p>In practical application, it is imperative to take into account the division of the dataset into two distinct subsets: one designated for model training and the other for model testing. This separation can be achieved using the <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> function, as exemplified below:</p>
@@ -1665,51 +1671,51 @@ Train Data:
 </div>
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_cb54b">
+<table id="T_7a46b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_cb54b_level0_col0" class="col_heading level0 col0" >precision</th>
-      <th id="T_cb54b_level0_col1" class="col_heading level0 col1" >recall</th>
-      <th id="T_cb54b_level0_col2" class="col_heading level0 col2" >f1-score</th>
-      <th id="T_cb54b_level0_col3" class="col_heading level0 col3" >support</th>
+      <th id="T_7a46b_level0_col0" class="col_heading level0 col0" >precision</th>
+      <th id="T_7a46b_level0_col1" class="col_heading level0 col1" >recall</th>
+      <th id="T_7a46b_level0_col2" class="col_heading level0 col2" >f1-score</th>
+      <th id="T_7a46b_level0_col3" class="col_heading level0 col3" >support</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_cb54b_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_cb54b_row0_col0" class="data row0 col0" >0.965</td>
-      <td id="T_cb54b_row0_col1" class="data row0 col1" >0.965</td>
-      <td id="T_cb54b_row0_col2" class="data row0 col2" >0.965</td>
-      <td id="T_cb54b_row0_col3" class="data row0 col3" >372.000</td>
+      <th id="T_7a46b_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_7a46b_row0_col0" class="data row0 col0" >0.965</td>
+      <td id="T_7a46b_row0_col1" class="data row0 col1" >0.965</td>
+      <td id="T_7a46b_row0_col2" class="data row0 col2" >0.965</td>
+      <td id="T_7a46b_row0_col3" class="data row0 col3" >372.000</td>
     </tr>
     <tr>
-      <th id="T_cb54b_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_cb54b_row1_col0" class="data row1 col0" >0.966</td>
-      <td id="T_cb54b_row1_col1" class="data row1 col1" >0.966</td>
-      <td id="T_cb54b_row1_col2" class="data row1 col2" >0.966</td>
-      <td id="T_cb54b_row1_col3" class="data row1 col3" >378.000</td>
+      <th id="T_7a46b_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_7a46b_row1_col0" class="data row1 col0" >0.966</td>
+      <td id="T_7a46b_row1_col1" class="data row1 col1" >0.966</td>
+      <td id="T_7a46b_row1_col2" class="data row1 col2" >0.966</td>
+      <td id="T_7a46b_row1_col3" class="data row1 col3" >378.000</td>
     </tr>
     <tr>
-      <th id="T_cb54b_level0_row2" class="row_heading level0 row2" >accuracy</th>
-      <td id="T_cb54b_row2_col0" class="data row2 col0" >0.965</td>
-      <td id="T_cb54b_row2_col1" class="data row2 col1" >0.965</td>
-      <td id="T_cb54b_row2_col2" class="data row2 col2" >0.965</td>
-      <td id="T_cb54b_row2_col3" class="data row2 col3" >0.965</td>
+      <th id="T_7a46b_level0_row2" class="row_heading level0 row2" >accuracy</th>
+      <td id="T_7a46b_row2_col0" class="data row2 col0" >0.965</td>
+      <td id="T_7a46b_row2_col1" class="data row2 col1" >0.965</td>
+      <td id="T_7a46b_row2_col2" class="data row2 col2" >0.965</td>
+      <td id="T_7a46b_row2_col3" class="data row2 col3" >0.965</td>
     </tr>
     <tr>
-      <th id="T_cb54b_level0_row3" class="row_heading level0 row3" >macro avg</th>
-      <td id="T_cb54b_row3_col0" class="data row3 col0" >0.965</td>
-      <td id="T_cb54b_row3_col1" class="data row3 col1" >0.965</td>
-      <td id="T_cb54b_row3_col2" class="data row3 col2" >0.965</td>
-      <td id="T_cb54b_row3_col3" class="data row3 col3" >750.000</td>
+      <th id="T_7a46b_level0_row3" class="row_heading level0 row3" >macro avg</th>
+      <td id="T_7a46b_row3_col0" class="data row3 col0" >0.965</td>
+      <td id="T_7a46b_row3_col1" class="data row3 col1" >0.965</td>
+      <td id="T_7a46b_row3_col2" class="data row3 col2" >0.965</td>
+      <td id="T_7a46b_row3_col3" class="data row3 col3" >750.000</td>
     </tr>
     <tr>
-      <th id="T_cb54b_level0_row4" class="row_heading level0 row4" >weighted avg</th>
-      <td id="T_cb54b_row4_col0" class="data row4 col0" >0.965</td>
-      <td id="T_cb54b_row4_col1" class="data row4 col1" >0.965</td>
-      <td id="T_cb54b_row4_col2" class="data row4 col2" >0.965</td>
-      <td id="T_cb54b_row4_col3" class="data row4 col3" >750.000</td>
+      <th id="T_7a46b_level0_row4" class="row_heading level0 row4" >weighted avg</th>
+      <td id="T_7a46b_row4_col0" class="data row4 col0" >0.965</td>
+      <td id="T_7a46b_row4_col1" class="data row4 col1" >0.965</td>
+      <td id="T_7a46b_row4_col2" class="data row4 col2" >0.965</td>
+      <td id="T_7a46b_row4_col3" class="data row4 col3" >750.000</td>
     </tr>
   </tbody>
 </table>
@@ -1718,51 +1724,51 @@ Train Data:
 </div>
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_b7928">
+<table id="T_8f26e">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_b7928_level0_col0" class="col_heading level0 col0" >precision</th>
-      <th id="T_b7928_level0_col1" class="col_heading level0 col1" >recall</th>
-      <th id="T_b7928_level0_col2" class="col_heading level0 col2" >f1-score</th>
-      <th id="T_b7928_level0_col3" class="col_heading level0 col3" >support</th>
+      <th id="T_8f26e_level0_col0" class="col_heading level0 col0" >precision</th>
+      <th id="T_8f26e_level0_col1" class="col_heading level0 col1" >recall</th>
+      <th id="T_8f26e_level0_col2" class="col_heading level0 col2" >f1-score</th>
+      <th id="T_8f26e_level0_col3" class="col_heading level0 col3" >support</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_b7928_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_b7928_row0_col0" class="data row0 col0" >0.952</td>
-      <td id="T_b7928_row0_col1" class="data row0 col1" >0.938</td>
-      <td id="T_b7928_row0_col2" class="data row0 col2" >0.945</td>
-      <td id="T_b7928_row0_col3" class="data row0 col3" >128.000</td>
+      <th id="T_8f26e_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_8f26e_row0_col0" class="data row0 col0" >0.952</td>
+      <td id="T_8f26e_row0_col1" class="data row0 col1" >0.938</td>
+      <td id="T_8f26e_row0_col2" class="data row0 col2" >0.945</td>
+      <td id="T_8f26e_row0_col3" class="data row0 col3" >128.000</td>
     </tr>
     <tr>
-      <th id="T_b7928_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_b7928_row1_col0" class="data row1 col0" >0.935</td>
-      <td id="T_b7928_row1_col1" class="data row1 col1" >0.951</td>
-      <td id="T_b7928_row1_col2" class="data row1 col2" >0.943</td>
-      <td id="T_b7928_row1_col3" class="data row1 col3" >122.000</td>
+      <th id="T_8f26e_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_8f26e_row1_col0" class="data row1 col0" >0.935</td>
+      <td id="T_8f26e_row1_col1" class="data row1 col1" >0.951</td>
+      <td id="T_8f26e_row1_col2" class="data row1 col2" >0.943</td>
+      <td id="T_8f26e_row1_col3" class="data row1 col3" >122.000</td>
     </tr>
     <tr>
-      <th id="T_b7928_level0_row2" class="row_heading level0 row2" >accuracy</th>
-      <td id="T_b7928_row2_col0" class="data row2 col0" >0.944</td>
-      <td id="T_b7928_row2_col1" class="data row2 col1" >0.944</td>
-      <td id="T_b7928_row2_col2" class="data row2 col2" >0.944</td>
-      <td id="T_b7928_row2_col3" class="data row2 col3" >0.944</td>
+      <th id="T_8f26e_level0_row2" class="row_heading level0 row2" >accuracy</th>
+      <td id="T_8f26e_row2_col0" class="data row2 col0" >0.944</td>
+      <td id="T_8f26e_row2_col1" class="data row2 col1" >0.944</td>
+      <td id="T_8f26e_row2_col2" class="data row2 col2" >0.944</td>
+      <td id="T_8f26e_row2_col3" class="data row2 col3" >0.944</td>
     </tr>
     <tr>
-      <th id="T_b7928_level0_row3" class="row_heading level0 row3" >macro avg</th>
-      <td id="T_b7928_row3_col0" class="data row3 col0" >0.944</td>
-      <td id="T_b7928_row3_col1" class="data row3 col1" >0.944</td>
-      <td id="T_b7928_row3_col2" class="data row3 col2" >0.944</td>
-      <td id="T_b7928_row3_col3" class="data row3 col3" >250.000</td>
+      <th id="T_8f26e_level0_row3" class="row_heading level0 row3" >macro avg</th>
+      <td id="T_8f26e_row3_col0" class="data row3 col0" >0.944</td>
+      <td id="T_8f26e_row3_col1" class="data row3 col1" >0.944</td>
+      <td id="T_8f26e_row3_col2" class="data row3 col2" >0.944</td>
+      <td id="T_8f26e_row3_col3" class="data row3 col3" >250.000</td>
     </tr>
     <tr>
-      <th id="T_b7928_level0_row4" class="row_heading level0 row4" >weighted avg</th>
-      <td id="T_b7928_row4_col0" class="data row4 col0" >0.944</td>
-      <td id="T_b7928_row4_col1" class="data row4 col1" >0.944</td>
-      <td id="T_b7928_row4_col2" class="data row4 col2" >0.944</td>
-      <td id="T_b7928_row4_col3" class="data row4 col3" >250.000</td>
+      <th id="T_8f26e_level0_row4" class="row_heading level0 row4" >weighted avg</th>
+      <td id="T_8f26e_row4_col0" class="data row4 col0" >0.944</td>
+      <td id="T_8f26e_row4_col1" class="data row4 col1" >0.944</td>
+      <td id="T_8f26e_row4_col2" class="data row4 col2" >0.944</td>
+      <td id="T_8f26e_row4_col3" class="data row4 col3" >250.000</td>
     </tr>
   </tbody>
 </table>
@@ -1952,6 +1958,578 @@ Train Data:
 </div>
 </div>
 </section>
+<section id="multiclass-classifier">
+<h2><span class="section-number">9.4.7. </span>Multiclass Classifier<a class="headerlink" href="#multiclass-classifier" title="Permalink to this heading">#</a></h2>
+<p>A multiclass classifier is a model capable of predicting one of more than two possible classes for a given input. For instance, a multiclass classifier could identify the color of a flower as red, blue, or green, or classify an animal as a dog, cat, or bird.</p>
+<p>However, not all classification models are inherently equipped to handle multiclass problems. Many linear models are designed for binary classification, which involves only two possible classes, such as yes or no, positive or negative, and so on.</p>
+<p>To extend a binary classification model to a multiclass classification model, various techniques can be employed. One of the most common ones is the one-vs.-rest (OvR) approach, also known as one-vs.-all (OvA) or binary relevance (BR).</p>
+<section id="one-vs-rest-approach">
+<h3><span class="section-number">9.4.7.1. </span>One-vs.-Rest Approach<a class="headerlink" href="#one-vs-rest-approach" title="Permalink to this heading">#</a></h3>
+<p>The OvR approach is a simple and intuitive way to use binary classifiers for multiclass classification. The idea is to train one binary classifier for each class, where the target class is treated as positive and the rest of the classes are treated as negative.</p>
+<p>For example, if you have three
+classes, <font color='Red'><b>R</b></font>, <font color='Green'><b>G</b></font>, and <font color='Blue'><b>B</b></font>, you can create three binary
+classifiers:</p>
+<ul class="simple">
+<li><p><strong>Classifier 1:</strong> <font color='Red'><b>R</b></font> vs (<font color='Blue'><b>B</b></font> or <font color='Green'><b>G</b></font>)</p></li>
+<li><p><strong>Classifier 2:</strong> <font color='Green'><b>G</b></font> vs (<font color='Red'><b>R</b></font> or <font color='Blue'><b>B</b></font>)</p></li>
+<li><p><strong>Classifier 3:</strong> <font color='Blue'><b>B</b></font> vs (<font color='Red'><b>R</b></font> or <font color='Green'><b>G</b></font>)</p></li>
+</ul>
+<figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../_images/OVR.png"><img alt="../_images/OVR.png" src="../_images/OVR.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9.5 </span><span class="caption-text">Example for One-vs.-Rest Approach.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Each classifier will output a probability of belonging to its
+positive class, such as <font color='Red'><b>R</b></font>, <font color='Green'><b>G</b></font>, and <font color='Blue'><b>B</b></font>. Then, you can
+compare the probabilities and choose the class with the highest
+probability as the final prediction.</p>
+<p>The OvR approach has several advantages, such as simplicity, speed, and ease of implementation. However, it also has some drawbacks:</p>
+<ul class="simple">
+<li><p>It may encounter class imbalance, as the negative class is typically much larger than the positive class. This imbalance may affect the performance and accuracy of the classifiers.</p></li>
+<li><p>It assumes that the classes are mutually exclusive, meaning that an input can only belong to one class. However, this assumption may not hold true for some problems, such as multi-label classification, where an input can belong to multiple classes.</p></li>
+<li><p>It does not account for correlations or dependencies between the classes, which may impact the quality of the predictions.</p></li>
+</ul>
+</section>
+<section id="multinomial-logistic-regression">
+<h3><span class="section-number">9.4.7.2. </span>Multinomial Logistic Regression<a class="headerlink" href="#multinomial-logistic-regression" title="Permalink to this heading">#</a></h3>
+<p>Multinomial logistic regression is a model that can handle multiple classes directly, unlike binary logistic regression that can only handle two classes. It is an extension of binary logistic regression that creates a binary model for each class and then combines them using a softmax function. The softmax function is a mathematical function that turns a vector of numbers into a vector of probabilities that add up to one. It gives each class a probability, and the class with the highest probability is the most likely one. The model can be expressed as <span id="id10">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-513a82af-b435-490a-9992-c0dcb1a5cfab">
+<span class="eqno">(9.93)<a class="headerlink" href="#equation-513a82af-b435-490a-9992-c0dcb1a5cfab" title="Permalink to this equation">#</a></span>\[\begin{equation}
+{\displaystyle \Pr(Y=k~|~X = x)={\frac {e^{{\boldsymbol {\beta }}_{k}\cdot \mathbf {X} _{i}}}{1+\sum _{j=1}^{K-1}e^{{\boldsymbol {\beta }}_{j}\cdot \mathbf {X} _{i}}}}\;\;\;\;,\;\;k=1,2,\ldots,K-1}.
+\end{equation}\]</div>
+<p>Multiclass logistic regression offers several benefits:</p>
+<ul class="simple">
+<li><p>It is more accurate and flexible, as it can reflect the true patterns and relationships in the data.</p></li>
+<li><p>It avoids the problems of class imbalance or mutual exclusivity, as it assigns a probability to each class independently.</p></li>
+<li><p>It can handle both ordinal and nominal classes, meaning that the classes can either have an order or not.</p></li>
+</ul>
+<p>However, multinomial logistic regression also has some limitations:</p>
+<ul class="simple">
+<li><p>It may be more costly and complex, as it requires more parameters and computations than binary logistic regression.</p></li>
+<li><p>It may be more susceptible to the effects of regularization, a method used to prevent overfitting or underfitting. Regularization works by adding a penalty term to the cost function that depends on the size or complexity of the model parameters. The amount of regularization needs to be carefully chosen to balance the bias and variance of the model.</p></li>
+</ul>
+</section>
+<section id="sklearn-logistic-regression">
+<h3><span class="section-number">9.4.7.3. </span>Sklearn Logistic Regression<a class="headerlink" href="#sklearn-logistic-regression" title="Permalink to this heading">#</a></h3>
+<p>Sklearn is a popular Python library for machine learning and data science. Sklearn provides a logistic regression model that can handle both binary and multiclass classification problems. Sklearn logistic regression allows us to use either the OvR or the multinomial approach by setting the <code class="docutils literal notranslate"><span class="pre">multi_class</span></code> hyperparameter to either <code class="docutils literal notranslate"><span class="pre">'ovr'</span></code> or <code class="docutils literal notranslate"><span class="pre">'multinomial'</span></code>, respectively. The default value is <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, which means that the algorithm will choose the best option based on the data and the solver <span id="id11">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">multi_class</span></code> hyperparameter is different from the <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> hyperparameter, which is used to adjust the weights of the classes to account for class imbalance. The <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> hyperparameter can be set to either <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> or a dictionary of class weights <span id="id12">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p>You can find more information and examples about sklearn logistic regression and the <code class="docutils literal notranslate"><span class="pre">multi_class</span></code> and <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> hyperparameters in the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">documentation</a> and this <a class="reference external" href="https://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_multinomial.html">tutorial</a> <span id="id13">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p><font color='Blue'><b>Example</b></font>: The <strong>Iris Dataset</strong> serves as a quintessential example in explaining cross-validations. Crafted by the eminent British biologist and statistician Ronald A. Fisher in 1936, the dataset finds its roots in the realm of discriminant analysis. Named after the Iris flower species it encapsulates, this dataset stands as a foundational cornerstone in machine learning and statistics.</p>
+<p><strong>Dataset Composition</strong></p>
+<p>This dataset encompasses measurements of four distinct attributes in three diverse species of Iris flowers:</p>
+<ol class="arabic simple">
+<li><p>Sepal Length</p></li>
+<li><p>Sepal Width</p></li>
+<li><p>Petal Length</p></li>
+<li><p>Petal Width</p></li>
+</ol>
+<p>The dataset encapsulates three distinct species of Iris flowers:</p>
+<ol class="arabic simple">
+<li><p>Iris setosa</p></li>
+<li><p>Iris versicolor</p></li>
+<li><p>Iris virginica</p></li>
+</ol>
+<p>Each Iris flower species is accompanied by precisely 50 samples, culminating in a total dataset size of 150 instances.</p>
+<p>Before delving into that, let’s first examine the distribution of the dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load the Iris dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+
+<span class="c1"># Create a Pandas DataFrame</span>
+<span class="n">iris_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">iris_df</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">]</span>
+
+<span class="c1"># Print the first few rows of the DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">iris_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Pairplot: Scatterplots for each pair of features</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">iris_df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># _ = g.map_lower(sns.kdeplot, levels=4, color=&quot;.2&quot;)</span>
+
+
+
+<span class="c1"># Create a 2x2 grid of subplots with a specified figure size</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Flatten the 2x2 grid into a 1D array of subplots</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="c1"># Get the column names of the iris DataFrame, excluding the &#39;species&#39; column</span>
+<span class="n">Cols</span> <span class="o">=</span> <span class="n">iris_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="c1"># Iterate through the columns using enumerate</span>
+<span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Cols</span><span class="p">):</span>
+    <span class="c1"># Create a violin plot using Seaborn</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">iris_df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+    
+    <span class="c1"># Set the title for the subplot</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Violinplot of </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> by species&quot;</span><span class="p">)</span>
+
+<span class="c1"># Adjust the layout of the subplots for better visualization</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+      <th>species</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>setosa</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/df5b1e895bd1d39c264788ff56cb11853473c586101fe70911d25c63062048de.png" src="../_images/df5b1e895bd1d39c264788ff56cb11853473c586101fe70911d25c63062048de.png" />
+<img alt="../_images/f5e951e161c20a4ba1a55b456fae0671b928f33e7fd7c2af63b897754427c2b7.png" src="../_images/f5e951e161c20a4ba1a55b456fae0671b928f33e7fd7c2af63b897754427c2b7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="k">def</span> <span class="nf">print_bold</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">31</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1;</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">m&quot;</span> <span class="o">+</span> <span class="n">txt</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+    
+<span class="c1"># Load the Iris dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+
+<span class="c1"># Select only the first two features for visualization</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Split the data into training and testing sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Create color maps</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span> <span class="s2">&quot;Blue&quot;</span><span class="p">,</span> <span class="s2">&quot;Green&quot;</span><span class="p">]</span>
+
+<span class="c1"># Different values of multi_class</span>
+<span class="n">multi_class_values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ovr&#39;</span><span class="p">,</span> <span class="s1">&#39;multinomial&#39;</span><span class="p">]</span>
+
+<span class="c1"># Create a 1x2 plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">multi_class</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">multi_class_values</span><span class="p">):</span>
+    <span class="c1"># Create a Logistic Regression classifier</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="n">multi_class</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">)</span>
+    <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate the model</span>
+    <span class="n">y_pred_train</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    
+    <span class="c1"># Plot decision boundaries</span>
+    <span class="n">display_dbd</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+                                                         <span class="n">cmap</span><span class="o">=</span>  <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">),</span>
+                                                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                                         <span class="n">grid_resolution</span> <span class="o">=</span> <span class="mi">300</span><span class="p">)</span>
+
+    <span class="c1"># Plot training points</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X_train</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">y_train</span><span class="p">],</span>
+                    <span class="n">palette</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="c1"># Set the title</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">ylabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logistic Regression classification (multi_class = </span><span class="si">{</span><span class="n">multi_class</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print the classification report</span>
+    <span class="n">print_bold</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">lr</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">multi_class</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train Classification Report:&quot;</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_pred_train</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Test Classification Report:&quot;</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_test</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Adjust the layout of the subplots for better visualization</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Red">LogisticRegression: ovr</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">	Train Classification Report:</span>
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>setosa</th>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>0.975000</td>
+      <td>40.000000</td>
+    </tr>
+    <tr>
+      <th>versicolor</th>
+      <td>0.666667</td>
+      <td>0.634146</td>
+      <td>0.650000</td>
+      <td>41.000000</td>
+    </tr>
+    <tr>
+      <th>virginica</th>
+      <td>0.658537</td>
+      <td>0.692308</td>
+      <td>0.675000</td>
+      <td>39.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.766667</td>
+      <td>0.766667</td>
+      <td>0.766667</td>
+      <td>0.766667</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.766734</td>
+      <td>0.767151</td>
+      <td>0.766667</td>
+      <td>120.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.766802</td>
+      <td>0.766667</td>
+      <td>0.766458</td>
+      <td>120.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">	Test Classification Report:</span>
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>setosa</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>10.000000</td>
+    </tr>
+    <tr>
+      <th>versicolor</th>
+      <td>1.000000</td>
+      <td>0.777778</td>
+      <td>0.875000</td>
+      <td>9.000000</td>
+    </tr>
+    <tr>
+      <th>virginica</th>
+      <td>0.846154</td>
+      <td>1.000000</td>
+      <td>0.916667</td>
+      <td>11.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+      <td>0.933333</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.948718</td>
+      <td>0.925926</td>
+      <td>0.930556</td>
+      <td>30.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.943590</td>
+      <td>0.933333</td>
+      <td>0.931944</td>
+      <td>30.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Red">LogisticRegression: multinomial</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">	Train Classification Report:</span>
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>setosa</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>versicolor</th>
+      <td>0.697674</td>
+      <td>0.731707</td>
+      <td>0.714286</td>
+      <td>41.0</td>
+    </tr>
+    <tr>
+      <th>virginica</th>
+      <td>0.702703</td>
+      <td>0.666667</td>
+      <td>0.684211</td>
+      <td>39.0</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.800000</td>
+      <td>0.800000</td>
+      <td>0.800000</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.800126</td>
+      <td>0.799458</td>
+      <td>0.799499</td>
+      <td>120.0</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.800084</td>
+      <td>0.800000</td>
+      <td>0.799749</td>
+      <td>120.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">	Test Classification Report:</span>
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>setosa</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>versicolor</th>
+      <td>0.875000</td>
+      <td>0.777778</td>
+      <td>0.823529</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>virginica</th>
+      <td>0.833333</td>
+      <td>0.909091</td>
+      <td>0.869565</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.900000</td>
+      <td>0.900000</td>
+      <td>0.900000</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.902778</td>
+      <td>0.895623</td>
+      <td>0.897698</td>
+      <td>30.0</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.901389</td>
+      <td>0.900000</td>
+      <td>0.899233</td>
+      <td>30.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../_images/8c5083b83f7d99fce32514ad333c5e3acf3d5c9ef0ca893126faafcd3684e375.png" src="../_images/8c5083b83f7d99fce32514ad333c5e3acf3d5c9ef0ca893126faafcd3684e375.png" />
+</div>
+</div>
+<p>For the <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> model with <code class="docutils literal notranslate"><span class="pre">multi_class='ovr'</span></code>:</p>
+<ul class="simple">
+<li><p>The training set accuracy is approximately 0.77, and the testing set accuracy is approximately 0.93. This means that the model correctly classified 77% of the samples in the training set and 93% of the samples in the testing set.</p></li>
+<li><p>The precision, recall, and F1-score for each class vary. For example, the model has perfect precision, recall, and F1-score for the ‘setosa’ class in the testing set.</p></li>
+</ul>
+<p>For the <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> model with <code class="docutils literal notranslate"><span class="pre">multi_class='multinomial'</span></code>:</p>
+<ul class="simple">
+<li><p>The training set accuracy is approximately 0.80, and the testing set accuracy is approximately 0.90. This means that the model correctly classified 80% of the samples in the training set and 90% of the samples in the testing set.</p></li>
+<li><p>The precision, recall, and F1-score for each class vary. For example, the model has perfect precision, recall, and F1-score for the ‘setosa’ class in the testing set.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2030,6 +2608,12 @@ Train Data:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-logistic-regression">9.4.4. Multiple Logistic Regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-optional-content">9.4.5. Confounding (Optional Content)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-synthetic-dataset">9.4.6. Example: Synthetic Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiclass-classifier">9.4.7. Multiclass Classifier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-vs-rest-approach">9.4.7.1. One-vs.-Rest Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-logistic-regression">9.4.7.2. Multinomial Logistic Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sklearn-logistic-regression">9.4.7.3. Sklearn Logistic Regression</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
