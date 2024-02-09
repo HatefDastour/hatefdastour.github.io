@@ -4,7 +4,7 @@ collection: publications
 permalink: /publication/dastour2024utilizing
 date: 2024-02-09
 venue: 'Environmental Research Communications'
-paperurl: 'https://doi.org/10.1088/2515-7620/ad248f'
+paperurl: 'https://iopscience.iop.org/article/10.1088/2515-7620/ad248f'
 citation: '<b>Dastour, H.</b> and Hassan, Q. K. (2024). Utilizing MODIS remote sensing and integrated data for forest fire spread modeling in the Southwest region of Canada. <i>Environmental Research Communications</i>, 6(2):025007. [IF: 2.9; IF Quartile: Q3]'
 ---
 <b>Abstract:</b> 
