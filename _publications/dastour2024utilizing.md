@@ -1,7 +1,7 @@
 ---
 title: "Utilizing MODIS remote sensing and integrated data for forest fire spread modeling in the Southwest region of Canada"
 collection: publications
-permalink: /publication/dastour2019
+permalink: /publication/dastour2024utilizing
 date: 2024-02-09
 venue: 'Environmental Research Communications'
 paperurl: 'https://doi.org/10.1088/2515-7620/ad248f'
