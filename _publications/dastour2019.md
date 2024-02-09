@@ -5,7 +5,8 @@ permalink: /publication/dastour2019
 date: 2019-09-15
 venue: 'Computers & Mathematics with Applications'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S0898122119302676'
-citation: '<b>H. Dastour</b> and W. Liao. "A fourth-order optimal finite difference scheme for the Helmholtz equation with PML". <i>Computers & Mathematics with Applications</i>, 6(78):2147-2165, 2019. [IF: 2.9; IF Quartile: Q1]'
+citation: '<b>Dastour H.</b> and Liao, W. (2019). A fourth-order optimal finite difference scheme for the Helmholtz equation with PML. <i>Computers & Mathematics with Applications</i>, 78(6):2147--2165.
+ [IF: 2.9; IF Quartile: Q1]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
