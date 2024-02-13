@@ -65,7 +65,7 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 ## Editor-reviewed Professional Magazines
 
-1. Bhuian, M.H., **Dastour, H.**, and Hassan, Q.K., 2023. Remote sensing of burn area mapping for the two largest 2023 forest fires in Alberta. *CIVIL Magazine*, 39, 19-20.
+1. Bhuian, M.H., **Dastour, H.**, and Hassan, Q.K., 2023. [Remote sensing of burn area mapping for the two largest 2023 forest fires in Alberta](https://www.kelmanonline.com/httpdocs/files/CSCE/civilwinter2023/index.html){:target="_blank"}. *CIVIL Magazine*, 39, 19-20.
 
 
 ## Selected Presentations
