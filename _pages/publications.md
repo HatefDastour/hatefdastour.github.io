@@ -46,7 +46,7 @@ river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110
 
 1. **Dastour, H.** and Liao, W., 2021. [An optimal 13-point finite difference scheme for a 2D Helmholtz equation with a perfectly matched layer boundary condition](https://doi.org/10.1007/s11075-020-00926-5){:target="_blank"}. *Numerical Algorithms*, 86, pp.1109-1141. \[IF: 2.1; IF Quartile: Q1\]
 
-1. **Dastour H.** and Liao W., 2019. [A fourth-order optimal finite difference scheme for the Helmholtz equation with PML](https://doi.org/10.1016/j.camwa.2019.05.004){:target="_blank"}. Computers \& Mathematics with Applications, 78(6):2147--2165. \[IF: 2.9; IF Quartile: Q1\]
+1. **Dastour H.** and Liao W., 2019. [A fourth-order optimal finite difference scheme for the Helmholtz equation with PML](https://doi.org/10.1016/j.camwa.2019.05.004){:target="_blank"}. Computers & Mathematics with Applications, 78(6):2147--2165. \[IF: 2.9; IF Quartile: Q1\]
 
 1. Liao, W., Yong, P., **Dastour, H.** and Huang, J., 2018. [Efficient and accurate numerical simulation of acoustic wave propagation in a 2D heterogeneous media](https://doi.org/10.1016/j.amc.2017.10.052){:target="_blank"}. *Applied Mathematics and Computation*, 321, pp.385-400. \[IF: 2.1; IF Quartile: Q1\]
 
