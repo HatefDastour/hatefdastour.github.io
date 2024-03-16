@@ -77,15 +77,15 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. **Dastour, H.** and Hassan, Q.K., "The significance of deep learning for classifying land use and land cover images", The International Geoscience and Remote Sensing Symposium (IGARSS), Pasadena, CA, USA, 16-21 July 2023 (Accepted, but not presented).
 
-1. **Dastour, H.** and Hassan, Q.K., "A Machine-Learning Framework for Modeling and Reconstructing Historical Monthly Streamflow Time Series", Canadian Water Association (CWRA) 2023 National Conference, Halifax, NS, Canada, 18-21 June 2023 (Conference Presentation).
+1. **Dastour, H.** and Hassan, Q.K., ["A Machine-Learning Framework for Modeling and Reconstructing Historical Monthly Streamflow Time Series"](/talks/CWRA_2023), Canadian Water Association (CWRA) 2023 National Conference, Halifax, NS, Canada, 18-21 June 2023 (Conference Presentation).
 
-1. **H. Dastour**, "Computational Methods for Solving Wave Equation Inverse Problem", Eric Milner Colloquium, University of Calgary, Calgary, AB, Canada, October 14, 2016 (Colloquium Presentation).
+1. **H. Dastour**, ["Computational Methods for Solving Wave Equation Inverse Problem"](/talks/EM_2016), Eric Milner Colloquium, University of Calgary, Calgary, AB, Canada, October 14, 2016 (Colloquium Presentation).
 
-1. **Dastour, H.**, "A stabilized marching scheme for solving the inverse problem of degenerate diffusion model", the Canadian Society of Applied and Industrial Mathematics (CAIMS 2016), University of Alberta, Edmonton, AB, Canada, June 28, 2016 (Conference Presentation).
+1. **Dastour, H.**, ["A stabilized marching scheme for solving the inverse problem of degenerate diffusion model"](/talks/CAIMS_2016), the Canadian Society of Applied and Industrial Mathematics (CAIMS 2016), University of Alberta, Edmonton, AB, Canada, June 28, 2016 (Conference Presentation).
 
-1. **Dastour, H.**, "A numerical estimation approach for an inverse heat conduction problem", 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 24, 2016 (Conference Presentation).
+1. **Dastour, H.**, ["A numerical estimation approach for an inverse heat conduction problem"](/talks/CMS_2016), 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 24, 2016 (Conference Presentation).
 
-1. **Dastour, H.**, "A Computational Method for Solving an Inverse Heat Conduction Problem", 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 25, 2016 (Conference Poster Presentation).
+1. **Dastour, H.**, ["A Computational Method for Solving an Inverse Heat Conduction Problem"](/talks/CMS_2016_Poster), 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 25, 2016 (Conference Poster Presentation).
 
-1. **Dastour, H.**, "A mollified marching solution of an inverse degenerate diffusion problem in petroleum reservoir", Alberta Mathematics Dialogue 2016, Mount Royal University, Calgary, AB, Canada, April 29, 2016
+1. **Dastour, H.**, ["A mollified marching solution of an inverse degenerate diffusion problem in petroleum reservoir"](/talks/AMD_2016), Alberta Mathematics Dialogue 2016, Mount Royal University, Calgary, AB, Canada, April 29, 2016
 (Conference Presentation).
