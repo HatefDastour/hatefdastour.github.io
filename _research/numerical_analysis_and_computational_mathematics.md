@@ -4,7 +4,11 @@ excerpt: "This area involves the development and application of numerical method
 collection: research
 ---
 
+<img src='/images/numerical_analysis_and_computational_mathematics.jpg'>
+
+<p style='text-align: justify;'>
 Numerical analysis and computational mathematics involve developing and analyzing computer methods to solve mathematical problems arising in scientific areas. This field combines numerical analysis, symbolic computations, and computer graphics to simplify setting up, solving, and interpreting complex mathematical models of the real world.
+</p>
 
 **Related Studies:**
 - [A generalized optimal fourth-order finite difference scheme for a 2D Helmholtz equation with the perfectly matched layer boundary condition](https://doi.org/10.1016/j.cam.2021.113544){:target="_blank"}

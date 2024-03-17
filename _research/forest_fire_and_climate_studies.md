@@ -4,7 +4,11 @@ excerpt: "Research in this area explores the relationship between climate change
 collection: research
 ---
 
+<img src='/images/forest_fire_and_climate_studies.jpg'>
+
+<p style='text-align: justify;'>
 Forest fires are a natural part of many ecosystems but can become more severe and frequent due to climate change. Advances in forest wildfire research have shown that climate change and human activities significantly impact wildfire occurrences, severity, and management. Understanding the effects of climate change on forest fire danger and severity, especially in regions like the Canadian boreal forests, is crucial for future fire management strategies.
+</p>
 
 **Related Studies:**
 - [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}
