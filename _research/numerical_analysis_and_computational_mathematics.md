@@ -16,7 +16,7 @@ Numerical analysis and computational mathematics involve developing and analyzin
 - [A fourth-order optimal finite difference scheme for the Helmholtz equation with PML](https://doi.org/10.1016/j.camwa.2019.05.004){:target="_blank"}
 - [Efficient and accurate numerical simulation of acoustic wave propagation in a 2D heterogeneous media](https://doi.org/10.1016/j.amc.2017.10.052){:target="_blank"}
 - [A mollified marching solution of an inverse ablation-type moving boundary problem](https://doi.org/10.1007/s40314-014-0180-5){:target="_blank"}
-- Estimation of unknown boundary functions in an inverse heat conduction problem using a mollified marching scheme](https://doi.org/10.1007/s11075-014-9871-7){:target="_blank"}
+- [Estimation of unknown boundary functions in an inverse heat conduction problem using a mollified marching scheme](https://doi.org/10.1007/s11075-014-9871-7){:target="_blank"}
 - [Proportional factors estimation
 in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}
 - [A Stable Numerical Solution of an Inverse Moving Boundary Problem of Heat Conduction Using Discrete Mollification Approach](https://jamm.scu.ac.ir/?_action=articleInfo&article=10027&lang=fa&lang=en&lang=fa&lang=en){:target="_blank"}
