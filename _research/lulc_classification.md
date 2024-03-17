@@ -1,6 +1,6 @@
 ---
 title: "Land Use and Land Cover (LULC) Classification"
-excerpt: "LULC classification involves categorizing the Earth’s surface into various types based on observed land cover, such as forests, urban areas, or water bodies. This research is crucial for environmental monitoring and urban planning. <br/><img src='/images/lulc_classification.jpg'>"
+excerpt: "LULC classification involves categorizing the Earth’s surface into various types based on observed land cover, such as forests, urban areas, or water bodies. This research is crucial for environmental monitoring and urban planning. <br/><img src='/images/lulc_classification_small.jpg'>"
 collection: research
 ---
 

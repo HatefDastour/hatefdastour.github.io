@@ -1,6 +1,6 @@
 ---
 title: "Numerical Analysis and Computational Mathematics"
-excerpt: "This area involves the development and application of numerical methods and algorithms to solve mathematical problems that are typically too complex for analytical solutions. It’s essential in engineering, physics, and economics for modeling and simulations. <br/><img src='/images/numerical_analysis_and_computational_mathematics.jpg'>"
+excerpt: "This area involves the development and application of numerical methods and algorithms to solve mathematical problems that are typically too complex for analytical solutions. It’s essential in engineering, physics, and economics for modeling and simulations. <br/><img src='/images/numerical_analysis_and_computational_mathematics_small.jpg'>"
 collection: research
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Climate and Vegetation Studies"
-excerpt: "Studies focusing on the interactions between climate patterns and vegetation, examining how climate change affects plant growth, distribution, and biodiversity. These studies often use remote sensing and field data to understand the impact of climate on vegetation dynamics. <br/><img src='/images/climate_and_vegetation_studies.jpg'>"
+excerpt: "Studies focusing on the interactions between climate patterns and vegetation, examining how climate change affects plant growth, distribution, and biodiversity. These studies often use remote sensing and field data to understand the impact of climate on vegetation dynamics. <br/><img src='/images/climate_and_vegetation_studies_small.jpg'>"
 collection: research
 ---
 

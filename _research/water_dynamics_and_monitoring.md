@@ -1,6 +1,6 @@
 ---
 title: "Water Dynamics and Monitoring"
-excerpt: "Research here focuses on the observation and analysis of water bodies’ behavior and characteristics, including their distribution, flow, and quality. It often involves the use of satellite imagery and sensors for real-time monitoring. <br/><img src='/images/water_dynamics_and_monitoring.jpg'>"
+excerpt: "Research here focuses on the observation and analysis of water bodies’ behavior and characteristics, including their distribution, flow, and quality. It often involves the use of satellite imagery and sensors for real-time monitoring. <br/><img src='/images/water_dynamics_and_monitoring_small.jpg'>"
 collection: research
 ---
 

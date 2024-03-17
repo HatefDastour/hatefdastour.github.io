@@ -1,6 +1,6 @@
 ---
 title: "Forest Fire and Climate Studies"
-excerpt: "Research in this area explores the relationship between climate change and forest fires, investigating how changes in climate variables such as temperature and precipitation influence the frequency, intensity, and distribution of wildfires. <br/><img src='/images/forest_fire_and_climate_studies.jpg'>"
+excerpt: "Research in this area explores the relationship between climate change and forest fires, investigating how changes in climate variables such as temperature and precipitation influence the frequency, intensity, and distribution of wildfires. <br/><img src='/images/forest_fire_and_climate_studies_small.jpg'>"
 collection: research
 ---
 
