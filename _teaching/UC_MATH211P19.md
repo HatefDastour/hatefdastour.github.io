@@ -1,8 +1,8 @@
 ---
-title: "MATH 211 - Linear Methods I - Spring 2019"
+title: "MATH 211 - Linear Methods I (Spring 2019)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/UC_MATH211_2019P
+permalink: /teaching/UC_MATH211P19
 venue: "University of Calgary, Department of Mathematics and Statistics"
 date: 2019-05-01
 location: "Calgary, Alberta"
@@ -15,4 +15,4 @@ An introduction to systems of linear equations, vectors in Euclidean space, and 
 * [Textbook: A First Course in Linear Algebra](https://lyryx.com/first-course-linear-algebra/){:target="_blank"}
 * [Syllabus](http://contacts.ucalgary.ca/info/math/files/info/unitis/courses/MATH211/P2019/MATH211-P2019-syllabus.pdf){:target="_blank"}
 * [Course Outline](http://contacts.ucalgary.ca/info/math/files/info/unitis/courses/MATH211/P2019/LEC1/MATH211-P2019-LEC1-outline.pdf){:target="_blank"}
-* [More Details](http://contacts.ucalgary.ca/info/math/courses/p19/MATH211?destination=profiles%2F1-6085569%2Fcourses){:target="_blank"}
+* [More Details](https://contacts.ucalgary.ca/info/math/files/info/unitis/courses/MATH211/P2019/LEC1/MATH211-P2019-LEC1-outline.pdf){:target="_blank"}
