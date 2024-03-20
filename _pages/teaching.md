@@ -6,8 +6,8 @@ title: "Teaching"
 ### University of Calgary, Calgary, AB, Canada
 
 * **Winter 2024:**
-	* [ENEN 693 - Life Cycle Assessment]
-	* [ENSF 444 - Machine Learning Systems]
+	* ENEN 693 - Life Cycle Assessment
+	* ENSF 444 - Machine Learning Systems
 
 * **Fall 2023:**
 	* [ENGG 680 - Introduction to Digital Engineering](/teaching/UC_ENGG680F23)

@@ -4,7 +4,7 @@ collection: teaching
 type: "Graduate course"
 permalink: /teaching/UC_ENGG680F23
 venue: "University of Calgary, Department of Electrical and Computer Engineering"
-date: 2019-05-01
+date: 2023-09-01
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>
