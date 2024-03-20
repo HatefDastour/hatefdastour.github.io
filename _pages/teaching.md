@@ -36,5 +36,5 @@ title: "Teaching"
 	* [MATH 2234 - Concepts of Mathematical Statistics](/teaching/MRU_MATH2234W23)
 
 * **Fall 2022:**
-	* [MATH 3101 - Numerical Analysis](/teaching/MRU_MATH3101_2022F)
+	* [MATH 3101 - Numerical Analysis](/teaching/MRU_MATH3101F22)
 	* [MATH 1203 - Linear Algebra for Scientists and Engineers](/teaching/MRU_MATH1203F22)
