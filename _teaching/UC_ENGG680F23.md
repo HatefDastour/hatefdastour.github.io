@@ -1,5 +1,5 @@
 ---
-title: "ENGG 680 - Introduction to Digital Engineerin (Fall 2023)"
+title: "ENGG 680 - Introduction to Digital Engineering (Fall 2023)"
 collection: teaching
 type: "Graduate course"
 permalink: /teaching/UC_ENGG680F23
