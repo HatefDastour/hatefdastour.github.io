@@ -9,7 +9,7 @@ redirect_from:
 
 <p style='text-align: justify;'>
 My name is Hatef Dastour, and I have expertise in diverse areas of research, specializing in Environmental Modeling, Remote Sensing, Mathematical Modelling, and the application of Machine Learning, Deep Learning, and Big Data Analysis within these domains.
-
+<br>
 <br>
 Beyond my professional pursuits, I am a tech enthusiast with a strong drive to stay informed about new advancements in technology. In my leisure time, I enjoy working out, hiking, and spending quality time with my family and friends.
 </p>
