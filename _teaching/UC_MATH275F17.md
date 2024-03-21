@@ -2,7 +2,7 @@
 title: "MATH 275 - Calculus for Engineers and Scientists (Fall 2017)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/UC_MATH275_2017F
+permalink: /teaching/UC_MATH275F17
 venue: "University of Calgary, Department of Mathematics and Statistics"
 date: 2017-09-01
 location: "Calgary, Alberta"

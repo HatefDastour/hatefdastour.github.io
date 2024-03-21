@@ -2,7 +2,7 @@
 title: "MATH 2233 - Statistics for Biological Sciences (Winter 2023)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/MRU_MATH2234W23
+permalink: /teaching/MRU_MATH2233W23
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2023-01-01
 location: "Calgary, Alberta"
