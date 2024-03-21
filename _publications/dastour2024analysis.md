@@ -1,5 +1,5 @@
 ---
-title: "Analysis of forest fire patterns and their relationship with climate variables in Alberta's natural subregions"
+title: "Analysis of forest fire patterns and their relationship with climate variables in Albertas natural subregions"
 collection: publications
 permalink: /publication/dastour2024analysis
 date: 2024-02-19
