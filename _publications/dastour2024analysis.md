@@ -5,7 +5,7 @@ permalink: /publication/dastour2024analysis
 date: 2024-02-19
 venue: 'Ecological Informatics'
 paperurl: 'https://doi.org/10.1007/s41748-024-00384-2'
-citation: '<b>Dastour, H.</b>, Ahmed M. Razu and Hassan, Q. K. (2024). Analysis of forest fire patterns and their relationship with climate variables in Alberta's natural subregions. <i>Ecological Informatics</i>. [IF: 5.1; IF Quartile: Q1]'
+citation: '<b>Dastour, H.</b>, Ahmed M. Razu and Hassan, Q. K. (2024). Analysis of forest fire patterns and their relationship with climate variables in Albertas natural subregions. <i>Ecological Informatics</i>. [IF: 5.1; IF Quartile: Q1]'
 ---
 <b>Abstract:</b> 
 <p style='text-align: justify;'>
