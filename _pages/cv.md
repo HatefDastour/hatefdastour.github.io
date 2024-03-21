@@ -74,7 +74,7 @@ redirect_from:
 {% endfor %}</ul>
   
 ---
-
+<!---
 ## Computer Skills
 
 * Proficiency with computer programming including MATLAB, Python (TensorFlow, PyTorch, Keras, Scikit-Learn, NLP, Pandas, Dask, ...), R, Julia Programming, and others.
@@ -118,3 +118,4 @@ redirect_from:
 * Organizer of [the University of Calgary Chapter of SIAM Biweekly Seminar Series](https://siamucalgary.wordpress.com/){:target="_blank"},
  Calgary, Canada, February 2017 - April 2018,
 * Organizer of [Calgary Applied and Industrial Mathematical Sciences Conference](http://www.ucalgary.ca/science/caimsc){:target="_blank"}, Calgary, Canada, May 21, 2017 - May 22, 2017.
+-->
