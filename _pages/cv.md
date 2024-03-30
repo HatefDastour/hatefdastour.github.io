@@ -6,7 +6,7 @@ author_profile: true
 redirect_from:
   - /resume
 ---
-
+<!---
 {% include base_path %}
 
 * [See my full CV in PDF format](/files/Hatef_Dastour_CV.pdf){:target="_blank"}.
@@ -74,7 +74,7 @@ redirect_from:
 {% endfor %}</ul>
   
 ---
-<!---
+
 ## Computer Skills
 
 * Proficiency with computer programming including MATLAB, Python (TensorFlow, PyTorch, Keras, Scikit-Learn, NLP, Pandas, Dask, ...), R, Julia Programming, and others.
