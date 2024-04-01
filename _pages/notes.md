@@ -72,13 +72,3 @@ This course covers root-finding algorithms, interpolation, integration, differen
 <br>
 SQL Server, MySQL_Connector, SQLite, PyMySQL, …
 </p>
-
-<hr style="height:2px; visibility:hidden;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Statistical_Learning/" target="_blank" rel="noopener noreferrer">Statistical Learning</a>
-</b></font>
-<br>
-This course focuses on statistical learning techniques using Python. Learn how to apply regression, classification, clustering, and other essential methods to analyze data, make predictions, and gain valuable insights. Gain hands-on experience in real-world data analysis projects and build a strong foundation in statistical learning with Python.
-</p>
