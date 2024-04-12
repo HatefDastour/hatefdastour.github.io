@@ -8,7 +8,7 @@ date: 2023-09-01
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>
-This course covers the fundamental elements of digital engineering systems and basic programming structures for implementation.It teaches programming strategies to aid data analysis, including data acquisition and cleansing, validation, and visualization. The course introduces fundamental machine learning methods and data-centric modeling, with practical examples from various engineering fields. Note: This course is not eligible for credit if taken more than once.
+This course covers the fundamental elements of digital engineering systems and basic programming structures for implementation. It teaches programming strategies to aid data analysis, including data acquisition and cleansing, validation, and visualization. The course introduces fundamental machine learning methods and data-centric modeling, with practical examples from various engineering fields.
 </p>
 
 * [Lecture Notes](/notes/Introduction_to_Digital_Engineering/){:target="_blank"}
