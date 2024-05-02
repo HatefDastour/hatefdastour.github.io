@@ -43,7 +43,7 @@ title: "Teaching"
 
 |     Semester    |                                        Course                                        |
 |:---------------:|:------------------------------------------------------------------------------------:|
-| **Spring 2023** |         [MATH 2333 - Statistics for Life Sciences](/teaching/MRU_MATH2333S23)        |
+| **Spring 2023** |         [MATH 2333 - Statistics for Life Sciences](/teaching/MRU_MATH2333P23)        |
 | **Winter 2023** |      [MATH 2233 - Statistics for Biological Sciences](/teaching/MRU_MATH2233W23)     |
 | **Winter 2023** | [MATH 2234 - Concepts of Mathematical Statistics](/teaching/MRU_MATH2234W23)         |
 |  **Fall 2022**  |              [MATH 3101 - Numerical Analysis](/teaching/MRU_MATH3101F22)             |
