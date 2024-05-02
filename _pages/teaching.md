@@ -5,14 +5,14 @@ title: "Teaching"
 
 ### University of Calgary, Calgary, AB, Canada
 
-| Semester        | Course                                                                                        |
-|-----------------|-----------------------------------------------------------------------------------------------|
-| **Winter 2024** | ENEN 693 - Life Cycle Assessment                                                              |
-| **Winter 2024** | ENSF 444 - Machine Learning Systems                                                           |
-| **Fall 2023**   | [ENGG 680 - Introduction to Digital Engineering](/teaching/UC_ENGG680F23)                     |
-| **Spring 2019** | [MATH 211 - Linear Methods I](/teaching/UC_MATH211P19)                                        |
-| **Summer 2018** | [MATH 211 - Linear Methods I](/teaching/UC_MATH211S18)                                        |
-| **Fall 2017**   | [Co-Instructor for MATH 275 - Calculus for Engineers and Scientists](/teaching/UC_MATH275F17) |
+|     Semester    |                                             Course                                            |
+|:---------------:|:---------------------------------------------------------------------------------------------:|
+| **Winter 2024** |                                ENEN 693 - Life Cycle Assessment                               |
+| **Winter 2024** |                              ENSF 444 - Machine Learning Systems                              |
+|  **Fall 2023**  |           [ENGG 680 - Introduction to Digital Engineering](/teaching/UC_ENGG680F23)           |
+| **Spring 2019** |                     [MATH 211 - Linear Methods I](/teaching/UC_MATH211P19)                    |
+| **Summer 2018** |                     [MATH 211 - Linear Methods I](/teaching/UC_MATH211S18)                    |
+|  **Fall 2017**  | [Co-Instructor for MATH 275 - Calculus for Engineers and Scientists](/teaching/UC_MATH275F17) |
 
 <!-- * **Winter 2024:**
 	* ENEN 693 - Life Cycle Assessment
