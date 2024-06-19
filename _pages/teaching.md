@@ -7,8 +7,8 @@ title: "Teaching"
 
 |     Semester    |                                             Course                                            |
 |:---------------:|:---------------------------------------------------------------------------------------------:|
-| **Winter 2024** |                                ENEN 693 - Life Cycle Assessment                               |
-| **Winter 2024** |                              ENSF 444 - Machine Learning Systems                              |
+| **Winter 2024** |                 [ENEN 693 - Life Cycle Assessment](/teaching/UC_ENEN693W24)                   |
+| **Winter 2024** |                  [ENSF 444 - Machine Learning Systems](/teaching/UC_ENSF444W24)               |
 |  **Fall 2023**  |           [ENGG 680 - Introduction to Digital Engineering](/teaching/UC_ENGG680F23)           |
 | **Spring 2019** |                     [MATH 211 - Linear Methods I](/teaching/UC_MATH211P19)                    |
 | **Summer 2018** |                     [MATH 211 - Linear Methods I](/teaching/UC_MATH211S18)                    |
