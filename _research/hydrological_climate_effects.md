@@ -1,10 +1,10 @@
 ---
-title: "Hydrology and Climate Studies"
-excerpt: "This field examines the effects of climate change on the hydrological cycle, including precipitation patterns, river flows, and groundwater levels. It aims to understand how changing climates affect water resources and flood risks. <br/><img src='/images/hydrology_and_climate_studies_small.jpg'>"
+title: "Hydrological Climate Effects"
+excerpt: "This field examines the effects of climate change on the hydrological cycle, including precipitation patterns, river flows, and groundwater levels. It aims to understand how changing climates affect water resources and flood risks. <br/><img src='/images/hydrological_climate_effects_small.jpg'>"
 collection: research
 ---
 
-<img src='/images/hydrology_and_climate_studies.jpg'>
+<img src='/images/hydrological_climate_effects.jpg'>
 
 <p style='text-align: justify;'>
 Hydrology, the study of water movement and distribution, is significantly affected by climate change. Changes in precipitation patterns, temperature, and extreme weather events alter the hydrological cycle, impacting water availability and quality. Monitoring and understanding these changes are vital for managing water resources sustainably and mitigating the risks of floods and droughts.
