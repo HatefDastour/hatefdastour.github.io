@@ -40,6 +40,16 @@ Finite Difference Method for solving PDEs.
 <a href="https://hatefdastour.github.io/notes/Introduction_to_Digital_Engineering/" target="_blank" rel="noopener noreferrer">Introduction to Digital Engineering</a>
 </b></font>
 <br>
+This course is an introductory exploration into the realm of geospatial data analytics, utilizing Geographic Information Systems (GIS) and Remote Sensing technologies as foundational tools. It is meticulously crafted for individuals who are new to the domain of geospatial data processing and have a burgeoning interest in data science. Prior experience in the field is not a prerequisite, making this course an ideal starting point for those aspiring to become proficient in spatial data analysis.
+</p>
+
+<hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Geospatial_Data_Analytics/" target="_blank" rel="noopener noreferrer">Introduction to Geospatial Data Analytics</a>
+</b></font>
+<br>
 This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
 </p>
 
