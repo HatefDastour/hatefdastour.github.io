@@ -7,16 +7,14 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
-1. Bhuian, H.†, **Dastour, H.**†, Ahmed, M.R., and Hassan, Q.K., 2024. [Comparison of perimeter delineation methods for remote sensing fire spot data in near\/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}, *Fire*, 7(7), p.226. \[IF: 3.0; IF Quartile: Q1\]
+1. Bhuian, H., **Dastour, H.**, Ahmed, M.R., and Hassan, Q.K., 2024 [Comparison of perimeter delineation methods for remote sensing fire spot data in near/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}, *Fire*, 7(7), p.226. \[IF: 3.0; IF Quartile: Q1\]
 
 
 1. **Dastour, H.** and Hassan, Q.K., 2024. [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://rdcu.be/dBtBI){:target="_blank"}. *Earth Systems and Environment*, 8, pp.165–180. \[IF: 5.3; IF Quartile: Q1\]
 
-1. **Dastour, H.** , Ahmed, M.R. and Hassan, Q.K., 2024. [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}. *Ecological Informatics*, 80,
-p.102531. \[IF: 5.8; IF Quartile: Q1\]
+1. **Dastour, H.** , Ahmed, M.R. and Hassan, Q.K., 2024. [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}. *Ecological Informatics*, 80, p.102531. \[IF: 5.8; IF Quartile: Q1\]
 
-1. **Dastour, H.** and Hassan, Q.K., 2024. [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}. *Environmental Research Communications*, 6(2),
-p.025007. \[IF: 2.5; IF Quartile: Q3\]
+1. **Dastour, H.** and Hassan, Q.K., 2024. [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}. *Environmental Research Communications*, 6(2), p.025007. \[IF: 2.5; IF Quartile: Q3\]
 
 1. Ghaderpour, E., Zaghloul, M.S., **Dastour, H.**, Gupta, A., Achari, G. and Hassan, Q.K., 2023.
 [Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in the Athabasca River Basin](https://doi.org/10.1175/JHM-D-23-0013.1){:target="_blank"}. *Journal of Hydrometeorology*, 24(10), pp.1883-1900. \[IF: 3.1; IF Quartile: Q2\]
@@ -24,15 +22,12 @@ p.025007. \[IF: 2.5; IF Quartile: Q3\]
 1. **Dastour, H.** and Hassan, Q.K., 2023. [A Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification](https://doi.org/10.3390/su15107854){:target="_blank"}.
 *Sustainability*, 15(10), p.7854. \[IF: 3.3; IF Quartile: Q2\]
 
-1. **Dastour, H.** and Hassan, Q.K., 2023. [A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series](https://doi.org/10.3390/hydrology10040095){:target="_blank"}. *Hydrology*,
-10(4), p.95. \[IF: 3.1; IF Quartile: Q2\]
+1. **Dastour, H.** and Hassan, Q.K., 2023. [A Machine-Learning Framework for Modeling and Predicting Monthly Streamflow Time Series](https://doi.org/10.3390/hydrology10040095){:target="_blank"}. *Hydrology*, 10(4), p.95. \[IF: 3.1; IF Quartile: Q2\]
 
-1. **Dastour, H.**, Gupta, A., Achari, G. and Hassan, Q.K., 2023. [A Robust Regime Shift Change Detection Algorithm for Water-Flow Dynamics](https://doi.org/10.3390/w15081571){:target="_blank"}.
-*Water*, 15(8), p.1571. \[IF: 3.0; IF Quartile: Q2\]
+1. **Dastour, H.**, Gupta, A., Achari, G. and Hassan, Q.K., 2023. [A Robust Regime Shift Change Detection Algorithm for Water-Flow Dynamics](https://doi.org/10.3390/w15081571){:target="_blank"}. *Water*, 15(8), p.1571. \[IF: 3.0; IF Quartile: Q2\]
 
 1. Zaghloul, M.S., Ghaderpour, E., **Dastour, H.**, Farjad, B., Gupta, A.,
-Eum, H., Achari, G. and Hassan, Q.K., 2022. [Long term trend analysis of river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110197){:target="_blank"}. *Hydrology*, 9(11), p.197.
-\[IF: 3.1; IF Quartile: Q2\]
+Eum, H., Achari, G. and Hassan, Q.K., 2022. [Long term trend analysis of river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110197){:target="_blank"}. *Hydrology*, 9(11), p.197. \[IF: 3.1; IF Quartile: Q2\]
 
 1. **Dastour, H.**, Ghaderpour, E., Zaghloul, M.S., Farjad, B., Gupta, A., Eum, H., Achari, G. and Hassan, Q.K., 2022. [Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada](https://doi.org/10.1016/j.jag.2022.103044){:target="_blank"}. *International Journal of Applied Earth Observation and Geoinformation*, 114, p.103044. \[IF: 7.6; IF Quartile: Q1\]
 
