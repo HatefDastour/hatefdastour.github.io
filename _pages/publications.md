@@ -58,7 +58,6 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. Ghaderpour E., Zaghloul M.S., **Dastour, H.**, Farjad F., Gupta, A., Eum, H., Achari, G., and Hassan, Q.K. 2022. Spatiotemporal Dynamics of the Athabasca River Basin: A Study on Climate, Vegetation, and Hydrometric Changes. *For Alberta Environment and Parks*, 69 p.
 
-
 ## Editor-reviewed Professional Magazines
 
 1. Bhuian, M.H., **Dastour, H.**, and Hassan, Q.K., 2023. [Remote sensing of burn area mapping for the two largest 2023 forest fires in Alberta](https://www.kelmanonline.com/httpdocs/files/CSCE/civilwinter2023/index.html){:target="_blank"}. *CIVIL Magazine*, 39, 19-20.
@@ -80,3 +79,10 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. **Dastour, H.**, ["A mollified marching solution of an inverse degenerate diffusion problem in petroleum reservoir"](/talks/AMD_2016), Alberta Mathematics Dialogue 2016, Mount Royal University, Calgary, AB, Canada, April 29, 2016
 (Conference Presentation).
+
+
+## Grauate Theses
+
+1. **Dastour, H.**, 2024. [Vegetation and Forest Fire Dynamics in Alberta: A Ground and Remote Sensing Data Analysis](https://prism.ucalgary.ca/items/04bea0ee-df5c-4956-b68a-57ada1cf5791){:target="_blank"}. *University of Calgary*, Calgary, Alberta.
+
+1. **Dastour, H.**, 2019. [Optimal Finite Difference Schemes for the Helmholtz Equation with PML](https://prism.ucalgary.ca/items/e79395f7-3f90-4a73-9869-847680aff384){:target="_blank"}. *University of Calgary*, Calgary, Alberta.
