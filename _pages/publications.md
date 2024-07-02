@@ -81,7 +81,7 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 (Conference Presentation).
 
 
-## Grauate Theses
+## Graduate Theses
 
 1. **Dastour, H.**, 2024. [Vegetation and Forest Fire Dynamics in Alberta: A Ground and Remote Sensing Data Analysis](https://prism.ucalgary.ca/items/04bea0ee-df5c-4956-b68a-57ada1cf5791){:target="_blank"}. *(Doctoral thesis, University of Calgary, Calgary, Canada)*.
 
