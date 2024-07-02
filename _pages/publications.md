@@ -7,7 +7,7 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
-1. Bhuian, H.†, **Dastour, H.**†, Ahmed, M.R., and Hassan, Q.K., 2024. [Comparison of perimeter delineation methods for remote sensing fire spot data in near/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}, *Fire*, 7(7), p.226. \[IF: 3.0; IF Quartile: Q1\]
+1. Bhuian, H.†, **Dastour, H.**†, Ahmed, M.R., and Hassan, Q.K., 2024. [Comparison of perimeter delineation methods for remote sensing fire spot data in near\/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}, *Fire*, 7(7), p.226. \[IF: 3.0; IF Quartile: Q1\]
 
 
 1. **Dastour, H.** and Hassan, Q.K., 2024. [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://rdcu.be/dBtBI){:target="_blank"}. *Earth Systems and Environment*, 8, pp.165–180. \[IF: 5.3; IF Quartile: Q1\]
