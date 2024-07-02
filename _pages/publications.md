@@ -83,6 +83,6 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 ## Grauate Theses
 
-1. **Dastour, H.**, 2024. [Vegetation and Forest Fire Dynamics in Alberta: A Ground and Remote Sensing Data Analysis](https://prism.ucalgary.ca/items/04bea0ee-df5c-4956-b68a-57ada1cf5791){:target="_blank"}. *University of Calgary*, Calgary, Alberta.
+1. **Dastour, H.**, 2024. [Vegetation and Forest Fire Dynamics in Alberta: A Ground and Remote Sensing Data Analysis](https://prism.ucalgary.ca/items/04bea0ee-df5c-4956-b68a-57ada1cf5791){:target="_blank"}. *(Doctoral thesis, University of Calgary, Calgary, Canada)*.
 
-1. **Dastour, H.**, 2019. [Optimal Finite Difference Schemes for the Helmholtz Equation with PML](https://prism.ucalgary.ca/items/e79395f7-3f90-4a73-9869-847680aff384){:target="_blank"}. *University of Calgary*, Calgary, Alberta.
+1. **Dastour, H.**, 2019. [Optimal Finite Difference Schemes for the Helmholtz Equation with PML](https://prism.ucalgary.ca/items/e79395f7-3f90-4a73-9869-847680aff384){:target="_blank"}. *(Doctoral thesis, University of Calgary, Calgary, Canada)*.
