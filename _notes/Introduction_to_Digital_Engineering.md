@@ -1,5 +1,4 @@
 ---
 title: "Introduction to Digital Engineering"
-excerpt: "This course introduces Python and OpenCV for computer vision tasks. Learn image and video manipulation, object detection, and deep learning integration. Gain practical skills for real-world applications in robotics, automation, and more."
-collection: notes
+excerpt: "This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields."
 ---
