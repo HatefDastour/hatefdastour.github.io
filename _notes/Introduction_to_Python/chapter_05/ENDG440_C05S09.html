@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>5.9. Combining Datasets using Pandas &#8212; Introduction to Python</title>
+    <title>5.9. Pandas merge &#8212; Introduction to Python</title>
   
   
   
@@ -222,9 +222,9 @@
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S04.html">5.4. Modifying a DataFrame in Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S05.html">5.5. Handling Missing Data in Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S06.html">5.6. Filling Missing Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S07.html">5.7. Working with Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S07.html">5.7. Techniques for Filling Missing Data in Time Series</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S08.html">5.8. Strategies for Handling Missing Categorical Data in Pandas</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.9. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.9. Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S10.html">5.10. Pandas <code class="docutils literal notranslate"><span class="pre">join</span></code> and <code class="docutils literal notranslate"><span class="pre">concat</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S11.html">5.11. Aggregation and Grouping in Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S12.html">5.12. Pandas pivot and melt</a></li>
@@ -330,7 +330,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Combining Datasets using Pandas</h1>
+    <h1>Pandas merge</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -340,16 +340,18 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-merge">5.9.1. Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-key-merging">5.9.1.1. Multi-Key Merging</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-left-and-right-prefixes">5.9.1.2. Specifying Left and Right Prefixes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-on-index">5.9.1.3. Merging on Index</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query-optional-content">5.9.1.4. Merging and Filtering DataFrames in Pandas using merge() and query() (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semi-join-and-anti-join-optional-content">5.9.1.5. Semi-join and Anti-join (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-on-nearest-key-optional-content">5.9.1.6. Merge on Nearest Key (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-merging">5.9.1.7. Categorical Merging</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inner-merge">5.9.1. Inner Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outer-merge">5.9.2. Outer Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#left-merge">5.9.3. Left Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#right-merge">5.9.4. Right Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-join">5.9.5. Cross Join</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-key-merging">5.9.6. Multi-Key Merging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-left-and-right-prefixes">5.9.7. Specifying Left and Right Prefixes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-on-index">5.9.8. Merging on Index</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query">5.9.9. Merging and Filtering DataFrames in Pandas using merge() and query()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semi-join-and-anti-join">5.9.10. Semi-join and Anti-join</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-on-nearest-key">5.9.11. Merge on Nearest Key</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-merging">5.9.12. Categorical Merging</a></li>
 </ul>
             </nav>
         </div>
@@ -361,56 +363,63 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="combining-datasets-using-pandas">
-<h1><span class="section-number">5.9. </span>Combining Datasets using Pandas<a class="headerlink" href="#combining-datasets-using-pandas" title="Link to this heading">#</a></h1>
-<p>Within the Pandas library, <code class="docutils literal notranslate"><span class="pre">merge</span></code>, <code class="docutils literal notranslate"><span class="pre">join</span></code>, and <code class="docutils literal notranslate"><span class="pre">concat</span></code> are fundamental functions that hold pivotal significance in the process of combining and merging data from various DataFrames.</p>
-<section id="pandas-merge">
-<h2><span class="section-number">5.9.1. </span>Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code><a class="headerlink" href="#pandas-merge" title="Link to this heading">#</a></h2>
-<p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">merge</span></code> function facilitates the merging of two DataFrames based on common columns or indices, resembling the behavior of SQL joins. By specifying the <code class="docutils literal notranslate"><span class="pre">on</span></code> parameter, you can identify the shared column(s) for merging. This function supports various types of joins, such as inner, left, right, and outer joins. To use <code class="docutils literal notranslate"><span class="pre">merge</span></code>, you simply follow this syntax <span id="id1">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas-merge">
+<h1><span class="section-number">5.9. </span>Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code><a class="headerlink" href="#pandas-merge" title="Link to this heading">#</a></h1>
+<p>Within the Pandas library, <code class="docutils literal notranslate"><span class="pre">merge</span></code>, <code class="docutils literal notranslate"><span class="pre">join</span></code>, and <code class="docutils literal notranslate"><span class="pre">concat</span></code> are fundamental functions that play a pivotal role in combining and merging data from various DataFrames. The <code class="docutils literal notranslate"><span class="pre">merge</span></code> function, in particular, facilitates the merging of two DataFrames based on common columns or indices, resembling the behavior of SQL joins. By specifying the <code class="docutils literal notranslate"><span class="pre">on</span></code> parameter, you can identify the shared column(s) for merging. This function supports various types of joins, such as inner, left, right, and outer joins. Here’s how you can use the <code class="docutils literal notranslate"><span class="pre">merge</span></code> function <span id="id1">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
          <span class="n">left_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;_x&#39;</span><span class="p">,</span> <span class="s1">&#39;_y&#39;</span><span class="p">),</span>
          <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now, let’s explain each parameter:</p>
+<p><strong>Parameters Explained:</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code>: The left DataFrame to be merged.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right</span></code>: The right DataFrame to be merged.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">how</span></code>: The type of join to perform: <code class="docutils literal notranslate"><span class="pre">'inner'</span></code>, <code class="docutils literal notranslate"><span class="pre">'outer'</span></code>, <code class="docutils literal notranslate"><span class="pre">'left'</span></code>, <code class="docutils literal notranslate"><span class="pre">'right'</span></code> or , <code class="docutils literal notranslate"><span class="pre">'cross'</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">'inner'</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">on</span></code>: Column(s) to join on. It can be a single column name or a list of column names.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">left_on</span></code>: Column(s) from the left DataFrame to use as join keys.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right_on</span></code>: Column(s) from the right DataFrame to use as join keys.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">left_index</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the left DataFrame’s index as a join key.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right_index</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the right DataFrame’s index as a join key.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sort</span></code>: Sort the result DataFrame by the join keys.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">suffixes</span></code>: Suffixes to add to overlapping column names from both DataFrames.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">copy</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, creates copies of input data.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">indicator</span></code>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, adds a column to indicate the source of each row.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">validate</span></code>: Validates the merge keys: <code class="docutils literal notranslate"><span class="pre">'one_to_one'</span></code>, <code class="docutils literal notranslate"><span class="pre">'one_to_many'</span></code>, <code class="docutils literal notranslate"><span class="pre">'many_to_one'</span></code>, <code class="docutils literal notranslate"><span class="pre">'many_to_many'</span></code>.</p></li>
-</ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function is used to combine two or more DataFrames based on common columns or indices. The <code class="docutils literal notranslate"><span class="pre">how</span></code> parameter determines the type of join (inner, outer, left, right). The <code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">left_on</span></code>, and <code class="docutils literal notranslate"><span class="pre">right_on</span></code> parameters specify which columns to use as keys. The <code class="docutils literal notranslate"><span class="pre">left_index</span></code> and <code class="docutils literal notranslate"><span class="pre">right_index</span></code> parameters indicate whether to use the indices for joining. The <code class="docutils literal notranslate"><span class="pre">suffixes</span></code> parameter is used to handle overlapping column names.</p>
-<p>For a comprehensive understanding of the function, you may refer to the complete documentation available <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html">here</a>.</p>
-<p>These are the different types of merge operations that you can specify when combining dataframes using the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function in pandas <span id="id2">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>]</span>:</p>
-<figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../_images/join_how.jpg"><img alt="../_images/join_how.jpg" src="../_images/join_how.jpg" style="width: 600px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 5.17 </span><span class="caption-text">Pandas <code class="docutils literal notranslate"><span class="pre">how</span></code> visualization.</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<ol class="arabic simple">
-<li><p><strong>Inner Merge (<code class="docutils literal notranslate"><span class="pre">'inner'</span></code>):</strong></p>
-<ul class="simple">
-<li><p>The inner merge returns only the rows where the keys (columns used for merging) exist in both dataframes.</p></li>
-<li><p>It effectively performs an intersection of the keys and retains only the common rows between the dataframes.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">left</span></code></strong>: The left DataFrame to be merged.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">right</span></code></strong>: The right DataFrame to be merged.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">how</span></code></strong>: The type of join to perform. Options include:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'inner'</span></code>: Only include rows with keys present in both DataFrames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'outer'</span></code>: Include rows with keys from either DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'left'</span></code>: Include all rows from the left DataFrame and matching rows from the right DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'right'</span></code>: Include all rows from the right DataFrame and matching rows from the left DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'cross'</span></code>: Perform a Cartesian product of rows from both DataFrames.</p></li>
 </ul>
 </li>
-</ol>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">on</span></code></strong>: Column(s) to join on. It can be a single column name or a list of column names.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">left_on</span></code></strong>: Column(s) from the left DataFrame to use as join keys.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">right_on</span></code></strong>: Column(s) from the right DataFrame to use as join keys.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">left_index</span></code></strong>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the left DataFrame’s index as a join key.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">right_index</span></code></strong>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the right DataFrame’s index as a join key.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sort</span></code></strong>: Sort the result DataFrame by the join keys.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">suffixes</span></code></strong>: Suffixes to add to overlapping column names from both DataFrames.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">copy</span></code></strong>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, creates copies of input data.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">indicator</span></code></strong>: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, adds a column to indicate the source of each row.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">validate</span></code></strong>: Validates the merge keys. Options include:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'one_to_one'</span></code>: Ensure that each key combination appears only once in both DataFrames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'one_to_many'</span></code>: Ensure that each key combination appears only once in the left DataFrame and multiple times in the right DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'many_to_one'</span></code>: Ensure that each key combination appears multiple times in the left DataFrame and only once in the right DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'many_to_many'</span></code>: Allow multiple appearances of each key combination in both DataFrames.</p></li>
+</ul>
+</li>
+</ul>
+<p>For a comprehensive understanding of the function, you may refer to the complete documentation available <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html">here</a>.</p>
+<p>These are the different types of merge operations that you can specify when combining dataframes using the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function in pandas <span id="id2">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>]</span>:</p>
+<figure class="align-center" id="merge-types-fig">
+<a class="reference internal image-reference" href="../_images/join_how.jpg"><img alt="../_images/join_how.jpg" src="../_images/join_how.jpg" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.17 </span><span class="caption-text">Various types of circle overlaps and connections: <strong>Left:</strong> Two circles overlapping slightly on the left side. <strong>Right:</strong> Two circles overlapping slightly on the right side. <strong>Outer:</strong> Two circles with a larger overlap in the middle. <strong>Inner:</strong> One small circle entirely within a larger circle. <strong>Cross:</strong> Three pairs of numbers (1-1, 2-2, 3-3) connected by lines in a star or cross-like pattern within an encompassing circle.</span><a class="headerlink" href="#merge-types-fig" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="inner-merge">
+<h2><span class="section-number">5.9.1. </span>Inner Merge<a class="headerlink" href="#inner-merge" title="Link to this heading">#</a></h2>
+<p>An inner merge in pandas returns only the rows where the keys (columns used for merging) exist in both dataframes. Think of it as finding the common ground between two datasets. For example, if you have two dataframes, one with employee names and IDs, and another with employee IDs and ages, an inner merge on the ID column will give you a dataframe that includes only the employees who appear in both dataframes, along with their names and ages.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Create two DataFrames</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">]})</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,],</span> <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">]})</span>
 <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">22</span><span class="p">]})</span>
 
 <span class="c1"># Display the original DataFrames</span>
@@ -558,15 +567,18 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<ol class="arabic simple" start="2">
-<li><p><strong>Outer Merge (<code class="docutils literal notranslate"><span class="pre">'outer'</span></code>):</strong></p>
-<ul class="simple">
-<li><p>The outer merge returns all rows from both dataframes.</p></li>
-<li><p>If a key exists in one dataframe but not in the other, the missing values will be filled with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (or specified fill values) in the resulting dataframe.</p></li>
-<li><p>It effectively performs a union of the keys, including all rows from both dataframes.</p></li>
-</ul>
-</li>
-</ol>
+<p><a class="reference internal" href="#venn-diagram-inner-example1"><span class="std std-numref">Fig. 5.18</span></a> illustrates the IDs present in two datasets, df1 and df2. The overlap shows IDs common to both datasets (2, 3), while the non-overlapping sections display unique IDs for each dataset (1 for df1 and 4 for df2). The merge using using <code class="docutils literal notranslate"><span class="pre">inner</span></code> is demonstrated.</p>
+<figure class="align-center" id="venn-diagram-inner-example1">
+<a class="reference internal image-reference" href="../_images/venn_diagram_inner_example1.jpg"><img alt="../_images/venn_diagram_inner_example1.jpg" src="../_images/venn_diagram_inner_example1.jpg" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.18 </span><span class="caption-text">Visualizing the inner merge for the above example.</span><a class="headerlink" href="#venn-diagram-inner-example1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="outer-merge">
+<h2><span class="section-number">5.9.2. </span>Outer Merge<a class="headerlink" href="#outer-merge" title="Link to this heading">#</a></h2>
+<p>An outer merge, on the other hand, is more inclusive. It returns all rows from both dataframes, filling in missing values with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> where there are no matches. This type of merge is useful when you want to combine all data from both sources, even if some entries don’t have corresponding matches. For instance, if one dataframe lists all employees and another lists only those who have completed a training program, an outer merge will show all employees, indicating who has completed the training and who hasn’t.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the original DataFrames</span>
@@ -726,14 +738,18 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p><strong>Left Merge (<code class="docutils literal notranslate"><span class="pre">'left'</span></code>):</strong></p>
-<ul class="simple">
-<li><p>The left merge returns all rows from the left dataframe and any matching rows from the right dataframe.</p></li>
-<li><p>If a key exists in the left dataframe but not in the right dataframe, the missing values in the right columns will be filled with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (or specified fill values) in the resulting dataframe.</p></li>
-</ul>
-</li>
-</ol>
+<p><a class="reference internal" href="#venn-diagram-outer-example1"><span class="std std-numref">Fig. 5.19</span></a> illustrates the IDs present in two datasets, df1 and df2. The overlap shows IDs common to both datasets (2, 3), while the non-overlapping sections display unique IDs for each dataset (1 for df1 and 4 for df2). The merge using using <code class="docutils literal notranslate"><span class="pre">outer</span></code> is demonstrated.</p>
+<figure class="align-center" id="venn-diagram-outer-example1">
+<a class="reference internal image-reference" href="../_images/venn_diagram_outer_example1.jpg"><img alt="../_images/venn_diagram_outer_example1.jpg" src="../_images/venn_diagram_outer_example1.jpg" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.19 </span><span class="caption-text">Visualizing the outer merge for the above example.</span><a class="headerlink" href="#venn-diagram-outer-example1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="left-merge">
+<h2><span class="section-number">5.9.3. </span>Left Merge<a class="headerlink" href="#left-merge" title="Link to this heading">#</a></h2>
+<p>A left merge focuses on retaining all rows from the left dataframe and matching them with rows from the right dataframe where possible. If a key exists in the left dataframe but not in the right, the resulting dataframe will still include the left dataframe’s rows, with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> filling in for missing values from the right dataframe. This is particularly useful when you have a primary dataset and want to enrich it with additional information from another dataset, without losing any of the original data.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the original DataFrames</span>
@@ -887,14 +903,18 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p><strong>Right Merge (<code class="docutils literal notranslate"><span class="pre">'right'</span></code>):</strong></p>
-<ul class="simple">
-<li><p>The right merge is similar to the left merge but keeps all rows from the right dataframe and includes matching rows from the left dataframe.</p></li>
-<li><p>If a key exists in the right dataframe but not in the left dataframe, the missing values in the left columns will be filled with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (or specified fill values) in the resulting dataframe.</p></li>
-</ul>
-</li>
-</ol>
+<p><a class="reference internal" href="#venn-diagram-left-example1"><span class="std std-numref">Fig. 5.20</span></a> illustrates the IDs present in two datasets, df1 and df2. The overlap shows IDs common to both datasets (2, 3), while the non-overlapping sections display unique IDs for each dataset (1 for df1 and 4 for df2). The merge using using <code class="docutils literal notranslate"><span class="pre">left</span></code> is demonstrated.</p>
+<figure class="align-center" id="venn-diagram-left-example1">
+<a class="reference internal image-reference" href="../_images/venn_diagram_left_example1.jpg"><img alt="../_images/venn_diagram_left_example1.jpg" src="../_images/venn_diagram_left_example1.jpg" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.20 </span><span class="caption-text">Visualizing the left merge for the above example.</span><a class="headerlink" href="#venn-diagram-left-example1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="right-merge">
+<h2><span class="section-number">5.9.4. </span>Right Merge<a class="headerlink" href="#right-merge" title="Link to this heading">#</a></h2>
+<p>The right merge is similar to the left merge but works in the opposite direction. It keeps all rows from the right dataframe and includes matching rows from the left dataframe. If a key exists in the right dataframe but not in the left, the resulting dataframe will include the right dataframe’s rows, with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> filling in for missing values from the left dataframe. This is handy when the right dataframe is your primary dataset and you want to add information from the left dataframe.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the original DataFrames</span>
@@ -1048,15 +1068,17 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<ol class="arabic simple" start="5">
-<li><p><strong>Cross Join (<code class="docutils literal notranslate"><span class="pre">'cross'</span></code>):</strong></p>
-<ul class="simple">
-<li><p>The cross join (also known as a Cartesian product) combines every row from the first dataframe with every row from the second dataframe.</p></li>
-<li><p>It results in a dataframe with a size equal to the product of the number of rows in both input dataframes.</p></li>
-<li><p>Since it generates a large number of rows, it should be used with caution and only when explicitly needed</p></li>
-</ul>
-</li>
-</ol>
+<p><a class="reference internal" href="#venn-diagram-right-example1"><span class="std std-numref">Fig. 5.21</span></a> illustrates the IDs present in two datasets, df1 and df2. The overlap shows IDs common to both datasets (2, 3), while the non-overlapping sections display unique IDs for each dataset (1 for df1 and 4 for df2). The merge using using <code class="docutils literal notranslate"><span class="pre">right</span></code> is demonstrated.</p>
+<figure class="align-center" id="venn-diagram-right-example1">
+<a class="reference internal image-reference" href="../_images/venn_diagram_right_example1.jpg"><img alt="../_images/venn_diagram_right_example1.jpg" src="../_images/venn_diagram_right_example1.jpg" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.21 </span><span class="caption-text">Visualizing the right merge for the above example.</span><a class="headerlink" href="#venn-diagram-right-example1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="cross-join">
+<h2><span class="section-number">5.9.5. </span>Cross Join<a class="headerlink" href="#cross-join" title="Link to this heading">#</a></h2>
+<p>A cross join, also known as a Cartesian product, combines every row from the first dataframe with every row from the second dataframe. This results in a dataframe where the number of rows is the product of the number of rows in both input dataframes. While this can generate a large number of rows, it’s useful in scenarios where you need to pair each item from one dataset with every item from another, such as creating all possible combinations of products and stores for a sales analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the original DataFrames</span>
@@ -1256,8 +1278,8 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>Here’s a quick summary of their behavior:</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<div class="pst-scrollable-table-container"><table class="table" id="tablec0509-01">
+<caption><span class="caption-number">Table 5.5 </span><span class="caption-text">Summary of Merge Types</span><a class="headerlink" href="#tablec0509-01" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Merge Type</p></th>
 <th class="head"><p>Description</p></th>
@@ -1282,13 +1304,102 @@ document.write(`
 </tbody>
 </table>
 </div>
+<div class="admonition-set-theory-notation-for-joins admonition">
+<p class="admonition-title">Set Theory Notation for Joins</p>
+<ol class="arabic simple">
+<li><p><strong>Inner Join:</strong></p>
+<ul class="simple">
+<li><p>Set Theory: A ∩ B</p></li>
+<li><p>Description: Includes rows that have matching values in both A and B.</p></li>
+</ul>
+</li>
+<li><p><strong>Outer Join (Full Outer Join):</strong></p>
+<ul class="simple">
+<li><p>Set Theory: A ∪ B</p></li>
+<li><p>Description: Includes all rows from both A and B, with missing values for non-matching rows.</p></li>
+</ul>
+</li>
+<li><p><strong>Left Join:</strong></p>
+<ul class="simple">
+<li><p>Set Theory: A ∪ (A ∩ B)</p></li>
+<li><p>Description: Includes all rows from A and only the matching rows from B.</p></li>
+</ul>
+</li>
+<li><p><strong>Right Join:</strong></p>
+<ul class="simple">
+<li><p>Set Theory: B ∪ (A ∩ B)</p></li>
+<li><p>Description: Includes all rows from B and only the matching rows from A.</p></li>
+</ul>
+</li>
+<li><p><strong>Cross Join (Cartesian Join):</strong></p>
+<ul class="simple">
+<li><p>Set Theory: A × B</p></li>
+<li><p>Description: Creates all possible combinations of rows from A and B.</p></li>
+</ul>
+</li>
+<li><p><strong>Semi-Join (Left or Right):</strong></p>
+<ul class="simple">
+<li><p>Set Theory: A ∩ B</p></li>
+<li><p>Description: Includes rows from one DataFrame (A or B) that have matching values in the other DataFrame.</p></li>
+</ul>
+</li>
+<li><p><strong>Anti-Join:</strong></p>
+<ul class="simple">
+<li><p>Set Theory: B - (A ∩ B)</p></li>
+<li><p>Description: Includes rows from B that do not have matching values in A.</p></li>
+</ul>
+</li>
+</ol>
+<p><a class="reference internal" href="#tablec0509-02"><span class="std std-numref">Table 5.6</span></a> summarizes the various types of joins using set theory notation and provides brief descriptions of each join operation.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tablec0509-02">
+<caption><span class="caption-number">Table 5.6 </span><span class="caption-text">Summary of the various types of joins</span><a class="headerlink" href="#tablec0509-02" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Join Type</p></th>
+<th class="head"><p>Notation</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Inner Join</p></td>
+<td><p>A ∩ B</p></td>
+<td><p>Rows with matching values in both A and B</p></td>
+</tr>
+<tr class="row-odd"><td><p>Outer Join</p></td>
+<td><p>A ∪ B</p></td>
+<td><p>All rows from both A and B, with missing values</p></td>
+</tr>
+<tr class="row-even"><td><p>Left Join</p></td>
+<td><p>A ∪ (A ∩ B)</p></td>
+<td><p>All rows from A, only matching rows from B</p></td>
+</tr>
+<tr class="row-odd"><td><p>Right Join</p></td>
+<td><p>B ∪ (A ∩ B)</p></td>
+<td><p>All rows from B, only matching rows from A</p></td>
+</tr>
+<tr class="row-even"><td><p>Cross Join</p></td>
+<td><p>A × B</p></td>
+<td><p>All possible combinations of rows from A and B</p></td>
+</tr>
+<tr class="row-odd"><td><p>Semi-Join</p></td>
+<td><p>A ∩ B</p></td>
+<td><p>Rows from one DataFrame (A or B) with matching values</p></td>
+</tr>
+<tr class="row-even"><td><p>Anti-Join</p></td>
+<td><p>B - (A ∩ B)</p></td>
+<td><p>Rows from B without matching values in A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 <section id="multi-key-merging">
-<h3><span class="section-number">5.9.1.1. </span>Multi-Key Merging<a class="headerlink" href="#multi-key-merging" title="Link to this heading">#</a></h3>
-<p>You can merge DataFrames on multiple columns by passing a list of column names to the <code class="docutils literal notranslate"><span class="pre">on</span></code> parameter.</p>
+<h2><span class="section-number">5.9.6. </span>Multi-Key Merging<a class="headerlink" href="#multi-key-merging" title="Link to this heading">#</a></h2>
+<p>You can merge DataFrames on multiple columns by passing a list of column names to the <code class="docutils literal notranslate"><span class="pre">on</span></code> parameter. This allows you to combine data based on multiple keys, ensuring that only rows with matching values in all specified columns are merged.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p><font color='Blue'><b>Example</b></font>:</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1463,15 +1574,15 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>The resulting DataFrame contains only the rows where ‘key1’ and ‘key2’ values were common between <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>, and it shows the corresponding values from both DataFrames in separate columns (‘value_x’ and ‘value_y’).</p>
+<p>The resulting DataFrame contains only the rows where both ‘key1’ and ‘key2’ values are common between <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>. It shows the corresponding values from both DataFrames in separate columns (‘value_x’ and ‘value_y’).</p>
 </section>
 <section id="specifying-left-and-right-prefixes">
-<h3><span class="section-number">5.9.1.2. </span>Specifying Left and Right Prefixes<a class="headerlink" href="#specifying-left-and-right-prefixes" title="Link to this heading">#</a></h3>
-<p>When merging DataFrames with overlapping column names, you can specify prefixes to differentiate them.</p>
+<h2><span class="section-number">5.9.7. </span>Specifying Left and Right Prefixes<a class="headerlink" href="#specifying-left-and-right-prefixes" title="Link to this heading">#</a></h2>
+<p>When merging DataFrames with overlapping column names, you can specify suffixes to differentiate them. This is particularly useful to avoid confusion and ensure clarity in the resulting DataFrame.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;_left&#39;</span><span class="p">,</span> <span class="s1">&#39;_right&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><font color='Blue'><b>Example</b></font>:</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">],</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;_left&#39;</span><span class="p">,</span> <span class="s1">&#39;_right&#39;</span><span class="p">))</span>
@@ -1523,14 +1634,15 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+<p>In this example, the resulting DataFrame will have columns with suffixes <code class="docutils literal notranslate"><span class="pre">_left</span></code> and <code class="docutils literal notranslate"><span class="pre">_right</span></code> to distinguish between the overlapping column names from <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>.</p>
 </section>
 <section id="merging-on-index">
-<h3><span class="section-number">5.9.1.3. </span>Merging on Index<a class="headerlink" href="#merging-on-index" title="Link to this heading">#</a></h3>
-<p>You can merge DataFrames based on their indices using the <code class="docutils literal notranslate"><span class="pre">left_index</span></code> and <code class="docutils literal notranslate"><span class="pre">right_index</span></code> parameters.</p>
+<h2><span class="section-number">5.9.8. </span>Merging on Index<a class="headerlink" href="#merging-on-index" title="Link to this heading">#</a></h2>
+<p>You can merge DataFrames based on their indices using the <code class="docutils literal notranslate"><span class="pre">left_index</span></code> and <code class="docutils literal notranslate"><span class="pre">right_index</span></code> parameters. This is useful when the indices of the DataFrames contain the keys you want to merge on.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><font color='Blue'><b>Example</b></font>:</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1602,11 +1714,12 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+<p>In this example, the DataFrames <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code> are merged based on their indices, which are set to ‘key1’. The resulting DataFrame contains rows where the indices match in both DataFrames, combining the corresponding values from each DataFrame.</p>
 </section>
-<section id="merging-and-filtering-dataframes-in-pandas-using-merge-and-query-optional-content">
-<h3><span class="section-number">5.9.1.4. </span>Merging and Filtering DataFrames in Pandas using merge() and query() (Optional Content)<a class="headerlink" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query-optional-content" title="Link to this heading">#</a></h3>
-<p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function is used to combine two or more DataFrames based on a common column or index. The <code class="docutils literal notranslate"><span class="pre">query()</span></code> function is used to filter rows from a DataFrame based on a given condition. Although you can use both functions separately, there might be scenarios where you want to merge DataFrames and then filter the result using a query <span id="id3">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
-<p><font color='Blue'><b>Example</b></font>: Let’s assume you have two DataFrames, <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>, and you want to merge them based on a common column, and then filter the merged result using a query condition.</p>
+<section id="merging-and-filtering-dataframes-in-pandas-using-merge-and-query">
+<h2><span class="section-number">5.9.9. </span>Merging and Filtering DataFrames in Pandas using merge() and query()<a class="headerlink" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query" title="Link to this heading">#</a></h2>
+<p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function is used to combine two or more DataFrames based on a common column or index. The <code class="docutils literal notranslate"><span class="pre">query()</span></code> function is used to filter rows from a DataFrame based on a given condition. Although you can use both functions separately, there might be scenarios where you want to merge DataFrames and then filter the result using a query <span id="id3">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
+<p><font color='Blue'><b>Example:</b></font> Let’s assume we have two DataFrames, <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>, and we want to merge them based on a common column, and then filter the merged result using a query condition.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1851,14 +1964,15 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+<p>In this example, we first create two DataFrames, <code class="docutils literal notranslate"><span class="pre">df1</span></code> and <code class="docutils literal notranslate"><span class="pre">df2</span></code>, with a common column ‘ID’. We then merge these DataFrames on the ‘ID’ column using an inner join, which retains only the rows with matching ‘ID’ values in both DataFrames. After merging, we use the <code class="docutils literal notranslate"><span class="pre">query()</span></code> function to filter the merged DataFrame based on the condition that ‘Value1’ is greater than 15 and ‘Value2’ is less than 400. The resulting DataFrame contains only the rows that meet these criteria.</p>
 </section>
-<section id="semi-join-and-anti-join-optional-content">
-<h3><span class="section-number">5.9.1.5. </span>Semi-join and Anti-join (Optional Content)<a class="headerlink" href="#semi-join-and-anti-join-optional-content" title="Link to this heading">#</a></h3>
-<p>Semi-join and anti-join are concepts in relational database management systems that involve combining two tables based on a common column but with specific filtering conditions. These concepts are useful for filtering and retrieving rows that meet certain criteria while excluding others <span id="id4">[<a class="reference internal" href="../References.html#id172" title="J. Rioux. Data Analysis with Python and PySpark. Manning, 2022. ISBN 9781617297205. URL: https://books.google.ca/books?id=4ytfEAAAQBAJ.">Rioux, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
-<figure class="align-center" id="id10">
+<section id="semi-join-and-anti-join">
+<h2><span class="section-number">5.9.10. </span>Semi-join and Anti-join<a class="headerlink" href="#semi-join-and-anti-join" title="Link to this heading">#</a></h2>
+<p>Semi-join and anti-join are concepts in relational database management systems that involve combining two tables based on a common column but with specific filtering conditions. These concepts are useful for filtering and retrieving rows that meet certain criteria while excluding others.<span id="id4">[<a class="reference internal" href="../References.html#id172" title="J. Rioux. Data Analysis with Python and PySpark. Manning, 2022. ISBN 9781617297205. URL: https://books.google.ca/books?id=4ytfEAAAQBAJ.">Rioux, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../_images/semi_join.jpg"><img alt="../_images/semi_join.jpg" src="../_images/semi_join.jpg" style="width: 450px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.18 </span><span class="caption-text">Semi join and Anti-join</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5.22 </span><span class="caption-text">Semi join and Anti-join</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <ol class="arabic simple">
@@ -1874,6 +1988,7 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 <li><p>Anti-joins are useful for finding records that are not present in another table or for excluding certain records that meet a certain criterion.</p></li>
 </ul>
 </div>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -2106,7 +2221,7 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 </div>
 <p>In SQL, you can use the <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">JOIN</span></code> (for semi-join) and <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">IN</span></code> or <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">EXISTS</span></code> (for anti-join) constructs to achieve these types of joins.</p>
 <p>In Pandas, you can simulate these types of joins using various methods. For example, to perform a semi-join, you could use the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function with the desired <code class="docutils literal notranslate"><span class="pre">how</span></code> parameter and then select the columns you want. For an anti-join, you could use the <code class="docutils literal notranslate"><span class="pre">merge()</span></code> function with the <code class="docutils literal notranslate"><span class="pre">indicator</span></code> parameter and then filter out the matching rows <span id="id7">[<a class="reference internal" href="../References.html#id172" title="J. Rioux. Data Analysis with Python and PySpark. Manning, 2022. ISBN 9781617297205. URL: https://books.google.ca/books?id=4ytfEAAAQBAJ.">Rioux, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
-<p>Here’s a simplified example in Pandas:</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Semi Join: Customers who have made orders</span>
@@ -2207,97 +2322,21 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 </table>
 </div></div></div>
 </div>
-<p><strong>Set Theory Notation for Joins:</strong></p>
-<ol class="arabic simple">
-<li><p><strong>Inner Join:</strong></p>
+<div class="admonition-comparison-with-other-merge-types admonition">
+<p class="admonition-title">Comparison with Other Merge Types</p>
 <ul class="simple">
-<li><p>Set Theory: A ∩ B</p></li>
-<li><p>Description: Includes rows that have matching values in both A and B.</p></li>
+<li><p><strong>Inner Join</strong>: Returns only the rows with matching keys in both DataFrames. Similar to a semi-join but includes columns from both DataFrames.</p></li>
+<li><p><strong>Left Join</strong>: Returns all rows from the left DataFrame and matching rows from the right DataFrame. Non-matching rows from the right DataFrame are filled with <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+<li><p><strong>Right Join</strong>: Returns all rows from the right DataFrame and matching rows from the left DataFrame. Non-matching rows from the left DataFrame are filled with <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+<li><p><strong>Outer Join</strong>: Returns all rows from both DataFrames, filling in <code class="docutils literal notranslate"><span class="pre">NaN</span></code> where there are no matches. This is more inclusive than a semi-join or anti-join.</p></li>
 </ul>
-</li>
-<li><p><strong>Outer Join (Full Outer Join):</strong></p>
-<ul class="simple">
-<li><p>Set Theory: A ∪ B</p></li>
-<li><p>Description: Includes all rows from both A and B, with missing values for non-matching rows.</p></li>
-</ul>
-</li>
-<li><p><strong>Left Join:</strong></p>
-<ul class="simple">
-<li><p>Set Theory: A ∪ (A ∩ B)</p></li>
-<li><p>Description: Includes all rows from A and only the matching rows from B.</p></li>
-</ul>
-</li>
-<li><p><strong>Right Join:</strong></p>
-<ul class="simple">
-<li><p>Set Theory: B ∪ (A ∩ B)</p></li>
-<li><p>Description: Includes all rows from B and only the matching rows from A.</p></li>
-</ul>
-</li>
-<li><p><strong>Cross Join (Cartesian Join):</strong></p>
-<ul class="simple">
-<li><p>Set Theory: A × B</p></li>
-<li><p>Description: Creates all possible combinations of rows from A and B.</p></li>
-</ul>
-</li>
-<li><p><strong>Semi-Join (Left or Right):</strong></p>
-<ul class="simple">
-<li><p>Set Theory: A ∩ B</p></li>
-<li><p>Description: Includes rows from one DataFrame (A or B) that have matching values in the other DataFrame.</p></li>
-</ul>
-</li>
-<li><p><strong>Anti-Join:</strong></p>
-<ul class="simple">
-<li><p>Set Theory: B - (A ∩ B)</p></li>
-<li><p>Description: Includes rows from B that do not have matching values in A.</p></li>
-</ul>
-</li>
-</ol>
-<p><strong>Summary:</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Join Type</p></th>
-<th class="head"><p>Notation</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Inner Join</p></td>
-<td><p>A ∩ B</p></td>
-<td><p>Rows with matching values in both A and B</p></td>
-</tr>
-<tr class="row-odd"><td><p>Outer Join</p></td>
-<td><p>A ∪ B</p></td>
-<td><p>All rows from both A and B, with missing values</p></td>
-</tr>
-<tr class="row-even"><td><p>Left Join</p></td>
-<td><p>A ∪ (A ∩ B)</p></td>
-<td><p>All rows from A, only matching rows from B</p></td>
-</tr>
-<tr class="row-odd"><td><p>Right Join</p></td>
-<td><p>B ∪ (A ∩ B)</p></td>
-<td><p>All rows from B, only matching rows from A</p></td>
-</tr>
-<tr class="row-even"><td><p>Cross Join</p></td>
-<td><p>A × B</p></td>
-<td><p>All possible combinations of rows from A and B</p></td>
-</tr>
-<tr class="row-odd"><td><p>Semi-Join</p></td>
-<td><p>A ∩ B</p></td>
-<td><p>Rows from one DataFrame (A or B) with matching values</p></td>
-</tr>
-<tr class="row-even"><td><p>Anti-Join</p></td>
-<td><p>B - (A ∩ B)</p></td>
-<td><p>Rows from B without matching values in A</p></td>
-</tr>
-</tbody>
-</table>
+<p>Semi-joins and anti-joins are more specialized operations that focus on filtering data based on the presence or absence of matching keys in another DataFrame, whereas the standard merge operations (inner, left, right, outer) are used to combine data from multiple DataFrames in various ways.</p>
 </div>
-<p>This table summarizes the various types of joins using set theory notation and provides brief descriptions of each join operation.</p>
 </section>
-<section id="merge-on-nearest-key-optional-content">
-<h3><span class="section-number">5.9.1.6. </span>Merge on Nearest Key (Optional Content)<a class="headerlink" href="#merge-on-nearest-key-optional-content" title="Link to this heading">#</a></h3>
+<section id="merge-on-nearest-key">
+<h2><span class="section-number">5.9.11. </span>Merge on Nearest Key<a class="headerlink" href="#merge-on-nearest-key" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">pd.merge_asof()</span></code> function in Pandas is used to perform a merge based on the nearest key, particularly for ordered data. It’s often used when you want to match records in two datasets based on a key column, but the values in the key column <strong>may not match exactly</strong>. Instead of requiring exact matches, this function allows you to match the nearest key values within a specified tolerance <span id="id8">[<a class="reference internal" href="../References.html#id139" title="Wes McKinney and others. Data structures for statistical computing in python. In Proceedings of the 9th Python in Science Conference, volume 445, 51–56. Austin, TX, 2010.">McKinney and others, 2010</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
-<p>Here’s the syntax of the <code class="docutils literal notranslate"><span class="pre">pd.merge_asof()</span></code> function:</p>
+<p>The syntax of the <code class="docutils literal notranslate"><span class="pre">pd.merge_asof()</span></code> function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">merge_asof</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">left_on</span><span class="p">,</span> <span class="n">right_on</span><span class="p">,</span> <span class="n">left_index</span><span class="p">,</span> <span class="n">right_index</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2311,7 +2350,7 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 <li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code>: Specifies whether to search for the nearest key in ‘backward’ or ‘forward’ direction.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code>: The maximum allowable difference between key values for a successful match.</p></li>
 </ul>
-<p>Here’s an explanation of the parameters using an example:</p>
+<p><font color='Blue'><b>Example:</b></font> An explanation of the parameters using an example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -2539,14 +2578,14 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 </div>
 </section>
 <section id="categorical-merging">
-<h3><span class="section-number">5.9.1.7. </span>Categorical Merging<a class="headerlink" href="#categorical-merging" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">5.9.12. </span>Categorical Merging<a class="headerlink" href="#categorical-merging" title="Link to this heading">#</a></h2>
 <p>If your data has categorical variables, you can use categorical merging for better performance.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;category_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;category_column&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
 <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;category_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;category_column&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
 <span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;category_column&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><font color='Blue'><b>Example</b></font>:</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -2587,8 +2626,8 @@ An anti-join, also known as an anti-semi-join or difference join, is the opposit
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Regular Merge Time: 0.486
-Categorical Merge Time: 0.309
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Regular Merge Time: 0.671
+Categorical Merge Time: 0.551
 </pre></div>
 </div>
 </div>
@@ -2596,8 +2635,7 @@ Categorical Merge Time: 0.309
 <p>In this example, we generate two DataFrames, df1 and df2, with a categorical column ‘category_column’. We then compare the performance of regular merging versus categorical merging.</p>
 <p>Categorical merging can offer better performance, especially when dealing with large datasets, because categorical data types use integer-based codes internally, reducing memory usage and speeding up comparison operations. As a result, merging operations involving categorical columns can be more efficient.</p>
 <p>Remember that the actual performance gain will depend on various factors including the size of your dataset and the specific operations being performed. Always consider the benefits of categorical data types based on your use case.</p>
-<p>These advanced merging techniques provide more flexibility and control over how you combine datasets using Pandas. Be sure to refer to the Pandas documentation for detailed information on these methods and their parameters: <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html</a></p>
-</section>
+<p>These merging techniques provide more flexibility and control over how you combine datasets using Pandas. Be sure to refer to the Pandas documentation for detailed information on these methods and their parameters: <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html</a></p>
 </section>
 </section>
 
@@ -2665,16 +2703,18 @@ Categorical Merge Time: 0.309
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-merge">5.9.1. Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-key-merging">5.9.1.1. Multi-Key Merging</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-left-and-right-prefixes">5.9.1.2. Specifying Left and Right Prefixes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-on-index">5.9.1.3. Merging on Index</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query-optional-content">5.9.1.4. Merging and Filtering DataFrames in Pandas using merge() and query() (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semi-join-and-anti-join-optional-content">5.9.1.5. Semi-join and Anti-join (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-on-nearest-key-optional-content">5.9.1.6. Merge on Nearest Key (Optional Content)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-merging">5.9.1.7. Categorical Merging</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inner-merge">5.9.1. Inner Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outer-merge">5.9.2. Outer Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#left-merge">5.9.3. Left Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#right-merge">5.9.4. Right Merge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-join">5.9.5. Cross Join</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-key-merging">5.9.6. Multi-Key Merging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-left-and-right-prefixes">5.9.7. Specifying Left and Right Prefixes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-on-index">5.9.8. Merging on Index</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-filtering-dataframes-in-pandas-using-merge-and-query">5.9.9. Merging and Filtering DataFrames in Pandas using merge() and query()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semi-join-and-anti-join">5.9.10. Semi-join and Anti-join</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-on-nearest-key">5.9.11. Merge on Nearest Key</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-merging">5.9.12. Categorical Merging</a></li>
 </ul>
   </nav></div>
 
