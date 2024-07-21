@@ -32,9 +32,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/ENDG440_C05S06';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5.7. Working with Time Series Data" href="ENDG440_C05S07.html" />
+    <link rel="next" title="5.7. Techniques for Filling Missing Data in Time Series" href="ENDG440_C05S07.html" />
     <link rel="prev" title="5.5. Handling Missing Data in Pandas" href="ENDG440_C05S05.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -222,7 +222,7 @@
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S04.html">5.4. Modifying a DataFrame in Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S05.html">5.5. Handling Missing Data in Pandas</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">5.6. Filling Missing Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S07.html">5.7. Working with Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S07.html">5.7. Techniques for Filling Missing Data in Time Series</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S08.html">5.8. Strategies for Handling Missing Categorical Data in Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S09.html">5.9. Combining Datasets using Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ENDG440_C05S10.html">5.10. Pandas <code class="docutils literal notranslate"><span class="pre">join</span></code> and <code class="docutils literal notranslate"><span class="pre">concat</span></code></a></li>
@@ -341,8 +341,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-fill-forward-fill-and-backward-fill">5.6.1. Constant Fill, Forward Fill, and Backward Fill</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-column-means-or-medians">5.6.2. Filling with Column Means or Medians</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-interpolation">5.6.3. Filling with Interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-column-means-or-medians">5.6.2. Filling with Column Means or Medians</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-mean-or-median">5.6.2.1. Why Use Mean or Median?</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -358,28 +360,25 @@ document.write(`
 <h1><span class="section-number">5.6. </span>Filling Missing Data<a class="headerlink" href="#filling-missing-data" title="Link to this heading">#</a></h1>
 <section id="constant-fill-forward-fill-and-backward-fill">
 <h2><span class="section-number">5.6.1. </span>Constant Fill, Forward Fill, and Backward Fill<a class="headerlink" href="#constant-fill-forward-fill-and-backward-fill" title="Link to this heading">#</a></h2>
-<p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> function is a versatile tool for replacing missing or NaN (Not a Number) values within a DataFrame or Series. This method is particularly useful during data preprocessing or cleaning tasks, enabling effective handling of missing data. You can tailor the way missing values are filled by using various parameters. For instance, you have the option to provide a single value, a list of values, or a dictionary to replace NaNs. Furthermore, you can employ methods like forward fill or backward fill, which carry forward the last valid value or propagate the next valid value to fill the NaNs, respectively. Additionally, you can limit the consecutive NaN values to be filled and downcast the result to a specific data type if needed. Always consider the data distribution and the analysis context to ensure the proper handling of missing data without introducing biases or inaccuracies <span id="id1">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
+<p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> function is a versatile tool for replacing missing or NaN (Not a Number) values within a DataFrame or Series. This method is particularly useful during data preprocessing or cleaning tasks, enabling effective handling of missing data. You can tailor the way missing values are filled by using various parameters. For instance, you have the option to provide a single value, a list of values, or a dictionary to replace NaNs. Additionally, you can limit the consecutive NaN values to be filled and downcast the result to a specific data type if needed. Always consider the data distribution and the analysis context to ensure the proper handling of missing data without introducing biases or inaccuracies <span id="id1">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
 <p><strong>Syntax:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> method in Pandas allows you to replace missing or NaN values within a DataFrame or Series using various options:</p>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">value</span></code> parameter can be a single value, a list of values with the same length as the data, or a dictionary with column names as keys and values as fill values.</p></li>
-<li><p>You can select a specific <code class="docutils literal notranslate"><span class="pre">method</span></code> to fill NaNs. If no method is specified, the <code class="docutils literal notranslate"><span class="pre">value</span></code> will be used to fill the missing values.</p></li>
-<li><p>Available methods are <code class="docutils literal notranslate"><span class="pre">'fill'</span></code> (or <code class="docutils literal notranslate"><span class="pre">'pad'</span></code>) for forward filling (propagating the last valid value forward) and <code class="docutils literal notranslate"><span class="pre">'bfill'</span></code> (or <code class="docutils literal notranslate"><span class="pre">'backfill'</span></code>) for backward filling (propagating the next valid value backward).</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">axis</span></code> parameter specifies whether to fill missing values along rows (<code class="docutils literal notranslate"><span class="pre">axis=0</span></code>, default) or columns (<code class="docutils literal notranslate"><span class="pre">axis=1</span></code>).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">axis</span></code> parameter specifies whether to fill missing values along rows (axis=0, default) or columns (axis=1).</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">inplace=True</span></code>, the original DataFrame or Series is directly modified; with <code class="docutils literal notranslate"><span class="pre">inplace=False</span></code> (default), a new object with filled values is returned.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter controls the number of consecutive NaN values filled when using forward or backward fill methods.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">downcast</span></code> parameter allows you to downcast the result to a specified data type, such as <code class="docutils literal notranslate"><span class="pre">'integer'</span></code>, <code class="docutils literal notranslate"><span class="pre">'signed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsigned'</span></code>, <code class="docutils literal notranslate"><span class="pre">'float'</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> (default) if possible.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter controls the number of consecutive NaN values filled.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">downcast</span></code> parameter allows you to downcast the result to a specified data type, such as ‘integer’, ‘signed’, ‘unsigned’, ‘float’, or None (default) if possible.</p></li>
 </ul>
-<p>You can see full description of the function <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">here</a>.</p>
-<p><font color='Blue'><b>Example</b></font>:</p>
+<p>You can see the full description of the function <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">here</a>.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
 
 <span class="c1"># Creating an example DataFrame with missing values (NaN)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
@@ -394,16 +393,6 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Filling NaN values with a constant (0):&#39;</span><span class="p">)</span>
 <span class="n">df_filled</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df_filled</span><span class="p">)</span>
-
-<span class="c1"># Performing forward fill to propagate previous values</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Forward fill:&#39;</span><span class="p">)</span>
-<span class="n">df_ffill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_ffill</span><span class="p">)</span>
-
-<span class="c1"># Performing backward fill to propagate next values</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Backward fill:&#39;</span><span class="p">)</span>
-<span class="n">df_bfill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bfill&#39;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_bfill</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -514,317 +503,25 @@ document.write(`
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Forward fill:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Backward fill:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>4.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-      <td>50.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
 </div></div></div>
 </div>
-<figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../_images/pd_fill_01.png"><img alt="../_images/pd_fill_01.png" src="../_images/pd_fill_01.png" style="width: 400px;" /></a>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/pd_fill_01.png"><img alt="../_images/pd_fill_01.png" src="../_images/pd_fill_01.png" style="width: 700px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.10 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5.10 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In this example, the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> method is used to create different DataFrames with missing values replaced. The first DataFrame (<code class="docutils literal notranslate"><span class="pre">df_filled</span></code>) replaces missing values with a single value. The second DataFrame (<code class="docutils literal notranslate"><span class="pre">df_ffill</span></code>) applies forward fill along columns. The third DataFrame (<code class="docutils literal notranslate"><span class="pre">df_bfill</span></code>) employs backward fill along rows.</p>
-<div class="important admonition">
-<p class="admonition-title">Remark</p>
-<p>In a recent <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">update</a>, the method : {‘backfill’, ‘bfill’, ‘ffill’, None} has been deprecated starting from version 2.1.0. It is recommended to use ‘ffill’ or ‘bfill’ as alternatives. Users with Pandas versions equal to or exceeding 2.1.0 will receive a future warning, although the deprecated method will continue to function for a limited number of versions beyond, such as version 2.3.</p>
-<p>Please also see <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ffill.html">pandas.DataFrame.ffill</a> and <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.bfill.html">pandas.DataFrame.bfill</a>.</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Creating an example DataFrame with missing values (NaN)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-        <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">50</span><span class="p">]}</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Displaying the original data for reference</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># Performing forward fill to propagate previous values</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Forward fill:&#39;</span><span class="p">)</span>
-<span class="n">df_ffill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_ffill</span><span class="p">)</span>
-
-<span class="c1"># Performing backward fill to propagate next values</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Backward fill:&#39;</span><span class="p">)</span>
-<span class="n">df_bfill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_bfill</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>NaN</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Forward fill:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Backward fill:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>4.0</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-      <td>50.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
 </section>
 <section id="filling-with-column-means-or-medians">
 <h2><span class="section-number">5.6.2. </span>Filling with Column Means or Medians<a class="headerlink" href="#filling-with-column-means-or-medians" title="Link to this heading">#</a></h2>
-<p>You can fill missing values with the mean or median of their respective columns. This is particularly useful when dealing with numeric data.</p>
+<p>Filling missing values with the mean or median of their respective columns is a common technique in data preprocessing, especially when dealing with numeric data. This method helps to maintain the overall distribution of the data while providing a reasonable estimate for the missing values.</p>
+<section id="why-use-mean-or-median">
+<h3><span class="section-number">5.6.2.1. </span>Why Use Mean or Median?<a class="headerlink" href="#why-use-mean-or-median" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Mean</strong>: The mean (average) is useful when the data is symmetrically distributed without outliers. It provides a central value that represents the dataset.</p></li>
+<li><p><strong>Median</strong>: The median is more robust to outliers and skewed data. It represents the middle value when the data is sorted, making it a better choice for datasets with significant outliers.</p></li>
+</ul>
+<p><font color='Blue'><b>Example:</b></font> An example demonstrating how to fill missing values with the mean of their respective columns:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -957,155 +654,10 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../_images/pd_fill_02.png"><img alt="../_images/pd_fill_02.png" src="../_images/pd_fill_02.png" style="width: 440px;" /></a>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/pd_fill_03.png"><img alt="../_images/pd_fill_03.png" src="../_images/pd_fill_03.png" style="width: 700px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.11 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="filling-with-interpolation">
-<h2><span class="section-number">5.6.3. </span>Filling with Interpolation<a class="headerlink" href="#filling-with-interpolation" title="Link to this heading">#</a></h2>
-<p>The Pandas library in Python offers the <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function as a versatile tool for filling missing or NaN (Not-a-Number) values within a DataFrame or Series. This function primarily employs interpolation techniques to estimate and insert values where data gaps exist <span id="id2">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
-<p>In Pandas, interpolation works by treating the DataFrame’s index as the x-values and the column values as the y-values. This is why it’s crucial for the index to represent a logical sequence, such as time or another ordered variable, to ensure meaningful interpolation. Therefore, Pandas interpolation is <strong>not recommended</strong> when there is no logical relationship between the index and the column chosen to be interpolated.</p>
-<p>Key Parameters:</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">method</span></code>: This parameter allows you to specify the interpolation method to be used. Common methods include ‘linear,’ ‘polynomial,’ ‘spline,’ and ‘nearest,’ among others. The choice of method depends on the nature of your data and the desired interpolation behavior.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">axis</span></code>: You can specify whether the interpolation should be performed along rows (axis=0) or columns (axis=1) of the DataFrame.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: It defines the maximum number of consecutive NaN values that can be filled. This helps prevent overly aggressive data imputation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">limit_direction</span></code>: This parameter determines whether filling should occur in a forward (‘forward’) or backward (‘backward’) direction when the ‘limit’ parameter is activated.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">inplace</span></code>: If set to True, the original DataFrame is modified in place. Otherwise, a new DataFrame with the interpolated values is returned.</p></li>
-</ol>
-<ul class="simple">
-<li><p><strong>How It Works:</strong>
-The <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function uses the specified interpolation method to estimate the missing values based on the surrounding data points. For instance, with linear interpolation, missing values are estimated as points lying on a straight line between the known data points. Polynomial interpolation uses polynomial functions to approximate the missing values more flexibly. Spline interpolation constructs piecewise-defined polynomials to capture complex data patterns.</p></li>
-<li><p><strong>Use Cases:</strong>
-Pandas’ <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function is particularly useful in data preprocessing, time series analysis, and data imputation tasks. It aids in maintaining the integrity of the data while ensuring a more complete dataset for downstream analysis.</p></li>
-</ul>
-<p>You can see the function description <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html">here</a>.</p>
-<p><font color='Blue'><b>Example:</b></font></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Creating a DataFrame with missing values (NaN)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Displaying the original data for reference</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># Filling NaN values using linear interpolation</span>
-<span class="n">df_filled_linear</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
-
-<span class="c1"># Displaying the DataFrame with interpolated values</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with interpolated values:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">df_filled_linear</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame with interpolated values:
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../_images/pd_fill_03.png"><img alt="../_images/pd_fill_03.png" src="../_images/pd_fill_03.png" style="width: 440px;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 5.12 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5.11 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <!-- ## Filling Using Grouping:
@@ -1124,6 +676,7 @@ group_means = df.groupby('Group')['Value'].transform('mean')
 df['Value'] = df['Value'].fillna(group_means)
 display(df)
 ``` --></section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1170,7 +723,7 @@ display(df)
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5.7. </span>Working with Time Series Data</p>
+        <p class="prev-next-title"><span class="section-number">5.7. </span>Techniques for Filling Missing Data in Time Series</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1191,8 +744,10 @@ display(df)
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-fill-forward-fill-and-backward-fill">5.6.1. Constant Fill, Forward Fill, and Backward Fill</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-column-means-or-medians">5.6.2. Filling with Column Means or Medians</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-interpolation">5.6.3. Filling with Interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-column-means-or-medians">5.6.2. Filling with Column Means or Medians</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-mean-or-median">5.6.2.1. Why Use Mean or Median?</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
