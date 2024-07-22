@@ -354,9 +354,16 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-function-for-time-series-analysis">5.11.8.1. <code class="docutils literal notranslate"><span class="pre">resample</span></code> Function for Time Series Analysis</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-iteration-optional-content">5.11.9. Group Iteration (Optional Content)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-groups-optional-content">5.11.10. Filtering Groups (Optional Content)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-optional-content">5.11.11. Transformation (Optional Content)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-iteration">5.11.9. Group Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-groups">5.11.10. Filtering Groups</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation">5.11.11. Transformation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-gaps-using-groupby">5.11.12. Filling Gaps Using <code class="docutils literal notranslate"><span class="pre">groupby</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-and-backward-fill">5.11.12.1. Forward Fill and Backward Fill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-with-aggregated-values">5.11.12.2. Fill with Aggregated Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-missing-values">5.11.12.3. Interpolate Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-fill-methods">5.11.12.4. Custom Fill Methods</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -377,7 +384,7 @@ document.write(`
 <section id="basic-syntax">
 <h3><span class="section-number">5.11.1.1. </span>Basic Syntax<a class="headerlink" href="#basic-syntax" title="Link to this heading">#</a></h3>
 <p>The basic syntax for using the <code class="docutils literal notranslate"><span class="pre">groupby()</span></code> function is as follows <span id="id2">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;column_name&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Full syntax can be found <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html">here</a>.</p>
@@ -402,11 +409,6 @@ document.write(`
 
 <span class="c1"># Display the first few rows of the DataFrame</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
-
-<span class="c1"># Grouping by &#39;Month&#39;</span>
-<span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;grouped would be an object as follows:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -515,8 +517,19 @@ document.write(`
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grouped would be an object as follows:
-&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x000001FE8605F560&gt;
+</div></div></div>
+</div>
+<p>grouped would be an object as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grouping by &#39;Month&#39;</span>
+<span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x00000233D73ED8E0&gt;
 </pre></div>
 </div>
 </div>
@@ -950,22 +963,28 @@ ________________________________________
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 <span class="c1"># Display the resulting DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First top 5 rows of the data&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 
 <span class="c1"># Grouping by both &quot;Product&quot; and &quot;Region&quot; and aggregating Sales and Price</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Product&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;Sales&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;Price&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">})</span>
 
 <span class="c1"># Display the result</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">result&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
 <span class="c1"># This flattens the DataFrame.</span>
 <span class="n">result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># Display the result</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">result (with reset index)&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First top 5 rows of the data
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1028,7 +1047,10 @@ ________________________________________
     </tr>
   </tbody>
 </table>
-</div></div><div class="output text_html"><div>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>result
+</pre></div>
+</div>
+<div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -1082,7 +1104,10 @@ ________________________________________
     </tr>
   </tbody>
 </table>
-</div></div><div class="output text_html"><div>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>result (with reset index)
+</pre></div>
+</div>
+<div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -1386,8 +1411,8 @@ ________________________________________
 </ul>
 </section>
 </section>
-<section id="group-iteration-optional-content">
-<h2><span class="section-number">5.11.9. </span>Group Iteration (Optional Content)<a class="headerlink" href="#group-iteration-optional-content" title="Link to this heading">#</a></h2>
+<section id="group-iteration">
+<h2><span class="section-number">5.11.9. </span>Group Iteration<a class="headerlink" href="#group-iteration" title="Link to this heading">#</a></h2>
 <p>In Pandas, you can use the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method to group data in a DataFrame based on one or more columns. Once you have grouped the data, you might want to perform operations on each group or apply custom functions to each group. Iterating through the grouped data can be done using the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> object.</p>
 <p>Let’s go through an example to illustrate how to iterate through the groups:</p>
 <p>Suppose you have the following DataFrame:</p>
@@ -1593,8 +1618,8 @@ ________________________________________
 <p>As you can see, the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method has created two groups based on the unique values in the ‘Category’ column (‘A’ and ‘B’). We used a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to iterate through each group, and in each iteration, the variable <code class="docutils literal notranslate"><span class="pre">name</span></code> contains the group name (‘A’ or ‘B’), and the variable <code class="docutils literal notranslate"><span class="pre">group</span></code> contains the corresponding DataFrame for that group.</p>
 <p>You can perform various operations on each group inside the loop or apply custom functions using the <code class="docutils literal notranslate"><span class="pre">apply</span></code> method on the grouped object. The <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method is a powerful tool for data aggregation and analysis, making it easier to work with subsets of data based on certain criteria.</p>
 </section>
-<section id="filtering-groups-optional-content">
-<h2><span class="section-number">5.11.10. </span>Filtering Groups (Optional Content)<a class="headerlink" href="#filtering-groups-optional-content" title="Link to this heading">#</a></h2>
+<section id="filtering-groups">
+<h2><span class="section-number">5.11.10. </span>Filtering Groups<a class="headerlink" href="#filtering-groups" title="Link to this heading">#</a></h2>
 <p>In Pandas, after grouping the data using the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method, you may want to filter the groups based on specific conditions. This can be done using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> function of the grouped object. The <code class="docutils literal notranslate"><span class="pre">filter</span></code> function allows you to apply a function to each group and returns only the groups that satisfy the specified condition <span id="id6">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
 <p>Let’s go through an example to demonstrate how to filter groups in Pandas:</p>
 <p>Suppose you have the following DataFrame:</p>
@@ -1690,8 +1715,8 @@ ________________________________________
 <p>You can use any custom function inside the <code class="docutils literal notranslate"><span class="pre">filter</span></code> method to perform more complex filtering operations based on your specific requirements.</p>
 <p>Remember that the result of filtering will be a new DataFrame that contains only the rows from the original DataFrame that belong to the groups meeting the specified condition.</p>
 </section>
-<section id="transformation-optional-content">
-<h2><span class="section-number">5.11.11. </span>Transformation (Optional Content)<a class="headerlink" href="#transformation-optional-content" title="Link to this heading">#</a></h2>
+<section id="transformation">
+<h2><span class="section-number">5.11.11. </span>Transformation<a class="headerlink" href="#transformation" title="Link to this heading">#</a></h2>
 <p>In Pandas, the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> transform operation is used to transform the grouped data, broadcasting the results back to the original DataFrame. The transform function returns a new DataFrame or Series with the same shape as the original, but with the transformed values based on the grouped data.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">transform</span></code> method is often used to perform operations on each group and align the results with the original DataFrame, preserving the index and columns. This is especially useful when you want to add aggregated values back to each row of the original DataFrame.</p>
 <p>Let’s go through an example to demonstrate how to use <code class="docutils literal notranslate"><span class="pre">groupby</span></code> with <code class="docutils literal notranslate"><span class="pre">transform</span></code>:</p>
@@ -1873,6 +1898,693 @@ ________________________________________
 <p>As you can see, the ‘GroupSum’ column is added to the original DataFrame, and each row now contains the sum of ‘Value’ for its corresponding ‘Category’.</p>
 <p>You can use any function compatible with <code class="docutils literal notranslate"><span class="pre">groupby</span></code> (e.g., ‘sum’, ‘mean’, ‘min’, ‘max’, custom functions) with the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method. This allows you to apply various transformations to the grouped data and broadcast the results back to the original DataFrame.</p>
 </section>
+<section id="filling-gaps-using-groupby">
+<h2><span class="section-number">5.11.12. </span>Filling Gaps Using <code class="docutils literal notranslate"><span class="pre">groupby</span></code><a class="headerlink" href="#filling-gaps-using-groupby" title="Link to this heading">#</a></h2>
+<p>When handling grouped data, addressing missing values or gaps is a crucial task. Pandas offers various methods to fill these gaps effectively, each with its unique approach and advantages.</p>
+<section id="forward-fill-and-backward-fill">
+<h3><span class="section-number">5.11.12.1. </span>Forward Fill and Backward Fill<a class="headerlink" href="#forward-fill-and-backward-fill" title="Link to this heading">#</a></h3>
+<p>Forward Fill and Backward Fill are two straightforward methods to handle missing values. <strong>Forward Fill</strong> (<code class="docutils literal notranslate"><span class="pre">ffill()</span></code>) propagates the last valid observation forward to fill gaps. This method is useful when the preceding value is a reasonable estimate for the missing data. Conversely, <strong>Backward Fill</strong> (<code class="docutils literal notranslate"><span class="pre">bfill()</span></code>) propagates the next valid observation backward. This method can be useful when subsequent values are expected to be similar to the missing ones. These methods are often used in time series data where the latest available data is assumed to be the best estimate for the missing values.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Forward Fill</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Forward Fill:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Reset for Backward Fill Example</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Backward Fill</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Backward Fill:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Forward Fill:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Backward Fill:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="fill-with-aggregated-values">
+<h3><span class="section-number">5.11.12.2. </span>Fill with Aggregated Values<a class="headerlink" href="#fill-with-aggregated-values" title="Link to this heading">#</a></h3>
+<p>Filling gaps with aggregated values involves using statistical measures such as mean, median, or mode to replace missing values within each group. This method ensures that the filled values are representative of the group’s overall trend. For instance, filling missing values with the group’s mean provides a balanced estimate, reducing the impact of outliers. This approach is particularly effective when the data within each group is expected to follow a normal distribution.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Fill with Mean</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fill with Mean:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fill with Mean:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>4.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="interpolate-missing-values">
+<h3><span class="section-number">5.11.12.3. </span>Interpolate Missing Values<a class="headerlink" href="#interpolate-missing-values" title="Link to this heading">#</a></h3>
+<p>Interpolation is a technique used to estimate missing values based on the known values surrounding them. The <code class="docutils literal notranslate"><span class="pre">interpolate()</span></code> method in pandas provides a flexible way to perform linear or non-linear interpolation within each group. This method is beneficial when the data is expected to change gradually and smoothly. Interpolation can provide more accurate estimates than simple forward or backward fills, especially in datasets where trends or patterns are present.</p>
+<p><font color='Blue'><b>Example:</b></font> Within each group, the code uses the <code class="docutils literal notranslate"><span class="pre">interpolate()</span></code> method to estimate and fill in the missing values. Interpolation is a technique that estimates missing values based on the values before and after the gap, providing a smooth transition between data points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Interpolate Missing Values</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">interpolate</span><span class="p">())</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpolate Missing Values:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Interpolate Missing Values:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>4.5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="custom-fill-methods">
+<h3><span class="section-number">5.11.12.4. </span>Custom Fill Methods<a class="headerlink" href="#custom-fill-methods" title="Link to this heading">#</a></h3>
+<p>In some cases, predefined methods might not be sufficient to handle specific data requirements. Custom fill methods allow you to define your own logic to fill gaps based on specific criteria. For instance, you might combine forward and backward fill methods or apply complex rules tailored to your dataset. This flexibility ensures that the method used to fill missing values aligns perfectly with the nature of the data and the analytical goals.</p>
+<p><font color='Blue'><b>Example:</b></font> Within each group, the code fills the missing values using a combination of forward fill (<code class="docutils literal notranslate"><span class="pre">ffill()</span></code>) and backward fill (<code class="docutils literal notranslate"><span class="pre">bfill()</span></code>). This ensures that any gaps in the data are filled with the nearest available values from within the same group.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Custom Fill Function</span>
+<span class="k">def</span> <span class="nf">custom_fill</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Custom logic to fill gaps</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">)[</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">custom_fill</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Custom Fill Method:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Custom Fill Method:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Group</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>B</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>B</td>
+      <td>5.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1953,9 +2665,16 @@ ________________________________________
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-function-for-time-series-analysis">5.11.8.1. <code class="docutils literal notranslate"><span class="pre">resample</span></code> Function for Time Series Analysis</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-iteration-optional-content">5.11.9. Group Iteration (Optional Content)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-groups-optional-content">5.11.10. Filtering Groups (Optional Content)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-optional-content">5.11.11. Transformation (Optional Content)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-iteration">5.11.9. Group Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-groups">5.11.10. Filtering Groups</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation">5.11.11. Transformation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-gaps-using-groupby">5.11.12. Filling Gaps Using <code class="docutils literal notranslate"><span class="pre">groupby</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-and-backward-fill">5.11.12.1. Forward Fill and Backward Fill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fill-with-aggregated-values">5.11.12.2. Fill with Aggregated Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-missing-values">5.11.12.3. Interpolate Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-fill-methods">5.11.12.4. Custom Fill Methods</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
