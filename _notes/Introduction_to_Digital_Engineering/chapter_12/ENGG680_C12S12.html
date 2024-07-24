@@ -1,0 +1,1394 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12.12. Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_12/ENGG680_C12S12';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12.13. Brief Overview of Additional Topics" href="ENGG680_C12S13.html" />
+    <link rel="prev" title="12.11. Image Augmentations with TensorFlow" href="ENGG680_C12S11.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Digital Engineering - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Digital Engineering - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ENGG680_C01.html">1. Introduction to Python Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S01.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S02.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S03.html">1.3. Functions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ENGG680_C02.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S01.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S02.html">2.2. Iteration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ENGG680_C03.html">3. Data Structures and File Handling in Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S01.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S02.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S03.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S04.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S05.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S06.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ENGG680_C04.html">4. Classes and Objects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S01.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S02.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S03.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S04.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S05.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S06.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ENGG680_C05.html">5. Introduction to NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S01.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S02.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S03.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ENGG680_C06.html">6. Working with Data using Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S01.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S02.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S03.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S04.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S05.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S06.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ENGG680_C07.html">7. Data Visualization using Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S01.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S02.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S03.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S04.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S05.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S06.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ENGG680_C08.html">8. An Introduction to Computer Vision</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S01.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S02.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S03.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S04.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S05.html">8.5. Drawing Functions (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ENGG680_C09.html">9. An Introduction to Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S01.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S02.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S03.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S04.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S05.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S06.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S07.html">9.7. Support Vector Machines</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ENGG680_C10.html">10. Tree-Based Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S01.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S02.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S03.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S04.html">10.4. Regression Trees and Linear Models (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S05.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S06.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S07.html">10.7. Gradient Boosting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ENGG680_C11.html">11. Dimensionality Reduction and Feature Selection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S01.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S02.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S03.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S04.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S05.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S06.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ENGG680_C12.html">12. Introduction to Deep Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S01.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S02.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S03.html">12.3. TensorFlow Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S04.html">12.4. Introduction to Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S05.html">12.5. Tensors in Various Operations (Ops)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S06.html">12.6. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S07.html">12.7. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S08.html">12.8. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S09.html">12.9. Deep Learning Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S10.html">12.10. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S11.html">12.11. Image Augmentations with TensorFlow</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">12.12. Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S13.html">12.13. Brief Overview of Additional Topics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">13. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">12.12.1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-model">12.12.2. Creating a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#early-stopping">12.12.3. Early stopping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-the-model">12.12.4. Fitting the model</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="enhancing-image-classification-precision-through-tensorflow-and-data-augmentation-strategies">
+<h1><span class="section-number">12.12. </span>Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies<a class="headerlink" href="#enhancing-image-classification-precision-through-tensorflow-and-data-augmentation-strategies" title="Link to this heading">#</a></h1>
+<p>Data augmentation is a technique that applies random transformations to images, such as flipping, rotation, cropping, brightness, contrast, and hue, to create more diverse and realistic variations of the original images. Data augmentation can enhance the quality and quantity of training data, which are crucial for developing better deep learning models. By simulating the real-world scenarios that the model may encounter, data augmentation can help the model learn more general and resilient features, and avoid overfitting to the training data. Data augmentation can also reduce the need for collecting and labeling more data, which can be costly and time-consuming <span id="id1">[<a class="reference internal" href="../References.html#id40" title="Hatef Dastour and Quazi K. Hassan. A comparison of deep transfer learning methods for land use and land cover classification. Sustainability, 15(10):7854, 2023. doi:10.3390/su15107854.">Dastour and Hassan, 2023</a>, <a class="reference internal" href="../References.html#id144" title="Agnieszka Mikołajczyk and Michał Grochowski. Data augmentation for improving deep learning in image classification problem. In 2018 international interdisciplinary PhD workshop (IIPhDW), 117–122. IEEE, 2018. doi:https://doi.org/10.1109/IIPHDW.2018.8388338.">Mikołajczyk and Grochowski, 2018</a>, <a class="reference internal" href="../References.html#id190" title="Connor Shorten and Taghi M Khoshgoftaar. A survey on image data augmentation for deep learning. Journal of big data, 6(1):1–48, 2019. doi:https://doi.org/10.1186/s40537-019-0197-0.">Shorten and Khoshgoftaar, 2019</a>]</span>.</p>
+<p>TensorFlow is a popular framework for developing and deploying deep learning models, and it provides a rich set of functions for image processing and data augmentation. The <code class="docutils literal notranslate"><span class="pre">tf.image</span></code> module contains many functions that can apply random transformations to images, with a specified probability of applying the transformation. These functions take an image tensor as input and return a transformed image tensor as output. By applying these functions sequentially, one can create a pipeline of data augmentations that can enrich the dataset and improve the model’s generalization and robustness <span id="id2">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<section id="dataset">
+<h2><span class="section-number">12.12.1. </span>Dataset<a class="headerlink" href="#dataset" title="Link to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://www.kaggle.com/datasets/phylake1337/fire-dataset">Fire Dataset</a> is a collection of images that can be used to train a machine learning model to distinguish between fire and non-fire scenes. The dataset consists of two folders: “fire_images” and “non-fire_images”. The “fire_images” folder contains 755 images of outdoor fire events, some of which have a lot of smoke. The “non-fire_images” folder has 244 images of various natural scenes, such as forests, rivers, animals, and waterfalls.</p>
+<p>The dataset poses a binary classification problem, where the model has to predict whether an image belongs to the fire or non-fire class. However, the dataset is imbalanced, meaning that there are more fire images than non-fire images. This can cause the model to be biased towards the fire class and perform poorly on the non-fire class. To prevent this, it is recommended to create a balanced validation set, where the number of images from each class is equal. For example, one can randomly select 40 images from each class and use them as the validation set, while the remaining images can be used as the training set. This way, the model can be evaluated fairly and accurately on both classes.</p>
+<!-- from google.colab import drive
+drive.mount('/content/drive') --><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">DatasetLabeler</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_path</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.png&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the DatasetLabeler object.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - dataset_path (str): The path to the dataset.</span>
+<span class="sd">        - extension (str): The file extension to filter files in the dataset (default is &#39;.png&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset_path</span> <span class="o">=</span> <span class="n">dataset_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extension</span> <span class="o">=</span> <span class="n">extension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">files_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_files_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subdirectories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_labels_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num2label_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_num2label_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_files_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a dictionary representing the directory structure and associated files in the dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - dict: A dictionary with subdirectory names as keys and lists of associated files as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">):</span>
+            <span class="n">entry_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">entry_path</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;└──&#39;</span><span class="p">,</span> <span class="n">entry</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+                <span class="n">sub</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+                <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extension</span><span class="p">)]</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">entry</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_list</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sep</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">file_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> files:&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sep</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_list</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;, ...&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">_generate_labels_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a dictionary mapping modified subdirectory names to original names.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - dict: A dictionary with modified subdirectory names as keys and original names as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subdirectories</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_images&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>\
+                                              <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>\
+                                              <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Non &#39;</span><span class="p">,</span><span class="s1">&#39;Non-&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subdirectories</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_generate_num2label_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a dictionary mapping numerical labels to modified subdirectory names.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - dict: A dictionary with numerical labels as keys and modified subdirectory names as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+<span class="c1"># Example usage:</span>
+<span class="n">dataset_path</span> <span class="o">=</span> <span class="s1">&#39;fire_dataset&#39;</span>
+<span class="n">labeler</span> <span class="o">=</span> <span class="n">DatasetLabeler</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
+
+<span class="c1"># Create a dictionary mapping modified subdirectory names to original names</span>
+<span class="n">labels_dict</span> <span class="o">=</span> <span class="n">labeler</span><span class="o">.</span><span class="n">labels_dict</span>
+
+<span class="c1"># Create a dictionary mapping numerical labels to modified subdirectory names</span>
+<span class="n">num2label_dict</span> <span class="o">=</span> <span class="n">labeler</span><span class="o">.</span><span class="n">num2label_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=============
+fire_dataset:
+=============
+└── fire_images:
+       755 PNG files:
+       fire.10.png, fire.1.png, fire.100.png, fire.102.png, fire.103.png, ...
+└── non_fire_images:
+       244 PNG files:
+       non_fire.1.png, non_fire.102.png, non_fire.104.png, non_fire.100.png, non_fire.103.png, ...
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference external" href="https://www.kaggle.com/datasets/phylake1337/fire-dataset">Fire Dataset</a> contains images of fire and non-fire scenes, which are imbalanced in number. There are 755 fire images and 244 non-fire images, which means that the fire class has about 75.6% of the total images, while the non-fire class has only 24.4%. If we randomly split this data into train, validation and test sets, we might end up with sets that do not reflect the true distribution of the classes. For example, the test set might have too many fire images or too few non-fire images, which would affect the evaluation of the model’s performance. To avoid this problem, we need to use stratified splitting, which ensures that each set has the same proportion of fire and non-fire images as the original data. This way, we can train and validate the model on balanced sets, and test it on a realistic set. Stratified splitting can be done using scikit-learn’s StratifiedShuffleSplit function¹, which randomly shuffles and splits the data into n folds, while preserving the percentage of samples for each class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># Define the batch size for loading data</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">random_seed</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Define the image dimensions</span>
+<span class="n">Img_Height</span> <span class="o">=</span> <span class="mi">180</span>
+<span class="n">Img_Width</span> <span class="o">=</span> <span class="mi">180</span>
+
+<span class="c1"># Define the path to the dataset folder</span>
+<span class="n">dataset_path</span> <span class="o">=</span> <span class="s1">&#39;fire_dataset&#39;</span>
+
+<span class="c1"># Load the dataset using TensorFlow&#39;s image_dataset_from_directory</span>
+<span class="n">full_ds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">image_dataset_from_directory</span><span class="p">(</span>
+    <span class="n">directory</span> <span class="o">=</span> <span class="n">dataset_path</span><span class="p">,</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">random_seed</span><span class="p">,</span>
+    <span class="n">image_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">Img_Height</span><span class="p">,</span> <span class="n">Img_Width</span><span class="p">),</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">validation_split</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Extract images and labels from the dataset</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">full_ds</span><span class="p">:</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+<span class="c1"># Convert the extracted data to numpy arrays</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Use stratified sampling to split the data into training, validation, and test sets while preserving class ratios</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_temp</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_temp</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="n">X_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_temp</span><span class="p">,</span> <span class="n">y_temp</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_temp</span><span class="p">)</span>
+
+<span class="c1"># Create TensorFlow datasets from the numpy arrays, batching the data</span>
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="n">val_ds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">))</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="n">test_ds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+
+<span class="c1"># Display the number of samples in each split</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of training samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of validation samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of test samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found 999 files belonging to 2 classes.
+Number of training samples: 799
+Number of validation samples: 100
+Number of test samples: 100
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/HatefDastour/ENGG_680/main/Files/mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calculate_class_distribution</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">label_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate and return the class distribution of a given dataset.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - y (numpy array): Target labels of the dataset.</span>
+<span class="sd">    - label_dict (dict): Mapping of class indices to class labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - class_distribution (dict): Distribution of classes as percentages with labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">total_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">class_distribution</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">label_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">unique</span><span class="p">],</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">total_samples</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">class_distribution</span>
+
+<span class="k">def</span> <span class="nf">print_bold</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">color_code</span><span class="o">=</span><span class="mi">35</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display text in bold with optional color.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - txt (str): The text to be displayed.</span>
+<span class="sd">    - color_code (int): ANSI color code for the text (default is 35 for purple).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1;</span><span class="si">{</span><span class="n">color_code</span><span class="si">}</span><span class="s2">m</span><span class="si">{</span><span class="n">txt</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate and display class distribution in each dataset as percentages with labels</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Training Set Class Distribution (Percentage):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calculate_class_distribution</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">num2label_dict</span><span class="p">))</span>
+
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Validation Set Class Distribution (Percentage):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calculate_class_distribution</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">num2label_dict</span><span class="p">))</span>
+
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Test Set Class Distribution (Percentage):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calculate_class_distribution</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">num2label_dict</span><span class="p">))</span>
+
+<span class="c1"># Count occurrences of 0s and 1s in each set</span>
+<span class="n">train_counts</span><span class="p">,</span> <span class="n">val_counts</span><span class="p">,</span> <span class="n">test_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_val</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># Create a figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+<span class="c1"># Set up the bar positions and widths</span>
+<span class="n">bar_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="c1"># Create horizontal bars with custom colors</span>
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bar_positions</span> <span class="o">-</span> <span class="n">bar_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="n">train_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                               <span class="n">test_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">bar_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fire&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bar_positions</span> <span class="o">+</span> <span class="n">bar_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="n">train_counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">val_counts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                               <span class="n">test_counts</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">bar_width</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;SeaGreen&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Non-Fire&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set plot labels and title</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of Classes (Fire and Non-Fire) in Training, Validation, and Test Sets&#39;</span><span class="p">,</span>
+             <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Sets (Training, Validation, Test)&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">700</span><span class="p">])</span>  <span class="c1"># Adjust the y-axis limit as needed</span>
+
+<span class="c1"># Set x-axis ticks and labels</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">bar_positions</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation&#39;</span><span class="p">,</span> <span class="s1">&#39;Test&#39;</span><span class="p">])</span>
+
+<span class="c1"># Show the legend</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bars</span> <span class="ow">in</span> <span class="p">[</span><span class="n">bars1</span><span class="p">,</span> <span class="n">bars2</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars</span><span class="p">:</span>
+        <span class="n">yval</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">yval</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">yval</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Magenta">Training Set Class Distribution (Percentage):</span>
+{&#39;Fire&#39;: 75.59, &#39;Non-Fire&#39;: 24.41}
+
+<span class=" -Color -Color-Bold -Color-Bold-Magenta">Validation Set Class Distribution (Percentage):</span>
+{&#39;Fire&#39;: 75.0, &#39;Non-Fire&#39;: 25.0}
+
+<span class=" -Color -Color-Bold -Color-Bold-Magenta">Test Set Class Distribution (Percentage):</span>
+{&#39;Fire&#39;: 76.0, &#39;Non-Fire&#39;: 24.0}
+</pre></div>
+</div>
+<img alt="../_images/20746dd3bec5ffa1202e2a0a7cc7fd6fea56aaf8ee7ed65445c3270393e2bc97.png" src="../_images/20746dd3bec5ffa1202e2a0a7cc7fd6fea56aaf8ee7ed65445c3270393e2bc97.png" />
+</div>
+</div>
+<p>The table below shows the number and percentage of fire and non-fire samples in each dataset split:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dataset Split</p></th>
+<th class="head"><p>Number of Samples</p></th>
+<th class="head"><p>Fire (%)</p></th>
+<th class="head"><p>Non-Fire (%)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Training</p></td>
+<td><p>799</p></td>
+<td><p>75.59</p></td>
+<td><p>24.41</p></td>
+</tr>
+<tr class="row-odd"><td><p>Validation</p></td>
+<td><p>100</p></td>
+<td><p>75.00</p></td>
+<td><p>25.00</p></td>
+</tr>
+<tr class="row-even"><td><p>Test</p></td>
+<td><p>100</p></td>
+<td><p>76.00</p></td>
+<td><p>24.00</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This shows the size and balance of each set, which are important for training, validating, and testing the model. A balanced class distribution helps the model generalize well for both classes.</p>
+</section>
+<section id="creating-a-model">
+<h2><span class="section-number">12.12.2. </span>Creating a Model<a class="headerlink" href="#creating-a-model" title="Link to this heading">#</a></h2>
+<p>The data_augmentation layer, implemented as a TensorFlow object, facilitates the application of random transformations to input images. These transformations encompass horizontal and vertical flipping, rotation, and contrast adjustment. The objective is to diversify the perspectives from which the model learns, thereby mitigating the risk of overfitting. A concise breakdown of the associated code follows:</p>
+<ol class="arabic simple">
+<li><p>Importing the TensorFlow library, which offers a comprehensive suite of tools and functions for machine learning.</p></li>
+<li><p>Creation of a Sequential object, serving as a container for a sequence of layers applicable to input data.</p></li>
+<li><p>Addition of a RandomFlip layer to the Sequential object, introducing random horizontal or vertical flips to input images. The input_shape parameter delineates the dimensions of the images as (Img_Height, Img_Width, 3), signifying height, width, and 3 color channels.</p></li>
+<li><p>Inclusion of a RandomRotation layer to the Sequential object, enabling random rotation of input images by a factor of 0.1, corresponding to an angle range of -10 to 10 degrees.</p></li>
+<li><p>Integration of a RandomContrast layer to the Sequential object, inducing random contrast adjustments to input images by a factor of 0.1, translating to a contrast range between 0.9 and 1.1 times the original contrast.</p></li>
+</ol>
+<p>The data_augmentation layer, when applied to training dataset images, serves as a preprocessing step prior to model ingestion.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="n">data_augmentation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">RandomFlip</span><span class="p">(</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">Img_Height</span><span class="p">,</span> <span class="n">Img_Width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+                                         <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+                                         <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">RandomContrast</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+                                         <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Get some images and labels from your training dataset</span>
+<span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_ds</span><span class="p">))</span>
+
+<span class="c1"># Apply the data_augmentation layer to the images</span>
+<span class="n">augmented_images</span> <span class="o">=</span> <span class="n">data_augmentation</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+<span class="c1"># Plot some of the original and augmented images</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+  <span class="c1"># Plot the original image</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">))</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Original&quot;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+  <span class="c1"># Plot the augmented image</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">augmented_images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">))</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Augmented&quot;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set a title for the entire figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;A Sample of Dataset&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b3abc6052641da44c7672255083191e7c8174d8551d4f80d50576cb6d3fe51ae.png" src="../_images/b3abc6052641da44c7672255083191e7c8174d8551d4f80d50576cb6d3fe51ae.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Define and compile the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;CNN&#39;</span><span class="p">,</span> <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">data_augmentation</span><span class="p">,</span>
+    <span class="c1"># Rescaling layer: Normalize pixel values to the range [0, 1]</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Rescaling</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">Img_Height</span><span class="p">,</span> <span class="n">Img_Width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+
+    <span class="c1"># First convolutional layer with 16 filters, each of size 3x3</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
+
+    <span class="c1"># Max-pooling layer to reduce spatial dimensions</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">(),</span>
+
+    <span class="c1"># Dropout layer to mitigate overfitting</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span>
+
+    <span class="c1"># Second convolutional layer with 32 filters, each of size 3x3</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
+
+    <span class="c1"># Another max-pooling layer</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">(),</span>
+
+    <span class="c1"># Dropout layer</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span>
+
+    <span class="c1"># Third convolutional layer with 64 filters, each of size 3x3</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
+
+    <span class="c1"># Another max-pooling layer</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">(),</span>
+
+    <span class="c1"># Dropout layer</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span>
+
+    <span class="c1"># Flatten layer to convert the 2D feature maps into a 1D vector</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span>
+
+    <span class="c1"># Fully connected (dense) layer with 128 neurons and ReLU activation</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)),</span>
+
+    <span class="c1"># Dropout layer</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+
+    <span class="c1"># Output layer with 2 neurons (for binary classification) and no activation function</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># Display a summary of the model architecture</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="c1"># Plot the model graph with layer shapes and names</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">show_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_layer_names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expand_nested</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;CNN&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ sequential (Sequential)     (None, 180, 180, 3)       0         
+                                                                 
+ rescaling (Rescaling)       (None, 180, 180, 3)       0         
+                                                                 
+ conv2d (Conv2D)             (None, 180, 180, 16)      448       
+                                                                 
+ max_pooling2d (MaxPooling2  (None, 90, 90, 16)        0         
+ D)                                                              
+                                                                 
+ dropout (Dropout)           (None, 90, 90, 16)        0         
+                                                                 
+ conv2d_1 (Conv2D)           (None, 90, 90, 32)        4640      
+                                                                 
+ max_pooling2d_1 (MaxPoolin  (None, 45, 45, 32)        0         
+ g2D)                                                            
+                                                                 
+ dropout_1 (Dropout)         (None, 45, 45, 32)        0         
+                                                                 
+ conv2d_2 (Conv2D)           (None, 45, 45, 64)        18496     
+                                                                 
+ max_pooling2d_2 (MaxPoolin  (None, 22, 22, 64)        0         
+ g2D)                                                            
+                                                                 
+ dropout_2 (Dropout)         (None, 22, 22, 64)        0         
+                                                                 
+ flatten (Flatten)           (None, 30976)             0         
+                                                                 
+ dense (Dense)               (None, 128)               3965056   
+                                                                 
+ dropout_3 (Dropout)         (None, 128)               0         
+                                                                 
+ dense_1 (Dense)             (None, 2)                 258       
+                                                                 
+=================================================================
+Total params: 3988898 (15.22 MB)
+Trainable params: 3988898 (15.22 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</pre></div>
+</div>
+<img alt="../_images/4865c73cdd21d83000c04606469b7f8bce921796f5fa37ad666be84bc5dc69c4.png" src="../_images/4865c73cdd21d83000c04606469b7f8bce921796f5fa37ad666be84bc5dc69c4.png" />
+</div>
+</div>
+<p>The model is a convolutional neural network (CNN) that can classify images into two classes: fire and non-fire. The model consists of the following layers:</p>
+<ul class="simple">
+<li><p>A data_augmentation layer, which randomly transforms the input images by flipping, rotating, and changing contrast. This helps the model learn from diverse perspectives and avoid overfitting.</p></li>
+<li><p>A rescaling layer, which normalizes the pixel values of the input images from the range [0, 255] to the range [0, 1]. This makes the input data easier for the model to learn.</p></li>
+<li><p>A convolutional layer, which applies 16 filters of size (3, 3) with relu activation to the input images to extract features such as edges, shapes, and textures. The output of this layer is a feature map, which is a representation of the input image in terms of the detected features.</p></li>
+<li><p>A max pooling layer, which reduces the size of the feature map by taking the maximum value in each region of size (2, 2). This reduces the computational complexity and the number of parameters of the model, as well as introduces some translational invariance, which means that the model can recognize the same feature in different locations of the image.</p></li>
+<li><p>A dropout layer, which randomly sets some of the values in the feature map to zero with a probability of 0.2. This prevents overfitting by reducing the dependence on specific features and encouraging the model to learn from multiple features.</p></li>
+<li><p>Another convolutional layer, which applies 32 filters of size (3, 3) with relu activation to the output of the previous layer. This layer extracts more features from the input feature map, increasing the depth and complexity of the model.</p></li>
+<li><p>Another max pooling layer, which reduces the size of the feature map by half in each dimension using a pool size of (2, 2).</p></li>
+<li><p>Another dropout layer, which randomly sets some of the values in the feature map to zero with a probability of 0.2.</p></li>
+<li><p>Another convolutional layer, which applies 64 filters of size (3, 3) with relu activation to the output of the previous layer. This layer extracts even more features from the input feature map, further increasing the depth and complexity of the model.</p></li>
+<li><p>Another max pooling layer, which reduces the size of the feature map by half in each dimension using a pool size of (2, 2).</p></li>
+<li><p>Another dropout layer, which randomly sets some of the values in the feature map to zero with a probability of 0.2.</p></li>
+<li><p>A flatten layer, which reshapes the output of the previous layer into a one-dimensional vector. This prepares the data for the next layer, which is a dense layer.</p></li>
+<li><p>A dense layer, which is a fully connected layer that performs a linear transformation on the input vector and applies an activation function. This layer acts as a classifier that maps the features extracted by the previous layers to the output classes. The number of units in this layer is 128, which means that the output vector has 128 elements. The activation function is relu, which is the same as before.</p></li>
+<li><p>Another dropout layer, which randomly sets some of the values in the output vector to zero with a probability of 0.2.</p></li>
+<li><p>Another dense layer, which is the final layer that produces the output of the model. The number of units in this layer is 2, which corresponds to the number of classes: fire and non-fire. The activation function is softmax, which converts the output vector into a probability distribution over the classes. The softmax function ensures that the sum of the probabilities is 1, and that the higher the probability, the more likely the class.</p></li>
+</ul>
+<p>The model has a total of 3988898 parameters, which are the weights and biases of each layer. The parameters are learned by the model during training, using an optimization algorithm that minimizes a loss function that measures the difference between the predicted output and the true output. The number of parameters indicates the complexity and capacity of the model, as well as the memory and computational requirements. The more parameters, the more expressive and powerful the model, but also the more prone to overfitting and the more expensive to train and run. All the parameters are trainable, which means that the model can learn from the data and adjust the parameters accordingly.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>Data augmentation is exclusively applied to the training set and is not extended to the validation and test sets. The data augmentation layer, an integral component of the model architecture, exclusively influences the input data during the training phase. The purpose of the validation and test sets is to assess the model’s performance on new, unseen data, and as such, they remain unaffected by the data augmentation layer. This deliberate segregation ensures an accurate evaluation of the model’s generalization to diverse variations and distortions within new data. Introducing data augmentation to the validation and test sets could yield misleading results, compromising the reliability of the model evaluation.</p>
+</div>
+<p>Visualkeras is a Python library that helps visualize Keras neural networks. It shows the structure and connections of the layers. It can customize the visualizations according to the needs. It supports two kinds of visualizations: layered and graph. Layered visualizations show the size and filters of Convolutional Neural Networks (CNNs), which are good for such models. Graph visualizations show the inputs, outputs, and operations of different models, from simple to complex. Visualkeras is useful for neural network developers, as it improves understanding and debugging <span id="id3">[<a class="reference internal" href="../References.html#id76" title="Paul Gavrikov. Visualkeras. https://github.com/paulgavrikov/visualkeras, 2020.">Gavrikov, 2020</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">visualkeras</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>visualkeras
+    <span class="kn">import</span> <span class="nn">visualkeras</span>
+
+<span class="n">clear_output</span><span class="p">()</span>
+<span class="n">visualkeras</span><span class="o">.</span><span class="n">layered_view</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">draw_volume</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/405d98f644d081bcffd999ecc1c6248fa5c4075d3572f763900af8f57b9f4beb.png" src="../_images/405d98f644d081bcffd999ecc1c6248fa5c4075d3572f763900af8f57b9f4beb.png" />
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>The proposed model can be enhanced through further fine-tuning.</p>
+</div>
+</section>
+<section id="early-stopping">
+<h2><span class="section-number">12.12.3. </span>Early stopping<a class="headerlink" href="#early-stopping" title="Link to this heading">#</a></h2>
+<p>Early stopping is a way to prevent deep neural networks from overfitting, which means that they learn too much from the training data and fail to generalize to new data. Overfitting can happen when the model is trained for too long and becomes too complex. Early stopping stops the training process before that happens, by monitoring the model’s performance on a separate validation data set, which is a part of the data that is not used for training but for checking the model’s accuracy. Early stopping works as follows:</p>
+<ul class="simple">
+<li><p>The model is trained for a certain number of iterations, which are also called epochs. In each epoch, the model learns from the training data and updates its weights, which are the values that determine how the model processes the input data and produces the output data.</p></li>
+<li><p>After each epoch, the model’s accuracy on the validation data is calculated and compared to the previous epochs. The accuracy is a measure of how well the model predicts the correct output for the validation data. The higher the accuracy, the better the model.</p></li>
+<li><p>If the accuracy on the validation data improves significantly from one epoch to another, it means that the model is still learning and becoming better. In that case, the training continues and the model’s weights are saved as the best weights so far.</p></li>
+<li><p>If the accuracy on the validation data does not improve significantly or even decreases from one epoch to another, it means that the model is not learning anymore and becoming worse. In that case, the training is stopped and the best weights that were saved before are used as the final weights for the model.</p></li>
+<li><p>The final weights are then used to evaluate the model’s performance on a test data set, which is another part of the data that is not used for training or validation but for testing the model’s accuracy on new and unseen data.</p></li>
+</ul>
+<p>Early stopping is a simple and effective way to regularize deep neural networks, which means to control their complexity and prevent overfitting. By stopping the training at the right time, early stopping can improve the model’s adaptability and generalization ability, which are important for real-world applications <span id="id4">[<a class="reference internal" href="../References.html#id40" title="Hatef Dastour and Quazi K. Hassan. A comparison of deep transfer learning methods for land use and land cover classification. Sustainability, 15(10):7854, 2023. doi:10.3390/su15107854.">Dastour and Hassan, 2023</a>, <a class="reference internal" href="../References.html#id152" title="Raoof Naushad, Tarunpreet Kaur, and Ebrahim Ghaderpour. Deep transfer learning for land use and land cover classification: a comparative study. Sensors, 21(23):8083, 2021.">Naushad <em>et al.</em>, 2021</a>]</span>.</p>
+</section>
+<section id="fitting-the-model">
+<h2><span class="section-number">12.12.4. </span>Fitting the model<a class="headerlink" href="#fitting-the-model" title="Link to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping">tf.keras.callbacks.EarlyStopping</a> function serves as a callback within the Keras framework, designed to halt the training of a model based on specified conditions. This callback is typically invoked at predefined intervals during the training process, such as the conclusion of each epoch. Its primary functionality lies in monitoring a designated metric, such as validation accuracy or loss, and assessing whether improvement has occurred. If there is no improvement observed over a predetermined number of epochs, known as the patience, the training process is terminated. Additionally, the EarlyStopping function has the capability to restore the model weights to the optimal configuration obtained prior to the cessation of training.</p>
+<p>The instantiation of the EarlyStopping callback is achieved through the code <code class="docutils literal notranslate"><span class="pre">tf.keras.callbacks.EarlyStopping(patience=5,</span> <span class="pre">restore_best_weights=True)</span></code>. This code creates an object equipped to interrupt the training process when the monitored metric ceases to exhibit improvement. The callback is characterized by two parameters: patience and restore_best_weights. The patience parameter dictates the number of consecutive epochs without improvement that triggers the termination of training. In this instance, a patience value of 5 implies that training halts if the metric fails to improve for five successive epochs. The restore_best_weights parameter determines whether the model should revert to the weights associated with the epoch featuring the optimal metric value. When set to True, the model reinstates the best weights; when set to False, the weights from the final epoch are retained. Notably, in the provided code, restore_best_weights is set to True, signifying the preference for utilizing the best weights upon the conclusion of training. This strategic utilization of the EarlyStopping callback contributes to the model’s resilience against overfitting tendencies and enhances its overall performance, as discussed in <span id="id5">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Compile the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+              <span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+              <span class="n">metrics</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+
+<span class="c1"># Train the model using the training and validation datasets with the custom callback</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">val_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                   <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">patience</span><span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/100
+7/7 - 17s - loss: 4.7085 - accuracy: 0.6183 - val_loss: 3.0626 - val_accuracy: 0.7100 - 17s/epoch - 2s/step
+Epoch 2/100
+7/7 - 1s - loss: 2.8164 - accuracy: 0.7034 - val_loss: 2.4934 - val_accuracy: 0.7500 - 746ms/epoch - 107ms/step
+Epoch 3/100
+7/7 - 1s - loss: 2.3255 - accuracy: 0.7559 - val_loss: 2.0678 - val_accuracy: 0.7500 - 726ms/epoch - 104ms/step
+Epoch 4/100
+7/7 - 1s - loss: 1.9435 - accuracy: 0.7559 - val_loss: 1.7574 - val_accuracy: 0.7500 - 745ms/epoch - 106ms/step
+Epoch 5/100
+7/7 - 1s - loss: 1.6615 - accuracy: 0.7559 - val_loss: 1.5080 - val_accuracy: 0.7500 - 739ms/epoch - 106ms/step
+Epoch 6/100
+7/7 - 1s - loss: 1.4321 - accuracy: 0.7559 - val_loss: 1.3277 - val_accuracy: 0.7500 - 746ms/epoch - 107ms/step
+Epoch 7/100
+7/7 - 1s - loss: 1.2684 - accuracy: 0.7559 - val_loss: 1.1823 - val_accuracy: 0.7500 - 715ms/epoch - 102ms/step
+Epoch 8/100
+7/7 - 1s - loss: 1.1349 - accuracy: 0.7672 - val_loss: 1.0733 - val_accuracy: 0.8000 - 725ms/epoch - 104ms/step
+Epoch 9/100
+7/7 - 1s - loss: 1.0251 - accuracy: 0.8811 - val_loss: 0.9523 - val_accuracy: 0.9300 - 823ms/epoch - 118ms/step
+Epoch 10/100
+7/7 - 1s - loss: 0.9170 - accuracy: 0.9149 - val_loss: 0.8455 - val_accuracy: 0.9000 - 834ms/epoch - 119ms/step
+Epoch 11/100
+7/7 - 1s - loss: 0.8262 - accuracy: 0.9312 - val_loss: 0.7996 - val_accuracy: 0.9100 - 863ms/epoch - 123ms/step
+Epoch 12/100
+7/7 - 1s - loss: 0.7844 - accuracy: 0.9237 - val_loss: 0.7506 - val_accuracy: 0.9500 - 883ms/epoch - 126ms/step
+Epoch 13/100
+7/7 - 1s - loss: 0.7504 - accuracy: 0.9237 - val_loss: 0.6634 - val_accuracy: 0.9500 - 862ms/epoch - 123ms/step
+Epoch 14/100
+7/7 - 1s - loss: 0.6737 - accuracy: 0.9362 - val_loss: 0.6191 - val_accuracy: 0.9500 - 832ms/epoch - 119ms/step
+Epoch 15/100
+7/7 - 1s - loss: 0.6143 - accuracy: 0.9637 - val_loss: 0.5824 - val_accuracy: 0.9500 - 720ms/epoch - 103ms/step
+Epoch 16/100
+7/7 - 1s - loss: 0.5798 - accuracy: 0.9587 - val_loss: 0.6081 - val_accuracy: 0.9200 - 718ms/epoch - 103ms/step
+Epoch 17/100
+7/7 - 1s - loss: 0.6148 - accuracy: 0.9437 - val_loss: 0.5506 - val_accuracy: 0.9500 - 747ms/epoch - 107ms/step
+Epoch 18/100
+7/7 - 1s - loss: 0.5811 - accuracy: 0.9312 - val_loss: 0.5351 - val_accuracy: 0.9500 - 753ms/epoch - 108ms/step
+Epoch 19/100
+7/7 - 1s - loss: 0.5312 - accuracy: 0.9599 - val_loss: 0.5039 - val_accuracy: 0.9600 - 761ms/epoch - 109ms/step
+Epoch 20/100
+7/7 - 1s - loss: 0.5027 - accuracy: 0.9549 - val_loss: 0.4700 - val_accuracy: 0.9700 - 900ms/epoch - 129ms/step
+Epoch 21/100
+7/7 - 1s - loss: 0.5082 - accuracy: 0.9512 - val_loss: 0.4425 - val_accuracy: 0.9700 - 888ms/epoch - 127ms/step
+Epoch 22/100
+7/7 - 1s - loss: 0.4707 - accuracy: 0.9612 - val_loss: 0.4324 - val_accuracy: 0.9900 - 877ms/epoch - 125ms/step
+Epoch 23/100
+7/7 - 1s - loss: 0.4599 - accuracy: 0.9637 - val_loss: 0.4218 - val_accuracy: 0.9800 - 817ms/epoch - 117ms/step
+Epoch 24/100
+7/7 - 1s - loss: 0.4367 - accuracy: 0.9675 - val_loss: 0.4206 - val_accuracy: 0.9700 - 779ms/epoch - 111ms/step
+Epoch 25/100
+7/7 - 1s - loss: 0.4415 - accuracy: 0.9549 - val_loss: 0.3928 - val_accuracy: 0.9800 - 731ms/epoch - 104ms/step
+Epoch 26/100
+7/7 - 1s - loss: 0.4173 - accuracy: 0.9599 - val_loss: 0.3800 - val_accuracy: 0.9900 - 802ms/epoch - 115ms/step
+Epoch 27/100
+7/7 - 1s - loss: 0.4176 - accuracy: 0.9599 - val_loss: 0.3844 - val_accuracy: 0.9700 - 844ms/epoch - 121ms/step
+Epoch 28/100
+7/7 - 1s - loss: 0.4121 - accuracy: 0.9612 - val_loss: 0.3808 - val_accuracy: 0.9800 - 832ms/epoch - 119ms/step
+Epoch 29/100
+7/7 - 1s - loss: 0.4049 - accuracy: 0.9587 - val_loss: 0.3760 - val_accuracy: 0.9700 - 849ms/epoch - 121ms/step
+Epoch 30/100
+7/7 - 1s - loss: 0.4012 - accuracy: 0.9612 - val_loss: 0.3616 - val_accuracy: 0.9800 - 849ms/epoch - 121ms/step
+Epoch 31/100
+7/7 - 1s - loss: 0.4005 - accuracy: 0.9612 - val_loss: 0.3583 - val_accuracy: 0.9700 - 763ms/epoch - 109ms/step
+Epoch 32/100
+7/7 - 1s - loss: 0.3803 - accuracy: 0.9625 - val_loss: 0.3415 - val_accuracy: 0.9900 - 794ms/epoch - 113ms/step
+Epoch 33/100
+7/7 - 1s - loss: 0.3707 - accuracy: 0.9662 - val_loss: 0.3381 - val_accuracy: 0.9700 - 747ms/epoch - 107ms/step
+Epoch 34/100
+7/7 - 1s - loss: 0.3703 - accuracy: 0.9687 - val_loss: 0.3527 - val_accuracy: 0.9800 - 730ms/epoch - 104ms/step
+Epoch 35/100
+7/7 - 1s - loss: 0.3656 - accuracy: 0.9637 - val_loss: 0.3386 - val_accuracy: 0.9800 - 734ms/epoch - 105ms/step
+Epoch 36/100
+7/7 - 1s - loss: 0.3635 - accuracy: 0.9612 - val_loss: 0.3310 - val_accuracy: 0.9800 - 735ms/epoch - 105ms/step
+Epoch 37/100
+7/7 - 1s - loss: 0.3595 - accuracy: 0.9637 - val_loss: 0.3176 - val_accuracy: 0.9900 - 755ms/epoch - 108ms/step
+Epoch 38/100
+7/7 - 1s - loss: 0.3534 - accuracy: 0.9637 - val_loss: 0.3135 - val_accuracy: 0.9800 - 739ms/epoch - 106ms/step
+Epoch 39/100
+7/7 - 1s - loss: 0.3413 - accuracy: 0.9625 - val_loss: 0.3076 - val_accuracy: 0.9900 - 730ms/epoch - 104ms/step
+Epoch 40/100
+7/7 - 1s - loss: 0.3323 - accuracy: 0.9700 - val_loss: 0.2994 - val_accuracy: 0.9900 - 747ms/epoch - 107ms/step
+Epoch 41/100
+7/7 - 1s - loss: 0.3275 - accuracy: 0.9675 - val_loss: 0.2897 - val_accuracy: 0.9900 - 743ms/epoch - 106ms/step
+Epoch 42/100
+7/7 - 1s - loss: 0.3116 - accuracy: 0.9700 - val_loss: 0.3161 - val_accuracy: 0.9700 - 744ms/epoch - 106ms/step
+Epoch 43/100
+7/7 - 1s - loss: 0.3327 - accuracy: 0.9562 - val_loss: 0.3253 - val_accuracy: 0.9700 - 843ms/epoch - 120ms/step
+Epoch 44/100
+7/7 - 1s - loss: 0.3349 - accuracy: 0.9549 - val_loss: 0.3146 - val_accuracy: 0.9600 - 877ms/epoch - 125ms/step
+Epoch 45/100
+7/7 - 1s - loss: 0.3409 - accuracy: 0.9537 - val_loss: 0.2924 - val_accuracy: 0.9600 - 861ms/epoch - 123ms/step
+Epoch 46/100
+7/7 - 1s - loss: 0.3058 - accuracy: 0.9637 - val_loss: 0.2749 - val_accuracy: 0.9800 - 909ms/epoch - 130ms/step
+Epoch 47/100
+7/7 - 1s - loss: 0.2947 - accuracy: 0.9725 - val_loss: 0.2601 - val_accuracy: 0.9900 - 830ms/epoch - 119ms/step
+Epoch 48/100
+7/7 - 1s - loss: 0.3126 - accuracy: 0.9599 - val_loss: 0.3081 - val_accuracy: 0.9400 - 822ms/epoch - 117ms/step
+Epoch 49/100
+7/7 - 1s - loss: 0.3301 - accuracy: 0.9562 - val_loss: 0.3068 - val_accuracy: 0.9400 - 783ms/epoch - 112ms/step
+Epoch 50/100
+7/7 - 1s - loss: 0.3308 - accuracy: 0.9474 - val_loss: 0.2909 - val_accuracy: 0.9500 - 756ms/epoch - 108ms/step
+Epoch 51/100
+7/7 - 1s - loss: 0.3022 - accuracy: 0.9637 - val_loss: 0.2799 - val_accuracy: 0.9800 - 764ms/epoch - 109ms/step
+Epoch 52/100
+7/7 - 1s - loss: 0.2989 - accuracy: 0.9662 - val_loss: 0.2643 - val_accuracy: 0.9800 - 770ms/epoch - 110ms/step
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output represents the training progress of a neural network model over 52 epochs, each involving a complete iteration through the training dataset. Key performance metrics such as loss and accuracy for both the training and validation datasets are reported after each epoch. Additionally, the time taken for each epoch and step is provided.</p>
+<p>In the initial epoch (Epoch 1/100), the training set exhibited a loss of 4.7085 and an accuracy of 0.6183, while the validation set had a loss of 3.0626 and an accuracy of 0.7100. Subsequent epochs show the evolution of these metrics, reflecting the model’s adjustment to the training data.</p>
+<p>Notable observations:</p>
+<ul class="simple">
+<li><p>The model’s performance on the training set, indicated by accuracy, appears to stabilize around 0.95 after the initial epochs.</p></li>
+<li><p>Validation accuracy exhibits improvement over the epochs, reaching 0.9800 in the later stages.</p></li>
+<li><p>The loss values, both for training and validation, decrease over time, indicating improved convergence of the model.</p></li>
+</ul>
+<p>The reported times (e.g., “17s/epoch,” “2s/step”) provide insights into the computational efficiency of the training process. The time per epoch includes the time taken for each training epoch, while the time per step represents the time taken for each batch processing step within an epoch.</p>
+<p>The training process utilized an EarlyStopping callback, as evident from the code provided earlier. This callback is designed to monitor the validation loss and halt training if no improvement is observed for a specified number of epochs (patience). The best weights are then restored to enhance the model’s performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># Create a figure and a set of subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># Define style colors</span>
+<span class="n">style_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RoyalBlue&#39;</span><span class="p">,</span> <span class="s1">&#39;OrangeRed&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot labels and titles</span>
+<span class="n">plot_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy&#39;</span><span class="p">]</span>
+<span class="n">plot_titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Log Loss vs Training Iterations&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy vs Training Iterations&#39;</span><span class="p">]</span>
+
+<span class="c1"># Loop through plots</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">plot_labels</span><span class="p">,</span> <span class="n">plot_titles</span><span class="p">)):</span>
+    <span class="c1"># Plot training and testing metrics from the history file</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;Loss&#39;</span> <span class="k">else</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+                 <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training &quot;</span> <span class="o">+</span> <span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">style_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s1">&#39;Loss&#39;</span> <span class="k">else</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">],</span>
+                 <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation &quot;</span> <span class="o">+</span> <span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">style_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+<span class="c1"># Add a common title</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Model Performance during Training&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout for better spacing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0cbdc463d3762bdceba1bededc59fb3c5c982b06081923c6c93252c31f79c4ed.png" src="../_images/0cbdc463d3762bdceba1bededc59fb3c5c982b06081923c6c93252c31f79c4ed.png" />
+</div>
+</div>
+<p>The results show the loss and accuracy of the model on the training and validation datasets for each epoch. The loss is a measure of how much the model’s predictions differ from the true labels, and the accuracy is a measure of how many of the model’s predictions are correct. The lower the loss and the higher the accuracy, the better the model. The results also show the time taken for each epoch and each step, which is a batch of data processed by the model.</p>
+<p>The results indicate that the model is improving over time, as the loss decreases and the accuracy increases on both the training and validation datasets. However, the improvement is not consistent or significant after some point, which suggests that the model is reaching its optimal performance and may start to overfit if trained further. Overfitting is a situation where the model learns too much from the training data and fails to generalize to new data.</p>
+<p>To prevent overfitting, you used the EarlyStopping callback, which is a function that can stop the training when a monitored metric has stopped improving. You set the patience argument to 5, which means that the training will stop if the metric does not improve for 5 consecutive epochs. You also set the restore_best_weights argument to True, which means that the model will use the best weights that were obtained before the training stopped. You monitored the validation loss as the metric, which is the loss on the validation dataset.</p>
+<p>The results show that the training stopped at epoch 52, because the validation loss did not improve for 5 epochs. The best validation loss was 0.2601, which was achieved at epoch 47. The model used the weights from that epoch as the final weights. The validation accuracy at that epoch was 0.9900, which means that the model correctly predicted 99% of the validation images. The training loss and accuracy at that epoch were 0.2947 and 0.9725, respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Define Metric Names (mapping from metric keys to more descriptive names)</span>
+<span class="n">Metrics_Names</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;Loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;mae&#39;</span><span class="p">:</span> <span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="s1">&#39;Recall&#39;</span><span class="p">}</span>
+
+<span class="c1"># Filter and modify history keys</span>
+<span class="n">Validation_Table</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;val_&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span>
+<span class="n">Train_Table</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Validation_Table</span><span class="p">]</span>
+
+<span class="c1"># Create DataFrames for validation and training metrics</span>
+<span class="n">Validation_Table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;val_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">Validation_Table</span><span class="p">})</span>
+<span class="n">Train_Table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">Train_Table</span><span class="p">})</span>
+
+<span class="c1"># Rename columns and add Iteration column</span>
+<span class="k">def</span> <span class="nf">modify_table</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">Metrics_Names</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Iteration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Iteration&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+
+<span class="n">Validation_Table</span> <span class="o">=</span> <span class="n">modify_table</span><span class="p">(</span><span class="n">Validation_Table</span><span class="p">)</span>
+<span class="n">Train_Table</span> <span class="o">=</span> <span class="n">modify_table</span><span class="p">(</span><span class="n">Train_Table</span><span class="p">)</span>
+
+<span class="c1"># Evaluate and format scores for train, validation, and test datasets</span>
+<span class="k">def</span> <span class="nf">evaluate_and_format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">scores_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">scores</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">metrics_names</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scores_df</span>
+
+<span class="c1"># Calculate and format scores for the train, validation, and test datasets</span>
+<span class="n">score_train</span> <span class="o">=</span> <span class="n">evaluate_and_format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">score_val</span> <span class="o">=</span> <span class="n">evaluate_and_format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">score_test</span> <span class="o">=</span> <span class="n">evaluate_and_format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+
+<span class="c1"># Concatenate and display scores in a table</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">score_train</span><span class="p">,</span> <span class="n">score_val</span><span class="p">,</span> <span class="n">score_test</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">score</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation&#39;</span><span class="p">,</span> <span class="s1">&#39;Test&#39;</span><span class="p">]</span>
+<span class="n">score</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">Metrics_Names</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Display the score table</span>
+<span class="n">display</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Loss&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.5f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.5f}</span><span class="s1">&#39;</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_a1af8" class="dataframe">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_a1af8_level0_col0" class="col_heading level0 col0" >Loss</th>
+      <th id="T_a1af8_level0_col1" class="col_heading level0 col1" >Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_a1af8_level0_row0" class="row_heading level0 row0" >Train</th>
+      <td id="T_a1af8_row0_col0" class="data row0 col0" >0.30523</td>
+      <td id="T_a1af8_row0_col1" class="data row0 col1" >0.96496</td>
+    </tr>
+    <tr>
+      <th id="T_a1af8_level0_row1" class="row_heading level0 row1" >Validation</th>
+      <td id="T_a1af8_row1_col0" class="data row1 col0" >0.26013</td>
+      <td id="T_a1af8_row1_col1" class="data row1 col1" >0.99000</td>
+    </tr>
+    <tr>
+      <th id="T_a1af8_level0_row2" class="row_heading level0 row2" >Test</th>
+      <td id="T_a1af8_row2_col0" class="data row2 col0" >0.31243</td>
+      <td id="T_a1af8_row2_col1" class="data row2 col1" >0.98000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The results show the loss and accuracy of the model on the train, validation, and test datasets. The loss is a measure of how much the model’s predictions differ from the true labels, and the accuracy is a measure of how many of the model’s predictions are correct. The lower the loss and the higher the accuracy, the better the model.</p>
+<p>The results indicate that the model has a high performance on all the datasets, as the loss is low and the accuracy is high. The model performs slightly better on the validation and test datasets than on the train dataset, which suggests that the model is not overfitting and can generalize well to new data. The model performs the best on the validation dataset, which has the lowest loss and the highest accuracy. The model performs slightly worse on the test dataset, which has a higher loss and a lower accuracy than the validation dataset, but still very close. The test dataset is the most important dataset to evaluate the model’s performance, as it represents the real-world data that the model will encounter. The results show that the model can handle different kinds of images and classify them correctly into fire and non-fire classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+
+<span class="c1"># Function to create and display a confusion matrix using seaborn heatmap</span>
+<span class="k">def</span> <span class="nf">create_confusion_matrix</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Generate predictions</span>
+    <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+        <span class="n">y_true</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="n">y_pred</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">images</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Calculate the confusion matrix</span>
+    <span class="n">confusion</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">confusion</span>
+
+<span class="c1"># Create confusion matrices for Train, Validation, and Test sets</span>
+<span class="n">CM_train</span> <span class="o">=</span> <span class="n">create_confusion_matrix</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">)</span>
+<span class="n">CM_val</span> <span class="o">=</span> <span class="n">create_confusion_matrix</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_ds</span><span class="p">)</span>
+<span class="n">CM_test</span> <span class="o">=</span> <span class="n">create_confusion_matrix</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_ds</span><span class="p">)</span>
+<span class="n">clear_output</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">num2label_dict</span> <span class="o">=</span> <span class="n">num2label_dict</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">xticklabels</span><span class="o">=</span><span class="n">num2label_dict</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">yticklabels</span><span class="o">=</span> <span class="n">num2label_dict</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Predicted Labels&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;True Labels&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">label</span><span class="p">]:</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Confusion Matrices&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># Assuming you have CM_train, CM_val, and CM_test defined</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="n">CM_train</span><span class="p">,</span> <span class="n">CM_val</span><span class="p">,</span> <span class="n">CM_test</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Train Set&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation Set&#39;</span><span class="p">,</span> <span class="s1">&#39;Test Set&#39;</span><span class="p">]):</span>
+    <span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a21247c360670db7228d797461d574e9d736bdf5baae78f85b07ff6546658402.png" src="../_images/a21247c360670db7228d797461d574e9d736bdf5baae78f85b07ff6546658402.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print(num2label_dict)</span>
+<span class="c1"># CM_train, CM_val, CM_test</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0: &#39;Fire&#39;, 1: &#39;Non-Fire&#39;}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;tf.Tensor: shape=(2, 2), dtype=int32, numpy=
+ array([[583,  21],
+        [  7, 188]], dtype=int32)&gt;,
+ &lt;tf.Tensor: shape=(2, 2), dtype=int32, numpy=
+ array([[75,  0],
+        [ 1, 24]], dtype=int32)&gt;,
+ &lt;tf.Tensor: shape=(2, 2), dtype=int32, numpy=
+ array([[75,  1],
+        [ 1, 23]], dtype=int32)&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results show the confusion matrices of the model on the train, validation, and test datasets. A confusion matrix is a table that shows how well the model predicts the correct class for each input image. The rows of the matrix represent the true classes, and the columns represent the predicted classes. The diagonal elements of the matrix show the number of images that were correctly classified, and the off-diagonal elements show the number of images that were misclassified. The higher the diagonal elements and the lower the off-diagonal elements, the better the model. The results also show the labels of the classes, which are fire and non-fire. Here is an interpretation of the results:</p>
+<ul class="simple">
+<li><p>The first confusion matrix is for the train dataset, which has 799 images. The model correctly predicted 583 fire images and 188 non-fire images, which are the diagonal elements. The model misclassified 21 fire images as non-fire images, and 7 non-fire images as fire images, which are the off-diagonal elements. The model’s accuracy on the train dataset is (583 + 188) / 799 = 0.9649, which means that the model correctly predicted 96.49% of the train images.</p></li>
+<li><p>The second confusion matrix is for the validation dataset, which has 100 images. The model correctly predicted 75 fire images and 24 non-fire images, which are the diagonal elements. The model misclassified 1 fire image as non-fire image, and 0 non-fire images as fire images, which are the off-diagonal elements. The model’s accuracy on the validation dataset is (75 + 24) / 100 = 0.9900, which means that the model correctly predicted 99.00% of the validation images.</p></li>
+<li><p>The third confusion matrix is for the test dataset, which has 100 images. The model correctly predicted 75 fire images and 23 non-fire images, which are the diagonal elements. The model misclassified 1 fire image as non-fire image, and 1 non-fire image as fire image, which are the off-diagonal elements. The model’s accuracy on the test dataset is (75 + 23) / 100 = 0.9800, which means that the model correctly predicted 98.00% of the test images.</p></li>
+</ul>
+<p>The results indicate that the model has a high performance on all the datasets, as the confusion matrices show a high number of correct predictions and a low number of incorrect predictions. The model performs slightly better on the validation dataset than on the train and test datasets, which suggests that the model is not overfitting and can generalize well to new data. The test dataset is the most important dataset to evaluate the model’s performance, as it represents the real-world data that the model will encounter. The results show that the model can handle different kinds of images and classify them correctly into fire and non-fire classes.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG680_C12S11.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">12.11. </span>Image Augmentations with TensorFlow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ENGG680_C12S13.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">12.13. </span>Brief Overview of Additional Topics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">12.12.1. Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-model">12.12.2. Creating a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#early-stopping">12.12.3. Early stopping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-the-model">12.12.4. Fitting the model</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

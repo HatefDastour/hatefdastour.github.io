@@ -1,0 +1,1520 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>11.2. Principal Components Analysis (PCA) &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_11/ENGG680_C11S02';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)" href="ENGG680_C11S03.html" />
+    <link rel="prev" title="11.1. Introduction to Dimensionality Reduction" href="ENGG680_C11S01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Digital Engineering - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Digital Engineering - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ENGG680_C01.html">1. Introduction to Python Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S01.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S02.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S03.html">1.3. Functions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ENGG680_C02.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S01.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S02.html">2.2. Iteration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ENGG680_C03.html">3. Data Structures and File Handling in Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S01.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S02.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S03.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S04.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S05.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S06.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ENGG680_C04.html">4. Classes and Objects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S01.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S02.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S03.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S04.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S05.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S06.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ENGG680_C05.html">5. Introduction to NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S01.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S02.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S03.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ENGG680_C06.html">6. Working with Data using Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S01.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S02.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S03.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S04.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S05.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S06.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ENGG680_C07.html">7. Data Visualization using Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S01.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S02.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S03.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S04.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S05.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S06.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ENGG680_C08.html">8. An Introduction to Computer Vision</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S01.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S02.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S03.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S04.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S05.html">8.5. Drawing Functions (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ENGG680_C09.html">9. An Introduction to Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S01.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S02.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S03.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S04.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S05.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S06.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S07.html">9.7. Support Vector Machines</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ENGG680_C10.html">10. Tree-Based Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S01.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S02.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S03.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S04.html">10.4. Regression Trees and Linear Models (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S05.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S06.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S07.html">10.7. Gradient Boosting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ENGG680_C11.html">11. Dimensionality Reduction and Feature Selection</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C11S01.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C11S03.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C11S04.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C11S05.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C11S06.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_12/ENGG680_C12.html">12. Introduction to Deep Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S01.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S02.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S03.html">12.3. TensorFlow Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S04.html">12.4. Introduction to Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S05.html">12.5. Tensors in Various Operations (Ops)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S06.html">12.6. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S07.html">12.7. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S08.html">12.8. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S09.html">12.9. Deep Learning Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S10.html">12.10. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S11.html">12.11. Image Augmentations with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S12.html">12.12. Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S13.html">12.13. Brief Overview of Additional Topics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">13. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Principal Components Analysis (PCA)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">11.2.1. Mathematical Formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-essence-of-principal-components-analysis-pca">11.2.2. The Essence of Principal Components Analysis (PCA)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-for-dimensionality-reduction">11.2.3. PCA for Dimensionality Reduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizing-pca-for-visualization-handwritten-digits">11.2.3.1. Utilizing PCA for Visualization: Handwritten Digits</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="principal-components-analysis-pca">
+<h1><span class="section-number">11.2. </span>Principal Components Analysis (PCA)<a class="headerlink" href="#principal-components-analysis-pca" title="Link to this heading">#</a></h1>
+<p>Principal Components Analysis (PCA) is a widely used statistical technique that plays a crucial role in reducing the dimensionality of high-dimensional data while retaining its inherent variability. This is accomplished by transforming the original variables into a new set of uncorrelated variables called principal components. These principal components are linear combinations of the original variables, and they are ordered in such a way that the first component explains the maximum variance, the second component explains the second highest variance, and so on.</p>
+<section id="mathematical-formulation">
+<h2><span class="section-number">11.2.1. </span>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading">#</a></h2>
+<p>PCA is a powerful tool when dealing with a large set of interconnected variables, enabling the compression of this set into a smaller group of representative variables that collectively capture the major part of the initial set’s variability. This is particularly valuable for tasks such as data visualization and exploratory analysis <span id="id1">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<p>Consider a scenario where we possess data on n observations, each with measurements across a collection of p features denoted as <span class="math notranslate nohighlight">\(X_1\)</span>, <span class="math notranslate nohighlight">\(X_2\)</span>, <span class="math notranslate nohighlight">\(\ldots\)</span>, <span class="math notranslate nohighlight">\(X_p\)</span>.</p>
+<ol class="arabic">
+<li><p>Given a dataset represented by an <span class="math notranslate nohighlight">\(n \times p\)</span> matrix X, the loading vector of the first principal component is determined by solving the subsequent optimization problem:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2d0b6199-66f5-4608-96d9-047c1fdcc68c">
+<span class="eqno">(11.1)<a class="headerlink" href="#equation-2d0b6199-66f5-4608-96d9-047c1fdcc68c" title="Permalink to this equation">#</a></span>\[\begin{align}
+   \max_{\phi_{11}, \ldots, \phi_{p1}} \left\{ \frac{1}{n} \sum_{i=1}^{n} \left( \sum_{j=1}^{p} \phi_{j1} x_{ij} \right)^2 \right\}, \quad \text{subject to} \sum_{j=1}^{p} \phi_{j1}^2.
+   \end{align}\]</div>
+<p>Introducing an intermediate variable <span class="math notranslate nohighlight">\(z_{ij} = \sum_{j=1}^{p} \phi_{j1} x_{ij}\)</span> allows us to reformulate the problem:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a44c0783-a88c-4b4c-b835-060c64a3c666">
+<span class="eqno">(11.2)<a class="headerlink" href="#equation-a44c0783-a88c-4b4c-b835-060c64a3c666" title="Permalink to this equation">#</a></span>\[\begin{align}
+   \max_{\phi_{11}, \ldots, \phi_{p1}} \left\{ \frac{1}{n} \sum_{i=1}^{n} z_{ij}^2 \right\}, \quad \text{subject to} \sum_{j=1}^{p} \phi_{j1}^2.
+   \end{align}\]</div>
+<p>Importantly, <span class="math notranslate nohighlight">\(\frac{1}{n}\sum_{i=1}^{n} z_{ij}^2 = 0\)</span> due to <span class="math notranslate nohighlight">\(\frac{1}{n}\sum_{i=1}^{n} x_{ij} = 0\)</span>. Furthermore, the terms <span class="math notranslate nohighlight">\(z_{ij}\)</span> are commonly known as the <strong>scores</strong> of the first principal component.</p>
+</li>
+<li><p>The second principal component can be understood as the linear combination of <span class="math notranslate nohighlight">\(X_1\)</span>, <span class="math notranslate nohighlight">\(X_2\)</span>, <span class="math notranslate nohighlight">\(\ldots\)</span>, <span class="math notranslate nohighlight">\(X_p\)</span> that possesses the highest <strong>variance</strong> among all linear combinations that are <strong>uncorrelated</strong> with the first principal component, denoted as <span class="math notranslate nohighlight">\(Z_1\)</span>. The scores of the second principal component, represented as <span class="math notranslate nohighlight">\(z_{12}\)</span>, <span class="math notranslate nohighlight">\(z_{22}\)</span>, <span class="math notranslate nohighlight">\(\ldots\)</span>, <span class="math notranslate nohighlight">\(z_{n2}\)</span>, are given by the formula:</p>
+<div class="math notranslate nohighlight">
+\[z_{i2} = \sum_{j=1}^{p} \phi_{j2} x_{ij}\]</div>
+<p>In this context, <span class="math notranslate nohighlight">\(\phi_{2} = \left[ \phi_{12}, \phi_{22}, \ldots, \phi_{p2} \right]\)</span> indicates the loading vector associated with the second principal component. Essentially, this vector captures the weightings assigned to each feature when constructing the second principal component.</p>
+</li>
+</ol>
+</section>
+<section id="the-essence-of-principal-components-analysis-pca">
+<h2><span class="section-number">11.2.2. </span>The Essence of Principal Components Analysis (PCA)<a class="headerlink" href="#the-essence-of-principal-components-analysis-pca" title="Link to this heading">#</a></h2>
+<p><strong>Objective</strong>: PCA aims to find a set of orthogonal axes (principal components) in the high-dimensional space that captures the most significant variance in the data <span id="id2">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p>
+<p><strong>Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Data Standardization</strong>: Before performing PCA, it’s common to standardize the data to have zero mean and unit variance. This is crucial as it ensures that variables with larger scales don’t disproportionately influence the analysis <span id="id3">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Covariance Matrix</strong>: Calculate the covariance matrix of the standardized data. The covariance matrix represents the relationships between the variables <span id="id4">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Eigenvalue Decomposition</strong>: Compute the eigenvalues and eigenvectors of the covariance matrix. The eigenvectors are the directions of the principal components, and the corresponding eigenvalues indicate the amount of variance explained by each component <span id="id5">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Principal Component Scores</strong>: Project the original data onto the principal component axes to obtain the principal component scores. These scores represent the data in the new coordinate system defined by the principal components <span id="id6">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+</ol>
+<p><strong>Applications</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Dimensionality Reduction</strong>: PCA is used to reduce the number of dimensions while retaining the most important information. This is particularly helpful when dealing with high-dimensional data that can be difficult to visualize or analyze <span id="id7">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Data Visualization</strong>: By plotting the data using the first two principal components as axes, it’s possible to visualize the inherent structure of the data in a lower-dimensional space <span id="id8">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Noise Reduction</strong>: PCA can help reduce noise in the data by focusing on the components that explain the most variance and potentially ignoring noise-dominated components <span id="id9">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Feature Selection</strong>: In some cases, PCA can be used as a form of feature selection, as it provides insights into which original features contribute most to the principal components <span id="id10">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+</ol>
+<p><strong>Limitations</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Loss of Interpretability</strong>: While PCA is powerful for dimensionality reduction, the resulting principal components might not have a direct interpretation in terms of the original features <span id="id11">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Linearity Assumption</strong>: PCA assumes that the underlying relationships in the data are linear. If the data exhibits nonlinear relationships, PCA might not be the most suitable technique <span id="id12">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+<li><p><strong>Information Loss</strong>: Although PCA retains most of the variance, there is some amount of information loss when reducing dimensions <span id="id13">[<a class="reference internal" href="../References.html#id100" title="I.T. Jolliffe. Principal Component Analysis. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475719048. URL: https://books.google.ca/books?id=-ongBwAAQBAJ.">Jolliffe, 2013</a>]</span>.</p></li>
+</ol>
+<div class="admonition-pca-algorithm admonition">
+<p class="admonition-title">PCA algorithm</p>
+<p>The PC (Principal Component) algorithm is a technique used for dimensionality reduction and feature extraction. It aims to find a set of orthogonal axes, called principal components, along which the data varies the most. These principal components are linear combinations of the original features. Below, I’ll outline the mathematical steps of the PC algorithm <span id="id14">[<a class="reference internal" href="../References.html#id161" title="Tony Phillips. Principal component analysis. https://mathvoices.ams.org/featurecolumn/2021/08/01/principal-component-analysis/, 2023. [Online; accessed 01-August-2023].">Phillips, 2023</a>]</span>:</p>
+<p><strong>Step 1: Data Preprocessing</strong></p>
+<ul class="simple">
+<li><p>Collect and preprocess the dataset if needed. Ensure that the data is centered (i.e., subtract the mean from each feature) to have a mean of zero.</p></li>
+</ul>
+<p><strong>Step 2: Calculate the Covariance Matrix</strong></p>
+<ul>
+<li><p>Compute the covariance matrix (<span class="math notranslate nohighlight">\( \Sigma \)</span>) of the preprocessed data. The covariance between two features <span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( x_j \)</span> is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-874b35d0-9f7a-44f3-a869-54833965ecfc">
+<span class="eqno">(11.3)<a class="headerlink" href="#equation-874b35d0-9f7a-44f3-a869-54833965ecfc" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Cov}(x_i, x_j) = \frac{1}{n-1} \sum_{k=1}^{n} (x_i^{(k)} - \bar{x}_i)(x_j^{(k)} - \bar{x}_j) \end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( n \)</span> is the number of data points.</p></li>
+<li><p><span class="math notranslate nohighlight">\( x_i^{(k)} \)</span> and <span class="math notranslate nohighlight">\( x_j^{(k)} \)</span> are the values of features <span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( x_j \)</span> for data point <span class="math notranslate nohighlight">\( k \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \bar{x}_i \)</span> and <span class="math notranslate nohighlight">\( \bar{x}_j \)</span> are the means of features <span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( x_j \)</span> across all data points.</p></li>
+</ul>
+</li>
+<li><p>The covariance matrix <span class="math notranslate nohighlight">\( \Sigma \)</span> is a symmetric matrix where each element <span class="math notranslate nohighlight">\( \Sigma_{ij} \)</span> represents the covariance between features <span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( x_j \)</span>.</p></li>
+</ul>
+<p><strong>Step 3: Eigendecomposition</strong></p>
+<ul class="simple">
+<li><p>Perform an eigendecomposition on the covariance matrix <span class="math notranslate nohighlight">\( \Sigma \)</span> to find its eigenvalues (<span class="math notranslate nohighlight">\( \lambda_1, \lambda_2, \ldots, \lambda_p \)</span>) and corresponding eigenvectors (<span class="math notranslate nohighlight">\( \mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_p \)</span>), where <span class="math notranslate nohighlight">\( p \)</span> is the number of features.</p></li>
+</ul>
+<p><strong>Step 4: Sort Eigenvalues and Eigenvectors</strong></p>
+<ul class="simple">
+<li><p>Sort the eigenvalues in descending order, and arrange the corresponding eigenvectors accordingly.</p></li>
+</ul>
+<p><strong>Step 5: Select Principal Components</strong></p>
+<ul class="simple">
+<li><p>Choose the top <span class="math notranslate nohighlight">\( k \)</span> eigenvectors corresponding to the <span class="math notranslate nohighlight">\( k \)</span> largest eigenvalues to form a matrix <span class="math notranslate nohighlight">\( \mathbf{V}_k \)</span>. These are the principal components that capture the most variance in the data.</p></li>
+</ul>
+<p><strong>Step 6: Projection</strong></p>
+<ul>
+<li><p>Project the original data onto the subspace spanned by the selected <span class="math notranslate nohighlight">\( k \)</span> principal components to obtain the reduced-dimensional representation of the data. The projection of a data point <span class="math notranslate nohighlight">\( \mathbf{x} \)</span> onto the subspace is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-57f8154d-8d2f-4bcb-a4f7-4c0a14daddca">
+<span class="eqno">(11.4)<a class="headerlink" href="#equation-57f8154d-8d2f-4bcb-a4f7-4c0a14daddca" title="Permalink to this equation">#</a></span>\[\begin{equation} \mathbf{X}_{\text{new}} = \mathbf{X} \cdot \mathbf{V}_k \end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( \mathbf{X}_{\text{new}} \)</span> is the reduced-dimensional data.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{X} \)</span> is the original centered data.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{V}_k \)</span> is the matrix of the top <span class="math notranslate nohighlight">\( k \)</span> principal components.</p></li>
+</ul>
+</li>
+</ul>
+<p>The result is a transformed dataset that retains most of the variance while reducing the dimensionality.</p>
+<p>The PC algorithm is a fundamental technique in dimensionality reduction and feature extraction, often used as a precursor to other machine learning tasks to reduce computational complexity and noise in the data.</p>
+</div>
+<div class="admonition-calculation-of-covarinace admonition">
+<p class="admonition-title">Calculation of Covarinace</p>
+<p>The covariance between two variables measures the extent to which they vary together. Mathematically, the covariance between two variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> is calculated as <span id="id15">[<a class="reference internal" href="../References.html#id207" title="R.S. Witte and J.S. Witte. Statistics. Wiley, 2017. ISBN 9781119254515. URL: https://books.google.ca/books?id=KcxjDwAAQBAJ.">Witte and Witte, 2017</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fa4ebe78-8add-4114-9da5-a56dd986535e">
+<span class="eqno">(11.5)<a class="headerlink" href="#equation-fa4ebe78-8add-4114-9da5-a56dd986535e" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Cov}(X, Y) = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) \end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( n \)</span> is the number of data points.</p></li>
+<li><p><span class="math notranslate nohighlight">\( x_i \)</span> and <span class="math notranslate nohighlight">\( y_i \)</span> are the values of variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> for the <span class="math notranslate nohighlight">\(i\)</span>th data point.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \bar{x} \)</span> and <span class="math notranslate nohighlight">\( \bar{y} \)</span> are the means of variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> across all data points.</p></li>
+</ul>
+<p>Covariance can also be calculated using matrix operations. If you have a dataset with multiple variables, you can calculate the covariance matrix <span class="math notranslate nohighlight">\( \Sigma \)</span> as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-79ebde21-a241-472e-a775-84b18f7747da">
+<span class="eqno">(11.6)<a class="headerlink" href="#equation-79ebde21-a241-472e-a775-84b18f7747da" title="Permalink to this equation">#</a></span>\[\begin{equation} \Sigma = \frac{1}{n-1} \cdot (\mathbf{X} - \mathbf{\bar{x}})^\top \cdot (\mathbf{X} - \mathbf{\bar{x}}) \end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( \mathbf{X} \)</span> is an <span class="math notranslate nohighlight">\( n \times p \)</span> matrix representing the dataset, where <span class="math notranslate nohighlight">\( n \)</span> is the number of data points and <span class="math notranslate nohighlight">\( p \)</span> is the number of variables.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{\bar{x}} \)</span> is a <span class="math notranslate nohighlight">\( 1 \times p \)</span> vector containing the means of each variable.</p></li>
+</ul>
+<p>The resulting covariance matrix <span class="math notranslate nohighlight">\( \Sigma \)</span> is a <span class="math notranslate nohighlight">\( p \times p \)</span> symmetric matrix. The element <span class="math notranslate nohighlight">\( \Sigma_{ij} \)</span> represents the covariance between variables <span class="math notranslate nohighlight">\(X_i\)</span> and <span class="math notranslate nohighlight">\(X_j\)</span>.</p>
+<p>In Python, you can calculate the covariance matrix using the <code class="docutils literal notranslate"><span class="pre">np.cov</span></code> function from the NumPy library. Here’s an example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Define a dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">],</span> <span class="o">...</span><span class="p">])</span>
+
+<span class="c1"># Calculate the covariance matrix</span>
+<span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The diagonal elements of the covariance matrix represent the variances of individual variables, while the off-diagonal elements represent the covariances between pairs of variables.</p>
+</div>
+<!-- Definitions of mean, standard deviation, and z-score, along with an explanation of how the z-score is used to standardize datasets:
+
+1. **Mean ($\mu$):**
+The mean, often referred to as the average, is the sum of all the values in a dataset divided by the total number of values.
+
+Mathematically:
+\begin{equation} \mu = \frac{1}{n} \sum_{i=1}^{n} x_i \end{equation},
+where:
+- $\mu$ represents the mean.
+- $n$ is the number of data points in the dataset.
+- $x_i$ are the individual data points.
+
+2. **Standard Deviation ($\sigma$):**
+The standard deviation measures the dispersion or spread of values in a dataset. It quantifies how much the individual data points deviate from the mean.
+
+Mathematically:
+\begin{equation} \sigma = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \mu)^2} \end{equation},
+where:
+- $\sigma$ represents the standard deviation.
+- $n$ is the number of data points in the dataset.
+- $x_i$ are the individual data points.
+- $\mu$ is the mean of the dataset.
+
+3. **Z-Score ($z$):**
+The z-score is a measure of how many standard deviations a particular data point is away from the mean. It's often used to standardize and compare values across different datasets, as it transforms the original data into a standardized distribution with a mean of 0 and a standard deviation of 1.
+
+Mathematically:
+\begin{equation} z = \frac{x - \mu}{\sigma} \end{equation}
+where:
+- $z$ is the z-score of a specific data point $x$.
+- $x$ is the individual data point.
+- $\mu$ is the mean of the dataset.
+- $\sigma$ is the standard deviation of the dataset.
+
+**Using Z-Scores for Standardization:**
+To standardize a dataset using z-scores, you subtract the mean from each data point and then divide by the standard deviation. This process centers the data around the mean and scales it by the standard deviation. This is useful for comparing and analyzing data points in a consistent way, regardless of the original scale of the data. Standardized data has a mean of 0 and a standard deviation of 1, which facilitates comparisons between different datasets or data points. --><p><font color='Blue'><b>Example:</b></font> Let’s consider a small dataset with two variables (<span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span>) and three observations:</p>
+<p><strong>Step 1: Define the Dataset</strong>
+The new original dataset is given by the matrix <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c85295d2-b908-4fde-a292-6659d9c69af1">
+<span class="eqno">(11.7)<a class="headerlink" href="#equation-c85295d2-b908-4fde-a292-6659d9c69af1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+A = \begin{bmatrix}
+11 &amp; 22 \\
+13 &amp; 24 \\
+15 &amp; 26 \\
+\end{bmatrix}
+\end{equation}\]</div>
+<p>This matrix represents a dataset with three data points, where each row corresponds to a data point and each column corresponds to a feature. In this case, you have three data points and two features.</p>
+<p><font color='Green'><b>Explanation:</b></font> This step defines the input data for PCA. The matrix <span class="math notranslate nohighlight">\(A\)</span> contains the values of the two features (<span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span>) for each data point. For example, the first data point has <span class="math notranslate nohighlight">\(X_1 = 11\)</span> and <span class="math notranslate nohighlight">\(X_2 = 22\)</span>.</p>
+<p><strong>Step 2: Calculate the Mean of Each Column</strong>
+Calculate the mean of each feature (column) to obtain the column-wise means:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-02e22639-d2dd-4e26-ae52-27e31637d730">
+<span class="eqno">(11.8)<a class="headerlink" href="#equation-02e22639-d2dd-4e26-ae52-27e31637d730" title="Permalink to this equation">#</a></span>\[\begin{equation}
+M = \begin{bmatrix}
+\dfrac{11+13+15}{3} \\
+\dfrac{22+24+26}{3} \\
+\end{bmatrix}
+= \begin{bmatrix}
+13 \\
+24 \\
+\end{bmatrix}
+\end{equation}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(M\)</span> represents the mean vector, where each element <span class="math notranslate nohighlight">\( M_i \)</span> corresponds to the mean of feature <span class="math notranslate nohighlight">\( i \)</span>.</p>
+<p><font color='Green'><b>Explanation:</b></font> This step calculates the average value of each feature across all data points. The mean vector <span class="math notranslate nohighlight">\(M\)</span> summarizes the central tendency of the data for each feature. For example, the mean of feature <span class="math notranslate nohighlight">\(X_1\)</span> is <span class="math notranslate nohighlight">\(13\)</span>, which is the average of <span class="math notranslate nohighlight">\(11\)</span>, <span class="math notranslate nohighlight">\(13\)</span>, and <span class="math notranslate nohighlight">\(15\)</span>.</p>
+<p><strong>Step 3: Center Columns by Subtracting Column Means</strong>
+Center the data by subtracting the mean vector <span class="math notranslate nohighlight">\( M \)</span> from each data point in matrix <span class="math notranslate nohighlight">\( A \)</span>, resulting in the centered matrix <span class="math notranslate nohighlight">\( C \)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6ecaf2d7-4a66-4b22-bc89-85571679968d">
+<span class="eqno">(11.9)<a class="headerlink" href="#equation-6ecaf2d7-4a66-4b22-bc89-85571679968d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+C = A - M =
+\begin{bmatrix}
+11-13 &amp; 22-24 \\
+13-13 &amp; 24-24 \\
+15-13 &amp; 26-24 \\
+\end{bmatrix}
+= \begin{bmatrix}
+-2 &amp; -2 \\
+0 &amp; 0 \\
+2 &amp; 2 \\
+\end{bmatrix}
+\end{equation}\]</div>
+<p><font color='Green'><b>Explanation:</b></font> This step centers the data by removing the mean from each feature. The centered matrix <span class="math notranslate nohighlight">\(C\)</span> contains the deviations of the original values from the mean. This ensures that the data has zero mean and reduces the effect of scaling differences among features. For example, the first data point has a deviation of <span class="math notranslate nohighlight">\(-2\)</span> from the mean of feature <span class="math notranslate nohighlight">\(X_1\)</span>.</p>
+<p><strong>Step 4: Calculate Covariance Matrix of Centered Matrix</strong>
+Consider that <span class="math notranslate nohighlight">\(X\)</span> represents a 3 by 2 matrix, implying that the sample size, denoted as <span class="math notranslate nohighlight">\(n\)</span>, equals 3. We can now compute the covariance matrix <span class="math notranslate nohighlight">\(V\)</span> for the centered matrix <span class="math notranslate nohighlight">\(C\)</span> by performing the matrix multiplication of the transpose of <span class="math notranslate nohighlight">\(C\)</span> by <span class="math notranslate nohighlight">\(C\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4548b13b-6594-46bd-a8c9-bf557ebe9179">
+<span class="eqno">(11.10)<a class="headerlink" href="#equation-4548b13b-6594-46bd-a8c9-bf557ebe9179" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\Sigma = \frac{1}{n-1}C^T   C =
+\frac{1}{3-1}
+\begin{bmatrix}
+-2 &amp; 0 &amp; 2 \\
+-2 &amp; 0 &amp; 2 \\
+\end{bmatrix}
+\begin{bmatrix}
+-2 &amp; -2 \\
+0 &amp; 0 \\
+2 &amp; 2 \\
+\end{bmatrix}
+= \begin{bmatrix}
+4 &amp; 4 \\
+4 &amp; 4 \\
+\end{bmatrix}
+\end{equation}\]</div>
+<p>The covariance matrix <span class="math notranslate nohighlight">\( V \)</span> captures the relationships between the features and their variations.</p>
+<p><font color='Green'><b>Explanation:</b></font> This step calculates the covariance matrix of the centered data. The covariance matrix measures the relationship between each pair of features in the data. Each element is the covariance between two features, which indicates how they vary together. A high positive covariance means that the features tend to increase or decrease together, while a high negative covariance means that they tend to move in opposite directions. A zero covariance means that the features are independent of each other. For example, the covariance between feature <span class="math notranslate nohighlight">\(X_1\)</span> and feature <span class="math notranslate nohighlight">\(X_2\)</span> is <span class="math notranslate nohighlight">\(4\)</span>, which means that they have a strong positive relationship.</p>
+<p><strong>Step 5: Eigendecomposition of Covariance Matrix</strong>
+Perform the eigendecomposition of the covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> to find eigenvalues and eigenvectors. Eigenvalues (<span class="math notranslate nohighlight">\( \lambda \)</span>) represent the importance of each eigenvector, and eigenvectors (<span class="math notranslate nohighlight">\( V \)</span>) define the directions of the new feature space:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-da82795c-5cb7-40b5-8027-b1d7df4ab40e">
+<span class="eqno">(11.11)<a class="headerlink" href="#equation-da82795c-5cb7-40b5-8027-b1d7df4ab40e" title="Permalink to this equation">#</a></span>\[\begin{equation}  \lambda = \begin{bmatrix}
+8 \\
+0 \\
+\end{bmatrix} \end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-774e80d8-3f24-423b-9b72-c0685384999e">
+<span class="eqno">(11.12)<a class="headerlink" href="#equation-774e80d8-3f24-423b-9b72-c0685384999e" title="Permalink to this equation">#</a></span>\[\begin{equation} V = \begin{bmatrix}
+\dfrac{\sqrt{2}}{2} &amp; -\dfrac{\sqrt{2}}{2} \\
+\dfrac{\sqrt{2}}{2} &amp; \dfrac{\sqrt{2}}{2} \\
+\end{bmatrix} \end{equation}\]</div>
+<p><font color='Green'><b>Explanation:</b></font> This step performs the eigendecomposition of the covariance matrix to find its eigenvalues and eigenvectors. The eigenvalues represent the amount of variance explained by each eigenvector, which are the directions of the principal components. The principal components are the new features that capture the most significant variations in the data. They are ordered by decreasing eigenvalues, meaning that the first principal component explains the most variance, the second principal component explains the second most variance, and so on. For example, the first eigenvalue is <span class="math notranslate nohighlight">\(8\)</span>, which means that the first principal component accounts for all the variance in the data, while the second eigenvalue is <span class="math notranslate nohighlight">\(0\)</span>, which means that the second principal component contributes nothing to the variance.</p>
+<p><strong>Step 6: Project Data</strong>
+Project the centered data matrix <span class="math notranslate nohighlight">\( C \)</span> onto the eigenvectors to obtain the transformed data <span class="math notranslate nohighlight">\( P \)</span>. The transformation is performed by calculating the dot product between the transposed eigenvectors and the transposed centered data matrix:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+P^T  = V^T  C^T &amp; =
+\begin{bmatrix}
+\dfrac{\sqrt{2}}{2} &amp; \dfrac{\sqrt{2}}{2} \\
+-\dfrac{\sqrt{2}}{2} &amp; \dfrac{\sqrt{2}}{2} \\
+\end{bmatrix}
+\begin{bmatrix}
+-2 &amp; 0 &amp; 2 \\
+-2 &amp; 0 &amp; 2 \\
+\end{bmatrix}
+\\ &amp; 
+= \begin{bmatrix}
+-2\sqrt{2} &amp; 0 &amp; 2\sqrt{2} \\
+0 &amp; 0 &amp; 0 \\
+\end{bmatrix}
+\end{align*}\]</div>
+<p>Transformed Data (Projected onto Principal Components):</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+P = \begin{bmatrix}
+-2\sqrt{2} &amp; 0 \\
+0 &amp; 0 \\
+2\sqrt{2} &amp; 0 \\
+\end{bmatrix}
+\end{align*}\]</div>
+<p>The resulting matrix <span class="math notranslate nohighlight">\( P\)</span> represents the data projected onto the new feature space defined by the eigenvectors. This transformation effectively reduces the dimensionality while retaining the maximum variance in the data.</p>
+<p><font color='Green'><b>Explanation:</b></font> This step projects the centered data matrix onto the eigenvectors to obtain the transformed data. The transformed data is in a new coordinate system defined by the principal components, where the axes are aligned with the directions of maximum variance in the data. The values in the transformed data represent the projections of the original data points onto the principal components, which indicate how much each principal component contributes to the data point’s transformation. For example, the first data point has a projection of <span class="math notranslate nohighlight">\(-2\sqrt{2}\)</span> along the first principal component and <span class="math notranslate nohighlight">\(0\)</span> along the second principal component, which means that it is located far away from the origin along the diagonal line defined by the first principal component.</p>
+<!-- **Step 1: Define the Dataset**
+The new original dataset is given by the matrix $A$:
+
+\begin{equation}
+A = \begin{bmatrix}
+11 & 22 \\
+13 & 24 \\
+15 & 26 \\
+\end{bmatrix}
+\end{equation}
+
+This matrix represents a dataset with three data points, where each row corresponds to a data point and each column corresponds to a feature.
+
+**Step 2: Calculate the Mean of Each Column**
+Calculate the mean of each feature (column) to obtain the column-wise means:
+
+\begin{equation}
+M = \begin{bmatrix}
+\dfrac{11+13+15}{3} \\
+\dfrac{22+24+26}{3} \\
+\end{bmatrix}
+= \begin{bmatrix}
+13 \\
+24 \\
+\end{bmatrix}
+\end{equation}
+
+Here, $M$ represents the mean vector, where each element $ M_i $ corresponds to the mean of feature $ i $.
+
+**Step 3: Center Columns by Subtracting Column Means**
+Center the data by subtracting the mean vector $ M $ from each data point in matrix $ A $, resulting in the centered matrix $ C $:
+
+\begin{equation}
+C = A - M =
+\begin{bmatrix}
+11-13 & 22-24 \\
+13-13 & 24-24 \\
+15-13 & 26-24 \\
+\end{bmatrix}
+= \begin{bmatrix}
+-2 & -2 \\
+0 & 0 \\
+2 & 2 \\
+\end{bmatrix}
+\end{equation}
+
+**Step 4: Calculate Covariance Matrix of Centered Matrix**
+Consider that $X$ represents a 3 by 2 matrix, implying that the sample size, denoted as $n$, equals 3. We can now compute the covariance matrix $V$ for the centered matrix $C$ by performing the matrix multiplication of the transpose of $C$ by $C$:
+
+\begin{equation}
+\Sigma = \frac{1}{n-1}C^T   C =
+\frac{1}{3-1}
+\begin{bmatrix}
+-2 & 0 & 2 \\
+-2 & 0 & 2 \\
+\end{bmatrix}
+\begin{bmatrix}
+-2 & -2 \\
+0 & 0 \\
+2 & 2 \\
+\end{bmatrix}
+= \begin{bmatrix}
+4 & 4 \\
+4 & 4 \\
+\end{bmatrix}
+\end{equation}
+
+The covariance matrix $ V $ captures the relationships between the features and their variations.
+
+**Step 5: Eigendecomposition of Covariance Matrix**
+Perform the eigendecomposition of the covariance matrix $\Sigma$ to find eigenvalues and eigenvectors. Eigenvalues ($ \lambda $) represent the importance of each eigenvector, and eigenvectors ($ V $) define the directions of the new feature space:
+
+\begin{equation}  \lambda = \begin{bmatrix}
+8 \\
+0 \\
+\end{bmatrix} \end{equation}
+
+\begin{equation} V = \begin{bmatrix}
+\dfrac{\sqrt{2}}{2} & -\dfrac{\sqrt{2}}{2} \\
+\dfrac{\sqrt{2}}{2} & \dfrac{\sqrt{2}}{2} \\
+\end{bmatrix} \end{equation}
+
+**Step 6: Project Data**
+Project the centered data matrix $ C $ onto the eigenvectors to obtain the transformed data $ P $. The transformation is performed by calculating the dot product between the transposed eigenvectors and the transposed centered data matrix:
+
+\begin{align*}
+P^T  = V^T  C^T & =
+\begin{bmatrix}
+\dfrac{\sqrt{2}}{2} & \dfrac{\sqrt{2}}{2} \\
+-\dfrac{\sqrt{2}}{2} & \dfrac{\sqrt{2}}{2} \\
+\end{bmatrix}
+\begin{bmatrix}
+-2 & 0 & 2 \\
+-2 & 0 & 2 \\
+\end{bmatrix}
+\\ & 
+= \begin{bmatrix}
+-2\sqrt{2} & 0 & 2\sqrt{2} \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\end{align*}
+
+Transformed Data (Projected onto Principal Components):
+\begin{align*}
+P = \begin{bmatrix}
+-2\sqrt{2} & 0 \\
+0 & 0 \\
+2\sqrt{2} & 0 \\
+\end{bmatrix}
+\end{align*}
+
+The resulting matrix $ P$ represents the data projected onto the new feature space defined by the eigenvectors. This transformation effectively reduces the dimensionality while retaining the maximum variance in the data. --><div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>To find the eigenvalues and eigenvectors, we can use the following steps:</p>
+<ul class="simple">
+<li><p>First, we need to find the characteristic polynomial of the matrix, which is given by the determinant of the matrix minus a scalar variable lambda. For the matrix <span class="math notranslate nohighlight">\(A = \begin{bmatrix}
+4 &amp; 4 \\
+4 &amp; 4 \\
+\end{bmatrix}\)</span>, the characteristic polynomial is:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\det(\lambda I - A) = 
+\begin{vmatrix}4 - \lambda &amp; 4 \\4 &amp; 4 - \lambda\end{vmatrix}=
+(4 - \lambda)^2 - 16 = \lambda^2 - 8\lambda
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Next, we need to find the roots of the characteristic polynomial, which are the eigenvalues of the matrix. We can use the quadratic formula to solve for lambda:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\lambda = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+= \frac{8 \pm \sqrt{64 - 0}}{2}
+= \frac{8 \pm 8}{2}
+= 0, 8
+\]</div>
+<ul>
+<li><p>The eigenvalues of the matrix are 0 and 8.</p></li>
+<li><p>To find the eigenvectors of the matrix, we need to plug in each eigenvalue into the equation <span class="math notranslate nohighlight">\((A - \lambda I)X = 0\)</span>, and solve for the vector.</p>
+<ul class="simple">
+<li><p>For the eigenvalue 0, we have:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{bmatrix}
+    4 - 0 &amp; 4 \\
+    4 &amp; 4 - 0
+    \end{bmatrix}
+    \begin{bmatrix}
+    x \\
+    y
+    \end{bmatrix}
+    = \begin{bmatrix}
+    0 \\
+    0
+    \end{bmatrix}
+    \end{split}\]</div>
+<ul class="simple">
+<li><p>This gives us the equation <span class="math notranslate nohighlight">\(4x + 4y = 0\)</span>, which implies that <span class="math notranslate nohighlight">\(x = -y\)</span>. Therefore, any vector of the form <span class="math notranslate nohighlight">\([-y, y]\)</span> is an eigenvector for the eigenvalue <span class="math notranslate nohighlight">\(0\)</span>. For example, <span class="math notranslate nohighlight">\([-1, 1]\)</span> is an eigenvector for <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p>For the eigenvalue 8, we have:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    \begin{bmatrix}
+    4 - 8 &amp; 4 \\
+    4 &amp; 4 - 8
+    \end{bmatrix}
+    \begin{bmatrix}
+    x \\
+    y
+    \end{bmatrix}
+    = \begin{bmatrix}
+    0 \\
+    0
+    \end{bmatrix}
+    \end{split}\]</div>
+<ul class="simple">
+<li><p>This gives us the equation <span class="math notranslate nohighlight">\(-4x + 4y = 0\)</span>, which implies that <span class="math notranslate nohighlight">\(x = y\)</span>. Therefore, any vector of the form <span class="math notranslate nohighlight">\([y, y]\)</span> is an eigenvector for the eigenvalue 8. For example, <span class="math notranslate nohighlight">\([1, 1]\)</span> is an eigenvector for 8.</p></li>
+<li><p>The eigenvectors of the matrix are <span class="math notranslate nohighlight">\([-y, y]\)</span> for 0 and <span class="math notranslate nohighlight">\([y, y]\)</span> for 8.</p></li>
+</ul>
+</li>
+</ul>
+<p>To form an eigenvector matrix V, we need to choose one eigenvector for each eigenvalue and arrange them as columns of the matrix. For example, we can choose <span class="math notranslate nohighlight">\([-1, 1]\)</span> for 0 and <span class="math notranslate nohighlight">\([1, 1]\)</span> for 8. Then, the eigenvector matrix <span class="math notranslate nohighlight">\(V\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+V = \begin{bmatrix}
+-1 &amp; 1 \\
+1 &amp; 1
+\end{bmatrix}
+\end{split}\]</div>
+<p>To normalize the eigenvector matrix V, we need to divide each column by its norm, which is the square root of the sum of the squares of its elements. For example, the norm of [-1, 1] is <span class="math notranslate nohighlight">\(\sqrt{(-1)^2 + (1)^2} = \sqrt{2}\)</span>. Then, the normalized eigenvector matrix V is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+V = \dfrac{1}{\sqrt{2}} \begin{bmatrix}
+-1 &amp; 1 \\
+1 &amp; 1
+\end{bmatrix}
+= \begin{bmatrix}
+-\dfrac{1}{\sqrt{2}} &amp; \dfrac{1}{\sqrt{2}} \\
+\dfrac{1}{\sqrt{2}} &amp; \dfrac{1}{\sqrt{2}}
+\end{bmatrix}
+\end{split}\]</div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>Principal Component Analysis (PCA) was conducted on a dataset containing three data points and two features. PCA is a data transformation technique designed to create a new feature space that maximizes data variance while minimizing redundancy. This new feature space is characterized by the eigenvectors of the dataset’s covariance matrix, often referred to as principal components. The eigenvalues of the covariance matrix provide insight into the significance of each principal component concerning data variance.</p>
+<p>The above calculations can be summarized as follows:</p>
+<ul>
+<li><p>The covariance matrix of the original dataset, denoted as <span class="math notranslate nohighlight">\(\Sigma\)</span>, is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d3c198c6-39a3-46fd-9f72-665015559251">
+<span class="eqno">(11.13)<a class="headerlink" href="#equation-d3c198c6-39a3-46fd-9f72-665015559251" title="Permalink to this equation">#</a></span>\[\begin{equation} \Sigma = \begin{bmatrix}
+  4 &amp; 4 \\
+  4 &amp; 4 \\
+  \end{bmatrix} \end{equation}\]</div>
+<p>This indicates a perfect correlation between the two features and equal variances. Consequently, the data exhibits substantial redundancy, suggesting the potential for dimensionality reduction without significant information loss.</p>
+</li>
+<li><p>The eigenvalues of the covariance matrix, represented as <span class="math notranslate nohighlight">\(\lambda\)</span>, are as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cb773853-f887-486a-9e88-592b1f4be8a7">
+<span class="eqno">(11.14)<a class="headerlink" href="#equation-cb773853-f887-486a-9e88-592b1f4be8a7" title="Permalink to this equation">#</a></span>\[\begin{equation} \lambda = \begin{bmatrix}
+  8 \\
+  0 \\
+  \end{bmatrix} \end{equation}\]</div>
+<p>These eigenvalues signify that the first principal component explains all the data variance, while the second principal component contributes none. Consequently, projecting the data onto a one-dimensional space defined by the first principal component preserves all essential information.</p>
+</li>
+<li><p>The eigenvectors of the covariance matrix, denoted as <span class="math notranslate nohighlight">\(V\)</span>, are given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d62be3ba-5b4a-4745-93d9-fcb14e7be3a6">
+<span class="eqno">(11.15)<a class="headerlink" href="#equation-d62be3ba-5b4a-4745-93d9-fcb14e7be3a6" title="Permalink to this equation">#</a></span>\[\begin{equation} V = \begin{bmatrix}
+  \dfrac{\sqrt{2}}{2} &amp; -\dfrac{\sqrt{2}}{2} \\
+  \dfrac{\sqrt{2}}{2} &amp; \dfrac{\sqrt{2}}{2} \\
+  \end{bmatrix} \end{equation}\]</div>
+<p>These eigenvectors specify that the first principal component is a 45-degree diagonal line, while the second principal component is perpendicular to it. These directions define the new feature space for data transformation.</p>
+</li>
+<li><p>The data projected onto the principal components, designated as <span class="math notranslate nohighlight">\(P\)</span>, is represented as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-eff4cfc4-4e2c-475f-9e74-f98cb2dba72a">
+<span class="eqno">(11.16)<a class="headerlink" href="#equation-eff4cfc4-4e2c-475f-9e74-f98cb2dba72a" title="Permalink to this equation">#</a></span>\[\begin{equation} P = \begin{bmatrix}
+  -2\sqrt{2} &amp; 0 \\
+  0 &amp; 0 \\
+  2\sqrt{2} &amp; 0 \\
+  \end{bmatrix} \end{equation}\]</div>
+<p>This projection effectively reduces the data from two dimensions to one dimension by utilizing only the first column of <span class="math notranslate nohighlight">\(P\)</span>. It is evident that the projected data points are evenly spaced along the first principal component and possess zero values along the second principal component.</p>
+</li>
+</ul>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>The matrix <span class="math notranslate nohighlight">\( P \)</span> represents the transformed data obtained after applying Principal Component Analysis (PCA) to the original dataset. Each row of <span class="math notranslate nohighlight">\( P \)</span> corresponds to a data point in the original dataset, and each column corresponds to a principal component.</p>
+<p>In the context of PCA, the principal components are orthogonal directions in the original feature space that capture the most significant variations in the data. The first principal component (column 1 of <span class="math notranslate nohighlight">\( P \)</span>) captures the maximum variance, the second principal component (column 2 of <span class="math notranslate nohighlight">\( P \)</span>) captures the second highest variance, and so on.</p>
+<p>The values in the matrix <span class="math notranslate nohighlight">\( P \)</span> represent the projections of the original data points onto these principal components. These projections are in a new coordinate system defined by the principal components, where the axes are aligned with the directions of maximum variance in the data.</p>
+<p>Interpreting the matrix <span class="math notranslate nohighlight">\( P \)</span>:</p>
+<ul class="simple">
+<li><p>Each row in <span class="math notranslate nohighlight">\( P \)</span> represents a transformed data point.</p></li>
+<li><p>The values in each row represent how the original features have been projected onto the principal components.</p></li>
+<li><p>The magnitude of each value indicates the contribution of the corresponding principal component to the transformation of that data point.</p></li>
+</ul>
+<p>For example, if the first column of <span class="math notranslate nohighlight">\( P \)</span> has relatively large values for a particular data point, it means that this data point has a significant projection along the direction of the first principal component, capturing a large amount of the overall variance in the data. Similarly, the second column of <span class="math notranslate nohighlight">\( P \)</span> captures the second principal component’s contribution to each data point’s transformation.</p>
+<p>The matrix <span class="math notranslate nohighlight">\( P \)</span> provides a reduced-dimensional representation of the original data in terms of the principal components. It captures the essential information while discarding less significant variations in the data, which is the primary goal of PCA.</p>
+</div>
+<p><span style="color: Blue;"><strong>Example:</strong></span> We can employ the numpy library in Python to perform Principal Component Analysis (PCA), as illustrated in the preceding instance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="k">def</span> <span class="nf">print_bold</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+    <span class="n">_left</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1;34m&quot;</span>
+    <span class="n">_right</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_left</span> <span class="o">+</span> <span class="n">txt</span> <span class="o">+</span> <span class="n">_right</span><span class="p">)</span>
+
+<span class="c1"># Define a matrix</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">],</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">24</span><span class="p">],</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">26</span><span class="p">]])</span>
+
+<span class="c1"># Step 1: Print the original dataset</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Step 1: Original Dataset:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c1"># Step 2: Calculate the mean of each column</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 2: Mean of Each Column:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Center columns by subtracting column means</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">-</span> <span class="n">M</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 3: Centered Columns:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+<span class="c1"># Step 4: Calculate covariance matrix of centered matrix</span>
+<span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 4: Covariance Matrix of Centered Matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
+
+<span class="c1"># Step 5: Eigendecomposition of covariance matrix</span>
+<span class="n">lambda_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">Sigma</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 5: Eigendecomposition of Covariance Matrix&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eigenvalues:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lambda_</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eigenvectors:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="c1"># Step 6: Project data</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 6: Projected Data:&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">Step 1: Original Dataset:</span>
+[[11 22]
+ [13 24]
+ [15 26]]
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 2: Mean of Each Column:</span>
+[13. 24.]
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 3: Centered Columns:</span>
+[[-2. -2.]
+ [ 0.  0.]
+ [ 2.  2.]]
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 4: Covariance Matrix of Centered Matrix:</span>
+[[4. 4.]
+ [4. 4.]]
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 5: Eigendecomposition of Covariance Matrix</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Eigenvalues:</span>
+[8. 0.]
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Eigenvectors:</span>
+[[ 0.70710678 -0.70710678]
+ [ 0.70710678  0.70710678]]
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 6: Projected Data:</span>
+array([[-2.82842712,  0.        ],
+       [ 0.        ,  0.        ],
+       [ 2.82842712,  0.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is what each step means:</p>
+<ul class="simple">
+<li><p><strong>Step 1:</strong> Original Dataset: This is the matrix that represents your data before applying PCA. Each row corresponds to a data point, and each column corresponds to a feature. In this case, you have three data points and two features.</p></li>
+<li><p><strong>Step 2:</strong> Mean of Each Column: This is the vector that contains the average value of each feature across all data points. This is used to center the data by subtracting the mean from each feature.</p></li>
+<li><p><strong>Step 3:</strong> Centered Columns: This is the matrix that represents your data after centering. Each element is the difference between the original value and the mean of the corresponding feature. This ensures that the data has zero mean and reduces the effect of scaling differences among features.</p></li>
+<li><p><strong>Step 4:</strong> Covariance Matrix of Centered Matrix: This is the matrix that measures the relationship between each pair of features in the centered data. Each element is the covariance between two features, which indicates how they vary together. A high positive covariance means that the features tend to increase or decrease together, while a high negative covariance means that they tend to move in opposite directions. A zero covariance means that the features are independent of each other.</p></li>
+<li><p><strong>Step 5:</strong> Eigendecomposition of Covariance Matrix: This is the process of finding the eigenvalues and eigenvectors of the covariance matrix. The eigenvalues represent the amount of variance explained by each eigenvector, which are the directions of the principal components. The principal components are the new features that capture the most significant variations in the data. They are ordered by decreasing eigenvalues, meaning that the first principal component explains the most variance, the second principal component explains the second most variance, and so on.</p></li>
+<li><p><strong>Step 6:</strong> Projected Data: This is the matrix that represents your data after transforming it to the new feature space defined by the principal components. Each row corresponds to a data point, and each column corresponds to a principal component. The values are the projections of the original data points onto the principal components, which indicate how much each principal component contributes to the data point’s transformation.</p></li>
+</ul>
+<p><font color='Blue'><b>Example:</b></font> We can utilize the scikit-learn library in Python to conduct Principal Component Analysis (PCA), as shown in the previous example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="c1"># Define a matrix</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">],</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">24</span><span class="p">],</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">26</span><span class="p">]])</span>
+
+<span class="c1"># Step 1: Print the original dataset</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Step 1: Original Dataset:&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+<span class="c1"># Step 2: Create the PCA instance with desired number of components</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">()</span>
+
+<span class="c1"># Step 3: Fit the PCA model on the data</span>
+<span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Step 3: Fit PCA Model on Data&quot;</span><span class="p">)</span>
+
+<span class="c1"># Step 4: Access principal components (eigenvectors) and explained variance</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 4: Access Principal Components and Explained Variance&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Principal Components (Eigenvectors):&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Explained Variance for Each Principal Component:&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
+
+<span class="c1"># Step 5: Eigendecomposition of Covariance Matrix</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 5: Eigendecomposition of Covariance Matrix&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Eigenvalues:&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Eigenvectors:&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span>
+
+<span class="c1"># Step 6: Transform data using PCA</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Step 6: Transform Data using PCA (Projection)&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s2">&quot;Transformed Data (Projected onto Principal Components):&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">Step 1: Original Dataset:</span>
+array([[11, 22],
+       [13, 24],
+       [15, 26]])
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 3: Fit PCA Model on Data</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 4: Access Principal Components and Explained Variance</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Principal Components (Eigenvectors):</span>
+array([[ 0.70710678,  0.70710678],
+       [-0.70710678,  0.70710678]])
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Explained Variance for Each Principal Component:</span>
+array([8., 0.])
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 5: Eigendecomposition of Covariance Matrix</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Eigenvalues:</span>
+array([8., 0.])
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Eigenvectors:</span>
+array([[ 0.70710678,  0.70710678],
+       [-0.70710678,  0.70710678]])
+
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Step 6: Transform Data using PCA (Projection)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Transformed Data (Projected onto Principal Components):</span>
+array([[-2.828427, -0.      ],
+       [ 0.      ,  0.      ],
+       [ 2.828427,  0.      ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Principal Component Analysis (PCA) stands as a swift and adaptable unsupervised technique for condensing the dimensionality of data. We caught a glimpse of its functionality in the earlier discussion on Scikit-Learn.</p>
+<p><font color='Blue'><b>Example:</b></font> Let’s focus on a two-dimensional dataset. For the purpose of illustration, let’s examine the subsequent set of 400 data points <span id="id16">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Set custom style using mystyle.mplstyle</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set random seed for reproducibility</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Generate random data using dot product of random matrix and normal distribution</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">400</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Create a scatter plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;Aqua&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;DodgerBlue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Set plot properties such as aspect ratio, limits, and labels</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_2$&#39;</span><span class="p">)</span>
+
+<span class="c1"># Ensure tight layout</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8a1ed43744f10aca3556419ce942aa40c7f0ae647ac2e2d7d06052b0e8e52b18.png" src="../_images/8a1ed43744f10aca3556419ce942aa40c7f0ae647ac2e2d7d06052b0e8e52b18.png" />
+</div>
+</div>
+<p>This code creates a synthetic dataset with two features (<span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span>) and 400 data points. The data points are generated by multiplying a random matrix with a normal distribution, which introduces some correlation between the features. The code then plots the data points on a scatter plot, where each point is colored in aqua and has a dodger blue edge. The plot also has equal aspect ratio, limits, and labels for the axes.</p>
+<p>By visual inspection, it becomes evident that a nearly linear connection exists between the <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> variables in this dataset. However, the objective here differs slightly: instead of aiming to <em>predict</em> <span class="math notranslate nohighlight">\(X_2\)</span> values based on <span class="math notranslate nohighlight">\(X_1\)</span> values, the focus of unsupervised learning is to uncover the <em>relationship</em> between the <span class="math notranslate nohighlight">\(X_1\)</span> and <span class="math notranslate nohighlight">\(X_2\)</span> variables <span id="id17">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>.</p>
+<p>Principal Component Analysis (PCA) serves as the tool to quantify this relationship. It achieves this by identifying the primary axes within the data and utilizing them to encapsulate the dataset’s characteristics  <span id="id18">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>.</p>
+<p>To carry out PCA using Scikit-Learn’s <code class="docutils literal notranslate"><span class="pre">PCA</span></code> estimator, follow these steps:</p>
+<ul class="simple">
+<li><p>Import the <code class="docutils literal notranslate"><span class="pre">PCA</span></code> class from the <code class="docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code> module.</p></li>
+<li><p>Create an instance of the <code class="docutils literal notranslate"><span class="pre">PCA</span></code> class with the desired number of components. For example, <code class="docutils literal notranslate"><span class="pre">pca</span> <span class="pre">=</span> <span class="pre">PCA(n_components=2)</span></code> creates a PCA object that can transform the data into two dimensions.</p></li>
+<li><p>Fit the PCA object to the data using the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method. For example, <code class="docutils literal notranslate"><span class="pre">pca.fit(X)</span></code> fits the PCA object to the data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> and computes the principal components and the explained variance.</p></li>
+<li><p>Transform the data into the new feature space using the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method. For example, <code class="docutils literal notranslate"><span class="pre">X_pca</span> <span class="pre">=</span> <span class="pre">pca.transform(X)</span></code> transforms the data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> into the new matrix <code class="docutils literal notranslate"><span class="pre">X_pca</span></code>, where each row corresponds to a data point and each column corresponds to a principal component.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Define arrow plot settings</span>
+<span class="n">plt_setting</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">head_width</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_arrow</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Function to plot an arrow on the given axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="c1"># Perform PCA with 2 components</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Create a scatter plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;GreenYellow&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;Olive&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_2$&#39;</span><span class="p">)</span>
+
+<span class="c1"># Visualize the principal components using ax.arrow()</span>
+<span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">,</span> <span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">vector</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>  <span class="c1"># Scale vector by a factor of 3 times the square root of the variance</span>
+    <span class="n">plot_arrow</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_setting</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a6a2762af596d28cf00160c5c26f9d564de7d240485a487f1b31de9d2f1a73e5.png" src="../_images/a6a2762af596d28cf00160c5c26f9d564de7d240485a487f1b31de9d2f1a73e5.png" />
+</div>
+</div>
+<p>This code performs PCA on the data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> and plots the data points and the principal components on a scatter plot. The principal components are the new features that capture the most significant variations in the data. They are represented by the black arrows on the plot, which indicate the directions and lengths of the principal components. The directions are given by the eigenvectors of the covariance matrix, and the lengths are proportional to the square roots of the eigenvalues, which measure the amount of variance explained by each principal component.</p>
+<p>These vectors embody the essence of the <em>principal axes</em> within the dataset. The length of each vector serves as a gauge for the axis’s significance in characterizing the data’s distribution—more precisely, it quantifies the variance of the data when projected onto that particular axis. The outcome of projecting each data point onto these principal axes gives birth to what we refer to as the “principal components” of the data <span id="id19">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>.</p>
+<p>If we plot these principal components beside the original data, we see the plots shown here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+<span class="c1"># Plot original data and principal components</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;Aqua&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;DodgerBlue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_2$&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">,</span> <span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">vector</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">plot_arrow</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">plt_setting</span><span class="p">)</span>
+
+<span class="c1"># Plot principal components</span>
+<span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_pca</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_pca</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;MistyRose&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plot_arrow</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="o">**</span><span class="n">plt_setting</span><span class="p">)</span>
+<span class="n">plot_arrow</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">plt_setting</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;component 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;component 2&#39;</span><span class="p">,</span>
+          <span class="n">title</span><span class="o">=</span><span class="s1">&#39;principal components&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8e16f148949f7fad70b7848f748c03ebd7c59969092aa31bd6aefb80e9f1162e.png" src="../_images/8e16f148949f7fad70b7848f748c03ebd7c59969092aa31bd6aefb80e9f1162e.png" />
+</div>
+</div>
+<p>This code plots the original data and the principal components on two subplots. The first subplot shows the data points and the principal components as black arrows on the original feature space. The second subplot shows the data points and the principal components as black arrows on the new feature space. The principal components are the new features that capture the most significant variations in the data. They are represented by the black arrows on the plot, which indicate the directions and lengths of the principal components. The directions are given by the eigenvectors of the covariance matrix, and the lengths are proportional to the square roots of the eigenvalues, which measure the amount of variance explained by each principal component.</p>
+<p>The process of transitioning from data axes to principal axes involves an affine transformation, which encompasses a combination of translation, rotation, and uniform scaling operations <span id="id20">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>.</p>
+<p>Although this method for discovering principal components might initially appear as a mathematical concept, its implications extend far beyond theoretical curiosity. In fact, it plays a pivotal role in various applications within the domains of machine learning and data exploration <span id="id21">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>]</span>. For example, PCA can be used to reduce the dimensionality of high-dimensional data, to visualize complex data structures, to remove noise from data, to extract features for classification or regression tasks, and to perform data compression or encryption.</p>
+</section>
+<section id="pca-for-dimensionality-reduction">
+<h2><span class="section-number">11.2.3. </span>PCA for Dimensionality Reduction<a class="headerlink" href="#pca-for-dimensionality-reduction" title="Link to this heading">#</a></h2>
+<p>Utilizing PCA to reduce dimensionality means discarding one or more of the smallest principal components. This results in a lower-dimensional representation of the data that preserves the most important variations in the data.</p>
+<p>Here’s an example of how PCA can be used for dimensionality reduction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize PCA with the desired number of components (in this case, 1)</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Fit the PCA model to the data</span>
+<span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Transform the original data using the trained PCA model</span>
+<span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Print the shape of the original and transformed data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original shape:   &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Transformed shape:&quot;</span><span class="p">,</span> <span class="n">X_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original shape:    (400, 2)
+Transformed shape: (400, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data after transformation now exists in a singular dimension. This means that each data point is represented by a single value, which is the projection of the original data point onto the first principal component. To grasp the implications of this reduction in dimensionality, we can reverse the transformation of this condensed data and generate a visualization by comparing it with the initial dataset. We can do this by using the <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> method of the PCA object, which reconstructs the original data from the transformed data by adding back the discarded components. For example, <code class="docutils literal notranslate"><span class="pre">X_new</span> <span class="pre">=</span> <span class="pre">pca.inverse_transform(X_pca)</span></code> will create a new matrix <code class="docutils literal notranslate"><span class="pre">X_new</span></code> that has the same shape as the original matrix <code class="docutils literal notranslate"><span class="pre">X</span></code>, but with less variance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_new</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X_pca</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;Aqua&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;DodgerBlue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_new</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;DarkRed&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$X_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$X_2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/297457152732fec00a71c739e004a3d5e798476d577ccbf3636b5e1d5d67dc6b.png" src="../_images/297457152732fec00a71c739e004a3d5e798476d577ccbf3636b5e1d5d67dc6b.png" />
+</div>
+</div>
+<p>The blue dots represent the original dataset, while the red dots depict the reconstructed version from the transformed data. This clearly illustrates the essence of PCA-driven dimensionality reduction: it eliminates the data’s less significant principal axes, retaining solely the component(s) with the greatest variability. The proportion of variance that gets removed (related to the extent of dot dispersion around the line shown in this figure) serves as an approximate gauge of the extent of “information” discarded in this dimensionality reduction process.</p>
+<p>In several aspects, this downsized dataset adequately captures the most vital connections among the points: even with a 50% reduction in data dimensionality, the fundamental relationships between data points are largely conserved. However, some information is inevitably lost in the process, as the red dots are not exactly the same as the blue dots. The difference between the original and the reconstructed data points is the projection error, which measures how well the principal components represent the data. The projection error is minimized when the principal components explain the most variance in the data.</p>
+<section id="utilizing-pca-for-visualization-handwritten-digits">
+<h3><span class="section-number">11.2.3.1. </span>Utilizing PCA for Visualization: Handwritten Digits<a class="headerlink" href="#utilizing-pca-for-visualization-handwritten-digits" title="Link to this heading">#</a></h3>
+<p>One of the applications of dimensionality reduction is to visualize high-dimensional data in a lower-dimensional space. This can help us explore the structure and patterns of the data, as well as identify outliers or anomalies. However, dimensionality reduction is not always straightforward or easy, especially when the data has a large number of dimensions.</p>
+<p>Let’s examine the <a class="reference external" href="https://archive.ics.uci.edu/dataset/80/optical+recognition+of+handwritten+digits">Optical Recognition of Handwritten Digits</a> dataset provided by the sklearn library (This is only a subset of the original dataset with 5620 instances). This dataset contains 1797 images of handwritten digits, each with 64 pixels. Each pixel is a feature that represents the grayscale intensity of the image, ranging from 0 to 16. Therefore, each image is a data point with 64 dimensions. This dataset is a prime candidate for showcasing the power of PCA-based visualization <span id="id22">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>, <a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>. PCA can help us reduce the dimensionality of the images from 64 to 2, while preserving the most important variations in the data. This way, we can plot the images on a two-dimensional scatter plot and see how they are related to each other.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">DESCR</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">ravel</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;A selection from the 64-dimensional digits dataset&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.. _digits_dataset:
+
+Optical recognition of handwritten digits dataset
+--------------------------------------------------
+
+**Data Set Characteristics:**
+
+    :Number of Instances: 1797
+    :Number of Attributes: 64
+    :Attribute Information: 8x8 image of integer pixels in the range 0..16.
+    :Missing Attribute Values: None
+    :Creator: E. Alpaydin (alpaydin &#39;@&#39; boun.edu.tr)
+    :Date: July; 1998
+
+This is a copy of the test set of the UCI ML hand-written digits datasets
+https://archive.ics.uci.edu/ml/datasets/Optical+Recognition+of+Handwritten+Digits
+
+The data set contains images of hand-written digits: 10 classes where
+each class refers to a digit.
+
+Preprocessing programs made available by NIST were used to extract
+normalized bitmaps of handwritten digits from a preprinted form. From a
+total of 43 people, 30 contributed to the training set and different 13
+to the test set. 32x32 bitmaps are divided into nonoverlapping blocks of
+4x4 and the number of on pixels are counted in each block. This generates
+an input matrix of 8x8 where each element is an integer in the range
+0..16. This reduces dimensionality and gives invariance to small
+distortions.
+
+For info on NIST preprocessing routines, see M. D. Garris, J. L. Blue, G.
+T. Candela, D. L. Dimmick, J. Geist, P. J. Grother, S. A. Janet, and C.
+L. Wilson, NIST Form-Based Handprint Recognition System, NISTIR 5469,
+1994.
+
+.. topic:: References
+
+  - C. Kaynak (1995) Methods of Combining Multiple Classifiers and Their
+    Applications to Handwritten Digit Recognition, MSc Thesis, Institute of
+    Graduate Studies in Science and Engineering, Bogazici University.
+  - E. Alpaydin, C. Kaynak (1998) Cascading Classifiers, Kybernetika.
+  - Ken Tang and Ponnuthurai N. Suganthan and Xi Yao and A. Kai Qin.
+    Linear dimensionalityreduction using relevance weighted LDA. School of
+    Electrical and Electronic Engineering Nanyang Technological University.
+    2005.
+  - Claudio Gentile. A New Approximate Maximal Margin Classification
+    Algorithm. NIPS. 2000.
+</pre></div>
+</div>
+<img alt="../_images/bab6236f6d0ee48614e5068c4f9c4aaaab67bf70acca0b0100ba973f439660df.png" src="../_images/bab6236f6d0ee48614e5068c4f9c4aaaab67bf70acca0b0100ba973f439660df.png" />
+</div>
+</div>
+<p>To develop a better understanding of the interconnections among these points, we can employ PCA to transform them into a more manageable number of dimensions, such as two:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="c1"># Load the digits dataset</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+
+<span class="c1"># Apply PCA to project data to 2 dimensions</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># project from 64 to 2 dimensions</span>
+<span class="n">projected</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Print shapes before and after PCA</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original data shape:&quot;</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Projected data shape:&quot;</span><span class="p">,</span> <span class="n">projected</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Create a scatter plot using Matplotlib</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">))</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">projected</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projected</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                     <span class="n">c</span><span class="o">=</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral&#39;</span><span class="p">,</span>
+                     <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="c1"># Set labels and title</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Component 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Component 2&#39;</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s1">&#39;PCA Projection of Handwritten Digits&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend inside on the top right</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="o">*</span><span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">(),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Digits&quot;</span><span class="p">,</span>
+                   <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Display the plot with tight layout</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data shape: (1797, 64)
+Projected data shape: (1797, 2)
+</pre></div>
+</div>
+<img alt="../_images/f80b0170336cc08cc37c6b050d263eb0d8c83b9bd8a925da7acc19e254b2fa87.png" src="../_images/f80b0170336cc08cc37c6b050d263eb0d8c83b9bd8a925da7acc19e254b2fa87.png" />
+</div>
+</div>
+<p>The complete dataset forms a cloud of points in a 64-dimensional space, while these specific points represent the projection of each data point along the directions characterized by the highest variance. Fundamentally, we’ve identified the optimal scaling and rotation within the 64-dimensional domain, enabling us to visualize the arrangement of the digits within two dimensions. Importantly, this process is unsupervised—meaning, it’s accomplished without using any label information <span id="id23">[<a class="reference internal" href="../References.html#id200" title="J. VanderPlas. Python Data Science Handbook: Essential Tools for Working with Data. O'Reilly Media, 2023. ISBN 9781098121228. URL: https://books.google.ca/books?id=h_UtzwEACAAJ.">VanderPlas, 2023</a>, <a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p>The code performs PCA on the digits dataset and plots the projected data on a two-dimensional scatter plot. The digits dataset contains 1797 images of handwritten digits, each with 64 pixels. Each pixel is a feature that represents the grayscale intensity of the image, ranging from 0 to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape:&#39;</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: (1797, 64)
+[15. 16. 16. ... 16. 16. 16.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Therefore, each image is a data point with 64 dimensions. PCA reduces the dimensionality of the images from 64 to 2, while preserving the most important variations in the data. The projected data is colored by the digit label, which ranges from 0 to 9. The plot shows how the different digits are clustered or separated in the new feature space. For example, the digits 0, 6, and 4 are well separated from the rest, while the digits 1 and 7 are more mixed. The plot also shows the component 1 and component 2 axes, which indicate the directions of the principal components. The principal components are the new features that capture the most significant variations in the data. They are represented by the black arrows on the plot, which indicate the directions and lengths of the principal components. The directions are given by the eigenvectors of the covariance matrix, and the lengths are proportional to the square roots of the eigenvalues, which measure the amount of variance explained by each principal component.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_11"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG680_C11S01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">11.1. </span>Introduction to Dimensionality Reduction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ENGG680_C11S03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">11.3. </span>t-Distributed Stochastic Neighbor Embedding (t-SNE)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">11.2.1. Mathematical Formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-essence-of-principal-components-analysis-pca">11.2.2. The Essence of Principal Components Analysis (PCA)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-for-dimensionality-reduction">11.2.3. PCA for Dimensionality Reduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizing-pca-for-visualization-handwritten-digits">11.2.3.1. Utilizing PCA for Visualization: Handwritten Digits</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1179 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12.6. Building a linear Regression Model &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_12/ENGG680_C12S06';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12.7. Building a Logistic Regression Model" href="ENGG680_C12S07.html" />
+    <link rel="prev" title="12.5. Tensors in Various Operations (Ops)" href="ENGG680_C12S05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Digital Engineering - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Digital Engineering - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ENGG680_C01.html">1. Introduction to Python Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S01.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S02.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S03.html">1.3. Functions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ENGG680_C02.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S01.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S02.html">2.2. Iteration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ENGG680_C03.html">3. Data Structures and File Handling in Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S01.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S02.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S03.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S04.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S05.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S06.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ENGG680_C04.html">4. Classes and Objects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S01.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S02.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S03.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S04.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S05.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S06.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ENGG680_C05.html">5. Introduction to NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S01.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S02.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S03.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ENGG680_C06.html">6. Working with Data using Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S01.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S02.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S03.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S04.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S05.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S06.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ENGG680_C07.html">7. Data Visualization using Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S01.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S02.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S03.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S04.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S05.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S06.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ENGG680_C08.html">8. An Introduction to Computer Vision</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S01.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S02.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S03.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S04.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S05.html">8.5. Drawing Functions (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_09/ENGG680_C09.html">9. An Introduction to Machine Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S01.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S02.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S03.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S04.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S05.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S06.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_09/ENGG680_C09S07.html">9.7. Support Vector Machines</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ENGG680_C10.html">10. Tree-Based Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S01.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S02.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S03.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S04.html">10.4. Regression Trees and Linear Models (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S05.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S06.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S07.html">10.7. Gradient Boosting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ENGG680_C11.html">11. Dimensionality Reduction and Feature Selection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S01.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S02.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S03.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S04.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S05.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S06.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ENGG680_C12.html">12. Introduction to Deep Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S01.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S02.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S03.html">12.3. TensorFlow Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S04.html">12.4. Introduction to Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S05.html">12.5. Tensors in Various Operations (Ops)</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">12.6. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S07.html">12.7. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S08.html">12.8. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S09.html">12.9. Deep Learning Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S10.html">12.10. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S11.html">12.11. Image Augmentations with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S12.html">12.12. Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C12S13.html">12.13. Brief Overview of Additional Topics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">13. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Building a linear Regression Model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-loss-function">12.6.1. Define a Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-evaluate-your-model">12.6.2. Train and Evaluate Your Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-and-load-the-model">12.6.3. Save and Load the Model</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="building-a-linear-regression-model">
+<h1><span class="section-number">12.6. </span>Building a linear Regression Model<a class="headerlink" href="#building-a-linear-regression-model" title="Link to this heading">#</a></h1>
+<p>Constructing a linear regression model utilizing TensorFlow Core APIs involves the following equation <span id="id1">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a4d126a1-ddb2-495c-8403-ad5e7e622090">
+<span class="eqno">(12.23)<a class="headerlink" href="#equation-a4d126a1-ddb2-495c-8403-ad5e7e622090" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathrm{Y} = \mathrm{X}w + b
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\underset{m\times 1}{\mathrm{Y}}\)</span>: Target vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(\underset{m\times n}{\mathrm{X}}\)</span>: Feature matrix</p></li>
+<li><p><span class="math notranslate nohighlight">\(\underset{n\times 1}{w}\)</span>: Weight vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span>: Bias</p></li>
+</ul>
+<p>By using the code with <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code>, the corresponding Python code is traced to generate an executable TensorFlow graph. This approach offers advantages such as facilitating model saving and loading post-training, as well as potential performance enhancements for complex models with numerous layers and intricate operations <span id="id2">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>You can establish a computational graph in the model shown above by incorporating the <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code> decorator. This decorator signals that the code should be executed within the context of a TensorFlow graph. The decorated method, typically named <code class="docutils literal notranslate"><span class="pre">__call__</span></code>, will be traced to generate an optimized graph representation, contributing to improved execution speed and enhanced performance <span id="id3">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+</div>
+<p>Here’s a brief outline of how the code could be structured:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Set a random seed for reproducible results</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">LinearRegression</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple linear regression model implemented using TensorFlow.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the LinearRegression model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the linear regression output for the given input.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (tf.Tensor): Input tensor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Output tensor after linear regression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the model parameters on the first call</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">built</span><span class="p">:</span>
+            <span class="c1"># Randomly generate the weight vector and bias term</span>
+            <span class="n">rand_w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">rand_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
+            <span class="c1"># Define and initialize the weight and bias variables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">rand_w</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weights&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">rand_b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bias&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Mark the model as built</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Perform linear regression</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="c1"># Squeeze the output tensor to remove unnecessary dimensions</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down the code step by step:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LinearRegression</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>This code defines a Python class named <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> that inherits from <code class="docutils literal notranslate"><span class="pre">tf.Module</span></code>. This class represents a linear regression model.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method initializes the object’s state. It sets <code class="docutils literal notranslate"><span class="pre">self.built</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>. This flag will be used to track whether the model’s parameters have been initialized.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Initialize the model parameters on the first call</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">built</span><span class="p">:</span>
+            <span class="c1"># Randomly generate the weight vector and bias term</span>
+            <span class="n">rand_w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">rand_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">rand_w</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weights&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">rand_b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bias&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code> decorator is applied to the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method. This decorator traces the method’s computation and generates an optimized TensorFlow graph for faster execution.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method takes an input tensor <code class="docutils literal notranslate"><span class="pre">x</span></code>, representing the input features for the linear regression model.</p></li>
+<li><p>Inside the method, there’s a conditional check using <code class="docutils literal notranslate"><span class="pre">self.built</span></code>. This check ensures that the model’s parameters (<code class="docutils literal notranslate"><span class="pre">w</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>) are initialized only once, on the first call.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">self.built</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, the weight vector <code class="docutils literal notranslate"><span class="pre">w</span></code> and bias term <code class="docutils literal notranslate"><span class="pre">b</span></code> are randomly generated using <code class="docutils literal notranslate"><span class="pre">tf.random.uniform</span></code> and assigned as <code class="docutils literal notranslate"><span class="pre">tf.Variable</span></code> instances.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">tf.squeeze</span></code> function is used to remove dimensions of size 1 from the tensor <code class="docutils literal notranslate"><span class="pre">y</span></code>, resulting in a 1D tensor representing the model’s predictions.</p></li>
+<li><p>The computed predictions are returned as the output of the method.</p></li>
+</ul>
+<p>Overall, this code defines a <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> class with an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method for parameter initialization and a <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method for making predictions using the linear regression model. The decorator <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code> optimizes the execution of the <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method by generating a TensorFlow graph.</p>
+<p><font color='Blue'><b>Example:</b></font>
+The Auto MPG dataset, available at <a class="reference external" href="https://archive.ics.uci.edu/dataset/9/auto+mpg">https://archive.ics.uci.edu/dataset/9/auto+mpg</a>, is a well-known and widely used collection of automotive data hosted by the UCI Machine Learning Repository. It offers a comprehensive exploration into the fuel efficiency of automobiles manufactured during the late 1970s and early 1980s. The dataset encompasses diverse quantitative and categorical attributes that encompass key automotive characteristics such as the number of cylinders, displacement, horsepower, and weight. With a goal of predicting fuel efficiencies, the Auto MPG dataset serves as an invaluable resource for developing and assessing predictive models in the field of automotive engineering and data science. Due to its rich and diverse attributes, it remains a popular choice for educational purposes, research, and practical applications in machine learning and data analysis.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Column Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mpg</p></td>
+<td><p>Miles per gallon (MPG) is a measure of fuel efficiency, representing the number of miles a vehicle can travel per gallon of fuel. It serves as the target variable for prediction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cylinders</p></td>
+<td><p>The number of cylinders in the engine of the vehicle.</p></td>
+</tr>
+<tr class="row-even"><td><p>displacement</p></td>
+<td><p>Engine displacement is the volume of air and fuel that an engine can pump in and out over a single cycle. It’s typically measured in cubic inches or cubic centimeters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>horsepower</p></td>
+<td><p>The power produced by the engine, measured in horsepower.</p></td>
+</tr>
+<tr class="row-even"><td><p>weight</p></td>
+<td><p>The weight of the vehicle, including its own mass and additional load, measured in pounds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>acceleration</p></td>
+<td><p>Acceleration measures how quickly a vehicle can increase its speed. It’s often measured as the time taken to accelerate from 0 to 60 miles per hour.</p></td>
+</tr>
+<tr class="row-even"><td><p>model year</p></td>
+<td><p>The year in which the vehicle model was manufactured. It’s often represented as the last two digits of the year (e.g., 80 for 1980).</p></td>
+</tr>
+<tr class="row-odd"><td><p>origin</p></td>
+<td><p>The origin of the vehicle’s manufacturer. It’s represented as an integer value, where 1 represents North America, 2 represents Europe, and 3 represents Asia.</p></td>
+</tr>
+<tr class="row-even"><td><p>car name</p></td>
+<td><p>The name of the car model.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The dataset may include instances with missing values. It’s crucial to address this by eliminating any rows containing missing values using the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.dropna</span></code> function. After handling missing values, the dataset should be converted into a <code class="docutils literal notranslate"><span class="pre">tf.float32</span></code> tensor type to ensure uniform data representation. This conversion can be achieved by using the <code class="docutils literal notranslate"><span class="pre">tf.convert_to_tensor</span></code> function to transform the cleaned dataset, followed by the <code class="docutils literal notranslate"><span class="pre">tf.cast</span></code> function to ensure the data is represented in the desired data type. This preparation process ensures that the dataset is ready for further analysis, model training, and optimization <span id="id4">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Load the dataset from the specified URL and define column names</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://archive.ics.uci.edu/ml/machine-learning-databases/auto-mpg/auto-mpg.data&#39;</span>
+<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">,</span> <span class="s1">&#39;Cylinders&#39;</span><span class="p">,</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Horsepower&#39;</span><span class="p">,</span> <span class="s1">&#39;Weight&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span> <span class="s1">&#39;Model Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">]</span>
+
+<span class="c1"># Read the dataset using pandas, handling missing values</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                      <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="c1"># Convert the cleaned dataset to a TensorFlow float32 tensor</span>
+<span class="n">dataset_tf</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Display the tail of the dataset for verification</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MPG</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model Year</th>
+      <th>Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>393</th>
+      <td>27.0</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790.0</td>
+      <td>15.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>394</th>
+      <td>44.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130.0</td>
+      <td>24.6</td>
+      <td>82</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>395</th>
+      <td>32.0</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295.0</td>
+      <td>11.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>396</th>
+      <td>28.0</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625.0</td>
+      <td>18.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>397</th>
+      <td>31.0</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720.0</td>
+      <td>19.4</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Next, proceed to split the dataset into training and test sets. It’s essential to ensure an unbiased split by shuffling the dataset using the <code class="docutils literal notranslate"><span class="pre">tf.random.shuffle</span></code> function. This step helps prevent any inadvertent ordering or structure from influencing the data distribution between the training and test sets <span id="id5">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Shuffle the dataset to ensure unbiased splits</span>
+<span class="n">dataset_shuffled</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset_tf</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+
+<span class="c1"># Split the shuffled dataset into training and test sets</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">dataset_shuffled</span><span class="p">[</span><span class="mi">100</span><span class="p">:],</span> <span class="n">dataset_shuffled</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+
+<span class="c1"># Separate features (x) and target labels (y) for both training and test sets</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">test_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code snippet, the shuffled dataset is created using <code class="docutils literal notranslate"><span class="pre">tf.random.shuffle</span></code> with a specified seed to ensure reproducibility. The dataset is then split into training and test sets using slicing. The features (x) and target labels (y) are separated for both the training and test sets. This prepares the data for further processing and model training.</p>
+<p>Proceed with basic feature engineering by performing one-hot encoding on the <code class="docutils literal notranslate"><span class="pre">&quot;Origin&quot;</span></code> feature. Utilize the <code class="docutils literal notranslate"><span class="pre">tf.one_hot</span></code> function to effectively transform this categorical column into three distinct binary columns, each corresponding to a specific origin category. This step enables the model to properly interpret and utilize the categorical information during training and inference <span id="id6">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">onehot_origin</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Extract the &quot;Origin&quot; column and cast it to integer</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="c1"># Apply one-hot encoding to the &quot;Origin&quot; column</span>
+    <span class="n">origin_oh</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">origin</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Adjust for 1-indexed feature</span>
+
+    <span class="c1"># Concatenate the one-hot encoded columns with the remaining features</span>
+    <span class="n">x_ohe</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">origin_oh</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x_ohe</span>
+
+<span class="c1"># Apply one-hot encoding to the &quot;Origin&quot; feature for both training and test sets</span>
+<span class="n">x_train_ohe</span><span class="p">,</span> <span class="n">x_test_ohe</span> <span class="o">=</span> <span class="n">onehot_origin</span><span class="p">(</span><span class="n">x_train</span><span class="p">),</span> <span class="n">onehot_origin</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># Display the numpy representation of the one-hot encoded training features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-Hot Encoded Training Features:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x_train_ohe</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>One-Hot Encoded Training Features:
+[[  4. 140.  72. ...   1.   0.   0.]
+ [  4. 120.  74. ...   0.   0.   1.]
+ [  4. 122.  88. ...   0.   1.   0.]
+ ...
+ [  8. 318. 150. ...   1.   0.   0.]
+ [  4. 156. 105. ...   1.   0.   0.]
+ [  6. 232. 100. ...   1.   0.   0.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code snippet, the <code class="docutils literal notranslate"><span class="pre">onehot_origin</span></code> function takes a feature matrix as input, extracts the “Origin” column, and applies one-hot encoding using <code class="docutils literal notranslate"><span class="pre">tf.one_hot</span></code>. The resulting one-hot encoded columns are concatenated with the remaining features, resulting in the transformed feature matrix. The function is then applied to both the training and test sets. Finally, the numpy representation of the one-hot encoded training features is displayed for verification.</p>
+<p>In this example, the problem involves multiple regression with predictors or features that vary significantly in scales. To mitigate the impact of these scale differences, it’s advantageous to standardize the data. This process ensures that each feature has a mean of zero and a standard deviation of one. Achieve standardization using the <code class="docutils literal notranslate"><span class="pre">tf.reduce_mean</span></code> and <code class="docutils literal notranslate"><span class="pre">tf.math.reduce_std</span></code> functions. Furthermore, when making predictions with the regression model, the unstandardization process can be applied to obtain predictions in terms of the original units, allowing for better interpretability <span id="id7">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Normalize</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Initialize the mean and standard deviation for normalization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">reduce_std</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Normalize the input by subtracting mean and dividing by standard deviation</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span>
+
+    <span class="k">def</span> <span class="nf">unnorm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Unnormalize the input by reversing the normalization process</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code snippet, the <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> class is defined, which is responsible for both normalization (<code class="docutils literal notranslate"><span class="pre">norm</span></code>) and unnormalization (<code class="docutils literal notranslate"><span class="pre">unnorm</span></code>) operations. During initialization, the mean and standard deviation of the input data are computed along each feature axis. The <code class="docutils literal notranslate"><span class="pre">norm</span></code> method standardizes the input data by subtracting the mean and dividing by the standard deviation, while the <code class="docutils literal notranslate"><span class="pre">unnorm</span></code> method reverses the normalization process to obtain data in the original units. This class facilitates preprocessing the data for training and reverting predictions to the original scale for better interpretability.</p>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Normalizing data involves transforming the values of a dataset to have a specific scale or distribution. The purpose of normalization is to ensure that different features or variables are on a similar scale, which can help improve the performance and convergence of machine learning models. Mathematically, data normalization typically involves two steps: subtracting the mean (<span class="math notranslate nohighlight">\(\mu\)</span>) and dividing by the standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>).</p>
+<p>Given a dataset with a feature (column) of values <span class="math notranslate nohighlight">\(x\)</span>, the normalization process can be described as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate Mean and Standard Deviation</strong>: Compute the mean (<span class="math notranslate nohighlight">\(\mu\)</span>) and the standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>) of the feature <span class="math notranslate nohighlight">\(x\)</span> across all instances in the dataset.</p></li>
+<li><p><strong>Subtract Mean</strong>: Subtract the mean from each individual value in the feature <code class="docutils literal notranslate"><span class="pre">x</span></code>. This centers the values around zero, making the mean of the normalized values close to zero.</p></li>
+</ol>
+<div class="amsmath math notranslate nohighlight" id="equation-f16367ea-6912-4c7b-a3c1-9770f9a65b5d">
+<span class="eqno">(12.24)<a class="headerlink" href="#equation-f16367ea-6912-4c7b-a3c1-9770f9a65b5d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Normalized Value} = x - \mu
+\end{equation}\]</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Divide by Standard Deviation</strong>: Divide the centered values by the standard deviation. This step scales the values to have a unit variance.</p></li>
+</ol>
+<div class="amsmath math notranslate nohighlight" id="equation-27962b09-51cb-4c05-a259-a9ceeb188101">
+<span class="eqno">(12.25)<a class="headerlink" href="#equation-27962b09-51cb-4c05-a259-a9ceeb188101" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Normalized Value} = \frac{x - \mu}{\sigma}
+\end{equation}\]</div>
+<p>The result is a new set of values that have zero mean and unit variance. Normalized data tends to have a distribution that is approximately centered around zero, and its range is constrained, which can be particularly useful for machine learning algorithms that are sensitive to the scale of features.</p>
+<p>In the context of the TensorFlow code snippet, the <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> class performs these mathematical operations to normalize and unnormalize the data. The <code class="docutils literal notranslate"><span class="pre">norm</span></code> method subtracts the mean and divides by the standard deviation, while the <code class="docutils literal notranslate"><span class="pre">unnorm</span></code> method reverses this process to obtain values in the original scale. This preprocessing step ensures that the features and target values are in a consistent and appropriate range for training and evaluation.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create Normalization instances for input features and target values</span>
+<span class="n">norm_x</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">x_train_ohe</span><span class="p">)</span>
+<span class="n">norm_y</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Normalize the training and test data</span>
+<span class="n">x_train_norm</span><span class="p">,</span> <span class="n">y_train_norm</span> <span class="o">=</span> <span class="n">norm_x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_train_ohe</span><span class="p">),</span> <span class="n">norm_y</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">x_test_norm</span><span class="p">,</span> <span class="n">y_test_norm</span> <span class="o">=</span> <span class="n">norm_x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_test_ohe</span><span class="p">),</span> <span class="n">norm_y</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code snippet, <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> instances are created for both input features (<code class="docutils literal notranslate"><span class="pre">norm_x</span></code>) and target values (<code class="docutils literal notranslate"><span class="pre">norm_y</span></code>). These instances encapsulate the mean and standard deviation calculated during initialization, allowing for consistent normalization and unnormalization operations. The training and test data are then normalized using the respective normalization instances. The normalized data is used for model training and evaluation, promoting stable convergence and accurate evaluation of the model’s performance.</p>
+<p>Now, using <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> module:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an instance of the LinearRegression model</span>
+<span class="n">lin_reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+
+<span class="c1"># Get a prediction for the first example in the normalized training data</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">lin_reg</span><span class="p">(</span><span class="n">x_train_norm</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Unnormalize the prediction using the y_normalizer&#39;s unnormalize method</span>
+<span class="n">prediction_unnorm</span> <span class="o">=</span> <span class="n">norm_y</span><span class="o">.</span><span class="n">unnorm</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+
+<span class="c1"># Print the unnormalized prediction</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unnormalized Prediction:&quot;</span><span class="p">,</span> <span class="n">prediction_unnorm</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unnormalized Prediction: [6.8007298]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code, we utilize the previously created <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> model to generate a prediction for the first example in the normalized training data <code class="docutils literal notranslate"><span class="pre">x_train_norm</span></code>. The prediction is then unnormalized using the <code class="docutils literal notranslate"><span class="pre">unnorm</span></code> method from the <code class="docutils literal notranslate"><span class="pre">Normalize</span></code> instance <code class="docutils literal notranslate"><span class="pre">norm_y</span></code>. The resulting unnormalized prediction is printed to the console, providing an MPG estimate in the original, interpretable units.</p>
+<section id="define-a-loss-function">
+<h2><span class="section-number">12.6.1. </span>Define a Loss Function<a class="headerlink" href="#define-a-loss-function" title="Link to this heading">#</a></h2>
+<p>In the context of training a machine learning model, it’s crucial to define a suitable loss function that quantifies how well the model’s predictions align with the true target values. For regression tasks involving continuous outputs, the mean squared error (MSE) serves as a well-suited choice for the loss function <span id="id8">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>The MSE, as expressed by the equation below, measures the average squared difference between the predicted values, denoted as <span class="math notranslate nohighlight">\(\hat{y}\)</span>, and the actual target values, represented by <span class="math notranslate nohighlight">\(y\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-61e6dd65-5b11-4dbd-af32-9a40c2920f06">
+<span class="eqno">(12.26)<a class="headerlink" href="#equation-61e6dd65-5b11-4dbd-af32-9a40c2920f06" title="Permalink to this equation">#</a></span>\[\begin{equation}
+MSE = \frac{1}{m}\sum_{i=1}^{m}(\hat{y}_i - y_i)^2
+\end{equation}\]</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{y}\)</span> represents the vector of model predictions.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\)</span> represents the vector of true target values.</p></li>
+</ul>
+<p>The primary objective in this regression problem is to discover the optimal weight vector, denoted as <span class="math notranslate nohighlight">\(w\)</span>, and bias term, denoted as <span class="math notranslate nohighlight">\(b\)</span>, that collectively minimize the value of the MSE loss function. This process guides the model to produce predictions that align closely with the actual target values, thus enhancing its predictive capability <span id="id9">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mse_loss</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="c1"># Calculate the mean squared error loss</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function computes the mean squared error loss between the predicted values (<code class="docutils literal notranslate"><span class="pre">y_pred</span></code>) and the actual target values (<code class="docutils literal notranslate"><span class="pre">y</span></code>). The squared differences between the predicted and actual values are averaged across all examples in the dataset, resulting in the mean squared error. The lower the value of the loss, the closer the model’s predictions are to the true targets.</p>
+</section>
+<section id="train-and-evaluate-your-model">
+<h2><span class="section-number">12.6.2. </span>Train and Evaluate Your Model<a class="headerlink" href="#train-and-evaluate-your-model" title="Link to this heading">#</a></h2>
+<p>Utilizing mini-batches during training offers benefits such as memory efficiency and accelerated convergence. The <code class="docutils literal notranslate"><span class="pre">tf.data.Dataset</span></code> API provides valuable functions for both batching and shuffling your data. This API empowers you to construct intricate input pipelines using modular and reusable components. You can delve deeper into constructing TensorFlow input pipelines by referring to <a class="reference external" href="https://www.tensorflow.org/guide/data">this guide</a>. This approach enhances the efficiency of data processing and helps streamline your training process <span id="id10">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+
+<span class="c1"># Create training dataset with shuffling and batching</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x_train_norm</span><span class="p">,</span> <span class="n">y_train_norm</span><span class="p">))</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">x_train_norm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+
+<span class="c1"># Create test dataset with shuffling and batching</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x_test_norm</span><span class="p">,</span> <span class="n">y_test_norm</span><span class="p">))</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">x_test_norm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>These lines efficiently create <code class="docutils literal notranslate"><span class="pre">tf.data.Dataset</span></code> objects for training and testing by using <code class="docutils literal notranslate"><span class="pre">from_tensor_slices</span></code> to create slices from tensors, followed by shuffling and batching operations to enhance the learning process.</p>
+<p>Next, implement a training loop to iteratively update the model’s parameters using the MSE loss function and its gradients with respect to the input parameters. This iterative process is known as <a class="reference external" href="https://developers.google.com/machine-learning/glossary#gradient-descent">gradient descent</a>. In each iteration, the model’s parameters are adjusted by taking a step in the opposite direction of their computed gradients. The step size is controlled by the learning rate, a tunable hyperparameter. Remember that the gradient points towards the direction of the steepest ascent, so moving in the opposite direction helps minimize the MSE loss function and improve the model’s accuracy.</p>
+<div class="admonition-gradient-descent admonition">
+<p class="admonition-title">Gradient Descent</p>
+<p>Gradient descent is a mathematical optimization technique used to minimize a function, typically a loss function in the context of machine learning. Let’s break down the mathematical formulation <span id="id11">[<a class="reference internal" href="../References.html#id42" title="M.P. Deisenroth, A.A. Faisal, and C.S. Ong. Mathematics for Machine Learning. Cambridge University Press, 2020. ISBN 9781108470049. URL: https://books.google.ca/books?id=pFjPDwAAQBAJ.">Deisenroth <em>et al.</em>, 2020</a>, <a class="reference internal" href="../References.html#id126" title="Z. Lin, H. Li, and C. Fang. Accelerated Optimization for Machine Learning: First-Order Algorithms. Springer Singapore, 2020. ISBN 9789811529108. URL: https://books.google.ca/books?id=4yjoDwAAQBAJ.">Lin <em>et al.</em>, 2020</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Objective Function</strong>: In the context of machine learning, we have a model that makes predictions based on some parameters. These predictions are compared to the actual targets using a loss function that measures the difference between predicted and actual values.</p></li>
+<li><p><strong>Loss Function</strong>: The loss function quantifies how well the model is performing. The goal is to minimize this function by adjusting the model’s parameters.</p></li>
+<li><p><strong>Gradient</strong>: The gradient of a function indicates its steepest ascent. It’s a vector that points in the direction of the greatest increase in the function. Mathematically, for a scalar function <span class="math notranslate nohighlight">\(f(x)\)</span> with respect to a vector x, the gradient is denoted as <span class="math notranslate nohighlight">\(\nabla f(x)\)</span> and computed by taking the partial derivatives of <span class="math notranslate nohighlight">\(f(x)\)</span> with respect to each element of <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+<li><p><strong>Gradient Descent Step</strong>: The idea behind gradient descent is to iteratively update the parameters in the direction of the negative gradient. This means moving in the direction of steepest decrease in the function to reach a minimum. The update equation for a parameter <span class="math notranslate nohighlight">\(w\)</span> is:</p></li>
+</ol>
+<div class="amsmath math notranslate nohighlight" id="equation-5c73ec3a-f413-4b77-80b3-6a9327e51186">
+<span class="eqno">(12.27)<a class="headerlink" href="#equation-5c73ec3a-f413-4b77-80b3-6a9327e51186" title="Permalink to this equation">#</a></span>\[\begin{equation}
+w_{\text{new}} = w_{\text{old}} - \text{learning_rate} \cdot \nabla f(w_{\text{old}})
+\end{equation}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(w_{\text{old}}\)</span> is the current value of the parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla f(w_{\text{old}})\)</span> is the gradient of the loss function at the current parameter values.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{learning_rate}\)</span> is a hyperparameter that controls the step size. It’s a small positive value.</p></li>
+</ul>
+<ol class="arabic simple" start="5">
+<li><p><strong>Iterations</strong>: The process is repeated for a certain number of iterations or until a stopping criterion is met. The parameters are updated in each iteration, gradually reducing the loss and bringing the model closer to the optimal parameter values.</p></li>
+</ol>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set training parameters</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">train_losses</span><span class="p">,</span> <span class="n">test_losses</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="c1"># Format training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">batch_losses_train</span><span class="p">,</span> <span class="n">batch_losses_test</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Iterate through the training data</span>
+    <span class="k">for</span> <span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+            <span class="n">y_pred_batch</span> <span class="o">=</span> <span class="n">lin_reg</span><span class="p">(</span><span class="n">x_batch</span><span class="p">)</span>
+            <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">mse_loss</span><span class="p">(</span><span class="n">y_pred_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+        <span class="c1"># Update parameters with respect to the gradient calculations</span>
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">,</span> <span class="n">lin_reg</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">lin_reg</span><span class="o">.</span><span class="n">variables</span><span class="p">):</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">assign_sub</span><span class="p">(</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="n">g</span><span class="p">)</span>
+        <span class="c1"># Keep track of batch-level training performance</span>
+        <span class="n">batch_losses_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
+
+    <span class="c1"># Iterate through the testing data</span>
+    <span class="k">for</span> <span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="n">test_dataset</span><span class="p">:</span>
+        <span class="n">y_pred_batch</span> <span class="o">=</span> <span class="n">lin_reg</span><span class="p">(</span><span class="n">x_batch</span><span class="p">)</span>
+        <span class="n">batch_loss</span> <span class="o">=</span> <span class="n">mse_loss</span><span class="p">(</span><span class="n">y_pred_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span>
+        <span class="c1"># Keep track of batch-level testing performance</span>
+        <span class="n">batch_losses_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
+
+    <span class="c1"># Keep track of epoch-level model performance</span>
+    <span class="n">train_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_losses_train</span><span class="p">)</span>
+    <span class="n">test_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">batch_losses_test</span><span class="p">)</span>
+    <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+    <span class="n">test_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_loss</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean Squared Error (MSE) for step </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">train_loss</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="si">:</span><span class="s1">0.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Output final losses</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Final train loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final test loss: </span><span class="si">{</span><span class="n">test_loss</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean Squared Error (MSE) for step 0: 2.866
+Mean Squared Error (MSE) for step 10: 0.453
+Mean Squared Error (MSE) for step 20: 0.285
+Mean Squared Error (MSE) for step 30: 0.231
+Mean Squared Error (MSE) for step 40: 0.209
+Mean Squared Error (MSE) for step 50: 0.203
+Mean Squared Error (MSE) for step 60: 0.194
+Mean Squared Error (MSE) for step 70: 0.184
+Mean Squared Error (MSE) for step 80: 0.186
+Mean Squared Error (MSE) for step 90: 0.176
+
+Final train loss: 0.177
+Final test loss: 0.157
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code snippet, we set up a training loop to iterate through a specified number of epochs. For each epoch, we loop through the training data in batches, calculate the mean squared error loss using the defined <code class="docutils literal notranslate"><span class="pre">mse_loss</span></code> function, and use the <code class="docutils literal notranslate"><span class="pre">tf.GradientTape</span></code> context to compute the gradients with respect to the model’s variables. We then update the model’s variables using the gradients and learning rate. The training and testing losses for each batch are recorded, and at the end of each epoch, the mean losses are computed and appended to the <code class="docutils literal notranslate"><span class="pre">train_losses</span></code> and <code class="docutils literal notranslate"><span class="pre">test_losses</span></code> lists. Finally, the code outputs the final training and testing losses. This loop represents the iterative process of gradient descent for training the model.</p>
+<p>It shows the mean squared error (MSE) values for different training iterations (or steps) as well as the final train and test loss.</p>
+<ul class="simple">
+<li><p>The “Mean Squared Error (MSE) for step X” lines illustrate the MSE values at various training steps. A lower MSE indicates closer predicted values to the actual target values. It’s apparent that the MSE initially starts relatively high and then consistently decreases with each training iteration, indicating that the model’s predictions are improving over time.</p></li>
+<li><p>The “Final train loss” denotes the average MSE over the entire training dataset after all training iterations. Here, the final train loss is 0.177. This figure represents the average squared difference between the predicted and true target values across the entire training dataset.</p></li>
+<li><p>The “Final test loss” signifies the average MSE over the test dataset, which contains data the model has not encountered during training. The recorded test loss is 0.176, indicating that the model performs reasonably well on unseen data.</p></li>
+</ul>
+<p>The decreasing MSE values during training and the relatively low final train and test losses underscore the linear regression model’s ability to make accurate predictions on the given dataset. These results highlight the model’s capacity to generalize and perform well on new, unseen data as well.</p>
+<p>Visualizing the changes in Mean Squared Error (MSE) loss over time can provide insights into how your model is improving during training. By plotting the loss values across iterations, you can track the convergence and optimization progress.</p>
+<p>It’s important to note that while the training loss decreases, the model’s performance on a designated validation or test set may not always follow the same trend. The validation set helps to evaluate the model’s ability to generalize to new, unseen data. If the training loss decreases while the validation loss increases, it could be an indication of overfitting, where the model is learning to fit the noise in the training data rather than capturing the underlying patterns.</p>
+<p>Using a validation set to monitor the model’s performance during training is essential to make informed decisions about stopping the training process and selecting the best model configuration. It ensures that the model is achieving good generalization and is not simply memorizing the training data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">),</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training loss&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;OrangeRed&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">),</span> <span class="n">test_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Testing loss&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;RoyalBlue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Epoch&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Mean Squared Error Loss&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MSE Loss vs Training Iterations&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1f15a49e830836507825d5c6fa930e130feb32fefdb9ce5b9dd848659e91dd7d.png" src="../_images/1f15a49e830836507825d5c6fa930e130feb32fefdb9ce5b9dd848659e91dd7d.png" />
+</div>
+</div>
+</section>
+<section id="save-and-load-the-model">
+<h2><span class="section-number">12.6.3. </span>Save and Load the Model<a class="headerlink" href="#save-and-load-the-model" title="Link to this heading">#</a></h2>
+<p>To enhance the usability of your trained model on new data, it’s advantageous to develop an export module that encapsulates essential operations such as feature extraction, normalization, prediction, and unnormalization. This export module streamlines the application of your model to raw data, facilitating the acquisition of meaningful predictions <span id="id12">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<p>Let’s navigate through the steps of crafting this export module to ensure a well-organized and straightforward process. This module will simplify the procedure of saving the trained model and subsequently loading it for predictions on fresh data. The advantage is that you won’t have to manually handle feature extraction, normalization, and renormalization, making the usage of the model seamless and intuitive <span id="id13">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExportModule</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">extract_features</span><span class="p">,</span> <span class="n">norm_x</span><span class="p">,</span> <span class="n">norm_y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the ExportModule.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (tf.Module): Trained machine learning model.</span>
+<span class="sd">            extract_features (callable): Feature extraction function.</span>
+<span class="sd">            norm_x (Normalize): Input normalization instance.</span>
+<span class="sd">            norm_y (Normalize): Output unnormalization instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract_features</span> <span class="o">=</span> <span class="n">extract_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_x</span> <span class="o">=</span> <span class="n">norm_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_y</span> <span class="o">=</span> <span class="n">norm_y</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">input_signature</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">TensorSpec</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)])</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the ExportModule for new data points.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (tf.Tensor): Input data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Predicted output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_y</span><span class="o">.</span><span class="n">unnorm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code> class encapsulates the necessary operations for using the trained model on new data. It takes the trained model, feature extraction function, input normalization instance (<code class="docutils literal notranslate"><span class="pre">norm_x</span></code>), and output unnormalization instance (<code class="docutils literal notranslate"><span class="pre">norm_y</span></code>) as inputs. The <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method, decorated with <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code>, applies these operations to new input data (<code class="docutils literal notranslate"><span class="pre">x</span></code>) and returns the predicted output. The <code class="docutils literal notranslate"><span class="pre">input_signature</span></code> argument in the <code class="docutils literal notranslate"><span class="pre">&#64;tf.function</span></code> decorator ensures that the input shape and data type are specified, allowing TensorFlow to optimize the function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an ExportModule instance for the trained linear regression model</span>
+<span class="n">lin_reg_export</span> <span class="o">=</span> <span class="n">ExportModule</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">lin_reg</span><span class="p">,</span>
+                               <span class="n">extract_features</span><span class="o">=</span><span class="n">onehot_origin</span><span class="p">,</span>
+                               <span class="n">norm_x</span><span class="o">=</span><span class="n">norm_x</span><span class="p">,</span>
+                               <span class="n">norm_y</span><span class="o">=</span><span class="n">norm_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, an instance of the <code class="docutils literal notranslate"><span class="pre">ExportModule</span></code> class is created to encapsulate the trained linear regression model (<code class="docutils literal notranslate"><span class="pre">lin_reg</span></code>). The <code class="docutils literal notranslate"><span class="pre">extract_features</span></code> function is set to <code class="docutils literal notranslate"><span class="pre">onehot_origin</span></code> for feature extraction, and the <code class="docutils literal notranslate"><span class="pre">norm_x</span></code> and <code class="docutils literal notranslate"><span class="pre">norm_y</span></code> instances are used for input normalization and output unnormalization, respectively. This export module can then be used to make predictions on new data points without needing to manually perform feature extraction, normalization, and unnormalization steps.</p>
+<p>If you wish to save the current state of the model, you can utilize the <code class="docutils literal notranslate"><span class="pre">tf.saved_model.save</span></code> function. On the other hand, if you need to load a saved model for the purpose of making predictions, you can achieve this by employing the <code class="docutils literal notranslate"><span class="pre">tf.saved_model.load</span></code> function. These functions offer a convenient way to persist and retrieve models, enabling seamless integration into different workflows and scenarios <span id="id14">[<a class="reference internal" href="../References.html#id54" title="TensorFlow Developers. Tensorflow documentation. https://www.tensorflow.org/guide, 2023. [Online; accessed 01-August-2023].">TensorFlow Developers, 2023</a>]</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Create a temporary directory to save the model</span>
+<span class="n">models</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+
+<span class="c1"># Define the path to save the exported model</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s1">&#39;lin_reg_export&#39;</span><span class="p">)</span>
+
+<span class="c1"># Save the ExportModule using tf.saved_model.save</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">lin_reg_export</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this code snippet, a temporary directory is created using <code class="docutils literal notranslate"><span class="pre">tempfile.mkdtemp()</span></code> to store the exported model. The <code class="docutils literal notranslate"><span class="pre">save_path</span></code> variable specifies the path where the model will be saved. Finally, the <code class="docutils literal notranslate"><span class="pre">tf.saved_model.save</span></code> function is used to save the <code class="docutils literal notranslate"><span class="pre">lin_reg_export</span></code> module to the specified path. This saved model can then be loaded for predictions using the <code class="docutils literal notranslate"><span class="pre">tf.saved_model.load</span></code> function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the saved model using tf.saved_model.load</span>
+<span class="n">lin_reg_loaded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+
+<span class="c1"># Make predictions on the test dataset using the loaded model</span>
+<span class="n">test_preds</span> <span class="o">=</span> <span class="n">lin_reg_loaded</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># Print the first 10 predicted values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First 10 predicted values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_preds</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">First</span> <span class="mi">10</span> <span class="n">predicted</span> <span class="n">values</span><span class="p">:</span>
+<span class="p">[</span><span class="mf">28.0975</span>   <span class="mf">26.193336</span> <span class="mf">33.564373</span> <span class="mf">27.719316</span> <span class="mf">31.787922</span> <span class="mf">24.014559</span> <span class="mf">24.421043</span>
+ <span class="mf">13.45958</span>  <span class="mf">28.562454</span> <span class="mf">27.368692</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In this code snippet, the saved model is loaded using the <code class="docutils literal notranslate"><span class="pre">tf.saved_model.load</span></code> function. Then, predictions are made on the test dataset using the loaded model. Finally, the first 10 predicted values are printed to the console. This demonstrates how to use the saved model to make predictions on new data.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>Saving models is crucial when working in platforms like Google Colab due to several reasons:</p>
+<ol class="arabic simple">
+<li><p><strong>Session Lifetime</strong>: Colab sessions have a limited lifetime. Once the session ends, all data, variables, and models are lost. Saving your model allows you to preserve your work across sessions and avoid retraining from scratch.</p></li>
+<li><p><strong>Resource Constraints</strong>: Colab provides limited resources, including memory and GPU availability. Training a complex model can take a significant amount of time and resources. Saving the model allows you to resume training without starting over if the session gets disconnected or terminated.</p></li>
+<li><p><strong>Training Time</strong>: Training deep learning models can be time-consuming. Saving the model allows you to train it over multiple sessions and continue training where you left off.</p></li>
+<li><p><strong>Reproducibility</strong>: Saving the model’s state ensures reproducibility. If you achieve a good model, you can save it and share it with others, allowing them to replicate your results.</p></li>
+<li><p><strong>Deployment</strong>: Once your model is trained, you can deploy it in various applications without needing to retrain it each time. Saving the model’s architecture and weights allows you to load it on different platforms for inference.</p></li>
+<li><p><strong>Experimentation</strong>: When experimenting with different model architectures or hyperparameters, saving models at different stages lets you compare their performance and choose the best configuration.</p></li>
+</ol>
+<p>By saving your model, you can effectively manage your work, continue training, and deploy models for real-world applications, even in an environment like Google Colab with session limitations.</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG680_C12S05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">12.5. </span>Tensors in Various Operations (Ops)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ENGG680_C12S07.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">12.7. </span>Building a Logistic Regression Model</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-a-loss-function">12.6.1. Define a Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-evaluate-your-model">12.6.2. Train and Evaluate Your Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-and-load-the-model">12.6.3. Save and Load the Model</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
