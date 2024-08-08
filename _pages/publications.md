@@ -50,7 +50,7 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. Garshasbi, M., **Dastour, H.**and Jalalvand, M., 2012. [A Stable Numerical Solution of an Inverse Moving Boundary Problem of Heat Conduction Using Discrete Mollification Approach](https://jamm.scu.ac.ir/?_action=articleInfo&article=10027&lang=fa&lang=en&lang=fa&lang=en){:target="_blank"}. *Journal of Advanced Mathematical Modeling*, 2(1), pp.47-60. \[IF: NA\]
 
-1. Garshasbi, M., Reihani, P. and **Dastour, H.**, 2012. [A stable numerical solution of a class of semi-linear Cauchy problems](https://contacts.ucalgary.ca/info/math/files/info/unitis/publications/1-6943191/Article_03.pdf){:target="_blank"}. *Journal of Advanced Research in Dynamical and Control Systems*, 4, pp.56-67. \[IF: NA\]
+1. Garshasbi, M., Reihani, P. and **Dastour, H.**, 2012. [A stable numerical solution of a class of semi-linear Cauchy problems](https://www.researchgate.net/publication/285766427_A_stable_numerical_solution_of_a_class_of_semi-linear_Cauchy_problems){:target="_blank"}. *Journal of Advanced Research in Dynamical and Control Systems*, 4, pp.56-67. \[IF: NA\]
 
 ## Technical reports 
 
