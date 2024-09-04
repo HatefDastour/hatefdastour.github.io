@@ -57,7 +57,7 @@ This course provides an introduction to geospatial data analytics using Geograph
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Introduction_to_Python/" target="_blank" rel="noopener noreferrer">Introduction to Python</a>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Python_Programming/" target="_blank" rel="noopener noreferrer">Introduction to Python Programming</a>
 </b></font>
 <br>
 This course covers fundamental programming concepts using Python, encompassing statements, conditionals, loops, functions, file I/O, debugging, data parsing, display techniques, and library usage.
