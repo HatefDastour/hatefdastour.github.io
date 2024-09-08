@@ -8,14 +8,13 @@ redirect_from:
 ---
 
 <p style='text-align: justify;'>
-I am a researcher with expertise in practical applications of machine learning, deep learning, and big data analysis in environmental modeling and remote sensing. My current research mainly focuses on domains such as forest fire, vegetation analysis, hydrology, and water resources management.
-<br>
-<br>
-I have had the opportunity to teach a range of courses on various subjects such as engineering, machine learning, mathematics, statistics, and data science at the University of Calgary, the University of Lethbridge (Calgary Campus), and Mount Royal University.
-<br>
-<br>
-Beyond my professional pursuits, I am a tech enthusiast with a strong drive to stay informed about new advancements in technology. In my leisure time, I enjoy working out, hiking, and spending quality time with my family and friends.
+I am a researcher with a focus on high-quality research in GIS, remote sensing, data fusion, and geospatial analytics. My work seamlessly integrates data mining, machine learning, and Artificial Intelligence (AI) to tackle pressing issues related to environmental processes, climate change, water resources, and natural hazard management.
+<br><br>
+I have had the privilege of teaching a diverse array of courses, including environmental engineering, machine learning, mathematics, statistics, and data science at the University of Calgary, the University of Lethbridge (Calgary Campus), and Mount Royal University.
+<br><br>
+Outside of my professional endeavors, I am a tech enthusiast with a passion for staying abreast of the latest technological advancements. In my leisure time, I enjoy working out, hiking, and cherishing moments with my family and friends.
 </p>
+
 <!---
 I obtained my BSc and MSc degrees in Applied Mathematics from Iran before joining the <a href="https://www.ucalgary.ca/" target="_blank">University of Calgary</a> in January 2016 to pursue my Ph.D. studies.
 <br>
