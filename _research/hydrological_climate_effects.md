@@ -11,5 +11,5 @@ Hydrology, the study of water movement and distribution, is significantly affect
 </p>
 
 **Related Studies:**
-- [Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in the Athabasca River Basin](https://doi.org/10.1175/JHM-D-23-0013.1){:target="_blank"}
-- [Long term trend analysis of river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110197){:target="_blank"}
+1. [Least-Squares Triple Cross-Wavelet and Multivariate Regression Analyses of Climate and River Flow in the Athabasca River Basin](https://doi.org/10.1175/JHM-D-23-0013.1){:target="_blank"}
+1. [Long term trend analysis of river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110197){:target="_blank"}

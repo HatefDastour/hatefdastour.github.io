@@ -11,5 +11,5 @@ Land Use and Land Cover (LULC) classification is a critical component of Earth o
 </p>
 
 **Related Studies:**
-- [A Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification](https://doi.org/10.3390/su15107854){:target="_blank"}
-- [Remote sensing of burn area mapping for the two largest 2023 forest fires in Alberta](https://www.kelmanonline.com/httpdocs/files/CSCE/civilwinter2023/index.html){:target="_blank"}
+1. [A Comparison of Deep Transfer Learning Methods for Land Use and Land Cover Classification](https://doi.org/10.3390/su15107854){:target="_blank"}
+1. [Remote sensing of burn area mapping for the two largest 2023 forest fires in Alberta](https://www.kelmanonline.com/httpdocs/files/CSCE/civilwinter2023/index.html){:target="_blank"}

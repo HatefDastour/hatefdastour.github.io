@@ -11,6 +11,6 @@ Our research focuses on innovative techniques in fire management and remote sens
 </p>
 
 **Related Studies:**
-- [Active Fire Clustering and Spatiotemporal Dynamic Models for Forest Fire Management](https://doi.org/10.3390/fire7100355){:target="_blank"}
-- [Comparison of perimeter delineation methods for remote sensing fire spot data in near/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}
-- [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}
+1. [Active Fire Clustering and Spatiotemporal Dynamic Models for Forest Fire Management](https://doi.org/10.3390/fire7100355){:target="_blank"}
+1. [Comparison of perimeter delineation methods for remote sensing fire spot data in near/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}
+1. [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}

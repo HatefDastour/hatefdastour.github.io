@@ -11,5 +11,5 @@ Climate and vegetation are intricately linked, with climate influencing vegetati
 </p>
 
 **Related Studies:**
-- [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://doi.org/10.1007/s41748-024-00384-2){:target="_blank"}
-- [Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada](https://doi.org/10.1016/j.jag.2022.103044){:target="_blank"}
+1. [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://doi.org/10.1007/s41748-024-00384-2){:target="_blank"}
+1. [Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada](https://doi.org/10.1016/j.jag.2022.103044){:target="_blank"}
