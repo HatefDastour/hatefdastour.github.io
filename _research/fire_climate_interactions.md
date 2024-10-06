@@ -1,5 +1,5 @@
 ---
-title: "Fire-Climate Interactions"
+title: "Climate Change and Forest Fire Dynamics"
 excerpt: "Research in this area explores the relationship between climate change and forest fires, investigating how changes in climate variables such as temperature and precipitation influence the frequency, intensity, and distribution of wildfires. <br/><img src='/images/fire_climate_interactions_small.jpg'>"
 collection: research
 ---
@@ -12,6 +12,4 @@ Forest fires are a natural part of many ecosystems but can become more severe an
 
 **Related Studies:**
 - [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}
-- [Utilizing MODIS Remote Sensing
-and Integrated Data for Forest Fire Spread Modeling in the Southwest
-Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}
+- [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}
