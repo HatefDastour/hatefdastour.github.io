@@ -7,6 +7,8 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
+1. **Dastour, H.**, Bhuian, H., Ahmed, M.R., and Hassan, Q.K., 2024 [Active Fire Clustering and Spatiotemporal Dynamic Models for Forest Fire Management](https://doi.org/10.3390/fire7100355){:target="_blank"}, *Fire*, 7(10), p.355. \[IF: 3.0; IF Quartile: Q1\]
+
 1. Bhuian, H., **Dastour, H.**, Ahmed, M.R., and Hassan, Q.K., 2024 [Comparison of perimeter delineation methods for remote sensing fire spot data in near/ultra-real-time applications](https://doi.org/10.3390/fire7070226){:target="_blank"}, *Fire*, 7(7), p.226. \[IF: 3.0; IF Quartile: Q1\]
 
 
