@@ -8,11 +8,11 @@ redirect_from:
 ---
 
 <p style='text-align: justify;'>
-I am a researcher with a focus on high-quality research in GIS, remote sensing, data fusion, and geospatial analytics. My work seamlessly integrates data mining, machine learning, and Artificial Intelligence (AI) to tackle pressing issues related to environmental processes, climate change, water resources, and natural hazard management.
+I am an experienced educator and researcher with a passion for data science, machine learning, and their applications in solving real-world problems. My expertise spans GIS, remote sensing, data fusion, and geospatial analytics, with a focus on integrating advanced computational methods to address critical issues in environmental processes, climate change, water resources, and natural hazard management.
 <br><br>
 I have had the privilege of teaching a diverse array of courses, including environmental engineering, machine learning, mathematics, statistics, and data science at the University of Calgary, the University of Lethbridge (Calgary Campus), and Mount Royal University.
 <br><br>
-Outside of my professional endeavors, I am a tech enthusiast with a passion for staying abreast of the latest technological advancements. In my leisure time, I enjoy working out, hiking, and cherishing moments with my family and friends.
+Outside of my academic pursuits, I am an avid tech enthusiast and enjoy outdoor activities like hiking. I value work-life balance and cherish time spent with family and friends, which I believe contributes to my effectiveness as an educator and mentor.
 </p>
 
 <!---
