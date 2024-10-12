@@ -7,7 +7,7 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
-1. **Dastour, H.** and Hassan, Q.K., 2024. [A multidimensional machine learning framework for LST reconstruction and climate variable analysis in forest fire occurrence](https://doi.org/10.1016/j.ecoinf.2024.102849){:target="_blank"}. *Ecological Informatics*, 80, p.102531. \[IF: 5.8; IF Quartile: Q1\]
+1. **Dastour, H.** and Hassan, Q.K., 2024. [A multidimensional machine learning framework for LST reconstruction and climate variable analysis in forest fire occurrence](https://doi.org/10.1016/j.ecoinf.2024.102849){:target="_blank"}. *Ecological Informatics*, p.102849. \[IF: 5.8; IF Quartile: Q1\]
 
 1. **Dastour, H.**, Bhuian, H., Ahmed, M.R., and Hassan, Q.K., 2024 [Active Fire Clustering and Spatiotemporal Dynamic Models for Forest Fire Management](https://doi.org/10.3390/fire7100355){:target="_blank"}, *Fire*, 7(10), p.355. \[IF: 3.0; IF Quartile: Q1\]
 
