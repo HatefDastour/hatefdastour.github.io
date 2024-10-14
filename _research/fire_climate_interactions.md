@@ -11,5 +11,6 @@ Forest fires are a natural part of many ecosystems but can become more severe an
 </p>
 
 **Related Studies:**
+1. [A multidimensional machine learning framework for LST reconstruction and climate variable analysis in forest fire occurrence](https://doi.org/10.1016/j.ecoinf.2024.102849){:target="_blank"}.
 1. [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}
 1. [Utilizing MODIS Remote Sensing and Integrated Data for Forest Fire Spread Modeling in the Southwest Region of Canada](https://doi.org/10.1088/2515-7620/ad248f){:target="_blank"}
