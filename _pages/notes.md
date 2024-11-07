@@ -15,13 +15,13 @@ This course introduces Python and OpenCV for computer vision tasks. Learn image 
 
 <hr style="height:2px; visibility:hidden;" />
 
-<p style='text-align: justify;'>
+<!-- <p style='text-align: justify;'>
 <font size="+2"><b>
 <a href="https://hatefdastour.github.io/notes/Differential_Equations/" target="_blank" rel="noopener noreferrer">Differential Equations</a>
 </b></font>
 <br>
 Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform.
-</p>
+</p> -->
 
 <hr style="height:2px; visibility:hidden;" />
 
@@ -51,6 +51,16 @@ This course provides an introduction to data-driven engineering, covering essent
 </b></font>
 <br>
 This course provides an introduction to geospatial data analytics using Geographic Information Systems (GIS) and Remote Sensing technologies as foundational tools. This course is designed for individuals who are new to geospatial data processing and have a growing interest in data science. 
+</p>
+
+<hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Probability_and_Statistics/" target="_blank" rel="noopener noreferrer">Introduction to Probability and Statistics</a>
+</b></font>
+<br>
+This course covers key concepts in descriptive statistics and graphical representation. Topics include measures of central tendency and dispersion, elementary probability, and both discrete and continuous random variables. Students will learn about expectation, as well as the binomial, normal, and Student's t-distributions. The course also addresses large and small sample inference and estimation, culminating in an understanding of the Central Limit Theorem.
 </p>
 
 <hr style="height:2px; visibility:hidden;" />
