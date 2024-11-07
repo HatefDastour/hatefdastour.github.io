@@ -23,7 +23,7 @@ This course introduces Python and OpenCV for computer vision tasks. Learn image 
 Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform.
 </p> -->
 
-<hr style="height:2px; visibility:hidden;" />
+<!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
@@ -31,7 +31,7 @@ Classification of ordinary differential equations, first and second order equati
 </b></font>
 <br>
 Finite Difference Method for solving PDEs.
-</p>
+</p> -->
 
 <hr style="height:2px; visibility:hidden;" />
 
@@ -93,7 +93,7 @@ Essential foundation in linear algebra covering systems of equations, matrices, 
 This course covers root-finding algorithms, interpolation, integration, differentiation, linear systems, and numerical ODE solutions for practical problem-solving. Gain vital skills for diverse applications in science and engineering.
 </p>
 
-<hr style="height:2px; visibility:hidden;" />
+<!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
@@ -101,4 +101,4 @@ This course covers root-finding algorithms, interpolation, integration, differen
 </b></font>
 <br>
 SQL Server, MySQL_Connector, SQLite, PyMySQL, …
-</p>
+</p> -->
