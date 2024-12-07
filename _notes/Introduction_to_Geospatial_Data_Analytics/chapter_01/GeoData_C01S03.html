@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1.3. Understanding Coordinate Systems &#8212; Introduction to Geospatial Data Analytics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_01/GeoData_C01S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1.4. Map Projections" href="GeoData_C01S04.html" />
+    <link rel="prev" title="1.2. Basic Definitions and Concepts" href="GeoData_C01S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Geospatial Data Analytics - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Geospatial Data Analytics - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="GeoData_C01.html">1. Foundations of Spatial Representation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S01.html">1.1. Introduction to GIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S02.html">1.2. Basic Definitions and Concepts</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.3. Understanding Coordinate Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S04.html">1.4. Map Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S05.html">1.5. Cylindrical Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S06.html">1.6. Conic Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GeoData_C01S07.html">1.7. Azimuthal Projections</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/GeoData_C02.html">2. GIS Data Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/GeoData_C02S01.html">2.1. Understanding Geospatial Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/GeoData_C02S02.html">2.2. Vector Data Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/GeoData_C02S03.html">2.3. Raster Data Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/GeoData_C02S04.html">2.4. Sources of Geospatial Data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/GeoData_C03.html">3. Introduction to Remote Sensing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S01.html">3.1. The Integration of GIS, RS, and GPS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S02.html">3.2. What is Remote Sensing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S03.html">3.3. Radiometric Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S04.html">3.4. Spatial Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S05.html">3.5. Spectral Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S06.html">3.6. Temporal Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/GeoData_C03S07.html">3.7. Understanding Remote Sensing Images</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">4. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Understanding Coordinate Systems</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-reference-systems-srs-and-datums">1.3.1. Spatial Reference Systems (SRS) and Datums</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-srs">1.3.2. Components of SRS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-coordinate-systems-in-gis">1.3.3. Types of Coordinate Systems in GIS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geographic-coordinate-systems-gcs">1.3.4. Geographic Coordinate Systems (GCS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#projected-coordinate-systems-pcs">1.3.5. Projected Coordinate Systems (PCS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-coordinate-systems">1.3.6. Local Coordinate Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-coordinate-system">1.3.7. Choosing the Right Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#horizontal-and-vertical-coordinate-systems">1.3.8. Horizontal and Vertical Coordinate Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-coordinate-systems-in-gis">1.3.9. Importance of Coordinate Systems in GIS</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="understanding-coordinate-systems">
+<h1><span class="section-number">1.3. </span>Understanding Coordinate Systems<a class="headerlink" href="#understanding-coordinate-systems" title="Link to this heading">#</a></h1>
+<section id="spatial-reference-systems-srs-and-datums">
+<h2><span class="section-number">1.3.1. </span>Spatial Reference Systems (SRS) and Datums<a class="headerlink" href="#spatial-reference-systems-srs-and-datums" title="Link to this heading">#</a></h2>
+<p>A Spatial Reference System (SRS) provides a framework to accurately determine and describe locations on the Earth’s surface. It integrates a coordinate system with a datum, and often a map projection, to enable precise georeferencing of spatial data. By standardizing how locations are measured and represented, SRSs facilitate the integration and comparison of spatial data from various sources, making them indispensable in geographic information systems (GIS) <span id="id1">[<a class="reference internal" href="../References.html#id51" title="C.B. Jones. Geographical Information Systems and Computer Cartography. Taylor &amp; Francis, 2014. ISBN 9781317900269. URL: https://books.google.ca/books?id=5Ix9AwAAQBAJ.">Jones, 2014</a>, <a class="reference internal" href="../References.html#id109" title="Z. Lu, Y. Qu, and S. Qiao. Geodesy: Introduction to Geodetic Datum and Geodetic Systems. Springer Berlin Heidelberg, 2014. ISBN 9783642412455. URL: https://books.google.ca/books?id=pdglBAAAQBAJ.">Lu <em>et al.</em>, 2014</a>, <a class="reference internal" href="../References.html#id110" title="V. Pászto, C. Jürgens, P. Tominc, and J. Burian. Spationomy: Spatial Exploration of Economic Data and Methods of Interdisciplinary Analytics. Springer International Publishing, 2019. ISBN 9783030266264. URL: https://books.google.ca/books?id=Ic-8DwAAQBAJ.">Pászto <em>et al.</em>, 2019</a>]</span>.</p>
+</section>
+<section id="components-of-srs">
+<h2><span class="section-number">1.3.2. </span>Components of SRS<a class="headerlink" href="#components-of-srs" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Coordinate Systems</strong>: A coordinate system is a mathematical framework that provides a standardized method for specifying the precise location of points on the Earth’s surface. Coordinates can be expressed in various forms, most commonly as latitude and longitude in a geographic coordinate system, or as Cartesian coordinates <span class="math notranslate nohighlight">\((x, y, z)\)</span> in a projected coordinate system. The choice of coordinate system affects how spatial data is interpreted and how accurate the representation of location is in different contexts.</p></li>
+<li><p><strong>Datums</strong>: A datum serves as the foundational reference point that defines the origin, orientation, and scale of a coordinate system. It ensures that the coordinates correspond to actual physical locations on Earth by aligning the coordinate system with an ellipsoid that approximates the Earth’s shape. The datum accounts for variations in the Earth’s surface by establishing a reference ellipsoid and anchoring it at a specific location, known as the datum origin. This alignment is crucial for maintaining spatial accuracy, especially when integrating data from different sources or conducting geospatial analyses.</p></li>
+<li><p><strong>Map Projections</strong>: A map projection is a method used to represent the curved surface of the Earth on a flat plane, such as a map or a digital screen. This process involves mathematical transformations that project the three-dimensional geographic data onto a two-dimensional surface. Different map projections are designed to preserve certain spatial properties—such as area, shape, distance, or direction—while inevitably distorting others. The choice of projection depends on the specific needs of the project, such as the scale of the area being mapped or the particular spatial properties that need to be preserved.</p></li>
+</ol>
+</section>
+<section id="types-of-coordinate-systems-in-gis">
+<h2><span class="section-number">1.3.3. </span>Types of Coordinate Systems in GIS<a class="headerlink" href="#types-of-coordinate-systems-in-gis" title="Link to this heading">#</a></h2>
+<p>GIS rely on coordinate systems to accurately represent locations on the Earth’s surface. Coordinate systems are essential for mapping, spatial analysis, and data visualization. They provide a framework for defining real-world locations in digital environments.</p>
+<p>There are several types of coordinate systems used in GIS, each serving different purposes and suitable for various applications. The three main types are:</p>
+<ul class="simple">
+<li><p>Geographic Coordinate Systems (GCS)</p></li>
+<li><p>Projected Coordinate Systems (PCS)</p></li>
+<li><p>Local Coordinate Systems</p></li>
+</ul>
+</section>
+<section id="geographic-coordinate-systems-gcs">
+<h2><span class="section-number">1.3.4. </span>Geographic Coordinate Systems (GCS)<a class="headerlink" href="#geographic-coordinate-systems-gcs" title="Link to this heading">#</a></h2>
+<p>Geographic Coordinate Systems are based on a three-dimensional model of the Earth, which is either an ellipsoid or a sphere. Locations on the Earth’s surface are defined using angular measurements, typically in decimal degrees. These measurements include degrees of longitude (x-coordinates) and degrees of latitude (y-coordinates) <span id="id2">[<a class="reference internal" href="../References.html#id52" title="M. Kumar, R.B. Singh, A. Singh, R. Pravesh, S.I. Majid, and A. Tiwari. Geographic Information Systems in Urban Planning and Management. Advances in Geographical and Environmental Sciences. Springer Nature Singapore, 2023. ISBN 9789811978555. URL: https://books.google.ca/books?id=isKrEAAAQBAJ.">Kumar <em>et al.</em>, 2023</a>]</span>.</p>
+<div class="proof example admonition" id="example2.3.1">
+<p class="admonition-title"><span class="caption-number">Example 1.6 </span></p>
+<section class="example-content" id="proof-content">
+<p>The coordinates of Calgary, Alberta, Canada are approximately 51.0447° N latitude and 114.0719° W longitude. These coordinates pinpoint Calgary’s location on the globe with high precision. The World Geodetic System 1984 (WGS84) is a widely used GCS, especially in GPS technology, providing a standard reference for mapping and navigation.</p>
+<p><a class="reference internal" href="#calgary-wgs84"><span class="std std-numref">Fig. 1.9</span></a> shows a world map in the Mercator projection, pinpointing the location of Calgary, Alberta, Canada. The coordinates given are <strong>51.0474°N latitude</strong> and <strong>-114.0719°W longitude</strong>, which are in the WGS84 format commonly used for GPS.</p>
+<ul class="simple">
+<li><p><strong>Latitude (51.0474°N)</strong>: Indicates Calgary is 51.0474 degrees north of the equator.</p></li>
+<li><p><strong>Longitude (-114.0719°W)</strong>: Indicates Calgary is 114.0719 degrees west of the Prime Meridian.</p></li>
+</ul>
+<figure class="align-center" id="calgary-wgs84">
+<img alt="../_images/Calgary_wgs84.png" src="../_images/Calgary_wgs84.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1.9 </span><span class="caption-text">Calgary, Alberta (WGS84 Coordinates).</span><a class="headerlink" href="#calgary-wgs84" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</div></section>
+<section id="projected-coordinate-systems-pcs">
+<h2><span class="section-number">1.3.5. </span>Projected Coordinate Systems (PCS)<a class="headerlink" href="#projected-coordinate-systems-pcs" title="Link to this heading">#</a></h2>
+<p>Projected Coordinate Systems (PCS) are used to represent the curved surface of the Earth on a flat plane, such as a map. Unlike Geographic Coordinate Systems (GCS), which use angular measurements (latitude and longitude), PCS use linear measurements (x and y coordinates). This makes it easier to measure distances and areas accurately on a flat map <span id="id3">[<a class="reference internal" href="../References.html#id52" title="M. Kumar, R.B. Singh, A. Singh, R. Pravesh, S.I. Majid, and A. Tiwari. Geographic Information Systems in Urban Planning and Management. Advances in Geographical and Environmental Sciences. Springer Nature Singapore, 2023. ISBN 9789811978555. URL: https://books.google.ca/books?id=isKrEAAAQBAJ.">Kumar <em>et al.</em>, 2023</a>]</span>.</p>
+<p>A PCS is composed of two main components: a GCS and a map projection. The GCS provides the framework of latitude and longitude coordinates, while the map projection involves mathematical calculations to convert these angular coordinates into Cartesian coordinates (x, y). This conversion process allows for the creation of flat maps from the Earth’s curved surface.</p>
+<p>One common example of a PCS is the <a class="reference external" href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system">Universal Transverse Mercator (UTM) system</a>. The UTM system divides the world into a series of zones, each 6 degrees of longitude wide. Each zone has its own PCS to minimize distortion within that zone.</p>
+<p>For instance, Calgary, Alberta, is located in both UTM Zone 11 and Zone 12 (<a class="reference external" href="https://mangomap.com/robertyoung/maps/69585/what-utm-zone-am-i-in-">See this link</a>). By using separate zones, the UTM system ensures that maps are more accurate for regional mapping and large-scale projects.</p>
+<div class="proof example admonition" id="example2.3.2">
+<p class="admonition-title"><span class="caption-number">Example 1.7 </span></p>
+<section class="example-content" id="proof-content">
+<p>Imagine you are working on a construction project in Calgary, Alberta. Using the UTM system, you would refer to Zones 11 and 12. The coordinates for a specific location in Calgary might be given as 11U 706000mE 5660000mN. This means the location is 706,000 meters east and 5,660,000 meters north within Zone 11. This precise measurement is crucial for detailed engineering work, ensuring that all elements of the project are accurately placed.</p>
+<p><strong>Breakdown of UTM Coordinates:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Zone Designation (11U)</strong>:</p>
+<ul class="simple">
+<li><p><strong>Zone Number</strong>: 11</p>
+<ul>
+<li><p>UTM zones are divided longitudinally into 6-degree wide strips. Zone 11 covers longitudes from 114°W to 120°W, which includes part of Calgary.</p></li>
+</ul>
+</li>
+<li><p><strong>Latitude Band</strong>: U</p>
+<ul>
+<li><p>The “U” indicates the latitude band. UTM zones are split into bands from C to X (excluding I and O), with “U” covering latitudes from 48°N to 56°N.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Easting (706000mE)</strong>:</p>
+<ul class="simple">
+<li><p>This value represents the distance in meters east from the central meridian of the UTM zone.</p></li>
+<li><p>The central meridian of Zone 11 is at 117°W. A false easting of 500,000 meters is applied to ensure all eastings within the zone are positive.</p></li>
+<li><p>Thus, 706,000 meters east means the location is 206,000 meters east of the central meridian.</p></li>
+</ul>
+</li>
+<li><p><strong>Northing (5660000mN)</strong>:</p>
+<ul class="simple">
+<li><p>This value represents the distance in meters north from the equator.</p></li>
+<li><p>For the Northern Hemisphere, northing values start at 0 at the equator and increase northward.</p></li>
+<li><p>Hence, 5,660,000 meters north indicates the distance from the equator to the location in Calgary.</p></li>
+</ul>
+</li>
+</ol>
+<p><a class="reference internal" href="#utm-example-calgary"><span class="std std-numref">Fig. 1.10</span></a> illustrates the Universal Transverse Mercator (UTM) zones, which are used for mapping and navigation. The world is divided into 60 vertical zones, each 6 degrees of longitude wide, labeled from 1 to 60. These zones are further divided into horizontal bands, labeled from C to X (excluding I and O), each 8 degrees of latitude high.</p>
+<ul class="simple">
+<li><p><strong>Zone Numbers</strong>: The numbers at the bottom of the map (1 to 60) represent the UTM zones, each covering a 6-degree longitudinal strip.</p></li>
+<li><p><strong>Latitude Bands</strong>: The letters on the side (C to X) represent 8-degree latitude bands, starting from 80° South to 84° North.</p></li>
+<li><p><strong>Highlighted Area</strong>: The map highlights Zones 11U and 12U, which include Calgary, Alberta, showing its specific location within the global UTM grid.</p></li>
+</ul>
+<figure class="align-center" id="utm-example-calgary">
+<img alt="../_images/utm_example_calgary.png" src="../_images/utm_example_calgary.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1.10 </span><span class="caption-text">UTM Zones Across the World.</span><a class="headerlink" href="#utm-example-calgary" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Let’s zoom in in <a class="reference internal" href="#utm-example-calgary"><span class="std std-numref">Fig. 1.10</span></a>. <a class="reference internal" href="#utm-example-calgary-zoom"><span class="std std-numref">Fig. 1.11</span></a> illustrates the Universal Transverse Mercator (UTM) zones that cover Calgary, Alberta. The map highlights UTM Zone Designator “U” and UTM Zone Numbers 11 and 12.</p>
+<figure class="align-center" id="utm-example-calgary-zoom">
+<a class="reference internal image-reference" href="../_images/utm_example_calgary_zoom.png"><img alt="../_images/utm_example_calgary_zoom.png" src="../_images/utm_example_calgary_zoom.png" style="width: 550px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.11 </span><span class="caption-text">UTM Zones Covering Calgary, Alberta.</span><a class="headerlink" href="#utm-example-calgary-zoom" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</div><div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>The letters “I” and “O” are excluded from the UTM zone designations to avoid confusion with the numbers “1” and “0”³. This helps ensure clarity and reduces the risk of errors when reading and interpreting the coordinates.</p>
+</div>
+</section>
+<section id="local-coordinate-systems">
+<h2><span class="section-number">1.3.6. </span>Local Coordinate Systems<a class="headerlink" href="#local-coordinate-systems" title="Link to this heading">#</a></h2>
+<p>Local Coordinate Systems are often used for engineering projects or other applications requiring high precision over a smaller area. These systems are tailored to specific locations and may not be compatible with global or regional coordinate systems. For example, a construction project might use a local coordinate system to ensure precise measurements and alignment. These systems are crucial for tasks that demand high accuracy, such as building infrastructure or conducting detailed land surveys <span id="id4">[<a class="reference internal" href="../References.html#id52" title="M. Kumar, R.B. Singh, A. Singh, R. Pravesh, S.I. Majid, and A. Tiwari. Geographic Information Systems in Urban Planning and Management. Advances in Geographical and Environmental Sciences. Springer Nature Singapore, 2023. ISBN 9789811978555. URL: https://books.google.ca/books?id=isKrEAAAQBAJ.">Kumar <em>et al.</em>, 2023</a>]</span>.</p>
+<div class="proof example admonition" id="example2.3.3">
+<p class="admonition-title"><span class="caption-number">Example 1.8 </span> (Examples of Local Coordinate Systems in Calgary, Alberta)</p>
+<section class="example-content" id="proof-content">
+<ol class="arabic simple">
+<li><p><strong>East Village Development</strong>:</p>
+<ul class="simple">
+<li><p>A local coordinate system is established for the East Village area.</p></li>
+<li><p>The origin (0,0) is set at a reference point, possibly the Calgary City Hall.</p></li>
+<li><p>A specific point of interest, such as a new building corner, is located at coordinates (1319, -326), meaning 1319 meters east and 326 meters south of the origin.</p></li>
+</ul>
+</li>
+<li><p><strong>Calgary Tower Area</strong>:</p>
+<ul class="simple">
+<li><p>For projects around the Calgary Tower, a local coordinate system is used.</p></li>
+<li><p>The origin (0,0) might be set at a convenient reference point in the downtown area.</p></li>
+<li><p>The Calgary Tower itself is located at coordinates (559, -468) in this system, indicating it is 559 meters east and 468 meters south of the chosen origin.</p></li>
+</ul>
+</li>
+<li><p><strong>Fort Calgary Historical Site</strong>:</p>
+<ul class="simple">
+<li><p>A separate local coordinate system is established for archaeological and restoration work at Fort Calgary.</p></li>
+<li><p>The origin (0,0) could be set at a significant point within the fort’s grounds.</p></li>
+<li><p>A point of interest, perhaps a newly discovered artifact or a restoration project, is located at coordinates (1617, -58), meaning 1617 meters east and 58 meters south of the origin.</p></li>
+</ul>
+</li>
+</ol>
+<p><a class="reference internal" href="#local-coordinate-calgary"><span class="std std-numref">Fig. 1.12</span></a> illustrates:</p>
+<ul class="simple">
+<li><p><strong>Calgary Local Coordinate System</strong> (top): A local coordinate system is established with the origin set at Calgary City Hall (0,0). Several points of interest, such as East Village, Calgary Tower, and Fort Calgary, are plotted with their respective local coordinates relative to the origin. The distances are in meters, indicating the eastward and northward (or southward) positions from City Hall.</p></li>
+<li><p><strong>Calgary in 2D Map</strong> (bottom): A cartographic 2D map of the Calgary area centered around City Hall. Major landmarks are plotted, including the same points from the local coordinate system, overlaid on a map background retrieved from OpenStreetMap. The geographic coordinates (latitude and longitude) are displayed here.</p></li>
+</ul>
+<figure class="align-center" id="local-coordinate-calgary">
+<a class="reference internal image-reference" href="../_images/local_coordinate_calgary.png"><img alt="../_images/local_coordinate_calgary.png" src="../_images/local_coordinate_calgary.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.12 </span><span class="caption-text">Comparison of Local Coordinate Systems and 2D Cartographic Map in Calgary, Alberta.</span><a class="headerlink" href="#local-coordinate-calgary" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>These local coordinate systems allow for precise measurements and planning within each specific area, tailored to the needs of different projects in Calgary.</p>
+</section>
+</div></section>
+<section id="choosing-the-right-coordinate-system">
+<h2><span class="section-number">1.3.7. </span>Choosing the Right Coordinate System<a class="headerlink" href="#choosing-the-right-coordinate-system" title="Link to this heading">#</a></h2>
+<p>Selecting an appropriate coordinate system is crucial for the accuracy and usability of spatial data. The choice depends on the scale of the project, the region of interest, and the intended use of the data.</p>
+<ul class="simple">
+<li><p>For global studies, a Geographic Coordinate System (GCS) like WGS84 is often used to ensure consistency across large areas.</p></li>
+<li><p>For regional or local projects, a Projected Coordinate System (PCS) that minimizes distortion in that specific area is preferred.</p></li>
+</ul>
+<p>For example, a city map of Calgary might use the UTM Zone 11N projection (a type of PCS) to provide accurate representations of streets and buildings. This system is well-suited for Calgary as it minimizes distortion in this region and uses meters as units, which is convenient for urban planning and construction.</p>
+</section>
+<section id="horizontal-and-vertical-coordinate-systems">
+<h2><span class="section-number">1.3.8. </span>Horizontal and Vertical Coordinate Systems<a class="headerlink" href="#horizontal-and-vertical-coordinate-systems" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Horizontal Coordinate Systems</strong>: These systems define where features are located across the globe. They use latitude and longitude to pinpoint locations. For example, the coordinates 51.0447° N, 114.0719° W identify downtown Calgary on a map.</p></li>
+<li><p><strong>Vertical Coordinate Systems</strong>: These systems define how high or deep features are relative to a surface, such as sea level. For instance, Calgary’s elevation is approximately 1,045 meters above sea level. Vertical coordinate systems are essential for applications like flood modeling in the Bow River basin, where knowing the elevation of land surfaces is crucial for predicting potential flood impacts.</p></li>
+</ul>
+</section>
+<section id="importance-of-coordinate-systems-in-gis">
+<h2><span class="section-number">1.3.9. </span>Importance of Coordinate Systems in GIS<a class="headerlink" href="#importance-of-coordinate-systems-in-gis" title="Link to this heading">#</a></h2>
+<p>Coordinate systems are vital for various GIS operations, including data integration, map creation, and spatial analysis. They ensure that spatial data from different sources can be compared and analyzed consistently.</p>
+<ul class="simple">
+<li><p><strong>Data Integration</strong>: When combining datasets from different sources, such as provincial land use data with municipal infrastructure data in Calgary, a common coordinate system ensures they align correctly.</p></li>
+<li><p><strong>Map Creation</strong>: Accurate maps depend on the correct use of coordinate systems to represent spatial relationships. For example, creating a map of Calgary’s public transit system requires precise positioning of bus stops, train stations, and route lines.</p></li>
+<li><p><strong>Spatial Analysis</strong>: In spatial analysis, such as calculating distances between neighborhoods or areas of parks in Calgary, consistent coordinate systems produce reliable results.</p></li>
+</ul>
+<p>Without a common coordinate system, it would be challenging to overlay maps (e.g., combining geological and urban development maps of Calgary), compare spatial data, or conduct accurate spatial analyses, leading to errors and misinterpretations in urban planning and development projects.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_01"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="GeoData_C01S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>Basic Definitions and Concepts</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="GeoData_C01S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.4. </span>Map Projections</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-reference-systems-srs-and-datums">1.3.1. Spatial Reference Systems (SRS) and Datums</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-srs">1.3.2. Components of SRS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-coordinate-systems-in-gis">1.3.3. Types of Coordinate Systems in GIS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geographic-coordinate-systems-gcs">1.3.4. Geographic Coordinate Systems (GCS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#projected-coordinate-systems-pcs">1.3.5. Projected Coordinate Systems (PCS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-coordinate-systems">1.3.6. Local Coordinate Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-coordinate-system">1.3.7. Choosing the Right Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#horizontal-and-vertical-coordinate-systems">1.3.8. Horizontal and Vertical Coordinate Systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-coordinate-systems-in-gis">1.3.9. Importance of Coordinate Systems in GIS</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
