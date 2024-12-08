@@ -1,0 +1,1609 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>5.7. Techniques for Filling Missing Data in Time Series &#8212; Introduction to Python Programming</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/PyIntro_C05S07';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.8. Strategies for Handling Missing Categorical Data in Pandas" href="PyIntro_C05S08.html" />
+    <link rel="prev" title="5.6. Filling Missing Data" href="PyIntro_C05S06.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Python Programming - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Python Programming - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/PyIntro_C01.html">1. Fundamental Concepts of Python Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S01.html">1.1. Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S02.html">1.2. Data Types: A brief overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S03.html">1.3. Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S04.html">1.4. Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S05.html">1.5. Statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S06.html">1.6. Conditionals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S07.html">1.7. Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S08.html">1.8. Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S09.html">1.9. Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S10.html">1.10. Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S11.html">1.11. Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S12.html">1.12. Special Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/PyIntro_C01S13.html">1.13. Functions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/PyIntro_C02.html">2. Data Structures and File Handling in Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S01.html">2.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S02.html">2.2. String Formatting Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S03.html">2.3. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S04.html">2.4. Dictionaries in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S05.html">2.5. Python Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S06.html">2.6. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/PyIntro_C02S07.html">2.7. Files in Python</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/PyIntro_C03.html">3. Classes and Objects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S01.html">3.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S02.html">3.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S03.html">3.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S04.html">3.4. Copying Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S05.html">3.5. Magic Methods (Dunder Methods) in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/PyIntro_C03S06.html">3.6. Examples of Classes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/PyIntro_C04.html">4. Introduction to NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/PyIntro_C04S01.html">4.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/PyIntro_C04S02.html">4.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/PyIntro_C04S03.html">4.3. Advanced Numpy Concepts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="PyIntro_C05.html">5. Working with Data using Pandas</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S01.html">5.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S02.html">5.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S03.html">5.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S04.html">5.4. Modifying a DataFrame in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S05.html">5.5. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S06.html">5.6. Filling Missing Data</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.7. Techniques for Filling Missing Data in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S08.html">5.8. Strategies for Handling Missing Categorical Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S09.html">5.9. Pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S10.html">5.10. Pandas <code class="docutils literal notranslate"><span class="pre">join</span></code> and <code class="docutils literal notranslate"><span class="pre">concat</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S11.html">5.11. Aggregation and Grouping in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PyIntro_C05S12.html">5.12. Pandas pivot and melt</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/PyIntro_C06.html">6. Data Visualization using Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S01.html">6.1. Getting Started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S02.html">6.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S03.html">6.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S04.html">6.4. Marker, Linestyles and Colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S05.html">6.5. Colormaps in Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S06.html">6.6. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/PyIntro_C06S07.html">6.7. Python Plotting Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Techniques for Filling Missing Data in Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-fill">5.7.1. Constant Fill</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-and-backward-fill">5.7.2. Forward Fill and Backward Fill</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-ffill">5.7.2.1. Forward Fill (ffill)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-fill-bfill">5.7.2.2. Backward Fill (bfill)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-interpolation">5.7.3. Filling with Interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-nans">5.7.4. Dropping NaNs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-drop-nans">5.7.4.1. When to Drop NaNs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputing-missing-values-through-simpleimputer">5.7.5. Imputing Missing Values through SimpleImputer</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="techniques-for-filling-missing-data-in-time-series">
+<h1><span class="section-number">5.7. </span>Techniques for Filling Missing Data in Time Series<a class="headerlink" href="#techniques-for-filling-missing-data-in-time-series" title="Link to this heading">#</a></h1>
+<p>Working with time series data containing NaN (Not a Number) values requires careful consideration to ensure accurate and meaningful analysis. Here are several effective strategies to handle NaN values in time series data <span id="id1">[<a class="reference internal" href="../References.html#id138" title="W. McKinney. Python for Data Analysis. O'Reilly Media, 2022. ISBN 9781098104009. URL: https://books.google.ca/books?id=EgKBEAAAQBAJ.">McKinney, 2022</a>, <a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>:</p>
+<section id="constant-fill">
+<h2><span class="section-number">5.7.1. </span>Constant Fill<a class="headerlink" href="#constant-fill" title="Link to this heading">#</a></h2>
+<p>When dealing with missing values in time series data, you can use the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> method to fill in the gaps with a constant value or summary statistics like mean or median. This approach is useful for maintaining the overall trend and distribution of the data.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><font color='Blue'><b>Example:</b></font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a simple time series DataFrame with missing values</span>
+<span class="n">date_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2023-01-10&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">23.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">date_rng</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Fill NaN values with a constant (0 in this case)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Filling NaN values with a constant (0):&#39;</span><span class="p">)</span>
+<span class="n">df_filled_constant</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_filled_constant</span><span class="p">)</span>
+
+<span class="c1"># Fill NaN values with the mean</span>
+<span class="n">_mean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fill NaN values with the mean:&quot;</span><span class="p">)</span>
+<span class="n">df_filled_mean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">_mean</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_filled_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filling NaN values with a constant (0):
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fill NaN values with the mean:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.50</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/pd_fill_03.png"><img alt="../_images/pd_fill_03.png" src="../_images/pd_fill_03.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.12 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="forward-fill-and-backward-fill">
+<h2><span class="section-number">5.7.2. </span>Forward Fill and Backward Fill<a class="headerlink" href="#forward-fill-and-backward-fill" title="Link to this heading">#</a></h2>
+<p>Forward fill and backward fill are methods used to handle missing values in time series data by propagating the last or next valid observation, respectively. These methods help maintain the continuity of observations in your dataset.</p>
+<section id="forward-fill-ffill">
+<h3><span class="section-number">5.7.2.1. </span>Forward Fill (ffill)<a class="headerlink" href="#forward-fill-ffill" title="Link to this heading">#</a></h3>
+<p>Forward fill (<code class="docutils literal notranslate"><span class="pre">ffill</span></code>) propagates the last valid observation forward to fill NaN values. This method is useful when you assume that the last known value should be carried forward.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">ffill</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">axis</span></code>: Specifies whether to fill missing values along rows (axis=0, default) or columns (axis=1).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inplace</span></code>: If True, modifies the original DataFrame; if False (default), returns a new DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: Limits the number of consecutive NaN values to fill.</p></li>
+</ul>
+</section>
+<section id="backward-fill-bfill">
+<h3><span class="section-number">5.7.2.2. </span>Backward Fill (bfill)<a class="headerlink" href="#backward-fill-bfill" title="Link to this heading">#</a></h3>
+<p>Backward fill (<code class="docutils literal notranslate"><span class="pre">bfill</span></code>) propagates the next valid observation backward to fill NaN values. This method is useful when you assume that the next known value should be carried backward.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">bfill</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">axis</span></code>: Specifies whether to fill missing values along rows (axis=0, default) or columns (axis=1).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inplace</span></code>: If True, modifies the original DataFrame; if False (default), returns a new DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: Limits the number of consecutive NaN values to fill.</p></li>
+</ul>
+<p><font color='Blue'><b>Example:</b></font> An example using the same data to demonstrate both forward fill and backward fill.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a simple time series DataFrame with missing values</span>
+<span class="n">date_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2023-01-10&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">23.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">date_rng</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Forward fill to propagate the last valid observation forward</span>
+<span class="n">df_filled_ffill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Forward fill to propagate the last valid observation forward:&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_filled_ffill</span><span class="p">)</span>
+
+<span class="c1"># Backward fill to propagate the next valid observation backward</span>
+<span class="n">df_filled_bfill</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Backward fill to propagate the next valid observation backward:&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_filled_bfill</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Forward fill to propagate the last valid observation forward:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Backward fill to propagate the next valid observation backward:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/pd_fill_04.png"><img alt="../_images/pd_fill_04.png" src="../_images/pd_fill_04.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.13 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="filling-with-interpolation">
+<h2><span class="section-number">5.7.3. </span>Filling with Interpolation<a class="headerlink" href="#filling-with-interpolation" title="Link to this heading">#</a></h2>
+<p>The Pandas library in Python offers the <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function as a versatile tool for filling missing or NaN (Not-a-Number) values within a DataFrame or Series. This function primarily employs interpolation techniques to estimate and insert values where data gaps exist <span id="id2">[<a class="reference internal" href="../References.html#id51" title="Pandas Developers. Pandas documentation. https://pandas.pydata.org/docs/, 2023. [Online; accessed 01-August-2023].">Pandas Developers, 2023</a>]</span>.</p>
+<p>In Pandas, interpolation works by treating the DataFrame’s index as the x-values and the column values as the y-values. This is why it’s crucial for the index to represent a logical sequence, such as time or another ordered variable, to ensure meaningful interpolation. Therefore, Pandas interpolation is <strong>not recommended</strong> when there is no logical relationship between the index and the column chosen to be interpolated.</p>
+<p>Key Parameters:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method</span></code>: This parameter allows you to specify the interpolation method to be used. Common methods include ‘linear,’ ‘polynomial,’ ‘spline,’ and ‘nearest,’ among others. The choice of method depends on the nature of your data and the desired interpolation behavior.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">axis</span></code>: You can specify whether the interpolation should be performed along rows (axis=0) or columns (axis=1) of the DataFrame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: It defines the maximum number of consecutive NaN values that can be filled. This helps prevent overly aggressive data imputation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit_direction</span></code>: This parameter determines whether filling should occur in a forward (‘forward’) or backward (‘backward’) direction when the ‘limit’ parameter is activated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inplace</span></code>: If set to True, the original DataFrame is modified in place. Otherwise, a new DataFrame with the interpolated values is returned.</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>How It Works:</strong>
+The <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function uses the specified interpolation method to estimate the missing values based on the surrounding data points. For instance, with linear interpolation, missing values are estimated as points lying on a straight line between the known data points. Polynomial interpolation uses polynomial functions to approximate the missing values more flexibly. Spline interpolation constructs piecewise-defined polynomials to capture complex data patterns.</p></li>
+<li><p><strong>Use Cases:</strong>
+Pandas’ <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> function is particularly useful in data preprocessing, time series analysis, and data imputation tasks. It aids in maintaining the integrity of the data while ensuring a more complete dataset for downstream analysis.</p></li>
+</ul>
+<p>You can see the function description <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html">here</a>.</p>
+<p><font color='Blue'><b>Example:</b></font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a simple time series DataFrame with missing values</span>
+<span class="n">date_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2023-01-10&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">23.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">date_rng</span><span class="p">)</span>
+
+<span class="c1"># Display the original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Interpolate missing values linearly</span>
+<span class="n">df_interpolate</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display the DataFrame with missing values filled using interpolation</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with Missing Values Filled:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_interpolate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame with Missing Values Filled:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>23.75</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>22.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>20.75</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.50</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/pd_fill_05.png"><img alt="../_images/pd_fill_05.png" src="../_images/pd_fill_05.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.14 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/pd_linear_int.png"><img alt="../_images/pd_linear_int.png" src="../_images/pd_linear_int.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.15 </span><span class="caption-text">Visual representation of pandas Linear Interpolation.</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Observe that here, we can perform linear interpolation with a default numerical index.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>In this context, each row in the data frame is considered an individual data point, and linear interpolation is applied based on the numerical order of these data points. Let’s focus on calculating the interpolated value for the data point with the default index 2.</p>
+<p>Assuming that the data point at default index 1 corresponds to a temperature of 24.5, and the data point at default index 3 corresponds to a temperature of 23.0, we can employ the linear interpolation formula as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cf8a4d5f-98d8-478b-8bc4-64f6ae3ec42c">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-cf8a4d5f-98d8-478b-8bc4-64f6ae3ec42c" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Interpolated value at index 2} = 24.5 + \left( \frac{2 - 1}{3 - 1} \right) \times (23.0 - 24.5) = 23.75 \end{equation}\]</div>
+<p>We have determined the interpolated temperature for index 2, which is 23.75. It’s worth noting that in this case, we’ve established that index 2 corresponds to the same data point as ‘2023-01-03’.</p>
+</section>
+<section id="dropping-nans">
+<h2><span class="section-number">5.7.4. </span>Dropping NaNs<a class="headerlink" href="#dropping-nans" title="Link to this heading">#</a></h2>
+<p>When dealing with missing data, one straightforward approach is to drop rows or columns that contain NaN values using the <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> method. This method is particularly useful when the missing values are too frequent or when estimating them is not feasible. However, it’s important to consider the impact of dropping data, as it can lead to loss of valuable information.</p>
+<section id="when-to-drop-nans">
+<h3><span class="section-number">5.7.4.1. </span>When to Drop NaNs<a class="headerlink" href="#when-to-drop-nans" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>High Frequency of Missing Values</strong>: If a significant portion of the data is missing, it might be more practical to drop those rows or columns rather than attempting to fill them.</p></li>
+<li><p><strong>Unfeasible Estimation</strong>: When the missing values cannot be reliably estimated due to lack of context or insufficient data, dropping them might be the best option.</p></li>
+<li><p><strong>Data Integrity</strong>: In some cases, retaining rows with missing values might compromise the integrity of the analysis. Dropping such rows ensures that the remaining data is complete and reliable.</p></li>
+</ul>
+<p><font color='Blue'><b>Example:</b></font> An example demonstrating how to drop rows with NaN values in a time series DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a simple time series DataFrame with missing values</span>
+<span class="n">date_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2023-01-10&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">23.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">date_rng</span><span class="p">)</span>
+
+<span class="c1"># Display the original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Drop rows with NaN values</span>
+<span class="n">df_dropped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_dropped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/pd_fill_07.png"><img alt="../_images/pd_fill_07.png" src="../_images/pd_fill_07.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.16 </span><span class="caption-text">Visual representation of the above example.</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="imputing-missing-values-through-simpleimputer">
+<h2><span class="section-number">5.7.5. </span>Imputing Missing Values through SimpleImputer<a class="headerlink" href="#imputing-missing-values-through-simpleimputer" title="Link to this heading">#</a></h2>
+<p>SimpleImputer is a class from the scikit-learn library in Python that provides a straightforward and flexible way to impute missing values in datasets. Imputation is the process of replacing missing values with estimated or calculated values, making the data more complete and suitable for analysis. SimpleImputer is particularly useful when we need to handle missing data in our machine learning workflow <span id="id3">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p>Here are the key aspects and functionalities of SimpleImputer:</p>
+<ol class="arabic simple">
+<li><p><strong>Handling Missing Data</strong>: SimpleImputer is designed to handle missing data by replacing NaN (Not-a-Number) or other user-specified missing values with appropriate values. It can be applied to both numerical and categorical features.</p></li>
+<li><p><strong>Imputation Strategies</strong>: SimpleImputer supports various imputation strategies to replace missing values, including:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: Replaces missing values with the mean of the non-missing values in the same column (for numerical features).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">median</span></code>: Fills missing values with the median of the non-missing values in the same column (for numerical features).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">most_frequent</span></code>: Imputes missing values with the most frequent (mode) value in the same column (for categorical features).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">constant</span></code>: Replaces missing values with a user-defined constant value.</p></li>
+</ul>
+</li>
+<li><p><strong>Usage in Machine Learning Pipelines</strong>: SimpleImputer can be integrated into scikit-learn’s machine learning pipelines, allowing you to preprocess your data and impute missing values as a part of the broader data preparation process.</p></li>
+<li><p><strong>Fit and Transform</strong>: Similar to other transformers in scikit-learn, you first fit a SimpleImputer instance on your training data using the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method. Then, you can apply the imputation to both the training and testing datasets using the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+
+<span class="c1"># Create a simple time series DataFrame with missing values</span>
+<span class="n">date_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2023-01-10&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">24.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">23.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">date_rng</span><span class="p">)</span>
+
+<span class="c1"># Display the original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Create a SimpleImputer instance to impute missing values with the mean</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fit the imputer on the data and transform it</span>
+<span class="n">df_imputed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">imputer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Display the DataFrame with missing values imputed using the mean</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DataFrame with Missing Values Imputed:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_imputed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.5</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame with Missing Values Imputed:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-01-01</th>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-02</th>
+      <td>24.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-03</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-04</th>
+      <td>23.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-05</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-06</th>
+      <td>22.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-07</th>
+      <td>21.50</td>
+    </tr>
+    <tr>
+      <th>2023-01-08</th>
+      <td>22.21</td>
+    </tr>
+    <tr>
+      <th>2023-01-09</th>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2023-01-10</th>
+      <td>19.50</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="PyIntro_C05S06.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.6. </span>Filling Missing Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PyIntro_C05S08.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.8. </span>Strategies for Handling Missing Categorical Data in Pandas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-fill">5.7.1. Constant Fill</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-and-backward-fill">5.7.2. Forward Fill and Backward Fill</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-ffill">5.7.2.1. Forward Fill (ffill)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-fill-bfill">5.7.2.2. Backward Fill (bfill)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filling-with-interpolation">5.7.3. Filling with Interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-nans">5.7.4. Dropping NaNs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-drop-nans">5.7.4.1. When to Drop NaNs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputing-missing-values-through-simpleimputer">5.7.5. Imputing Missing Values through SimpleImputer</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
