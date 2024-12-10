@@ -1,0 +1,1698 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9.7. Support Vector Machines &#8212; Introduction to Digital Engineering</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_09/ENGG680_C09S07';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Tree-Based Methods" href="../chapter_10/ENGG680_C10.html" />
+    <link rel="prev" title="9.6. Resampling Methods" href="ENGG680_C09S06.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Digital Engineering - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Digital Engineering - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/ENGG680_C01.html">1. Introduction to Python Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S01.html">1.1. Variable names, Expressions and statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S02.html">1.2. Fundamental Concepts and Operations in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/ENGG680_C01S03.html">1.3. Functions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/ENGG680_C02.html">2. Control Flow: Conditionals, Recursion, and Iteration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S01.html">2.1. Conditionals and recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/ENGG680_C02S02.html">2.2. Iteration</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/ENGG680_C03.html">3. Data Structures and File Handling in Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S01.html">3.1. Strings in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S02.html">3.2. Python Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S03.html">3.3. Python Dictionaries: Key-Value Pairs in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S04.html">3.4. Python Tuples: Immutable Sequences in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S05.html">3.5. Python Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/ENGG680_C03S06.html">3.6. Files in Python (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/ENGG680_C04.html">4. Classes and Objects</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S01.html">4.1. Introduction to Classes and Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S02.html">4.2. Inheritance and Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S03.html">4.3. Encapsulation and Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S04.html">4.4. Copying Objects (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S05.html">4.5. Magic Methods (Dunder Methods) in Python (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/ENGG680_C04S06.html">4.6. Examples of Classes (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/ENGG680_C05.html">5. Introduction to NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S01.html">5.1. Basics of Numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S02.html">5.2. NumPy Function Reference and Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/ENGG680_C05S03.html">5.3. Advanced Numpy Concepts (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/ENGG680_C06.html">6. Working with Data using Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S01.html">6.1. An Introduction to Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S02.html">6.2. DataFrame and Series Indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S03.html">6.3. Pandas Data Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S04.html">6.4. Handling Missing Data in Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S05.html">6.5. Combining Datasets using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/ENGG680_C06S06.html">6.6. Aggregation and Grouping in Pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/ENGG680_C07.html">7. Data Visualization using Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S01.html">7.1. Getting started with Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S02.html">7.2. Matplotlib Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S03.html">7.3. Matplotlib interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S04.html">7.4. Adjusting the Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S05.html">7.5. Seaborn plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/ENGG680_C07S06.html">7.6. Python Plotting Guide</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_08/ENGG680_C08.html">8. An Introduction to Computer Vision</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S01.html">8.1. Getting Started with OpenCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S02.html">8.2. Geometric Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S03.html">8.3. Image Thresholding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S04.html">8.4. Image Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_08/ENGG680_C08S05.html">8.5. Drawing Functions (Optional Section)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="ENGG680_C09.html">9. An Introduction to Machine Learning</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S01.html">9.1. Prologue: Statistical Metrics and Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S02.html">9.2. An Introduction to Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S03.html">9.3. Multiple Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S04.html">9.4. Logistic Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S05.html">9.5. K-Nearest Neighbors (K-NN)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ENGG680_C09S06.html">9.6. Resampling Methods</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">9.7. Support Vector Machines</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_10/ENGG680_C10.html">10. Tree-Based Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S01.html">10.1. Fundamental Structure of Decision Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S02.html">10.2. Regression Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S03.html">10.3. Classification Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S04.html">10.4. Regression Trees and Linear Models (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S05.html">10.5. Enhancing Decision Trees with Bagging: An Introduction (Optional Section)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S06.html">10.6. Random Forests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_10/ENGG680_C10S07.html">10.7. Gradient Boosting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_11/ENGG680_C11.html">11. Dimensionality Reduction and Feature Selection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S01.html">11.1. Introduction to Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S02.html">11.2. Principal Components Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S03.html">11.3. t-Distributed Stochastic Neighbor Embedding (t-SNE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S04.html">11.4. Linear and Quadratic Discriminant Analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S05.html">11.5. Recursive Feature Elimination (RFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_11/ENGG680_C11S06.html">11.6. Practical Considerations in Dimensionality Reduction</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_12/ENGG680_C12.html">12. Introduction to Deep Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S01.html">12.1. Understanding Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S02.html">12.2. Fundamentals of Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S03.html">12.3. TensorFlow Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S04.html">12.4. Introduction to Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S05.html">12.5. Tensors in Various Operations (Ops)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S06.html">12.6. Building a linear Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S07.html">12.7. Building a Logistic Regression Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S08.html">12.8. Multilayer Perceptron (MLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S09.html">12.9. Deep Learning Architectures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S10.html">12.10. Image classification with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S11.html">12.11. Image Augmentations with TensorFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S12.html">12.12. Enhancing Image Classification Precision Through TensorFlow and Data Augmentation Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_12/ENGG680_C12S13.html">12.13. Brief Overview of Additional Topics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">13. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Support Vector Machines</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles-of-svm">9.7.1. Basic principles of SVM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-vector-classifiers">9.7.2. Support Vector Classifiers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulating-the-maximal-margin-classifier">9.7.3. Formulating the Maximal Margin Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-with-non-linear-decision-boundaries">9.7.4. Classification with Non-Linear Decision Boundaries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#augmented-feature-space">9.7.4.1. Augmented Feature Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">9.7.4.2. Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-support-vector-machine-kernelized-enhancement">9.7.5. The Support Vector Machine: Kernelized Enhancement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-support-vector-classifier">9.7.5.1. Linear Support Vector Classifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kernelized-format">9.7.5.2. Kernelized Format</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sklearns-svc-and-svr">9.7.6. sklearn’s  SVC and SVR</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="tex2jax_ignore mathjax_ignore section" id="support-vector-machines">
+<h1><span class="section-number">9.7. </span>Support Vector Machines<a class="headerlink" href="#support-vector-machines" title="Permalink to this heading">#</a></h1>
+<p>Support Vector Machines (SVM) are a versatile and powerful framework in machine learning, skillfully handling both classification and regression tasks. The core idea of SVM is to find an optimal hyperplane within a high-dimensional feature space, smartly separating data points belonging to different classes. This hyperplane’s choice depends on the maximization of the margin, which is the spatial distance between the hyperplane and the closest data points from each distinct class. Thus, SVM works as a finely tuned balance between achieving high-accuracy alignment with training data and promoting robust generalization to novel, previously unseen data instances <span id="id1">[<a class="reference internal" href="../References.html#id184" title="B. Scholkopf and A.J. Smola. Learning with Kernels: Support Vector Machines, Regularization, Optimization, and Beyond. Adaptive Computation and Machine Learning series. MIT Press, 2018. ISBN 9780262536578. URL: https://books.google.ca/books?id=7r34DwAAQBAJ.">Scholkopf and Smola, 2018</a>, <a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Hyperplane</p>
+<p>A hyperplane is a plane with one less dimension than the dimension of its ambient space. For example, if space is 3-dimensional, then its hyperplanes are 2-dimensional planes. Moreover, if the space is 2-dimensional, its hyperplanes are the 1-dimensional lines <span id="id2">[<a class="reference internal" href="../References.html#id115" title="K. Kuttler and I. Farah. A First Course in Linear Algebra. Lyryx Learning Incorporated, 2020. URL: https://books.google.ca/books?id=1jd8zgEACAAJ.">Kuttler and Farah, 2020</a>]</span>.</p>
+</div>
+<div class="section" id="basic-principles-of-svm">
+<h2><span class="section-number">9.7.1. </span>Basic principles of SVM<a class="headerlink" href="#basic-principles-of-svm" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Hyperplane</strong>: A separation line that divides data instances of different classes, acting as a classification criterion.</p></li>
+<li><p><strong>Support Vectors</strong>: Data instances that are nearest to the hyperplane, having a strong impact on its position and direction.</p></li>
+<li><p><strong>Margin</strong>: The distance between the hyperplane and the closest support vectors, serving as a safety margin to prevent misclassification.</p></li>
+<li><p><strong>Kernel Trick</strong>: A clever method that enables SVM to handle complex non-linear data patterns by effectively transforming data points to a higher dimensional space.</p></li>
+<li><p><strong>C Parameter</strong>: Controls the trade-off between maximizing the margin’s width and minimizing classification errors, thus determining SVM’s tolerance level.</p></li>
+<li><p><strong>Kernel Functions</strong>: Various kernel functions (e.g., linear, polynomial, radial basis function) that are crucial in defining the shape and form of the final decision boundary.</p></li>
+</ul>
+</div>
+<div class="section" id="support-vector-classifiers">
+<h2><span class="section-number">9.7.2. </span>Support Vector Classifiers<a class="headerlink" href="#support-vector-classifiers" title="Permalink to this heading">#</a></h2>
+<p>Support Vector Classifiers (SVCs) are a basic technique in binary classification problems, where the goal is to split two classes, usually labeled as -1 and 1, by finding an ideal hyperplane. The hyperplane can be expressed mathematically as follows <span id="id3">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>, <a class="reference internal" href="../References.html#id115" title="K. Kuttler and I. Farah. A First Course in Linear Algebra. Lyryx Learning Incorporated, 2020. URL: https://books.google.ca/books?id=1jd8zgEACAAJ.">Kuttler and Farah, 2020</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8f5add83-c86b-4c73-b3c2-d3c7e8a9c1f2">
+<span class="eqno">(9.105)<a class="headerlink" href="#equation-8f5add83-c86b-4c73-b3c2-d3c7e8a9c1f2" title="Permalink to this equation">#</a></span>\[\begin{equation} \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p = 0 \end{equation}\]</div>
+<p>In this equation:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( \beta_0, \beta_1, \cdots, \beta_p \)</span> are coefficients that determine the direction and location of the hyperplane.</p></li>
+<li><p><span class="math notranslate nohighlight">\( x_1, x_2, \cdots, x_p \)</span> are the features of the data point.</p></li>
+</ul>
+<p><font color='Blue'><b>Example:</b></font> Consider a two-dimensional space defined by the X-Y plane. A concrete example of a hyperplane within this context could be represented by the equation <span id="id4">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-fc2589bc-1bd9-4f5b-900a-40b16198268e">
+<span class="eqno">(9.106)<a class="headerlink" href="#equation-fc2589bc-1bd9-4f5b-900a-40b16198268e" title="Permalink to this equation">#</a></span>\[\begin{equation} 1 + 2X_1 + 3X_2 = 0\end{equation}\]</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../mystyle.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a figure and axis with a specific size</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Generate a range of values for X1</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Calculate corresponding values for X2 based on the hyperplane equation -(1 + 2*X1)/3</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">X1</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span>
+
+<span class="c1"># Plot the hyperplane</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">)</span>
+
+<span class="c1"># Set labels, limits, and aspect ratio for X and Y axes</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_1$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_2$&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Fill the region where 1 + 2X1 + 3X2 &gt; 0 with a light green color and annotate</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">X1</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;LimeGreen&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$1 + 2X_1 + 3X_2 &gt; 0$&#39;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;xx-large&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fill the region where 1 + 2X1 + 3X2 &lt; 0 with an orange color and annotate</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">X1</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$1 + 2X_1 + 3X_2 &lt; 0$&#39;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;xx-large&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/5f0dd10b71d17960bfd2956f45603b1772789ed795f75a7f76a89e86389a1e3c.png" src="../_images/5f0dd10b71d17960bfd2956f45603b1772789ed795f75a7f76a89e86389a1e3c.png" />
+</div>
+</div>
+<p>By running this code snippet, a clear visual illustration of a hyperplane in a two-dimensional space appears. The code creates a plot where the hyperplane, given by the equation <span class="math notranslate nohighlight">\(1 + 2X_1 + 3X_2 = 0\)</span>, separates the plane into areas where this inequality is true and where it is false. This not only demonstrates the idea of a hyperplane in a 2D plane but also highlights the usefulness of programming tools in showing mathematical concepts.</p>
+</div>
+<div class="section" id="formulating-the-maximal-margin-classifier">
+<h2><span class="section-number">9.7.3. </span>Formulating the Maximal Margin Classifier<a class="headerlink" href="#formulating-the-maximal-margin-classifier" title="Permalink to this heading">#</a></h2>
+<p>In this section, we explain how to construct the maximal margin hyperplane, which is the optimal boundary for separating two classes of data points. We assume that we have a set of <em>n</em> training observations <em><span class="math notranslate nohighlight">\(x_1, ..., x_n \in \mathbb{R}^p\)</span></em>, each with a corresponding class label <em><span class="math notranslate nohighlight">\(y_1, ..., y_n \in \{-1, 1\}\)</span></em>. The class label indicates which side of the hyperplane the observation belongs to.</p>
+<p>The maximal margin hyperplane is the one that maximizes the distance between the hyperplane and the nearest data points from each class. This distance is called the margin (<em><span class="math notranslate nohighlight">\(M\)</span></em>), and it represents how well the hyperplane separates the classes. The larger the margin, the lower the chance of misclassification.</p>
+<p>To find the maximal margin hyperplane, we need to solve an optimization problem that involves finding the coefficients <em><span class="math notranslate nohighlight">\(\beta_0, \beta_1, ..., \beta_p\)</span></em> that define the hyperplane equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-64a3034f-3a94-499c-9ca7-01c8777878ef">
+<span class="eqno">(9.107)<a class="headerlink" href="#equation-64a3034f-3a94-499c-9ca7-01c8777878ef" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p = 0
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><em><span class="math notranslate nohighlight">\(x_1\)</span></em>, <em><span class="math notranslate nohighlight">\(x_2\)</span></em>, …, <em><span class="math notranslate nohighlight">\(x_p\)</span></em> are the features of any observation.</p></li>
+<li><p><em><span class="math notranslate nohighlight">\(\beta_0\)</span></em> is the intercept term, and <em><span class="math notranslate nohighlight">\(\beta_1\)</span></em>, <em><span class="math notranslate nohighlight">\(\beta_2\)</span></em>, …, <em><span class="math notranslate nohighlight">\(\beta_p\)</span></em> are the slope terms.</p></li>
+</ul>
+<p>The optimization problem has the following constraints for each training observation (<em><span class="math notranslate nohighlight">\(i\)</span></em>) <span id="id5">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ff0bc13c-9441-49e6-8aec-8c4aff72b850">
+<span class="eqno">(9.108)<a class="headerlink" href="#equation-ff0bc13c-9441-49e6-8aec-8c4aff72b850" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y_i (\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip}) \geq M (1 - \epsilon_i)
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><em><span class="math notranslate nohighlight">\(y_i\)</span></em> is the class label of the <em><span class="math notranslate nohighlight">\(i\)</span></em>-th observation, taking values -1 or 1.</p></li>
+<li><p><em><span class="math notranslate nohighlight">\(x_{i1}\)</span></em>, <em><span class="math notranslate nohighlight">\(x_{i2}\)</span></em>, …, <em><span class="math notranslate nohighlight">\(x_{ip}\)</span></em> are the features of the <em><span class="math notranslate nohighlight">\(i\)</span></em>-th observation.</p></li>
+<li><p><em><span class="math notranslate nohighlight">\(\epsilon_i\)</span></em> is a slack variable that allows some flexibility in the classification. It takes a value of zero for points that are correctly classified and outside the margin, a positive value for points that are inside the margin or on the wrong side of the hyperplane, and a negative value for points that are on the hyperplane.</p></li>
+</ul>
+<p>These constraints ensure that the hyperplane separates the classes as well as possible, while allowing some errors for noisy or overlapping data.</p>
+<p>Another constraint that normalizes the coefficients is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c0ba4256-b525-4c73-8cf7-8cc853a3b377">
+<span class="eqno">(9.109)<a class="headerlink" href="#equation-c0ba4256-b525-4c73-8cf7-8cc853a3b377" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\sum_{j=1}^{p} \beta_j^2 = 1
+\end{equation}\]</div>
+<p>This constraint prevents the coefficients from becoming arbitrarily large, which would affect the margin calculation.</p>
+<p>Additionally, the regularization parameter <em><span class="math notranslate nohighlight">\(C\)</span></em> controls the trade-off between maximizing the margin <em><span class="math notranslate nohighlight">\(M\)</span></em> and minimizing the errors <em><span class="math notranslate nohighlight">\(\epsilon_i\)</span></em>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7785ed88-3df1-412f-b9c6-e6a2fa29f126">
+<span class="eqno">(9.110)<a class="headerlink" href="#equation-7785ed88-3df1-412f-b9c6-e6a2fa29f126" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\sum_{i=1}^{n} \epsilon_i \leq C
+\end{equation}\]</div>
+<p>The regularization parameter <em><span class="math notranslate nohighlight">\(C\)</span></em> limits the total amount of slack allowed in the classification. A small value of <em><span class="math notranslate nohighlight">\(C\)</span></em> implies a large margin and a strict classification, while a large value of <em><span class="math notranslate nohighlight">\(C\)</span></em> implies a small margin and a flexible classification.</p>
+<p>The optimization problem aims to find the coefficients <em><span class="math notranslate nohighlight">\(\beta_0, \beta_1, ..., \beta_p\)</span></em> and the slack variables <em><span class="math notranslate nohighlight">\(\epsilon_i\)</span></em> that satisfy these constraints and maximize the margin <em><span class="math notranslate nohighlight">\(M\)</span></em>. By solving this problem, we obtain the maximal margin hyperplane that best separates the classes in the feature space. The data points that are closest to the hyperplane and determine its position and margin are called support vectors. They have the most influence on the classification outcome.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="c1"># Sample data (features and class labels)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Create a Support Vector Classifier</span>
+<span class="n">svc</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fit the model to the data</span>
+<span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Get the support vectors</span>
+<span class="n">support_vectors</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">support_vectors_</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Support Vectors:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">support_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="si">{</span><span class="n">support_vectors</span><span class="p">[:,</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get the coefficients (beta values) and the intercept (beta_0)</span>
+<span class="n">coefficients</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficients (Beta values):</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Intercept (Beta_0):</span><span class="se">\t\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">intercept</span><span class="p">)</span>
+
+<span class="c1"># Get the margin (M)</span>
+<span class="n">margin</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Margin (M):</span><span class="se">\t\t\t\t</span><span class="s1"> </span><span class="si">{</span><span class="n">margin</span><span class="si">:</span><span class="s1">+.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get the slack variables (epsilon values)</span>
+<span class="n">dual_coefs</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">dual_coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">epsilon_values</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">dual_coefs</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slack Variables (Epsilon values):</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">epsilon_values</span><span class="p">)</span>
+
+<span class="c1"># Get the regularization parameter (C)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">svc</span><span class="o">.</span><span class="n">C</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Regularization Parameter (C):</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Support Vectors:
+		[5. 6.]
+		[4. 5.]
+Coefficients (Beta values):		 [[1. 1.]]
+Intercept (Beta_0):			 [-10.]
+Margin (M):				 +1.414
+Slack Variables (Epsilon values):	 [2. 0.]
+Regularization Parameter (C):		 0.5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>Note that in the above code:</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">support_vectors</span></code> variable contains the support vectors that were identified by the Support Vector Classifier (SVC) during the fitting of the model. Support vectors are the data points from the training dataset that are closest to the decision boundary (hyperplane) and have the most influence on defining the decision boundary. These vectors “support” the position of the decision boundary and, as a result, are crucial in the classification process. Support vectors are important in SVM (Support Vector Machine) algorithms because they determine the margin, which is the distance between the decision boundary and the nearest data points. In the context of the code you’ve provided, <code class="docutils literal notranslate"><span class="pre">support_vectors</span></code> will hold the coordinates of these important data points in your feature space.</p></li>
+<li><p>The variable <code class="docutils literal notranslate"><span class="pre">coefficients</span></code> stores the coefficients associated with the features in the Support Vector Classifier (SVC) model. These coefficients represent the weights or importance of each feature in the decision boundary equation. For an SVC model with a linear kernel, the decision boundary is a hyperplane, and the coefficients represent the normal vector to this hyperplane. In other words, they define the orientation of the hyperplane in the feature space. In the context of your code, <code class="docutils literal notranslate"><span class="pre">coefficients</span></code> contains the coefficients for each feature dimension, and you can use them to understand the relative importance of each feature in the classification decision. These coefficients are determined during the training of the SVC model and are essential for making predictions.</p></li>
+<li><p>The variable <code class="docutils literal notranslate"><span class="pre">intercept</span></code> stores the intercept of the decision boundary in the Support Vector Classifier (SVC) model. The intercept represents the offset of the decision boundary from the origin in the feature space. For an SVC model with a linear kernel, the decision boundary is a hyperplane defined by the coefficients and the intercept. The intercept determines the position of this hyperplane along the feature space’s axis that is orthogonal to the hyperplane. In simpler terms, the intercept shifts the decision boundary back and forth along this axis. If we have a positive intercept, it means the decision boundary is shifted in one direction, and if you have a negative intercept, it’s shifted in the opposite direction. In the code, <code class="docutils literal notranslate"><span class="pre">intercept</span></code> contains the intercept value for the decision boundary and is determined during the training of the SVC model. It plays a crucial role in the classification process.</p></li>
+<li><p>In the above code, the variable <code class="docutils literal notranslate"><span class="pre">margin</span></code> calculates the margin of the Support Vector Classifier (SVC) model. The margin represents the distance between the decision boundary (hyperplane) and the nearest support vectors. It is a measure of how well the model can separate the classes. The formula used to calculate <code class="docutils literal notranslate"><span class="pre">margin</span></code> is as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">margin</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coefficients</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>In the above code, the comments indicate that we are obtaining the slack variables (epsilon values) in the context of a Support Vector Classifier (SVC) model. Let’s break down what these lines of code are doing:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dual_coefs</span> <span class="pre">=</span> <span class="pre">svc.dual_coef_[0]</span></code>: In an SVM, the dual coefficients represent the Lagrange multipliers associated with the support vectors. These coefficients indicate the importance of each support vector in determining the location and orientation of the decision boundary. By accessing <code class="docutils literal notranslate"><span class="pre">svc.dual_coef_</span></code>, you are retrieving the dual coefficients for the support vectors. The <code class="docutils literal notranslate"><span class="pre">[0]</span></code> indexing suggests that you are extracting the dual coefficients for the first class (typically the positive class) of the binary classification problem.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon_values</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">-</span> <span class="pre">dual_coefs</span></code>: The variable <code class="docutils literal notranslate"><span class="pre">epsilon_values</span></code> is then calculated. Epsilon values, also known as slack variables, are introduced in soft-margin SVMs. They measure the degree to which a data point is allowed to be on the wrong side of the decision boundary while still satisfying the margin constraints. In this calculation, you are computing the epsilon values by subtracting the dual coefficients from 1. A value close to 1 indicates that the corresponding support vector is far from the margin, while a value close to 0 indicates that the support vector is very close to or on the wrong side of the margin.</p></li>
+</ol>
+<p>These values are useful for understanding the margin and classification properties of the SVM. A larger epsilon value indicates a greater margin violation by the corresponding support vector, and a smaller value indicates that the support vector is correctly classified or is very close to the margin.</p>
+</li>
+</ul>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#f5645a&quot;</span><span class="p">,</span> <span class="s2">&quot;#b781ea&quot;</span><span class="p">]</span>
+<span class="n">edge_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#8A0002&#39;</span><span class="p">,</span> <span class="s1">&#39;#3C1F8B&#39;</span><span class="p">]</span>
+<span class="n">cmap_light</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;#f7dfdf&#39;</span><span class="p">,</span> <span class="s1">&#39;#e3d3f2&#39;</span><span class="p">])</span>
+
+<span class="c1"># Create a figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_light</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                       <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span>
+                                       <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define labels and markers for different classes</span>
+<span class="n">class_labels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">marker</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">class_labels</span><span class="p">,</span> <span class="n">markers</span><span class="p">):</span>
+    <span class="n">class_data</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">class_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">class_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fc</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">label</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span>
+               <span class="n">ec</span><span class="o">=</span><span class="n">edge_colors</span><span class="p">[</span><span class="n">label</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">)</span>
+
+<span class="c1"># Plot support vectors</span>
+<span class="n">support_vectors</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">support_vectors_</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+           <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Support Vectors&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Support Vector Classifier&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/48bb5b3a68920405e797b5c04cea32b10c9586582b36bf676a4acd364722405d.png" src="../_images/48bb5b3a68920405e797b5c04cea32b10c9586582b36bf676a4acd364722405d.png" />
+</div>
+</div>
+<p>In the context of binary classification using a Support Vector Machine (SVM) with a linear kernel, it is possible to retrieve the coefficients associated with the decision boundary. These coefficients are indicative of the feature weights that define the orientation of the decision boundary, often referred to as a hyperplane. The equation representing the decision boundary takes the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6f5d70dd-abe1-408c-8bd6-c718e7b1cd0a">
+<span class="eqno">(9.111)<a class="headerlink" href="#equation-6f5d70dd-abe1-408c-8bd6-c718e7b1cd0a" title="Permalink to this equation">#</a></span>\[\begin{equation}w_1 \cdot x_1 + w_2 \cdot x_2 + b = 0\end{equation}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> represent the coefficients, <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> denote the features, and <span class="math notranslate nohighlight">\(b\)</span> stands for the intercept.</p>
+<p>To access the coefficients <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span>, you can utilize <code class="docutils literal notranslate"><span class="pre">svc.coef_</span></code>, and to obtain the intercept <span class="math notranslate nohighlight">\(b\)</span>, you may employ <code class="docutils literal notranslate"><span class="pre">svc.intercept_</span></code> from your SVM model denoted as <code class="docutils literal notranslate"><span class="pre">svc</span></code>. The procedure for accessing these values is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hyperplane equation</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">equation</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">w1</span><span class="si">:</span><span class="s1">+.3f</span><span class="si">}</span><span class="s1"> \cdot x_1 </span><span class="si">{</span><span class="n">w2</span><span class="si">:</span><span class="s1">+.3f</span><span class="si">}</span><span class="s1"> \cdot x_2 </span><span class="si">{</span><span class="n">b</span><span class="si">:</span><span class="s1">+.3f</span><span class="si">}</span><span class="s1"> = 0$&#39;</span>
+
+<span class="c1"># Display the equation using LaTeX</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Latex</span><span class="p">,</span> <span class="n">display</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Latex</span><span class="p">(</span><span class="n">equation</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[+1.000 \cdot x_1 +1.000 \cdot x_2 -10.000 = 0\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#f5645a&quot;</span><span class="p">,</span> <span class="s2">&quot;#b781ea&quot;</span><span class="p">]</span>
+<span class="n">edge_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#8A0002&#39;</span><span class="p">,</span> <span class="s1">&#39;#3C1F8B&#39;</span><span class="p">]</span>
+<span class="n">cmap_light</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;#f7dfdf&#39;</span><span class="p">,</span> <span class="s1">&#39;#e3d3f2&#39;</span><span class="p">])</span>
+
+<span class="c1"># Create a figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Decision boundary display</span>
+<span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_light</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;pcolormesh&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define labels and markers for different classes</span>
+<span class="n">class_info</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">class_info</span><span class="p">:</span>
+    <span class="n">class_data</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">class_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">class_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fc</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">edge_colors</span><span class="p">[</span><span class="n">label</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span>
+               <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">)</span>
+
+<span class="c1"># Plot support vectors</span>
+<span class="n">support_vectors</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">support_vectors_</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">support_vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+           <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Support Vectors&#39;</span><span class="p">)</span>
+
+<span class="c1"># Decision boundary line</span>
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">line_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">line_y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">w1</span> <span class="o">/</span> <span class="n">w2</span><span class="p">)</span> <span class="o">*</span> <span class="n">line_x</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span> <span class="o">/</span> <span class="n">w2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">line_x</span><span class="p">,</span> <span class="n">line_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Decision Boundary: </span><span class="si">{</span><span class="n">equation</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot settings</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Support Vector Classifier&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bd69a98dd9b825d1822700d6ab9ca95243a672f3b9bd03b107d01a593ea5b99f.png" src="../_images/bd69a98dd9b825d1822700d6ab9ca95243a672f3b9bd03b107d01a593ea5b99f.png" />
+</div>
+</div>
+<div class="admonition-support-vector-classifier admonition">
+<p class="admonition-title">Support Vector Classifier</p>
+<p>The support vector classifier (SVC) is a robust classification method that categorizes test observations based on their positioning relative to a carefully chosen hyperplane. This hyperplane is strategically selected to efficiently segregate the majority of training observations into two distinct classes, even though there might be a minor number of misclassifications.</p>
+<p>Consider a set of <span class="math notranslate nohighlight">\(n\)</span> training observations, <span class="math notranslate nohighlight">\(x_1, \ldots, x_n \in \mathbb{R}^p\)</span>, each associated with class labels <span class="math notranslate nohighlight">\(y_1, \ldots, y_n \in \{-1, 1\}\)</span>. The goal of the support vector classifier is to optimize the following mathematical formulation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4a07b052-b606-4ffb-ae9f-5f75c48d9847">
+<span class="eqno">(9.112)<a class="headerlink" href="#equation-4a07b052-b606-4ffb-ae9f-5f75c48d9847" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp;\text{Maximize the margin } M \\
+&amp;\text{subject to:} \\
+&amp;\begin{cases}
+\displaystyle{y_i(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_p x_{ip}) \geq M (1 - \epsilon_i)}\\
+\displaystyle{\sum_{j=1}^{p} \beta_j^2 = 1}\\
+\displaystyle{\epsilon_i \geq 0} \\
+\displaystyle{\sum_{i=1}^{n} \epsilon_i \leq C}
+\end{cases}
+\end{align}\]</div>
+<p>In this context:</p>
+<ul class="simple">
+<li><p>The primary objective is to maximize the margin (<span class="math notranslate nohighlight">\(M\)</span>), which signifies the separation between classes and enhances the classifier’s robustness.</p></li>
+<li><p>The formulation guarantees that each training observation (<span class="math notranslate nohighlight">\(x_i\)</span>) lies on the correct side of its corresponding hyperplane. A slack variable (<span class="math notranslate nohighlight">\(\epsilon_i\)</span>) accommodates a controlled level of misclassification.</p></li>
+<li><p>The constraint <span class="math notranslate nohighlight">\(\sum_{j=1}^{p} \beta_j^2 = 1\)</span> ensures that the chosen hyperplane remains properly scaled.</p></li>
+<li><p>Slack variables (<span class="math notranslate nohighlight">\(\epsilon_i\)</span>) provide room for observations to fall within the margin or on the incorrect side of the hyperplane.</p></li>
+<li><p>The parameter <span class="math notranslate nohighlight">\(C\)</span>, a nonnegative tuning parameter, constrains the cumulative magnitude of slack variables, thereby striking a balance between maximizing the margin and allowing for a certain level of misclassification.</p></li>
+</ul>
+<p>Through the harmonious interplay of these components, the support vector classifier effectively designs a hyperplane that optimally segregates classes while gracefully managing the intricacies inherent in real-world datasets. The selection of <span class="math notranslate nohighlight">\(C\)</span> and the subsequent determination of the optimal hyperplane contribute to the SVC’s ability to deliver accurate classification results, even in the presence of noise or outliers.</p>
+</div>
+</div>
+<div class="section" id="classification-with-non-linear-decision-boundaries">
+<h2><span class="section-number">9.7.4. </span>Classification with Non-Linear Decision Boundaries<a class="headerlink" href="#classification-with-non-linear-decision-boundaries" title="Permalink to this heading">#</a></h2>
+<p>Support Vector Machines (SVMs) represent a significant leap beyond the conventional support vector classifier, enabling the handling of intricate non-linear decision boundaries in classification tasks. This transformative advancement stems from a novel approach that expands the feature space, providing a more comprehensive representation of the underlying data structure <span id="id6">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<div class="section" id="augmented-feature-space">
+<h3><span class="section-number">9.7.4.1. </span>Augmented Feature Space<a class="headerlink" href="#augmented-feature-space" title="Permalink to this heading">#</a></h3>
+<p>In contrast to the reliance on <em><span class="math notranslate nohighlight">\(p\)</span></em> traditional features:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-706cecef-c6c0-456c-b060-2d950e46d4a7">
+<span class="eqno">(9.113)<a class="headerlink" href="#equation-706cecef-c6c0-456c-b060-2d950e46d4a7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_1, X_2, \ldots , X_p.
+\end{equation}\]</div>
+<p>SVMs introduce a revolutionary paradigm by extending the support vector classifier to function within an augmented feature space encompassing <em><span class="math notranslate nohighlight">\(2p\)</span></em> features:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c412f100-01f1-4f9d-b1e1-bea4e52dbafc">
+<span class="eqno">(9.114)<a class="headerlink" href="#equation-c412f100-01f1-4f9d-b1e1-bea4e52dbafc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_1, X_1^2, X_2, X_2^2, \ldots , X_p, X^2_p.
+\end{equation}\]</div>
+<p>This augmentation equips SVMs to adeptly address intricate classification complexities characterized by non-linear relationships <span id="id7">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+</div>
+<div class="section" id="mathematical-formulation">
+<h3><span class="section-number">9.7.4.2. </span>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this heading">#</a></h3>
+<p>The foundation of this advancement resides in the core optimization problem of SVMs, defined as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b0de122f-3208-4b47-9a2f-1061d3348b2a">
+<span class="eqno">(9.115)<a class="headerlink" href="#equation-b0de122f-3208-4b47-9a2f-1061d3348b2a" title="Permalink to this equation">#</a></span>\[\begin{align}
+&amp;\text{Maximize the margin } M \\
+&amp;\text{subject to:} \\
+&amp;\begin{cases}
+\displaystyle{y_i \left(\beta_0 + \sum_{j=1}^{p}\beta_{j1} x_{ij}+\sum_{j=1}^{p}\beta_{j2} x_{ij}^2 \right)
+\geq M (1-\epsilon_i)}
+\\
+\displaystyle{\sum_{j=1}^{p} \sum_{k=1}^{2} \beta_{jk}^2 = 1}
+\\
+\displaystyle{\epsilon_i \geq 0}
+\\
+\displaystyle{\sum_{i=1}^{n} \epsilon_i \leq C.}
+\end{cases}
+\end{align}\]</div>
+<p>Key Insights from this Formulation:</p>
+<ul class="simple">
+<li><p>The ultimate objective remains the maximization of the margin (<em><span class="math notranslate nohighlight">\(M\)</span></em>), embodying the distinction between classes.</p></li>
+<li><p>The introduction of quadratic terms (<em><span class="math notranslate nohighlight">\(x_{ij}^2\)</span></em>) for each of the <em><span class="math notranslate nohighlight">\(p\)</span></em> original features enhances predictive capacity, enabling SVMs to capture intricate non-linear relationships inherent in the data.</p></li>
+<li><p>Analogous to the conventional support vector classifier, the conditions ensure that training observations (<em><span class="math notranslate nohighlight">\(x_i\)</span></em>) consistently align with the correct side of their respective hyperplanes. The incorporation of slack variables (<em><span class="math notranslate nohighlight">\(\epsilon_i\)</span></em>) accommodates potential misclassifications.</p></li>
+<li><p>A noteworthy addition lies in the utilization of coefficients (<em><span class="math notranslate nohighlight">\(\beta_{j1}\)</span></em> and <em><span class="math notranslate nohighlight">\(\beta_{j2}\)</span></em>) to capture both linear and quadratic facets of the transformed features. This versatility empowers SVMs to delineate non-linear decision boundaries.</p></li>
+<li><p>The constraint <em><span class="math notranslate nohighlight">\(\sum_{j=1}^{p} \sum_{k=1}^{2} \beta_{jk}^2 = 1\)</span></em> ensures the appropriate scaling of the augmented hyperplane within the expanded feature space.</p></li>
+<li><p>In alignment with its role in the original support vector classifier, the regularization parameter <em><span class="math notranslate nohighlight">\(C\)</span></em> retains its significance in balancing the optimization trade-off between maximizing the margin and permitting controlled misclassification.</p></li>
+</ul>
+<p><font color='Blue'><b>Example</b></font>: In this code example, a Decision Tree Classifier is utilized to illustrate decision boundaries on synthetic data. The synthetic dataset is generated using the <code class="docutils literal notranslate"><span class="pre">make_blobs</span></code> function from scikit-learn, designed for creating artificial datasets for various machine learning experiments. This particular dataset consists of the following characteristics:</p>
+<ul class="simple">
+<li><p><strong>Number of Samples:</strong> 1000</p></li>
+<li><p><strong>Number of Features:</strong> 2</p></li>
+<li><p><strong>Number of Classes:</strong> 2</p></li>
+<li><p><strong>Random Seed (random_state):</strong> 0</p></li>
+<li><p><strong>Cluster Standard Deviation (cluster_std):</strong> 1.0</p></li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>The dataset contains 1000 data points, each described by a pair of feature values. These features are represented as ‘Feature 1’ and ‘Feature 2’.</p></li>
+</ul>
+<p><strong>Outcome (Target Variable):</strong></p>
+<ul class="simple">
+<li><p>The dataset also includes a target variable called ‘Outcome.’ This variable assigns each data point to one of two distinct classes, identified as ‘Class 0’ and ‘Class 1’.</p></li>
+</ul>
+<p>The dataset has been designed to simulate a scenario with two well-separated clusters, making it suitable for binary classification tasks. Each data point in this dataset is associated with one of the two classes, and it can be used for practicing and evaluating machine learning algorithms that deal with binary classification problems.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="c1"># Generate synthetic data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># Define colors and markers for data points</span>
+<span class="n">colors</span><span class="p">,</span> <span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#f44336&quot;</span><span class="p">,</span> <span class="s2">&quot;#40a347&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]</span>
+<span class="n">cmap_</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+<span class="c1"># Titles for the subplots</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Linear Decision Boundaries&#39;</span><span class="p">,</span> <span class="s1">&#39;Non-Linear Decision Boundaries&#39;</span><span class="p">]</span>
+
+<span class="c1"># Create subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="c1"># Create SVM models and visualize decision boundaries</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">deg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+    <span class="c1"># Create SVM model with specific parameters</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># Scatter plot of data points</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span>
+                   <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">markers</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+    <span class="c1"># Display decision boundaries</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span>
+                                                  <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                                  <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_</span><span class="si">{1}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$X_</span><span class="si">{2}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Set the title for the subplot</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Classification with </span><span class="si">{</span><span class="n">titles</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Add a title to the entire figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;SVM Poly Classifiers Comparison&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="c1"># Adjust layout</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dd53a3f3ec39f0abe1845d884c52d0a17b8ec2718e21d08c73c7114e1bff5416.png" src="../_images/dd53a3f3ec39f0abe1845d884c52d0a17b8ec2718e21d08c73c7114e1bff5416.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-support-vector-machine-kernelized-enhancement">
+<h2><span class="section-number">9.7.5. </span>The Support Vector Machine: Kernelized Enhancement<a class="headerlink" href="#the-support-vector-machine-kernelized-enhancement" title="Permalink to this heading">#</a></h2>
+<div class="section" id="linear-support-vector-classifier">
+<h3><span class="section-number">9.7.5.1. </span>Linear Support Vector Classifier<a class="headerlink" href="#linear-support-vector-classifier" title="Permalink to this heading">#</a></h3>
+<p>The linear support vector classifier can be written as follows <span id="id8">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a51f231e-4669-4b59-b331-9fa2e2afe217">
+<span class="eqno">(9.116)<a class="headerlink" href="#equation-a51f231e-4669-4b59-b331-9fa2e2afe217" title="Permalink to this equation">#</a></span>\[\begin{align}
+f(x) = \beta_0 + \sum_{i\in \mathcal{S}} \alpha_i\langle x, x_i\rangle,
+\end{align}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f(x)\)</span> is the decision function that gives a classification score for the input feature vector <em><span class="math notranslate nohighlight">\(x\)</span></em>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span> is the intercept term.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha_i\)</span> are the coefficients related to the support vectors <em><span class="math notranslate nohighlight">\(x_i\)</span></em>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\langle x, x_i\rangle\)</span> is the inner product between the input vector <em><span class="math notranslate nohighlight">\(x\)</span></em> and the support vector <em><span class="math notranslate nohighlight">\(x_i\)</span></em>.</p></li>
+<li><p>The set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> has indices that correspond to the support vectors, which are the training samples that are closest to the decision boundary.</p></li>
+</ul>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Remember that the inner product of two <em>r</em>-vectors <em><span class="math notranslate nohighlight">\(a\)</span></em> and <em><span class="math notranslate nohighlight">\(b\)</span></em> is formally defined as <span class="math notranslate nohighlight">\(\displaystyle{\langle a, b \rangle = \sum_{i=1}^{r} a_i b_i}\)</span>, where the sum goes over <em><span class="math notranslate nohighlight">\(r\)</span></em> components <span id="id9">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>, <a class="reference internal" href="../References.html#id115" title="K. Kuttler and I. Farah. A First Course in Linear Algebra. Lyryx Learning Incorporated, 2020. URL: https://books.google.ca/books?id=1jd8zgEACAAJ.">Kuttler and Farah, 2020</a>]</span>.</p>
+</div>
+</div>
+<div class="section" id="kernelized-format">
+<h3><span class="section-number">9.7.5.2. </span>Kernelized Format<a class="headerlink" href="#kernelized-format" title="Permalink to this heading">#</a></h3>
+<p>In a more general form, we replace the inner product with a function called the <strong>kernel</strong>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-931670b6-1eda-4459-8b01-08a9cb22e601">
+<span class="eqno">(9.117)<a class="headerlink" href="#equation-931670b6-1eda-4459-8b01-08a9cb22e601" title="Permalink to this equation">#</a></span>\[\begin{align}
+K(x_i, x_{i'}) = K(x_{i'}, x_i),
+\end{align}\]</div>
+<p>Here, <em><span class="math notranslate nohighlight">\(K\)</span></em> is a function that measures the similarity between two data points <em><span class="math notranslate nohighlight">\(x_i\)</span></em> and <em><span class="math notranslate nohighlight">\(x_{i'}\)</span></em>. This kernelized representation allows us to express <em><span class="math notranslate nohighlight">\(f(x)\)</span></em> as <span id="id10">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-83afff3f-81b0-47a3-9db1-f7d660f09eda">
+<span class="eqno">(9.118)<a class="headerlink" href="#equation-83afff3f-81b0-47a3-9db1-f7d660f09eda" title="Permalink to this equation">#</a></span>\[\begin{align}
+f(x) = \beta_0 + \sum_{i\in \mathcal{S}} \alpha_iK(x_i, x_{i'}).
+\end{align}\]</div>
+<p>Different types of kernels can be used in SVMs to capture different types of relationships between data points. Here are some examples:</p>
+<ul class="simple">
+<li><p><strong>Linear Kernel:</strong> <span class="math notranslate nohighlight">\(\displaystyle{K(x_i, x_{i'}) = \sum_{j=1}^{p} x_{ij}x_{i'j}}\)</span></p></li>
+<li><p><strong>Polynomial Kernel:</strong> <span class="math notranslate nohighlight">\(\displaystyle{K(x_i, x_{i'}) = \left(1+\sum_{j=1}^{p} x_{ij}x_{i'j}\right)^d}\)</span></p></li>
+<li><p><strong>Radial Kernel (RBF):</strong> <span class="math notranslate nohighlight">\(\displaystyle{K(x_i, x_{i'}) = \exp\left(-\gamma \sum_{j=1}^{p} (x_{ij}-x_{i'j})^2\right)}\)</span></p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(d\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> are hyperparameters that affect the shape and flexibility of the decision boundary.</p>
+<p>Scikit-learn’s SVM implementation offers flexibility in choosing the suitable kernel and tuning hyperparameters to achieve the best classification performance for different types of data. The classifier aims to maximize the margin while ensuring accurate classification and controlled misclassification, guided by the chosen kernel’s ability to capture the data’s underlying structure.</p>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<ol class="arabic">
+<li><p>In the context of the provided text, <span class="math notranslate nohighlight">\(x'\)</span> is used as a placeholder to represent another data point. It’s not a specific variable; rather, it’s a general notation to indicate that the kernel function <span class="math notranslate nohighlight">\(K(x_i, x_{i'})\)</span> computes the similarity between the data point <span class="math notranslate nohighlight">\(x_i\)</span> and some other data point <span class="math notranslate nohighlight">\(x_{i'}\)</span>.</p>
+<p>So, <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_{i'}\)</span> are two different data points, and <span class="math notranslate nohighlight">\(K(x_i, x_{i'})\)</span> measures the similarity between them using the chosen kernel function. The notation <span class="math notranslate nohighlight">\(x'\)</span> is used to emphasize that this kernel function can be applied to any pair of data points in the dataset, not just <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_{i'}\)</span>. It’s a way to express the general concept of similarity between data points in the context of Support Vector Machines (SVM) and kernelized representations.</p>
+</li>
+<li><p>The sklearn function also includes the following kernels <span id="id11">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>:</p>
+<ul class="simple">
+<li><p><strong>Sigmoid Kernel (kernel=‘sigmoid’):</strong>
+The sigmoid kernel maps data into a sigmoid-like space. It can be useful when dealing with data that might not be linearly separable in the original feature space. However, it’s less commonly used compared to other kernels, as it might be sensitive to hyperparameters.</p></li>
+</ul>
+<p>The sigmoid kernel is a type of kernel function used in machine learning, particularly in support vector machines (SVMs). Kernel functions play a crucial role in SVMs, enabling them to operate in a higher-dimensional space without explicitly calculating the coordinates of the data points in that space. The sigmoid kernel is defined as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-861a8fb3-2060-436a-8bed-68e4f74d2d05">
+<span class="eqno">(9.119)<a class="headerlink" href="#equation-861a8fb3-2060-436a-8bed-68e4f74d2d05" title="Permalink to this equation">#</a></span>\[\begin{equation} K(x, y) =  \tanh(\alpha \langle x, y \rangle + c) = \tanh(\alpha \cdot x^T y + c), \end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\( x \)</span> and <span class="math notranslate nohighlight">\( y \)</span> are the input vectors, <span class="math notranslate nohighlight">\( \alpha \)</span> is a scaling parameter, and <span class="math notranslate nohighlight">\( c \)</span> is a constant. The hyperbolic tangent function (<span class="math notranslate nohighlight">\( \tanh \)</span>) ensures that the values of the kernel function lie in the range <span class="math notranslate nohighlight">\((-1, 1)\)</span>.  It is also known as the hyperbolic tangent kernel or the Multi-Layer Perceptron (MLP) kernel.</p>
+<p>The sigmoid kernel is particularly useful when dealing with non-linear data and can capture complex relationships between data points. However, its performance may vary depending on the specific characteristics of the dataset and the choice of hyperparameters, such as <span class="math notranslate nohighlight">\( \alpha \)</span> and <span class="math notranslate nohighlight">\( c \)</span>. It is essential to fine-tune these parameters to achieve optimal results in SVM applications employing the sigmoid kernel.</p>
+<ul class="simple">
+<li><p><strong>Precomputed Kernel (kernel=‘precomputed’):</strong>
+Instead of using one of the built-in kernels, you can provide your own precomputed kernel matrix. This is useful when you’ve already calculated the similarity or distance between data points using a custom kernel and want to use it directly.</p></li>
+</ul>
+</li>
+<li><p>The Support Vector Machine (SVM) algorithm was initially developed for binary classification tasks, where it aimed to separate data points into two distinct classes. However, in practice, many real-world problems involve multiple classes. Scikit-learn (sklearn), a widely used machine learning library, can handle multiclass classification with SVMs and other algorithms through techniques such as one-vs-one and one-vs-rest strategies <span id="id12">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+<p>In the one-vs-one strategy, a separate binary classifier is trained for each pair of classes, effectively dividing the multiclass problem into a series of binary decisions. During classification, these binary classifiers vote, and the class with the most votes is the predicted class.</p>
+<p>Conversely, the one-vs-rest strategy trains one binary classifier for each class, treating it as the positive class while considering all other classes as the negative class. The final prediction assigns the class associated with the binary classifier that outputs the highest confidence.</p>
+<p>Sklearn’s ability to handle multiclass problems with SVMs is an extension of the original binary classification concept, enabling the algorithm to be applied to a wider range of practical applications. This extension enhances the versatility of SVMs and makes them more applicable to academic and real-world scenarios involving multiple classes <span id="id13">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p>
+</li>
+</ol>
+</div>
+<p><font color='Blue'><b>Example:</b></font> In this example, we’re using SVM classifiers along with matplotlib to demonstrate how various SVM kernels behave on the <a class="reference external" href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris dataset</a>. We aim to show their decision boundaries in a grid of four smaller plots (2x2).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">svm</span>
+<span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="c1"># Load data</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Create SVM models</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+          <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+          <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+          <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)]</span>
+
+<span class="c1"># Feature labels</span>
+<span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Cm&#39;</span><span class="p">,</span><span class="s1">&#39;CM&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[:</span><span class="mi">2</span><span class="p">]]</span>
+
+<span class="c1"># Fit models to data</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+
+<span class="c1"># Titles for the plots</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LinearSVC (linear kernel)&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;SVC with RBF kernel&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;SVC with polynomial (degree 3) kernel&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;SVC with polynomial (degree 5) kernel&quot;</span><span class="p">]</span>
+
+<span class="c1"># Define colors and markers</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#f44336&quot;</span><span class="p">,</span> <span class="s2">&quot;#40a347&quot;</span><span class="p">,</span> <span class="s1">&#39;#0086ff&#39;</span><span class="p">]</span>
+<span class="n">edge_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#cc180b&quot;</span><span class="p">,</span> <span class="s2">&quot;#16791d&quot;</span><span class="p">,</span> <span class="s1">&#39;#11548f&#39;</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span>
+<span class="n">cmap_</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="c1"># Create 2x2 grid for plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+<span class="c1"># Create a dictionary to map target names to numbers</span>
+<span class="n">target_names</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;Setosa&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;Versicolor&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;Virginica&#39;</span><span class="p">}</span>
+
+<span class="c1"># Plot decision boundaries</span>
+<span class="k">for</span> <span class="n">clf</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">disp</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_</span><span class="p">,</span>
+                                                  <span class="n">grid_resolution</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+                                                  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                                  <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">)</span>
+    
+    <span class="c1"># Scatter plot of data points with target names</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span>
+                   <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">edge_colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="n">markers</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">target_names</span><span class="p">[</span><span class="n">num</span><span class="p">])</span>
+        
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Flower Type&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Add a title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;SVM Classifier Comparison&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d2c7af2a1c3a567e2196dd68337719687f704fb4e87a56e4ad33fab3a04fafd4.png" src="../_images/d2c7af2a1c3a567e2196dd68337719687f704fb4e87a56e4ad33fab3a04fafd4.png" />
+</div>
+</div>
+<!-- `````{admonition} ROC Curve and Key Concepts
+
+The Receiver Operating Characteristic (ROC) curve is a graphical representation used to evaluate the performance of binary classification models across different classification thresholds. It illustrates the trade-off between the sensitivity (True Positive Rate, TPR) and the specificity (True Negative Rate, TNR) of the model. The ROC curve plots TPR against the False Positive Rate (FPR) for various threshold values {cite:p}`bloch2010progress`.
+
+The key concepts are as follows {cite:p}`bloch2010progress`:
+
+1. **Binary Classification Problem**: ROC is used in binary classification scenarios where the target variable has two classes, often denoted as positive and negative. Examples include medical diagnoses (disease or no disease) or spam classification (spam or not spam).
+
+1. **True Positive Rate (Sensitivity)**: It's the ratio of correctly predicted positive instances to the total actual positive instances. It indicates how well the model identifies positive instances.
+
+   \begin{equation}
+   TPR = \frac{TP}{TP + FN}
+   \end{equation}
+   where $TP$ represents the number of true positive instances and $FN$ represents the number of false negative instances. Sensitivity indicates the model's ability to correctly identify positive instances.
+
+1. **False Positive Rate**: It's the ratio of incorrectly predicted positive instances to the total actual negative instances. It measures how often the model makes false predictions for the negative class.
+   \begin{equation}
+   FPR = \frac{FP}{FP + TN}
+   \end{equation}
+   where $FP$ represents the number of false positive instances and $TN$ represents the number of true negative instances. FPR quantifies the rate at which the model incorrectly predicts positive instances for the negative class.
+
+1. **True Negative Rate (Specificity)**: It's the ratio of correctly predicted negative instances to the total actual negative instances. It shows how well the model identifies negative instances.
+   \begin{equation}
+   TNR = \frac{TN}{TN + FP}
+   \end{equation}
+   Specificity measures the model's ability to correctly identify negative instances.
+
+1. **False Negative Rate**: It's the ratio of incorrectly predicted negative instances to the total actual positive instances. It quantifies the rate at which the model misclassifies positive instances.
+   \begin{equation}
+   FNR = \frac{FN}{FN + TP}
+   \end{equation}
+   FNR represents the rate at which the model incorrectly predicts negative instances for the positive class.
+
+1. **ROC Curve**: The ROC curve is a plot of sensitivity (true positive rate) against the false positive rate for various classification thresholds. Each point on the ROC curve corresponds to a particular threshold. The curve provides a visual representation of how well the model separates the two classes as the threshold changes.
+
+1. **Area Under the Curve (AUC)**: The AUC measures the area under the ROC curve. It quantifies the overall performance of the model. An AUC value closer to 1 indicates a better-performing model, while an AUC of 0.5 suggests that the model's performance is no better than random guessing.
+
+   - AUC = 1: Perfect classifier
+   - AUC = 0.5: Random guessing
+   - AUC > 0.5: Model performs better than random guessing
+   - AUC < 0.5: Model performs worse than random guessing
+
+````` --></div>
+</div>
+<div class="section" id="sklearns-svc-and-svr">
+<h2><span class="section-number">9.7.6. </span>sklearn’s  SVC and SVR<a class="headerlink" href="#sklearns-svc-and-svr" title="Permalink to this heading">#</a></h2>
+<p>Support Vector Machine (SVM), a notable machine learning algorithm available within the scikit-learn (sklearn) library, shows versatility and finds use in both classification and regression tasks <span id="id14">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>. Within the sklearn SVM module, two main classes are available:</p>
+<ul class="simple">
+<li><p><strong>Support Vector Classification (SVC):</strong>
+SVC focuses on solving classification tasks. Its main aim is to find the optimal hyperplane that efficiently separates data points into different classes, with the extra goal of maximizing the margin between these classes. The definition of this hyperplane is affected by a subset of data points called support vectors. Moreover, SVC can skillfully handle both linear and non-linear classification problems through the use of various kernel functions, including linear, polynomial, radial basis function (RBF), and sigmoid kernels <span id="id15">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p></li>
+<li><p><strong>Support Vector Regression (SVR):</strong>
+Unlike SVC, SVR is designed for regression tasks. Instead of looking for a hyperplane for class separation, SVR aims to find a hyperplane that minimizes the error between predicted values and actual target values, while taking into account a predefined margin of tolerance. Similar to SVC, SVR has the ability to handle non-linear regression problems through the use of kernel functions <span id="id16">[<a class="reference internal" href="../References.html#id53" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>.</p></li>
+</ul>
+<p>The choice of kernel and hyperparameters is a crucial decision, depending on the data’s features and the specific problem at hand. Thorough data preprocessing and extensive model evaluation are essential for achieving optimal performance within the context of academic or research endeavors.</p>
+<p><font color='Blue'><b>Example:</b></font>
+In this example, we focus on the Auto MPG dataset, which is sourced from the <a class="reference external" href="http://archive.ics.uci.edu/dataset/9/auto+mpg">UCI Machine Learning Repository</a>. The aim is to demonstrate the use of Support Vector Regression (SVR) with this dataset.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Feature</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MPG</p></td>
+<td><p>Fuel efficiency in miles per gallon. Higher values indicate better fuel efficiency.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cylinders</p></td>
+<td><p>Number of engine cylinders, indicating engine capacity and power. Common values: 4, 6, and 8 cylinders.</p></td>
+</tr>
+<tr class="row-even"><td><p>Displacement</p></td>
+<td><p>Engine volume in cubic inches or cubic centimeters, reflecting engine size and power. Higher values mean more power.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Horsepower</p></td>
+<td><p>Engine horsepower, measuring its ability to perform work. Higher values indicate a more powerful engine.</p></td>
+</tr>
+<tr class="row-even"><td><p>Weight</p></td>
+<td><p>Vehicle mass in pounds or kilograms, influencing fuel efficiency. Lighter vehicles tend to have better MPG.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Acceleration</p></td>
+<td><p>Vehicle’s acceleration performance, usually measured in seconds to reach 60 mph (or 100 km/h) from a standstill.</p></td>
+</tr>
+<tr class="row-even"><td><p>Model Year</p></td>
+<td><p>Year of vehicle manufacturing, useful for tracking technology and efficiency trends.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Origin</p></td>
+<td><p>Country or region of vehicle origin, often a categorical variable. Values: 1 (USA), 2 (Germany), 3 (Japan), and more.</p></td>
+</tr>
+<tr class="row-even"><td><p>Car Name</p></td>
+<td><p>Name or model of the car, useful for identification and categorization of different car models.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># You can download the dataset from: http://archive.ics.uci.edu/static/public/9/auto+mpg.zip</span>
+
+<span class="c1"># Define column names based on the dataset&#39;s description</span>
+<span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">,</span> <span class="s1">&#39;Cylinders&#39;</span><span class="p">,</span> <span class="s1">&#39;Displacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Horsepower&#39;</span><span class="p">,</span> <span class="s1">&#39;Weight&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Acceleration&#39;</span><span class="p">,</span> <span class="s1">&#39;Model_Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;Car_Name&#39;</span><span class="p">]</span>
+
+<span class="c1"># Read the dataset with column names, treating &#39;?&#39; as missing values, and remove rows with missing values</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;auto-mpg.data&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span>
+                          <span class="n">na_values</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="c1"># Remove the &#39;Car_Name&#39; column from the DataFrame</span>
+<span class="n">auto_mpg_df</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Car_Name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">auto_mpg_df</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="p">[</span><span class="s1">&#39;MPG&#39;</span><span class="p">])</span>
+<span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MPG&#39;</span> <span class="p">:</span> <span class="s1">&#39;ln(MPG)&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Display the resulting DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">auto_mpg_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ln(MPG)</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight</th>
+      <th>Acceleration</th>
+      <th>Model_Year</th>
+      <th>Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.890372</td>
+      <td>8</td>
+      <td>307.0</td>
+      <td>130.0</td>
+      <td>3504.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.708050</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>165.0</td>
+      <td>3693.0</td>
+      <td>11.5</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.890372</td>
+      <td>8</td>
+      <td>318.0</td>
+      <td>150.0</td>
+      <td>3436.0</td>
+      <td>11.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.772589</td>
+      <td>8</td>
+      <td>304.0</td>
+      <td>150.0</td>
+      <td>3433.0</td>
+      <td>12.0</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.833213</td>
+      <td>8</td>
+      <td>302.0</td>
+      <td>140.0</td>
+      <td>3449.0</td>
+      <td>10.5</td>
+      <td>70</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>3.295837</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790.0</td>
+      <td>15.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>388</th>
+      <td>3.784190</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130.0</td>
+      <td>24.6</td>
+      <td>82</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>389</th>
+      <td>3.465736</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295.0</td>
+      <td>11.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>390</th>
+      <td>3.332205</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625.0</td>
+      <td>18.6</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>391</th>
+      <td>3.433987</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720.0</td>
+      <td>19.4</td>
+      <td>82</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>392 rows × 8 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="c1"># Prepare the data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;ln(MPG)&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Features</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">auto_mpg_df</span><span class="p">[</span><span class="s1">&#39;ln(MPG)&#39;</span><span class="p">]</span>  <span class="c1"># Target variable</span>
+
+<span class="c1"># Initialize KFold cross-validator</span>
+<span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Lists to store train and test scores for each fold</span>
+<span class="n">train_r2_scores</span><span class="p">,</span> <span class="n">test_r2_scores</span><span class="p">,</span> <span class="n">train_MSE_scores</span><span class="p">,</span> <span class="n">test_MSE_scores</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="n">svr</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVR</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span>  <span class="c1"># Create a Support Vector Regression model with an RBF kernel</span>
+
+<span class="k">def</span> <span class="nf">_Line</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">80</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">print_bold</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+    <span class="n">_left</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1;34m&quot;</span>
+    <span class="n">_right</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_left</span> <span class="o">+</span> <span class="n">txt</span> <span class="o">+</span> <span class="n">_right</span><span class="p">)</span>
+    
+<span class="c1"># Perform Cross-Validation</span>
+<span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>  <span class="c1"># Extract training and testing subsets by index</span>
+    <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+    <span class="n">svr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>  <span class="c1"># Train the SVR model</span>
+    <span class="c1"># train</span>
+    <span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">svr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">train_r2_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">))</span>
+    <span class="n">train_MSE_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">))</span>
+    <span class="c1"># test</span>
+    <span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">svr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">test_r2_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+    <span class="n">test_MSE_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+
+<span class="n">_Line</span><span class="p">()</span>
+<span class="c1">#  Print the Train and Test Scores for each fold</span>
+<span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">):</span>
+    <span class="n">print_bold</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fold </span><span class="si">{</span><span class="n">fold</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train R-Squared Score = </span><span class="si">{</span><span class="n">train_r2_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test R-Squared Score = </span><span class="si">{</span><span class="n">test_r2_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train MSE Score = </span><span class="si">{</span><span class="n">train_MSE_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test MSE Score= </span><span class="si">{</span><span class="n">test_MSE_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">_Line</span><span class="p">()</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s1">&#39;R-Squared Score:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean Train R-Squared Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_r2_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_r2_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean Test R-Squared Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_r2_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_r2_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s1">&#39;MSE Score:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean MSE Accuracy Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_MSE_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_MSE_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean MSE Accuracy Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_MSE_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_MSE_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">_Line</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>________________________________________________________________________________
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Fold 1:</span>
+	Train R-Squared Score = 0.7809, Test R-Squared Score = 0.7654
+	Train MSE Score = 0.0251, Test MSE Score= 0.0277
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Fold 2:</span>
+	Train R-Squared Score = 0.7775, Test R-Squared Score = 0.7836
+	Train MSE Score = 0.0259, Test MSE Score= 0.0238
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Fold 3:</span>
+	Train R-Squared Score = 0.7888, Test R-Squared Score = 0.7194
+	Train MSE Score = 0.0251, Test MSE Score= 0.0274
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Fold 4:</span>
+	Train R-Squared Score = 0.7787, Test R-Squared Score = 0.7760
+	Train MSE Score = 0.0253, Test MSE Score= 0.0266
+<span class=" -Color -Color-Bold -Color-Bold-Blue">Fold 5:</span>
+	Train R-Squared Score = 0.7668, Test R-Squared Score = 0.8129
+	Train MSE Score = 0.0261, Test MSE Score= 0.0239
+________________________________________________________________________________
+<span class=" -Color -Color-Bold -Color-Bold-Blue">R-Squared Score:</span>
+	Mean Train R-Squared Score: 0.7785 ± 0.0070
+	Mean Test R-Squared Score: 0.7715 ± 0.0304
+<span class=" -Color -Color-Bold -Color-Bold-Blue">MSE Score:</span>
+	Mean MSE Accuracy Score: 0.0255 ± 0.0004
+	Mean MSE Accuracy Score: 0.0259 ± 0.0017
+________________________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<p>The performance metrics, namely the R-Squared Score and Mean Squared Error (MSE), provide insights into the predictive capabilities of the model across training and test datasets. For each fold, the R-Squared Score indicates the proportion of the variance in the dependent variable that is predictable from the independent variables. Notably, the mean Train R-Squared Score is calculated as 0.7785 with a standard deviation of 0.0070, signifying the consistency of the model’s performance across the training sets. Simultaneously, the mean Test R-Squared Score, averaging 0.7715 with a standard deviation of 0.0304, portrays the model’s generalization ability to unseen data. Furthermore, the Mean Squared Error (MSE) serves as an assessment of the model’s accuracy by quantifying the average squared difference between predicted and actual values. The mean Train MSE Score is computed as 0.0255 with a minimal standard deviation of 0.0004, underscoring the stability of the model during training. Correspondingly, the mean Test MSE Score, averaging 0.0259 with a standard deviation of 0.0017, elucidates the model’s precision in predicting outcomes on the test sets.</p>
+<p><font color='Blue'><b>Example:</b></font> Here, we have a code example that demonstrates the use of a Decision Tree Classifier to visualize decision boundaries on synthetic data. This synthetic dataset is created using scikit-learn’s <code class="docutils literal notranslate"><span class="pre">make_blobs</span></code> function, specifically designed for generating artificial datasets for various machine learning experiments. This particular dataset has the following characteristics:</p>
+<ul class="simple">
+<li><p><strong>Number of Samples:</strong> 2000</p></li>
+<li><p><strong>Number of Features:</strong> 2</p></li>
+<li><p><strong>Number of Classes:</strong> 4</p></li>
+<li><p><strong>Random Seed (random_state):</strong> 0</p></li>
+<li><p><strong>Cluster Standard Deviation (cluster_std):</strong> 1.0</p></li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>Within the dataset, there are 2000 data points, each characterized by a pair of feature values, denoted as ‘Feature 1’ and ‘Feature 2’.</p></li>
+</ul>
+<p><strong>Target Variable:</strong></p>
+<ul class="simple">
+<li><p>The dataset also includes a target variable named ‘Outcome.’ This variable assigns each data point to one of four distinct classes, labeled as ‘Class 0’, ‘Class 1’, ‘Class 2’, and ‘Class 3’.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#f5645a&quot;</span><span class="p">,</span> <span class="s2">&quot;#b781ea&quot;</span><span class="p">,</span> <span class="s1">&#39;#B2FF66&#39;</span><span class="p">,</span> <span class="s1">&#39;#0096ff&#39;</span><span class="p">]</span>
+<span class="n">edge_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#8A0002&#39;</span><span class="p">,</span> <span class="s1">&#39;#3C1F8B&#39;</span><span class="p">,</span> <span class="s1">&#39;#6A993D&#39;</span><span class="p">,</span> <span class="s1">&#39;#2e658c&#39;</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">]</span>
+<span class="c1"># Generate synthetic data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+
+<span class="c1"># Create a scatter plot using Seaborn</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">y</span> <span class="o">==</span> <span class="n">num</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span>
+               <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">edge_colors</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="n">markers</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Synthetic Dataset&#39;</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1e606fab5accdb98b014aef08ceda70d06019c0888d7ad38da5f1b6a9a2117e4.png" src="../_images/1e606fab5accdb98b014aef08ceda70d06019c0888d7ad38da5f1b6a9a2117e4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="k">def</span> <span class="nf">_Line</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">80</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">print_bold</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+    <span class="n">_left</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1;31m&quot;</span>
+    <span class="n">_right</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_left</span> <span class="o">+</span> <span class="n">txt</span> <span class="o">+</span> <span class="n">_right</span><span class="p">)</span>
+    
+<span class="c1"># Initialize StratifiedKFold cross-validator</span>
+<span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># The splitt would be 80-20!</span>
+
+<span class="c1"># Lists to store train and test scores for each fold</span>
+<span class="n">train_acc_scores</span><span class="p">,</span> <span class="n">test_acc_scores</span><span class="p">,</span> <span class="n">train_f1_scores</span><span class="p">,</span> <span class="n">test_f1_scores</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">train_class_proportions</span><span class="p">,</span> <span class="n">test_class_proportions</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="bp">cls</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span> <span class="o">=</span> <span class="s1">&#39;rbf&#39;</span><span class="p">)</span>
+    
+<span class="c1"># Perform Cross-Validation</span>
+<span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="p">(</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+    <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate class proportions for train and test sets</span>
+    <span class="n">train_class_proportions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="bp">cls</span><span class="p">)</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)])</span>
+    <span class="n">test_class_proportions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="bp">cls</span><span class="p">)</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)])</span>
+    
+    <span class="c1"># train</span>
+    <span class="n">y_train_pred</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">train_acc_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">))</span>
+    <span class="n">train_f1_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;weighted&#39;</span><span class="p">))</span>
+    
+    <span class="c1"># test</span>
+    <span class="n">y_test_pred</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">test_acc_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+    <span class="n">test_f1_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;weighted&#39;</span><span class="p">))</span>
+
+<span class="n">_Line</span><span class="p">()</span>
+<span class="c1">#  Print the Train and Test Scores for each fold</span>
+<span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">):</span>
+    <span class="n">print_bold</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fold </span><span class="si">{</span><span class="n">fold</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train Class Proportions: </span><span class="si">{</span><span class="n">train_class_proportions</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Test Class Proportions: </span><span class="si">{</span><span class="n">test_class_proportions</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train Accuracy Score = </span><span class="si">{</span><span class="n">train_acc_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test Accuracy Score = </span><span class="si">{</span><span class="n">test_acc_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train F1 Score (weighted) = </span><span class="si">{</span><span class="n">train_f1_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test F1 Score (weighted)= </span><span class="si">{</span><span class="n">test_f1_scores</span><span class="p">[</span><span class="n">fold</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">_Line</span><span class="p">()</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s1">&#39;Accuracy Score:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean Train Accuracy Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_acc_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_acc_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean Test Accuracy Score: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_acc_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_acc_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">print_bold</span><span class="p">(</span><span class="s1">&#39;F1 Score:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean F1 Accuracy Score (weighted): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_f1_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_f1_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mean F1 Accuracy Score (weighted): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_f1_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_f1_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">_Line</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>________________________________________________________________________________
+<span class=" -Color -Color-Bold -Color-Bold-Red">Fold 1:</span>
+	Train Class Proportions: [0.25, 0.25, 0.25, 0.25]*1600
+	Test Class Proportions: [0.25, 0.25, 0.25, 0.25]*400
+	Train Accuracy Score = 0.9337, Test Accuracy Score = 0.9200
+	Train F1 Score (weighted) = 0.9336, Test F1 Score (weighted)= 0.9198
+<span class=" -Color -Color-Bold -Color-Bold-Red">Fold 2:</span>
+	Train Class Proportions: [0.25, 0.25, 0.25, 0.25]*1600
+	Test Class Proportions: [0.25, 0.25, 0.25, 0.25]*400
+	Train Accuracy Score = 0.9306, Test Accuracy Score = 0.9375
+	Train F1 Score (weighted) = 0.9306, Test F1 Score (weighted)= 0.9377
+<span class=" -Color -Color-Bold -Color-Bold-Red">Fold 3:</span>
+	Train Class Proportions: [0.25, 0.25, 0.25, 0.25]*1600
+	Test Class Proportions: [0.25, 0.25, 0.25, 0.25]*400
+	Train Accuracy Score = 0.9350, Test Accuracy Score = 0.9300
+	Train F1 Score (weighted) = 0.9349, Test F1 Score (weighted)= 0.9299
+<span class=" -Color -Color-Bold -Color-Bold-Red">Fold 4:</span>
+	Train Class Proportions: [0.25, 0.25, 0.25, 0.25]*1600
+	Test Class Proportions: [0.25, 0.25, 0.25, 0.25]*400
+	Train Accuracy Score = 0.9363, Test Accuracy Score = 0.9275
+	Train F1 Score (weighted) = 0.9362, Test F1 Score (weighted)= 0.9271
+<span class=" -Color -Color-Bold -Color-Bold-Red">Fold 5:</span>
+	Train Class Proportions: [0.25, 0.25, 0.25, 0.25]*1600
+	Test Class Proportions: [0.25, 0.25, 0.25, 0.25]*400
+	Train Accuracy Score = 0.9281, Test Accuracy Score = 0.9475
+	Train F1 Score (weighted) = 0.9279, Test F1 Score (weighted)= 0.9473
+________________________________________________________________________________
+<span class=" -Color -Color-Bold -Color-Bold-Red">Accuracy Score:</span>
+	Mean Train Accuracy Score: 0.9327 ± 0.0030
+	Mean Test Accuracy Score: 0.9325 ± 0.0094
+<span class=" -Color -Color-Bold -Color-Bold-Red">F1 Score:</span>
+	Mean F1 Accuracy Score (weighted): 0.9326 ± 0.0030
+	Mean F1 Accuracy Score (weighted): 0.9323 ± 0.0094
+________________________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<p>The metrics assessed include Accuracy Score and F1 Score (weighted) for both training and test datasets. For each fold, the Train and Test Class Proportions denote the distribution of classes within the respective datasets, illustrating a balanced representation with equal proportions across four classes. The Accuracy Score, which quantifies the ratio of correctly predicted instances to the total instances, exhibits a consistent and high performance across folds. The mean Train Accuracy Score is calculated as 0.9327 with a narrow standard deviation of 0.0030, highlighting the model’s proficiency in correctly classifying instances within the training sets. Simultaneously, the mean Test Accuracy Score averages at 0.9325 with a slightly wider standard deviation of 0.0094, indicating robust generalization to unseen data. The F1 Score (weighted), a metric that balances precision and recall, provides additional insights into the model’s classification capabilities. The mean Train F1 Score (weighted) is reported as 0.9326 with a standard deviation of 0.0030, underlining the model’s ability to maintain a balance between precision and recall in the training sets. Similarly, the mean Test F1 Score (weighted) averages 0.9323 with a standard deviation of 0.0094, signifying the model’s effectiveness in achieving a balanced performance on the test sets.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.accuracy_score</span></code> is a function commonly used in the context of classification tasks within the field of machine learning. It is part of the scikit-learn library in Python. This function is utilized to quantify the accuracy of a classification model by comparing the predicted labels against the true labels of a dataset.</p>
+<p>The accuracy score is calculated by dividing the number of correctly classified instances by the total number of instances. Mathematically, it can be expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2b87776f-7610-43bb-977a-26f3fd61862c">
+<span class="eqno">(9.120)<a class="headerlink" href="#equation-2b87776f-7610-43bb-977a-26f3fd61862c" title="Permalink to this equation">#</a></span>\[\begin{equation} \text{Accuracy} = \frac{\text{Number of Correctly Classified Instances}}{\text{Total Number of Instances}} \end{equation}\]</div>
+<p>In Python, using the <code class="docutils literal notranslate"><span class="pre">metrics.accuracy_score</span></code> function involves providing the true labels and the predicted labels as arguments. The function then returns a numerical value representing the accuracy of the classification model.</p>
+<p>It is important to note that while accuracy is a straightforward metric, it may not be sufficient in scenarios with imbalanced class distributions. In such cases, additional metrics like precision, recall, and F1-score might be more informative for evaluating the performance of a classification model.</p>
+</li>
+<li><p>The F1 Score, specifically in its weighted form, is a metric commonly employed in the evaluation of classification models. It provides a balance between precision and recall, offering a single numerical value that summarizes the model’s performance across multiple classes in a weighted manner.</p>
+<p>The weighted F1 Score is calculated by considering both precision (<span class="math notranslate nohighlight">\(P\)</span>) and recall (<span class="math notranslate nohighlight">\(R\)</span>) for each class and then computing the harmonic mean of these values. The weighted aspect accounts for the imbalance in class sizes. Mathematically, it is defined as follows:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f886365b-10df-461a-8b18-78c9b6ae7551">
+<span class="eqno">(9.121)<a class="headerlink" href="#equation-f886365b-10df-461a-8b18-78c9b6ae7551" title="Permalink to this equation">#</a></span>\[\begin{equation} F1_{\text{weighted}} = \frac{\sum_{i=1}^{C} w_i \cdot F1_i}{\sum_{i=1}^{C} w_i} \end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( C \)</span> is the number of classes.</p></li>
+<li><p><span class="math notranslate nohighlight">\( F1_i \)</span> is the F1 Score for class <span class="math notranslate nohighlight">\( i \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( w_i \)</span> is the weight assigned to class <span class="math notranslate nohighlight">\( i \)</span>, typically proportional to the number of instances in that class.</p></li>
+</ul>
+<p>In Python, scikit-learn’s <code class="docutils literal notranslate"><span class="pre">metrics.f1_score</span></code> function can be utilized to compute the F1 Score. When employing the ‘weighted’ parameter, it calculates the average F1 Score, considering the number of instances in each class as weights.</p>
+<p>This weighted F1 Score is particularly useful when dealing with imbalanced datasets, where certain classes may have significantly fewer instances than others. It provides a more nuanced evaluation of the model’s ability to perform well across all classes, accounting for the influence of class size on the overall metric.</p>
+<p><font color='Blue'><b>Example:</b></font> Let’s consider a scenario where we have a classification model dealing with a dataset that includes three classes: A, B, and C. The dataset is imbalanced, meaning that the number of instances in each class is different. We want to compute the weighted F1 Score for this model.</p>
+<p>Here’s a hypothetical example with class counts and F1 Scores for each class:</p>
+<ul class="simple">
+<li><p>Class A: True Positives (TP) = 150, False Positives (FP) = 20, False Negatives (FN) = 10</p></li>
+<li><p>Class B: TP = 80, FP = 5, FN = 30</p></li>
+<li><p>Class C: TP = 40, FP = 10, FN = 5</p></li>
+</ul>
+<p>Class weights (<span class="math notranslate nohighlight">\(w_i\)</span>) can be determined based on the number of instances in each class. For simplicity, let’s assume the weights are proportional to the number of instances in each class:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(w_{\text{A}} = 300\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{\text{B}} = 115\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{\text{C}} = 55\)</span></p></li>
+</ul>
+<p>Now, we can compute the F1 Score for each class using the formula:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2e0e4f20-fe1f-4e8c-a3cb-02ecf1bf4a88">
+<span class="eqno">(9.122)<a class="headerlink" href="#equation-2e0e4f20-fe1f-4e8c-a3cb-02ecf1bf4a88" title="Permalink to this equation">#</a></span>\[\begin{equation} F1_i = \frac{2 \cdot \text{TP}_i}{2 \cdot \text{TP}_i + \text{FP}_i + \text{FN}_i} \end{equation}\]</div>
+<p>After calculating <span class="math notranslate nohighlight">\(F1_i\)</span> for each class, we can then compute the weighted F1 Score using the formula mentioned earlier:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d9574a55-90e7-4961-b440-c2242448c07c">
+<span class="eqno">(9.123)<a class="headerlink" href="#equation-d9574a55-90e7-4961-b440-c2242448c07c" title="Permalink to this equation">#</a></span>\[\begin{equation} F1_{\text{weighted}} = \frac{w_{\text{A}} \cdot F1_{\text{A}} + w_{\text{B}} \cdot F1_{\text{B}} + w_{\text{C}} \cdot F1_{\text{C}}}{w_{\text{A}} + w_{\text{B}} + w_{\text{C}}} \end{equation}\]</div>
+<p>This weighted F1 Score provides a comprehensive evaluation of the model’s performance, giving more importance to classes with a larger number of instances.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_09"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ENGG680_C09S06.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">9.6. </span>Resampling Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_10/ENGG680_C10.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Tree-Based Methods</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-principles-of-svm">9.7.1. Basic principles of SVM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-vector-classifiers">9.7.2. Support Vector Classifiers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulating-the-maximal-margin-classifier">9.7.3. Formulating the Maximal Margin Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-with-non-linear-decision-boundaries">9.7.4. Classification with Non-Linear Decision Boundaries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#augmented-feature-space">9.7.4.1. Augmented Feature Space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-formulation">9.7.4.2. Mathematical Formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-support-vector-machine-kernelized-enhancement">9.7.5. The Support Vector Machine: Kernelized Enhancement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-support-vector-classifier">9.7.5.1. Linear Support Vector Classifier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kernelized-format">9.7.5.2. Kernelized Format</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sklearns-svc-and-svr">9.7.6. sklearn’s  SVC and SVR</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
