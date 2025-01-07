@@ -7,6 +7,8 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
+1. **Dastour, H.**, Alam, M., Dewan, A., and Hassan, Q.K., 2024. [Evaluating Climatic Warming and the Modulating Effects of Surface Water and Regional Variables in Western Bangladesh](https://doi.org/10.1016/j.rineng.2024.103864){:target="_blank"}. *Results in Engineering*, p.103864. \[IF: 6.0; IF Quartile: Q1\]
+
 1. **Dastour, H.** and Hassan, Q.K., 2024. [A multidimensional machine learning framework for LST reconstruction and climate variable analysis in forest fire occurrence](https://doi.org/10.1016/j.ecoinf.2024.102849){:target="_blank"}. *Ecological Informatics*, 83, p.102849. \[IF: 5.8; IF Quartile: Q1\]
 
 1. **Dastour, H.**, Bhuian, H., Ahmed, M.R., and Hassan, Q.K., 2024 [Active Fire Clustering and Spatiotemporal Dynamic Models for Forest Fire Management](https://doi.org/10.3390/fire7100355){:target="_blank"}, *Fire*, 7(10), p.355. \[IF: 3.0; IF Quartile: Q1\]
