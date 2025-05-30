@@ -83,7 +83,7 @@ This course covers fundamental programming concepts using Python, encompassing s
 Essential foundation in linear algebra covering systems of equations, matrices, vectors, determinants, and complex numbers. Practical applications in various fields highlighted.
 </p>
 
-<hr style="height:2px; visibility:hidden;" />
+<!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
@@ -91,7 +91,7 @@ Essential foundation in linear algebra covering systems of equations, matrices, 
 </b></font>
 <br>
 This course covers root-finding algorithms, interpolation, integration, differentiation, linear systems, and numerical ODE solutions for practical problem-solving. Gain vital skills for diverse applications in science and engineering.
-</p>
+</p> -->
 
 <!-- <hr style="height:2px; visibility:hidden;" />
 
