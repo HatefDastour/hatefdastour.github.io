@@ -4,7 +4,7 @@ collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/UC_MATH211
 venue: "University of Calgary, Department of Mathematics and Statistics"
-date: Multiple Semesters
+date: 2019-05-01
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>

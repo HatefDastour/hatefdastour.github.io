@@ -4,7 +4,7 @@ collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/ULETH_MATH1510
 venue: "University of Lethbridge (Calgary Campus), Calgary, AB, Canada"
-date: Multiple Semesters
+date: 2021-09-01
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>

@@ -4,7 +4,7 @@ collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/ULETH_MATH1770
 venue: "University of Lethbridge (Calgary Campus), Calgary, AB, Canada"
-date: Multiple Semesters
+date: 2022-01-01
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>
