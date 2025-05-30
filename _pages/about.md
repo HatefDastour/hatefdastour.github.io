@@ -15,6 +15,6 @@ I hold dual Ph.D. degrees in Applied Mathematics and Geomatics Engineering, with
 Before joining MU, I taught at Mount Royal University, the University of Lethbridge, and the University of Calgary. I also worked in industry as a Data Scientist and Research Scientist, where I developed predictive models, designed scalable data pipelines, and applied analytics to real-world problems using Python, SQL, and cloud-based tools.
 <br><br>
 I am committed to education and mentorship, having taught courses in machine learning systems and digital engineering. I also contribute to the academic community through thesis examination, journal reviewing, conference organization, and academic leadership. I founded the SIAM Chapter at the University of Calgary and have been active in outreach and community-based initiatives.
-
+<br><br>
 Outside of work, I enjoy hiking and value time with family and friends, which I believe strengthens my role as an educator and mentor.
 </p>
