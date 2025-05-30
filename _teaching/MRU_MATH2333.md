@@ -2,7 +2,7 @@
 title: "MATH 2333 - Statistics for Life Sciences (Spring 2023)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/MRU_MATH2333P23
+permalink: /teaching/MRU_MATH2333
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2023-05-01
 location: "Calgary, Alberta"

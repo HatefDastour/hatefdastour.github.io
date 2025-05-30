@@ -2,7 +2,7 @@
 title: "ENGG 680 - Introduction to Digital Engineering (Fall 2023)"
 collection: teaching
 type: "Graduate course"
-permalink: /teaching/UC_ENGG680F23
+permalink: /teaching/UC_ENGG680
 venue: "University of Calgary, Department of Electrical and Computer Engineering"
 date: 2023-09-01
 location: "Calgary, Alberta"

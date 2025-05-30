@@ -2,7 +2,7 @@
 title: "ENEN 693 - Life Cycle Assessment (Winter 2024)"
 collection: teaching
 type: "Graduate course"
-permalink: /teaching/UC_ENEN693W24
+permalink: /teaching/UC_ENEN693
 venue: "University of Calgary, Department of Civil Engineering"
 date: 2024-01-01
 location: "Calgary, Alberta"

@@ -2,7 +2,7 @@
 title: "MATH 3101 - Numerical Analysis (Fall 2022)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/MRU_MATH3101F22
+permalink: /teaching/MRU_MATH3101
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2022-09-01
 location: "Calgary, Alberta"

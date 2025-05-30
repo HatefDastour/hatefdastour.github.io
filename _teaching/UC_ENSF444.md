@@ -2,7 +2,7 @@
 title: "ENSF 444 - Machine Learning Systems (Winter 2024)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/UC_ENSF444W24
+permalink: /teaching/UC_ENSF444
 venue: "University of Calgary, Department of Electrical and Computer Engineering"
 date: 2024-01-01
 location: "Calgary, Alberta"

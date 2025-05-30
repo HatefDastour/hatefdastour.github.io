@@ -1,10 +1,10 @@
 ---
-title: "MATH 1510Y - Calculus for Management and Social Sciences (Fall 2021)"
+title: "MATH 1510 - Calculus for Management and Social Sciences (Fall 2021)"
 collection: teaching
 type: "Undergraduate course"
-permalink: /teaching/ULETH_MATH1510Y_2021F
+permalink: /teaching/ULETH_MATH1510
 venue: "University of Lethbridge (Calgary Campus), Calgary, AB, Canada"
-date: 2021-09-01
+date: Multiple Semesters
 location: "Calgary, Alberta"
 ---
 <p style='text-align: justify;'>
