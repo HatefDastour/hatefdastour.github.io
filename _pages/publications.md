@@ -11,7 +11,7 @@ author_profile: true
 
 1. Aryal, S., **Dastour, H.**, Farjad, B., Achari, G., Gupta, A., Hassan, Q.K., 2025. [Enhancing Drought Monitoring in Southern Alberta: A Comparative Evaluation of Drought Indices for Regional Applicability](https://doi.org/10.1016/j.rineng.2025.106403){:target="_blank"}. *Results in Engineering*, p106403.  \[IF: 7.9; IF Quartile: Q1\]
 
-1. **Dastour, H.**, Alam, M., Dewan, A., and Hassan, Q.K., 2024. [Evaluating Climatic Warming and the Modulating Effects of Surface Water and Regional Variables in Western Bangladesh](https://doi.org/10.1016/j.rineng.2024.103864){:target="_blank"}, *Results in Engineering*, 25, p.103864. \[IF: 7.9; IF Quartile: Q1\]
+1. **Dastour, H.**, Alam, M., Dewan, A., and Hassan, Q.K., 2025. [Evaluating Climatic Warming and the Modulating Effects of Surface Water and Regional Variables in Western Bangladesh](https://doi.org/10.1016/j.rineng.2024.103864){:target="_blank"}, *Results in Engineering*, 25, p.103864. \[IF: 7.9; IF Quartile: Q1\]
 
 1. **Dastour, H.** and Hassan, Q.K., 2024. [A multidimensional machine learning framework for LST reconstruction and climate variable analysis in forest fire occurrence](https://doi.org/10.1016/j.ecoinf.2024.102849){:target="_blank"}. *Ecological Informatics*, 83, p.102849. \[IF: 7.3; IF Quartile: Q1\]
 
