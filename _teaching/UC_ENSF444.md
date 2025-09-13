@@ -1,11 +1,11 @@
 ---
-title: "ENSF 444 - Machine Learning Systems (Winter 2024)"
+title: "ENSF 444 - Machine Learning Systems"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/UC_ENSF444
 venue: "University of Calgary, Department of Electrical and Computer Engineering"
 date: 2024-01-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course offers a comprehensive exploration of data science techniques tailored for engineering contexts. It covers the essential processes of extracting, cleaning, and visualizing data to make informed decisions based on engineering datasets. The course also delves into the fundamental numerical computation techniques that form the foundation of machine learning algorithms. Students will gain a solid understanding of both supervised and unsupervised learning algorithms, crucial for predictive modeling and pattern discovery in data.

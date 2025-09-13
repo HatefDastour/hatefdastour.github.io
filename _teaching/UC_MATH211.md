@@ -1,11 +1,11 @@
 ---
-title: "MATH 211 - Linear Methods I (Spring 2019)"
+title: "MATH 211 - Linear Methods I"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/UC_MATH211
 venue: "University of Calgary, Department of Mathematics and Statistics"
 date: 2019-05-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 An introduction to systems of linear equations, vectors in Euclidean space, and matrix algebra. Additional topics include linear transformations, determinants, complex numbers, eigenvalues, and applications.

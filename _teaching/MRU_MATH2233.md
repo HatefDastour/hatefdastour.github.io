@@ -1,11 +1,11 @@
 ---
-title: "MATH 2233 - Statistics for Biological Sciences (Winter 2023)"
+title: "MATH 2233 - Statistics for Biological Sciences"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/MRU_MATH2233
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2023-01-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course offers an extensive study of descriptive statistics, probability theory, and structured methods for inferential statistics. It covers essential subjects including inference on population means and proportions, understanding of regression and correlation, execution of chi-square tests, analysis of variance, and application of non-parametric statistics. Moreover, students will gain practical experience by applying these statistical techniques to actual problems in the biological and health sciences.

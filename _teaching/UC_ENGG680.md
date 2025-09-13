@@ -1,11 +1,11 @@
 ---
-title: "ENGG 680 - Introduction to Digital Engineering (Fall 2023)"
+title: "ENGG 680 - Introduction to Digital Engineering"
 collection: teaching
 type: "Graduate course"
 permalink: /teaching/UC_ENGG680
 venue: "University of Calgary, Department of Electrical and Computer Engineering"
 date: 2023-09-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course covers the fundamental elements of digital engineering systems and basic programming structures for implementation. It teaches programming strategies to aid data analysis, including data acquisition and cleansing, validation, and visualization. The course introduces fundamental machine learning methods and data-centric modeling, with practical examples from various engineering fields.

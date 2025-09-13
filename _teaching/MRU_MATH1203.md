@@ -1,11 +1,11 @@
 ---
-title: "MATH 1203 - Linear Algebra for Scientists and Engineers (Fall 2022)"
+title: "MATH 1203 - Linear Algebra for Scientists and Engineers"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/MRU_MATH1203
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2022-09-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course provides a foundational journey through linear algebra tailored for students in the sciences. It encompasses a variety of subjects such as vector and matrix algebra, systems of linear equations, determinants, linear transformations, polar coordinates, and complex numbers. The course delves deeply into the practical uses of linear algebra in the physical sciences, with a special focus on the roles of eigenvalues and eigenvectors.

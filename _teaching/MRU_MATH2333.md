@@ -1,11 +1,11 @@
 ---
-title: "MATH 2333 - Statistics for Life Sciences (Spring 2023)"
+title: "MATH 2333 - Statistics for Life Sciences"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/MRU_MATH2333
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2023-05-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course introduces students to exploratory data analysis, offering a concise overview of probability theory and inferential statistics. Students will thoroughly investigate key topics such as inferring population means and proportions, performing chi-square tests, and studying regression and correlation. The course also emphasizes the practical use of these statistical techniques, especially their importance in medical and health sciences.

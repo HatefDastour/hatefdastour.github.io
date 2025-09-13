@@ -3,6 +3,10 @@ permalink: /teaching/
 title: "Teaching"
 ---
 
+## University of Missouri, Columbia, MO, USA
+1. [DSA SCI 8510 - Geospatial Data Engineering](/teaching/DSA_SCI_8510)
+1. [DSA SCI 8001 - Introduction to Natural Language Processing and Large Language Models](/teaching/DSA_SCI_8001)
+
 ## University of Calgary, Calgary, AB, Canada
 
 1. [ENEN 693 - Life Cycle Assessment](/teaching/UC_ENEN693)

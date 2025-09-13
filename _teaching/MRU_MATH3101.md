@@ -1,11 +1,11 @@
 ---
-title: "MATH 3101 - Numerical Analysis (Fall 2022)"
+title: "MATH 3101 - Numerical Analysis"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/MRU_MATH3101
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2022-09-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course is centered on the theoretical and practical aspects of numerical computation techniques aimed at addressing real-world issues. It includes a spectrum of methodologies such as resolving nonlinear and simultaneous linear equations, curve fitting, eigenvalue issues, interpolation and approximation, as well as numerical differentiation and integration. Additionally, it involves tackling ordinary and partial differential equations. The lab segment of the course allows students to implement these techniques on basic problems and solve more complex problems through computerized methods.

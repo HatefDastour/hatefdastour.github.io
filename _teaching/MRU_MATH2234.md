@@ -1,11 +1,11 @@
 ---
-title: "MATH 2234 - Concepts of Mathematical Statistics (Winter 2023)"
+title: "MATH 2234 - Concepts of Mathematical Statistics"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/MRU_MATH2234
 venue: "Mount Royal University, Department of Mathematics and Computing"
 date: 2023-01-01
-location: "Calgary, Alberta"
+location: "Calgary, AB, Canada"
 ---
 <p style='text-align: justify;'>
 This course delves into descriptive statistics and provides a primer on probability theory. The program also offers an in-depth examination of inferential statistics. Essential subjects covered include drawing conclusions about the means and proportions of single or dual populations, grasping linear regression and correlation, executing chi-square tests, and carrying out variance analysis. Students will employ statistical software in lab sessions to apply these principles to actual data sets.
