@@ -8,9 +8,9 @@ redirect_from:
 ---
 
 <p style='text-align: justify;'>
-I am an Assistant Teaching Professor of Data Science and Analytics at the University of Missouri's Institute for Data Science and Informatics, and an AI Fellow within the Graduate School. My work lies at the intersection of geomatics, remote sensing, geospatial analytics, and big data. I apply computational methods—including machine learning, data fusion, and agent-based modeling—to address pressing challenges related to climate change, environmental sustainability, natural hazards, and water resources.
+I am an Assistant Teaching Professor of Data Science and Analytics at the University of Missouri's Institute for Data Science and Informatics, and an AI Fellow within the Graduate School. My work lies at the intersection of geomatics, remote sensing, geospatial analytics, and big data. I apply computational methods—including machine learning, data fusion, and agent-based modeling—to address pressing challenges related to environmental transformation, sustainability, natural hazards, and water resources.
 <br><br>
-I hold dual Ph.D. degrees in Applied Mathematics and Geomatics Engineering, with a focus on geospatial analysis and computational modeling for environmental applications. My research has been supported by the Government of Canada and the Government of Alberta, and has included projects on forest fires, floods, droughts, and climate-induced land-use change.
+I hold dual Ph.D. degrees in Applied Mathematics and Geomatics Engineering, with a focus on geospatial analysis and computational modeling for environmental applications. My research has been supported by the Government of Canada and the Government of Alberta, and has included projects on forest fires, floods, droughts, and land-use changes driven by long-term environmental trends.
 <br><br>
 Before joining the University of Missouri, I taught at Mount Royal University, the University of Lethbridge, and the University of Calgary. I also worked in industry as a Data Scientist and Research Scientist, where I developed predictive models, designed scalable data pipelines, and applied analytics to real-world problems using Python, SQL, and cloud-based tools.
 <br><br>
