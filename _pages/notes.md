@@ -73,7 +73,7 @@ This course covers key concepts in descriptive statistics and graphical represen
 This course covers fundamental programming concepts using Python, encompassing statements, conditionals, loops, functions, file I/O, debugging, data parsing, display techniques, and library usage.
 </p>
 
-<hr style="height:2px; visibility:hidden;" />
+<!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
@@ -81,7 +81,7 @@ This course covers fundamental programming concepts using Python, encompassing s
 </b></font>
 <br>
 Essential foundation in linear algebra covering systems of equations, matrices, vectors, determinants, and complex numbers. Practical applications in various fields highlighted.
-</p>
+</p> -->
 
 <!-- <hr style="height:2px; visibility:hidden;" />
 
