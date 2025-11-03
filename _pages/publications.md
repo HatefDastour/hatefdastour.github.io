@@ -78,9 +78,9 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. **Dastour, H.** and Hassan, Q.K., ["Modeling Forest Fire Spread in Southwestern Canada Using MODIS Remote Sensing and Integrated Data"](/talks/WFCC_2024), Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
 
-1. Bhuian, H.,  **Dastour, H.**, Ahmed, M.R., and Hassan, Q.K., "Evaluation of Remote Sensing-derived Active Fire Perimeter Delineation Methods for Operational Purposes", Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
+1. Bhuian, H.,  **Dastour, H.**, Ahmed, M.R., and Hassan, Q.K., ["Evaluation of Remote Sensing-derived Active Fire Perimeter Delineation Methods for Operational Purposes"](/talks/WFCC_2024_2), Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
 
-1. **Dastour, H.** and Hassan, Q.K., "The significance of deep learning for classifying land use and land cover images", The International Geoscience and Remote Sensing Symposium (IGARSS), Pasadena, CA, USA, 16-21 July 2023 (Accepted, but not presented).
+1. **Dastour, H.** and Hassan, Q.K., ["The significance of deep learning for classifying land use and land cover images"](/talks/IGARSS_2023), The International Geoscience and Remote Sensing Symposium (IGARSS), Pasadena, CA, USA, 16-21 July 2023 (Accepted, but not presented).
 
 1. **Dastour, H.** and Hassan, Q.K., ["A Machine-Learning Framework for Modeling and Reconstructing Historical Monthly Streamflow Time Series"](/talks/CWRA_2023), Canadian Water Association (CWRA) 2023 National Conference, Halifax, NS, Canada, 18-21 June 2023 (Conference Presentation).
 
