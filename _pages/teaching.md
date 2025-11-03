@@ -4,6 +4,8 @@ title: "Teaching"
 ---
 
 ## University of Missouri, Columbia, MO, USA
+1. [DSA SCI 8530 - Geospatial AI & Image Analysis](/teaching/DSA_SCI_8530)
+1. [DSA SCI 8420 - Cloud Computing for Data Analytics](/teaching/DSA_SCI_8420)
 1. [DSA SCI 8510 - Geospatial Data Engineering](/teaching/DSA_SCI_8510)
 1. [DSA SCI 8001 - Introduction to Natural Language Processing and Large Language Models](/teaching/DSA_SCI_8001)
 
