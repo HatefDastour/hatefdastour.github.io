@@ -1,0 +1,2913 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.3. Handling Missing Values &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_02/Intro2TS_C02S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. References" href="../References.html" />
+    <link rel="prev" title="2.2. Identifying Patterns of Missingness" href="Intro2TS_C02S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C02.html">2. Missing Data in Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">3. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Handling Missing Values</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deletion-methods">2.3.1. Deletion Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#listwise-deletion">2.3.1.1. Listwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-deletion">2.3.1.2. Pairwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-demonstrating-listwise-and-pairwise-deletion">2.3.1.3. Example: Demonstrating Listwise and Pairwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">2.3.1.4. Conclusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-imputation-methods">2.3.2. Simple Imputation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-value-substitution-methods">2.3.2.1. Simple Value Substitution Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#last-observation-carried-forward-locf">2.3.2.2. Last Observation Carried Forward (LOCF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-observation-carried-backward-nocb">2.3.2.3. Next Observation Carried Backward (NOCB)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-locf-and-nocb">2.3.2.4. Comparison of LOCF and NOCB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolation-methods">2.3.3. Interpolation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-interpolation">2.3.3.1. Linear Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polynomial-interpolation">2.3.3.2. Polynomial Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-interpolation">2.3.3.3. Spline Interpolation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-techniques-for-handling-missing-data">2.3.4. Advanced Techniques for Handling Missing Data</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- ## Handeling Missing Values
+
+After identifying missing values in a dataset, it is essential to address them appropriately to ensure the accuracy and reliability of analyses. Here’s a complete guide to the various methods for dealing with missing values:
+
+### 1. Deletion Methods
+   - **Listwise Deletion**: Remove entire rows that contain any missing values. This method is straightforward but can lead to significant data loss, especially if many variables have missing data.
+   - **Pairwise Deletion**: Exclude cases only for analyses involving variables with missing data. This method retains more data than listwise deletion but can create inconsistencies across different analyses.
+
+### 2. Imputation Methods
+   - **Simple Imputation**:
+     - **Mean/Median/Mode Imputation**: Replace missing values with the mean, median, or mode of the variable. This method is easy to implement but can reduce variability and distort relationships between variables.
+     - **Constant Value Imputation**: Fill missing values with a constant value (e.g., zero). This approach can introduce bias if the constant does not reflect the underlying data distribution.
+     - **Random Sample Imputation**: Replace missing values with random samples from the observed values of the variable. This method maintains the distribution but may not account for relationships with other variables.
+   
+   - **Regression Imputation**: Use regression models to predict and fill in missing values based on other variables. This method preserves relationships but may overstate these relationships if not used carefully.
+
+   - **Multiple Imputation**: Create multiple plausible imputed datasets, analyze each separately, and then combine the results. This technique accounts for uncertainty in the imputed values and provides more robust estimates.
+
+   - **K-Nearest Neighbors (KNN) Imputation**: Use the average (or weighted average) of K nearest neighbors to fill in missing values. This method captures complex relationships but can be computationally intensive.
+
+   - **Last Observation Carried Forward (LOCF)**: Fill missing values using the last observed value prior to the missing entry. This approach is particularly useful in time series data but may introduce bias if the data trend changes.
+
+   - **Next Observation Carried Backward (NOCB)**: Similar to LOCF, this method fills missing values using subsequent observations. It can be useful when data is expected to follow a particular trend.
+
+### 3. Model-Based Methods
+   - **Expectation-Maximization (EM) Algorithm**: A statistical technique that estimates parameters in models where some data is missing by iteratively maximizing the likelihood function.
+   - **Maximum Likelihood Estimation (MLE)**: A method that estimates parameters directly from incomplete data, often used in structural equation modeling.
+
+### 4. Machine Learning Methods
+   - **Decision Tree-Based Methods**: Use decision trees to predict and fill in missing values based on other features in the dataset.
+   - **Random Forest Imputation**: Utilize a random forest model to predict and impute missing values, leveraging multiple trees for more robust predictions.
+   - **Deep Learning Methods (e.g., Autoencoders)**: Use neural networks to learn representations of data and predict missing values based on learned patterns.
+
+### 5. Time Series Specific Methods
+   - **Interpolation**: Fill in missing values using interpolation methods such as linear or spline interpolation, which estimate intermediate values between known data points.
+   - **Kalman Filtering**: A recursive algorithm that estimates unknown variables over time, particularly useful for noisy time series data.
+   - **Seasonal Decomposition**: Analyze seasonal patterns in time series data to inform imputation strategies based on expected trends.
+
+### 6. Advanced Techniques
+   - **Hot-Deck Imputation**: Replace missing values with observed responses from similar cases within the dataset.
+   - **Cold-Deck Imputation**: Use external datasets or historical averages to fill in missing values.
+   - **Predictive Mean Matching (PMM)**: A hybrid approach that matches cases with similar observed characteristics and uses their observed outcomes for imputation.
+
+### 7. Hybrid Approaches
+   - Combining multiple methods can improve imputation quality by leveraging strengths from different techniques while mitigating their weaknesses.
+
+### 8. Sensitivity Analysis
+   - Assessing how different imputation methods affect results is crucial for understanding potential biases introduced by handling missing data. --><section class="tex2jax_ignore mathjax_ignore" id="handling-missing-values">
+<h1><span class="section-number">2.3. </span>Handling Missing Values<a class="headerlink" href="#handling-missing-values" title="Link to this heading">#</a></h1>
+<p>After identifying missing values in a dataset, addressing them effectively is essential to ensure the accuracy and reliability of analyses. Missing data can introduce bias, reduce statistical power, and impact the validity of results. Below is a detailed guide to various methods for handling missing values. Note that we can only explain a subset of these methods at this stage. Some advanced techniques, particularly those requiring familiarity with time series modeling methods.</p>
+<section id="deletion-methods">
+<h2><span class="section-number">2.3.1. </span>Deletion Methods<a class="headerlink" href="#deletion-methods" title="Link to this heading">#</a></h2>
+<p>When addressing missing data, <strong>listwise deletion</strong> and <strong>pairwise deletion</strong> are two foundational methods commonly used in data analysis. These approaches are straightforward to implement but vary in their impact on the dataset and the potential biases they introduce. Below, we explain these methods in detail, incorporating examples and highlighting their strengths and limitations.</p>
+<section id="listwise-deletion">
+<h3><span class="section-number">2.3.1.1. </span>Listwise Deletion<a class="headerlink" href="#listwise-deletion" title="Link to this heading">#</a></h3>
+<p>Listwise deletion, also known as <strong>casewise deletion</strong>, involves removing any observation (row) that contains missing values in one or more variables. This results in a reduced dataset that includes only complete cases. While this method ensures consistency across analyses, it can lead to significant data loss if missingness is widespread.</p>
+<ul class="simple">
+<li><p>In machine learning, listwise deletion is often used in ranking tasks where incomplete observations can distort model predictions <span id="id1">[<a class="reference internal" href="../References.html#id310" title="Zheng Li, Caili Guo, Xin Wang, Hao Zhang, and Yanjun Wang. Integrating listwise ranking into pairwise-based image-text retrieval. Knowledge-Based Systems, 287:111431, March 2024. URL: https://www.sciencedirect.com/science/article/pii/S0950705124000662 (visited on 2025-01-01), doi:10.1016/j.knosys.2024.111431.">Li <em>et al.</em>, 2024</a>]</span>.</p></li>
+<li><p>In time-series analysis, listwise deletion ensures that only complete records are used for modeling trends or patterns.</p></li>
+</ul>
+<p>However, listwise deletion can lead to <strong>biased results</strong> if the missing data are not <em>Missing Completely At Random (MCAR)</em>.</p>
+</section>
+<section id="pairwise-deletion">
+<h3><span class="section-number">2.3.1.2. </span>Pairwise Deletion<a class="headerlink" href="#pairwise-deletion" title="Link to this heading">#</a></h3>
+<p>Pairwise deletion takes a more flexible approach by removing only the specific variables or pairs of variables that contain missing values while retaining all other observations. This allows for more data to be preserved compared to listwise deletion. It is particularly useful for analyses involving relationships between variables (e.g., correlations or covariances), where not all variables need to be analyzed simultaneously.</p>
+<ul class="simple">
+<li><p>Pairwise deletion is especially effective when working with complex data structures like networks or sparse datasets <span id="id2">[<a class="reference internal" href="../References.html#id309" title="Colin Wilcox, Vasileios Giagos, and Soufiene Djahel. A Neighborhood-Similarity-Based Imputation Algorithm for Healthcare Data Sets: A Comparative Study. Electronics, 12(23):4809, November 2023. doi:10.3390/electronics12234809.">Wilcox <em>et al.</em>, 2023</a>]</span>.</p></li>
+<li><p>In image-text retrieval tasks, pairwise deletion has been used alongside listwise ranking methods to improve retrieval performance by leveraging complementary strengths <span id="id3">[<a class="reference internal" href="../References.html#id310" title="Zheng Li, Caili Guo, Xin Wang, Hao Zhang, and Yanjun Wang. Integrating listwise ranking into pairwise-based image-text retrieval. Knowledge-Based Systems, 287:111431, March 2024. URL: https://www.sciencedirect.com/science/article/pii/S0950705124000662 (visited on 2025-01-01), doi:10.1016/j.knosys.2024.111431.">Li <em>et al.</em>, 2024</a>]</span>.</p></li>
+</ul>
+<p>Despite its advantages, pairwise deletion can still lead to <strong>biased results</strong> if the missing data are not <em>Missing At Random (MAR)</em> or <em>MCAR</em>. Additionally, sample sizes may vary across analyses depending on which variables are included, potentially complicating interpretation.</p>
+</section>
+<section id="example-demonstrating-listwise-and-pairwise-deletion">
+<h3><span class="section-number">2.3.1.3. </span>Example: Demonstrating Listwise and Pairwise Deletion<a class="headerlink" href="#example-demonstrating-listwise-and-pairwise-deletion" title="Link to this heading">#</a></h3>
+<p>This dataset contains daily temperature records for Columbia, Missouri, spanning from October 1 to October 10, 2024. The temperatures are presented in both standard and metric units. The data was collected by the <a class="reference external" href="https://www.ncei.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USC00231801/detail">University of Missouri weather station</a> and sourced from the National Centers for Environmental Information (NCEI), a division of NOAA. You can access the original data source here: <a class="reference external" href="https://www.ncei.noaa.gov/cdo-web/">NCEI Climate Data</a>.</p>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>This dataset is intended for <strong>educational use only</strong>. Although based on historical data, it has been modified for training purposes to illustrate techniques for handling missing data in Python and may not be suitable for operational weather analysis or forecasting. Here, <code class="docutils literal notranslate"><span class="pre">TMIN</span></code> stands for minimum daily temperature (in degrees farenhight) and <code class="docutils literal notranslate"><span class="pre">TMAX</span></code> stands for maximum daily temperature (in degrees farenhight).</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="table-c01s01-deletion-method-example">
+<caption><span class="caption-number">Table 2.2 </span><span class="caption-text">Climate Dataset with Missing Values</span><a class="headerlink" href="#table-c01s01-deletion-method-example" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>TMIN</p></th>
+<th class="head text-right"><p>TMAX</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>2024-10-01</p></td>
+<td class="text-right"><p>49.0</p></td>
+<td class="text-right"><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2024-10-02</p></td>
+<td class="text-right"><p>44.0</p></td>
+<td class="text-right"><p>74.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2024-10-03</p></td>
+<td class="text-right"><p>56.0</p></td>
+<td class="text-right"><p>87.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2024-10-04</p></td>
+<td class="text-right"><p>NaN</p></td>
+<td class="text-right"><p>NaN</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2024-10-05</p></td>
+<td class="text-right"><p>62.0</p></td>
+<td class="text-right"><p>89.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2024-10-06</p></td>
+<td class="text-right"><p>NaN</p></td>
+<td class="text-right"><p>79.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2024-10-07</p></td>
+<td class="text-right"><p>47.0</p></td>
+<td class="text-right"><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2024-10-08</p></td>
+<td class="text-right"><p>43.0</p></td>
+<td class="text-right"><p>NaN</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2024-10-09</p></td>
+<td class="text-right"><p>46.0</p></td>
+<td class="text-right"><p>78.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2024-10-10</p></td>
+<td class="text-right"><p>49.0</p></td>
+<td class="text-right"><p>80.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This dataset contains missing values (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>) in various rows and columns. It can be visualized as follows. <a class="reference internal" href="#deletion-method-example"><span class="std std-numref">Fig. 2.1</span></a> highlights missing cells in red and non-missing cells in green.</p>
+<figure class="align-center" id="deletion-method-example">
+<a class="reference internal image-reference" href="../_images/Deletion_Method_Example.gif"><img alt="../_images/Deletion_Method_Example.gif" src="../_images/Deletion_Method_Example.gif" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Visualization of <a class="reference internal" href="#table-c01s01-deletion-method-example"><span class="std std-numref">Table 2.2</span></a>, where green shades show entries without missing values and orange cells show entries with missing values.</span><a class="headerlink" href="#deletion-method-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In listwise deletion, rows with any missing values are removed entirely before performing analyses. This ensures that only complete cases are retained.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data_10day_standard_missing.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Data:&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Apply listwise deletion</span>
+<span class="n">df_listwise</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">After listwise deletion:&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_listwise</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.0</td>
+    </tr>
+    <tr>
+      <th>10/4/24</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>10/6/24</th>
+      <td>NaN</td>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/8/24</th>
+      <td>43.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.0</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After listwise deletion:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.0</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.0</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As shown above, rows <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">5</span></code>, and <code class="docutils literal notranslate"><span class="pre">6</span></code> are removed because they contain at least one missing value. Only rows <code class="docutils literal notranslate"><span class="pre">3</span></code> and <code class="docutils literal notranslate"><span class="pre">7</span></code> remain in the dataset after applying listwise deletion.</p>
+<p>In some analyses, such as calculating means or correlations, we may want to utilize all available data for specific variables rather than discarding entire rows. Pairwise deletion allows us to calculate statistics independently for each variable by ignoring <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate mean using pairwise deletion (mean of each column ignoring NaN values)</span>
+<span class="n">pairwise_mean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pairwise Mean:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pairwise_mean</span><span class="p">)</span>
+
+<span class="c1"># Calculate mean using listwise deletion (on the reduced dataset)</span>
+<span class="n">listwise_mean</span> <span class="o">=</span> <span class="n">df_listwise</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Listwise Mean:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">listwise_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pairwise Mean:
+TMIN    49.500
+TMAX    78.875
+dtype: float64
+
+Listwise Mean:
+TMIN    50.429
+TMAX    78.857
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><strong>Pairwise mean</strong> uses all available pairs for each variable (maximizing data).</p></li>
+<li><p><strong>Listwise mean</strong> uses only completely observed rows (more data loss).</p></li>
+</ul>
+</section>
+<section id="conclusion">
+<h3><span class="section-number">2.3.1.4. </span>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h3>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-c01s01-deletion-methods-comparison">
+<caption><span class="caption-number">Table 2.3 </span><span class="caption-text">Combined Advantages and Disadvantages of Listwise vs Pairwise Deletion</span><a class="headerlink" href="#table-c01s01-deletion-methods-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Feature</strong></p></th>
+<th class="head"><p><strong>Listwise Deletion</strong></p></th>
+<th class="head"><p><strong>Pairwise Deletion</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Data Retention</strong></p></td>
+<td><p>Removes entire rows with missing data, leading to significant data loss if missingness is widespread.</p></td>
+<td><p>Retains more data by analyzing specific columns independently, minimizing overall data loss.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Bias Risk</strong></p></td>
+<td><p>High risk of bias if missing data are not <em>Missing Completely At Random (MCAR)</em>, as certain groups may be disproportionately excluded.</p></td>
+<td><p>Lower bias risk compared to listwise deletion but still present if data are not <em>Missing At Random (MAR)</em> or <em>MCAR</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ease of Use</strong></p></td>
+<td><p>Simple to implement and interpret, requiring minimal computational effort.</p></td>
+<td><p>More complex implementation; requires careful handling to ensure valid comparisons across analyses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Consistency Across Analyses</strong></p></td>
+<td><p>Ensures consistency by using the same subset of complete cases for all analyses.</p></td>
+<td><p>Sample size varies across analyses depending on the variables involved, potentially complicating interpretation.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Applicability</strong></p></td>
+<td><p>Suitable for datasets with minimal missingness or when consistency across analyses is critical.</p></td>
+<td><p>Useful for preserving data in exploratory analyses or when relationships between specific variables are the focus.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Key Considerations for Deletion Methods</p>
+<p><strong>Listwise Deletion:</strong></p>
+<ul class="simple">
+<li><p>Best suited for:</p>
+<ul>
+<li><p>Datasets with minimal missing values (&lt;5% missingness)</p></li>
+<li><p>Analyses requiring consistent sample sizes</p></li>
+<li><p>Cases where missing data are MCAR</p></li>
+</ul>
+</li>
+<li><p>Primary advantages:</p>
+<ul>
+<li><p>Simplicity in implementation</p></li>
+<li><p>Consistency across analyses</p></li>
+<li><p>Unbiased parameter estimates when MCAR assumption holds</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Pairwise Deletion:</strong></p>
+<ul class="simple">
+<li><p>Best suited for:</p>
+<ul>
+<li><p>Exploratory data analysis</p></li>
+<li><p>Computing correlation matrices</p></li>
+<li><p>Cases where maximizing available data is crucial</p></li>
+</ul>
+</li>
+<li><p>Primary advantages:</p>
+<ul>
+<li><p>Preserves more information</p></li>
+<li><p>More efficient use of available data</p></li>
+<li><p>Reduced bias compared to listwise deletion</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Implementation Guidelines</p>
+<ol class="arabic simple">
+<li><p><strong>Before Applying Deletion Methods:</strong></p>
+<ul class="simple">
+<li><p>Assess the pattern and extent of missingness</p></li>
+<li><p>Verify MCAR assumption if possible</p></li>
+<li><p>Consider the impact on sample size</p></li>
+</ul>
+</li>
+<li><p><strong>When Choosing Between Methods:</strong></p>
+<ul class="simple">
+<li><p>Use listwise deletion when:</p>
+<ul>
+<li><p>Missing data are MCAR</p></li>
+<li><p>Sample size remains adequate after deletion</p></li>
+<li><p>Consistent sample size is required</p></li>
+</ul>
+</li>
+<li><p>Use pairwise deletion when:</p>
+<ul>
+<li><p>Maximizing available information is crucial</p></li>
+<li><p>Different analyses can tolerate varying sample sizes</p></li>
+<li><p>Preliminary or exploratory analyses are being conducted</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<p>The choice between listwise and pairwise deletion should be guided by:</p>
+<ol class="arabic simple">
+<li><p>The research objectives</p></li>
+<li><p>The missing data mechanism (MCAR, MAR, or MNAR)</p></li>
+<li><p>The proportion of missing values</p></li>
+<li><p>The importance of maintaining consistent sample sizes across analyses</p></li>
+</ol>
+<p>Both methods have their place in data analysis, but neither should be applied without careful consideration of their assumptions and potential impact on the results. When possible, more sophisticated methods like multiple imputation might be more appropriate for handling missing data, especially when the missingness mechanism is not MCAR or when the proportion of missing data is substantial.</p>
+</section>
+</section>
+<section id="simple-imputation-methods">
+<h2><span class="section-number">2.3.2. </span>Simple Imputation Methods<a class="headerlink" href="#simple-imputation-methods" title="Link to this heading">#</a></h2>
+<p>Simple imputation methods represent a fundamental approach to handling missing values in datasets. These methods replace missing values with estimated values based on various simple rules or calculations. While more sophisticated techniques exist, simple imputation methods remain popular due to their ease of implementation, computational efficiency, and interpretability.</p>
+<p>These methods can be broadly categorized into two groups:</p>
+<ol class="arabic simple">
+<li><p><strong>Value Substitution Methods</strong>: These methods replace missing values with a calculated statistic (like mean or median) or a predefined constant value. They are straightforward to implement and understand but may not capture the temporal dynamics of the data.</p></li>
+<li><p><strong>Sequential Methods</strong>: These approaches leverage the ordered nature of data, particularly useful in time series. They include methods like Last Observation Carried Forward (LOCF) and Next Observation Carried Backward (NOCB), which use neighboring values to fill gaps.</p></li>
+</ol>
+<p>While these methods are computationally efficient and easy to implement, they each come with their own assumptions and limitations. The choice of method should be guided by the nature of the data, the pattern of missingness, and the requirements of subsequent analyses.</p>
+<section id="simple-value-substitution-methods">
+<h3><span class="section-number">2.3.2.1. </span>Simple Value Substitution Methods<a class="headerlink" href="#simple-value-substitution-methods" title="Link to this heading">#</a></h3>
+<p>One of the most straightforward approaches to handling missing values is through simple value substitution. These methods include mean imputation, median imputation, and constant value imputation, each replacing missing values with a specific type of value.</p>
+<p>Consider the dataset from <a class="reference internal" href="#deletion-method-example"><span class="std std-numref">Fig. 2.1</span></a> with missing values:</p>
+<p>These methods work as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Mean Imputation</strong>: Replaces missing values with the average of the available data. This method is particularly useful for normally distributed variables and large datasets.</p></li>
+<li><p><strong>Median Imputation</strong>: Uses the median value of the available data, making it more robust to outliers and suitable for skewed distributions.</p></li>
+<li><p><strong>Constant Value Imputation</strong>: Replaces missing values with a predefined constant (often zero), useful when missing values have a specific meaning in the context.</p></li>
+</ol>
+<p>In <a class="reference internal" href="#simple-imputation-methods-mean"><span class="std std-numref">Fig. 2.2</span></a>, missing values in each column are replaced with the mean value calculated from the available data in that column. The animation demonstrates how each NaN value is systematically replaced with the column’s mean, preserving the central tendency of the dataset while potentially reducing variability.</p>
+<figure class="align-center" id="simple-imputation-methods-mean">
+<a class="reference internal image-reference" href="../_images/Simple_Imputation_Methods_Mean.gif"><img alt="../_images/Simple_Imputation_Methods_Mean.gif" src="../_images/Simple_Imputation_Methods_Mean.gif" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Visualization of Mean Imputation. Missing values in each column are replaced with the mean value of that column.</span><a class="headerlink" href="#simple-imputation-methods-mean" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For column <strong>TMIN</strong>, the mean is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Mean}_{TMIN} = 49.5\]</div>
+<p>For column <strong>TMAX</strong>, the mean is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Mean}_{TMAX} = 78.875\]</div>
+<p>Mean-imputed data:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Date</p></th>
+<th class="head"><p>TMIN</p></th>
+<th class="head"><p>TMAX</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>10/1/24</p></td>
+<td><p>49.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/2/24</p></td>
+<td><p>44.0</p></td>
+<td><p>74.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/3/24</p></td>
+<td><p>56.0</p></td>
+<td><p>87.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/4/24</p></td>
+<td><p>49.5</p></td>
+<td><p>78.9</p></td>
+</tr>
+<tr class="row-even"><td><p>10/5/24</p></td>
+<td><p>62.0</p></td>
+<td><p>89.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/6/24</p></td>
+<td><p>49.5</p></td>
+<td><p>79.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/7/24</p></td>
+<td><p>47.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/8/24</p></td>
+<td><p>43.0</p></td>
+<td><p>78.9</p></td>
+</tr>
+<tr class="row-even"><td><p>10/9/24</p></td>
+<td><p>46.0</p></td>
+<td><p>78.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/10/24</p></td>
+<td><p>49.0</p></td>
+<td><p>80.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In <a class="reference internal" href="#simple-imputation-methods-median"><span class="std std-numref">Fig. 2.3</span></a>, missing values are imputed with the median of the respective column. Because medians rely on ordered values rather than averages, this method is less affected by outliers compared to mean imputation.</p>
+<figure class="align-center" id="simple-imputation-methods-median">
+<a class="reference internal image-reference" href="../_images/Simple_Imputation_Methods_Median.gif"><img alt="../_images/Simple_Imputation_Methods_Median.gif" src="../_images/Simple_Imputation_Methods_Median.gif" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.3 </span><span class="caption-text">Visualization of Median Imputation. Missing values in each column are replaced with the median value of that column.</span><a class="headerlink" href="#simple-imputation-methods-median" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For column <strong>TMIN</strong>, the median is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Median}_{TMIN} = 48.0\]</div>
+<p>For column <strong>TMAX</strong>, the median is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Median}_{TMAX} = 78.5\]</div>
+<p>Median-imputed data:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Date</p></th>
+<th class="head"><p>TMIN</p></th>
+<th class="head"><p>TMAX</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>10/1/24</p></td>
+<td><p>49.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/2/24</p></td>
+<td><p>44.0</p></td>
+<td><p>74.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/3/24</p></td>
+<td><p>56.0</p></td>
+<td><p>87.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/4/24</p></td>
+<td><p>48.0</p></td>
+<td><p>78.5</p></td>
+</tr>
+<tr class="row-even"><td><p>10/5/24</p></td>
+<td><p>62.0</p></td>
+<td><p>89.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/6/24</p></td>
+<td><p>48.0</p></td>
+<td><p>79.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/7/24</p></td>
+<td><p>47.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/8/24</p></td>
+<td><p>43.0</p></td>
+<td><p>78.5</p></td>
+</tr>
+<tr class="row-even"><td><p>10/9/24</p></td>
+<td><p>46.0</p></td>
+<td><p>78.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/10/24</p></td>
+<td><p>49.0</p></td>
+<td><p>80.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In <a class="reference internal" href="#simple-imputation-methods-zero"><span class="std std-numref">Fig. 2.4</span></a>, missing values are imputed using a constant value. Here, missing entries are replaced with <code class="docutils literal notranslate"><span class="pre">0</span></code>, which might be appropriate if missingness represents “no observation” or an absence of measurement, though it can strongly distort the dataset’s distribution.</p>
+<figure class="align-center" id="simple-imputation-methods-zero">
+<a class="reference internal image-reference" href="../_images/Simple_Imputation_Methods_Zero.gif"><img alt="../_images/Simple_Imputation_Methods_Zero.gif" src="../_images/Simple_Imputation_Methods_Zero.gif" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.4 </span><span class="caption-text">Visualization of Constant Value Imputation. Missing values in each column are replaced with a constant value (e.g., zero).</span><a class="headerlink" href="#simple-imputation-methods-zero" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For constant value imputation:</p>
+<div class="math notranslate nohighlight">
+\[\text{Missing Value} = c, \quad c = 0\]</div>
+<p>Constant-value (zero) imputed data:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Date</p></th>
+<th class="head"><p>TMIN</p></th>
+<th class="head"><p>TMAX</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>10/1/24</p></td>
+<td><p>49.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/2/24</p></td>
+<td><p>44.0</p></td>
+<td><p>74.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/3/24</p></td>
+<td><p>56.0</p></td>
+<td><p>87.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/4/24</p></td>
+<td><p>0.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/5/24</p></td>
+<td><p>62.0</p></td>
+<td><p>89.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/6/24</p></td>
+<td><p>0.0</p></td>
+<td><p>79.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/7/24</p></td>
+<td><p>47.0</p></td>
+<td><p>72.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/8/24</p></td>
+<td><p>43.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>10/9/24</p></td>
+<td><p>46.0</p></td>
+<td><p>78.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>10/10/24</p></td>
+<td><p>49.0</p></td>
+<td><p>80.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These methods can be easily implemented in Python using pandas:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load the dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data_10day_standard_missing.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Mean imputation</span>
+<span class="n">col_means</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Column Means:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">col_means</span><span class="p">)</span>
+<span class="n">mean_imputed</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">col_means</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Mean Imputed Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">mean_imputed</span><span class="p">)</span>
+
+<span class="c1"># Median imputation</span>
+<span class="n">col_medians</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Column Medians:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">col_medians</span><span class="p">)</span>
+<span class="n">median_imputed</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">col_medians</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Median Imputed Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">median_imputed</span><span class="p">)</span>
+
+<span class="c1"># Constant value imputation (e.g., replace with zero)</span>
+<span class="n">constant_imputed</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Constant Value Imputed Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">constant_imputed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.0</td>
+    </tr>
+    <tr>
+      <th>10/4/24</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>10/6/24</th>
+      <td>NaN</td>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/8/24</th>
+      <td>43.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.0</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Column Means:
+TMIN    49.500
+TMAX    78.875
+dtype: float64
+
+Mean Imputed Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.000</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.000</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.000</td>
+    </tr>
+    <tr>
+      <th>10/4/24</th>
+      <td>49.5</td>
+      <td>78.875</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.000</td>
+    </tr>
+    <tr>
+      <th>10/6/24</th>
+      <td>49.5</td>
+      <td>79.000</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.000</td>
+    </tr>
+    <tr>
+      <th>10/8/24</th>
+      <td>43.0</td>
+      <td>78.875</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.000</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Column Medians:
+TMIN    48.0
+TMAX    78.5
+dtype: float64
+
+Median Imputed Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.0</td>
+    </tr>
+    <tr>
+      <th>10/4/24</th>
+      <td>48.0</td>
+      <td>78.5</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>10/6/24</th>
+      <td>48.0</td>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/8/24</th>
+      <td>43.0</td>
+      <td>78.5</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.0</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Constant Value Imputed Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10/1/24</th>
+      <td>49.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/2/24</th>
+      <td>44.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>10/3/24</th>
+      <td>56.0</td>
+      <td>87.0</td>
+    </tr>
+    <tr>
+      <th>10/4/24</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>10/5/24</th>
+      <td>62.0</td>
+      <td>89.0</td>
+    </tr>
+    <tr>
+      <th>10/6/24</th>
+      <td>0.0</td>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>10/7/24</th>
+      <td>47.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>10/8/24</th>
+      <td>43.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>10/9/24</th>
+      <td>46.0</td>
+      <td>78.0</td>
+    </tr>
+    <tr>
+      <th>10/10/24</th>
+      <td>49.0</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-c01s02-simple-imputation-methods-timeseries-comparison">
+<caption><span class="caption-number">Table 2.4 </span><span class="caption-text">Advantages and Disadvantages of Simple Value Substitution Methods for Time Series</span><a class="headerlink" href="#table-c01s02-simple-imputation-methods-timeseries-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Advantages</strong></p></th>
+<th class="head"><p><strong>Disadvantages</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mean Imputation</strong></p></td>
+<td><p>- Simple to implement and understand<br>- Preserves the overall mean of the variable<br>- Computationally efficient<br>- Suitable for large datasets with stationary behavior</p></td>
+<td><p>- Breaks temporal dependence structure<br>- Ignores seasonality and trends<br>- Can create flat segments, reducing variability<br>- Sensitive to outliers<br>- May lead to biased autocorrelation estimates</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Median Imputation</strong></p></td>
+<td><p>- Robust to outliers<br>- Suitable for skewed distributions<br>- Preserves median of the variable<br>- Less sensitive to extreme values</p></td>
+<td><p>- Does not account for time order<br>- Ignores seasonality and cyclic patterns<br>- Can distort lag relationships<br>- Creates unrealistic continuity in temporal context<br>- May affect variance structure</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Constant Value</strong></p></td>
+<td><p>- Simple and quick to apply<br>- Useful when missing values indicate a specific state (e.g., sensor failure)<br>- Preserves interpretability in some contexts</p></td>
+<td><p>- Completely ignores temporal dynamics<br>- May introduce artificial level shifts<br>- Creates unrealistic patterns for continuous processes<br>- Can distort trend and seasonality modeling<br>- May bias autocorrelation and forecast models</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Implementation Guidelines for Time Series</p>
+<p>When applying these methods to time series, consider:</p>
+<ol class="arabic simple">
+<li><p><strong>Temporal Structure</strong>:</p>
+<ul class="simple">
+<li><p>Avoid using simple imputation for long gaps as it disrupts autocorrelation</p></li>
+<li><p>Prefer methods that account for seasonality and trends (e.g., interpolation) when feasible</p></li>
+<li><p>For stationary series with minimal variation, mean or median may be less harmful but still limited</p></li>
+</ul>
+</li>
+<li><p><strong>Data Quality Checks</strong>:</p>
+<ul class="simple">
+<li><p>Assess autocorrelation function (ACF) and partial autocorrelation function (PACF) before and after imputation</p></li>
+<li><p>Examine residual patterns to detect artificial flattening</p></li>
+<li><p>Compare imputed values against seasonal averages when applicable</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>:</p>
+<ul class="simple">
+<li><p>Record the chosen method, justification, and temporal considerations</p></li>
+<li><p>Document the proportion and location of imputed points (isolated vs. block missingness)</p></li>
+<li><p>Note any limitations for downstream time series models (ARIMA, LSTM, etc.)</p></li>
+</ul>
+</li>
+</ol>
+</div>
+<p>These simple imputation methods are generally discouraged for time series because they ignore temporal dependence, seasonality, and trend structures. They can lead to biased parameter estimates and poor forecasting performance. Use them only for exploratory analysis or when missingness is minimal and random.</p>
+</section>
+<section id="last-observation-carried-forward-locf">
+<h3><span class="section-number">2.3.2.2. </span>Last Observation Carried Forward (LOCF)<a class="headerlink" href="#last-observation-carried-forward-locf" title="Link to this heading">#</a></h3>
+<p><strong>Last Observation Carried Forward (LOCF)</strong> is a widely used method for handling missing data in longitudinal studies, clinical trials, and time-series analysis<span id="id4">[<a class="reference internal" href="../References.html#id311" title="Sean Bourke, John Magaña Morton, and Paul Williams. Effect of JumpstartMD, a Commercial Low-Calorie Low-Carbohydrate Physician-Supervised Weight Loss Program, on 22,407 Adults. Journal of Obesity, 2020(1):8026016, 2020. doi:10.1155/2020/8026016.">Bourke <em>et al.</em>, 2020</a>, <a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>. This technique involves replacing missing values with the most recently observed value, which is then propagated forward to fill subsequent gaps<span id="id5">[<a class="reference internal" href="../References.html#id311" title="Sean Bourke, John Magaña Morton, and Paul Williams. Effect of JumpstartMD, a Commercial Low-Calorie Low-Carbohydrate Physician-Supervised Weight Loss Program, on 22,407 Adults. Journal of Obesity, 2020(1):8026016, 2020. doi:10.1155/2020/8026016.">Bourke <em>et al.</em>, 2020</a>, <a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>. LOCF operates under the assumption that the last known observation serves as a reasonable proxy for subsequent missing values.</p>
+<p>LOCF is particularly well-suited for <strong>time-series data</strong> where trends are expected to exhibit continuity or stability, such as weather patterns, stock prices, or medical monitoring. However, it’s crucial to note that LOCF has limitations that warrant careful consideration before implementation.</p>
+<p>To illustrate the LOCF method, consider the following synthetic time-series dataset containing missing values:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-c01s01-locf-example">
+<caption><span class="caption-number">Table 2.5 </span><span class="caption-text">Synthetic Time Series Dataset with Missing Values</span><a class="headerlink" href="#table-c01s01-locf-example" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Date</p></th>
+<th class="head"><p>TMIN</p></th>
+<th class="head"><p>TMAX</p></th>
+<th class="head"><p>PERCIP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2025-01-01</p></td>
+<td><p>1.0</p></td>
+<td><p>NaN</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2025-01-02</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+<td><p>NaN</p></td>
+</tr>
+<tr class="row-even"><td><p>2025-01-03</p></td>
+<td><p>NaN</p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2025-01-04</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>2025-01-05</p></td>
+<td><p>5.0</p></td>
+<td><p>NaN</p></td>
+<td><p>5.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2025-01-06</p></td>
+<td><p>NaN</p></td>
+<td><p>6.0</p></td>
+<td><p>6.0</p></td>
+</tr>
+<tr class="row-even"><td><p>2025-01-07</p></td>
+<td><p>7.0</p></td>
+<td><p>7.0</p></td>
+<td><p>NaN</p></td>
+</tr>
+<tr class="row-odd"><td><p>2025-01-08</p></td>
+<td><p>8.0</p></td>
+<td><p>8.0</p></td>
+<td><p>8.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In <a class="reference internal" href="#table-c01s01-locf-example"><span class="std std-numref">Table 2.5</span></a>, TMIN represents ‘Daily Minimum Temperature (°C)’, TMAX denotes ‘Daily Maximum Temperature (°C)’, and PERCIP stands for ‘Daily Accumulated Precipitation’. Before applying LOCF, it’s important to understand the pattern and distribution of missing values in our dataset.</p>
+<figure class="align-center" id="missingdata-timeseriesexample">
+<a class="reference internal image-reference" href="../_images/MissingData_TimeSeriesExample.png"><img alt="../_images/MissingData_TimeSeriesExample.png" src="../_images/MissingData_TimeSeriesExample.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.5 </span><span class="caption-text">Time series corresponding to <a class="reference internal" href="#table-c01s01-locf-example"><span class="std std-numref">Table 2.5</span></a>. The top panel shows Daily Minimum Temperature (°C), the middle panel displays Daily Maximum Temperature (°C), and the bottom panel illustrates Daily Accumulated Precipitation. Missing points are visualized using an ‘x’ sign in each panel.</span><a class="headerlink" href="#missingdata-timeseriesexample" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#missingdata-timeseriesexample"><span class="std std-numref">Fig. 2.5</span></a> reveals the temporal pattern of missing values across our three variables. We can observe that:</p>
+<ul class="simple">
+<li><p>TMIN (top panel) has gaps on January 3rd and 6th</p></li>
+<li><p>TMAX (middle panel) shows missing values on January 1st and 5th</p></li>
+<li><p>PERCIP (bottom panel) has missing data on January 2nd and 7th</p></li>
+</ul>
+<p>This visualization helps us understand how LOCF will propagate values forward to fill these gaps. The following animation demonstrates the LOCF process:</p>
+<figure class="align-center" id="locf-imputation-methods">
+<a class="reference internal image-reference" href="../_images/LOCF_Imputation.gif"><img alt="../_images/LOCF_Imputation.gif" src="../_images/LOCF_Imputation.gif" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.6 </span><span class="caption-text">Visualization of Last Observation Carried Forward (LOCF) Imputation. Missing values are filled using the last observed value in each column.</span><a class="headerlink" href="#locf-imputation-methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In <a class="reference internal" href="#locf-imputation-methods"><span class="std std-numref">Fig. 2.6</span></a>, we can see how LOCF systematically fills each missing value with its most recent observed value. For example:</p>
+<ul class="simple">
+<li><p>When TMIN is missing on January 3rd, it’s filled with the value from January 2nd</p></li>
+<li><p>The missing TMAX value on January 5th is replaced with the January 4th observation</p></li>
+<li><p>For PERCIP, the January 2nd gap is filled using the January 1st value</p></li>
+</ul>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>A key limitation of LOCF arises when missing values occur at the <strong>beginning of the dataset</strong>. In such instances, there is no prior observation to carry forward, rendering LOCF ineffective. Consequently, these initial missing values remain as <code class="docutils literal notranslate"><span class="pre">NaN</span></code> and require alternative imputation methods.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load the dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;generated_sample_time_series_climate.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># LOCF imputation</span>
+<span class="n">locf_imputed</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Last Observation Carried Forward (LOCF) Imputed Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">locf_imputed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Last Observation Carried Forward (LOCF) Imputed Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+      <th>PERCIP</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-01-01</th>
+      <td>-4.2</td>
+      <td>4.2</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2025-01-02</th>
+      <td>7.3</td>
+      <td>3.1</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>2025-01-03</th>
+      <td>7.3</td>
+      <td>-4.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2025-01-04</th>
+      <td>-8.3</td>
+      <td>-4.0</td>
+      <td>1.39</td>
+    </tr>
+    <tr>
+      <th>2025-01-05</th>
+      <td>-3.7</td>
+      <td>3.9</td>
+      <td>0.43</td>
+    </tr>
+    <tr>
+      <th>2025-01-06</th>
+      <td>-3.7</td>
+      <td>-0.4</td>
+      <td>0.12</td>
+    </tr>
+    <tr>
+      <th>2025-01-07</th>
+      <td>-17.4</td>
+      <td>-9.6</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>2025-01-08</th>
+      <td>-19.6</td>
+      <td>-9.6</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Explanation</strong>:</p>
+<p>The Last Observation Carried Forward (LOCF) method has been applied to our synthetic time-series dataset, yielding the following results:</p>
+<ol class="arabic simple">
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">TMIN</span></code> (Daily Minimum Temperature):</p>
+<ul class="simple">
+<li><p>The missing value on <code class="docutils literal notranslate"><span class="pre">2025-01-03</span></code> is imputed with <code class="docutils literal notranslate"><span class="pre">7.3°C</span></code>, which is carried forward from the last observed value on <code class="docutils literal notranslate"><span class="pre">2025-01-02</span></code>.</p></li>
+<li><p>Similarly, the gap at <code class="docutils literal notranslate"><span class="pre">2025-01-06</span></code> is filled with <code class="docutils literal notranslate"><span class="pre">-3.7°C</span></code>, using the most recent observation from <code class="docutils literal notranslate"><span class="pre">2025-01-05</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">TMAX</span></code> (Daily Maximum Temperature):</p>
+<ul class="simple">
+<li><p>For the missing data point on <code class="docutils literal notranslate"><span class="pre">2025-01-04</span></code>, LOCF assigns <code class="docutils literal notranslate"><span class="pre">-4.0°C</span></code>, based on the previous day’s reading.</p></li>
+<li><p>The final missing value on <code class="docutils literal notranslate"><span class="pre">2025-01-08</span></code> is imputed as <code class="docutils literal notranslate"><span class="pre">-9.6°C</span></code>, carried forward from <code class="docutils literal notranslate"><span class="pre">2025-01-07</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">PERCIP</span></code> (Daily Accumulated Precipitation):</p>
+<ul class="simple">
+<li><p>Notably, the missing value at the dataset’s start (<code class="docutils literal notranslate"><span class="pre">2025-01-01</span></code>) remains unfilled, as LOCF cannot impute when there’s no prior observation.</p></li>
+</ul>
+</li>
+</ol>
+<p>This imputation process ensures continuity in the time series by propagating the last known values forward to fill gaps, maintaining the dataset’s temporal structure.</p>
+<figure class="align-center" id="missingdata-timeseriesexample-ffill">
+<a class="reference internal image-reference" href="../_images/MissingData_TimeSeriesExample_ffill.png"><img alt="../_images/MissingData_TimeSeriesExample_ffill.png" src="../_images/MissingData_TimeSeriesExample_ffill.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.7 </span><span class="caption-text">Visualization of the time series after LOCF imputation. Gray points represent original values, while green points indicate imputed values using the forward-fill method.</span><a class="headerlink" href="#missingdata-timeseriesexample-ffill" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#missingdata-timeseriesexample-ffill"><span class="std std-numref">Fig. 2.7</span></a> illustrates the impact of LOCF on our dataset. Original data points are shown in gray, while the imputed values are highlighted in green. This visual representation helps to understand how LOCF maintains the trend of the last observed value until new data becomes available, potentially creating step-like patterns in the imputed series.</p>
+</section>
+<section id="next-observation-carried-backward-nocb">
+<h3><span class="section-number">2.3.2.3. </span>Next Observation Carried Backward (NOCB)<a class="headerlink" href="#next-observation-carried-backward-nocb" title="Link to this heading">#</a></h3>
+<p>The <strong>Next Observation Carried Backward (NOCB)</strong> method is a missing value recovery technique that fills in missing values using the <strong>next observed value</strong> after the gap. This approach assumes that future observations can reasonably inform earlier gaps, making it particularly suitable for <strong>time-series data</strong> where trends or patterns are expected to remain stable over time.</p>
+<p>NOCB is commonly applied in fields such as healthcare, sustainability research, and time-series modeling. For example:</p>
+<ul class="simple">
+<li><p>In healthcare, NOCB is used to fill gaps in physiological state variables by assuming that future test results can reflect earlier states <span id="id6">[<a class="reference internal" href="../References.html#id314" title="Tobias Hecker, Getrude Mkinga, Eva Hartmann, Mabula Nkuba, and Katharin Hermenau. Sustainability of effects and secondary long-term outcomes: One-year follow-up of a cluster-randomized controlled trial to prevent maltreatment in institutional care. PLOS Global Public Health, 2(5):e0000286, May 2022. Publisher: Public Library of Science. doi:10.1371/journal.pgph.0000286.">Hecker <em>et al.</em>, 2022</a>]</span>.</p></li>
+<li><p>In sustainability research, baseline values of new participants are often replaced with their values at first follow-up using NOCB <span id="id7">[<a class="reference internal" href="../References.html#id314" title="Tobias Hecker, Getrude Mkinga, Eva Hartmann, Mabula Nkuba, and Katharin Hermenau. Sustainability of effects and secondary long-term outcomes: One-year follow-up of a cluster-randomized controlled trial to prevent maltreatment in institutional care. PLOS Global Public Health, 2(5):e0000286, May 2022. Publisher: Public Library of Science. doi:10.1371/journal.pgph.0000286.">Hecker <em>et al.</em>, 2022</a>]</span>.</p></li>
+</ul>
+<p>Using the same dataset from our LOCF example, we can visualize how NOCB fills missing values by looking forward in time. For our temperature and precipitation data:</p>
+<ul class="simple">
+<li><p>A missing TMIN value on January 3rd would be filled using the value from January 4th</p></li>
+<li><p>The missing TMAX value on January 1st would be replaced with the January 2nd observation</p></li>
+<li><p>For PERCIP, the January 2nd gap would be filled using the January 3rd measurement</p></li>
+</ul>
+<p>The following animation demonstrates this backward filling process:</p>
+<figure class="align-center" id="nocb-imputation-methods">
+<a class="reference internal image-reference" href="../_images/NOCB_Imputation.gif"><img alt="../_images/NOCB_Imputation.gif" src="../_images/NOCB_Imputation.gif" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.8 </span><span class="caption-text">Visualization of Next Observation Carried Backward (NOCB) Imputation. Missing values are filled using the next observed value in each column.</span><a class="headerlink" href="#nocb-imputation-methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In <a class="reference internal" href="#nocb-imputation-methods"><span class="std std-numref">Fig. 2.8</span></a>, we can observe how:</p>
+<ul class="simple">
+<li><p>The imputation process starts from the end of the time series and moves backward</p></li>
+<li><p>Each missing value is replaced with the next available observation in its column</p></li>
+<li><p>The method preserves the temporal patterns within each variable independently</p></li>
+<li><p>Missing values at the end of the series remain unfilled due to the absence of future observations</p></li>
+<li><p>The process continues until all possible gaps are filled, except those at the end of the dataset</p></li>
+</ul>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>If a missing value occurs at the <strong>end of the dataset</strong>, there is no subsequent observation to carry backward, and it remains as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
+</div>
+<p><strong>Python Implementation:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOCB imputation</span>
+<span class="n">nocb_imputed</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Next Observation Carried Backward (NOCB) Imputed Data:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">nocb_imputed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Next Observation Carried Backward (NOCB) Imputed Data:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TMIN</th>
+      <th>TMAX</th>
+      <th>PERCIP</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-01-01</th>
+      <td>-4.2</td>
+      <td>4.2</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>2025-01-02</th>
+      <td>7.3</td>
+      <td>3.1</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>2025-01-03</th>
+      <td>-8.3</td>
+      <td>-4.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>2025-01-04</th>
+      <td>-8.3</td>
+      <td>3.9</td>
+      <td>1.39</td>
+    </tr>
+    <tr>
+      <th>2025-01-05</th>
+      <td>-3.7</td>
+      <td>3.9</td>
+      <td>0.43</td>
+    </tr>
+    <tr>
+      <th>2025-01-06</th>
+      <td>-17.4</td>
+      <td>-0.4</td>
+      <td>0.12</td>
+    </tr>
+    <tr>
+      <th>2025-01-07</th>
+      <td>-17.4</td>
+      <td>-9.6</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>2025-01-08</th>
+      <td>-19.6</td>
+      <td>NaN</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Explanation</strong>:</p>
+<p>The Next Observation Carried Backward (NOCB) method has been applied to our synthetic time-series dataset, yielding the following results:</p>
+<ol class="arabic simple">
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">TMIN</span></code> (Daily Minimum Temperature):</p>
+<ul class="simple">
+<li><p>The missing value on <code class="docutils literal notranslate"><span class="pre">2025-01-03</span></code> is imputed with <code class="docutils literal notranslate"><span class="pre">-8.3°C</span></code>, which is carried backward from the next observed value on <code class="docutils literal notranslate"><span class="pre">2025-01-04</span></code>.</p></li>
+<li><p>Similarly, the gap at <code class="docutils literal notranslate"><span class="pre">2025-01-06</span></code> is filled with <code class="docutils literal notranslate"><span class="pre">-17.4°C</span></code>, using the subsequent observation from <code class="docutils literal notranslate"><span class="pre">2025-01-07</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">TMAX</span></code> (Daily Maximum Temperature):</p>
+<ul class="simple">
+<li><p>For the missing data point on <code class="docutils literal notranslate"><span class="pre">2025-01-04</span></code>, NOCB assigns <code class="docutils literal notranslate"><span class="pre">-0.4°C</span></code>, based on the next day’s reading.</p></li>
+<li><p>Notably, the final missing value on <code class="docutils literal notranslate"><span class="pre">2025-01-08</span></code> remains unfilled, as there are no subsequent observations to carry backward.</p></li>
+</ul>
+</li>
+<li><p>Column <code class="docutils literal notranslate"><span class="pre">PERCIP</span></code> (Daily Accumulated Precipitation):</p>
+<ul class="simple">
+<li><p>The missing value at the dataset’s start (<code class="docutils literal notranslate"><span class="pre">2025-01-01</span></code>) is imputed as <code class="docutils literal notranslate"><span class="pre">0.2</span></code>, carried backward from the next available observation.</p></li>
+</ul>
+</li>
+</ol>
+<p>This imputation process ensures continuity in the time series by propagating future known values backward to fill gaps, maintaining the dataset’s temporal structure.</p>
+<figure class="align-center" id="missingdata-timeseriesexample-bfill">
+<a class="reference internal image-reference" href="../_images/MissingData_TimeSeriesExample_bfill.png"><img alt="../_images/MissingData_TimeSeriesExample_bfill.png" src="../_images/MissingData_TimeSeriesExample_bfill.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.9 </span><span class="caption-text">Visualization of the time series after NOCB imputation. Gray points represent original values, while blue points indicate imputed values using the backward-fill method.</span><a class="headerlink" href="#missingdata-timeseriesexample-bfill" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#missingdata-timeseriesexample-bfill"><span class="std std-numref">Fig. 2.9</span></a> illustrates the impact of NOCB on our dataset. Original data points are shown in gray, while the imputed values are highlighted in blue. This visual representation helps to understand how NOCB maintains the trend of the next observed value, filling gaps with future information. This approach can create step-like patterns in the imputed series, but in the opposite direction compared to LOCF.</p>
+</section>
+<section id="comparison-of-locf-and-nocb">
+<h3><span class="section-number">2.3.2.4. </span>Comparison of LOCF and NOCB<a class="headerlink" href="#comparison-of-locf-and-nocb" title="Link to this heading">#</a></h3>
+<p>The following table summarizes the key differences between <strong>Last Observation Carried Forward (LOCF)</strong> and <strong>Next Observation Carried Backward (NOCB)</strong>:</p>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-c02s02-locf-nocb-comparison">
+<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Comparison of LOCF and NOCB Imputation Methods</span><a class="headerlink" href="#table-c02s02-locf-nocb-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Feature</strong></p></th>
+<th class="head"><p><strong>LOCF</strong></p></th>
+<th class="head"><p><strong>NOCB</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Direction of Imputation</strong></p></td>
+<td><p>Fills gaps using the last observed value before the gap</p></td>
+<td><p>Fills gaps using the next observed value after the gap</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Unfilled Values</strong></p></td>
+<td><p>Missing values at the start of the dataset remain unfilled</p></td>
+<td><p>Missing values at the end of the dataset remain unfilled</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Assumptions</strong></p></td>
+<td><p>Assumes continuity or stability over time</p></td>
+<td><p>Assumes future observations can inform earlier gaps</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Bias Risk</strong></p></td>
+<td><p>Can introduce bias if trends change significantly after the last observed value</p></td>
+<td><p>Can introduce bias if trends change significantly before the next observed value</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Uncertainty Handling</strong></p></td>
+<td><p>Does not account for uncertainty in imputation, leading to overly narrow confidence intervals</p></td>
+<td><p>Similar to LOCF, does not account for uncertainty in imputation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Applicability</strong></p></td>
+<td><p>Useful for time-series data where past trends influence future observations</p></td>
+<td><p>Useful for time-series data where future trends can inform earlier gaps</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>When choosing between LOCF and NOCB methods, it’s important to understand their respective strengths and limitations. Let’s first examine their key advantages:</p>
+<div class="admonition-advantages-of-locf-and-nocb admonition">
+<p class="admonition-title">Advantages of LOCF and NOCB</p>
+<p><strong>Advantages of LOCF:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Simplicity</strong>: Easy to implement and computationally efficient.</p></li>
+<li><p><strong>Preserves Dataset Size</strong>: Retains all rows in the dataset by imputing missing values instead of removing them.</p></li>
+<li><p><strong>Applicability to Time-Series Data</strong>: Works well when past observations are expected to influence future ones.</p></li>
+</ol>
+<p><strong>Advantages of NOCB:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Reverse Imputation Direction</strong>: Fills missing values by looking forward in time, making it effective for datasets where future trends are more reliable indicators than past trends.</p></li>
+<li><p><strong>Preserves Dataset Size</strong>: Like LOCF, it retains all rows by imputing missing values.</p></li>
+</ol>
+</div>
+<p>While these advantages make both methods attractive for their simplicity and practical implementation, they also come with several important limitations that should be carefully considered:</p>
+<div class="admonition-limitations-of-locf-and-nocb admonition">
+<p class="admonition-title">Limitations of LOCF and NOCB</p>
+<p><strong>Limitations of LOCF:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Bias Introduction</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Assumes that missing final values are identical to the last recorded values, which may not always be plausible <span id="id8">[<a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>.</p></li>
+<li><p>For example, in weight loss studies, carrying forward a participant’s last recorded weight might underestimate actual weight loss <span id="id9">[<a class="reference internal" href="../References.html#id311" title="Sean Bourke, John Magaña Morton, and Paul Williams. Effect of JumpstartMD, a Commercial Low-Calorie Low-Carbohydrate Physician-Supervised Weight Loss Program, on 22,407 Adults. Journal of Obesity, 2020(1):8026016, 2020. doi:10.1155/2020/8026016.">Bourke <em>et al.</em>, 2020</a>]</span>.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Narrow Confidence Intervals</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Does not account for uncertainty introduced by imputation, leading to overly narrow confidence intervals <span id="id10">[<a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p><strong>Conservative Estimates</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Only considers the last observed value, ignoring potential changes or trends in the outcome variable over time <span id="id11">[<a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>.</p></li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p><strong>Unfilled Values at Dataset Start</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Missing values at the beginning of the dataset remain unfilled because there is no prior observation.</p></li>
+</ul>
+<p><strong>Limitations of NOCB:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Bias Introduction</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Assumes that future observations can accurately represent earlier missing values, which may not hold true if trends change significantly over time.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Uncertainty Handling</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Like LOCF, it does not account for uncertainty in imputation.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p><strong>Unfilled Values at Dataset End</strong>:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Missing values at the end of the dataset remain unfilled because there are no subsequent observations.</p></li>
+</ul>
+</div>
+<p>Despite these limitations, both methods have proven valuable in various real-world applications. Understanding where and how these methods are successfully applied can help guide their appropriate use:</p>
+<div class="admonition-applications-of-locf-and-nocb admonition">
+<p class="admonition-title">Applications of LOCF and NOCB</p>
+<p><strong>Applications of LOCF:</strong></p>
+<ul class="simple">
+<li><p><strong>Clinical Trials and Longitudinal Studies</strong>:</p>
+<ul>
+<li><p>Commonly used to handle missing data in clinical trials due to its simplicity <span id="id12">[<a class="reference internal" href="../References.html#id311" title="Sean Bourke, John Magaña Morton, and Paul Williams. Effect of JumpstartMD, a Commercial Low-Calorie Low-Carbohydrate Physician-Supervised Weight Loss Program, on 22,407 Adults. Journal of Obesity, 2020(1):8026016, 2020. doi:10.1155/2020/8026016.">Bourke <em>et al.</em>, 2020</a>, <a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>.</p></li>
+<li><p>For example, in anti-obesity drug trials, LOCF has been shown to produce conservative estimates compared to multiple imputation (MI) <span id="id13">[<a class="reference internal" href="../References.html#id312" title="Anders W. Jørgensen, Lars H. Lundstrøm, Jørn Wetterslev, Arne Astrup, and Peter C. Gøtzsche. Comparison of Results from Different Imputation Techniques for Missing Data from an Anti-Obesity Drug Trial. PLOS ONE, 9(11):e111964, November 2014. Publisher: Public Library of Science. doi:10.1371/journal.pone.0111964.">Jørgensen <em>et al.</em>, 2014</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Weight Loss Programs</strong>:</p>
+<ul>
+<li><p>Studies have shown that LOCF can produce significantly lower weight loss estimates compared to MI <span id="id14">[<a class="reference internal" href="../References.html#id311" title="Sean Bourke, John Magaña Morton, and Paul Williams. Effect of JumpstartMD, a Commercial Low-Calorie Low-Carbohydrate Physician-Supervised Weight Loss Program, on 22,407 Adults. Journal of Obesity, 2020(1):8026016, 2020. doi:10.1155/2020/8026016.">Bourke <em>et al.</em>, 2020</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Longitudinal Data Analysis</strong>:</p>
+<ul>
+<li><p>In asynchronous longitudinal data, LOCF can be formalized as a weighted estimation method for generalized linear models but may introduce bias in such contexts <span id="id15">[<a class="reference internal" href="../References.html#id313" title="Hongyuan Cao, Jialiang Li, and Jason P. Fine. On last observation carried forward and asynchronous longitudinal regression analysis. Electronic Journal of Statistics, 10(1):1155–1180, January 2016. doi:10.1214/16-EJS1141.">Cao <em>et al.</em>, 2016</a>]</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Applications of NOCB:</strong></p>
+<ul class="simple">
+<li><p><strong>Healthcare Research</strong>:</p>
+<ul>
+<li><p>Often used in physiological state variables where future test results are assumed to reflect earlier states <span id="id16">[<a class="reference internal" href="../References.html#id314" title="Tobias Hecker, Getrude Mkinga, Eva Hartmann, Mabula Nkuba, and Katharin Hermenau. Sustainability of effects and secondary long-term outcomes: One-year follow-up of a cluster-randomized controlled trial to prevent maltreatment in institutional care. PLOS Global Public Health, 2(5):e0000286, May 2022. Publisher: Public Library of Science. doi:10.1371/journal.pgph.0000286.">Hecker <em>et al.</em>, 2022</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Sustainability Research</strong>:</p>
+<ul>
+<li><p>For example, baseline values of new participants are replaced with their first follow-up values using NOCB <span id="id17">[<a class="reference internal" href="../References.html#id314" title="Tobias Hecker, Getrude Mkinga, Eva Hartmann, Mabula Nkuba, and Katharin Hermenau. Sustainability of effects and secondary long-term outcomes: One-year follow-up of a cluster-randomized controlled trial to prevent maltreatment in institutional care. PLOS Global Public Health, 2(5):e0000286, May 2022. Publisher: Public Library of Science. doi:10.1371/journal.pgph.0000286.">Hecker <em>et al.</em>, 2022</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Time-Series Data Analysis</strong>:</p>
+<ul>
+<li><p>Effective for datasets like stock prices or weather data where future trends are reliable indicators.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Both LOCF and NOCB are effective methods for imputing missing values in time-series data but rely on different assumptions about how data evolves over time:</p>
+<ol class="arabic simple">
+<li><p>Use <strong>LOCF</strong> when past observations are expected to influence future ones.</p></li>
+<li><p>Use <strong>NOCB</strong> when future observations can reasonably inform earlier gaps.</p></li>
+</ol>
+<p>While both methods are computationally efficient and easy to implement, they share common limitations such as introducing bias and failing to account for uncertainty in imputation. Advanced methods like multiple imputation (MI) or neural network-based models may provide better accuracy for datasets with complex patterns or significant variability <span id="id18">[<a class="reference internal" href="../References.html#id314" title="Tobias Hecker, Getrude Mkinga, Eva Hartmann, Mabula Nkuba, and Katharin Hermenau. Sustainability of effects and secondary long-term outcomes: One-year follow-up of a cluster-randomized controlled trial to prevent maltreatment in institutional care. PLOS Global Public Health, 2(5):e0000286, May 2022. Publisher: Public Library of Science. doi:10.1371/journal.pgph.0000286.">Hecker <em>et al.</em>, 2022</a>]</span>.</p>
+</section>
+</section>
+<section id="interpolation-methods">
+<h2><span class="section-number">2.3.3. </span>Interpolation Methods<a class="headerlink" href="#interpolation-methods" title="Link to this heading">#</a></h2>
+<p>Interpolation methods estimate missing values by fitting mathematical functions through known data points. These methods can capture complex patterns and relationships in the data, making them particularly useful for time series with regular patterns or trends.</p>
+<section id="linear-interpolation">
+<h3><span class="section-number">2.3.3.1. </span>Linear Interpolation<a class="headerlink" href="#linear-interpolation" title="Link to this heading">#</a></h3>
+<p><strong>Linear Interpolation</strong> is a simple and computationally efficient technique for estimating missing values by assuming a linear relationship between two known data points. It involves connecting the two nearest observed points with a straight line and estimating the missing value along this line.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-c02s02-linear-interpolation-example">
+<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Synthetic Time Series Dataset with Missing Values. TEMP represents average daily temperature (°C).</span><a class="headerlink" href="#table-c02s02-linear-interpolation-example" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Date</p></th>
+<th class="head text-right"><p>TEMP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>2025-01-01</p></td>
+<td class="text-right"><p>0.00</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-02</p></td>
+<td class="text-right"><p>nan</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2025-01-03</p></td>
+<td class="text-right"><p>-6.15</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-04</p></td>
+<td class="text-right"><p>-1.95</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2025-01-05</p></td>
+<td class="text-right"><p>nan</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-06</p></td>
+<td class="text-right"><p>nan</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2025-01-07</p></td>
+<td class="text-right"><p>-13.50</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-08</p></td>
+<td class="text-right"><p>-10.75</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2025-01-09</p></td>
+<td class="text-right"><p>-7.65</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-10</p></td>
+<td class="text-right"><p>-19.85</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>2025-01-11</p></td>
+<td class="text-right"><p>-28.25</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>2025-01-12</p></td>
+<td class="text-right"><p>-33.00</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In the dataset available at <a class="reference internal" href="#table-c02s02-linear-interpolation-example"><span class="std std-numref">Table 2.7</span></a>, TEMP represents average daily temperature (°C). The missing values on <code class="docutils literal notranslate"><span class="pre">2025-01-02</span></code>, <code class="docutils literal notranslate"><span class="pre">2025-01-05</span></code>, and <code class="docutils literal notranslate"><span class="pre">2025-01-06</span></code> will be estimated using linear interpolation.</p>
+<p>In <a class="reference internal" href="#linear-interpolation-methods"><span class="std std-numref">Fig. 2.10</span></a>, linear interpolation estimates the missing value <span class="math notranslate nohighlight">\(v\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> as a point on a straight line between two adjacent known points:</p>
+<ol class="arabic simple">
+<li><p><strong>Known Points</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( t_1 \)</span>: Time of the first known point.</p></li>
+<li><p><span class="math notranslate nohighlight">\( v_1 \)</span>: Value at <span class="math notranslate nohighlight">\( t_1 \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( t_2 \)</span>: Time of the second known point.</p></li>
+<li><p><span class="math notranslate nohighlight">\( v_2 \)</span>: Value at <span class="math notranslate nohighlight">\( t_2 \)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Missing Point</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( t \)</span>: Time for which we want to estimate <span class="math notranslate nohighlight">\( v \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( v \)</span>: Missing value at <span class="math notranslate nohighlight">\( t \)</span>.</p></li>
+</ul>
+</li>
+</ol>
+<p>The interpolated value is calculated using the equation of a straight line:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5da0fe89-92d9-4ae1-8fcb-98c5e7d67d8e">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-5da0fe89-92d9-4ae1-8fcb-98c5e7d67d8e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+v = v_1 + m \cdot (t - t_1)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(m \)</span> is the slope of the line between <span class="math notranslate nohighlight">\((t_1, v_1)\)</span> and <span class="math notranslate nohighlight">\((t_2, v_2) \)</span>, given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a1cb0337-0325-4f09-945b-e7d50972747b">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-a1cb0337-0325-4f09-945b-e7d50972747b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+m = \dfrac{v_2 - v_1}{t_2 - t_1}
+\end{equation}\]</div>
+<figure class="align-center" id="linear-interpolation-methods">
+<a class="reference internal image-reference" href="../_images/Linear_Interpolation.gif"><img alt="../_images/Linear_Interpolation.gif" src="../_images/Linear_Interpolation.gif" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.10 </span><span class="caption-text">Visualization of Linear Interpolation. Missing values are filled using a straight line between known points.</span><a class="headerlink" href="#linear-interpolation-methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Python Implementation:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load the dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;generated_sample_time_series_avg_temp.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Store the missing value locations before interpolation</span>
+<span class="n">missing_mask</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;TEMP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+
+<span class="c1"># Apply linear interpolation</span>
+<span class="n">linear_interpolated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define styling function to highlight originally missing values</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">highlight_missing</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;background-color: #2fb112&#39;</span> <span class="k">if</span> <span class="n">m</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">missing_mask</span><span class="p">]</span>
+
+<span class="c1"># Apply styling to interpolated dataframe</span>
+<span class="n">styled_df</span> <span class="o">=</span> <span class="n">linear_interpolated</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">highlight_missing</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;TEMP&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Linear Interpolation Results:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">styled_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             TEMP
+Date             
+2025-01-01   0.00
+2025-01-02    NaN
+2025-01-03  -6.15
+2025-01-04  -1.95
+2025-01-05    NaN
+2025-01-06    NaN
+2025-01-07 -13.50
+2025-01-08 -10.75
+2025-01-09  -7.65
+2025-01-10 -19.85
+2025-01-11 -28.25
+2025-01-12 -33.00
+
+Linear Interpolation Results:
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+#T_75228_row1_col0, #T_75228_row4_col0, #T_75228_row5_col0 {
+  background-color: #2fb112;
+}
+</style>
+<table id="T_75228">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_75228_level0_col0" class="col_heading level0 col0" >TEMP</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Date</th>
+      <th class="blank col0" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_75228_level0_row0" class="row_heading level0 row0" >2025-01-01</th>
+      <td id="T_75228_row0_col0" class="data row0 col0" >0.000000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row1" class="row_heading level0 row1" >2025-01-02</th>
+      <td id="T_75228_row1_col0" class="data row1 col0" >-3.075000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row2" class="row_heading level0 row2" >2025-01-03</th>
+      <td id="T_75228_row2_col0" class="data row2 col0" >-6.150000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row3" class="row_heading level0 row3" >2025-01-04</th>
+      <td id="T_75228_row3_col0" class="data row3 col0" >-1.950000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row4" class="row_heading level0 row4" >2025-01-05</th>
+      <td id="T_75228_row4_col0" class="data row4 col0" >-5.800000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row5" class="row_heading level0 row5" >2025-01-06</th>
+      <td id="T_75228_row5_col0" class="data row5 col0" >-9.650000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row6" class="row_heading level0 row6" >2025-01-07</th>
+      <td id="T_75228_row6_col0" class="data row6 col0" >-13.500000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row7" class="row_heading level0 row7" >2025-01-08</th>
+      <td id="T_75228_row7_col0" class="data row7 col0" >-10.750000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row8" class="row_heading level0 row8" >2025-01-09</th>
+      <td id="T_75228_row8_col0" class="data row8 col0" >-7.650000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row9" class="row_heading level0 row9" >2025-01-10</th>
+      <td id="T_75228_row9_col0" class="data row9 col0" >-19.850000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row10" class="row_heading level0 row10" >2025-01-11</th>
+      <td id="T_75228_row10_col0" class="data row10 col0" >-28.250000</td>
+    </tr>
+    <tr>
+      <th id="T_75228_level0_row11" class="row_heading level0 row11" >2025-01-12</th>
+      <td id="T_75228_row11_col0" class="data row11 col0" >-33.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p><strong>Explanation of Results:</strong></p>
+<ol class="arabic">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">2025-01-02</span></code>, the correct calculation is:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+m = \frac{-6.15 - 0.0}{2} = -3.075, \quad v = 0.0 + (-3.075 \cdot (1)) = -3.075
+\end{equation*}\]</div>
+</li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">2025-01-05</span></code> and <code class="docutils literal notranslate"><span class="pre">2025-01-06</span></code>, using values from Jan 4th (-1.95) and Jan 7th (-13.5):</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+m = \frac{-13.5 - (-1.95)}{3} = -3.85, \quad v_5 = -1.95 + (-3.85 \cdot (1)) = -5.8
+\end{equation*}\]</div>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+v_6 = -1.95 + (-3.85 \cdot (2)) = -9.65
+\end{equation*}\]</div>
+</li>
+</ol>
+<p>This results in smooth transitions between observed data points while maintaining linearity.</p>
+<figure class="align-center" id="linear-interpolation-temp">
+<a class="reference internal image-reference" href="../_images/Linear_Interpolation_TEMP.png"><img alt="../_images/Linear_Interpolation_TEMP.png" src="../_images/Linear_Interpolation_TEMP.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.11 </span><span class="caption-text">Visualization of the time series after linear interpolation.</span><a class="headerlink" href="#linear-interpolation-temp" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#linear-interpolation-temp"><span class="std std-numref">Fig. 2.11</span></a> illustrates how linear interpolation creates straight-line segments between known data points to estimate missing values. For example, between January 4th (-2.0°C) and January 7th (-13.5°C), two missing values are interpolated at January 5th (-5.8°C) and January 6th (-9.650°C), following a constant rate of decrease. Similarly, the missing value on January 2nd is interpolated between January 1st (0.0°C) and January 3rd (-6.150°C).</p>
+<div class="important admonition">
+<p class="admonition-title">Advantages and Limitations of Linear Interpolation</p>
+<p><strong>Advantages:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Simplicity</strong>: Linear interpolation is easy to implement and computationally efficient, making it a practical choice for many time-series datasets.</p></li>
+<li><p><strong>Preserves Dataset Structure</strong>: Retains all rows in the dataset by imputing missing values instead of removing them, ensuring continuity in time-series data.</p></li>
+<li><p><strong>Smooth Transitions</strong>: Produces reasonable estimates for missing values by maintaining smooth transitions between observed data points.</p></li>
+<li><p><strong>Applicability</strong>: Particularly effective for datasets where trends are stable or changes between observations are gradual.</p></li>
+</ol>
+<p><strong>Limitations:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Assumption of Linearity</strong>:</p>
+<ul class="simple">
+<li><p>Assumes that changes between consecutive observations are linear, which may not hold true for datasets with non-linear trends.</p></li>
+</ul>
+</li>
+<li><p><strong>Underestimates Variability</strong>:</p>
+<ul class="simple">
+<li><p>Can reduce variability in the dataset by smoothing fluctuations, potentially distorting the time-series dependence structure <span id="id19">[<a class="reference internal" href="../References.html#id315" title="Edward Hollingdale, Francisco Javier Pérez-Barbería, and David McPetrie Walker. Inferring symmetric and asymmetric interactions between animals and groups from positional data. PLOS ONE, 13(12):e0208202, December 2018. Publisher: Public Library of Science. doi:10.1371/journal.pone.0208202.">Hollingdale <em>et al.</em>, 2018</a>, <a class="reference internal" href="../References.html#id316" title="Sebastian Raubitzek and Thomas Neubauer. Taming the Chaos in Neural Network Time Series Predictions. Entropy, 23(11):1424, November 2021. Number: 11 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/e23111424.">Raubitzek and Neubauer, 2021</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Ineffectiveness for Long Gaps</strong>:</p>
+<ul class="simple">
+<li><p>May produce inaccurate estimates when gaps are large or irregularly spaced <span id="id20">[<a class="reference internal" href="../References.html#id318" title="S. Kandasamy, F. Baret, A. Verger, P. Neveux, and M. Weiss. A comparison of methods for smoothing and gap filling time series of remote sensing observations &amp;ndash; application to MODIS LAI products. Biogeosciences, 10(6):4055–4071, June 2013. Publisher: Copernicus GmbH. doi:10.5194/bg-10-4055-2013.">Kandasamy <em>et al.</em>, 2013</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Not Suitable for Non-linear Trends</strong>:</p>
+<ul class="simple">
+<li><p>For datasets with complex patterns, advanced interpolation methods (e.g., spline interpolation or curve fitting) may provide better results <span id="id21">[<a class="reference internal" href="../References.html#id316" title="Sebastian Raubitzek and Thomas Neubauer. Taming the Chaos in Neural Network Time Series Predictions. Entropy, 23(11):1424, November 2021. Number: 11 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/e23111424.">Raubitzek and Neubauer, 2021</a>]</span>.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+<p>Linear interpolation is a simple yet effective method for filling gaps in time-series data when changes between observations are approximately linear and gaps are short or regularly spaced:</p>
+<ol class="arabic simple">
+<li><p>Use <strong>linear interpolation</strong> for datasets with stable trends or gradual changes over time.</p></li>
+<li><p>For datasets with non-linear trends or long gaps, consider alternative methods such as spline interpolation or machine learning-based imputation techniques.</p></li>
+</ol>
+</section>
+<section id="polynomial-interpolation">
+<h3><span class="section-number">2.3.3.2. </span>Polynomial Interpolation<a class="headerlink" href="#polynomial-interpolation" title="Link to this heading">#</a></h3>
+<p>Polynomial interpolation fits a polynomial function through known data points to estimate missing values. Unlike linear interpolation which creates straight lines between points, polynomial interpolation can capture more complex patterns in the data. The order of the polynomial determines its flexibility and complexity:</p>
+<ul class="simple">
+<li><p>A <strong>second-order</strong> (quadratic) polynomial has the form: <span class="math notranslate nohighlight">\(P(t) = a_0 + a_1t + a_2t^2\)</span>
+This can model simple curves with one bend, suitable for data with a single peak or valley.</p></li>
+<li><p>A <strong>third-order</strong> (cubic) polynomial has the form: <span class="math notranslate nohighlight">\(P(t) = a_0 + a_1t + a_2t^2 + a_3t^3\)</span>
+This allows for more complex curves with up to two bends, making it more flexible but potentially more prone to overfitting.</p></li>
+</ul>
+<p>Higher-order polynomials can capture increasingly complex patterns but may introduce unwanted oscillations between data points, especially when dealing with gaps in the data.</p>
+<p>For polynomial interpolation, instead of connecting points with straight lines as seen in the figure, we fit a polynomial through the known points. Here are implementations using both second and third-order polynomials:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;generated_sample_time_series_avg_temp.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="c1"># Apply second-order polynomial interpolation</span>
+<span class="n">poly2_interpolated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;polynomial&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Second-order Polynomial Interpolation Results:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">poly2_interpolated</span><span class="p">)</span>
+
+<span class="c1"># Apply third-order polynomial interpolation</span>
+<span class="n">poly3_interpolated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;polynomial&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Third-order Polynomial Interpolation Results:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">poly3_interpolated</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Second-order Polynomial Interpolation Results:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TEMP</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-01-01</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2025-01-02</th>
+      <td>-6.054847</td>
+    </tr>
+    <tr>
+      <th>2025-01-03</th>
+      <td>-6.150000</td>
+    </tr>
+    <tr>
+      <th>2025-01-04</th>
+      <td>-1.950000</td>
+    </tr>
+    <tr>
+      <th>2025-01-05</th>
+      <td>-3.442099</td>
+    </tr>
+    <tr>
+      <th>2025-01-06</th>
+      <td>-10.624593</td>
+    </tr>
+    <tr>
+      <th>2025-01-07</th>
+      <td>-13.500000</td>
+    </tr>
+    <tr>
+      <th>2025-01-08</th>
+      <td>-10.750000</td>
+    </tr>
+    <tr>
+      <th>2025-01-09</th>
+      <td>-7.650000</td>
+    </tr>
+    <tr>
+      <th>2025-01-10</th>
+      <td>-19.850000</td>
+    </tr>
+    <tr>
+      <th>2025-01-11</th>
+      <td>-28.250000</td>
+    </tr>
+    <tr>
+      <th>2025-01-12</th>
+      <td>-33.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Third-order Polynomial Interpolation Results:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TEMP</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-01-01</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2025-01-02</th>
+      <td>-8.984820</td>
+    </tr>
+    <tr>
+      <th>2025-01-03</th>
+      <td>-6.150000</td>
+    </tr>
+    <tr>
+      <th>2025-01-04</th>
+      <td>-1.950000</td>
+    </tr>
+    <tr>
+      <th>2025-01-05</th>
+      <td>-4.165076</td>
+    </tr>
+    <tr>
+      <th>2025-01-06</th>
+      <td>-9.878666</td>
+    </tr>
+    <tr>
+      <th>2025-01-07</th>
+      <td>-13.500000</td>
+    </tr>
+    <tr>
+      <th>2025-01-08</th>
+      <td>-10.750000</td>
+    </tr>
+    <tr>
+      <th>2025-01-09</th>
+      <td>-7.650000</td>
+    </tr>
+    <tr>
+      <th>2025-01-10</th>
+      <td>-19.850000</td>
+    </tr>
+    <tr>
+      <th>2025-01-11</th>
+      <td>-28.250000</td>
+    </tr>
+    <tr>
+      <th>2025-01-12</th>
+      <td>-33.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To better understand how different polynomial interpolation methods handle missing values in our temperature dataset, let’s examine their performance. Our dataset contains missing temperature values on January 2nd, 5th, and 6th, which each method approaches differently based on their underlying mathematical principles.</p>
+<p>These estimates show how different interpolation methods handle the missing values:</p>
+<p>For January 2nd:</p>
+<ul class="simple">
+<li><p>Linear interpolation: -3.075°C</p></li>
+<li><p>Second-order polynomial: -6.052°C</p></li>
+<li><p>Third-order polynomial: -8.899°C</p></li>
+</ul>
+<p>For January 5th:</p>
+<ul class="simple">
+<li><p>Linear interpolation: -5.800°C</p></li>
+<li><p>Second-order polynomial: -3.393°C</p></li>
+<li><p>Third-order polynomial: -3.937°C</p></li>
+</ul>
+<p>For January 6th:</p>
+<ul class="simple">
+<li><p>Linear interpolation: -9.650°C</p></li>
+<li><p>Second-order polynomial: -10.504°C</p></li>
+<li><p>Third-order polynomial: -9.508°C</p></li>
+</ul>
+<p>The differences between these methods are substantial:</p>
+<ul class="simple">
+<li><p>Linear interpolation creates straight lines between known points, producing the most straightforward estimates</p></li>
+<li><p>Second-order polynomial captures a single parabolic curve, resulting in notably different values, particularly for January 2nd (-6.052°C vs -3.075°C from linear)</p></li>
+<li><p>Third-order polynomial allows for more complex curves, leading to the most extreme estimate for January 2nd (-8.899°C) while providing intermediate estimates for January 5th and 6th</p></li>
+</ul>
+<figure class="align-center" id="polynomial-interpolation-temp-order2">
+<a class="reference internal image-reference" href="../_images/Polynomial_Interpolation_TEMP_order2.png"><img alt="../_images/Polynomial_Interpolation_TEMP_order2.png" src="../_images/Polynomial_Interpolation_TEMP_order2.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.12 </span><span class="caption-text">Visualization of the time series after a quadratic (second-order) polynomial interpolation. The green curve shows how a simpler polynomial captures the general trend while potentially missing some local variations.</span><a class="headerlink" href="#polynomial-interpolation-temp-order2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="polynomial-interpolation-temp-order3">
+<a class="reference internal image-reference" href="../_images/Polynomial_Interpolation_TEMP_order3.png"><img alt="../_images/Polynomial_Interpolation_TEMP_order3.png" src="../_images/Polynomial_Interpolation_TEMP_order3.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.13 </span><span class="caption-text">Visualization of the time series after a cubic (third-order) polynomial interpolation. The blue curve demonstrates how a higher-order polynomial can capture more complex patterns in the temperature changes.</span><a class="headerlink" href="#polynomial-interpolation-temp-order3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#polynomial-interpolation-temp-order2"><span class="std std-numref">Fig. 2.12</span></a> and <a class="reference internal" href="#polynomial-interpolation-temp-order3"><span class="std std-numref">Fig. 2.13</span></a> illustrate the difference between second and third-order polynomial interpolation. The quadratic polynomial (order=2) provides a smoother fit with less flexibility, while the cubic polynomial (order=3) captures more local variations in the temperature pattern. The choice between these orders depends on the expected complexity of the underlying temperature changes and the risk of overfitting.</p>
+</section>
+<section id="spline-interpolation">
+<h3><span class="section-number">2.3.3.3. </span>Spline Interpolation<a class="headerlink" href="#spline-interpolation" title="Link to this heading">#</a></h3>
+<p>Spline interpolation is a sophisticated technique used for enhancing low-resolution signals, data approximation, and interpolation. Unlike simpler methods, splines provide smooth transitions while avoiding oscillation problems common in high-degree polynomial interpolation <span id="id22">[<a class="reference internal" href="../References.html#id324" title="Aurelian Bejancu. Transfinite Thin Plate Spline Interpolation. Constructive Approximation, 34(2):237–256, October 2011. doi:10.1007/s00365-010-9118-3.">Bejancu, 2011</a>, <a class="reference internal" href="../References.html#id326" title="Marco L. Bittencourt, Ney A. Dumont, and Jan S. Hesthaven, editors. Spectral and High Order Methods for Partial Differential Equations ICOSAHOM 2016: Selected Papers from the ICOSAHOM conference, June 27-July 1, 2016, Rio de Janeiro, Brazil. Volume 119 of Lecture Notes in Computational Science and Engineering. Springer International Publishing, Cham, 2017. ISBN 978-3-319-65869-8 978-3-319-65870-4. doi:10.1007/978-3-319-65870-4.">Bittencourt <em>et al.</em>, 2017</a>, <a class="reference internal" href="../References.html#id325" title="Tsai-Min Chen, Yuan-Hong Tsai, Huan-Hsin Tseng, Kai-Chun Liu, Jhih-Yu Chen, Chih-Han Huang, Guo-Yuan Li, Chun-Yen Shen, and Yu Tsao. SRECG: ECG Signal Super-Resolution Framework for Portable/Wearable Devices in Cardiac Arrhythmias Classification. IEEE Transactions on Consumer Electronics, 69(3):250–260, August 2023. Conference Name: IEEE Transactions on Consumer Electronics. doi:10.1109/TCE.2023.3237715.">Chen <em>et al.</em>, 2023</a>]</span>. Let’s explore the main variants:</p>
+<ol class="arabic">
+<li><p><strong>Linear spline:</strong> A linear spline is a type of spline function that is constructed piece-wise from linear functions creating two-point interpolating polynomials <span id="id23">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>. This means that the spline is composed of multiple linear segments, each defined by two points, and these segments are joined together at specific points, called knots <span id="id24">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p>
+<p>Linear splines are commonly used for interpolation and smoothing of data, particularly in cases where the data has a simple, linear relationship between the independent and dependent variables <span id="id25">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>. They are also used in various applications, such as data fitting, signal processing, and computer graphics <span id="id26">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p>
+<p>One of the advantages of linear splines is their simplicity and ease of implementation <span id="id27">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>. They can be easily constructed and evaluated, making them a popular choice for many applications. However, linear splines have some limitations, such as their inability to capture complex relationships between variables <span id="id28">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>. They are also sensitive to the choice of knots and can produce poor results if the knots are not carefully selected <span id="id29">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p>
+<p>Linear splines can be used in various applications, such as:</p>
+<ul class="simple">
+<li><p>Data interpolation: Linear splines can be used to interpolate data between given points <span id="id30">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p></li>
+<li><p>Signal processing: Linear splines can be used to smooth and filter signals <span id="id31">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p></li>
+<li><p>Computer graphics: Linear splines can be used to create smooth curves and surfaces <span id="id32">[<a class="reference internal" href="../References.html#id343" title="David A. Schmidt, Mohammad S. Khan, and Brian T. Bennett. Spline Based Intrusion Detection in Vehicular Ad Hoc Networks (VANET). In 2019 SoutheastCon, 1–5. April 2019. ISSN: 1558-058X. URL: https://ieeexplore.ieee.org/document/9020367 (visited on 2025-01-04), doi:10.1109/SoutheastCon42311.2019.9020367.">Schmidt <em>et al.</em>, 2019</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Cubic Spline:</strong> Cubic splines are defined as a set of cubic polynomials that connect given points, with matching first and second derivatives at the junctions between polynomials. This method is widely used in mathematics, engineering, computer graphics, and scientific computing due to its smoothness, flexibility, accuracy, ease of implementation, and numerical stability<span id="id33">[<a class="reference internal" href="../References.html#id330" title="Qusay Muzaffar, David Levin, and Michael Werman. Approximating a Function with a Jump Discontinuity—The High-Noise Case. AppliedMath, 4(2):561–569, June 2024. Number: 2 Publisher: Multidisciplinary Digital Publishing Institute. URL: https://www.mdpi.com/2673-9909/4/2/30 (visited on 2025-01-04), doi:10.3390/appliedmath4020030.">Muzaffar <em>et al.</em>, 2024</a>]</span>.</p>
+<p>The interpolation process involves dividing the interval between adjacent points into equal subintervals and using the resulting intermediate points as control points to constrain the curve’s curvature. For example, in our temperature dataset, when interpolating between January 4th (-1.95°C) and January 7th (-13.5°C), the method creates a smooth curve that maintains continuity in both first and second derivatives.</p>
+<p>One key advantage of cubic splines is their ability to handle data with jump discontinuities by using separate cubic spline approximations on either side of the discontinuity <span id="id34">[<a class="reference internal" href="../References.html#id330" title="Qusay Muzaffar, David Levin, and Michael Werman. Approximating a Function with a Jump Discontinuity—The High-Noise Case. AppliedMath, 4(2):561–569, June 2024. Number: 2 Publisher: Multidisciplinary Digital Publishing Institute. URL: https://www.mdpi.com/2673-9909/4/2/30 (visited on 2025-01-04), doi:10.3390/appliedmath4020030.">Muzaffar <em>et al.</em>, 2024</a>]</span>. However, the method also has limitations. It assumes the existence of first and second-order derivatives at interpolated points, which may not always hold true <span id="id35">[<a class="reference internal" href="../References.html#id331" title="Ying Bai, Nailong Guo, and Gerald Agbegha. Fuzzy Interpolation and Other Interpolation Methods Used in Robot Calibrations. Journal of Robotics, 2012(1):376293, 2012. doi:10.1155/2012/376293.">Bai <em>et al.</em>, 2012</a>]</span>. Additionally, the resulting curve can be sensitive to the choice of control points, potentially affecting smoothness and accuracy <span id="id36">[<a class="reference internal" href="../References.html#id331" title="Ying Bai, Nailong Guo, and Gerald Agbegha. Fuzzy Interpolation and Other Interpolation Methods Used in Robot Calibrations. Journal of Robotics, 2012(1):376293, 2012. doi:10.1155/2012/376293.">Bai <em>et al.</em>, 2012</a>]</span>.</p>
+<p>Applications of cubic splines extend beyond simple interpolation to include:</p>
+<ul class="simple">
+<li><p>Robot path planning <span id="id37">[<a class="reference internal" href="../References.html#id328" title="Jianfang Lian, Wentao Yu, Kui Xiao, and Weirong Liu. Cubic Spline Interpolation-Based Robot Path Planning Using a Chaotic Adaptive Particle Swarm Optimization Algorithm. Mathematical Problems in Engineering, 2020(1):1849240, 2020. _eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1155/2020/1849240. URL: https://onlinelibrary.wiley.com/doi/abs/10.1155/2020/1849240 (visited on 2025-01-04), doi:10.1155/2020/1849240.">Lian <em>et al.</em>, 2020</a>]</span></p></li>
+<li><p>Drawing geographic maps</p></li>
+<li><p>Approximating functions with jump discontinuities <span id="id38">[<a class="reference internal" href="../References.html#id330" title="Qusay Muzaffar, David Levin, and Michael Werman. Approximating a Function with a Jump Discontinuity—The High-Noise Case. AppliedMath, 4(2):561–569, June 2024. Number: 2 Publisher: Multidisciplinary Digital Publishing Institute. URL: https://www.mdpi.com/2673-9909/4/2/30 (visited on 2025-01-04), doi:10.3390/appliedmath4020030.">Muzaffar <em>et al.</em>, 2024</a>]</span></p></li>
+<li><p>Construction of quadratic splines for quantile estimation</p></li>
+</ul>
+</li>
+<li><p><strong>Third-order spline:</strong> Third-order spline interpolation is a fast, efficient, and robust way to interpolate functions <span id="id39">[<a class="reference internal" href="../References.html#id344" title="William E. Schiesser. Spline Collocation Methods for Partial Differential Equations: With Applications in R. John Wiley &amp; Sons, May 2017. ISBN 978-1-119-30103-5. Google-Books-ID: rB61DgAAQBAJ.">Schiesser, 2017</a>]</span>. It is based on the principle of dividing the interpolation interval into small segments, with each segment specified by a third-degree polynomial <span id="id40">[<a class="reference internal" href="../References.html#id344" title="William E. Schiesser. Spline Collocation Methods for Partial Differential Equations: With Applications in R. John Wiley &amp; Sons, May 2017. ISBN 978-1-119-30103-5. Google-Books-ID: rB61DgAAQBAJ.">Schiesser, 2017</a>]</span>. The coefficients of the polynomial are selected in such a way that certain conditions are met, depending on the interpolation method <span id="id41">[<a class="reference internal" href="../References.html#id344" title="William E. Schiesser. Spline Collocation Methods for Partial Differential Equations: With Applications in R. John Wiley &amp; Sons, May 2017. ISBN 978-1-119-30103-5. Google-Books-ID: rB61DgAAQBAJ.">Schiesser, 2017</a>]</span>. Third-order splines can be used to represent functional dependencies in the form of sums of paired products of constant coefficients by the values of basis functions, providing the basis for significant parallelization of calculations <span id="id42">[<a class="reference internal" href="../References.html#id344" title="William E. Schiesser. Spline Collocation Methods for Partial Differential Equations: With Applications in R. John Wiley &amp; Sons, May 2017. ISBN 978-1-119-30103-5. Google-Books-ID: rB61DgAAQBAJ.">Schiesser, 2017</a>]</span>.</p>
+<p>A third-order spline basis can effectively represent the shape of a deformable linear object (DLO). The spline basis is a function of a free coordinate u, which represents the position on the DLO. The spline basis is used to define the DLO’s dynamic model, which includes the total kinetic energy, external forces, and potential energy . The potential energy is generated due to the influence of gravity, stretching, torsion, and bending effects on the DLO.</p>
+<p>Third-order spline interpolation is used in various applications, including lane detection for intelligent vehicles <span id="id43">[<a class="reference internal" href="../References.html#id345" title="Jingwei Cao, Chuanxue Song, Shixin Song, Feng Xiao, and Silun Peng. Lane Detection Algorithm for Intelligent Vehicles in Complex Road Conditions and Dynamic Environments. Sensors, 19(14):3166, January 2019. doi:10.3390/s19143166.">Cao <em>et al.</em>, 2019</a>]</span>. An n-order B-spline curve is defined as a function of position vectors and basis functions <span id="id44">[<a class="reference internal" href="../References.html#id345" title="Jingwei Cao, Chuanxue Song, Shixin Song, Feng Xiao, and Silun Peng. Lane Detection Algorithm for Intelligent Vehicles in Complex Road Conditions and Dynamic Environments. Sensors, 19(14):3166, January 2019. doi:10.3390/s19143166.">Cao <em>et al.</em>, 2019</a>]</span>. A third-order B-spline curve is used to fit lane lines in complex road conditions, and the mathematical expression corresponding to the curve is given <span id="id45">[<a class="reference internal" href="../References.html#id345" title="Jingwei Cao, Chuanxue Song, Shixin Song, Feng Xiao, and Silun Peng. Lane Detection Algorithm for Intelligent Vehicles in Complex Road Conditions and Dynamic Environments. Sensors, 19(14):3166, January 2019. doi:10.3390/s19143166.">Cao <em>et al.</em>, 2019</a>]</span>.</p>
+<p>Exponential splines are also used to find the numerical solution of third-order singularly perturbed boundary value problems <span id="id46">[<a class="reference internal" href="../References.html#id346" title="Yohannis Alemayehu Wakjira and Gemechis File Duressa. Exponential spline method for singularly perturbed third-order boundary value problems. Demonstratio Mathematica, 53(1):360–372, January 2020. Publisher: De Gruyter Open Access. URL: https://www.degruyter.com/document/doi/10.1515/dema-2020-0024/html (visited on 2025-01-04), doi:10.1515/dema-2020-0024.">Wakjira and Duressa, 2020</a>]</span>. The exponential spline function is presented to solve the problem, and convergence analysis is briefly discussed <span id="id47">[<a class="reference internal" href="../References.html#id346" title="Yohannis Alemayehu Wakjira and Gemechis File Duressa. Exponential spline method for singularly perturbed third-order boundary value problems. Demonstratio Mathematica, 53(1):360–372, January 2020. Publisher: De Gruyter Open Access. URL: https://www.degruyter.com/document/doi/10.1515/dema-2020-0024/html (visited on 2025-01-04), doi:10.1515/dema-2020-0024.">Wakjira and Duressa, 2020</a>]</span>. The method is shown to be sixth order convergence <span id="id48">[<a class="reference internal" href="../References.html#id346" title="Yohannis Alemayehu Wakjira and Gemechis File Duressa. Exponential spline method for singularly perturbed third-order boundary value problems. Demonstratio Mathematica, 53(1):360–372, January 2020. Publisher: De Gruyter Open Access. URL: https://www.degruyter.com/document/doi/10.1515/dema-2020-0024/html (visited on 2025-01-04), doi:10.1515/dema-2020-0024.">Wakjira and Duressa, 2020</a>]</span>. The applicability of the method is validated by solving some model problems for different values of the perturbation parameter, and the numerical results are presented both in tables and graphs <span id="id49">[<a class="reference internal" href="../References.html#id346" title="Yohannis Alemayehu Wakjira and Gemechis File Duressa. Exponential spline method for singularly perturbed third-order boundary value problems. Demonstratio Mathematica, 53(1):360–372, January 2020. Publisher: De Gruyter Open Access. URL: https://www.degruyter.com/document/doi/10.1515/dema-2020-0024/html (visited on 2025-01-04), doi:10.1515/dema-2020-0024.">Wakjira and Duressa, 2020</a>]</span>.</p>
+</li>
+<li><p><strong>PCHIP (Piecewise Cubic Hermite Interpolating Polynomial):</strong> PCHIP offers a shape-preserving alternative to cubic splines by maintaining monotonicity in the interpolated values. While sacrificing some smoothness, it better preserves local trends and avoids introducing artificial extrema in the data.</p>
+<p>Recent applications of spline interpolation include:</p>
+<ul class="simple">
+<li><p>Sound field estimation using physics-informed neural networks <span id="id50">[<a class="reference internal" href="../References.html#id329" title="Kazuhide Shigemi, Shoichi Koyama, Tomohiko Nakamura, and Hiroshi Saruwatari. Physics-Informed Convolutional Neural Network with Bicubic Spline Interpolation for Sound Field Estimation. In 2022 International Workshop on Acoustic Signal Enhancement (IWAENC), 1–5. September 2022. URL: https://ieeexplore.ieee.org/document/9914792 (visited on 2025-01-04), doi:10.1109/IWAENC53105.2022.9914792.">Shigemi <em>et al.</em>, 2022</a>]</span></p></li>
+<li><p>Robot path planning with cubic spline interpolation <span id="id51">[<a class="reference internal" href="../References.html#id328" title="Jianfang Lian, Wentao Yu, Kui Xiao, and Weirong Liu. Cubic Spline Interpolation-Based Robot Path Planning Using a Chaotic Adaptive Particle Swarm Optimization Algorithm. Mathematical Problems in Engineering, 2020(1):1849240, 2020. _eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1155/2020/1849240. URL: https://onlinelibrary.wiley.com/doi/abs/10.1155/2020/1849240 (visited on 2025-01-04), doi:10.1155/2020/1849240.">Lian <em>et al.</em>, 2020</a>]</span></p></li>
+<li><p>Bearing fault diagnosis using B-spline-based deep learning <span id="id52">[<a class="reference internal" href="../References.html#id327" title="Yang Li, Xiaojiao Gu, and Yonghe Wei. A Deep Learning-Based Method for Bearing Fault Diagnosis with Few-Shot Learning. Sensors, 24(23):7516, January 2024. Number: 23 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/s24237516.">Li <em>et al.</em>, 2024</a>]</span></p></li>
+</ul>
+<p>While spline interpolation offers advantages in approximating complex functions and handling high-dimensional data, it’s important to consider its computational complexity and potential for oscillation near data points when choosing an interpolation method <span id="id53">[<a class="reference internal" href="../References.html#id324" title="Aurelian Bejancu. Transfinite Thin Plate Spline Interpolation. Constructive Approximation, 34(2):237–256, October 2011. doi:10.1007/s00365-010-9118-3.">Bejancu, 2011</a>, <a class="reference internal" href="../References.html#id326" title="Marco L. Bittencourt, Ney A. Dumont, and Jan S. Hesthaven, editors. Spectral and High Order Methods for Partial Differential Equations ICOSAHOM 2016: Selected Papers from the ICOSAHOM conference, June 27-July 1, 2016, Rio de Janeiro, Brazil. Volume 119 of Lecture Notes in Computational Science and Engineering. Springer International Publishing, Cham, 2017. ISBN 978-3-319-65869-8 978-3-319-65870-4. doi:10.1007/978-3-319-65870-4.">Bittencourt <em>et al.</em>, 2017</a>, <a class="reference internal" href="../References.html#id325" title="Tsai-Min Chen, Yuan-Hong Tsai, Huan-Hsin Tseng, Kai-Chun Liu, Jhih-Yu Chen, Chih-Han Huang, Guo-Yuan Li, Chun-Yen Shen, and Yu Tsao. SRECG: ECG Signal Super-Resolution Framework for Portable/Wearable Devices in Cardiac Arrhythmias Classification. IEEE Transactions on Consumer Electronics, 69(3):250–260, August 2023. Conference Name: IEEE Transactions on Consumer Electronics. doi:10.1109/TCE.2023.3237715.">Chen <em>et al.</em>, 2023</a>]</span>.</p>
+</li>
+<li><p><strong>B-Spline (Basis Spline):</strong> B-splines are sophisticated mathematical functions used to construct curves and surfaces through piecewise-defined polynomial curves, smoothly blended between control points. They are extensively used in computer-aided design (CAD), geometric modeling, and image processing due to their ability to create continuous and smooth curves that can be extended to higher dimensions <span id="id54">[<a class="reference internal" href="../References.html#id332" title="Nabeel Rehemtulla, Monica Valluri, and Eugene Vasiliev. Non-parametric spherical Jeans mass estimation with B-splines. Monthly Notices of the Royal Astronomical Society, 511(4):5536–5549, April 2022. URL: https://doi.org/10.1093/mnras/stac400 (visited on 2025-01-04), doi:10.1093/mnras/stac400.">Rehemtulla <em>et al.</em>, 2022</a>]</span>.</p>
+<p>A key advantage of B-splines is their non-parametric nature, allowing them to model curves without restricting velocity or density profiles to specific shapes <span id="id55">[<a class="reference internal" href="../References.html#id332" title="Nabeel Rehemtulla, Monica Valluri, and Eugene Vasiliev. Non-parametric spherical Jeans mass estimation with B-splines. Monthly Notices of the Royal Astronomical Society, 511(4):5536–5549, April 2022. URL: https://doi.org/10.1093/mnras/stac400 (visited on 2025-01-04), doi:10.1093/mnras/stac400.">Rehemtulla <em>et al.</em>, 2022</a>]</span>. They can represent complex nonlinear mappings as combinations of piecewise polynomials, enhancing model expressiveness when handling continuous functions <span id="id56">[<a class="reference internal" href="../References.html#id327" title="Yang Li, Xiaojiao Gu, and Yonghe Wei. A Deep Learning-Based Method for Bearing Fault Diagnosis with Few-Shot Learning. Sensors, 24(23):7516, January 2024. Number: 23 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/s24237516.">Li <em>et al.</em>, 2024</a>]</span>. This flexibility makes them particularly valuable for:</p>
+<ul class="simple">
+<li><p>Creating reference trajectories in trajectory planning <span id="id57">[<a class="reference internal" href="../References.html#id333" title="Chuyuan Tao, Sheng Cheng, Fanxin Wang, Yang Zhao, and Naira Hovakimyan. An Optimization-Based Planner with B-spline Parameterized Continuous-Time Reference Signals. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 3100–3107. October 2024. ISSN: 2153-0866. URL: https://ieeexplore.ieee.org/document/10802083 (visited on 2025-01-04), doi:10.1109/IROS58592.2024.10802083.">Tao <em>et al.</em>, 2024</a>]</span></p></li>
+<li><p>Modeling cusps or jumps at interfaces while maintaining differentiability elsewhere</p></li>
+<li><p>Guiding autonomous systems through dynamic environments <span id="id58">[<a class="reference internal" href="../References.html#id334" title="Kailin Tong, Berin Dikic, Wenbo Xiao, Martin Steinberger, Martin Horn, and Selim Solmaz. Safety Metric Aware Trajectory Repairing for Automated Driving. August 2024. arXiv:2408.10622 [cs]. URL: http://arxiv.org/abs/2408.10622 (visited on 2025-01-04), doi:10.48550/arXiv.2408.10622.">Tong <em>et al.</em>, 2024</a>]</span></p></li>
+</ul>
+<p>B-splines excel in applications requiring precise curve modeling, from trajectory planning to density profile estimation in astrophysics<span id="id59">[<a class="reference internal" href="../References.html#id332" title="Nabeel Rehemtulla, Monica Valluri, and Eugene Vasiliev. Non-parametric spherical Jeans mass estimation with B-splines. Monthly Notices of the Royal Astronomical Society, 511(4):5536–5549, April 2022. URL: https://doi.org/10.1093/mnras/stac400 (visited on 2025-01-04), doi:10.1093/mnras/stac400.">Rehemtulla <em>et al.</em>, 2022</a>]</span>. Their ability to maintain smoothness while accommodating complex patterns makes them particularly suitable for handling real-world data with varying degrees of complexity.</p>
+<ol class="arabic simple">
+<li><p><strong>Akima spline:</strong> Akima spline is a type of cubic spline interpolation method that is widely used in various fields, including signal processing, image processing, and machine learning. It is a locally supported interpolation method, meaning that the value of the spline at a given point is determined by its neighborhood. This makes Akima spline more efficient and effective than other interpolation methods, such as cubic splines, which are global and can lead to unnatural wiggles in the resulting curve.</p></li>
+</ol>
+<p>One of the key advantages of Akima spline is its ability to balance the continuity of the interpolation function and calculation costs <span id="id60">[<a class="reference internal" href="../References.html#id347" title="Suorong Yang, Geng Zhang, Jian Zhao, and Furao Shen. A Simple Geometric-Aware Indoor Positioning Interpolation Algorithm Based on Manifold Learning. November 2023. arXiv:2311.15583 [cs]. URL: http://arxiv.org/abs/2311.15583 (visited on 2025-01-04), doi:10.48550/arXiv.2311.15583.">Yang <em>et al.</em>, 2023</a>]</span>. It uses a unique cubic polynomial to determine the spline curve between every pair of consecutive points, and the coefficients of the polynomials are determined by four constraints <span id="id61">[<a class="reference internal" href="../References.html#id347" title="Suorong Yang, Geng Zhang, Jian Zhao, and Furao Shen. A Simple Geometric-Aware Indoor Positioning Interpolation Algorithm Based on Manifold Learning. November 2023. arXiv:2311.15583 [cs]. URL: http://arxiv.org/abs/2311.15583 (visited on 2025-01-04), doi:10.48550/arXiv.2311.15583.">Yang <em>et al.</em>, 2023</a>]</span>. This ensures that the Akima spline function and its first derivatives are continuous, making it a popular choice for various applications.</p>
+<p>Akima spline has been used in various fields, including signal processing <span id="id62">[<a class="reference internal" href="../References.html#id348" title="Toral Gupta and Neil J. Cornish. Bayesian power spectral estimation of gravitational wave detector noise revisited. Physical Review D, 109(6):064040, March 2024. Publisher: American Physical Society. doi:10.1103/PhysRevD.109.064040.">Gupta and Cornish, 2024</a>]</span>, image processing <span id="id63">[<a class="reference internal" href="../References.html#id349" title="Jorge Martínez Sánchez, Álvaro Váquez Álvarez, David López Vilariño, Francisco Fernández Rivera, José Carlos Cabaleiro Domínguez, and Tomás Fernández Pena. Fast Ground Filtering of Airborne LiDAR Data Based on Iterative Scan-Line Spline Interpolation. Remote Sensing, 11(19):2256, January 2019. Number: 19 Publisher: Multidisciplinary Digital Publishing Institute. URL: https://www.mdpi.com/2072-4292/11/19/2256 (visited on 2025-01-04), doi:10.3390/rs11192256.">Martínez Sánchez <em>et al.</em>, 2019</a>]</span>, and machine learning <span id="id64">[<a class="reference internal" href="../References.html#id347" title="Suorong Yang, Geng Zhang, Jian Zhao, and Furao Shen. A Simple Geometric-Aware Indoor Positioning Interpolation Algorithm Based on Manifold Learning. November 2023. arXiv:2311.15583 [cs]. URL: http://arxiv.org/abs/2311.15583 (visited on 2025-01-04), doi:10.48550/arXiv.2311.15583.">Yang <em>et al.</em>, 2023</a>]</span>. In signal processing, Akima spline is used to reconstruct signals from level-crossing samples. In image processing, it is used for fast ground filtering of airborne LiDAR data <span id="id65">[<a class="reference internal" href="../References.html#id349" title="Jorge Martínez Sánchez, Álvaro Váquez Álvarez, David López Vilariño, Francisco Fernández Rivera, José Carlos Cabaleiro Domínguez, and Tomás Fernández Pena. Fast Ground Filtering of Airborne LiDAR Data Based on Iterative Scan-Line Spline Interpolation. Remote Sensing, 11(19):2256, January 2019. Number: 19 Publisher: Multidisciplinary Digital Publishing Institute. URL: https://www.mdpi.com/2072-4292/11/19/2256 (visited on 2025-01-04), doi:10.3390/rs11192256.">Martínez Sánchez <em>et al.</em>, 2019</a>]</span>. In machine learning, Akima spline is used for interpolation and extrapolation tasks, such as in Bayesian power spectral estimation <span id="id66">[<a class="reference internal" href="../References.html#id348" title="Toral Gupta and Neil J. Cornish. Bayesian power spectral estimation of gravitational wave detector noise revisited. Physical Review D, 109(6):064040, March 2024. Publisher: American Physical Society. doi:10.1103/PhysRevD.109.064040.">Gupta and Cornish, 2024</a>]</span> and quantum cluster theories <span id="id67">[<a class="reference internal" href="../References.html#id350" title="Thomas Maier, Mark Jarrell, Thomas Pruschke, and Matthias H. Hettler. Quantum cluster theories. Reviews of Modern Physics, 77(3):1027–1080, October 2005. Publisher: American Physical Society. URL: https://link.aps.org/doi/10.1103/RevModPhys.77.1027 (visited on 2025-01-04), doi:10.1103/RevModPhys.77.1027.">Maier <em>et al.</em>, 2005</a>]</span>.</p>
+<p>In addition to its applications, Akima spline has also been compared to other interpolation methods, such as cubic splines and Hermite interpolation polynomials<span id="id68">[<a class="reference internal" href="../References.html#id347" title="Suorong Yang, Geng Zhang, Jian Zhao, and Furao Shen. A Simple Geometric-Aware Indoor Positioning Interpolation Algorithm Based on Manifold Learning. November 2023. arXiv:2311.15583 [cs]. URL: http://arxiv.org/abs/2311.15583 (visited on 2025-01-04), doi:10.48550/arXiv.2311.15583.">Yang <em>et al.</em>, 2023</a>]</span>. The results show that Akima spline outperforms these methods in terms of accuracy and efficiency.</p>
+</li>
+<li><p><strong>Thin Plate Spline:</strong> Thin plate splines are sophisticated interpolation methods designed for scattered data in high-dimensional spaces. They function as unique minimizers of the squared seminorm among all admissible functions taking prescribed values at given points. This method has gained prominence in computer-aided design, engineering, and remote sensing applications.</p>
+<p>Key advantages of thin plate splines include:</p>
+<ul class="simple">
+<li><p>Ability to handle high-dimensional data</p></li>
+<li><p>Invariance to rotations or reflections of coordinate axes <span id="id69">[<a class="reference internal" href="../References.html#id335" title="Ioannis Kalogridis. Robust thin-plate splines for multivariate spatial smoothing. Econometrics and Statistics, June 2023. doi:10.1016/j.ecosta.2023.06.002.">Kalogridis, 2023</a>]</span></p></li>
+<li><p>Computational efficiency with only one smoothing parameter <span id="id70">[<a class="reference internal" href="../References.html#id335" title="Ioannis Kalogridis. Robust thin-plate splines for multivariate spatial smoothing. Econometrics and Statistics, June 2023. doi:10.1016/j.ecosta.2023.06.002.">Kalogridis, 2023</a>]</span></p></li>
+</ul>
+<p>The method has found particular success in remote sensing applications, where it generates reference surfaces for filtering algorithms <span id="id71">[<a class="reference internal" href="../References.html#id336" title="Penggen Cheng, Zhenyang Hui, Yuanping Xia, Yao Yevenyo Ziggah, Youjian Hu, and Jing Wu. An Improved Skewness Balancing Filtering Algorithm Based on Thin Plate Spline Interpolation. Applied Sciences, 9(1):203, January 2019. Number: 1 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/app9010203.">Cheng <em>et al.</em>, 2019</a>]</span>. For example, in terrain analysis, thin plate splines can create reference surfaces that reflect terrain fluctuations, enabling the removal of nonground points through iterative processing <span id="id72">[<a class="reference internal" href="../References.html#id336" title="Penggen Cheng, Zhenyang Hui, Yuanping Xia, Yao Yevenyo Ziggah, Youjian Hu, and Jing Wu. An Improved Skewness Balancing Filtering Algorithm Based on Thin Plate Spline Interpolation. Applied Sciences, 9(1):203, January 2019. Number: 1 Publisher: Multidisciplinary Digital Publishing Institute. doi:10.3390/app9010203.">Cheng <em>et al.</em>, 2019</a>]</span>.</p>
+<p>Recent developments include low-rank thin plate splines (LR-TPS), which achieve comparable estimation accuracy to traditional thin plate splines but with significantly reduced computational time. These advances have made the method particularly valuable for dynamic function-on-scalars regression and other applications requiring efficient processing of complex, high-dimensional data.</p>
+</li>
+</ol>
+<p>Beyond the spline methods discussed above, several other variants exist. Smoothing splines incorporate a roughness penalty to balance fit and smoothness <span id="id73">[<a class="reference internal" href="../References.html#id337" title="Yuedong Wang. Smoothing Splines: Methods and Applications. CRC Press, June 2011. ISBN 978-1-4200-7756-8. Google-Books-ID: NH5Spn0yru4C.">Wang, 2011</a>]</span>. Tension splines allow control over the “tightness” of the curve through a tension parameter <span id="id74">[<a class="reference internal" href="../References.html#id338" title="Boris I. Kvasov. Methods of Shape-preserving Spline Approximation. World Scientific, 2000. ISBN 978-981-02-4010-3. Google-Books-ID: _So7vgJTEZYC.">Kvasov, 2000</a>]</span>. Cardinal splines offer local control over curve characteristics while maintaining continuity <span id="id75">[<a class="reference internal" href="../References.html#id339" title="I. J. Schoenberg. Cardinal Spline Interpolation. SIAM, January 1973. ISBN 978-0-89871-009-0. Google-Books-ID: O3ipetjS_64C.">Schoenberg, 1973</a>]</span>. Natural cubic splines enforce zero second derivatives at endpoints, making them useful for physical systems <span id="id76">[<a class="reference internal" href="../References.html#id340" title="Ludwig Fahrmeir, Thomas Kneib, Stefan Lang, and Brian Marx. Regression: Models, Methods and Applications. Springer Science &amp; Business Media, May 2013. ISBN 978-3-642-34333-9. Google-Books-ID: EQxU9iJtipAC.">Fahrmeir <em>et al.</em>, 2013</a>]</span>. Catmull-Rom splines are particularly popular in computer graphics for their local control properties <span id="id77">[<a class="reference internal" href="../References.html#id341" title="Ron Goldman. Pyramid Algorithms: A Dynamic Programming Approach to Curves and Surfaces for Geometric Modeling. Elsevier, July 2002. ISBN 978-0-08-051547-2. Google-Books-ID: xFuhIl1rb2sC.">Goldman, 2002</a>]</span>. Quasi-interpolating splines provide approximations that don’t necessarily pass through all data points but maintain important shape properties <span id="id78">[<a class="reference internal" href="../References.html#id342" title="Martin Dietrich Buhmann, Martin Buhmann, and Janin Jäger. Quasi-Interpolation. Cambridge University Press, March 2022. ISBN 978-1-107-07263-3. Google-Books-ID: yBhdEAAAQBAJ.">Buhmann <em>et al.</em>, 2022</a>]</span>.</p>
+<p>In the following sections, we will demonstrate the application of three commonly implemented spline methods - cubic spline, PCHIP, and Akima spline - using our synthetic daily average temperature dataset. These methods are available through scipy.interpolate and pandas, making them readily accessible for time series interpolation tasks. We’ll examine how each method handles the missing temperature values on January 2nd, 5th, and 6th, comparing their behavior and appropriateness for meteorological data.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load the dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;generated_sample_time_series_avg_temp.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">spline_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;First order spline (linear spline)&#39;</span><span class="p">:</span> <span class="s1">&#39;slinear&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Cubic spline&#39;</span><span class="p">:</span> <span class="s1">&#39;cubicspline&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Third order spline&#39;</span><span class="p">:</span> <span class="s1">&#39;cubic&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Piecewise Cubic Hermite Interpolating Polynomial&#39;</span><span class="p">:</span> <span class="s1">&#39;pchip&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;Akima spline&#39;</span><span class="p">:</span> <span class="s1">&#39;akima&#39;</span><span class="p">,}</span>
+
+<span class="c1"># Specify order for methods that require it</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">spline_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+<span class="n">df_comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_comparison</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">spline_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">df_comparison</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>First order spline (linear spline)</th>
+      <th>Cubic spline</th>
+      <th>Third order spline</th>
+      <th>Piecewise Cubic Hermite Interpolating Polynomial</th>
+      <th>Akima spline</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2025-01-01</th>
+      <td>0.000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2025-01-02</th>
+      <td>-3.075</td>
+      <td>-8.984820</td>
+      <td>-8.984820</td>
+      <td>-5.056250</td>
+      <td>-4.847762</td>
+    </tr>
+    <tr>
+      <th>2025-01-03</th>
+      <td>-6.150</td>
+      <td>-6.150000</td>
+      <td>-6.150000</td>
+      <td>-6.150000</td>
+      <td>-6.150000</td>
+    </tr>
+    <tr>
+      <th>2025-01-04</th>
+      <td>-1.950</td>
+      <td>-1.950000</td>
+      <td>-1.950000</td>
+      <td>-1.950000</td>
+      <td>-1.950000</td>
+    </tr>
+    <tr>
+      <th>2025-01-05</th>
+      <td>-5.800</td>
+      <td>-4.165076</td>
+      <td>-4.165076</td>
+      <td>-4.944444</td>
+      <td>-5.503694</td>
+    </tr>
+    <tr>
+      <th>2025-01-06</th>
+      <td>-9.650</td>
+      <td>-9.878666</td>
+      <td>-9.878666</td>
+      <td>-10.505556</td>
+      <td>-11.610180</td>
+    </tr>
+    <tr>
+      <th>2025-01-07</th>
+      <td>-13.500</td>
+      <td>-13.500000</td>
+      <td>-13.500000</td>
+      <td>-13.500000</td>
+      <td>-13.500000</td>
+    </tr>
+    <tr>
+      <th>2025-01-08</th>
+      <td>-10.750</td>
+      <td>-10.750000</td>
+      <td>-10.750000</td>
+      <td>-10.750000</td>
+      <td>-10.750000</td>
+    </tr>
+    <tr>
+      <th>2025-01-09</th>
+      <td>-7.650</td>
+      <td>-7.650000</td>
+      <td>-7.650000</td>
+      <td>-7.650000</td>
+      <td>-7.650000</td>
+    </tr>
+    <tr>
+      <th>2025-01-10</th>
+      <td>-19.850</td>
+      <td>-19.850000</td>
+      <td>-19.850000</td>
+      <td>-19.850000</td>
+      <td>-19.850000</td>
+    </tr>
+    <tr>
+      <th>2025-01-11</th>
+      <td>-28.250</td>
+      <td>-28.250000</td>
+      <td>-28.250000</td>
+      <td>-28.250000</td>
+      <td>-28.250000</td>
+    </tr>
+    <tr>
+      <th>2025-01-12</th>
+      <td>-33.000</td>
+      <td>-33.000000</td>
+      <td>-33.000000</td>
+      <td>-33.000000</td>
+      <td>-33.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<figure class="align-center" id="comparison-of-interpolation-spline-methods">
+<a class="reference internal image-reference" href="../_images/Comparison_of_Interpolation_Spline_Methods.png"><img alt="../_images/Comparison_of_Interpolation_Spline_Methods.png" src="../_images/Comparison_of_Interpolation_Spline_Methods.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.14 </span><span class="caption-text">Comparison of different spline interpolation methods for temperature data interpolation. The figure shows various interpolation techniques applied to temperature measurements from January 2025, with black dots representing actual measurements and different line styles showing interpolation results.</span><a class="headerlink" href="#comparison-of-interpolation-spline-methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#comparison-of-interpolation-spline-methods"><span class="std std-numref">Fig. 2.14</span></a> shows a comparison of different spline interpolation methods used to fill missing temperature data points over a 12-day period in January 2025. The original temperature data (shown as black dots) contains several gaps, particularly on January 2nd, 5th, and 6th.</p>
+<p><strong>Original Data Pattern</strong></p>
+<ul class="simple">
+<li><p>Starting at 0°C on January 1st</p></li>
+<li><p>Drops to -6.15°C by January 3rd</p></li>
+<li><p>Rises to -1.95°C on January 4th</p></li>
+<li><p>Falls again to -13.50°C by January 7th</p></li>
+<li><p>Shows a dramatic decline after January 9th, reaching -33°C by January 12th</p></li>
+</ul>
+<p><strong>Method Behaviors</strong></p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-spline-comparison">
+<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Comparison of Interpolation Methods for Temperature Data</span><a class="headerlink" href="#table-spline-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Key Characteristics</p></th>
+<th class="head"><p>Interpolation Behavior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Linear Spline</p></td>
+<td><p>Direct point-to-point connection</p></td>
+<td><p>Most conservative, minimal oscillation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cubic/Third Order</p></td>
+<td><p>Higher-order polynomial fitting</p></td>
+<td><p>Produces smooth curves with potential overshooting</p></td>
+</tr>
+<tr class="row-even"><td><p>PCHIP</p></td>
+<td><p>Shape-preserving interpolation</p></td>
+<td><p>Maintains data monotonicity with natural transitions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Akima</p></td>
+<td><p>Robust to outliers</p></td>
+<td><p>Balanced between smoothness and data fidelity</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Notable Observations</strong></p>
+<ul class="simple">
+<li><p>The cubic and third-order splines show identical behavior, producing the most extreme interpolation around January 2nd (-8.98°C)</p></li>
+<li><p>The linear spline provides the most conservative estimates, with straight-line connections between known points</p></li>
+<li><p>All methods converge closely for the steep temperature drop between January 9th and 12th</p></li>
+<li><p>The Akima and PCHIP methods generally provide more moderate interpolations compared to the cubic splines</p></li>
+</ul>
+<p>The graph effectively demonstrates how different interpolation techniques can produce varying estimates for the same missing data points, particularly evident in the gaps between January 1-3 and January 4-7.</p>
+</section>
+</section>
+<section id="advanced-techniques-for-handling-missing-data">
+<h2><span class="section-number">2.3.4. </span>Advanced Techniques for Handling Missing Data<a class="headerlink" href="#advanced-techniques-for-handling-missing-data" title="Link to this heading">#</a></h2>
+<p>While we have covered several fundamental approaches to handling missing data, there are more sophisticated methods that leverage advanced statistical and machine learning techniques. These approaches often require a deeper understanding of machine learning concepts, which we will explore in later chapters after covering various ML models.</p>
+<p>One category of advanced techniques includes machine learning-based imputation methods. Random Forest Imputation, for example, uses the Random Forest algorithm to predict missing values based on other features in the dataset. This method can capture complex relationships and handle both numerical and categorical data effectively. Similarly, K-Nearest Neighbors (KNN) Imputation uses the K most similar records to estimate missing values, which is particularly useful when there are strong correlations between features.</p>
+<p>Model-based methods offer another sophisticated approach to handling missing data. The Expectation-Maximization (EM) algorithm is an iterative method that estimates parameters in models with incomplete data by maximizing the likelihood function. Maximum Likelihood Estimation (MLE) directly estimates parameters from incomplete data and is often used in structural equation modeling or advanced statistical analyses.</p>
+<p>Deep learning approaches have also been applied to the problem of missing data. Autoencoders, a type of neural network, can learn patterns in data and predict missing values based on learned representations. Generative Adversarial Networks (GANs) can generate realistic values to fill in gaps in datasets, which is particularly useful for complex data types like images.</p>
+<p>Multiple imputation techniques, such as Multiple Imputation by Chained Equations (MICE), create multiple plausible imputed datasets, analyze each separately, and then combine the results. This method accounts for the uncertainty in the imputation process, providing more robust estimates.</p>
+<p>These advanced techniques often provide more accurate imputations, especially for complex datasets with non-random missing patterns. However, they typically require a solid understanding of statistical and machine learning concepts. As we progress through subsequent chapters and delve deeper into machine learning models, we will revisit some of these methods and explore their implementation in greater detail.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-base-py"
+        },
+        kernelOptions: {
+            name: "conda-base-py",
+            path: "./chapter_02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-base-py'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C02S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Identifying Patterns of Missingness</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../References.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deletion-methods">2.3.1. Deletion Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#listwise-deletion">2.3.1.1. Listwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-deletion">2.3.1.2. Pairwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-demonstrating-listwise-and-pairwise-deletion">2.3.1.3. Example: Demonstrating Listwise and Pairwise Deletion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">2.3.1.4. Conclusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-imputation-methods">2.3.2. Simple Imputation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-value-substitution-methods">2.3.2.1. Simple Value Substitution Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#last-observation-carried-forward-locf">2.3.2.2. Last Observation Carried Forward (LOCF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-observation-carried-backward-nocb">2.3.2.3. Next Observation Carried Backward (NOCB)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-locf-and-nocb">2.3.2.4. Comparison of LOCF and NOCB</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolation-methods">2.3.3. Interpolation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-interpolation">2.3.3.1. Linear Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polynomial-interpolation">2.3.3.2. Polynomial Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-interpolation">2.3.3.3. Spline Interpolation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-techniques-for-handling-missing-data">2.3.4. Advanced Techniques for Handling Missing Data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

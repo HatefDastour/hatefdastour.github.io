@@ -73,6 +73,16 @@ This course covers key concepts in descriptive statistics and graphical represen
 This course covers fundamental programming concepts using Python, encompassing statements, conditionals, loops, functions, file I/O, debugging, data parsing, display techniques, and library usage.
 </p>
 
+<hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Time_Series/" target="_blank" rel="noopener noreferrer">Introduction to Time Series</a>
+</b></font>
+<br>
+This course teaches time series analysis and forecasting with classical and machine learning methods using real-world data.​ Students learn to identify trends, handle temporal data, and build predictive models for domains like climate, health, and finance.​ Emphasis is on hands-on implementation and practical use for analysis and decision-making.​
+</p>
+
 <!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>

@@ -1,0 +1,1134 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1.3. Time Series Cross-Validation &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_01/Intro2TS_C01S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Missing Data in Time Series" href="../chapter_02/Intro2TS_C02.html" />
+    <link rel="prev" title="1.2. Best Sources for Public Datasets" href="Intro2TS_C01S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C01.html">1. Introduction to Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.3. Time Series Cross-Validation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">3. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Time Series Cross-Validation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">1.3.1. Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-cross-validation-fails-for-time-series">1.3.2. Why Standard Cross-Validation Fails for Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3.3. Time Series Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-time-series-cross-validation">1.3.4. Types of Time Series Cross-Validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window">1.3.4.1. Expanding Window</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-sliding-window-cross-validation">1.3.4.2. Rolling/Sliding Window Cross-Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-cross-validation">1.3.4.3. Blocked Cross-Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-considerations-for-time-series-cv">1.3.5. Practical Considerations for Time Series CV</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="time-series-cross-validation">
+<h1><span class="section-number">1.3. </span>Time Series Cross-Validation<a class="headerlink" href="#time-series-cross-validation" title="Link to this heading">#</a></h1>
+<section id="cross-validation">
+<h2><span class="section-number">1.3.1. </span>Cross-Validation<a class="headerlink" href="#cross-validation" title="Link to this heading">#</a></h2>
+<p>Cross-validation is a powerful statistical technique used in machine learning for model selection and performance evaluation. It is particularly useful for smaller datasets and helps ensure that models generalize well to unseen data. By systematically partitioning the data into subsets for training and validation, cross-validation provides a more robust assessment of model performance than simple train-test splits <span id="id1">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p>
+<div class="admonition-purpose-and-benefits admonition">
+<p class="admonition-title">Purpose and Benefits</p>
+<ol class="arabic simple">
+<li><p><strong>Model Selection</strong>:</p>
+<ul class="simple">
+<li><p>Helps choose the best model or hyperparameters for a given task.</p></li>
+<li><p>Allows comparison of different models or algorithms on the same data.</p></li>
+<li><p>Provides a systematic way to tune hyperparameters for optimal performance <span id="id2">[<a class="reference internal" href="../References.html#id170" title="Payam Refaeilzadeh, Lei Tang, and Huan Liu. Cross-Validation, pages 532–538. Springer US, Boston, MA, 2009. doi:10.1007/978-0-387-39940-9_565.">Refaeilzadeh <em>et al.</em>, 2009</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Estimation</strong>:</p>
+<ul class="simple">
+<li><p>Provides a more reliable estimate of model performance on unseen data.</p></li>
+<li><p>Reduces the impact of data partitioning luck by using multiple train-test splits.</p></li>
+<li><p>Offers insights into the model’s stability and sensitivity to data variations <span id="id3">[<a class="reference internal" href="../References.html#id98" title="Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani, and Jonathan Taylor. An Introduction to Statistical Learning: with Applications in R. Springer Texts in Statistics. Springer Cham, 2023. ISBN 9783031391897. URL: https://link.springer.com/book/10.1007/978-3-031-38747-0.">James <em>et al.</em>, 2023</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Overfitting Prevention</strong>:</p>
+<ul class="simple">
+<li><p>Reduces the risk of overfitting by using multiple subsets of data for training and validation.</p></li>
+<li><p>Helps identify models that are too complex or too simple for the given data.</p></li>
+<li><p>Encourages the development of more generalizable models <span id="id4">[<a class="reference internal" href="../References.html#id170" title="Payam Refaeilzadeh, Lei Tang, and Huan Liu. Cross-Validation, pages 532–538. Springer US, Boston, MA, 2009. doi:10.1007/978-0-387-39940-9_565.">Refaeilzadeh <em>et al.</em>, 2009</a>]</span>.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+</section>
+<section id="why-standard-cross-validation-fails-for-time-series">
+<h2><span class="section-number">1.3.2. </span>Why Standard Cross-Validation Fails for Time Series<a class="headerlink" href="#why-standard-cross-validation-fails-for-time-series" title="Link to this heading">#</a></h2>
+<p>Traditional k-fold cross-validation randomly partitions data into folds, which violates the temporal structure of time series data. This can lead to:</p>
+<ul class="simple">
+<li><p><strong>Data leakage</strong>: Using future information to predict past events</p></li>
+<li><p><strong>Unrealistic performance estimates</strong>: Models appear more accurate than they would be in practice</p></li>
+<li><p><strong>Violation of temporal dependencies</strong>: Breaking the sequential nature that drives time series patterns</p></li>
+</ul>
+<p><em>Example:</em> If we randomly split stock price data, we might train on 2023 data and test on 2021 data, which is impossible in real forecasting scenarios.</p>
+</section>
+<section id="id5">
+<h2><span class="section-number">1.3.3. </span>Time Series Cross-Validation<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>Time Series Cross-Validation is a specialized technique designed for evaluating models on time-dependent data. This method is crucial for maintaining the chronological order of observations, which is essential in time series analysis. Here’s an expanded explanation:</p>
+<ol class="arabic simple">
+<li><p><strong>Sliding Window Approach:</strong></p>
+<ul class="simple">
+<li><p>Uses a forward-moving time window for training and testing.</p></li>
+<li><p>The training set grows with each iteration, while the test set remains a fixed size.</p></li>
+<li><p>This approach mimics real-world forecasting scenarios where we use past data to predict future values.</p></li>
+</ul>
+</li>
+<li><p><strong>Maintaining Temporal Order:</strong></p>
+<ul class="simple">
+<li><p>Preserves the time-based dependencies in the data.</p></li>
+<li><p>Ensures that future information is not used to predict past events, avoiding data leakage.</p></li>
+</ul>
+</li>
+<li><p><strong>Multiple Train-Test Splits:</strong></p>
+<ul class="simple">
+<li><p>Creates several train-test splits, each representing a different point in time.</p></li>
+<li><p>Allows for assessing model performance across various temporal segments of the data.</p></li>
+</ul>
+</li>
+<li><p><strong>Forecasting Performance Assessment:</strong></p>
+<ul class="simple">
+<li><p>Evaluates how well the model generalizes to future, unseen data.</p></li>
+<li><p>Particularly useful for assessing the stability of model performance over time.</p></li>
+</ul>
+</li>
+<li><p><strong>Adaptability to Changing Patterns:</strong></p>
+<ul class="simple">
+<li><p>Helps in understanding how model performance might change as new data becomes available.</p></li>
+<li><p>Useful for detecting concept drift in time series.</p></li>
+</ul>
+</li>
+<li><p><strong>Fixed Window (Rolling Origin):</strong></p>
+<ul class="simple">
+<li><p>Training window size remains constant as it moves forward</p></li>
+<li><p>Useful when recent patterns are more relevant than distant history</p></li>
+<li><p>Example: Always use exactly 252 trading days (1 year) for training</p></li>
+</ul>
+</li>
+<li><p><strong>Expanding Window (Used in our example):</strong></p>
+<ul class="simple">
+<li><p>Training window grows with each split</p></li>
+<li><p>Incorporates all available historical information</p></li>
+<li><p>Better for capturing long-term trends and structural changes</p></li>
+</ul>
+</li>
+<li><p><strong>Blocked Cross-Validation:</strong></p>
+<ul class="simple">
+<li><p>Introduces gaps between training and test sets</p></li>
+<li><p>Accounts for temporal correlation that might persist beyond immediate neighbors</p></li>
+<li><p>Useful when autocorrelation extends over multiple periods</p></li>
+</ul>
+</li>
+</ol>
+<p>Example using NVIDIA (NVDA) stock price data:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yfinance</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">yf</span>
+<span class="c1"># Download NVIDIA stock data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">yf</span><span class="o">.</span><span class="n">download</span><span class="p">([</span><span class="s1">&#39;NVDA&#39;</span><span class="p">],</span> <span class="n">period</span><span class="o">=</span><span class="s1">&#39;5y&#39;</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auto_adjust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Ticker</th>
+      <th>Date</th>
+      <th>NVDA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-11-23</td>
+      <td>13.100011</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-11-24</td>
+      <td>12.918314</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-11-25</td>
+      <td>13.194471</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-11-27</td>
+      <td>13.220890</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-11-30</td>
+      <td>13.360716</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1251</th>
+      <td>2025-11-17</td>
+      <td>186.600006</td>
+    </tr>
+    <tr>
+      <th>1252</th>
+      <td>2025-11-18</td>
+      <td>181.360001</td>
+    </tr>
+    <tr>
+      <th>1253</th>
+      <td>2025-11-19</td>
+      <td>186.520004</td>
+    </tr>
+    <tr>
+      <th>1254</th>
+      <td>2025-11-20</td>
+      <td>180.639999</td>
+    </tr>
+    <tr>
+      <th>1255</th>
+      <td>2025-11-21</td>
+      <td>178.880005</td>
+    </tr>
+  </tbody>
+</table>
+<p>1256 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="types-of-time-series-cross-validation">
+<h2><span class="section-number">1.3.4. </span>Types of Time Series Cross-Validation<a class="headerlink" href="#types-of-time-series-cross-validation" title="Link to this heading">#</a></h2>
+<p>The three main approaches to time series cross-validation differ fundamentally in how they handle training data over time. The timeline visualization below illustrates the key distinctions between expanding window, rolling window, and blocked cross-validation methods:</p>
+<div class="full-width docutils">
+<figure class="align-center" id="ts-cv-methods">
+<a class="reference internal image-reference" href="../_images/ts_cv_methods.png"><img alt="../_images/ts_cv_methods.png" src="../_images/ts_cv_methods.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.2 </span><span class="caption-text">Timeline comparison of three time series cross-validation methods. The visualization shows how each method handles training data (green), test data (blue), and gaps (orange) across multiple splits over time. Expanding window grows training sets progressively, rolling window maintains fixed training sizes, and blocked CV introduces purged gaps to prevent data leakage.</span><a class="headerlink" href="#ts-cv-methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<p><strong>Method Comparison Overview:</strong></p>
+<p><strong>Expanding Window Cross-Validation</strong> (Top section):</p>
+<ul class="simple">
+<li><p><strong>Training sets grow progressively</strong> with each split, accumulating all historical data</p></li>
+<li><p>Maximizes available information for model training</p></li>
+<li><p>Best for capturing long-term trends and when all historical context is valuable</p></li>
+<li><p>Each split builds upon all previous knowledge, creating increasingly comprehensive training sets</p></li>
+</ul>
+<p><strong>Rolling Window Cross-Validation</strong> (Middle section):</p>
+<ul class="simple">
+<li><p><strong>Fixed training window size</strong> that slides forward through time</p></li>
+<li><p>Maintains consistent training periods (e.g., always 200 days)</p></li>
+<li><p>Emphasizes recent patterns while discarding older information</p></li>
+<li><p>Ideal for non-stationary series where recent data is more predictive than distant history</p></li>
+</ul>
+<p><strong>Blocked Cross-Validation</strong> (Bottom section):</p>
+<ul class="simple">
+<li><p><strong>Introduces purged gaps</strong> (orange) between training and test periods</p></li>
+<li><p>Prevents data leakage from autocorrelation and temporal dependencies</p></li>
+<li><p>Training sets expand but stop before test periods with buffer zones</p></li>
+<li><p>Essential for financial data and high-frequency time series with strong serial correlation</p></li>
+</ul>
+<p><strong>Key Temporal Insights:</strong></p>
+<p>The timeline clearly shows how each method treats the <strong>temporal boundary</strong> between training and testing:</p>
+<ul class="simple">
+<li><p><strong>Expanding</strong>: Direct transition from training to testing (no gaps)</p></li>
+<li><p><strong>Rolling</strong>: Direct transition but with limited historical memory</p></li>
+<li><p><strong>Blocked</strong>: Intentional gaps to break temporal correlations</p></li>
+</ul>
+<p><strong>Selection Criteria:</strong></p>
+<ul class="simple">
+<li><p>Choose <strong>Expanding Window</strong> for trend-following models and when historical patterns remain relevant</p></li>
+<li><p>Select <strong>Rolling Window</strong> for adaptive models in changing environments with structural breaks</p></li>
+<li><p>Use <strong>Blocked CV</strong> when autocorrelation is present and realistic performance estimates are critical</p></li>
+</ul>
+<p>Each method serves different analytical needs and data characteristics, making the choice dependent on your specific time series properties and forecasting objectives.</p>
+<section id="expanding-window">
+<h3><span class="section-number">1.3.4.1. </span>Expanding Window<a class="headerlink" href="#expanding-window" title="Link to this heading">#</a></h3>
+<p>The <strong>Expanding Window</strong> approach (also known as “growing window” or “anchored walk-forward”) is the default method in scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code>. This technique progressively increases the training window size while maintaining consistent test set sizes, making it particularly valuable for capturing evolving patterns in time series data.</p>
+<div class="admonition-key-characteristics admonition">
+<p class="admonition-title">Key Characteristics</p>
+<p><strong>Progressive Data Accumulation</strong>: Each subsequent split incorporates all previous training data plus additional historical observations, creating an ever-expanding knowledge base for the model. This cumulative approach ensures that valuable historical patterns and long-term trends are preserved across all validation splits.</p>
+<p><strong>Mimicking Real-World Scenarios</strong>: In practice, analysts and traders typically have access to all historical data when making forecasts. The expanding window method closely replicates this reality, where decision-makers use the entirety of available historical information rather than discarding older data.</p>
+<p><strong>Long-term Pattern Recognition</strong>: By retaining all historical data, this method is particularly effective at capturing:</p>
+<ul class="simple">
+<li><p><strong>Structural changes</strong> that occur gradually over time</p></li>
+<li><p><strong>Long-term cycles</strong> and secular trends</p></li>
+<li><p><strong>Regime changes</strong> in market conditions or business environments</p></li>
+<li><p><strong>Seasonal patterns</strong> that may evolve or strengthen over time</p></li>
+</ul>
+</div>
+<div class="admonition-when-to-use-expanding-windows admonition">
+<p class="admonition-title">When to Use Expanding Windows</p>
+<ul class="simple">
+<li><p><strong>Sufficient Historical Data</strong>: When you have adequate historical observations to support meaningful training</p></li>
+<li><p><strong>Evolving Relationships</strong>: When relationships between variables may strengthen or change over time</p></li>
+<li><p><strong>Long-term Dependencies</strong>: For time series where distant past observations remain relevant</p></li>
+<li><p><strong>Model Stability Testing</strong>: To assess how model performance changes as more data becomes available</p></li>
+</ul>
+<p><strong>Trade-offs to Consider:</strong></p>
+<ul class="simple">
+<li><p><strong>Computational Cost</strong>: Training time increases with each split as the training set grows</p></li>
+<li><p><strong>Concept Drift</strong>: May be less responsive to recent structural changes if older patterns dominate</p></li>
+<li><p><strong>Memory Requirements</strong>: Larger training sets require more computational resources</p></li>
+</ul>
+</div>
+<p>The NVIDIA example below demonstrates these concepts in action, showing how each split builds upon previous knowledge while testing the model’s ability to generalize to future periods.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeriesSplit</span>
+
+<span class="c1"># Time Series Cross-Validation</span>
+<span class="n">tscv</span> <span class="o">=</span> <span class="n">TimeSeriesSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tscv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="mi">1</span><span class="p">):</span>
+      <span class="c1"># Display split periods</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[1;31m&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">:&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[0m&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\033</span><span class="s2">[1;42mTrain set</span><span class="se">\033</span><span class="s2">[0m:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_index</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
+          <span class="sa">f</span><span class="s1">&#39;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\033</span><span class="s2">[1;44mTest set</span><span class="se">\033</span><span class="s2">[0m:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_index</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
+          <span class="sa">f</span><span class="s1">&#39;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Red">Split 1:</span>
+	<span class=" -Color -Color-Bold -Color-Bold-BGGreen">Train set</span>: 		From 2020-11-23 To 2021-09-24
+	<span class=" -Color -Color-Bold -Color-Bold-BGBlue">Test set</span>: 		From 2021-09-27 To 2022-07-26
+<span class=" -Color -Color-Bold -Color-Bold-Red">Split 2:</span>
+	<span class=" -Color -Color-Bold -Color-Bold-BGGreen">Train set</span>: 		From 2020-11-23 To 2022-07-26
+	<span class=" -Color -Color-Bold -Color-Bold-BGBlue">Test set</span>: 		From 2022-07-27 To 2023-05-24
+<span class=" -Color -Color-Bold -Color-Bold-Red">Split 3:</span>
+	<span class=" -Color -Color-Bold -Color-Bold-BGGreen">Train set</span>: 		From 2020-11-23 To 2023-05-24
+	<span class=" -Color -Color-Bold -Color-Bold-BGBlue">Test set</span>: 		From 2023-05-25 To 2024-03-25
+<span class=" -Color -Color-Bold -Color-Bold-Red">Split 4:</span>
+	<span class=" -Color -Color-Bold -Color-Bold-BGGreen">Train set</span>: 		From 2020-11-23 To 2024-03-25
+	<span class=" -Color -Color-Bold -Color-Bold-BGBlue">Test set</span>: 		From 2024-03-26 To 2025-01-24
+<span class=" -Color -Color-Bold -Color-Bold-Red">Split 5:</span>
+	<span class=" -Color -Color-Bold -Color-Bold-BGGreen">Train set</span>: 		From 2020-11-23 To 2025-01-24
+	<span class=" -Color -Color-Bold -Color-Bold-BGBlue">Test set</span>: 		From 2025-01-27 To 2025-11-21
+</pre></div>
+</div>
+</div>
+</div>
+<!-- ````{div} full-width -->
+<figure class="align-center" id="time-series-cv">
+<a class="reference internal image-reference" href="../_images/time_series_cv.png"><img alt="../_images/time_series_cv.png" src="../_images/time_series_cv.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.3 </span><span class="caption-text">Time Series Cross-Validation splits for NVIDIA stock price data (2020-2025). The visualization shows five sequential splits with expanding training windows (green) and fixed-size test sets (blue). Each split demonstrates the forward-moving nature of the validation process, with the gray line representing the complete dataset. The stock price shows significant growth, particularly in 2023-2025, ranging from around $0 to $150.</span><a class="headerlink" href="#time-series-cv" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<!-- ```` -->
+<p><strong>Split Structure</strong></p>
+<ul class="simple">
+<li><p>Each split shows:</p>
+<ul>
+<li><p>Training data (green shaded area)</p></li>
+<li><p>Test data (blue shaded area)</p></li>
+<li><p>Full dataset line (gray)</p></li>
+</ul>
+</li>
+<li><p>The training window expands with each subsequent split</p></li>
+<li><p>Test set size remains consistent across all splits</p></li>
+</ul>
+<p><strong>Progressive Nature</strong></p>
+<ul class="simple">
+<li><p>Split 1: Uses minimal training data with early test period</p></li>
+<li><p>Split 2: Expands training data forward</p></li>
+<li><p>Split 3: Further expansion of training window</p></li>
+<li><p>Split 4: Includes significant price increase period</p></li>
+<li><p>Split 5: Uses maximum training data, testing on most recent period</p></li>
+</ul>
+</section>
+<section id="rolling-sliding-window-cross-validation">
+<h3><span class="section-number">1.3.4.2. </span>Rolling/Sliding Window Cross-Validation<a class="headerlink" href="#rolling-sliding-window-cross-validation" title="Link to this heading">#</a></h3>
+<p><strong>Definition</strong>: Rolling Window Cross-Validation (also known as Fixed Window or Sliding Window) maintains a constant training window size that slides forward with each split, emphasizing recent data patterns over historical information.</p>
+<p><strong>Key Characteristics</strong>:</p>
+<ul class="simple">
+<li><p>Training window size remains <strong>fixed</strong> as it moves forward</p></li>
+<li><p>Useful when recent patterns are more relevant than distant history</p></li>
+<li><p>Also called “Rolling Origin” validation</p></li>
+<li><p>Preferable when older history may not be relevant due to structural changes</p></li>
+</ul>
+<p><strong>When to Use</strong>:</p>
+<ul class="simple">
+<li><p>Large datasets with sufficient observations</p></li>
+<li><p>When structural changes occur over time (e.g., market regime shifts)</p></li>
+<li><p>When you want to simulate real-world scenarios where only recent data is available</p></li>
+<li><p>Example: Using exactly 252 trading days (1 year) for training, always</p></li>
+</ul>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeriesSplit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Custom Rolling Window implementation</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RollingTimeSeriesSplit</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="o">=</span> <span class="n">train_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">test_size</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">train_size</span> <span class="o">=</span> <span class="n">test_size</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># Default: 2x test size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">train_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+            <span class="n">start_train</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">test_size</span>
+            <span class="n">end_train</span> <span class="o">=</span> <span class="n">start_train</span> <span class="o">+</span> <span class="n">train_size</span>
+            <span class="n">start_test</span> <span class="o">=</span> <span class="n">end_train</span>
+            <span class="n">end_test</span> <span class="o">=</span> <span class="n">start_test</span> <span class="o">+</span> <span class="n">test_size</span>
+            
+            <span class="k">if</span> <span class="n">end_test</span> <span class="o">&lt;=</span> <span class="n">n_samples</span><span class="p">:</span>
+                <span class="n">train_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_train</span><span class="p">,</span> <span class="n">end_train</span><span class="p">)</span>
+                <span class="n">test_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_test</span><span class="p">,</span> <span class="n">end_test</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">train_indices</span><span class="p">,</span> <span class="n">test_indices</span>
+
+<span class="c1"># Example usage with NVIDIA data</span>
+<span class="n">rolling_cv</span> <span class="o">=</span> <span class="n">RollingTimeSeriesSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rolling Window Cross-Validation:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rolling_cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train: From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_idx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_idx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)</span><span class="si">}</span><span class="s2"> days)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Test: From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_idx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_idx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)</span><span class="si">}</span><span class="s2"> days)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rolling Window Cross-Validation:
+Split 1:
+	Train: From 2020-11-23 To 2021-09-09 (200 days)
+	Test: From 2021-09-10 To 2021-11-18 (50 days)
+Split 2:
+	Train: From 2021-02-05 To 2021-11-18 (200 days)
+	Test: From 2021-11-19 To 2022-02-01 (50 days)
+Split 3:
+	Train: From 2021-04-20 To 2022-02-01 (200 days)
+	Test: From 2022-02-02 To 2022-04-13 (50 days)
+Split 4:
+	Train: From 2021-06-30 To 2022-04-13 (200 days)
+	Test: From 2022-04-14 To 2022-06-27 (50 days)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<!-- ````{div} full-width -->
+<figure class="align-center" id="rolling-window-cv">
+<a class="reference internal image-reference" href="../_images/rolling_window_cv.png"><img alt="../_images/rolling_window_cv.png" src="../_images/rolling_window_cv.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.4 </span><span class="caption-text">Rolling Window Cross-Validation for NVIDIA stock price data (2020-2022). The visualization demonstrates four sequential splits with fixed-size training windows (green) that slide forward through time, maintaining consistent 200-day training periods. Unlike expanding windows, each training set discards older data as it moves forward, focusing on the most recent 200 days of market behavior. Test sets (blue) remain consistent at 50 days each. This approach is particularly effective for capturing evolving market dynamics during NVIDIA’s transition period from gaming-focused to AI-infrastructure company.</span><a class="headerlink" href="#rolling-window-cv" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<!-- ```` -->
+<p><strong>Split Structure Comparison with Expanding Window</strong>:</p>
+<ul class="simple">
+<li><p><strong>Training Data</strong>: Green shaded areas maintain <strong>constant size</strong> (200 days each), sliding forward through time</p></li>
+<li><p><strong>Data Focus</strong>: Each split emphasizes recent patterns by discarding older historical data</p></li>
+<li><p><strong>Temporal Progression</strong>: Windows move forward systematically, maintaining the same “memory length”</p></li>
+</ul>
+<p><strong>Key Observations from Rolling Window Method</strong>:</p>
+<p><strong>Consistent Training Size</strong>:</p>
+<ul class="simple">
+<li><p>Split 1: 200 days (Aug 2020 - Jun 2021) - Early pandemic recovery period</p></li>
+<li><p>Split 2: 200 days (Oct 2020 - Aug 2021) - Includes crypto boom period</p></li>
+<li><p>Split 3: 200 days (Jan 2021 - Oct 2021) - Peak gaming/crypto demand</p></li>
+<li><p>Split 4: 200 days (Mar 2021 - Jan 2022) - Transition to AI focus begins</p></li>
+</ul>
+<p><strong>Rolling Window Advantages Demonstrated</strong>:</p>
+<ul class="simple">
+<li><p><strong>Adaptability</strong>: Each model focuses on the most recent 200-day pattern, quickly adapting to new market conditions</p></li>
+<li><p><strong>Structural Change Detection</strong>: Better captures the evolving nature of NVIDIA’s business model transformation</p></li>
+<li><p><strong>Reduced Historical Bias</strong>: Avoids influence from outdated market patterns (e.g., pre-AI era pricing)</p></li>
+<li><p><strong>Consistent Memory</strong>: All models use identical training periods, enabling fair performance comparisons</p></li>
+</ul>
+<p><strong>Market Context Analysis</strong>:</p>
+<ul class="simple">
+<li><p><strong>Early Splits</strong>: Focus on gaming and cryptocurrency mining demand cycles</p></li>
+<li><p><strong>Later Splits</strong>: Begin incorporating early AI/data center growth signals</p></li>
+<li><p><strong>Pattern Evolution</strong>: Shows how rolling windows capture the company’s strategic pivot more dynamically than expanding windows</p></li>
+</ul>
+<p><strong>Advantages</strong>:</p>
+<ul class="simple">
+<li><p>Adapts to new data trends through the rolling mechanism</p></li>
+<li><p>Provides more robust forecasts in dynamic environments</p></li>
+<li><p>Prevents overfitting through consistent window size</p></li>
+<li><p>Better for non-stationary time series with structural breaks</p></li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul class="simple">
+<li><p>May discard valuable historical information</p></li>
+<li><p>Requires sufficient data for meaningful window sizes</p></li>
+<li><p>Less suitable for capturing long-term patterns</p></li>
+</ul>
+</section>
+<section id="blocked-cross-validation">
+<h3><span class="section-number">1.3.4.3. </span>Blocked Cross-Validation<a class="headerlink" href="#blocked-cross-validation" title="Link to this heading">#</a></h3>
+<p><strong>Definition</strong>: Blocked Cross-Validation introduces gaps (blocking periods) between training and test sets to reduce temporal correlation and minimize data leakage due to autocorrelation.</p>
+<p><strong>Key Concepts</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Purging</strong>: Eliminates observations from the training set that have labels overlapping in time with the test set</p></li>
+<li><p><strong>Embargo</strong>: Adds an additional buffer period after the test set to eliminate serial correlation between consecutive periods</p></li>
+</ol>
+<p><strong>Why It’s Needed</strong>:</p>
+<ul class="simple">
+<li><p>Time series data exhibits <strong>autocorrelation</strong> - observations close in time are correlated</p></li>
+<li><p>Even without direct data leakage, temporal dependencies can leak future information into training</p></li>
+<li><p>Traditional CV methods can underestimate prediction errors due to these dependencies</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PurgedTimeSeriesSplit</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">embargo_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> 
+                 <span class="n">purge_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Purged Time Series Cross-Validation with embargo</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        n_splits : int</span>
+<span class="sd">            Number of splits</span>
+<span class="sd">        embargo_pct : float</span>
+<span class="sd">            Percentage of data to embargo after test set</span>
+<span class="sd">        purge_pct : float  </span>
+<span class="sd">            Percentage of data to purge before test set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embargo_pct</span> <span class="o">=</span> <span class="n">embargo_pct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">purge_pct</span> <span class="o">=</span> <span class="n">purge_pct</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">test_size</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate embargo and purge sizes</span>
+        <span class="n">embargo_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">embargo_pct</span><span class="p">)</span>
+        <span class="n">purge_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">purge_pct</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+            <span class="c1"># Test set boundaries</span>
+            <span class="n">test_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">test_size</span>
+            <span class="n">test_end</span> <span class="o">=</span> <span class="n">test_start</span> <span class="o">+</span> <span class="n">test_size</span>
+            
+            <span class="k">if</span> <span class="n">test_end</span> <span class="o">&gt;=</span> <span class="n">n_samples</span><span class="p">:</span>
+                <span class="k">break</span>
+                
+            <span class="c1"># Training set (before test set, with purging)</span>
+            <span class="n">train_end</span> <span class="o">=</span> <span class="n">test_start</span> <span class="o">-</span> <span class="n">purge_size</span>
+            <span class="n">train_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">train_end</span><span class="p">))</span>
+            
+            <span class="c1"># Test set</span>
+            <span class="n">test_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">test_start</span><span class="p">,</span> <span class="n">test_end</span><span class="p">)</span>
+            
+            <span class="c1"># Apply embargo: exclude period after test set from next training</span>
+            <span class="c1"># (This affects subsequent iterations)</span>
+            
+            <span class="k">yield</span> <span class="n">train_indices</span><span class="p">,</span> <span class="n">test_indices</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">purged_cv</span> <span class="o">=</span> <span class="n">PurgedTimeSeriesSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">embargo_pct</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">purge_pct</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Blocked/Purged Cross-Validation:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">purged_cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Train: From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_idx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">train_idx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)</span><span class="si">}</span><span class="s2"> days)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Test: From </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_idx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;To </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_idx</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)</span><span class="si">}</span><span class="s2"> days)&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Show the gap</span>
+        <span class="n">gap_days</span> <span class="o">=</span> <span class="n">test_idx</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="n">train_idx</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">gap_days</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Gap: </span><span class="si">{</span><span class="n">gap_days</span><span class="si">}</span><span class="s2"> days (purged)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Blocked/Purged Cross-Validation:
+Split 1:
+	Train: From 2020-11-23 To 2021-10-15 (226 days)
+	Test: From 2021-11-22 To 2022-11-18 (251 days)
+	Gap: 25 days (purged)
+Split 2:
+	Train: From 2020-11-23 To 2022-10-14 (477 days)
+	Test: From 2022-11-21 To 2023-11-20 (251 days)
+	Gap: 25 days (purged)
+Split 3:
+	Train: From 2020-11-23 To 2023-10-16 (728 days)
+	Test: From 2023-11-21 To 2024-11-19 (251 days)
+	Gap: 25 days (purged)
+Split 4:
+	Train: From 2020-11-23 To 2024-10-15 (979 days)
+	Test: From 2024-11-20 To 2025-11-20 (251 days)
+	Gap: 25 days (purged)
+</pre></div>
+</div>
+</div>
+</div>
+<!-- ````{div} full-width -->
+<figure class="align-center" id="blocked-cv">
+<a class="reference internal image-reference" href="../_images/blocked_cv.png"><img alt="../_images/blocked_cv.png" src="../_images/blocked_cv.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.5 </span><span class="caption-text">Blocked (Purged) Cross-Validation for NVIDIA stock price data (2020-2025). This visualization demonstrates the critical concept of temporal gaps in time series validation. Training sets (green) grow over time but are separated from test sets (blue) by purged gaps (red) that prevent data leakage from autocorrelation. The 25-day gaps ensure that temporal dependencies between consecutive observations don’t artificially inflate model performance estimates. This method provides more realistic performance estimates for financial time series where price movements exhibit strong serial correlation.</span><a class="headerlink" href="#blocked-cv" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<!-- ```` -->
+<p><strong>Critical Features of Blocked Cross-Validation Visualization</strong>:</p>
+<p><strong>Purged Gaps (Red Areas)</strong>:</p>
+<ul class="simple">
+<li><p><strong>25-day buffer zones</strong> between training and test sets</p></li>
+<li><p>Explicitly removed from both training and testing to break autocorrelation chains</p></li>
+<li><p>Prevent information leakage from temporally correlated observations</p></li>
+<li><p>Size determined by autocorrelation analysis (2% of total data in this example)</p></li>
+</ul>
+<p><strong>Expanding Training with Gaps</strong>:</p>
+<ul class="simple">
+<li><p>Training sets (green) still grow over time like expanding window CV</p></li>
+<li><p>But <strong>critically stop before test periods</strong> to maintain temporal independence</p></li>
+<li><p>Each split incorporates more historical knowledge while respecting temporal boundaries</p></li>
+</ul>
+<p><strong>Realistic Performance Assessment</strong>:</p>
+<ul class="simple">
+<li><p><strong>Split 1</strong>: Tests model on 2021-2022 data using only pre-gap 2020-2021 training</p></li>
+<li><p><strong>Split 2</strong>: Tests on 2022-2023 period with expanded training up to mid-2022 gap</p></li>
+<li><p><strong>Split 3</strong>: Evaluates 2023-2024 AI boom period with comprehensive pre-2023 training</p></li>
+<li><p><strong>Split 4</strong>: Tests most recent period (2024-2025) with maximum historical context</p></li>
+</ul>
+<p><strong>Applications</strong>:</p>
+<ul class="simple">
+<li><p><strong>Financial Time Series</strong>: Where price movements exhibit strong autocorrelation</p></li>
+<li><p><strong>High-frequency Data</strong>: Where serial correlation extends over multiple periods</p></li>
+<li><p><strong>Label Overlap</strong>: When features are constructed using forward-looking windows</p></li>
+<li><p><strong>Regulatory Compliance</strong>: When avoiding look-ahead bias is critical</p></li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul class="simple">
+<li><p>More accurate error estimates than standard CV</p></li>
+<li><p>Reduces data leakage from temporal dependencies</p></li>
+<li><p>Better model selection in presence of autocorrelation</p></li>
+<li><p>Provides more conservative (realistic) performance estimates</p></li>
+</ul>
+<p><strong>Practical Considerations</strong>:</p>
+<ul class="simple">
+<li><p><strong>Gap Size</strong>: Should be based on autocorrelation function analysis</p></li>
+<li><p><strong>Embargo Period</strong>: Typically 5-10% of total sample size</p></li>
+<li><p><strong>Trade-off</strong>: Larger gaps provide better independence but reduce training data</p></li>
+<li><p><strong>Computational Cost</strong>: More complex than standard CV but essential for time series</p></li>
+</ul>
+</section>
+</section>
+<section id="practical-considerations-for-time-series-cv">
+<h2><span class="section-number">1.3.5. </span>Practical Considerations for Time Series CV<a class="headerlink" href="#practical-considerations-for-time-series-cv" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Choosing the Number of Splits:</strong></p>
+<ul class="simple">
+<li><p>More splits provide better performance estimates but increase computational cost</p></li>
+<li><p>Consider the trade-off between statistical reliability and practical constraints</p></li>
+<li><p>Typically 3-10 splits depending on dataset size and computational resources</p></li>
+</ul>
+</li>
+<li><p><strong>Test Set Size:</strong></p>
+<ul class="simple">
+<li><p>Should reflect the actual forecasting horizon of interest</p></li>
+<li><p>For daily data: 30-90 days for monthly forecasting, 252 days for annual</p></li>
+<li><p>Balance between having enough test data for reliable evaluation and sufficient training data</p></li>
+</ul>
+</li>
+<li><p><strong>Temporal Alignment:</strong></p>
+<ul class="simple">
+<li><p>Ensure splits align with natural time boundaries (e.g., month/quarter ends for business data)</p></li>
+<li><p>Consider seasonal patterns when determining split points</p></li>
+<li><p>Account for calendar effects (holidays, weekends) in financial data</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_01"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C01S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>Best Sources for Public Datasets</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_02/Intro2TS_C02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Missing Data in Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">1.3.1. Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-cross-validation-fails-for-time-series">1.3.2. Why Standard Cross-Validation Fails for Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3.3. Time Series Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-time-series-cross-validation">1.3.4. Types of Time Series Cross-Validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window">1.3.4.1. Expanding Window</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-sliding-window-cross-validation">1.3.4.2. Rolling/Sliding Window Cross-Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-cross-validation">1.3.4.3. Blocked Cross-Validation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-considerations-for-time-series-cv">1.3.5. Practical Considerations for Time Series CV</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
