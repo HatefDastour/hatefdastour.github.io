@@ -4,18 +4,20 @@ title: "Teaching"
 ---
 
 ## University of Missouri, Columbia, MO, USA
-1. [DSA SCI 8530 - Geospatial AI & Image Analysis](/teaching/DSA_SCI_8530)
+1. [Co-Instructor for DSA SCI 7010: Principles of Data Science & Analytics](/teaching/DSA_SCI_7010)
+1. [DSA SCI 8001 - Advanced Topics in Data Science and Analytics: Introduction to Natural Language Processing and Large Language Models](/teaching/DSA_SCI_8001_llm)
+1. [DSA SCI 8001 - Advanced Topics in Data Science and Analytics: Time Series Analyses and Modeling](/teaching/DSA_SCI_8001_time)
 1. [DSA SCI 8420 - Cloud Computing for Data Analytics](/teaching/DSA_SCI_8420)
 1. [DSA SCI 8510 - Geospatial Data Engineering](/teaching/DSA_SCI_8510)
-1. [DSA SCI 8001 - Introduction to Natural Language Processing and Large Language Models](/teaching/DSA_SCI_8001)
+1. [DSA SCI 8530 - Geospatial AI & Image Analysis](/teaching/DSA_SCI_8530)
 
 ## University of Calgary, Calgary, AB, Canada
 
+1. [MATH 211 - Linear Methods I](/teaching/UC_MATH211) (Multiple Semesters)
+1. [Co-Instructor for MATH 275 - Calculus for Engineers and Scientists](/teaching/UC_MATH275)
 1. [ENEN 693 - Life Cycle Assessment](/teaching/UC_ENEN693)
 1. [ENSF 444 - Machine Learning Systems](/teaching/UC_ENSF444)
 1. [ENGG 680 - Introduction to Digital Engineering](/teaching/UC_ENGG680)
-1. [MATH 211 - Linear Methods I](/teaching/UC_MATH211) (Multiple Semesters)
-1. [Co-Instructor for MATH 275 - Calculus for Engineers and Scientists](/teaching/UC_MATH275)
 
 ## University of Lethbridge (Calgary Campus), Calgary, AB, Canada
 

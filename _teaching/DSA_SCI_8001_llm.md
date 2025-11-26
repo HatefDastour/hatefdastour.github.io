@@ -1,8 +1,8 @@
 ---
-title: "DSA SCI 8001 - Introduction to Natural Language Processing and Large Language Models"
+title: "DSA SCI 8001 - Advanced Topics in Data Science and Analytics: Introduction to Natural Language Processing and Large Language Models"
 collection: teaching
 type: "Graduate course"
-permalink: /teaching/DSA_SCI_8001
+permalink: /teaching/DSA_SCI_8001_llm
 venue: "University of Missouri, Institute for Data Science and Informatics (IDSI)"
 date: 2025-08-21
 location: "Columbia, MO, USA"
