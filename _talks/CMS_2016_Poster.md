@@ -9,4 +9,4 @@ location: "Edmonton, Alberta, Canada"
 ---
 
 
-Conference page: [http://www.caims2016.caims.ca/welcome2016.html](http://www.caims2016.caims.ca/welcome2016.html)
+A one-dimensional inverse heat conduction problem with unknown nonlinear boundary conditions is investigated in this study. Nonlinear boundary conditions are imposed involving both the flux and the temperature due to the heat transfer coefficient depends on the boundary temperature, and the dependence has a complicated or unknown structure. A numerical algorithm based on space marching scheme and the mollification method is generated, and the stability and the convergence of which are analyzed as well. Two numerical examples are tested to illustrate the efficiency of our algorithm.
