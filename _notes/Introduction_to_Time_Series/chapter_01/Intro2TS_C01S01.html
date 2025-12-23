@@ -32,9 +32,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -180,6 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -322,7 +323,7 @@ document.write(`
 <section id="id1">
 <h2><span class="section-number">1.1.1. </span>What are Time Series?<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>A <strong>time series</strong> is a sequence of data points indexed in chronological order. Most commonly, these points are recorded at regular intervals, forming a discrete-time sequence. Each observation represents the state of a variable (or variables) at a specific moment, making the temporal order an essential part of the data’s meaning.</p>
-<p>Time series differ from other data types in that reordering the observations changes their interpretation. Measurements close in time are often more related than those farther apart, a property known as <strong>temporal dependence</strong> or <strong>autocorrelation</strong>. In many modern applications, time series arrive as continuous data streams from sensors, instruments, or digital services, requiring specialized methods for storage, processing, and analysis. <span id="id2">[<a class="reference internal" href="../References.html#id410" title="Time series. August 2025. Page Version ID: 1305291979. URL: https://en.wikipedia.org/w/index.php?title=Time_series&amp;oldid=1305291979 (visited on 2025-08-15)."><em>Time series</em>, 2025</a>]</span>.</p>
+<p>Time series differ from other data types in that reordering the observations changes their interpretation. Measurements close in time are often more related than those farther apart, a property known as <strong>temporal dependence</strong> or <strong>autocorrelation</strong>. In many modern applications, time series arrive as continuous data streams from sensors, instruments, or digital services, requiring specialized methods for storage, processing, and analysis. <span id="id2">[<a class="reference internal" href="../References.html#id411" title="Time series. August 2025. Page Version ID: 1305291979. URL: https://en.wikipedia.org/w/index.php?title=Time_series&amp;oldid=1305291979 (visited on 2025-08-15)."><em>Time series</em>, 2025</a>]</span>.</p>
 <div class="proof example admonition" id="example_C01S01_01">
 <p class="admonition-title"><span class="caption-number">Example 1.1 </span> (Microsoft)</p>
 <section class="example-content" id="proof-content">
@@ -350,170 +351,185 @@ Time series data from connected devices can be thought of as continuous data str
 </section>
 <section id="time-series-formats">
 <h2><span class="section-number">1.1.2. </span>Time Series Formats<a class="headerlink" href="#time-series-formats" title="Link to this heading">#</a></h2>
-<p>Time series data extends far beyond classical tables—though numeric, timestamped records remain the most familiar form. At their core, time series are unified by their temporal sequence, but their modality and structure shape the required storage, analysis, and preprocessing methods.</p>
-<p>Below is a unified, academic overview of the main time series formats, enhanced with:</p>
-<ul class="simple">
-<li><p>Discussion of their analytical/research implications</p></li>
-<li><p>Notes on preprocessing and storage</p></li>
-<li><p>Common software tools for each modality</p></li>
-<li><p>Current advances including foundation models and unified AI approaches</p></li>
-</ul>
+<!-- Time series data extends far beyond classical tables—though numeric, timestamped records remain the most familiar form. At their core, time series are unified by their temporal sequence, but their modality and structure shape the required storage, analysis, and preprocessing methods.
+
+Below is a unified, academic overview of the main time series formats, enhanced with:
+- Discussion of their analytical/research implications
+- Notes on preprocessing and storage
+- Common software tools for each modality
+- Current advances including foundation models and unified AI approaches -->
+<p>Time series data extends far beyond classical tables—though numeric, timestamped records remain the most familiar form. At their core, time series are unified by their temporal sequence, but their modality and structure shape the required storage, analysis, and preprocessing methods. This overview examines the main time series formats with discussion of their analytical implications, preprocessing requirements, storage considerations, common software tools, and current advances including foundation models and unified AI approaches.</p>
 <section id="traditional-numeric-series">
 <h3><span class="section-number">1.1.2.1. </span>Traditional Numeric Series<a class="headerlink" href="#traditional-numeric-series" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Tabular records associating each timestamp with one or more numeric measurements—used in finance, economics, science, and industrial monitoring.</p>
-<ul class="simple">
-<li><p><strong>Univariate (single variable):</strong> Each series tracks a single variable (e.g., a stock’s daily closing price).</p>
-<ul>
-<li><p><em>Classical analysis:</em> ARIMA or exponential smoothing for forecasting; trend and seasonality extraction.</p></li>
-<li><p><em>Modern approaches:</em> Foundation models (TimesFM, Chronos) for zero-shot forecasting; transformer-based architectures for long-term predictions.</p></li>
-<li><p><em>Preprocessing:</em> Outlier detection, missing value imputation, resampling for consistent intervals.</p></li>
-<li><p><em>Software tools:</em> R (<code class="docutils literal notranslate"><span class="pre">forecast</span></code>, <code class="docutils literal notranslate"><span class="pre">tsibble</span></code>, <code class="docutils literal notranslate"><span class="pre">fable</span></code>), Python (<code class="docutils literal notranslate"><span class="pre">pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, <code class="docutils literal notranslate"><span class="pre">prophet</span></code>, <code class="docutils literal notranslate"><span class="pre">sktime</span></code>, <code class="docutils literal notranslate"><span class="pre">darts</span></code>).</p></li>
-</ul>
-</li>
-<li><p><strong>Multivariate (multiple related variables):</strong> Each record contains several tied measurements (e.g., temperature, humidity, wind speed measured at every hour).</p>
-<ul>
-<li><p><em>Classical analysis:</em> Vector autoregression (VAR), multivariate state-space models, anomaly detection.</p></li>
-<li><p><em>Modern approaches:</em> Transformer-based multivariate forecasting, foundation models with cross-series attention mechanisms.</p></li>
-<li><p><em>Example dataset:</em> Air Quality Dataset (hourly readings of pollutants and weather parameters).</p></li>
-</ul>
-</li>
-<li><p><strong>Panel or multiple independent series:</strong> Multiple separate but structurally similar series (e.g., rainfall in several unrelated cities or sales across many stores).</p>
-<ul>
-<li><p><em>Classical analysis:</em> Panel data regression, mixed-effects modeling, cross-sectional comparison.</p></li>
-<li><p><em>Modern approaches:</em> Foundation models trained on heterogeneous panels for universal forecasting across domains.</p></li>
-<li><p><em>Example dataset:</em> FRED-QD (quarterly economic data for multiple U.S. regions).</p></li>
-</ul>
-</li>
-<li><p><strong>Storage formats:</strong></p>
-<ul>
-<li><p><strong>Wide format:</strong> Each time series/variable in its own column (easy for visualization).</p></li>
-<li><p><strong>Long format:</strong> Stacked format with series/variable IDs; more flexible for modeling and aggregation.</p></li>
-</ul>
-</li>
-<li><p><strong>Storage considerations:</strong> For high-frequency, long-span data, time series databases like <strong>InfluxDB</strong> or <strong>TimescaleDB</strong> are often used. Columnar file formats (e.g., Apache Parquet, Arrow) are efficient for analytics workloads.</p></li>
-</ul>
+<!-- Tabular records associating each timestamp with one or more numeric measurements—used in finance, economics, science, and industrial monitoring.
+
+- **Univariate (single variable):** Each series tracks a single variable (e.g., a stock's daily closing price).
+  - *Classical analysis:* ARIMA or exponential smoothing for forecasting; trend and seasonality extraction.
+  - *Modern approaches:* Foundation models (TimesFM, Chronos) for zero-shot forecasting; transformer-based architectures for long-term predictions.
+  - *Preprocessing:* Outlier detection, missing value imputation, resampling for consistent intervals.
+  - *Software tools:* R (`forecast`, `tsibble`, `fable`), Python (`pandas`, `statsmodels`, `prophet`, `sktime`, `darts`).
+
+- **Multivariate (multiple related variables):** Each record contains several tied measurements (e.g., temperature, humidity, wind speed measured at every hour).
+  - *Classical analysis:* Vector autoregression (VAR), multivariate state-space models, anomaly detection.
+  - *Modern approaches:* Transformer-based multivariate forecasting, foundation models with cross-series attention mechanisms.
+  - *Example dataset:* Air Quality Dataset (hourly readings of pollutants and weather parameters).
+
+- **Panel or multiple independent series:** Multiple separate but structurally similar series (e.g., rainfall in several unrelated cities or sales across many stores).
+  - *Classical analysis:* Panel data regression, mixed-effects modeling, cross-sectional comparison.
+  - *Modern approaches:* Foundation models trained on heterogeneous panels for universal forecasting across domains.
+  - *Example dataset:* FRED-QD (quarterly economic data for multiple U.S. regions).
+
+- **Storage formats:**
+  - **Wide format:** Each time series/variable in its own column (easy for visualization).
+  - **Long format:** Stacked format with series/variable IDs; more flexible for modeling and aggregation.
+
+- **Storage considerations:** For high-frequency, long-span data, time series databases like [**InfluxDB**](https://www.influxdata.com/) or [**TimescaleDB**](https://github.com/timescale/timescaledb) are often used. Columnar file formats (e.g., Apache Parquet, Arrow) are efficient for analytics workloads. -->
+<p>Tabular records associating each timestamp with one or more numeric measurements represent the most common time series format, widely used in finance, economics, science, and industrial monitoring. These series can be organized in several structural patterns.</p>
+<p><strong>Univariate series</strong> track a single variable over time, such as a stock’s daily closing price. Classical analysis approaches include ARIMA or exponential smoothing for forecasting, along with trend and seasonality extraction. Modern approaches leverage foundation models like <a class="reference external" href="https://research.google/blog/a-decoder-only-foundation-model-for-time-series-forecasting/">TimesFM</a> and <a class="reference external" href="https://github.com/amazon-science/chronos-forecasting">Chronos</a> for zero-shot forecasting, while transformer-based architectures enable long-term predictions. Preprocessing typically involves outlier detection, missing value imputation, and resampling to ensure consistent intervals. The R ecosystem provides robust tools through packages like <code class="docutils literal notranslate"><span class="pre">forecast</span></code>, <code class="docutils literal notranslate"><span class="pre">tsibble</span></code>, and <code class="docutils literal notranslate"><span class="pre">fable</span></code>, while Python offers <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, <code class="docutils literal notranslate"><span class="pre">prophet</span></code>, <code class="docutils literal notranslate"><span class="pre">sktime</span></code>, and <code class="docutils literal notranslate"><span class="pre">darts</span></code>.</p>
+<p><strong>Multivariate series</strong> capture multiple related variables in each record, such as temperature, humidity, and wind speed measured simultaneously every hour. Classical analysis techniques include vector autoregression (VAR), multivariate state-space models, and anomaly detection. Modern transformer-based architectures can perform multivariate forecasting with foundation models incorporating cross-series attention mechanisms. The <a class="reference external" href="https://archive.ics.uci.edu/dataset/387/air+quality">UCI Air Quality Dataset</a> provides an excellent example, containing hourly readings of multiple pollutants and weather parameters.</p>
+<p><strong>Panel data or multiple independent series</strong> consist of structurally similar but separate time series, such as rainfall measurements across unrelated cities or sales data across many retail stores. Classical panel data regression, mixed-effects modeling, and cross-sectional comparison have been standard approaches. Modern foundation models trained on heterogeneous panels now enable universal forecasting across domains without task-specific training. The <a class="reference external" href="https://research.stlouisfed.org/econ/mccracken/fred-databases/">FRED-QD</a> dataset exemplifies this structure, offering quarterly economic data for multiple U.S. regions maintained by the Federal Reserve Bank of St. Louis.</p>
+<p>Storage format considerations are crucial for numeric time series. Wide format places each time series or variable in its own column, facilitating visualization, while long format uses a stacked structure with series and variable identifiers, offering more flexibility for modeling and aggregation. For high-frequency, long-span data, specialized time series databases like <a class="reference external" href="https://www.influxdata.com/"><strong>InfluxDB</strong></a> or <a class="reference external" href="https://github.com/timescale/timescaledb"><strong>TimescaleDB</strong></a> optimize time-indexed ingestion and querying. Columnar file formats such as Apache Parquet and Arrow provide efficient storage and analytics workloads, enabling fast retrieval and seamless integration with Python and R.</p>
 </section>
 <section id="event-driven-or-irregular-time-series">
 <h3><span class="section-number">1.1.2.2. </span>Event-Driven or Irregular Time Series<a class="headerlink" href="#event-driven-or-irregular-time-series" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Time-stamped data captured only when triggering events occur, as in logs or alerts. Intervals between entries vary.</p>
-<ul class="simple">
-<li><p><strong>Example:</strong> Security system records motion detection times; server logs capture only errors or significant changes.</p></li>
-<li><p><em>Classical analysis:</em> Point process modeling, event clustering, survival analysis.</p></li>
-<li><p><em>Modern approaches:</em> Neural point processes, transformer-based event sequence modeling, foundation models for irregular time series.</p></li>
-<li><p><em>Preprocessing:</em> Temporal normalization, deduplication, event aggregation by interval.</p></li>
-<li><p><strong>Event streaming tools:</strong> For real-time, at-scale applications, platforms like <strong>Apache Kafka</strong> and <strong>Pulsar</strong> manage and distribute these streams.</p></li>
-</ul>
+<!-- **Definition:** Time-stamped data captured only when triggering events occur, as in logs or alerts. Intervals between entries vary.
+
+- **Example:** Security system records motion detection times; server logs capture only errors or significant changes.
+- *Classical analysis:* Point process modeling, event clustering, survival analysis.
+- *Modern approaches:* Neural point processes, transformer-based event sequence modeling, foundation models for irregular time series.
+- *Preprocessing:* Temporal normalization, deduplication, event aggregation by interval.
+- **Event streaming tools:** For real-time, at-scale applications, platforms like **Apache Kafka** and **Pulsar** manage and distribute these streams.
+
+ -->
+<p>Event-driven data represents time-stamped observations captured only when triggering events occur, as in system logs or security alerts. Unlike regularly sampled metrics, intervals between entries vary considerably. A security system might record motion detection only when movement occurs, or server logs might capture only errors and significant state changes rather than maintaining continuous monitoring.</p>
+<p>Classical analysis approaches include point process modeling, event clustering, and survival analysis. Modern advances have introduced neural point processes, transformer-based event sequence modeling, and foundation models specifically designed for irregular time series. Preprocessing typically involves temporal normalization, deduplication, and event aggregation by interval. For real-time, at-scale applications, event streaming platforms like <a class="reference external" href="https://kafka.apache.org/"><strong>Apache Kafka</strong></a> and <a class="reference external" href="https://pulsar.apache.org/"><strong>Apache Pulsar</strong></a> provide robust infrastructure for managing and distributing these streams across distributed systems.</p>
 </section>
 <section id="signal-oriented-data-audio-biomedical-sensor">
 <h3><span class="section-number">1.1.2.3. </span>Signal-Oriented Data (Audio, Biomedical, Sensor)<a class="headerlink" href="#signal-oriented-data-audio-biomedical-sensor" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Continuous or discrete signal measurements over time, often requiring both time- and frequency-domain analysis.</p>
-<ul class="simple">
-<li><p><strong>Audio/speech:</strong> Waveform of speech/audio for recognition, speaker identification.</p>
-<ul>
-<li><p><em>Classical tools:</em> Python (<code class="docutils literal notranslate"><span class="pre">scipy.signal</span></code>), MATLAB (Signal Processing Toolbox).</p></li>
-<li><p><em>Modern approaches:</em> Transformer-based audio processing, foundation models for speech and audio understanding.</p></li>
-</ul>
-</li>
-<li><p><strong>Biomedical signals:</strong> ECG, EEG; stored in EDF, WFDB formats.</p>
-<ul>
-<li><p><em>Tools:</em> <code class="docutils literal notranslate"><span class="pre">physiozoo.com</span></code> for PPG (&amp; benchmarks), <code class="docutils literal notranslate"><span class="pre">pySPACE</span></code> for EEG analysis.</p></li>
-<li><p><em>Modern approaches:</em> Deep learning for automated diagnosis, foundation models for multi-modal biomedical signal analysis.</p></li>
-</ul>
-</li>
-<li><p><strong>Sensor/IoT streams:</strong> Temperature, vibration, and industrial metrics sampled at high frequencies; increasingly stored in <strong>TsFile, TSDF</strong>, or columnar formats for durability and efficiency.</p>
-<ul>
-<li><p><em>Preprocessing:</em> Filtering, resampling, artifact removal.</p></li>
-<li><p><em>Modern approaches:</em> Edge AI for real-time processing, foundation models for predictive maintenance.</p></li>
-</ul>
-</li>
-</ul>
+<!-- 
+
+**Definition:** Continuous or discrete signal measurements over time, often requiring both time- and frequency-domain analysis.
+
+- **Audio/speech:** Waveform of speech/audio for recognition, speaker identification.
+  - *Classical tools:* Python (`scipy.signal`), MATLAB (Signal Processing Toolbox).
+  - *Modern approaches:* Transformer-based audio processing, foundation models for speech and audio understanding.
+  
+- **Biomedical signals:** ECG, EEG; stored in EDF, WFDB formats.
+  - *Tools:* `physiozoo.com` for PPG (& benchmarks), `pySPACE` for EEG analysis.
+  - *Modern approaches:* Deep learning for automated diagnosis, foundation models for multi-modal biomedical signal analysis.
+  
+- **Sensor/IoT streams:** Temperature, vibration, and industrial metrics sampled at high frequencies; increasingly stored in **TsFile, TSDF**, or columnar formats for durability and efficiency.
+  - *Preprocessing:* Filtering, resampling, artifact removal.
+  - *Modern approaches:* Edge AI for real-time processing, foundation models for predictive maintenance. -->
+<p>Continuous or discrete signal measurements over time often require analysis in both time and frequency domains. This category encompasses diverse applications across multiple scales.</p>
+<p><strong>Audio and speech signals</strong> consist of waveforms used for recognition and speaker identification. Classical tools include Python’s <code class="docutils literal notranslate"><span class="pre">scipy.signal</span></code> library and MATLAB’s Signal Processing Toolbox for spectral analysis and filtering. Modern approaches employ transformer-based audio processing and foundation models for speech and audio understanding, enabling end-to-end learning from raw waveforms.</p>
+<p><strong>Biomedical signals</strong> such as electrocardiograms (ECG) and electroencephalograms (EEG) are typically stored in specialized formats like EDF and WFDB. <a class="reference external" href="https://physiozoo.github.io">PhysioZoo</a> provides comprehensive tools for photoplethysmography (PPG) analysis and heart rate variability benchmarks, while <code class="docutils literal notranslate"><span class="pre">pySPACE</span></code> facilitates EEG analysis. Modern deep learning approaches enable automated diagnosis, and foundation models now support multi-modal biomedical signal analysis, integrating diverse physiological measurements.</p>
+<p><strong>Sensor and IoT streams</strong> capture temperature, vibration, and industrial metrics sampled at high frequencies. These are increasingly stored in specialized formats like <a class="reference external" href="https://iotdb.apache.org/"><strong>TsFile</strong></a> (developed by Apache IoTDB) or <a class="reference external" href="https://github.com/biomarkersParkinson/tsdf"><strong>TSDF</strong></a> (Time Series Data Format), along with columnar formats, to ensure durability and efficiency. Preprocessing steps include filtering, resampling, and artifact removal. Modern approaches incorporate edge AI for real-time processing and foundation models for predictive maintenance, enabling proactive equipment monitoring.</p>
 </section>
 <section id="image-and-video-time-series">
 <h3><span class="section-number">1.1.2.4. </span>Image and Video Time Series<a class="headerlink" href="#image-and-video-time-series" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Sequences of images or video frames indexed by time—common in geospatial (earth observation), scientific, and medical contexts.</p>
-<ul class="simple">
-<li><p><strong>Examples:</strong></p>
-<ul>
-<li><p>Satellite scene series (e.g., LandSat images over a city across decades).</p></li>
-<li><p>MRI scan progression for patient monitoring.</p></li>
-<li><p>Security cameras, wildlife monitoring.</p></li>
-</ul>
-</li>
-<li><p><strong>Storage:</strong> Specialized multimedia containers (combine audio, video, annotations), but for analytical workflows, image arrays are often stored as 3D+ arrays (e.g., [time, height, width, channels]).</p></li>
-<li><p><strong>Classical tools:</strong> <code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> and <code class="docutils literal notranslate"><span class="pre">OpenCV</span></code> (Python); VANTAGE for synchronizing video and time-series bio-logger data; SamuROI for multi-scale optical imaging in neuroscience.</p></li>
-<li><p><strong>Modern approaches:</strong> Vision transformers for video analysis, foundation models combining computer vision and time series modeling, multi-modal architectures processing synchronized video and sensor data.</p></li>
-</ul>
+<!-- **Definition:** Sequences of images or video frames indexed by time—common in geospatial (earth observation), scientific, and medical contexts.
+
+- **Examples:**
+  - Satellite scene series (e.g., LandSat images over a city across decades).
+  - MRI scan progression for patient monitoring.
+  - Security cameras, wildlife monitoring.
+- **Storage:** Specialized multimedia containers (combine audio, video, annotations), but for analytical workflows, image arrays are often stored as 3D+ arrays (e.g., [time, height, width, channels]).
+- **Classical tools:** `scikit-image` and `OpenCV` (Python); VANTAGE for synchronizing video and time-series bio-logger data; SamuROI for multi-scale optical imaging in neuroscience.
+- **Modern approaches:** Vision transformers for video analysis, foundation models combining computer vision and time series modeling, multi-modal architectures processing synchronized video and sensor data. -->
+<p>Sequences of images or video frames indexed by time are increasingly common in geospatial earth observation, scientific imaging, and medical monitoring. <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-8">Landsat satellite imagery</a> provides decades of multispectral observations tracking environmental changes across cities and landscapes. MRI scan progressions enable patient monitoring over treatment periods, while security cameras and wildlife monitoring systems generate continuous visual time series.</p>
+<p>Storage approaches vary by application. Specialized multimedia containers combine audio, video, and annotations, but analytical workflows often represent image arrays as multi-dimensional arrays with dimensions for time, height, width, and spectral channels. Classical tools include <code class="docutils literal notranslate"><span class="pre">scikit-image</span></code> and <code class="docutils literal notranslate"><span class="pre">OpenCV</span></code> in Python. <a class="reference external" href="https://github.com/sschoombie/VANTAGE">VANTAGE</a> provides specialized capabilities for synchronizing video with bio-logger time-series data in animal behavior studies, while <a class="reference external" href="https://github.com/kavli-ntnu/SAMUROI">SamuROI</a> facilitates multi-scale optical imaging analysis in neuroscience research. Modern vision transformers enable sophisticated video analysis, and foundation models now seamlessly combine computer vision and time series modeling. Multi-modal architectures can process synchronized video and sensor data, extracting insights impossible from either modality alone.</p>
 </section>
 <section id="event-camera-streams">
 <h3><span class="section-number">1.1.2.5. </span>Event Camera Streams<a class="headerlink" href="#event-camera-streams" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Ultra-fast vision sensors produce streams of asynchronous pixel-level events (not full frames) every time brightness changes—rather than at fixed intervals.</p>
-<ul class="simple">
-<li><p><strong>Example:</strong> Recording high-speed robotic motion or ball trajectories with minimal blur and low power.</p></li>
-<li><p><em>Classical analysis:</em> Specialized event-based vision algorithms; typical storage as event log files with pixel coordinates, time, and polarity.</p></li>
-<li><p><em>Modern approaches:</em> Neuromorphic computing architectures, spiking neural networks, event-based transformer models.</p></li>
-</ul>
+<!-- **Definition:** Ultra-fast vision sensors produce streams of asynchronous pixel-level events (not full frames) every time brightness changes—rather than at fixed intervals.
+
+- **Example:** Recording high-speed robotic motion or ball trajectories with minimal blur and low power.
+- *Classical analysis:* Specialized event-based vision algorithms; typical storage as event log files with pixel coordinates, time, and polarity.
+- *Modern approaches:* Neuromorphic computing architectures, spiking neural networks, event-based transformer models. -->
+<p>Ultra-fast vision sensors represent a paradigm shift from traditional frame-based cameras. Event cameras produce streams of asynchronous pixel-level events triggered whenever brightness changes occur, rather than capturing full frames at fixed intervals. This approach enables recording high-speed robotic motion or ball trajectories with minimal motion blur and dramatically reduced power consumption.</p>
+<p>Classical analysis relies on specialized event-based vision algorithms, with data typically stored as event log files containing pixel coordinates, timestamps, and polarity information. Modern approaches employ neuromorphic computing architectures, spiking neural networks that process events asynchronously, and event-based transformer models that can learn spatiotemporal patterns directly from event streams.</p>
 </section>
 <section id="textual-and-log-streams">
 <h3><span class="section-number">1.1.2.6. </span>Textual and Log Streams<a class="headerlink" href="#textual-and-log-streams" title="Link to this heading">#</a></h3>
-<p><strong>Definition:</strong> Sequences of time-stamped textual entries, such as structured system logs, chat transcripts, or social media posts.</p>
-<ul class="simple">
-<li><p><strong>Examples:</strong></p>
-<ul>
-<li><p>Twitter traffic during news events.</p></li>
-<li><p>Server/application logs for anomaly detection.</p></li>
-<li><p>IoT text logs from connected sensors.</p></li>
-</ul>
-</li>
-<li><p><em>Classical analysis:</em> Trend detection, text mining, event correlation.</p></li>
-<li><p><em>Modern approaches:</em> Large language models for log analysis, foundation models combining NLP and time series modeling for contextual understanding.</p></li>
-<li><p><em>Preprocessing:</em> Parsing, timestamp alignment, log template discovery, text normalization.</p></li>
-<li><p><em>Tools:</em> Python’s <code class="docutils literal notranslate"><span class="pre">pandas</span></code> for time series logs; <code class="docutils literal notranslate"><span class="pre">nltk</span></code>/<code class="docutils literal notranslate"><span class="pre">spaCy</span></code> for text; log-specific tools for organizing, searching, and visualizing event logs.</p></li>
-</ul>
+<!-- **Definition:** Sequences of time-stamped textual entries, such as structured system logs, chat transcripts, or social media posts.
+
+- **Examples:**
+  - Twitter traffic during news events.
+  - Server/application logs for anomaly detection.
+  - IoT text logs from connected sensors.
+- *Classical analysis:* Trend detection, text mining, event correlation.
+- *Modern approaches:* Large language models for log analysis, foundation models combining NLP and time series modeling for contextual understanding.
+- *Preprocessing:* Parsing, timestamp alignment, log template discovery, text normalization.
+- *Tools:* Python's `pandas` for time series logs; `nltk`/`spaCy` for text; log-specific tools for organizing, searching, and visualizing event logs. -->
+<p>Sequences of time-stamped textual entries span structured system logs, chat transcripts, and social media posts. Twitter traffic during breaking news events, server and application logs for anomaly detection, and IoT text logs from connected sensors all exemplify this category.</p>
+<p>Classical text mining approaches include trend detection, event correlation, and temporal pattern analysis. Modern large language models have transformed log analysis capabilities, while foundation models combining natural language processing with time series modeling enable contextual understanding of temporal text patterns. Preprocessing involves parsing, timestamp alignment, log template discovery, and text normalization. Python’s <code class="docutils literal notranslate"><span class="pre">pandas</span></code> handles time series logs effectively, while <code class="docutils literal notranslate"><span class="pre">nltk</span></code> and <code class="docutils literal notranslate"><span class="pre">spaCy</span></code> provide natural language processing capabilities. Specialized log analysis tools organize, search, and visualize event logs for operational intelligence.</p>
 </section>
 </section>
 <section id="structural-and-analytical-perspectives">
 <h2><span class="section-number">1.1.3. </span>Structural and Analytical Perspectives<a class="headerlink" href="#structural-and-analytical-perspectives" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Metrics vs. Events</strong></p>
-<ul>
-<li><p><strong>Metrics:</strong> Regularly sampled (e.g., hourly weather readings).</p></li>
-<li><p><strong>Events:</strong> Irregular, trigger-driven (e.g., system fault alerts).</p></li>
-</ul>
-</li>
-<li><p><strong>Classical vs. Modern Modeling</strong></p>
-<ul>
-<li><p><strong>Classical:</strong> Suitable for interpretable, statistical approaches (ARIMA, linear regression, STL decomposition).</p></li>
-<li><p><strong>Foundation Models:</strong> Large-scale pre-trained architectures providing zero-shot and few-shot capabilities across diverse tasks and domains.</p></li>
-<li><p><strong>Hybrid Approaches:</strong> Combining classical statistical methods with modern AI for enhanced performance and interpretability.</p></li>
-</ul>
-</li>
-</ul>
+<!-- - **Metrics vs. Events**
+  - **Metrics:** Regularly sampled (e.g., hourly weather readings).
+  - **Events:** Irregular, trigger-driven (e.g., system fault alerts).
+- **Classical vs. Modern Modeling**
+  - **Classical:** Suitable for interpretable, statistical approaches (ARIMA, linear regression, STL decomposition).
+  - **Foundation Models:** Large-scale pre-trained architectures providing zero-shot and few-shot capabilities across diverse tasks and domains.
+  - **Hybrid Approaches:** Combining classical statistical methods with modern AI for enhanced performance and interpretability. -->
+<p>Understanding the distinction between <strong>metrics and events</strong> provides crucial insight into time series characteristics. Metrics represent regularly sampled measurements such as hourly weather readings, while events are irregular and trigger-driven, like system fault alerts. This distinction influences storage strategies, query patterns, and analytical approaches.</p>
+<p>The evolution from <strong>classical to modern modeling</strong> reflects broader trends in data science. Classical approaches remain suitable for interpretable, statistical analysis using techniques like ARIMA, linear regression, and STL decomposition. Foundation models represent large-scale pre-trained architectures providing zero-shot and few-shot capabilities across diverse tasks and domains without task-specific fine-tuning. Hybrid approaches increasingly combine classical statistical methods with modern AI, leveraging the interpretability of traditional approaches with the power and generalization capability of foundation models.</p>
 </section>
 <section id="storage-and-preprocessing-notes">
 <h2><span class="section-number">1.1.4. </span>Storage and Preprocessing Notes<a class="headerlink" href="#storage-and-preprocessing-notes" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Time Series Databases:</strong> <em>InfluxDB</em> and <em>TimescaleDB</em> are optimized for time-indexed ingestion/querying; TimescaleDB excels with multi-metric analytics, while InfluxDB is often used for sensor/IoT scale.</p></li>
-<li><p><strong>Columnar Data Formats:</strong> <em>Parquet</em> and <em>Arrow</em> allow fast retrieval, storage efficiency, and seamless Python/R integration, especially for analytic workloads.</p></li>
-<li><p><strong>Event Streaming Platforms:</strong> <em>Apache Kafka</em> and similar systems enable scalable, real-time ingestion and processing of event-driven or high-velocity time series.</p></li>
-<li><p><strong>Preprocessing Considerations:</strong> Each modality may require different steps—e.g., imputation of missing values for numeric data, filtering and noise reduction for signals, or parsing and normalization for text streams.</p></li>
-<li><p><strong>Foundation Model Integration:</strong> Modern workflows increasingly incorporate pre-trained foundation models that can handle multiple data modalities and tasks with minimal preprocessing.</p></li>
-</ul>
+<!-- - **Time Series Databases:** *InfluxDB* and *TimescaleDB* are optimized for time-indexed ingestion/querying; TimescaleDB excels with multi-metric analytics, while InfluxDB is often used for sensor/IoT scale.
+- **Columnar Data Formats:** *Parquet* and *Arrow* allow fast retrieval, storage efficiency, and seamless Python/R integration, especially for analytic workloads.
+- **Event Streaming Platforms:** *Apache Kafka* and similar systems enable scalable, real-time ingestion and processing of event-driven or high-velocity time series.
+- **Preprocessing Considerations:** Each modality may require different steps—e.g., imputation of missing values for numeric data, filtering and noise reduction for signals, or parsing and normalization for text streams.
+- **Foundation Model Integration:** Modern workflows increasingly incorporate pre-trained foundation models that can handle multiple data modalities and tasks with minimal preprocessing. -->
+<p><strong>Time series databases</strong> like <em>InfluxDB</em> and <em>TimescaleDB</em> optimize time-indexed ingestion and querying. TimescaleDB excels with multi-metric analytics and provides SQL compatibility through its PostgreSQL extension, while InfluxDB is often preferred for sensor and IoT scale deployments with its custom query language.</p>
+<p><strong>Columnar data formats</strong> including <em>Parquet</em> and <em>Arrow</em> enable fast retrieval, storage efficiency, and seamless integration with Python and R ecosystems. These formats are particularly effective for analytic workloads where queries access many rows but only specific columns.</p>
+<p><strong>Event streaming platforms</strong> such as <em>Apache Kafka</em> and <em>Apache Pulsar</em> enable scalable, real-time ingestion and processing of event-driven or high-velocity time series. These platforms support distributed architectures with fault tolerance and exactly-once processing semantics.</p>
+<p><strong>Preprocessing considerations</strong> vary substantially across modalities. Numeric data requires imputation of missing values and outlier handling. Signal data demands filtering and noise reduction. Text streams need parsing and normalization. Each modality presents unique challenges that must be addressed before analysis.</p>
+<p><strong>Foundation model integration</strong> increasingly characterizes modern workflows. Pre-trained foundation models can handle multiple data modalities and tasks with minimal preprocessing, reducing the traditional feature engineering burden while improving generalization to new domains.</p>
 </section>
 <section id="current-state-of-the-art-foundation-models-and-unified-approaches">
 <h2><span class="section-number">1.1.5. </span>Current State of the Art: Foundation Models and Unified Approaches<a class="headerlink" href="#current-state-of-the-art-foundation-models-and-unified-approaches" title="Link to this heading">#</a></h2>
-<p>The field has recently witnessed transformative advances with <strong>foundation models</strong>—large, pre-trained architectures that can handle diverse time series tasks:</p>
-<p><strong>Key Developments:</strong></p>
-<ul class="simple">
-<li><p><strong>Universal Models:</strong> Foundation models like TimesFM, TimeGPT, Chronos, and TimesBERT provide zero-shot forecasting, anomaly detection, and classification across domains without task-specific training.</p></li>
-<li><p><strong>Multi-modal Integration:</strong> Current architectures seamlessly combine numeric time series with text, images, and event data for contextual understanding.</p></li>
-<li><p><strong>Synthetic Data Augmentation:</strong> Advanced synthetic data generation techniques enhance model training and enable privacy-preserving applications.</p></li>
-<li><p><strong>Hybrid Excellence:</strong> State-of-the-art systems often combine classical statistical methods with foundation models, leveraging the interpretability of traditional approaches with the power of modern AI.</p></li>
-</ul>
-<p><strong>Practical Impact:</strong>
-Students and practitioners should become familiar with both classical time series analysis (for interpretability and domain-specific insights) and modern foundation model APIs and frameworks (for scalable, generalizable solutions).</p>
+<!-- 
+The field has recently witnessed transformative advances with **foundation models**—large, pre-trained architectures that can handle diverse time series tasks:
+
+**Key Developments:**
+- **Universal Models:** Foundation models like TimesFM, TimeGPT, Chronos, and TimesBERT provide zero-shot forecasting, anomaly detection, and classification across domains without task-specific training.
+- **Multi-modal Integration:** Current architectures seamlessly combine numeric time series with text, images, and event data for contextual understanding.
+- **Synthetic Data Augmentation:** Advanced synthetic data generation techniques enhance model training and enable privacy-preserving applications.
+- **Hybrid Excellence:** State-of-the-art systems often combine classical statistical methods with foundation models, leveraging the interpretability of traditional approaches with the power of modern AI.
+
+**Practical Impact:**
+Students and practitioners should become familiar with both classical time series analysis (for interpretability and domain-specific insights) and modern foundation model APIs and frameworks (for scalable, generalizable solutions).
+
+````{div} full-width
+
+```{table}  Summary Table
+:name: table_C01S01_01
+
+| Format                                      | Description                                        | Classical Analysis Methods           | Modern AI Approaches                             | Storage/Tools                                              |
+|----------------------------------------------|----------------------------------------------------|--------------------------------------|--------------------------------------------------|------------------------------------------------------------|
+| **Numeric (uni/multivariate/panel)**         | Timestamps w/ one or more numeric values           | ARIMA, VAR, regression, clustering   | Foundation models, transformers, zero-shot forecasting | Time series DB (InfluxDB, TimescaleDB); pandas, R, Parquet |
+| **Irregular/Event**                         | Irregular event records w/ timestamps              | Point processes, survival analysis   | Neural point processes, event transformers       | Kafka, Pulsar, Pandas                                       |
+| **Signal (Audio/Biomedical/Sensor)**         | Continuous/discrete signals, high-frequency        | FFT, filtering, spectral analysis    | Deep learning, foundation models for signals     | TsFile, TSDF; scipy, MATLAB                                 |
+| **Images & Video Sequences**                 | Time-indexed visual frames                         | Image processing, computer vision    | Vision transformers, multi-modal foundation models | Multimedia containers, scikit-image, VANTAGE                |
+| **Event Camera Streams**                     | Pixel-level, event-based vision streams            | Event-based algorithms               | Neuromorphic computing, spiking neural networks  | Custom event log files, event-based analysis tools           |
+| **Textual/Log Streams**                      | Time-stamped text entries                          | NLP, text mining, event correlation  | Large language models, multi-modal AI            | Pandas, NLP libraries (spaCy/nltk), log parsers              |
+
+```
+```` -->
+<p>The field has recently witnessed transformative advances with <strong>foundation models</strong>—large, pre-trained architectures that can handle diverse time series tasks across domains.</p>
+<p><strong>Universal models</strong> like <a class="reference external" href="https://research.google/blog/a-decoder-only-foundation-model-for-time-series-forecasting/">TimesFM</a>, <a class="reference external" href="https://github.com/Nixtla/nixtla">TimeGPT</a>, <a class="reference external" href="https://github.com/amazon-science/chronos-forecasting">Chronos</a>, and TimesBERT provide zero-shot forecasting, anomaly detection, and classification across domains without requiring task-specific training. These models learn generalizable temporal patterns from diverse training data, enabling strong performance on unseen time series.</p>
+<p><strong>Multi-modal integration</strong> represents another frontier. Current architectures seamlessly combine numeric time series with text, images, and event data for contextual understanding. This integration enables richer analysis by leveraging complementary information across modalities.</p>
+<p><strong>Synthetic data augmentation</strong> techniques have advanced significantly, enhancing model training and enabling privacy-preserving applications. Generative models can create realistic time series that preserve statistical properties while protecting sensitive information.</p>
+<p><strong>Hybrid excellence</strong> characterizes state-of-the-art systems, which often combine classical statistical methods with foundation models. This approach leverages the interpretability and domain-specific insights of traditional methods while harnessing the power and adaptability of modern AI architectures.</p>
+<p><strong>Practical implications</strong> for students and practitioners are significant. Familiarity with both classical time series analysis—for interpretability and domain-specific insights—and modern foundation model APIs and frameworks—for scalable, generalizable solutions—has become essential. The most effective practitioners understand when to apply each approach and how to combine them for optimal results.</p>
 <div class="full-width docutils">
-<div class="pst-scrollable-table-container"><table class="table" id="table-c01s01-01">
-<caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Summary Table</span><a class="headerlink" href="#table-c01s01-01" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="table-time-series-formats">
+<caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Summary Table: Time Series Formats and Analysis Approaches</span><a class="headerlink" href="#table-time-series-formats" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Format</p></th>
 <th class="head"><p>Description</p></th>
