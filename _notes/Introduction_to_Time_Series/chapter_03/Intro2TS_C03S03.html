@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.3. Additive vs. Multiplicative Decomposition &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_03/Intro2TS_C03S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.4. Robust STL" href="Intro2TS_C03S04.html" />
+    <link rel="prev" title="3.2. Seasonal-Trend Decomposition using LOESS (STL)" href="Intro2TS_C03S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C03.html">3. Seasonality and Stationarity</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">4. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Additive vs. Multiplicative Decomposition</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-framework">3.3.1. Mathematical Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-air-passengers-multiplicative-decomposition">3.3.1.1. Example: Air Passengers (Multiplicative Decomposition)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-vs-multiplicative-visual-comparison">3.3.1.2. Additive vs. Multiplicative: Visual Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.1.3. Forecasting Implications</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="additive-vs-multiplicative-decomposition">
+<h1><span class="section-number">3.3. </span>Additive vs. Multiplicative Decomposition<a class="headerlink" href="#additive-vs-multiplicative-decomposition" title="Link to this heading">#</a></h1>
+<section id="mathematical-framework">
+<h2><span class="section-number">3.3.1. </span>Mathematical Framework<a class="headerlink" href="#mathematical-framework" title="Link to this heading">#</a></h2>
+<p>For a time series <span class="math notranslate nohighlight">\(y_t\)</span>, two decomposition models exist <span id="id1">[<a class="reference internal" href="../References.html#id425" title="Robert B Cleveland, William S Cleveland, Jean E McRae, and Irma Terpenning. STL: a seasonal-trend decomposition. Journal of Official Stattistics, 6(1):3–73, 1990. URL: https://www.math.unm.edu/~lil/Stat581/STL.pdf.">Cleveland <em>et al.</em>, 1990</a>, <a class="reference internal" href="../References.html#id428" title="Qingsong Wen, Jingkun Gao, Xiaomin Song, Liang Sun, Huan Xu, and Shenghuo Zhu. RobustSTL: A Robust Seasonal-Trend Decomposition Algorithm for Long Time Series. Proceedings of the AAAI Conference on Artificial Intelligence, 33(01):5409–5416, July 2019. doi:10.1609/aaai.v33i01.33015409.">Wen <em>et al.</em>, 2019</a>, <a class="reference internal" href="../References.html#id429" title="Qingsong Wen, Zhe Zhang, Yan Li, and Liang Sun. Fast RobustSTL: Efficient and Robust Seasonal-Trend Decomposition for Time Series with Complex Patterns. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining, 2203–2213. Virtual Event CA USA, August 2020. ACM. doi:10.1145/3394486.3403271.">Wen <em>et al.</em>, 2020</a>]</span>:</p>
+<p><strong>Additive model</strong> (appropriate when seasonal amplitude is constant):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-133f4a23-1812-44ea-98dc-d9f1d8fb40ad">
+<span class="eqno">(3.8)<a class="headerlink" href="#equation-133f4a23-1812-44ea-98dc-d9f1d8fb40ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y_t = T_t + S_t + R_t
+\end{equation}\]</div>
+<p><strong>Multiplicative model</strong> (appropriate when seasonal amplitude grows with trend):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e1c43755-0aa0-4a88-98d3-fdf827590b0c">
+<span class="eqno">(3.9)<a class="headerlink" href="#equation-e1c43755-0aa0-4a88-98d3-fdf827590b0c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+y_t = T_t \times S_t \times R_t
+\end{equation}\]</div>
+<p>When seasonal variations scale proportionally with the series level, a multiplicative model is more appropriate. STL, which assumes an additive structure, handles multiplicative data via <strong>logarithmic transformation</strong>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b6f83113-11af-4aae-ad73-99016db718a0">
+<span class="eqno">(3.10)<a class="headerlink" href="#equation-b6f83113-11af-4aae-ad73-99016db718a0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\log(y_t) = \log(T_t \times S_t \times R_t) = \log(T_t) + \log(S_t) + \log(R_t)
+\end{equation}\]</div>
+<p>After decomposing <span class="math notranslate nohighlight">\(\log(y_t)\)</span> additively, components are back-transformed:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-adabfd24-e3d9-40ed-800b-306f05a15762">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-adabfd24-e3d9-40ed-800b-306f05a15762" title="Permalink to this equation">#</a></span>\[\begin{align}
+T_t &amp;= \exp(\tilde{T}_t) \\
+S_t &amp;= \exp(\tilde{S}_t) \\
+R_t &amp;= \exp(\tilde{R}_t)
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{T}_t\)</span>, <span class="math notranslate nohighlight">\(\tilde{S}_t\)</span>, <span class="math notranslate nohighlight">\(\tilde{R}_t\)</span> are the additive components of <span class="math notranslate nohighlight">\(\log(y_t)\)</span>.</p>
+<section id="example-air-passengers-multiplicative-decomposition">
+<h3><span class="section-number">3.3.1.1. </span>Example: Air Passengers (Multiplicative Decomposition)<a class="headerlink" href="#example-air-passengers-multiplicative-decomposition" title="Link to this heading">#</a></h3>
+<p>The <a class="reference external" href="https://www.kaggle.com/datasets/brmil07/air-passengers-dataset/data">classic Air Passengers dataset</a> (monthly totals from 1949–1960) exhibits clear <strong>multiplicative seasonality</strong>: seasonal fluctuations grow proportionally with the increasing trend in air travel demand.</p>
+<figure class="align-center" id="fig-air-passengers-original">
+<a class="reference internal image-reference" href="../_images/air_passengers_original.png"><img alt="../_images/air_passengers_original.png" src="../_images/air_passengers_original.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.13 </span><span class="caption-text">Monthly airline passenger totals from January 1949 to December 1960. The series exhibits a strong upward trend with clear seasonal peaks during summer months (June–August). Crucially, the amplitude of seasonal fluctuations increases proportionally with the trend level, indicating multiplicative rather than additive seasonality.</span><a class="headerlink" href="#fig-air-passengers-original" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="additive-vs-multiplicative-visual-comparison">
+<h3><span class="section-number">3.3.1.2. </span>Additive vs. Multiplicative: Visual Comparison<a class="headerlink" href="#additive-vs-multiplicative-visual-comparison" title="Link to this heading">#</a></h3>
+<div class="full-width docutils">
+<figure class="align-center" id="fig-additive-vs-multiplicative">
+<a class="reference internal image-reference" href="../_images/air_passengers_additive_vs_multiplicative.png"><img alt="../_images/air_passengers_additive_vs_multiplicative.png" src="../_images/air_passengers_additive_vs_multiplicative.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.14 </span><span class="caption-text">Comparison of additive (left) versus multiplicative (right) STL decomposition for the Air Passengers series. <strong>Left panels</strong>: Additive decomposition incorrectly assumes constant seasonal amplitude, leading to increasing residual variance over time as the model fails to account for growing seasonal fluctuations. <strong>Right panels</strong>: Multiplicative decomposition (via log-transformation) correctly captures proportional seasonal growth, yielding residuals with stable variance throughout the series. The multiplicative model is appropriate for this dataset.</span><a class="headerlink" href="#fig-additive-vs-multiplicative" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<p>Key Observations from <a class="reference internal" href="#fig-additive-vs-multiplicative"><span class="std std-numref">Fig. 3.14</span></a></p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Additive model (left)</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Trend</strong>: Captures overall growth but underestimates the acceleration.</p></li>
+<li><p class="sd-card-text"><strong>Seasonal</strong>: Fixed amplitude (~20–30 passengers) throughout, failing to account for larger seasonal swings in later years.</p></li>
+<li><p class="sd-card-text"><strong>Residual</strong>: Shows <strong>heteroscedasticity</strong> (increasing variance over time), indicating model misspecification.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Multiplicative model (right)</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Trend</strong>: Smooth exponential growth trajectory.</p></li>
+<li><p class="sd-card-text"><strong>Seasonal</strong>: Amplitude proportional to trend level (e.g., seasonal multiplier ranges from 0.85 to 1.15, meaning ±15% variation around trend).</p></li>
+<li><p class="sd-card-text"><strong>Residual</strong>: <strong>Homoscedastic</strong> (constant variance), confirming appropriate model choice.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="fig-air-passengers-variance">
+<a class="reference internal image-reference" href="../_images/air_passengers_variance.png"><img alt="../_images/air_passengers_variance.png" src="../_images/air_passengers_variance.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Variance decomposition for the multiplicative STL decomposition of Air Passengers (on log scale). The trend dominates, explaining approximately 80% of total log-variance, while seasonality accounts for ~8.5%, and residuals capture only ~2.5%, indicating an excellent fit.</span><a class="headerlink" href="#fig-air-passengers-variance" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table" id="table-air-passengers-variance">
+<caption><span class="caption-number">Table 3.4 </span><span class="caption-text">Variance decomposition for multiplicative STL (log scale). Trend captures the exponential growth, seasonality captures the annual cycle, and residuals represent unexplained variation.</span><a class="headerlink" href="#table-air-passengers-variance" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Component</p></th>
+<th class="head text-right"><p>Variance (log scale)</p></th>
+<th class="head text-right"><p>Percent_of_total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Trend</p></td>
+<td class="text-right"><p>0.1776</p></td>
+<td class="text-right"><p>91.1518</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Seasonal</p></td>
+<td class="text-right"><p>0.0166</p></td>
+<td class="text-right"><p>8.5292</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Residual</p></td>
+<td class="text-right"><p>0.0005</p></td>
+<td class="text-right"><p>0.2507</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-center" id="fig-seasonal-pattern-multipliers">
+<a class="reference internal image-reference" href="../_images/air_passengers_seasonal_pattern.png"><img alt="../_images/air_passengers_seasonal_pattern.png" src="../_images/air_passengers_seasonal_pattern.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.16 </span><span class="caption-text">Multiplicative seasonal pattern for Air Passengers (1949–1960). Each bar represents the seasonal multiplier for that month (e.g., July ≈ 1.13 means +13% above trend). Summer months (June–August) show strong positive seasonality (blue bars), while winter months (November–February) show negative seasonality (orange bars), reflecting vacation travel patterns.</span><a class="headerlink" href="#fig-seasonal-pattern-multipliers" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table" id="table-seasonal-multipliers">
+<caption><span class="caption-number">Table 3.5 </span><span class="caption-text">Multiplicative seasonal pattern: monthly multipliers and percent changes relative to trend. Positive values indicate months with above-trend passenger counts; negative values indicate below-trend months.</span><a class="headerlink" href="#table-seasonal-multipliers" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Month</p></th>
+<th class="head text-right"><p>Seasonal_Multiplier</p></th>
+<th class="head text-right"><p>Percent_Change</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>January</p></td>
+<td class="text-right"><p>0.9128</p></td>
+<td class="text-right"><p>-8.7185</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>February</p></td>
+<td class="text-right"><p>0.976</p></td>
+<td class="text-right"><p>-2.4028</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>March</p></td>
+<td class="text-right"><p>1.0882</p></td>
+<td class="text-right"><p>8.818</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>April</p></td>
+<td class="text-right"><p>1.0227</p></td>
+<td class="text-right"><p>2.268</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>May</p></td>
+<td class="text-right"><p>0.9699</p></td>
+<td class="text-right"><p>-3.0139</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>June</p></td>
+<td class="text-right"><p>1.0691</p></td>
+<td class="text-right"><p>6.9107</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>July</p></td>
+<td class="text-right"><p>1.1671</p></td>
+<td class="text-right"><p>16.7145</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>August</p></td>
+<td class="text-right"><p>1.1686</p></td>
+<td class="text-right"><p>16.858</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>September</p></td>
+<td class="text-right"><p>1.0663</p></td>
+<td class="text-right"><p>6.6333</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>October</p></td>
+<td class="text-right"><p>0.9206</p></td>
+<td class="text-right"><p>-7.9434</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>November</p></td>
+<td class="text-right"><p>0.7982</p></td>
+<td class="text-right"><p>-20.1813</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>December</p></td>
+<td class="text-right"><p>0.9189</p></td>
+<td class="text-right"><p>-8.1087</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Here is a version consistent with the new seasonal multipliers:</p>
+<ol class="arabic simple">
+<li><p><strong>Exponential trend growth</strong>: Air travel still exhibits strong exponential growth over 1949–1960, with passenger volumes increasing several‑fold over the sample, consistent with post‑war economic expansion and rapid adoption of commercial aviation.</p></li>
+<li><p><strong>Proportional seasonality</strong>: Seasonal multipliers now range from about 0.80 in November (roughly 20% below trend) to about 1.17 in July–August (roughly 17% above trend). This confirms a strongly <strong>multiplicative</strong> seasonal structure: as the baseline travel volume rises over time, the absolute seasonal swings become larger (e.g., from tens of thousands of passengers early in the sample to many tens of thousands later), while the <strong>relative percentage variation by month</strong> remains roughly stable from year to year.</p></li>
+<li><p><strong>Stable residuals</strong>: After accounting for the exponential trend and these proportional seasonal effects, the remaining residuals continue to show approximately constant variance and no systematic temporal pattern, indicating that the multiplicative decomposition captures the main systematic features of the series.</p></li>
+</ol>
+</section>
+<section id="forecasting-implications">
+<h3><span class="section-number">3.3.1.3. </span>Forecasting Implications<a class="headerlink" href="#forecasting-implications" title="Link to this heading">#</a></h3>
+<p>For forecasting, the multiplicative decomposition enables:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f9258aae-bfb9-4799-8eef-4074311be6d7">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-f9258aae-bfb9-4799-8eef-4074311be6d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y}_{T+h} = \hat{T}_{T+h} \times \hat{S}_{(T+h \mod 12)}
+\end{equation}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{T}_{T+h}\)</span> is an extrapolated trend (e.g., via exponential smoothing or regression on log-trend)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{S}_{(T+h \mod 12)}\)</span> is the seasonal multiplier for month <span class="math notranslate nohighlight">\(h\)</span></p></li>
+</ul>
+<p>This formulation ensures that forecasted seasonal fluctuations <strong>grow proportionally</strong> with the trend, unlike additive forecasts which would underestimate future seasonal peaks.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reconstruct the series to verify decomposition</span>
+<span class="n">reconstructed</span> <span class="o">=</span> <span class="n">mult_trend</span> <span class="o">*</span> <span class="n">mult_seasonal</span> <span class="o">*</span> <span class="n">mult_resid</span>
+
+<span class="c1"># Reconstruction error</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">air_series</span> <span class="o">-</span> <span class="n">reconstructed</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean absolute reconstruction error: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Root mean squared error: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean absolute reconstruction error: 0.0000
+Root mean squared error: 0.0000
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="fig-reconstruction">
+<a class="reference internal image-reference" href="../_images/air_passengers_reconstruction.png"><img alt="../_images/air_passengers_reconstruction.png" src="../_images/air_passengers_reconstruction.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.17 </span><span class="caption-text"><strong>Top panel</strong>: Original Air Passengers series (black) versus reconstructed series from multiplicative STL components <span class="math notranslate nohighlight">\(T_t \times S_t \times R_t\)</span> (red dashed). The two curves are nearly indistinguishable. <strong>Bottom panel</strong>: Reconstruction error, showing negligible deviations (&lt; 1 passenger on average), confirming that the multiplicative decomposition accurately represents the observed data.</span><a class="headerlink" href="#fig-reconstruction" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_03"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C03S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Seasonal-Trend Decomposition using LOESS (STL)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C03S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Robust STL</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-framework">3.3.1. Mathematical Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-air-passengers-multiplicative-decomposition">3.3.1.1. Example: Air Passengers (Multiplicative Decomposition)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-vs-multiplicative-visual-comparison">3.3.1.2. Additive vs. Multiplicative: Visual Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.1.3. Forecasting Implications</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
