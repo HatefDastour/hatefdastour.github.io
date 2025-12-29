@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.1. Outlier Detection in Time Series &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2TS_C04S01';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.2. Outlier Classification by Scope" href="Intro2TS_C04S02.html" />
+    <link rel="prev" title="4. Outlier Detection" href="Intro2TS_C04.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C04.html">4. Outlier Detection</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S02.html">4.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S03.html">4.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S04.html">4.4. Time Series Outlier Detection: Visual Methods</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S05.html">4.6. Major Statistical Methods for Outlier Detection in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">5. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Outlier Detection in Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-outliers">4.1.1. What Are Outliers?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">4.1.1.1. Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-outlier-detection-matters">4.1.1.2. Why Outlier Detection Matters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-synthetic-e-commerce-sales-data">4.1.2. Example: Synthetic E-commerce Sales Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-dataset-step-by-step">4.1.2.1. Building the Dataset Step-by-Step</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-dataset">4.1.3. Visualizing the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-impact-of-outliers">4.1.4. The Impact of Outliers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lessons-learned">4.1.4.1. Lessons Learned</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="outlier-detection-in-time-series">
+<h1><span class="section-number">4.1. </span>Outlier Detection in Time Series<a class="headerlink" href="#outlier-detection-in-time-series" title="Link to this heading">#</a></h1>
+<section id="what-are-outliers">
+<h2><span class="section-number">4.1.1. </span>What Are Outliers?<a class="headerlink" href="#what-are-outliers" title="Link to this heading">#</a></h2>
+<section id="definition">
+<h3><span class="section-number">4.1.1.1. </span>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h3>
+<p>Outliers are data points that deviate significantly from the normal pattern or expected behavior within a dataset.</p>
+<p><strong>In Time Series Context:</strong></p>
+<ul class="simple">
+<li><p>Observations substantially different from most data points</p></li>
+<li><p>May result from:</p>
+<ul>
+<li><p><strong>Natural variation</strong> (extreme but legitimate values)</p></li>
+<li><p><strong>Measurement errors</strong> (sensor malfunction, data entry mistakes)</p></li>
+<li><p><strong>Genuinely unusual events</strong> (system failures, external shocks)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="why-outlier-detection-matters">
+<h3><span class="section-number">4.1.1.2. </span>Why Outlier Detection Matters<a class="headerlink" href="#why-outlier-detection-matters" title="Link to this heading">#</a></h3>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Impact on Data Integrity &amp; Model Accuracy</div>
+<p class="sd-card-text"><strong>Distorts Statistical Measures:</strong> Outliers significantly skew descriptive statistics (mean, variance, correlation) and misrepresent underlying patterns and trends.</p>
+<p class="sd-card-text"><strong>Compromises Model Performance:</strong> Predictive models built on outlier-contaminated data lead to biased parameter estimates and reduced forecasting accuracy.</p>
+<p class="sd-card-text"><strong>Masks True Patterns:</strong> Extreme values obscure genuine trends and seasonal patterns, leading to misinterpretations.</p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Enhancing Insights &amp; Decision-Making</div>
+<p class="sd-card-text"><strong>Reveals Important Events:</strong> Outliers can represent critical events (system failures, fraudulent activities, market shocks) requiring specific attention.</p>
+<p class="sd-card-text"><strong>Improves Data Quality:</strong> Identifying outliers helps remove erroneous entries and sensor malfunctions, ensuring higher-quality datasets.</p>
+<p class="sd-card-text"><strong>Supports Robust Decisions:</strong> Analyses that properly account for outliers lead to more reliable strategic outcomes.</p>
+<p class="sd-card-text"><strong>Enhances Model Robustness:</strong> Appropriate outlier handling creates more stable forecasting models that generalize better to new data.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-synthetic-e-commerce-sales-data">
+<h2><span class="section-number">4.1.2. </span>Example: Synthetic E-commerce Sales Data<a class="headerlink" href="#example-synthetic-e-commerce-sales-data" title="Link to this heading">#</a></h2>
+<p>To demonstrate outlier concepts, we’ll build a synthetic e-commerce dataset from scratch. This “teaching dataset” lets us control exactly what patterns exist and which values qualify as outliers.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why Build Synthetic Data?</p>
+<ol class="arabic simple">
+<li><p><strong>Complete Control:</strong> We know exactly which points are outliers and why</p></li>
+<li><p><strong>Realistic Complexity:</strong> Real time series have structure—trends, seasonality, and noise layers that interact</p></li>
+<li><p><strong>Educational Value:</strong> Seeing how common patterns emerge from simple rules builds intuition</p></li>
+<li><p><strong>Reproducibility:</strong> Anyone can run the same code and learn from the same examples</p></li>
+</ol>
+</div>
+<section id="building-the-dataset-step-by-step">
+<h3><span class="section-number">4.1.2.1. </span>Building the Dataset Step-by-Step<a class="headerlink" href="#building-the-dataset-step-by-step" title="Link to this heading">#</a></h3>
+<p><strong>Step 1: Time Horizon</strong></p>
+<p>We’ll use one year (365 days) of daily sales—long enough for patterns, short enough to visualize, and a typical business cycle.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_days</span> <span class="o">=</span> <span class="mi">365</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">n_days</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Step 2: Growth Trend</strong></p>
+<p>Most businesses grow over time. We model this as linear growth:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-306a950b-32af-45c6-a825-7da63a639400">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-306a950b-32af-45c6-a825-7da63a639400" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Trend}_t = 10,000 + 50 \times t
+\end{equation}\]</div>
+<ul class="simple">
+<li><p>Start: $10,000/day</p></li>
+<li><p>Growth: $50/day</p></li>
+<li><p>End: ~$28,250/day</p></li>
+</ul>
+<p><strong>Why this matters:</strong> A value normal in January might be suspiciously low in December due to growth—outliers depend on <strong>temporal context</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_sales</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">growth_rate</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">trend</span> <span class="o">=</span> <span class="n">base_sales</span> <span class="o">+</span> <span class="n">growth_rate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Step 3: Weekly Seasonality</strong></p>
+<p>People shop differently on weekends. We add a 30% boost Saturday-Sunday:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">day_of_week</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">dayofweek</span>  <span class="c1"># 0=Monday, 6=Sunday</span>
+<span class="n">weekend_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">day_of_week</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">weekend_mask</span>
+</pre></div>
+</div>
+<p><strong>Why this matters:</strong> High sales on Saturday are normal; the same on Tuesday would be suspicious—outliers are <strong>context-dependent</strong>.</p>
+<p><strong>Step 4: Random Noise</strong></p>
+<p>Real data is never smooth. We add natural day-to-day variation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bcc8c8d3-8f63-4d88-865c-f28fa1627912">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-bcc8c8d3-8f63-4d88-865c-f28fa1627912" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Noise} \sim \mathcal{N}(0, 500)
+\end{equation}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_days</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On a base of $10K–$28K, $500 noise (~2–5%) is realistic but small enough that outliers still stand out.</p>
+<p><strong>Step 5: Combine Components</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-c4afb735-64d9-4ad0-a0a1-f28f20e67472">
+<span class="eqno">(4.3)<a class="headerlink" href="#equation-c4afb735-64d9-4ad0-a0a1-f28f20e67472" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Sales}_t = \text{Trend}_t \times \text{Seasonality}_t + \text{Noise}_t
+\end{equation}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sales</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">*</span> <span class="n">seasonality</span> <span class="o">+</span> <span class="n">noise</span>
+</pre></div>
+</div>
+<p>Now we have realistic e-commerce sales with no outliers—just growth, weekly cycles, and noise.</p>
+<p><strong>Step 6: Inject Outliers</strong></p>
+<p>We deliberately add five outliers representing different real-world scenarios:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outlier_events</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">85</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Black Friday Sale&#39;</span><span class="p">,</span> 
+         <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Major holiday promotion&#39;</span><span class="p">},</span>
+    <span class="mi">142</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Website Outage&#39;</span><span class="p">,</span> 
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Technical failure&#39;</span><span class="p">},</span>
+    <span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Viral Marketing&#39;</span><span class="p">,</span> 
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Social media success&#39;</span><span class="p">},</span>
+    <span class="mi">265</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Data Entry Error&#39;</span><span class="p">,</span> 
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Recording mistake&#39;</span><span class="p">},</span>
+    <span class="mi">310</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Flash Sale&#39;</span><span class="p">,</span> 
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Limited-time promotion&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Why These Specific Outliers?</p>
+<ol class="arabic simple">
+<li><p><strong>Black Friday (3×):</strong> Legitimate extreme—keep it, it’s genuine business</p></li>
+<li><p><strong>Website Outage (0.6×):</strong> Operational problem—keep but flag for investigation</p></li>
+<li><p><strong>Viral Marketing (2.5×):</strong> Unexpected success—keep and study it</p></li>
+<li><p><strong>Data Entry Error (-$5K):</strong> Data quality issue—must correct or remove</p></li>
+<li><p><strong>Flash Sale (2×):</strong> Planned promotion—keep, it’s real strategy</p></li>
+</ol>
+<p>These cover the spectrum: <strong>not all outliers should be treated the same way</strong>.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Set random seed for reproducibility</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 1. Generate time index (1 year of daily data)</span>
+<span class="n">n_days</span> <span class="o">=</span> <span class="mi">365</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">n_days</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Create base trend component (gradual growth)</span>
+<span class="n">base_sales</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># Starting daily sales</span>
+<span class="n">growth_rate</span> <span class="o">=</span> <span class="mi">50</span>    <span class="c1"># Daily growth</span>
+<span class="n">trend</span> <span class="o">=</span> <span class="n">base_sales</span> <span class="o">+</span> <span class="n">growth_rate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span>
+
+<span class="c1"># 3. Add weekly seasonality (weekend boost)</span>
+<span class="n">day_of_week</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">dayofweek</span>  <span class="c1"># 0=Monday, 6=Sunday</span>
+<span class="n">weekend_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">day_of_week</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># Saturday and Sunday</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">weekend_mask</span>  <span class="c1"># 30% boost on weekends</span>
+
+<span class="c1"># 4. Add random noise (natural variation)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_days</span><span class="p">)</span>
+
+<span class="c1"># 5. Combine components to create baseline sales</span>
+<span class="n">sales</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">*</span> <span class="n">seasonality</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="c1"># 6. Inject specific outliers with business context</span>
+<span class="n">outlier_events</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">85</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Black Friday Sale&#39;</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Major holiday promotion&#39;</span><span class="p">},</span>
+    <span class="mi">142</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Website Outage&#39;</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Technical failure&#39;</span><span class="p">},</span>
+    <span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Viral Marketing&#39;</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Social media success&#39;</span><span class="p">},</span>
+    <span class="mi">265</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Data Entry Error&#39;</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Recording mistake&#39;</span><span class="p">},</span>
+    <span class="mi">310</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Flash Sale&#39;</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Limited-time promotion&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Apply outliers</span>
+<span class="n">original_sales</span> <span class="o">=</span> <span class="n">sales</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">day_idx</span><span class="p">,</span> <span class="n">event_info</span> <span class="ow">in</span> <span class="n">outlier_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s1">&#39;factor&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="n">sales</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_sales</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s1">&#39;value&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="n">sales</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+<span class="c1"># Create DataFrame</span>
+<span class="n">ecommerce_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span>
+    <span class="s1">&#39;sales&#39;</span><span class="p">:</span> <span class="n">sales</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+    <span class="s1">&#39;day_of_week&#39;</span><span class="p">:</span> <span class="n">day_of_week</span><span class="p">,</span>
+    <span class="s1">&#39;is_weekend&#39;</span><span class="p">:</span> <span class="n">weekend_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1"># Mark outlier dates</span>
+<span class="n">outlier_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">outlier_events</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="n">ecommerce_df</span><span class="p">[</span><span class="s1">&#39;is_outlier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ecommerce_df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">outlier_dates</span><span class="p">)</span>
+
+<span class="c1"># Display summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Synthetic E-commerce Sales Dataset ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Dataset shape: </span><span class="si">{</span><span class="n">ecommerce_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date range: </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of outliers injected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outlier_events</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Component Breakdown ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base daily sales (day 1): $</span><span class="si">{</span><span class="n">base_sales</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Daily growth rate: $</span><span class="si">{</span><span class="n">growth_rate</span><span class="si">}</span><span class="s2">/day&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weekend sales boost: +30%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noise standard deviation: $500&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Injected Outliers ---&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">day_idx</span><span class="p">,</span> <span class="n">event_info</span> <span class="ow">in</span> <span class="n">outlier_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">event_date</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">event_date</span><span class="si">}</span><span class="s2"> (Day </span><span class="si">{</span><span class="n">day_idx</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  → </span><span class="si">{</span><span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;factor&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  → Sales multiplier: </span><span class="si">{</span><span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">×&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">&#39;value&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  → Recorded value: $</span><span class="si">{</span><span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Statistical Summary ---&quot;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">ecommerce_df</span><span class="p">[</span><span class="s1">&#39;sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Synthetic E-commerce Sales Dataset ===
+
+Dataset shape: (365, 5)
+Date range: 2024-01-01 to 2024-12-30
+Number of outliers injected: 5
+
+--- Component Breakdown ---
+Base daily sales (day 1): $10,000
+Daily growth rate: $50/day
+Weekend sales boost: +30%
+Noise standard deviation: $500
+
+--- Injected Outliers ---
+2024-03-26 (Day 85): Black Friday Sale
+  → Major holiday promotion
+  → Sales multiplier: 3.0×
+2024-05-22 (Day 142): Website Outage
+  → Technical failure
+  → Sales multiplier: 0.6×
+2024-07-19 (Day 200): Viral Marketing
+  → Social media success
+  → Sales multiplier: 2.5×
+2024-09-22 (Day 265): Data Entry Error
+  → Recording mistake
+  → Recorded value: $-5,000
+2024-11-06 (Day 310): Flash Sale
+  → Limited-time promotion
+  → Sales multiplier: 2.0×
+
+--- Statistical Summary ---
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>365.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>20862.205479</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>6987.757049</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-5000.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>15603.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>20606.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>25473.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>50782.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="visualizing-the-dataset">
+<h2><span class="section-number">4.1.3. </span>Visualizing the Dataset<a class="headerlink" href="#visualizing-the-dataset" title="Link to this heading">#</a></h2>
+<figure class="align-default" id="ecommerce-sales-outliers">
+<img alt="../_images/ecommerce_sales_outliers.png" src="../_images/ecommerce_sales_outliers.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text"><strong>Synthetic e-commerce sales with five deliberate outliers.</strong> One year of daily sales showing: (1) upward trend ($50/day growth), (2) weekly seasonality (weekend boosts in green), (3) natural noise (±$500 jitter), and (4) five outliers (red stars). Three spike upward (Black Friday, Viral Marketing, Flash Sale), one drops (Website Outage), and one is impossible (Data Entry Error at -$5K). Similar absolute values (~$40K–$50K) in March and November occur at different baseline levels due to growth, showing why temporal context matters for outlier detection.</span><a class="headerlink" href="#ecommerce-sales-outliers" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In <a class="reference internal" href="#ecommerce-sales-outliers"><span class="std std-numref">Fig. 4.1</span></a>, notice:</p>
+<ol class="arabic simple">
+<li><p><strong>Rising Baseline:</strong> Gradual upward trend throughout the year</p></li>
+<li><p><strong>Weekly Rhythm:</strong> Regular sawtooth pattern repeating every 7 days</p></li>
+<li><p><strong>Weekend Effect:</strong> Green bands show weekend boosts aligning with peaks</p></li>
+<li><p><strong>Outlier Diversity:</strong> Three upward spikes, one downward dip, one impossible negative value</p></li>
+<li><p><strong>Context Dependency:</strong> Same values mean different things at different times</p></li>
+</ol>
+<p><strong>Understanding Each Outlier:</strong></p>
+<p><strong>1. Black Friday Sale (Day 85, March 26)</strong> — <em>Legitimate extreme</em></p>
+<ul class="simple">
+<li><p>Sales: ~3× normal (~$39K vs. ~$13K)</p></li>
+<li><p>Point outlier (single spike)</p></li>
+<li><p><strong>Action:</strong> Keep—genuine business activity</p></li>
+</ul>
+<p><strong>2. Website Outage (Day 142, May 22)</strong> — <em>Operational failure</em></p>
+<ul class="simple">
+<li><p>Sales: 40% drop (~$8K vs. ~$14K)</p></li>
+<li><p>Point outlier (single dip)</p></li>
+<li><p><strong>Action:</strong> Keep but flag—informs capacity planning</p></li>
+</ul>
+<p><strong>3. Viral Marketing (Day 200, July 19)</strong> — <em>Unexpected success</em></p>
+<ul class="simple">
+<li><p>Sales: ~2.5× normal (~$40K vs. ~$16K)</p></li>
+<li><p>Point outlier (unpredictable spike)</p></li>
+<li><p><strong>Action:</strong> Keep and study—marketing insight</p></li>
+</ul>
+<p><strong>4. Data Entry Error (Day 265, September 22)</strong> — <em>Data quality issue</em></p>
+<ul class="simple">
+<li><p>Sales: -$5K (impossible)</p></li>
+<li><p>Point outlier (corrupts statistics)</p></li>
+<li><p><strong>Action:</strong> Correct or remove—not real data</p></li>
+</ul>
+<p><strong>5. Flash Sale (Day 310, November 6)</strong> — <em>Planned promotion</em></p>
+<ul class="simple">
+<li><p>Sales: ~2× normal (~$38K vs. ~$19K)</p></li>
+<li><p>Point outlier (known event)</p></li>
+<li><p><strong>Action:</strong> Keep—real business strategy</p></li>
+</ul>
+</section>
+<section id="the-impact-of-outliers">
+<h2><span class="section-number">4.1.4. </span>The Impact of Outliers<a class="headerlink" href="#the-impact-of-outliers" title="Link to this heading">#</a></h2>
+<figure class="align-default" id="ecommerce-outlier-impact">
+<img alt="../_images/ecommerce_outlier_impact.png" src="../_images/ecommerce_outlier_impact.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.2 </span><span class="caption-text"><strong>Multi-perspective outlier impact analysis.</strong> Four views of the same data showing how five outliers (1.4% of observations) affect statistical measures. <strong>Top-Left:</strong> Time series with outliers marked (red X’s) shows their rarity and temporal spacing across the year. <strong>Top-Right:</strong> Box plots reveal outliers extend the range dramatically ($50K vs. $37K max; -$5K vs. $10K min). Means shift but medians stay nearly identical, demonstrating median’s <strong>robustness</strong> to outliers. <strong>Bottom-Left:</strong> Histograms show outliers create heavy tails—isolated bars at -$5K, $40K, and $50K with gaps between them and the main distribution. <strong>Bottom-Right:</strong> Statistical table quantifies the impact—mean +$121 (+0.6%), median +$24 (+0.1%), std dev +$576 (+9.0%), min -$14,837 (-150.9%), max +$13,987 (+38.0%). <strong>Key insight:</strong> Robust statistics (median) resist outlier influence; non-robust statistics (mean, std dev, range) don’t.</span><a class="headerlink" href="#ecommerce-outlier-impact" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition-key-takeaways admonition">
+<p class="admonition-title">Key Takeaways</p>
+<ol class="arabic simple">
+<li><p><strong>Temporal Context Matters:</strong> Outliers aren’t just extreme values—they’re values unexpected for their specific time and context</p></li>
+<li><p><strong>Range Extension:</strong> Outliers double the data range (-$5K to $50K vs. $10K to $37K), affecting standardization and distance-based methods</p></li>
+<li><p><strong>Tail Behavior:</strong> Outliers create heavy tails—isolated extreme values far from the distribution center</p></li>
+<li><p><strong>Statistical Sensitivity:</strong> Mean/std dev are highly sensitive to outliers; median is robust. Choose statistics based on whether outliers are errors or genuine extremes</p></li>
+</ol>
+</div>
+<section id="lessons-learned">
+<h3><span class="section-number">4.1.4.1. </span>Lessons Learned<a class="headerlink" href="#lessons-learned" title="Link to this heading">#</a></h3>
+<p><strong>1. Outliers Have Different Causes</strong>
+Legitimate events, operational failures, unexpected successes, and data quality issues—each requires different treatment. No one-size-fits-all solution.</p>
+<p><strong>2. Context is Everything</strong>
+Growth trends and seasonality mean the same value can be normal or anomalous depending on <em>when</em> it occurs.</p>
+<p><strong>3. Not All Variation is Anomalous</strong>
+Random noise and seasonal patterns are signal, not noise—they reflect real dynamics.</p>
+<p><strong>4. Statistical Impact Varies</strong></p>
+<ul class="simple">
+<li><p><strong>Mean/Std Dev:</strong> Sensitive to outliers</p></li>
+<li><p><strong>Median:</strong> Robust to outliers</p></li>
+<li><p><strong>Range:</strong> Dominated by outliers</p></li>
+</ul>
+<p>Choose wisely based on your analysis goals.</p>
+<p><strong>5. Multiple Views Required</strong>
+Time series plots, box plots, histograms, and statistical tables each reveal different aspects. Comprehensive analysis needs all perspectives.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C04.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Outlier Detection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C04S02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.2. </span>Outlier Classification by Scope</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-outliers">4.1.1. What Are Outliers?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">4.1.1.1. Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-outlier-detection-matters">4.1.1.2. Why Outlier Detection Matters</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-synthetic-e-commerce-sales-data">4.1.2. Example: Synthetic E-commerce Sales Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-dataset-step-by-step">4.1.2.1. Building the Dataset Step-by-Step</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-dataset">4.1.3. Visualizing the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-impact-of-outliers">4.1.4. The Impact of Outliers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lessons-learned">4.1.4.1. Lessons Learned</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
