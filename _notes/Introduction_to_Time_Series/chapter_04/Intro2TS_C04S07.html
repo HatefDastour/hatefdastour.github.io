@@ -1,0 +1,910 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.7. Automated ARIMA Models &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2TS_C04S07';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Outlier Detection in Time Series" href="../chapter_05/Intro2TS_C05.html" />
+    <link rel="prev" title="4.6. SARIMA and SARIMAX" href="Intro2TS_C04S06.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C04.html">4. Classical Time Series Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Automated ARIMA Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">4.7.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stepwise-search-algorithm">4.7.2. The Stepwise Search Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-comparing-manual-vs-auto-arima-on-airline-passengers">4.7.3. Example: Comparing Manual vs. Auto-ARIMA on Airline Passengers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-manual-approach">4.7.3.1. The Manual Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-automated-approach">4.7.3.2. The Automated Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-metrics">4.7.3.3. Accuracy metrics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-performance-evaluation">4.7.4. Forecast Performance Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-forecasts">4.7.4.1. Generating Forecasts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-forecast-performance">4.7.4.2. Visualizing Forecast Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-error-visualization">4.7.4.3. Forecast Error Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-distribution-analysis">4.7.4.4. Error Distribution Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-use-auto-arima">4.7.5. When Should You Use Auto-ARIMA?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-workflow-recommendation">4.7.6. Practical Workflow Recommendation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="automated-arima-models">
+<h1><span class="section-number">4.7. </span>Automated ARIMA Models<a class="headerlink" href="#automated-arima-models" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2><span class="section-number">4.7.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Throughout this chapter, we have emphasized a systematic and disciplined approach to ARIMA modeling: testing for stationarity, carefully examining ACF and PACF plots, performing manual grid searches across candidate parameters, and comparing models using information criteria. This workflow offers distinct advantages—we understand the rationale behind each parameter selection, we can justify our choices to stakeholders, and we maintain complete control over the modeling process. However, this traditional approach is computationally expensive and labor-intensive, often requiring extensive visualization and iterative fitting across numerous parameter combinations.</p>
+<p><strong>Auto-ARIMA</strong> represents a fundamentally different philosophy. Instead of manually specifying candidate parameters, the algorithm automatically searches the <span class="math notranslate nohighlight">\((p,d,q)(P,D,Q)_s\)</span> parameter space to identify the model that optimizes a statistical criterion (typically AIC). This automation prioritizes speed and objectivity over interpretability, facilitating rapid model selection when domain knowledge is limited or when we must forecast hundreds of time series at scale.</p>
+</section>
+<section id="the-stepwise-search-algorithm">
+<h2><span class="section-number">4.7.2. </span>The Stepwise Search Algorithm<a class="headerlink" href="#the-stepwise-search-algorithm" title="Link to this heading">#</a></h2>
+<p>Auto-ARIMA employs a <strong>stepwise search</strong> strategy that mirrors manual analysis but operates with significantly greater computational efficiency. The process typically unfolds as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Determine Differencing Orders</strong>: The algorithm applies unit root tests (such as ADF or KPSS) to identify the number of regular differences (<span class="math notranslate nohighlight">\(d\)</span>) and seasonal differences (<span class="math notranslate nohighlight">\(D\)</span>) required to achieve stationarity.</p></li>
+<li><p><strong>Initialize with Simple Models</strong>: The search begins with parsimonious parameter values (e.g., <span class="math notranslate nohighlight">\(p=0, q=0, P=0, Q=0\)</span>).</p></li>
+<li><p><strong>Explore Parameter Space</strong>: The algorithm incrementally perturbs parameters by <span class="math notranslate nohighlight">\(\pm 1\)</span>, fitting new candidate models at each step.</p></li>
+<li><p><strong>Select Best Model</strong>: At each iteration, the model with the lowest AIC is retained as the current champion.</p></li>
+<li><p><strong>Terminate Search</strong>: The process concludes when parameter perturbations no longer yield a reduction in AIC.</p></li>
+</ol>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>The algorithm does not perform an exhaustive search of every possible <span class="math notranslate nohighlight">\((p,d,q,P,D,Q)_s\)</span> combination, as this would require thousands of model fits even for moderate parameter bounds. Instead, stepwise pruning explores only locally promising parameter neighborhoods, reducing computation time from hours to seconds. This efficiency is the core advantage of the automated approach.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Advantages of Auto-ARIMA</p>
+<ol class="arabic simple">
+<li><p><strong>Speed and Efficiency</strong>: Auto-ARIMA fits dozens of candidate models in seconds. In contrast, manual analysis—producing plots, interpreting correlations, and fitting grid search candidates—can easily consume hours for a single series. This speed is critical when forecasting high-volume portfolios in production environments.</p></li>
+<li><p><strong>Objectivity</strong>: The algorithm eliminates subjective judgment from ACF and PACF interpretation. There is no ambiguity about whether a specific lag is “significant enough” to warrant inclusion; the criterion is strictly whether it reduces the AIC. This objectivity ensures consistency and auditability in operational settings.</p></li>
+<li><p><strong>Enterprise Scalability</strong>: While manual analysis is feasible for a handful of series, it becomes impractical for forecasting 500 or 5,000 items. Auto-ARIMA handles batch processing efficiently, generating reasonable baseline models across large datasets with minimal human intervention.</p></li>
+<li><p><strong>Rapid Baseline Development</strong>: Auto-ARIMA quickly establishes whether a time series requires complex structures or if simple specifications suffice. This provides a valuable initial benchmark during the exploratory phase of a project.</p></li>
+<li><p><strong>Accessibility</strong>: By abstracting away the complexities of differencing logic and lag interpretation, Auto-ARIMA enables practitioners with limited time series expertise to generate robust models.</p></li>
+</ol>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Limitations and Pitfalls</p>
+<ol class="arabic simple">
+<li><p><strong>In-Sample Optimization Bias</strong>: Auto-ARIMA optimizes AIC, which is calculated on the training data. A model with the lowest AIC may not necessarily perform best on unseen future data—a classic manifestation of the bias-variance tradeoff.</p></li>
+<li><p><strong>Preference for Unnecessary Complexity</strong>: When AIC improvements are marginal, the algorithm may favor models with additional parameters. This can lead to overparameterized models that fit training noise rather than the underlying signal, degrading out-of-sample performance.</p></li>
+<li><p><strong>Loss of Interpretability</strong>: The algorithm operates as a “black box,” providing no causal explanation for its parameter selection. It may be difficult to explain to stakeholders why a specific AR term was included or why a seasonal difference was omitted.</p></li>
+<li><p><strong>Neglect of Domain Knowledge</strong>: The algorithm lacks context. It may select a statistically optimal model that produces forecasts contradicting physical or business realities—such as negative sales or impossible inventory levels.</p></li>
+<li><p><strong>Incomplete Residual Validation</strong>: Auto-ARIMA does not routinely verify that residuals exhibit white noise properties. A model selected for its low AIC may still suffer from autocorrelation, indicating specification inadequacy. Manual residual diagnostics remain essential.</p></li>
+</ol>
+</div>
+<div class="admonition-best-practice admonition">
+<p class="admonition-title">Best Practice</p>
+<p>We should treat Auto-ARIMA as a <strong>starting point and benchmark</strong>, not a final solution. It is imperative to validate selected models through rigorous residual diagnostics and out-of-sample forecast evaluation before deployment.</p>
+</div>
+</section>
+<section id="example-comparing-manual-vs-auto-arima-on-airline-passengers">
+<h2><span class="section-number">4.7.3. </span>Example: Comparing Manual vs. Auto-ARIMA on Airline Passengers<a class="headerlink" href="#example-comparing-manual-vs-auto-arima-on-airline-passengers" title="Link to this heading">#</a></h2>
+<p>Let’s compare both approaches on the canonical <strong>Airline Passengers</strong> dataset (1949–1960). This dataset is considered the “Hello World” of seasonal time series forecasting and was the primary case study used by Box and Jenkins to demonstrate the power of seasonal ARIMA modeling.</p>
+<section id="the-manual-approach">
+<h3><span class="section-number">4.7.3.1. </span>The Manual Approach<a class="headerlink" href="#the-manual-approach" title="Link to this heading">#</a></h3>
+<p>Through our previous analysis (or simply by following Box and Jenkins’ classic derivation), we identified the <strong>SARIMA(0,1,1)(0,1,1,12)</strong> specification as the gold standard for this data. The logic is elegant and transparent:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d=1\)</span>: Regular differencing removes the linear trend.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D=1\)</span>: Seasonal differencing at lag 12 removes the annual cycle.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta_1, \Theta_1\)</span>: Moving average terms model the remaining smooth autocorrelation structure.</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.statespace.sarimax</span><span class="w"> </span><span class="kn">import</span> <span class="n">SARIMAX</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+
+<span class="c1"># Load Data</span>
+<span class="n">df_air</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">get_rdataset</span><span class="p">(</span><span class="s2">&quot;AirPassengers&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+<span class="n">df_air</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;1949-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df_air</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;ME&#39;</span><span class="p">)</span>
+<span class="n">df_air</span> <span class="o">=</span> <span class="n">df_air</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;passengers&#39;</span><span class="p">})</span>
+
+<span class="c1"># Train/Test Split</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_air</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">train_air</span> <span class="o">=</span> <span class="n">df_air</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span>
+<span class="n">test_air</span> <span class="o">=</span> <span class="n">df_air</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span>
+
+<span class="c1"># Fit Manual Model: SARIMA(0,1,1)(0,1,1,12)</span>
+<span class="n">model_manual</span> <span class="o">=</span> <span class="n">SARIMAX</span><span class="p">(</span>
+    <span class="n">train_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span>
+    <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">seasonal_order</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+    <span class="n">enforce_stationarity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">enforce_invertibility</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">result_manual</span> <span class="o">=</span> <span class="n">model_manual</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="the-automated-approach">
+<h3><span class="section-number">4.7.3.2. </span>The Automated Approach<a class="headerlink" href="#the-automated-approach" title="Link to this heading">#</a></h3>
+<p>Now we run Auto-ARIMA on the same training data. We enable the stepwise search and allow the algorithm to determine the optimal differencing and parameter orders based on minimizing AIC.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pmdarima</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+
+<span class="c1"># Fit Auto-ARIMA on training data</span>
+<span class="n">auto_model</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">auto_arima</span><span class="p">(</span>
+    <span class="n">train_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span>
+    <span class="n">start_p</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_p</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_q</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">start_P</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_Q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_P</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_Q</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">seasonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Let the algorithm determine differencing</span>
+    <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">error_action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span>
+    <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">stepwise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">auto_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                     SARIMAX Results                                      
+==========================================================================================
+Dep. Variable:                                  y   No. Observations:                  122
+Model:             SARIMAX(2, 0, 0)x(0, 1, 0, 12)   Log Likelihood                -408.015
+Date:                            Fri, 02 Jan 2026   AIC                            824.031
+Time:                                    20:12:44   BIC                            834.833
+Sample:                                01-31-1949   HQIC                           828.412
+                                     - 02-28-1959                                         
+Covariance Type:                              opg                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+intercept      4.9719      1.964      2.531      0.011       1.122       8.822
+ar.L1          0.6745      0.099      6.826      0.000       0.481       0.868
+ar.L2          0.1406      0.097      1.445      0.148      -0.050       0.331
+sigma2        96.6711     11.946      8.093      0.000      73.258     120.084
+===================================================================================
+Ljung-Box (L1) (Q):                   0.00   Jarque-Bera (JB):                 1.36
+Prob(Q):                              0.96   Prob(JB):                         0.51
+Heteroskedasticity (H):               1.48   Skew:                            -0.02
+Prob(H) (two-sided):                  0.24   Kurtosis:                         3.54
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="accuracy-metrics">
+<h3><span class="section-number">4.7.3.3. </span>Accuracy metrics<a class="headerlink" href="#accuracy-metrics" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_percentage_error</span>
+
+<span class="c1"># 1. Compute Metrics Helper</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_metrics</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">predicted</span><span class="p">):</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">predicted</span><span class="p">))</span>
+    <span class="n">mape</span> <span class="o">=</span> <span class="n">mean_absolute_percentage_error</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">mape</span>
+
+<span class="c1"># 2. Get Fitted Values (In-Sample)</span>
+<span class="c1"># statsmodels: .fittedvalues</span>
+<span class="c1"># pmdarima:    .predict_in_sample()</span>
+<span class="n">fitted_manual</span> <span class="o">=</span> <span class="n">result_manual</span><span class="o">.</span><span class="n">fittedvalues</span>
+<span class="n">fitted_auto</span> <span class="o">=</span> <span class="n">auto_model</span><span class="o">.</span><span class="n">predict_in_sample</span><span class="p">()</span>
+
+<span class="c1"># 3. Get Forecasts (Out-of-Sample)</span>
+<span class="c1"># statsmodels: .get_forecast(steps=...)</span>
+<span class="c1"># pmdarima:    .predict(n_periods=...)</span>
+<span class="n">fc_manual</span> <span class="o">=</span> <span class="n">result_manual</span><span class="o">.</span><span class="n">get_forecast</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">))</span><span class="o">.</span><span class="n">predicted_mean</span>
+<span class="n">fc_auto</span> <span class="o">=</span> <span class="n">auto_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">n_periods</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">))</span>
+
+<span class="c1"># 4. Calculate Metrics</span>
+<span class="n">train_rmse_m</span><span class="p">,</span> <span class="n">train_mape_m</span> <span class="o">=</span> <span class="n">get_metrics</span><span class="p">(</span><span class="n">train_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span> <span class="n">fitted_manual</span><span class="p">)</span>
+<span class="n">train_rmse_a</span><span class="p">,</span> <span class="n">train_mape_a</span> <span class="o">=</span> <span class="n">get_metrics</span><span class="p">(</span><span class="n">train_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span> <span class="n">fitted_auto</span><span class="p">)</span>
+<span class="n">test_rmse_m</span><span class="p">,</span> <span class="n">test_mape_m</span> <span class="o">=</span> <span class="n">get_metrics</span><span class="p">(</span><span class="n">test_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span> <span class="n">fc_manual</span><span class="p">)</span>
+<span class="n">test_rmse_a</span><span class="p">,</span> <span class="n">test_mape_a</span> <span class="o">=</span> <span class="n">get_metrics</span><span class="p">(</span><span class="n">test_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">],</span> <span class="n">fc_auto</span><span class="p">)</span>
+
+<span class="c1"># 5. Create DataFrame</span>
+<span class="n">metrics_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Manual SARIMA&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">result_manual</span><span class="o">.</span><span class="n">aic</span><span class="p">,</span>
+        <span class="n">result_manual</span><span class="o">.</span><span class="n">bic</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">result_manual</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
+        <span class="n">train_rmse_m</span><span class="p">,</span>
+        <span class="n">train_mape_m</span><span class="p">,</span>
+        <span class="n">test_rmse_m</span><span class="p">,</span>
+        <span class="n">test_mape_m</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Auto-ARIMA&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">auto_model</span><span class="o">.</span><span class="n">aic</span><span class="p">(),</span>       <span class="c1"># Note: .aic() is a method in pmdarima</span>
+        <span class="n">auto_model</span><span class="o">.</span><span class="n">bic</span><span class="p">(),</span>       <span class="c1"># Note: .bic() is a method in pmdarima</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">auto_model</span><span class="o">.</span><span class="n">params</span><span class="p">()),</span> <span class="c1"># Note: .params() is a method</span>
+        <span class="n">train_rmse_a</span><span class="p">,</span>
+        <span class="n">train_mape_a</span><span class="p">,</span>
+        <span class="n">test_rmse_a</span><span class="p">,</span>
+        <span class="n">test_mape_a</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">index_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AIC&#39;</span><span class="p">,</span> <span class="s1">&#39;BIC&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters&#39;</span><span class="p">,</span> <span class="s1">&#39;Training RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;Training MAPE (%)&#39;</span><span class="p">,</span> <span class="s1">&#39;Test RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;Test MAPE (%)&#39;</span><span class="p">]</span>
+<span class="n">df_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index_labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><a class="reference internal" href="#table-c01s01-comparison"><span class="std std-numref">Table 4.9</span></a> presents a side-by-side comparison of the Manual and Auto-ARIMA models across key performance dimensions.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-c01s01-comparison">
+<caption><span class="caption-number">Table 4.9 </span><span class="caption-text">Quantitative Comparison</span><a class="headerlink" href="#table-c01s01-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>Manual SARIMA</p></th>
+<th class="head text-right"><p>Auto-ARIMA</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>AIC</p></td>
+<td class="text-right"><p>723.84</p></td>
+<td class="text-right"><p>824.03</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>BIC</p></td>
+<td class="text-right"><p>731.51</p></td>
+<td class="text-right"><p>834.83</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Parameters</p></td>
+<td class="text-right"><p>3</p></td>
+<td class="text-right"><p>4</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Training RMSE</p></td>
+<td class="text-right"><p>16.06</p></td>
+<td class="text-right"><p>32.94</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Training MAPE (%)</p></td>
+<td class="text-right"><p>5.04</p></td>
+<td class="text-right"><p>10.64</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Test RMSE</p></td>
+<td class="text-right"><p>45.29</p></td>
+<td class="text-right"><p>39.87</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Test MAPE (%)</p></td>
+<td class="text-right"><p>8.80</p></td>
+<td class="text-right"><p>7.69</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol class="arabic">
+<li><p><strong>In-Sample Superiority (Manual Model):</strong> The Manual SARIMA(0,1,1)(0,1,1,12) clearly outperforms Auto-ARIMA on the training data. Its AIC (723.84) is over 100 points lower than the Auto-ARIMA model (824.03), and its training RMSE (16.06) is roughly half that of the automated model (32.94). This confirms that the manual specification—which explicitly removes the stochastic trend and seasonal cycle via differencing—captures the historical data structure far more efficiently.</p></li>
+<li><p><strong>Structural Differences (The “Stiffness” Factor):</strong> The Auto-ARIMA output reveals <em>why</em> the models behave differently. The automated selection is <strong>SARIMA(2,0,0)(0,1,0,12) with intercept</strong>.</p>
+<ul class="simple">
+<li><p><strong>Intercept:</strong> The coefficient is <strong>4.97</strong> (<span class="math notranslate nohighlight">\(p=0.011\)</span>), enforcing a deterministic upward drift.</p></li>
+<li><p><strong>AR Terms:</strong> The first AR lag is <strong>0.67</strong> (<span class="math notranslate nohighlight">\(p&lt;0.001\)</span>), creating strong persistence around that deterministic trend.</p></li>
+</ul>
+<p>This structure creates a “stiff” model that rigidly projects the historical slope forward. In contrast, the manual model’s differencing (<span class="math notranslate nohighlight">\(d=1\)</span>) allows the trend to evolve stochastically, adapting to shocks rather than forcing a fixed trajectory.</p>
+</li>
+<li><p><strong>Out-of-Sample Performance (Mixed Bag):</strong> On the test set, the Auto-ARIMA model achieves a lower RMSE (39.87 vs 45.29) and MAPE (7.69% vs 8.80%). This suggests that for this specific short-term horizon, the rigid deterministic trend of the Auto-ARIMA model happened to extrapolate the trajectory slightly better than the stochastic trend of the manual model.</p></li>
+<li><p><strong>Parsimony vs. Complexity:</strong> The manual model achieves its results with fewer parameters (3 vs. 4). The significant gap in BIC (731.51 vs. 834.83) heavily penalizes the Auto-ARIMA model for its inefficiency.</p></li>
+</ol>
+<p>While Auto-ARIMA provides a marginally better forecast on the test set, the Manual SARIMA model remains preferable for robust operational use. It offers a theoretically sound representation of the data generating process (stochastic trend/seasonality), fits the historical record much better, and avoids the risk of a deterministic trend that could dangerously diverge over longer horizons. The Auto-ARIMA model is arguably “right for the wrong reasons”—it fits a rigid curve that happened to align with the test data, but lacks the adaptive capacity of the properly differenced manual model.</p>
+</section>
+</section>
+<section id="forecast-performance-evaluation">
+<h2><span class="section-number">4.7.4. </span>Forecast Performance Evaluation<a class="headerlink" href="#forecast-performance-evaluation" title="Link to this heading">#</a></h2>
+<p>Having established the two competing models—the manually identified <strong>SARIMA(0,1,1)(0,1,1,12)</strong> and Auto-ARIMA’s selected <strong>SARIMA(2,0,0)(0,1,0,12) with intercept</strong>—we now turn to the critical question: how well do they forecast on unseen data? While in-sample fit statistics (AIC, BIC) provide useful information about model parsimony and data fit during training, the ultimate test of a time series model lies in its ability to accurately predict values it has never seen before. This out-of-sample forecast evaluation reveals which model truly generalizes better.</p>
+<section id="generating-forecasts">
+<h3><span class="section-number">4.7.4.1. </span>Generating Forecasts<a class="headerlink" href="#generating-forecasts" title="Link to this heading">#</a></h3>
+<p>We generate forecasts for the held-out test set, which covers the final 24 months of the dataset (1959–1960). The manual model produces forecasts using <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>’ <code class="docutils literal notranslate"><span class="pre">get_forecast()</span></code> method, which returns both point predictions and 95% confidence intervals. Similarly, Auto-ARIMA’s <code class="docutils literal notranslate"><span class="pre">predict()</span></code> method provides comparable probabilistic outputs, allowing us to evaluate not just the accuracy of the point forecasts but also the reliability of the uncertainty bounds.</p>
+<p>We visualize the trajectories of both models against the actual passenger counts for 1959–1960 to assess which specification captures the final evolution of the trend and seasonal cycle more accurately.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Generate Manual Forecasts</span>
+<span class="n">fc_manual</span> <span class="o">=</span> <span class="n">result_manual</span><span class="o">.</span><span class="n">get_forecast</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">))</span>
+<span class="n">manual_mean</span> <span class="o">=</span> <span class="n">fc_manual</span><span class="o">.</span><span class="n">predicted_mean</span>
+<span class="n">manual_ci</span> <span class="o">=</span> <span class="n">fc_manual</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span>
+
+<span class="c1"># 2. Generate Auto-ARIMA Forecasts</span>
+<span class="n">auto_mean</span><span class="p">,</span> <span class="n">auto_ci</span> <span class="o">=</span> <span class="n">auto_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="n">n_periods</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">),</span> 
+    <span class="n">return_conf_int</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">auto_mean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">auto_mean</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">test_air</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<section id="visualizing-forecast-performance">
+<h3><span class="section-number">4.7.4.2. </span>Visualizing Forecast Performance<a class="headerlink" href="#visualizing-forecast-performance" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="#forecast-comparison"><span class="std std-numref">Fig. 4.29</span></a> provides a direct visual comparison of how each model performs on the test set (1959–1960). The plots display the training data in green, the actual test observations in blue, and the model forecasts in red.</p>
+<figure class="align-center" id="forecast-comparison">
+<a class="reference internal image-reference" href="../_images/forecast_comparison.png"><img alt="../_images/forecast_comparison.png" src="../_images/forecast_comparison.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.29 </span><span class="caption-text"><strong>Comparison of manual SARIMA vs. Auto-ARIMA forecasts on Airline Passengers.</strong> The top panel (a) displays forecasts from the manually identified <strong>SARIMA(0,1,1)(0,1,1,12)</strong>, while the bottom panel (b) shows the <strong>Auto-ARIMA SARIMA(2,0,0)(0,1,0,12)</strong> selection. Both models successfully capture the pronounced annual seasonality, tracking the timing of peaks (summer travel) and troughs (winter) throughout the 24-month horizon. The manual model’s confidence intervals (shaded red) widen noticeably more than the Auto-ARIMA intervals as the horizon extends. This reflects the theoretical difference in their structures: the manual model’s stochastic trend (<span class="math notranslate nohighlight">\(d=1\)</span>) accumulates uncertainty over time, whereas the Auto-ARIMA model’s deterministic trend (intercept + AR) implies a more rigid future path with tighter, though potentially overconfident, bounds [image:32].</span><a class="headerlink" href="#forecast-comparison" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p><strong>Trajectory Tracking:</strong> Both models capture the general upward trend and the seasonal oscillation reasonably well. Neither model exhibits a massive systematic failure (e.g., predicting a flat line or missing the seasonal peaks entirely).</p></li>
+<li><p><strong>Uncertainty Estimation:</strong> A key difference lies in the <strong>confidence intervals</strong>. The manual model (panel a) produces wider confidence bands that expand as we forecast further into the future. This is a desirable property, reflecting the genuine uncertainty of extrapolating a stochastic trend. In contrast, the Auto-ARIMA model (panel b) produces noticeably narrower bands. While this might look “more precise,” it is arguably “overconfident”—it assumes the future trend will follow the fixed intercept slope rather than acknowledging that the trend itself could drift.</p></li>
+<li><p><strong>Peak Accuracy:</strong> Visually, the Auto-ARIMA model (bottom) seems to hit the peak values slightly better than the manual model in the second year (1960). This visual intuition aligns with the lower RMSE we observed in the quantitative table (39.87 vs 45.29).</p></li>
+</ol>
+<p>While the eye can discern these broad patterns, determining which model is truly superior requires the rigorous quantitative comparison we performed earlier. The visual evidence confirms that both are plausible models, but they represent fundamentally different beliefs about how the future unfolds (stochastic vs. deterministic).</p>
+</section>
+<section id="forecast-error-visualization">
+<h3><span class="section-number">4.7.4.3. </span>Forecast Error Visualization<a class="headerlink" href="#forecast-error-visualization" title="Link to this heading">#</a></h3>
+<p>To better understand <em>where</em> and <em>why</em> forecast errors occur, we visualize the residuals (forecast errors) across the test period. <a class="reference internal" href="#error-comparison"><span class="std std-numref">Fig. 4.30</span></a> plots these errors for both models on the same axis.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ---------------------------------------------------------</span>
+<span class="c1"># Calculate Forecast Errors</span>
+<span class="c1"># ---------------------------------------------------------</span>
+<span class="c1"># Re-generate forecasts to ensure we have the correct data</span>
+<span class="n">manual_pred</span> <span class="o">=</span> <span class="n">result_manual</span><span class="o">.</span><span class="n">get_forecast</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">))</span><span class="o">.</span><span class="n">predicted_mean</span>
+<span class="n">auto_pred</span> <span class="o">=</span> <span class="n">auto_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">n_periods</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_air</span><span class="p">))</span>
+
+<span class="c1"># Calculate errors (Actual - Forecast)</span>
+<span class="n">manual_errors</span> <span class="o">=</span> <span class="n">test_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">manual_pred</span>
+<span class="n">auto_errors</span> <span class="o">=</span> <span class="n">test_air</span><span class="p">[</span><span class="s1">&#39;passengers&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">auto_pred</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="error-comparison">
+<a class="reference internal image-reference" href="../_images/error_comparison.png"><img alt="../_images/error_comparison.png" src="../_images/error_comparison.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.30 </span><span class="caption-text"><strong>Forecast error comparison for Manual SARIMA (Blue) vs. Auto-ARIMA (Red) on Airline Passengers test data.</strong> The blue solid line tracks the errors of the manual model, while the red dashed line tracks the Auto-ARIMA errors. Both models exhibit positive errors (under-forecasting) throughout the entire test period, with the magnitude peaking significantly during the summer months (July/August). This synchronized pattern reveals that both models struggle to capture the accelerating amplitude of the seasonal peaks in the final years of the dataset [image:35].</span><a class="headerlink" href="#error-comparison" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p><strong>Systematic Under-Forecasting:</strong> Unlike the “balanced” errors we typically hope for, both models consistently show positive errors (Actual &gt; Forecast). The traces hover almost entirely above the zero line. This indicates that the trend in passenger growth during 1959-1960 accelerated faster than either the stochastic trend (Manual) or the deterministic trend (Auto-ARIMA) could project based on the training data.</p></li>
+<li><p><strong>Seasonal Amplitude Mismatch:</strong> The errors are not constant; they spike dramatically during the summer peaks (reaching nearly +90 for the Manual model and +80 for Auto-ARIMA). This suggests that the <strong>multiplicative seasonality</strong> is intensifying. While we log-transformed the data (or relied on the model to handle it), the extreme growth in peak travel is still being underestimated by both specifications.</p></li>
+<li><p><strong>Magnitude Comparison:</strong> The Auto-ARIMA errors (red dashed line) generally stay closer to the zero line than the manual model’s errors (blue solid line), particularly during the extreme summer peaks. This visually confirms the lower RMSE (39.87 vs 45.29) we observed earlier. The “stiffer” Auto-ARIMA model happened to catch the high amplitude of the 1960 summer peak slightly better than the stochastic manual model.</p></li>
+</ol>
+<p>The visual similarity between the two error traces reinforces that the models are structurally distinct but functionally related. They succeed and fail in the same months, driven by the same underlying irregularities in the passenger data, with Auto-ARIMA holding a slight edge in amplitude accuracy for this specific test window.</p>
+</section>
+<section id="error-distribution-analysis">
+<h3><span class="section-number">4.7.4.4. </span>Error Distribution Analysis<a class="headerlink" href="#error-distribution-analysis" title="Link to this heading">#</a></h3>
+<p>Understanding the distribution of forecast errors provides deeper insight into model performance than summary metrics alone. <a class="reference internal" href="#error-distributions"><span class="std std-numref">Fig. 4.31</span></a> displays the histograms of forecast errors for both models on the test set.</p>
+<figure class="align-center" id="error-distributions">
+<a class="reference internal image-reference" href="../_images/error_distributions.png"><img alt="../_images/error_distributions.png" src="../_images/error_distributions.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.31 </span><span class="caption-text"><strong>Distribution of forecast errors for Airline Passengers (1959–1960).</strong> The left panel (a) displays manual SARIMA errors, while the right panel (b) shows Auto-ARIMA errors. The red dashed vertical line marks zero (perfect forecast), while the green solid line indicates the actual mean error. Unlike the Milk example, these distributions are <strong>not</strong> centered at zero. Both models show a significant positive bias (Mean Error &gt; 36), indicating systematic under-forecasting. The distributions are somewhat multi-modal, reflecting the seasonal nature of the errors (large errors in peak months, smaller errors in off-peak months). Auto-ARIMA achieves a slightly lower mean error (36.09 vs 41.29) and lower standard deviation (17.34 vs 19.05), confirming its marginal advantage on this specific test window [image:36].</span><a class="headerlink" href="#error-distributions" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p><strong>Systematic Bias (Under-Forecasting):</strong> Both models exhibit a strong positive mean error: <strong>+41.29</strong> for Manual SARIMA and <strong>+36.09</strong> for Auto-ARIMA. This is a critical finding. It indicates that on average, the actual passenger counts were 36–41 passengers higher than predicted. This systematic under-prediction suggests that the trend in the final two years accelerated beyond what either model projected from the 1949–1958 training data.</p></li>
+<li><p><strong>Variability:</strong> The standard deviation of errors is slightly lower for Auto-ARIMA (17.34) compared to the Manual model (19.05). This aligns with the “stiffer” nature of the Auto-ARIMA specification—its deterministic trend happened to align better with the accelerated growth, leading to slightly tighter error clustering.</p></li>
+<li><p><strong>Skewness:</strong> Both distributions show positive skewness (~0.61–0.62). This “right tail” corresponds to the summer months, where the under-forecasting was most severe (errors reaching +80 or +90). The models struggle most with the extreme peaks.</p></li>
+</ol>
+</section>
+</section>
+<section id="when-should-you-use-auto-arima">
+<h2><span class="section-number">4.7.5. </span>When Should You Use Auto-ARIMA?<a class="headerlink" href="#when-should-you-use-auto-arima" title="Link to this heading">#</a></h2>
+<p>The comparison between manual and automated selection reveals that the “best” approach depends heavily on your constraints: scale, stakes, and the need for explainability.</p>
+<div class="tip admonition">
+<p class="admonition-title">Appropriate Scenarios for Auto-ARIMA</p>
+<ul class="simple">
+<li><p><strong>Large-Scale Forecasting:</strong> If you must forecast 5,000 SKUs weekly, manual analysis is impossible. Auto-ARIMA allows you to trade a small amount of accuracy/explainability for the ability to scale.</p></li>
+<li><p><strong>Exploratory Baselines:</strong> Use Auto-ARIMA as a “sniff test” to quickly establish a performance floor. If your manual model cannot beat the automated baseline, you likely missed a signal in the ACF/PACF plots.</p></li>
+<li><p><strong>Low-Stakes/High-Volume:</strong> For routine operational metrics where individual errors have low cost, the speed of automation outweighs the benefits of deep inspection.</p></li>
+</ul>
+<h3 class="rubric" id="when-manual-analysis-is-essential">When Manual Analysis is Essential</h3>
+<ul class="simple">
+<li><p><strong>High-Stakes Decision Making:</strong> When forecasts drive multi-million dollar inventory or staffing decisions, you must be able to explain <em>why</em> the model predicts a downturn. “The algorithm said so” is rarely a sufficient defense to stakeholders.</p></li>
+<li><p><strong>Long-Term Strategic Planning:</strong> As seen in our example, Auto-ARIMA can lock onto rigid deterministic trends that may diverge dangerously over long horizons. Manual analysis (<span class="math notranslate nohighlight">\(d=1\)</span>) ensures the model acknowledges structural uncertainty.</p></li>
+<li><p><strong>Structural Breaks &amp; Anomalies:</strong> Automated tools blindly fit data. A human analyst can recognize that a dip in 2020 was due to a pandemic, not a permanent seasonal shift, and adjust the model accordingly.</p></li>
+</ul>
+</div>
+</section>
+<section id="practical-workflow-recommendation">
+<h2><span class="section-number">4.7.6. </span>Practical Workflow Recommendation<a class="headerlink" href="#practical-workflow-recommendation" title="Link to this heading">#</a></h2>
+<p>The most robust approach is a <em>hybrid workflow</em> that leverages automation for efficiency while preserving human judgment for validity.</p>
+<ol class="arabic simple">
+<li><p><strong>Run Auto-ARIMA First:</strong> Use it to get a quick read on the data complexity and establish a performance benchmark (AIC/RMSE).</p></li>
+<li><p><strong>Conduct Manual Diagnostics:</strong> Plot the ACF/PACF yourself. Does the automated model’s logic match the visual evidence? (e.g., Did it pick AR terms when you see clear seasonal spikes?)</p></li>
+<li><p><strong>Compete the Models:</strong> Fit both the automated suggestion and your manually derived specification.</p></li>
+<li><p><strong>Validate Out-of-Sample:</strong> Don’t rely on AIC alone. As we saw, a model with higher AIC (Auto-ARIMA) can sometimes forecast better in the short term, but you must assess if that performance is robust or lucky.</p></li>
+<li><p><strong>Check the Residuals:</strong> Ensure the final champion—regardless of how it was selected—produces white noise residuals.</p></li>
+</ol>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p><strong>Use Auto-ARIMA to augment your judgment, never to replace it.</strong></p>
+<p>Auto-ARIMA is a powerful servant but a poor master. Let it handle the computational heavy lifting of grid searching, but retain the final decision-making authority. If the algorithm selects a model that contradicts the physical reality of your data (e.g., a rigid intercept for a volatile trend), trust your domain expertise over the algorithm’s AIC optimization.</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C04S06.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.6. </span>SARIMA and SARIMAX</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_05/Intro2TS_C05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Outlier Detection in Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">4.7.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stepwise-search-algorithm">4.7.2. The Stepwise Search Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-comparing-manual-vs-auto-arima-on-airline-passengers">4.7.3. Example: Comparing Manual vs. Auto-ARIMA on Airline Passengers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-manual-approach">4.7.3.1. The Manual Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-automated-approach">4.7.3.2. The Automated Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy-metrics">4.7.3.3. Accuracy metrics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-performance-evaluation">4.7.4. Forecast Performance Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-forecasts">4.7.4.1. Generating Forecasts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-forecast-performance">4.7.4.2. Visualizing Forecast Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecast-error-visualization">4.7.4.3. Forecast Error Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-distribution-analysis">4.7.4.4. Error Distribution Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-use-auto-arima">4.7.5. When Should You Use Auto-ARIMA?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-workflow-recommendation">4.7.6. Practical Workflow Recommendation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

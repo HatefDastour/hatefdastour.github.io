@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.4. Visual Methods for Outlier Detection &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2TS_C05S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series" href="Intro2TS_C05S05.html" />
+    <link rel="prev" title="5.3. Outlier Classification by Seasonality" href="Intro2TS_C05S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2TS_C04.html">4. Classical Time Series Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Visual Methods for Outlier Detection</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-plots-line-plots">5.4.1. Time Plots (Line Plots)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#histograms">5.4.2. Histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-plots-box-and-whisker">5.4.3. Box Plots (Box-and-Whisker)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scatter-plots-and-lag-plots">5.4.4. Scatter Plots and Lag Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#violin-plots-grouped-by-time-unit">5.4.5. Violin Plots (Grouped by Time Unit)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonal-decomposition-plots">5.4.6. Seasonal Decomposition Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-q-plots-quantile-quantile-plots">5.4.7. Q-Q Plots (Quantile-Quantile Plots)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-probability-plots">5.4.8. Normal Probability Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-plots">5.4.9. Residual Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-charts-statistical-process-control">5.4.10. Control Charts (Statistical Process Control)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-visual-methods-for-your-data">5.4.11. Choosing Visual Methods for Your Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-selection-by-data-type">5.4.11.1. Method Selection by Data Type</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-workflow">5.4.11.2. Practical Workflow</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="visual-methods-for-outlier-detection">
+<h1><span class="section-number">5.4. </span>Visual Methods for Outlier Detection<a class="headerlink" href="#visual-methods-for-outlier-detection" title="Link to this heading">#</a></h1>
+<p>Statistical tests and automated detection algorithms are powerful tools for identifying anomalies in large datasets. However, the most effective first step in outlier analysis often remains surprisingly simple: visualizing your data.</p>
+<p>Visual methods provide immediate insight into the distribution, temporal patterns, and structural characteristics of your data that summary statistics cannot capture. A single well-designed plot can reveal whether outliers are isolated incidents, seasonal deviations, or symptoms of systematic drift. More importantly, visualization helps you understand the context surrounding anomalies—information that is essential for determining whether an outlier represents a genuine discovery, a measurement error, or an expected but rare occurrence <span id="id1">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id168" title="Hadley Wickham Garrett Grolemund. R for Data Science. O'Reilly Media, Inc., Place of publication not identified, 2016. ISBN 978-1-4919-1038-2. OCLC: 972569031.">Grolemund, 2016</a>]</span>.</p>
+<p>Tukey emphasized that exploratory data analysis through visualization should precede formal statistical testing <span id="id2">[<a class="reference internal" href="../References.html#id405" title="John Wilder Tukey. Exploratory data analysis. Addison-Wesley series in behavioral science. Addison-Wesley publ, Reading (Mass.) Menlo Park (Calif.) London [etc.], 1977. ISBN 978-0-201-07616-5.">Tukey, 1977</a>]</span>. Visual inspection allows you to identify not just extreme values, but also clusters of moderate deviations, unexpected patterns in variance, and relationships between variables that influence what constitutes anomalous behavior. These patterns often suggest which statistical methods will be most appropriate for your specific data characteristics.</p>
+<div class="important admonition">
+<p class="admonition-title">Note</p>
+<p>While visual methods are excellent for exploration and validation, they are inherently subjective and limited by human perceptual capabilities. They should be used to identify potential issues and generate hypotheses, which are then confirmed with the statistical methods discussed in <a class="reference internal" href="Intro2TS_C05S05.html#descriptive-stats-methods-outlier"><span class="std std-numref">Section 5.5</span></a> and <a class="reference internal" href="Intro2TS_C05S06.html#time-series-modeling-methods-outlier"><span class="std std-numref">Section 5.6</span></a>. For datasets with thousands or millions of observations, visual methods alone become impractical, and automated detection algorithms become necessary.</p>
+</div>
+<section id="time-plots-line-plots">
+<h2><span class="section-number">5.4.1. </span>Time Plots (Line Plots)<a class="headerlink" href="#time-plots-line-plots" title="Link to this heading">#</a></h2>
+<p>The time plot (also called a line plot or run chart) is the fundamental visualization tool for temporal data analysis. By displaying observations in chronological order, time plots reveal patterns, trends, and deviations that are impossible to detect from summary statistics alone.</p>
+<p>Time plots excel at revealing different outlier types because each creates a distinct visual signature. Additive outliers appear as isolated spikes that break the continuity of an otherwise smooth pattern. Level shifts manifest as abrupt changes in the series mean, creating a clear “before and after” effect where the data operates at two distinct levels. Innovative outliers and transient changes produce curved patterns where the series gradually transitions between states rather than jumping instantaneously.</p>
+<figure class="align-center" id="timeplot-outliers-illustration">
+<a class="reference internal image-reference" href="../_images/timeplot_outliers_illustration.png"><img alt="../_images/timeplot_outliers_illustration.png" src="../_images/timeplot_outliers_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.14 </span><span class="caption-text">Time plot showing web traffic with three distinct anomaly types: a single-day spike (AO), a permanent level increase (LS), and a decaying impact surge (IO/TC).</span><a class="headerlink" href="#timeplot-outliers-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#timeplot-outliers-illustration"><span class="std std-numref">Fig. 5.14</span></a> demonstrates web traffic data from January through October 2024, revealing three common anomaly patterns that become immediately apparent through visualization:</p>
+<ul class="simple">
+<li><p><strong>Additive Outlier (March 2024):</strong> The red marker indicates a sharp spike reaching approximately 1,320 requests per day—far above the baseline of 600-900 requests typical for this period. The series immediately returns to normal the following day, with no lasting impact. This pattern suggests a transient event such as a data logging error, brief viral content spike, or isolated external shock. The defining characteristic is complete isolation—the spike affects only a single observation with no influence on surrounding values.</p></li>
+<li><p><strong>Level Shift (Late May 2024):</strong> The green dashed vertical line marks a permanent structural change in the traffic baseline. Before this point, daily requests fluctuate between approximately 600-900 with clear weekly seasonality. After the shift, the entire series operates at a higher level, fluctuating between approximately 900-1,100 requests per day. The shift occurs abruptly, and the elevated level persists for the remainder of the observation period. This pattern suggests a structural change such as a successful SEO campaign, new content strategy, or platform feature that permanently increased user engagement.</p></li>
+<li><p><strong>Decaying Impact (Late July/Early August 2024):</strong> The purple shaded region highlights a surge where traffic peaks above 1,300 requests per day but does not immediately return to baseline like the additive outlier. Instead, the series remains elevated for several weeks with gradually declining peaks—each subsequent high point is slightly lower than the previous one. This decaying pattern suggests an external shock with lingering effects, such as a viral marketing campaign whose influence gradually fades, or a temporary promotional event whose momentum dissipates over time.</p></li>
+</ul>
+<p><a class="reference internal" href="#timeplot-outliers-illustration"><span class="std std-numref">Fig. 5.14</span></a> also illustrates the importance of weekly seasonality in this dataset. Throughout all periods—before the level shift, after it, and during the decaying impact—a consistent weekly pattern remains visible with regular oscillations between higher and lower traffic days. This regular pattern makes the three anomalies even more apparent: the additive outlier disrupts the weekly cycle at a single point, the level shift permanently raises the entire oscillating pattern, and the decaying impact temporarily amplifies the weekly peaks before gradually subsiding.</p>
+</section>
+<section id="histograms">
+<h2><span class="section-number">5.4.2. </span>Histograms<a class="headerlink" href="#histograms" title="Link to this heading">#</a></h2>
+<p>While time plots reveal temporal patterns, histograms provide a complementary perspective by displaying the frequency distribution of values regardless of when they occurred. Histograms answer a fundamental question: how common is this particular value within the dataset?</p>
+<p>Histograms make outliers visible through several visual cues. Isolated bars that appear far from the main distribution indicate values that occur rarely and deviate substantially from typical observations. Gaps between the primary cluster of data and extreme values suggest a natural boundary between normal variation and genuinely anomalous behavior. Asymmetry in the distribution—such as a long tail extending toward high values—reveals systematic patterns of extreme observations rather than random deviations <span id="id3">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id405" title="John Wilder Tukey. Exploratory data analysis. Addison-Wesley series in behavioral science. Addison-Wesley publ, Reading (Mass.) Menlo Park (Calif.) London [etc.], 1977. ISBN 978-0-201-07616-5.">Tukey, 1977</a>]</span>.</p>
+<p>However, histograms of time series data that exhibit strong seasonal or contextual patterns can be misleading when viewed in aggregate. A temperature dataset spanning an entire year will show a broad, possibly bimodal distribution mixing winter and summer observations. In such cases, values that appear normal in the overall histogram may actually be extreme for their specific context.</p>
+<figure class="align-center" id="temperature-histograms-illustration">
+<a class="reference internal image-reference" href="../_images/temperature_histograms_illustration.png"><img alt="../_images/temperature_histograms_illustration.png" src="../_images/temperature_histograms_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.15 </span><span class="caption-text">Temperature distributions by season. The overall histogram mixes all temperatures, while seasonal breakdowns reveal context-specific outliers: anomalously cold days in summer and warm days in winter.</span><a class="headerlink" href="#temperature-histograms-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#temperature-histograms-illustration"><span class="std std-numref">Fig. 5.15</span></a> demonstrates why conditional histograms—distributions computed separately for each relevant context—provide more accurate outlier identification than aggregate distributions:</p>
+<ul class="simple">
+<li><p><strong>Overall Distribution (Left Panel):</strong> The blue histogram displays all temperature observations across the entire year. The distribution shows a clear bimodal pattern with two prominent peaks: one around 35-40°F (winter temperatures) and another around 80-85°F (summer temperatures). The substantial spread from approximately 20°F to 100°F reflects the natural seasonal variation in temperature. In this aggregate view, nearly all values appear to be part of the normal pattern because both winter cold and summer heat are legitimately present in the annual cycle. This makes it nearly impossible to identify true outliers—a 50°F reading could be normal for spring/fall, while 75°F could be typical for summer.</p></li>
+<li><p><strong>Summer Distribution (Center Panel):</strong> When isolating only summer months (June-August), the orange histogram reveals a concentrated distribution centered around 78-82°F, with most observations falling between 70-95°F. The distribution is approximately normal with a clear central tendency. Critically, a few isolated bars appear in the 50-55°F range at the far left of the distribution. These observations—which seemed unremarkable in the overall histogram where 50°F appeared as part of the continuum between winter and summer—now stand out as clear anomalies. These represent anomalously cold days for summer, potentially indicating measurement errors, unusual weather events, or sensor malfunctions worth investigating.</p></li>
+<li><p><strong>Winter Distribution (Right Panel):</strong> The teal histogram shows the distribution for winter months (December-February), revealing a concentration around 35-42°F with most observations ranging from 25-55°F. This distribution is also approximately normal but centered at a much lower temperature than summer. The key insight appears on the far right: a single isolated bar around 70°F stands apart from the main cluster. This observation—which blended seamlessly into the overall annual histogram—is clearly anomalous when viewed in its winter context. A 70°F day in January represents either a genuine extreme weather event or a data quality issue requiring investigation.</p></li>
+</ul>
+<p>The overall histogram suggests that any temperature between 20°F and 100°F is “normal” because such values occur throughout the year. However, the conditional histograms reveal that 50°F is anomalous in summer and 70°F is anomalous in winter—both would be missed by methods that only examine the global distribution.</p>
+<p>The bimodal nature of the overall distribution is itself a diagnostic signal that the data contains distinct subpopulations (seasons) that should be analyzed separately. For time series with known seasonal patterns, cyclical behavior, or distinct operational modes, constructing separate histograms for each context provides more meaningful outlier identification than a single global distribution. This technique extends beyond seasonality—web traffic should be analyzed separately for weekdays versus weekends, manufacturing data by production line or shift, and retail sales by holiday versus non-holiday periods.</p>
+</section>
+<section id="box-plots-box-and-whisker">
+<h2><span class="section-number">5.4.3. </span>Box Plots (Box-and-Whisker)<a class="headerlink" href="#box-plots-box-and-whisker" title="Link to this heading">#</a></h2>
+<p>Box plots provide a statistical visualization of data distribution based on a five-number summary: minimum, first quartile (Q1), median, third quartile (Q3), and maximum. The box represents the interquartile range (IQR) containing the middle 50% of observations, while whiskers extend to show the range of typical variation <span id="id4">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id281" title="Robert Mcgill, John W. Tukey, and Wayne A. Larsen. Variations of Box Plots. The American Statistician, 32(1):12–16, February 1978. URL: http://www.tandfonline.com/doi/abs/10.1080/00031305.1978.10479236, doi:10.1080/00031305.1978.10479236.">Mcgill <em>et al.</em>, 1978</a>, <a class="reference internal" href="../References.html#id405" title="John Wilder Tukey. Exploratory data analysis. Addison-Wesley series in behavioral science. Addison-Wesley publ, Reading (Mass.) Menlo Park (Calif.) London [etc.], 1977. ISBN 978-0-201-07616-5.">Tukey, 1977</a>]</span>.</p>
+<p>By convention, observations that fall more than 1.5 times the IQR beyond the box edges are plotted as individual points and represent potential outliers. This automated statistical rule provides an objective method for flagging anomalies without requiring manual threshold selection. Box plots become particularly powerful when comparing distributions across multiple groups or contexts, as they reveal both central tendency and variability while simultaneously highlighting unusual observations.</p>
+<figure class="align-center" id="hourly-usage-boxplot-illustration">
+<a class="reference internal image-reference" href="../_images/hourly_usage_boxplot_illustration.png"><img alt="../_images/hourly_usage_boxplot_illustration.png" src="../_images/hourly_usage_boxplot_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.16 </span><span class="caption-text">Hourly electricity usage box plots showing the daily cycle. Individual dots beyond whiskers represent days with unusually high usage for that specific hour, with contextual outliers highlighted at 3 AM.</span><a class="headerlink" href="#hourly-usage-boxplot-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#hourly-usage-boxplot-illustration"><span class="std std-numref">Fig. 5.16</span></a> displays electricity consumption data organized by hour of the day, with separate box plots for each of the 24 hours. This arrangement reveals both the normal daily usage pattern and context-specific anomalies that would be invisible in an aggregate analysis:</p>
+<ul class="simple">
+<li><p><strong>Daily Usage Pattern:</strong> The box plots reveal a clear diurnal cycle in electricity consumption. During nighttime hours (approximately 10 AM through 4 PM shown as hours 10-16), the boxes are positioned lower on the y-axis with medians around 14-15 kWh, representing baseline overnight consumption when most equipment is idle. Usage gradually increases in the early evening, reaching peak levels around 6 PM (hour 18) where the box is positioned near 22 kWh. Late evening and early morning hours (hours 0-3 and 21-23) show intermediate consumption levels around 27-30 kWh, reflecting transitional periods as buildings power down or start up.</p></li>
+<li><p><strong>Outlier Distribution:</strong> Nearly every hour shows at least one outlier point (circles) above the upper whisker, indicating days when consumption exceeded the typical range for that specific hour. The density and magnitude of these outliers varies by time of day. Hours 0, 1, and 18 show multiple outliers, while midday hours show fewer deviations. Critically, an outlier at hour 3 reaches approximately 42 kWh—roughly double the typical consumption for that hour.</p></li>
+<li><p><strong>Contextual Significance:</strong> The red annotation highlights outliers at 3 AM (hour 3), where several observations fall in the 37-42 kWh range. These values might appear unremarkable when compared to the global distribution of electricity usage—42 kWh is well within the range observed during evening peak hours. However, in the context of 3 AM when typical consumption is 25-28 kWh, these observations represent anomalies exceeding 150% of expected usage. Such patterns could indicate equipment malfunctioning and running continuously, unauthorized after-hours operations, or HVAC systems failing to enter overnight setback mode.</p></li>
+</ul>
+<p><a class="reference external" href="https://hatefdastour.github.io/notes/Introduction_to_Probability_and_Statistics/chapter_02/STATS_C02S07.html">Box plots</a> excel at revealing contextual outliers because they provide separate distributional summaries for each relevant subgroup. An observation of 30 kWh is simultaneously:</p>
+<ul class="simple">
+<li><p>Normal or slightly below average for hour 0 (midnight)</p></li>
+<li><p>Extremely high for hour 10 (mid-morning)</p></li>
+<li><p>Typical for hour 21 (9 PM)</p></li>
+</ul>
+<p>Without the hour-by-hour breakdown, these distinctions would be lost. The figure also reveals that outliers are not uniformly distributed across hours—some time periods exhibit more variable consumption patterns than others, information useful for targeting anomaly investigation efforts.</p>
+<p>The 1.5×IQR rule applied by box plots provides a statistically principled, automatic threshold that adapts to each context’s natural variability. Hours with highly consistent usage patterns (narrow boxes) will flag smaller deviations as outliers, while hours with naturally variable consumption (wider boxes) require larger deviations to exceed the whisker threshold.</p>
+</section>
+<section id="scatter-plots-and-lag-plots">
+<h2><span class="section-number">5.4.4. </span>Scatter Plots and Lag Plots<a class="headerlink" href="#scatter-plots-and-lag-plots" title="Link to this heading">#</a></h2>
+<p>Scatter plots reveal relationships between variables by displaying paired observations in two-dimensional space. While standard scatter plots compare two different variables (such as marketing spend versus sales), lag plots provide a specialized temporal perspective by plotting each observation against its own past values <span id="id5">[<a class="reference internal" href="../References.html#id92" title="William S. Cleveland. Visualizing data. AT &amp; T Bell Laboratories, Murray Hill, NJ, 1993. ISBN 978-0-9634884-0-4.">Cleveland, 1993</a>, <a class="reference internal" href="../References.html#id200" title="Rob J. Hyndman and George Athanasopoulos. Forecasting: principles and practice. OTexts, Melbourne, Australia, third edition edition, 2021. ISBN 978-0-9875071-3-6.">Hyndman and Athanasopoulos, 2021</a>, <a class="reference internal" href="../References.html#id380" title="Robert H. Shumway and David S. Stoffer. Time Series Analysis and Its Applications: With R Examples. Springer Texts in Statistics. Springer Nature Switzerland, Cham, 2025. ISBN 978-3-031-70583-0 978-3-031-70584-7. doi:10.1007/978-3-031-70584-7.">Shumway and Stoffer, 2025</a>]</span>.</p>
+<!-- ### Scatter Plot Perspectives on Outlier Detection
+
+```{figure} scatter_plots_illustration.png
+---
+width: 900px
+align: center
+name: scatter_plots_illustration
+---
+Three scatter perspectives on monthly retail sales: time versus value reveals an above-trend outlier, autocorrelation (lag plot) shows temporal dynamics, and sales versus marketing spend identifies an off-relationship anomaly.
+```
+
+{numref}`scatter_plots_illustration` demonstrates three complementary scatter plot approaches to diagnosing anomalies, using the same sales dataset to highlight a single outlier point: **December 2023**.
+
+- **Time versus Value (Left Panel):** This scatter plot displays monthly sales on the y-axis against chronological time on the x-axis. The orange line represents a fitted trend capturing the long-term growth pattern. While most observations cluster around this trend with typical seasonal fluctuations, the red marker highlights December 2023 as a distinct **above-trend outlier**. In this specific month, sales spiked significantly higher than the expected trajectory. While high sales are typically positive, such a sharp deviation from the established trend warrants investigation to determine if it resulted from a genuine demand surge, a successful one-off intervention, or a data recording error.
+
+- **Autocorrelation Scatter (Center Panel):** This lag-1 plot displays each month's sales ($Sales_t$) against the previous month's sales ($Sales_{t-1}$). The distinct diagonal pattern (orange line) confirms strong positive autocorrelation—high sales months tend to follow high sales months. While the cluster is tight, deviations from this diagonal indicate breaks in temporal consistency. A sudden spike like the December 2023 outlier often manifests here as a pair of anomalous coordinates: first as a high $Sales_t$ relative to a normal $Sales_{t-1}$, and subsequently as a normal $Sales_t$ following the exceptionally high $Sales_{t-1}$, creating points that diverge from the inertia of the time series.
+
+- **Sales versus Marketing Spend (Right Panel):** This bivariate scatter plot reveals a diagnostic insight that the time plot misses. Here, sales are plotted against marketing expenditure, showing a strong positive relationship (blue points). The red marker again identifies December 2023, but reveals it as an off-relationship point. Although sales were high (approx. \$3.4 million), they were actually *low* relative to the record marketing spend of roughly \$2.25 million for that month. Based on the historical relationship, such high spending should have generated sales exceeding \$4.0 million. Thus, while the Time vs. Value plot suggests a "good" month (high sales), this multivariate view exposes it as an inefficient one (diminishing returns or attribution issues). --><!-- ### Lag Plots for Temporal Structure Analysis -->
+<p>To illustrate the diagnostic power of lag plots, we generate a synthetic daily price series using an Autoregressive AR(1) process centered at $100 with a persistence parameter <span class="math notranslate nohighlight">\(\phi=0.7\)</span>. This setup mimics typical stock price behavior where today’s price is strongly correlated with yesterday’s. We then inject two specific anomalies: a sudden “Flash Crash” on May 1st (simulating a discrete shock) and a structural increase in volatility starting in late 2023 (simulating a regime change). By comparing the time series view with lag plots, we can see how these distinct temporal features manifest differently across diagnostic tools.</p>
+<figure class="align-center" id="lag-plots-illustration">
+<a class="reference internal image-reference" href="../_images/lag_plots_illustration.png"><img alt="../_images/lag_plots_illustration.png" src="../_images/lag_plots_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.17 </span><span class="caption-text">Lag plots comparing temporal dependence at different lags against time series views. The time series plots (a, b) provide context for the “Flash Crash” and volatility shift, while the Lag-1 plot (c) highlights the outlier’s deviation from autocorrelation, and the Lag-7 plot (d) reveals the structural explosion in variance.</span><a class="headerlink" href="#lag-plots-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#lag-plots-illustration"><span class="std std-numref">Fig. 5.17</span></a> utilizes lag plots to diagnose temporal structure and identify specific anomalies that purely time-based plots might obscure.</p>
+<ul class="simple">
+<li><p><strong>Time Series Views (Top Panels a &amp; b):</strong> The top panel (a) displays the raw daily price series, where the “Flash Crash” on May 1st appears as a sharp, momentary dip. The middle panel (b) highlights a structural shift in the data’s behavior: the earlier period (teal) is stable, while the later period (purple) exhibits significantly higher volatility, representing a regime change in market conditions. These time-domain views establish the “what” and “when” of the anomalies.</p></li>
+<li><p><strong>Lag-1 Plot (Panel c):</strong> This plot displays Price<span class="math notranslate nohighlight">\(_t\)</span> against its immediate predecessor Price<span class="math notranslate nohighlight">\(_{t-1}\)</span>. The tight clustering of blue points along the orange OLS fit line indicates a strong positive autoregressive relationship—knowing yesterday’s price allows for a reliable prediction of today’s. The red marker highlights the <strong>Flash Crash</strong> as a significant outlier. Its position far below the diagonal trend line indicates that the price drop was not predicted by the previous day’s value, confirming it as a shock event inconsistent with the market’s normal inertia.</p></li>
+<li><p><strong>Lag-7 Plot (Panel d):</strong> This plot displays Price<span class="math notranslate nohighlight">\(_t\)</span> against the value seven days prior, Price<span class="math notranslate nohighlight">\(_{t-7}\)</span>. Unlike the lag-1 plot, there is no distinct linear trend, indicating weak correlation at this weekly lag. However, the plot clearly separates the two volatility regimes. The teal points (Stable) cluster tightly around the center, while the purple points (Volatile) form a dispersed “explosion” outward. This “fanning out” effect is a visual signature of <strong>heteroscedasticity</strong> (non-stationary variance), proving that the market’s risk profile has fundamentally changed even if the mean price has not.</p></li>
+</ul>
+<!-- ### Diagnostic Applications -->
+<p>Comparing lag plots at multiple lags provides insight into the underlying process:</p>
+<ul class="simple">
+<li><p><strong>Autocorrelation Decay:</strong> Strong structure at Lag-1 vs. a “blob” at Lag-7 suggests a process with short-term memory that decays quickly (like an AR(1) process).</p></li>
+<li><p><strong>Regime Detection:</strong> The emergence of distinct clusters or spreads (like the purple vs. teal points in Panel d) signals that the data-generating process is not constant over time, necessitating models that can handle regime switching or volatility clustering (e.g., ARCH/GARCH models).</p></li>
+</ul>
+</section>
+<section id="violin-plots-grouped-by-time-unit">
+<h2><span class="section-number">5.4.5. </span>Violin Plots (Grouped by Time Unit)<a class="headerlink" href="#violin-plots-grouped-by-time-unit" title="Link to this heading">#</a></h2>
+<p>Violin plots combine box plot summaries with distributional detail, where violin width represents observation density at each value. When grouped by cyclical time units (hour, day, month, quarter), they reveal how entire distributions shift across temporal contexts, effectively identifying contextual outliers in seasonal data <span id="id6">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id187" title="Jerry L. Hintze and Ray D. Nelson. Violin Plots: A Box Plot-Density Trace Synergism. The American Statistician, 52(2):181–184, May 1998. URL: http://www.tandfonline.com/doi/abs/10.1080/00031305.1998.10480559, doi:10.1080/00031305.1998.10480559.">Hintze and Nelson, 1998</a>]</span>.</p>
+<figure class="align-center" id="quarterly-sales-violin-illustration">
+<a class="reference internal image-reference" href="../_images/quarterly_sales_violin_illustration.png"><img alt="../_images/quarterly_sales_violin_illustration.png" src="../_images/quarterly_sales_violin_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.18 </span><span class="caption-text">Violin plot of quarterly sales distributions. Q4’s elevated, wider profile reflects holiday effects, making December 2024’s unusually low value clearly anomalous within its quarterly context.</span><a class="headerlink" href="#quarterly-sales-violin-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#quarterly-sales-violin-illustration"><span class="std std-numref">Fig. 5.18</span></a> displays monthly sales grouped by fiscal quarter, with gray dots representing individual months and orange lines marking medians:</p>
+<ul class="simple">
+<li><p><strong>Seasonal Pattern:</strong> Quarters 1-3 show similar distributions centered around $0.80M with narrow violins ($0.65-$1.00M). Q4’s distribution is dramatically elevated, centered at $1.12M and spanning $1.00-$1.42M, reflecting holiday shopping effects <span id="id7">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>]</span>.</p></li>
+<li><p><strong>Outlier Identification:</strong> The red marker identifies December 2024 at $0.65M—positioned far below Q4’s dense region and even lower than typical Q1-Q3 values. While every other Q4 observation clusters in $1.0-$1.4M, this point sits in isolation, warranting investigation into data errors, supply chain disruptions, or market changes <span id="id8">[<a class="reference internal" href="../References.html#id187" title="Jerry L. Hintze and Ray D. Nelson. Violin Plots: A Box Plot-Density Trace Synergism. The American Statistician, 52(2):181–184, May 1998. URL: http://www.tandfonline.com/doi/abs/10.1080/00031305.1998.10480559, doi:10.1080/00031305.1998.10480559.">Hintze and Nelson, 1998</a>]</span>.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Violin plots vs. box plots</p>
+<p>Violin plots reveal full distributional shapes beyond box plots’ five-point summaries. The Q4 violin shows not just elevated values but a smooth, approximately normal distribution at that level. This context emphasizes how the outlier violates an entire consistent density pattern, not just a statistical threshold <span id="id9">[<a class="reference internal" href="../References.html#id187" title="Jerry L. Hintze and Ray D. Nelson. Violin Plots: A Box Plot-Density Trace Synergism. The American Statistician, 52(2):181–184, May 1998. URL: http://www.tandfonline.com/doi/abs/10.1080/00031305.1998.10480559, doi:10.1080/00031305.1998.10480559.">Hintze and Nelson, 1998</a>]</span>.</p>
+</div>
+</section>
+<section id="seasonal-decomposition-plots">
+<h2><span class="section-number">5.4.6. </span>Seasonal Decomposition Plots<a class="headerlink" href="#seasonal-decomposition-plots" title="Link to this heading">#</a></h2>
+<p>Time series data often contain overlapping components—trends, seasonal patterns, and irregular fluctuations—that obscure genuine anomalies within expected cyclical variation. Seasonal decomposition mathematically separates these components for independent analysis <span id="id10">[<a class="reference internal" href="../References.html#id91" title="Robert B Cleveland, William S Cleveland, Jean E McRae, and Irma Terpenning. STL: a seasonal-trend decomposition. Journal of Official Stattistics, 6(1):3–73, 1990. URL: https://www.math.unm.edu/~lil/Stat581/STL.pdf.">Cleveland <em>et al.</em>, 1990</a>, <a class="reference internal" href="../References.html#id200" title="Rob J. Hyndman and George Athanasopoulos. Forecasting: principles and practice. OTexts, Melbourne, Australia, third edition edition, 2021. ISBN 978-0-9875071-3-6.">Hyndman and Athanasopoulos, 2021</a>]</span>.</p>
+<p>STL (Seasonal and Trend decomposition using Loess) partitions a time series into three additive components: trend (long-term movement), seasonal (repeating cycles), and residual (unexplained variation). The residual component isolates deviations that cannot be attributed to expected patterns, making it particularly valuable for outlier detection <span id="id11">[<a class="reference internal" href="../References.html#id91" title="Robert B Cleveland, William S Cleveland, Jean E McRae, and Irma Terpenning. STL: a seasonal-trend decomposition. Journal of Official Stattistics, 6(1):3–73, 1990. URL: https://www.math.unm.edu/~lil/Stat581/STL.pdf.">Cleveland <em>et al.</em>, 1990</a>]</span>.</p>
+<figure class="align-center" id="stl-decomposition-icecream-sales-illustration">
+<a class="reference internal image-reference" href="../_images/stl_decomposition_icecream_sales_illustration.png"><img alt="../_images/stl_decomposition_icecream_sales_illustration.png" src="../_images/stl_decomposition_icecream_sales_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.19 </span><span class="caption-text">STL decomposition of ice cream sales revealing trend, seasonal, and residual components. The residual panel exposes a massive January 2023 spike invisible in the raw data.</span><a class="headerlink" href="#stl-decomposition-icecream-sales-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#stl-decomposition-icecream-sales-illustration"><span class="std std-numref">Fig. 5.19</span></a> demonstrates STL decomposition on monthly ice cream sales (2019-2025):</p>
+<ul class="simple">
+<li><p><strong>Observed Series (Top):</strong> Raw sales show complex variability (30-55 units) with no immediately obvious outliers, as seasonal patterns mask anomalies.</p></li>
+<li><p><strong>Trend Component (Second):</strong> Smooth growth from 35 to 47 units reveals stable long-term dynamics without structural breaks.</p></li>
+<li><p><strong>Seasonal Component (Third):</strong> Consistent annual pattern (±6 units) peaks in summer and troughs in winter, indicating stable seasonality across all years.</p></li>
+<li><p><strong>Residual Component (Bottom):</strong> Random noise typically fluctuates within ±2 units. The red marker highlights <strong>January 2023</strong> reaching +10 units—five times typical magnitude. This represents sales 10 units higher than expected given trend (44) and winter seasonality (-6), suggesting unusual weather, promotional success, or data quality issues <span id="id12">[<a class="reference internal" href="../References.html#id200" title="Rob J. Hyndman and George Athanasopoulos. Forecasting: principles and practice. OTexts, Melbourne, Australia, third edition edition, 2021. ISBN 978-0-9875071-3-6.">Hyndman and Athanasopoulos, 2021</a>]</span>.</p></li>
+</ul>
+<p>The critical insight: the January 2023 anomaly appears as routine fluctuation in raw data but stands out unmistakably in residuals. STL’s robustness to outliers ensures extreme values don’t distort fitted components, making anomalies prominent in residuals <span id="id13">[<a class="reference internal" href="../References.html#id91" title="Robert B Cleveland, William S Cleveland, Jean E McRae, and Irma Terpenning. STL: a seasonal-trend decomposition. Journal of Official Stattistics, 6(1):3–73, 1990. URL: https://www.math.unm.edu/~lil/Stat581/STL.pdf.">Cleveland <em>et al.</em>, 1990</a>]</span>. For multiple seasonal periods (e.g., daily data with weekly and annual cycles), advanced methods like MSTL handle complex structures.</p>
+</section>
+<section id="q-q-plots-quantile-quantile-plots">
+<h2><span class="section-number">5.4.7. </span>Q-Q Plots (Quantile-Quantile Plots)<a class="headerlink" href="#q-q-plots-quantile-quantile-plots" title="Link to this heading">#</a></h2>
+<p>Quantile-quantile plots assess whether data follow a specified theoretical distribution by plotting sample quantiles against theoretical quantiles. Points lying on the diagonal reference line indicate the data match the reference distribution, while deviations reveal the nature and location of departures <span id="id14">[<a class="reference internal" href="../References.html#id4" title="John M. Chambers, William S. Cleveland, Beat Kleiner, and Paul A. Tukey. Graphical Methods for Data Analysis. Chapman and Hall/CRC, 1 edition, January 2018. ISBN 978-1-351-07230-4. URL: https://www.taylorfrancis.com/books/9781351080750 (visited on 2025-12-31), doi:10.1201/9781351072304.">Chambers <em>et al.</em>, 2018</a>, <a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id431" title="M. B. Wilk and R. Gnanadesikan. Probability plotting methods for the analysis of data. Biometrika, 55(1):1–17, March 1968.">Wilk and Gnanadesikan, 1968</a>]</span>.</p>
+<p>Q-Q plots excel at identifying outliers and assessing tail behavior, where deviations from the reference line become visually prominent at the extremes.</p>
+<figure class="align-center" id="qq-plot-temperature-illustration">
+<a class="reference internal image-reference" href="../_images/qq_plot_temperature_illustration.png"><img alt="../_images/qq_plot_temperature_illustration.png" src="../_images/qq_plot_temperature_illustration.png" style="width: 500px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.20 </span><span class="caption-text">Q-Q plot of standardized daily temperatures versus normal quantiles. Central alignment confirms approximate normality, while tail deviations (red) reveal extreme hot and cold days.</span><a class="headerlink" href="#qq-plot-temperature-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#qq-plot-temperature-illustration"><span class="std std-numref">Fig. 5.20</span></a> displays standardized daily temperatures (mean zero, unit variance) against theoretical normal quantiles:</p>
+<ul class="simple">
+<li><p><strong>Central Region Alignment:</strong> Blue points from approximately -1.5 to +1.5 SD align closely with the orange reference line, indicating the central 85-90% of temperatures follow approximate normality.</p></li>
+<li><p><strong>Lower Tail Deviations:</strong> Red points below the reference line (theoretical quantiles &lt;-2) represent unusually cold days more extreme than normal predictions. The coldest observations reach -3.0 SD or lower where normality predicts -2.5 SD, indicating a <strong>heavier lower tail</strong> from extreme cold snaps or arctic outbreaks.</p></li>
+<li><p><strong>Upper Tail Deviations:</strong> Red points above the reference line (theoretical quantiles &gt;+2) represent unusually hot days exceeding normal predictions, reflecting heat waves or climate variability. The symmetric tail deviations suggest <strong>leptokurtic</strong> (heavy-tailed) behavior with excess kurtosis rather than skewness <span id="id15">[<a class="reference internal" href="../References.html#id4" title="John M. Chambers, William S. Cleveland, Beat Kleiner, and Paul A. Tukey. Graphical Methods for Data Analysis. Chapman and Hall/CRC, 1 edition, January 2018. ISBN 978-1-351-07230-4. URL: https://www.taylorfrancis.com/books/9781351080750 (visited on 2025-12-31), doi:10.1201/9781351072304.">Chambers <em>et al.</em>, 2018</a>, <a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>]</span>.</p></li>
+</ul>
+<p>Q-Q plots distinguish between <strong>systematic</strong> deviations (many tail observations, suggesting model misspecification requiring alternative distributions like t-distributions or mixture models) and <strong>isolated</strong> deviations (few extreme points, suggesting individual outliers warranting investigation or removal). A point at theoretical quantile -3 occurs roughly once in 740 observations under normality; multiple such points indicate either genuine rare events or data quality issues <span id="id16">[<a class="reference internal" href="../References.html#id431" title="M. B. Wilk and R. Gnanadesikan. Probability plotting methods for the analysis of data. Biometrika, 55(1):1–17, March 1968.">Wilk and Gnanadesikan, 1968</a>]</span>.</p>
+</section>
+<section id="normal-probability-plots">
+<h2><span class="section-number">5.4.8. </span>Normal Probability Plots<a class="headerlink" href="#normal-probability-plots" title="Link to this heading">#</a></h2>
+<p>Normal probability plots assess whether data follow a normal distribution by plotting ordered observations against expected normal quantiles. Points aligning along a straight reference line indicate normality, while deviations reveal the nature of departures—heavier tails, skewness, or discrete outliers <span id="id17">[<a class="reference internal" href="../References.html#id4" title="John M. Chambers, William S. Cleveland, Beat Kleiner, and Paul A. Tukey. Graphical Methods for Data Analysis. Chapman and Hall/CRC, 1 edition, January 2018. ISBN 978-1-351-07230-4. URL: https://www.taylorfrancis.com/books/9781351080750 (visited on 2025-12-31), doi:10.1201/9781351072304.">Chambers <em>et al.</em>, 2018</a>, <a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id173" title="William F. Guthrie. NIST/SEMATECH e-Handbook of Statistical Methods (NIST Handbook 151). 2020. URL: https://www.itl.nist.gov/div898/handbook/, doi:10.18434/M32189.">Guthrie, 2020</a>, <a class="reference internal" href="../References.html#id298" title="D.C. Montgomery. Statistical Quality Control, 7th Edition. Wiley, 2012. ISBN 978-1-118-21468-8. URL: https://books.google.com/books?id=RgQcAAAAQBAJ.">Montgomery, 2012</a>]</span>.</p>
+<figure class="align-center" id="normal-probability-plot-processing-times-illustration">
+<a class="reference internal image-reference" href="../_images/normal_probability_plot_processing_times_illustration.png"><img alt="../_images/normal_probability_plot_processing_times_illustration.png" src="../_images/normal_probability_plot_processing_times_illustration.png" style="width: 500px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.21 </span><span class="caption-text">Normal probability plot of manufacturing processing times. Central linearity confirms approximate normality for typical operations, but upper-tail curvature reveals heavy-tailed delays.</span><a class="headerlink" href="#normal-probability-plot-processing-times-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#normal-probability-plot-processing-times-illustration"><span class="std std-numref">Fig. 5.21</span></a> displays manufacturing processing times plotted against expected normal quantiles. Each observation’s plotting position <span class="math notranslate nohighlight">\((i-0.5)/n\)</span> converts to a normal quantile via the inverse CDF.</p>
+<ul class="simple">
+<li><p><strong>Central Linear Pattern:</strong> Blue points from quantile -2 to +2 align closely with the orange reference line (fitted to 10th-90th percentiles), indicating typical processing times (12-28 minutes) follow approximate normality under standard operating conditions.</p></li>
+<li><p><strong>Upper Tail Deviation:</strong> Beginning at quantile +2, red points deviate progressively upward. Where normality predicts 28-30 minutes at the upper tail, actual observations extend beyond 50 minutes—a <strong>heavy upper tail</strong> indicating delays occur more frequently than expected.</p></li>
+<li><p><strong>Outlier Identification:</strong> Processing times exceeding 45 minutes (quantile &gt;+2.5) represent rare events (&lt;1% under normality). The progressive separation suggests both heavy-tail behavior and discrete extreme outliers from assignable causes like equipment breakdowns, material defects, or operator errors.</p></li>
+</ul>
+<p>The <strong>asymmetric</strong> pattern—deviation only in the upper tail—reflects manufacturing reality: processes experience delays but cannot exceed optimized minimum times <span id="id18">[<a class="reference internal" href="../References.html#id298" title="D.C. Montgomery. Statistical Quality Control, 7th Edition. Wiley, 2012. ISBN 978-1-118-21468-8. URL: https://books.google.com/books?id=RgQcAAAAQBAJ.">Montgomery, 2012</a>]</span>.</p>
+<p><a class="reference internal" href="#normal-probability-plot-processing-times-illustration"><span class="std std-numref">Fig. 5.21</span></a> reveals that normal-based control charts will underestimate delay frequency, as 3-sigma limits flag extreme outliers but miss systematic heavy-tail patterns. Alternative approaches include log-normal or Weibull distributions, robust control charts, or separate assignable cause treatment. For capacity planning, managers using the normal 95th percentile (~28 minutes) will face more delays than anticipated; empirical percentiles or heavy-tailed distributions provide more realistic estimates <span id="id19">[<a class="reference internal" href="../References.html#id4" title="John M. Chambers, William S. Cleveland, Beat Kleiner, and Paul A. Tukey. Graphical Methods for Data Analysis. Chapman and Hall/CRC, 1 edition, January 2018. ISBN 978-1-351-07230-4. URL: https://www.taylorfrancis.com/books/9781351080750 (visited on 2025-12-31), doi:10.1201/9781351072304.">Chambers <em>et al.</em>, 2018</a>, <a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id173" title="William F. Guthrie. NIST/SEMATECH e-Handbook of Statistical Methods (NIST Handbook 151). 2020. URL: https://www.itl.nist.gov/div898/handbook/, doi:10.18434/M32189.">Guthrie, 2020</a>]</span>.</p>
+</section>
+<section id="residual-plots">
+<h2><span class="section-number">5.4.9. </span>Residual Plots<a class="headerlink" href="#residual-plots" title="Link to this heading">#</a></h2>
+<p>After fitting a model to time series data, residuals represent unexplained variation remaining after accounting for systematic patterns. Residual analysis provides a critical diagnostic tool for model validation and outlier detection, where unusually large residuals indicate either genuine anomalies or model inadequacies <span id="id20">[<a class="reference internal" href="../References.html#id55" title="George E. P. Box, Gwilym M. Jenkins, Gregory C. Reinsel, and Greta M. Ljung. Time series analysis: forecasting and control. Wiley series in probability and statistics. Wiley, Hoboken, New Jersey, fifth edition edition, 2016. ISBN 978-1-118-67502-1 978-1-118-67492-5.">Box <em>et al.</em>, 2016</a>, <a class="reference internal" href="../References.html#id298" title="D.C. Montgomery. Statistical Quality Control, 7th Edition. Wiley, 2012. ISBN 978-1-118-21468-8. URL: https://books.google.com/books?id=RgQcAAAAQBAJ.">Montgomery, 2012</a>, <a class="reference internal" href="../References.html#id324" title="Daniel Peña and Julio Rodríguez. The log of the determinant of the autocorrelation matrix for testing goodness of fit in time series. Journal of Statistical Planning and Inference, 136(8):2706–2718, August 2006. URL: https://linkinghub.elsevier.com/retrieve/pii/S0378375804004574 (visited on 2025-12-29), doi:10.1016/j.jspi.2004.10.026.">Peña and Rodríguez, 2006</a>]</span>.</p>
+<p>Residual plots reveal different aspects of model performance: time plots detect temporal patterns or shocks, fitted value plots assess heteroscedasticity, and standardized plots flag statistical extremes using ±2 or ±3 SD thresholds.</p>
+<figure class="align-center" id="residual-diagnostics-illustration">
+<a class="reference internal image-reference" href="../_images/residual_diagnostics_illustration.png"><img alt="../_images/residual_diagnostics_illustration.png" src="../_images/residual_diagnostics_illustration.png" style="width: 1000px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.22 </span><span class="caption-text">Residual diagnostics after fitting a seasonal trend model to airline passenger data. The top panel reveals a +700 passenger residual in February 2022 exceeding ±2 SD thresholds.</span><a class="headerlink" href="#residual-diagnostics-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#residual-diagnostics-illustration"><span class="std std-numref">Fig. 5.22</span></a> presents three complementary diagnostics from a seasonal trend model fitted to monthly airline passenger data (2019-2025):</p>
+<ul class="simple">
+<li><p><strong>Residuals vs Time (Top):</strong> Raw residuals oscillate around zero within ±200 passengers, with red dashed lines marking ±2 SD thresholds at ±240. The February 2022 outlier (+700 passengers) exceeds this threshold by 3×, warranting investigation into promotional events, competitor disruptions, or data errors.</p></li>
+<li><p><strong>Residuals vs Fitted (Middle):</strong> Teal points scatter randomly in a horizontal band (±200 passengers) across fitted values (9,750-10,750), showing <strong>no heteroscedasticity</strong>. The +700 outlier appears in the upper region, confirming its anomalous status independent of timing. The constant variance validates the modeling approach.</p></li>
+<li><p><strong>Standardized Residuals (Bottom):</strong> Orange (±2 SD) and red (±3 SD) thresholds frame typical variation. The February 2022 spike reaches <strong>+4.8 SD</strong>—an event with probability &lt;1 in 1.5 million under normality. Even with multiple testing across 72 months, this is statistically indefensible as random variation.</p></li>
+</ul>
+<p>The plots collectively validate the model for typical observations while flagging the February 2022 outlier. This extreme observation represents either a genuine external shock requiring documentation/intervention analysis, or a data quality issue (double-counting, date errors) requiring correction <span id="id21">[<a class="reference internal" href="../References.html#id55" title="George E. P. Box, Gwilym M. Jenkins, Gregory C. Reinsel, and Greta M. Ljung. Time series analysis: forecasting and control. Wiley series in probability and statistics. Wiley, Hoboken, New Jersey, fifth edition edition, 2016. ISBN 978-1-118-67502-1 978-1-118-67492-5.">Box <em>et al.</em>, 2016</a>, <a class="reference internal" href="../References.html#id324" title="Daniel Peña and Julio Rodríguez. The log of the determinant of the autocorrelation matrix for testing goodness of fit in time series. Journal of Statistical Planning and Inference, 136(8):2706–2718, August 2006. URL: https://linkinghub.elsevier.com/retrieve/pii/S0378375804004574 (visited on 2025-12-29), doi:10.1016/j.jspi.2004.10.026.">Peña and Rodríguez, 2006</a>]</span>.</p>
+<p>Residual patterns guide improvement strategies: systematic time oscillations suggest additional seasonal terms, funneling in fitted plots indicates need for log transformation, and autocorrelation patterns warrant ARIMA terms.</p>
+</section>
+<section id="control-charts-statistical-process-control">
+<h2><span class="section-number">5.4.10. </span>Control Charts (Statistical Process Control)<a class="headerlink" href="#control-charts-statistical-process-control" title="Link to this heading">#</a></h2>
+<p>Control charts provide a statistical framework for monitoring process stability and detecting anomalies in sequential data. Developed by Walter Shewhart in the 1920s, they establish control limits based on natural process variation during stable operation, then flag observations exceeding these limits as potential special causes <span id="id22">[<a class="reference internal" href="../References.html#id298" title="D.C. Montgomery. Statistical Quality Control, 7th Edition. Wiley, 2012. ISBN 978-1-118-21468-8. URL: https://books.google.com/books?id=RgQcAAAAQBAJ.">Montgomery, 2012</a>]</span>.</p>
+<p>An Individuals control chart (X-chart or I-chart) monitors individual observations rather than sample means. The chart displays a center line (process mean) and control limits at ±3 standard deviations, encompassing 99.73% of observations under normal stable operation.</p>
+<figure class="align-center" id="individuals-control-chart-illustration">
+<a class="reference internal image-reference" href="../_images/individuals_control_chart_illustration.png"><img alt="../_images/individuals_control_chart_illustration.png" src="../_images/individuals_control_chart_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.23 </span><span class="caption-text">Individuals control chart monitoring daily call center response times. A March 2024 point exceeds the upper control limit, while pattern-based rules flag trend and run violations.</span><a class="headerlink" href="#individuals-control-chart-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#individuals-control-chart-illustration"><span class="std std-numref">Fig. 5.23</span></a> displays daily call center response times from January through July 2024. The center line (CL) sits at approximately 8.1 minutes, with Upper Control Limit (UCL) at 11.1 minutes and Lower Control Limit (LCL) at 5.1 minutes, all calculated from the Phase 1 baseline (gray shaded region).</p>
+<ul class="simple">
+<li><p><strong>Phase 1 Baseline:</strong> The gray region represents the initial 50 days used to establish control limits from stable process operation.</p></li>
+<li><p><strong>Phase 2 Monitoring:</strong> Post-baseline observations are compared against established limits. Most response times fluctuate within 5.5-10.5 minutes, indicating statistical control.</p></li>
+<li><p><strong>Out-of-Control Signal:</strong> The red marker in early March 2024 reaches 11.8 minutes, exceeding the UCL. This signal (probability ~0.27% under normal operation) triggers investigation into special causes such as staffing issues, system problems, or volume spikes.</p></li>
+<li><p><strong>Pattern-Based Rules:</strong> The orange shaded region (late April) shows a <strong>trend pattern</strong> with 6 consecutive increases, suggesting gradual deterioration. The purple region (early June) shows a <strong>run pattern</strong> with 8 consecutive points below CL, suggesting a process shift. These Western Electric rules detect subtle changes not captured by simple limit violations.</p></li>
+</ul>
+<p>The key distinction is between <strong>common-cause variation</strong> (inherent randomness within control limits) and <strong>special-cause variation</strong> (identifiable events causing outliers or patterns). Common causes require process redesign; special causes require root problem identification and elimination.</p>
+<!-- ### Additional Detection Rules
+
+Beyond the simple ±3σ limit rule, control charts employ additional pattern recognition rules (often called Western Electric Rules or Nelson Rules) to detect subtler out-of-control conditions:
+
+- **Rule 2**: Two out of three consecutive points beyond ±2σ (not visible in this chart)
+- **Rule 3**: Four out of five consecutive points beyond ±1σ on the same side of center line
+- **Rule 4**: Eight or more consecutive points on one side of the center line (run above or below center)
+- **Rule 5**: Six or more consecutive points steadily increasing or decreasing (trend)
+- **Rule 6**: Fourteen or more points alternating up and down (excessive oscillation)
+- **Rule 7**: Fifteen consecutive points within ±1σ (unusual lack of variation)
+
+While the figure highlights the obvious out-of-control point exceeding the UCL, careful examination might reveal runs, trends, or other patterns suggesting process drift or instability before control limits are breached. The gray baseline period should be scrutinized for such patterns before establishing control limits to ensure the baseline truly represents stable operation.
+
+### Phase 1 Versus Phase 2 Applications
+
+The distinction between Phase 1 (retrospective analysis to establish limits) and Phase 2 (prospective monitoring of new data) is critical for proper control chart application. During Phase 1, analysts may iteratively remove outliers and recalculate limits until a stable baseline emerges, though this requires careful justification to avoid artificially narrow limits. During Phase 2, limits remain fixed and are not recalculated with each new observation, preserving their statistical interpretation as probabilities under the baseline process.
+
+For processes with regime changes or continuous improvement initiatives, control limits may be periodically re-established once a new stable state is achieved. However, frequent limit recalculation defeats the purpose of statistical monitoring and should be undertaken only when fundamental process changes are verified. --></section>
+<section id="choosing-visual-methods-for-your-data">
+<h2><span class="section-number">5.4.11. </span>Choosing Visual Methods for Your Data<a class="headerlink" href="#choosing-visual-methods-for-your-data" title="Link to this heading">#</a></h2>
+<p>The effectiveness of visual outlier detection depends on matching methods to data characteristics and analysis goals. Focus on complementary approaches that address your specific situation rather than applying every available visualization <span id="id23">[<a class="reference internal" href="../References.html#id406" title="Antony Unwin. Graphical Data Analysis with R. Chapman and Hall/CRC, 1 edition, September 2018. ISBN 978-1-315-37008-8. URL: https://www.taylorfrancis.com/books/9781315362298 (visited on 2025-12-29), doi:10.1201/9781315370088.">Unwin, 2018</a>]</span>.</p>
+<section id="method-selection-by-data-type">
+<h3><span class="section-number">5.4.11.1. </span>Method Selection by Data Type<a class="headerlink" href="#method-selection-by-data-type" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Univariate time series with trend/seasonality</strong>: Start with time plots, then apply seasonal decomposition (STL) to examine residuals. Box plots grouped by season provide contextual screening. For high-frequency data (hourly, daily), control charts monitor ongoing operations with statistical limits, while box plots grouped by hour/day reveal when outliers concentrate in specific periods <span id="id24">[<a class="reference internal" href="../References.html#id406" title="Antony Unwin. Graphical Data Analysis with R. Chapman and Hall/CRC, 1 edition, September 2018. ISBN 978-1-315-37008-8. URL: https://www.taylorfrancis.com/books/9781315362298 (visited on 2025-12-29), doi:10.1201/9781315370088.">Unwin, 2018</a>]</span>.</p></li>
+<li><p><strong>Process monitoring</strong>: Control charts (X-charts) establish baseline limits and flag special-cause variation. Supplement with residual plots after fitting trend/seasonal models to identify model-independent anomalies.</p></li>
+<li><p><strong>Distributional assessment</strong>: Begin with histograms for overall shape, then use Q-Q plots for specific distributional assumptions. Box plots offer quick summaries while violin plots reveal detailed density for multimodal or asymmetric distributions. For non-normal distributions, Q-Q plots distinguish true outliers from systematic heavy-tail behavior requiring alternative assumptions or transformation <span id="id25">[<a class="reference internal" href="../References.html#id406" title="Antony Unwin. Graphical Data Analysis with R. Chapman and Hall/CRC, 1 edition, September 2018. ISBN 978-1-315-37008-8. URL: https://www.taylorfrancis.com/books/9781315362298 (visited on 2025-12-29), doi:10.1201/9781315370088.">Unwin, 2018</a>]</span>.</p></li>
+<li><p><strong>Relationship analysis</strong>: Scatter plots identify deviations from expected correlations. Lag plots at relevant lags (lag-1 for immediate dependence, lag-7 for weekly patterns, lag-24 for daily cycles) expose temporal structure changes. Residual plots after modeling expose outliers unexplained by systematic relationships.</p></li>
+</ul>
+</section>
+<section id="practical-workflow">
+<h3><span class="section-number">5.4.11.2. </span>Practical Workflow<a class="headerlink" href="#practical-workflow" title="Link to this heading">#</a></h3>
+<p>Progress through: <strong>Initial exploration</strong> (time plots, histograms) to understand patterns and flag obvious anomalies → <strong>Distributional analysis</strong> (box/violin plots, Q-Q plots) to assess tail behavior → <strong>Model-based detection</strong> (residuals) to identify anomalies persisting after accounting for systematic patterns. Three to five well-chosen plots typically provide more insight than fifteen redundant ones. Each should answer a specific question about temporal patterns, distributional consistency, relationships, or model adequacy <span id="id26">[<a class="reference internal" href="../References.html#id406" title="Antony Unwin. Graphical Data Analysis with R. Chapman and Hall/CRC, 1 edition, September 2018. ISBN 978-1-315-37008-8. URL: https://www.taylorfrancis.com/books/9781315362298 (visited on 2025-12-29), doi:10.1201/9781315370088.">Unwin, 2018</a>]</span>.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C05S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Outlier Classification by Seasonality</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C05S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.5. </span>Descriptive Statistics-Based Methods for Outlier Detection in Time Series</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-plots-line-plots">5.4.1. Time Plots (Line Plots)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#histograms">5.4.2. Histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-plots-box-and-whisker">5.4.3. Box Plots (Box-and-Whisker)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scatter-plots-and-lag-plots">5.4.4. Scatter Plots and Lag Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#violin-plots-grouped-by-time-unit">5.4.5. Violin Plots (Grouped by Time Unit)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonal-decomposition-plots">5.4.6. Seasonal Decomposition Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-q-plots-quantile-quantile-plots">5.4.7. Q-Q Plots (Quantile-Quantile Plots)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-probability-plots">5.4.8. Normal Probability Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-plots">5.4.9. Residual Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-charts-statistical-process-control">5.4.10. Control Charts (Statistical Process Control)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-visual-methods-for-your-data">5.4.11. Choosing Visual Methods for Your Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-selection-by-data-type">5.4.11.1. Method Selection by Data Type</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-workflow">5.4.11.2. Practical Workflow</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

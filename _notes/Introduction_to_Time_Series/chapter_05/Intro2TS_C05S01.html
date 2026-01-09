@@ -1,0 +1,788 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.1. Outlier Detection in Time Series &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2TS_C05S01';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.2. Outlier Classification by Scope" href="Intro2TS_C05S02.html" />
+    <link rel="prev" title="5. Outlier Detection in Time Series" href="Intro2TS_C05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2TS_C04.html">4. Classical Time Series Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Outlier Detection in Time Series</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-when-one-bad-data-point-ruins-everything">5.1.1. Motivation: When One Bad Data Point Ruins Everything</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-outliers">5.1.2. What Are Outliers?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-context-why-location-matters">5.1.2.1. Time Series Context: Why Location Matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#origins-of-outliers">5.1.2.2. Origins of Outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-outlier-detection-matters">5.1.3. Why Outlier Detection Matters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-statistical-inference">5.1.3.1. Impact on Statistical Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-forecasting-models">5.1.3.2. Impact on Forecasting Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-nature-threat-and-opportunity">5.1.3.3. Dual Nature: Threat and Opportunity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-synthetic-e-commerce-dataset">5.1.4. Building a Synthetic E-commerce Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-constructing-the-baseline-time-series">5.1.4.1. Step 1: Constructing the Baseline Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-injecting-realistic-outliers">5.1.4.2. Step 2: Injecting Realistic Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-quantifying-the-impact-of-outliers">5.1.4.3. Step 3: Quantifying the Impact of Outliers</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="outlier-detection-in-time-series">
+<h1><span class="section-number">5.1. </span>Outlier Detection in Time Series<a class="headerlink" href="#outlier-detection-in-time-series" title="Link to this heading">#</a></h1>
+<section id="motivation-when-one-bad-data-point-ruins-everything">
+<h2><span class="section-number">5.1.1. </span>Motivation: When One Bad Data Point Ruins Everything<a class="headerlink" href="#motivation-when-one-bad-data-point-ruins-everything" title="Link to this heading">#</a></h2>
+<p>Consider a retailer forecasting demand to optimize inventory. In January 2024, they observe daily sales averaging $15,000. On January 15th, the system records <strong>-$12,000</strong>—a negative sale. This impossible value stems from a data entry error where a refund was logged incorrectly.</p>
+<p>If we naively fit a forecasting model to this contaminated data, the estimated mean drops from $15,000 to $14,672, the variance inflates by 40%, and the trained model persistently under-forecasts February demand by 8%. A single bad value out of 365 observations corrupts the entire pipeline.</p>
+<p>This example illustrates why outlier detection is not a cosmetic preprocessing step—it is a fundamental requirement for reliable time series analysis.</p>
+</section>
+<section id="what-are-outliers">
+<h2><span class="section-number">5.1.2. </span>What Are Outliers?<a class="headerlink" href="#what-are-outliers" title="Link to this heading">#</a></h2>
+<p>Outliers are observations that deviate significantly from the expected pattern established by the majority of the data. In cross-sectional statistics, an outlier might simply be “an unusually large or small value.” In time series, the definition becomes more nuanced: we must ask whether a value is unusual <em>given its temporal context</em>.</p>
+<section id="time-series-context-why-location-matters">
+<h3><span class="section-number">5.1.2.1. </span>Time Series Context: Why Location Matters<a class="headerlink" href="#time-series-context-why-location-matters" title="Link to this heading">#</a></h3>
+<p>A daily sales figure of $25,000 could be:</p>
+<ul class="simple">
+<li><p><strong>Normal</strong> if it occurs on Black Friday during a holiday promotion</p></li>
+<li><p><strong>An outlier</strong> if it occurs on a Tuesday in February with no special events</p></li>
+<li><p><strong>Suspicious</strong> if the previous 30 days averaged $10,000 and there’s no documented reason for the spike</p></li>
+</ul>
+<p>Unlike independent observations, time series outliers depend on:</p>
+<ol class="arabic simple">
+<li><p><strong>Trend:</strong> Is the value unusual relative to the current trajectory?</p></li>
+<li><p><strong>Seasonality:</strong> Does it deviate from the expected seasonal pattern?</p></li>
+<li><p><strong>Recent History:</strong> Is it inconsistent with the preceding observations?</p></li>
+</ol>
+</section>
+<section id="origins-of-outliers">
+<h3><span class="section-number">5.1.2.2. </span>Origins of Outliers<a class="headerlink" href="#origins-of-outliers" title="Link to this heading">#</a></h3>
+<p>Outliers typically arise from one of three distinct mechanisms, and identifying the source is critical because it dictates your handling strategy:</p>
+<ol class="arabic simple">
+<li><p><strong>Natural Extremes (Keep Them):</strong> These are legitimate, albeit rare, values from the tail of the true distribution—such as record electricity demand during a heatwave or a viral traffic spike. You should <strong>retain</strong> these because removing them artificially smooths reality, leaving your model unprepared for future extremes that are part of normal business operations.</p></li>
+<li><p><strong>Measurement Errors (Fix or Remove):</strong> These are artifacts of data collection failures, such as a broken sensor reporting -999°C, a duplicate transaction, or a typo (e.g., entering $1M instead of $10k). These points contain zero information and purely corrupt your estimates; they must be <strong>corrected</strong> or <strong>deleted</strong> to prevent them from biasing your analysis.</p></li>
+<li><p><strong>Exceptional Events (Keep and Flag):</strong> These are genuine but non-recurring disturbances caused by external shocks, like a supply chain outage from a hurricane or a cyberattack. While the data is real, treating it as a repeating pattern leads to overfitting. The best approach is to <strong>keep</strong> the data point but <strong>flag</strong> it (e.g., with a dummy variable) so the model learns to treat it as a special case rather than a regular occurrence.</p></li>
+</ol>
+<figure class="align-center" id="outliers-summary">
+<a class="reference internal image-reference" href="../_images/outliers_summary.png"><img alt="../_images/outliers_summary.png" src="../_images/outliers_summary.png" style="width: 500px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text"><strong>Decision framework for handling outliers.</strong> This flowchart summarizes the three critical paths for outlier management. When an outlier is detected, identifying its root cause is the first step. <strong>Natural Extremes</strong> (e.g., heatwaves) should be kept to preserve reality. <strong>Measurement Errors</strong> (e.g., sensor failures) are corrupt data points that must be fixed or removed. <strong>Exceptional Events</strong> (e.g., strikes or disasters) are real but unique; they should be kept in the dataset but flagged (e.g., with a dummy variable) so models treat them as special cases rather than learning them as repeating patterns. (Image generated using <a class="reference external" href="https://gemini.google.com/">Google Gemini</a>).</span><a class="headerlink" href="#outliers-summary" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="why-outlier-detection-matters">
+<h2><span class="section-number">5.1.3. </span>Why Outlier Detection Matters<a class="headerlink" href="#why-outlier-detection-matters" title="Link to this heading">#</a></h2>
+<section id="impact-on-statistical-inference">
+<h3><span class="section-number">5.1.3.1. </span>Impact on Statistical Inference<a class="headerlink" href="#impact-on-statistical-inference" title="Link to this heading">#</a></h3>
+<p>Outliers exert disproportionate influence on parameter estimates because many statistical methods minimize squared errors. A single extreme value can:</p>
+<ul class="simple">
+<li><p><strong>Bias the Mean:</strong> One observation of $100,000 in data averaging $10,000 pulls the mean from $10,000 to $11,944 (assuming 50 observations).</p></li>
+<li><p><strong>Inflate Variance:</strong> The same outlier increases the standard deviation from $500 to $12,600—a 25-fold increase.</p></li>
+<li><p><strong>Distort Correlations:</strong> A single spike that coincides with a seasonal peak can create spurious correlation between unrelated variables.</p></li>
+</ul>
+<p>These distortions propagate through every downstream analysis: hypothesis tests lose power, confidence intervals become unreliable, and regression coefficients become biased.</p>
+</section>
+<section id="impact-on-forecasting-models">
+<h3><span class="section-number">5.1.3.2. </span>Impact on Forecasting Models<a class="headerlink" href="#impact-on-forecasting-models" title="Link to this heading">#</a></h3>
+<p>Forecasting models learn patterns from historical data. When outliers contaminate training data:</p>
+<ul class="simple">
+<li><p><strong>ARIMA Models:</strong> Parameter estimates (AR and MA coefficients) become biased, leading to mis-specified dynamics.</p></li>
+<li><p><strong>Exponential Smoothing:</strong> The smoothing constant adapts to extreme noise, causing over- or under-reaction to new data.</p></li>
+<li><p><strong>Machine Learning:</strong> Gradient-based methods (neural networks, gradient boosting) chase outliers during training, sacrificing generalization.</p></li>
+</ul>
+<p>A study of retail demand forecasting found that removing just 2% of observations flagged as outliers reduced Mean Absolute Percentage Error (MAPE) by 15% on average.</p>
+</section>
+<section id="dual-nature-threat-and-opportunity">
+<h3><span class="section-number">5.1.3.3. </span>Dual Nature: Threat and Opportunity<a class="headerlink" href="#dual-nature-threat-and-opportunity" title="Link to this heading">#</a></h3>
+<p>While outliers threaten model validity, they also convey critical information:</p>
+<ul class="simple">
+<li><p><strong>Fraud Detection:</strong> Unusual transaction patterns flag potential credit card fraud.</p></li>
+<li><p><strong>Equipment Failure:</strong> Sensor readings that suddenly spike often precede mechanical failures.</p></li>
+<li><p><strong>Market Anomalies:</strong> Trading volume outliers may signal insider information or news events.</p></li>
+</ul>
+<p>The goal is not to blindly remove all extreme values, but to <em>detect, investigate, and handle them appropriately</em> based on their origin and business context.</p>
+<div class="important admonition">
+<p class="admonition-title">Key Principle</p>
+<p><strong>Not all outliers are errors, and not all errors are outliers.</strong></p>
+<p>A value can be statistically extreme yet perfectly valid (Black Friday sales), while a subtle data quality issue (systematic 1% under-reporting) may never trigger outlier detection. Effective analysis requires both statistical methods <em>and</em> domain knowledge.</p>
+</div>
+</section>
+</section>
+<section id="building-a-synthetic-e-commerce-dataset">
+<h2><span class="section-number">5.1.4. </span>Building a Synthetic E-commerce Dataset<a class="headerlink" href="#building-a-synthetic-e-commerce-dataset" title="Link to this heading">#</a></h2>
+<p>Let’s create a synthetic e-commerce dataset to explore outlier detection. By building it from scratch, we control exactly what patterns exist and, crucially, which values qualify as outliers.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why Synthetic Data?</p>
+<p>In real-world data, the “ground truth” is often unknown—we rarely know for certain whether a spike is a genuine anomaly or just extreme noise. By constructing our own dataset, we can:</p>
+<ol class="arabic simple">
+<li><p><strong>Define the Baseline:</strong> Establish a clear “normal” behavior (trend + seasonality).</p></li>
+<li><p><strong>Control Complexity:</strong> Introduce known patterns (like weekend boosts) to see how detection algorithms handle them.</p></li>
+<li><p><strong>Evaluate Accuracy:</strong> Precisely measure how well different methods identify the specific anomalies we inject.</p></li>
+</ol>
+</div>
+<section id="step-1-constructing-the-baseline-time-series">
+<h3><span class="section-number">5.1.4.1. </span>Step 1: Constructing the Baseline Time Series<a class="headerlink" href="#step-1-constructing-the-baseline-time-series" title="Link to this heading">#</a></h3>
+<p>We’ll build one year of daily sales data (365 days). Our model will include three fundamental components commonly found in retail data:</p>
+<ol class="arabic simple">
+<li><p><strong>Trend:</strong> A gradual linear increase in sales (simulating business growth).</p></li>
+<li><p><strong>Seasonality:</strong> A recurring weekly pattern (simulating higher demand on weekends).</p></li>
+<li><p><strong>Noise:</strong> Random day-to-day fluctuations (simulating natural variability).</p></li>
+</ol>
+<p><strong>Mathematical Model</strong></p>
+<p>We combine these components using a mixed additive-multiplicative model:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-64932f20-41c4-4046-bc28-a1987590a4bd">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-64932f20-41c4-4046-bc28-a1987590a4bd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+
+\text{Sales}_t = (\text{Trend}_t \times \text{Seasonality}_t) + \text{Noise}_t
+
+\end{equation}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{Trend}_t = 10,000 + 50t\)</span> (Starts at $10k, grows $50/day)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Seasonality}_t = 1.3\)</span> for weekends, <span class="math notranslate nohighlight">\(1.0\)</span> for weekdays</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Noise} \sim \mathcal{N}(0, 500)\)</span></p></li>
+</ul>
+<p><strong>Implementation:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Set random seed for reproducibility</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 1. Generate time index (1 year of daily data)</span>
+<span class="n">n_days</span> <span class="o">=</span> <span class="mi">365</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">n_days</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Create base trend component (gradual growth)</span>
+<span class="n">base_sales</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># Starting daily sales</span>
+<span class="n">growth_rate</span> <span class="o">=</span> <span class="mi">50</span>    <span class="c1"># Daily growth</span>
+<span class="n">trend</span> <span class="o">=</span> <span class="n">base_sales</span> <span class="o">+</span> <span class="n">growth_rate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_days</span><span class="p">)</span>
+
+<span class="c1"># 3. Add weekly seasonality (weekend boost)</span>
+<span class="n">day_of_week</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">dayofweek</span>  <span class="c1"># 0=Monday, 6=Sunday</span>
+<span class="n">weekend_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">day_of_week</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># 1 for Sat/Sun, 0 otherwise</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">weekend_mask</span>  <span class="c1"># 30% boost on weekends</span>
+
+<span class="c1"># 4. Add random noise (natural variation)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_days</span><span class="p">)</span>
+
+<span class="c1"># 5. Combine components to create baseline sales</span>
+<span class="n">sales_baseline</span> <span class="o">=</span> <span class="n">trend</span> <span class="o">*</span> <span class="n">seasonality</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="c1"># Create DataFrame</span>
+<span class="n">df_baseline</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span> <span class="s1">&#39;sales&#39;</span><span class="p">:</span> <span class="n">sales_baseline</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Before we break the data with outliers, it is critical to understand what “normal” looks like.</p>
+<figure class="align-center" id="baseline-sales">
+<a class="reference internal image-reference" href="../_images/baseline_sales.png"><img alt="../_images/baseline_sales.png" src="../_images/baseline_sales.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text"><strong>Synthetic E-commerce Sales Baseline (Pre-Outliers).</strong> This plot shows the “clean” data generating process before any anomalies are introduced. The purple line tracks daily sales, while green shaded regions indicate weekends. The structure exhibits two key regularities: a deterministic linear trend (sales grow by roughly <span class="math notranslate nohighlight">\(50/day) and clear weekly seasonality (sales spike by 30% every Saturday and Sunday). Notice the &quot;heartbeat&quot; pattern created by these weekend boosts. Crucially, the definition of &quot;normal&quot; evolves over time: a \)</span>15,000 sales day is completely expected in January but would be suspiciously low by December. Any robust outlier detection method must account for this evolving context rather than applying a fixed global threshold [image:38].</span><a class="headerlink" href="#baseline-sales" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Notice the distinct “heartbeat” pattern. The data oscillates regularly due to the weekend boost, and the overall level rises steadily from ~$10k in Jan to ~$30k in Dec. This illustrates why context is king: a raw value of <strong>$15,000</strong> is perfectly normal in January but would be a statistically significant anomaly (too low) in December. Effective time series outlier detection requires methods that model this <strong>temporal context</strong>—comparing each point not to the global average, but to its own local expectation.</p>
+</section>
+<section id="step-2-injecting-realistic-outliers">
+<h3><span class="section-number">5.1.4.2. </span>Step 2: Injecting Realistic Outliers<a class="headerlink" href="#step-2-injecting-realistic-outliers" title="Link to this heading">#</a></h3>
+<p>Now we deliberately add five outliers representing different real-world scenarios. We define them in a dictionary to simulate the specific business context for each anomaly:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outlier_events</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">85</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Black Friday Sale&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Major holiday promotion&#39;</span><span class="p">},</span>
+    <span class="mi">142</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Website Outage&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Technical failure&#39;</span><span class="p">},</span>
+    <span class="mi">200</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Viral Marketing&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Social media success&#39;</span><span class="p">},</span>
+    <span class="mi">265</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Data Entry Error&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Recording mistake&#39;</span><span class="p">},</span>
+    <span class="mi">310</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Flash Sale&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;Limited-time promotion&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">What Each Outlier Represents</p>
+<p>These outliers span the full spectrum of how we should handle extreme values:</p>
+<ul class="simple">
+<li><p><strong>Black Friday (3×):</strong> Legitimate extreme event—keep it, this is genuine business activity.</p></li>
+<li><p><strong>Website Outage (0.6×):</strong> Operational problem—keep but flag for investigation.</p></li>
+<li><p><strong>Viral Marketing (2.5×):</strong> Unexpected success—keep and analyze what worked.</p></li>
+<li><p><strong>Data Entry Error (-$5K):</strong> Data quality issue—must correct or remove.</p></li>
+<li><p><strong>Flash Sale (2×):</strong> Planned promotion—keep it, this reflects real strategy.</p></li>
+</ul>
+<p>Not all outliers deserve the same treatment. Some represent opportunities, others signal problems, and a few are simply mistakes.</p>
+</div>
+<p>We then apply these outliers to our clean baseline series:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inject specific outliers with business context</span>
+<span class="c1"># Apply outliers to a copy of the sales data from the baseline dataframe</span>
+<span class="n">sales_contaminated</span> <span class="o">=</span> <span class="n">df_baseline</span><span class="p">[</span><span class="s1">&#39;sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">day_idx</span><span class="p">,</span> <span class="n">event_info</span> <span class="ow">in</span> <span class="n">outlier_events</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s1">&#39;factor&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="n">sales_contaminated</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_baseline</span><span class="p">[</span><span class="s1">&#39;sales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s1">&#39;value&#39;</span> <span class="ow">in</span> <span class="n">event_info</span><span class="p">:</span>
+        <span class="n">sales_contaminated</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">day_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_info</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+<span class="c1"># Create the final contaminated DataFrame</span>
+<span class="n">ecommerce_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span>
+    <span class="s1">&#39;sales&#39;</span><span class="p">:</span> <span class="n">sales_contaminated</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+    <span class="s1">&#39;day_of_week&#39;</span><span class="p">:</span> <span class="n">day_of_week</span><span class="p">,</span>
+    <span class="s1">&#39;is_weekend&#39;</span><span class="p">:</span> <span class="n">weekend_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1"># Mark outlier dates for easy plotting later</span>
+<span class="n">outlier_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dates</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">outlier_events</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="n">ecommerce_df</span><span class="p">[</span><span class="s1">&#39;is_outlier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ecommerce_df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">outlier_dates</span><span class="p">)</span>
+
+<span class="c1"># Display summary statistics</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Synthetic E-commerce Sales Dataset ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset shape: </span><span class="si">{</span><span class="n">ecommerce_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date range: </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of outliers injected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outlier_events</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Synthetic E-commerce Sales Dataset ===
+Dataset shape: (365, 5)
+Date range: 2024-01-01 to 2024-12-30
+Number of outliers injected: 5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s visualize the final dataset with the outliers highlighted. This plot confirms that our synthetic anomalies have been placed correctly and allows us to see how they stand out (or blend in) against the background trend and seasonality.</p>
+<figure class="align-center" id="ecommerce-sales-outliers">
+<a class="reference internal image-reference" href="../_images/ecommerce_sales_outliers.png"><img alt="../_images/ecommerce_sales_outliers.png" src="../_images/ecommerce_sales_outliers.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.3 </span><span class="caption-text"><strong>One year of synthetic e-commerce sales with five planted outliers.</strong> The series shows steady growth ($50/day), weekly seasonality (weekend boosts highlighted in green), natural day-to-day variation (±$500), and five deliberately injected outliers (red stars). Three spike upward (Black Friday, Viral Marketing, Flash Sale), one drops sharply (Website Outage), and one is physically impossible (Data Entry Error at -$5K). Notice how similar absolute values in March versus November land at different points relative to the baseline—this illustrates why outlier detection must account for temporal context.</span><a class="headerlink" href="#ecommerce-sales-outliers" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Looking at <a class="reference internal" href="#ecommerce-sales-outliers"><span class="std std-numref">Fig. 5.3</span></a>, several patterns emerge. The baseline rises steadily throughout the year, creating an upward trend. A regular “sawtooth” pattern repeats every seven days, with weekend periods (shown in green) consistently boosting sales above weekday levels.</p>
+<p>The five outliers show distinct behaviors:</p>
+<ol class="arabic simple">
+<li><p><strong>Black Friday Sale (March):</strong> A massive spike to ~$39K, roughly 3x the normal level.</p></li>
+<li><p><strong>Website Outage (May):</strong> A sharp drop to ~$8K, reflecting a 40% loss in expected revenue.</p></li>
+<li><p><strong>Viral Marketing (July):</strong> An unpredictable surge to ~$40K.</p></li>
+<li><p><strong>Data Entry Error (Sept):</strong> A clearly impossible value of -$5,000.</p></li>
+<li><p><strong>Flash Sale (Nov):</strong> A doubling of sales to ~$38K.</p></li>
+</ol>
+<p><strong>The Context Problem:</strong>
+Notice that the “Flash Sale” in November (~$38K) is roughly the same absolute dollar value as the “Black Friday” spike in March (~$39K). However, the November value is only <strong>2x</strong> its local baseline, while the March value is <strong>3x</strong> its local baseline. A simple threshold like “Sales &gt; $35,000” might catch both, but it would fail to distinguish their relative severity given the underlying trend. This reinforces why we need detection methods that respect the time series structure.</p>
+</section>
+<section id="step-3-quantifying-the-impact-of-outliers">
+<h3><span class="section-number">5.1.4.3. </span>Step 3: Quantifying the Impact of Outliers<a class="headerlink" href="#step-3-quantifying-the-impact-of-outliers" title="Link to this heading">#</a></h3>
+<p>Visualizing data is crucial, but we must also understand how outliers distort our statistical lens. Just five extreme values in a dataset of 365 days (1.4% of the data) can wreak havoc on standard metrics.</p>
+<p>The following code generates a comprehensive dashboard comparing the “clean” dataset (if we removed the outliers) against the “contaminated” dataset (what we actually observe).</p>
+<figure class="align-center" id="ecommerce-outlier-impact">
+<a class="reference internal image-reference" href="../_images/ecommerce_outlier_impact.png"><img alt="../_images/ecommerce_outlier_impact.png" src="../_images/ecommerce_outlier_impact.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.4 </span><span class="caption-text"><strong>Four perspectives on how outliers affect our data.</strong> These visualizations show the same dataset from different angles, revealing how just five outliers (1.4% of observations) influence various statistical measures. The time series (top-left) shows outliers scattered across the year as red X’s. The box plots (top-right) demonstrate how outliers stretch the range from roughly $10K–$37K to -$5K–$50K. Notice the median (central line) barely moves, while the whiskers and outliers expand dramatically. The histogram (bottom-left) reveals “heavy tails”—isolated red bars at -$5K, $40K, and $50K that sit far from the main green distribution. The statistical table (bottom-right) quantifies the damage: while the median remains stable (difference of ~$24), the standard deviation jumps by ~9%, and the range explodes by nearly $30,000.</span><a class="headerlink" href="#ecommerce-outlier-impact" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="tip admonition">
+<p class="admonition-title">What This Tells Us</p>
+<p><strong>1. Range is Fragile:</strong>
+By doubling the data range (from ~$27k spread to ~$55k spread), outliers destroy the performance of any algorithm that relies on distance or scaling, such as K-Means clustering or Min-Max normalization.</p>
+<p><strong>2. Heavy Tails Signal Danger:</strong>
+The isolated bars in the histogram are the visual signature of outliers. They sit far from the main distribution, creating gaps. In forecasting, models (like Neural Networks) often try to “stretch” to cover these gaps, ruining their performance on the normal data.</p>
+<p><strong>3. Robustness Matters:</strong>
+Notice how the <strong>Median</strong> barely budged, while the <strong>Mean</strong> and <strong>Standard Deviation</strong> were pulled around. If your outliers are errors (like our -$5k data entry), robust statistics like the Median are your best friends. If they are genuine extremes (like Black Friday), the Mean is telling you the truth about total revenue, but the Median tells you about a “typical day.”</p>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Outlier Detection in Time Series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C05S02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>Outlier Classification by Scope</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-when-one-bad-data-point-ruins-everything">5.1.1. Motivation: When One Bad Data Point Ruins Everything</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-outliers">5.1.2. What Are Outliers?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-context-why-location-matters">5.1.2.1. Time Series Context: Why Location Matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#origins-of-outliers">5.1.2.2. Origins of Outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-outlier-detection-matters">5.1.3. Why Outlier Detection Matters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-statistical-inference">5.1.3.1. Impact on Statistical Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-forecasting-models">5.1.3.2. Impact on Forecasting Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dual-nature-threat-and-opportunity">5.1.3.3. Dual Nature: Threat and Opportunity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-synthetic-e-commerce-dataset">5.1.4. Building a Synthetic E-commerce Dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-constructing-the-baseline-time-series">5.1.4.1. Step 1: Constructing the Baseline Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-injecting-realistic-outliers">5.1.4.2. Step 2: Injecting Realistic Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-quantifying-the-impact-of-outliers">5.1.4.3. Step 3: Quantifying the Impact of Outliers</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1092 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3. Outlier Classification by Seasonality &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2TS_C05S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.4. Visual Methods for Outlier Detection" href="Intro2TS_C05S04.html" />
+    <link rel="prev" title="5.2. Outlier Classification by Scope" href="Intro2TS_C05S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2TS_C04.html">4. Classical Time Series Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Outlier Classification by Seasonality</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-seasonality-matters">5.3.1. Why Seasonality Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonal-outliers-so">5.3.2. Seasonal Outliers (SO)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-seasonal-anomalies">5.3.2.1. Visualizing Seasonal Anomalies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-seasonal-outliers">5.3.3. Non-Seasonal Outliers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-four-types-of-temporal-impact">5.3.3.1. The Four Types of Temporal Impact</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-additive-outliers-ao-isolated-impact">5.3.3.2. Type 1: Additive Outliers (AO) – Isolated Impact</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-innovative-outliers-io-decaying-persistence">5.3.3.3. Type 2: Innovative Outliers (IO) – Decaying Persistence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-3-level-shift-ls-permanent-structural-change">5.3.3.4. Type 3: Level Shift (LS) – Permanent Structural Change</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-4-transient-change-tc-temporary-structural-change">5.3.3.5. Type 4: Transient Change (TC) – Temporary Structural Change</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-among-outlier-types">5.3.4. Distinguishing Among Outlier Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-signatures">5.3.4.1. Temporal Signatures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implications-for-time-series-analysis">5.3.4.2. Implications for Time Series Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-strategy-considerations">5.3.4.3. Detection Strategy Considerations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">5.3.4.4. Forecasting Implications</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="outlier-classification-by-seasonality">
+<h1><span class="section-number">5.3. </span>Outlier Classification by Seasonality<a class="headerlink" href="#outlier-classification-by-seasonality" title="Link to this heading">#</a></h1>
+<p>When analyzing time series data with repeating patterns—such as retail sales, energy consumption, or web traffic—an outlier is not simply an “extreme value.” It is a value that defies its <strong>seasonal expectation</strong>. A data point can be globally normal (e.g., within the overall range of the dataset) yet seasonally anomalous (e.g., far below the expected peak for that time of year).</p>
+<p>Classifying outliers based on their relationship to seasonality is critical because it prevents two common errors:</p>
+<ol class="arabic simple">
+<li><p><strong>False Positives:</strong> Flagging a normal seasonal peak (e.g. December sales) as an outlier just because it is high.</p></li>
+<li><p><strong>False Negatives:</strong> Missing a significant drop in performance (e.g. a poor holiday season) because the value is still higher than an average month.</p></li>
+</ol>
+<section id="why-seasonality-matters">
+<h2><span class="section-number">5.3.1. </span>Why Seasonality Matters<a class="headerlink" href="#why-seasonality-matters" title="Link to this heading">#</a></h2>
+<p>Consider a retailer analyzing monthly revenue. In <strong>December 2024</strong>, they record sales of <strong>$1.2 million</strong>.</p>
+<ul class="simple">
+<li><p><strong>Global Perspective:</strong> Compared to an average month (e.g., March with $600k), $1.2 million looks fantastic—double the typical revenue.</p></li>
+<li><p><strong>Seasonal Perspective:</strong> Compared to previous Decembers (2022: $2.8M, 2023: $3.1M), $1.2 million is a disaster. It represents a massive underperformance relative to the seasonal norm.</p></li>
+</ul>
+<p>Standard outlier detection methods (e.g. Z-Scores calculated on the entire dataset) would fail here. They might see $1.2M as “high” or “normal,” completely missing the fact that it is an anomaly for December. Effective detection requires methods that decompose the signal into trend, seasonality, and residual components (e.g., STL decomposition) to isolate the true anomalies.</p>
+</section>
+<section id="seasonal-outliers-so">
+<h2><span class="section-number">5.3.2. </span>Seasonal Outliers (SO)<a class="headerlink" href="#seasonal-outliers-so" title="Link to this heading">#</a></h2>
+<p>Seasonal outliers are data points that deviate significantly from the expected seasonal pattern. They are anomalous <strong>relative to their season</strong>, not necessarily relative to the global dataset average.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Seasonal Outliers</p>
+<ul class="simple">
+<li><p><strong>Season-Specific:</strong> The benchmark is the historical data for that specific period (e.g., compare Dec 2024 only to Dec 2023, Dec 2022…).</p></li>
+<li><p><strong>Relative Deviation:</strong> The anomaly is defined by the gap between the observed value and the <em>expected seasonal peak/trough</em>.</p></li>
+<li><p><strong>Context-Dependent:</strong> A value might be the highest in the dataset yet still be an outlier if it should have been even higher.</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Retail Sales:</strong> December sales of $1.2M are high globally but low seasonally (expected $2.5M). This indicates a failed holiday campaign or supply chain collapse.</p></li>
+<li><p class="sd-card-text"><strong>Energy Consumption:</strong> January electricity usage of 95,000 kWh is higher than September (80k), but far below the winter norm (150k). This could indicate a broken meter or unusually mild weather.</p></li>
+<li><p class="sd-card-text"><strong>Web Traffic:</strong> A travel site gets 50k visits in July (peak season). If July 2024 sees only 25k visits, it is a seasonal outlier, even if 25k is double the traffic of November.</p></li>
+</ul>
+</div>
+</div>
+<section id="visualizing-seasonal-anomalies">
+<h3><span class="section-number">5.3.2.1. </span>Visualizing Seasonal Anomalies<a class="headerlink" href="#visualizing-seasonal-anomalies" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="#seasonal-outlier-holiday-retail-sales"><span class="std std-numref">Fig. 5.8</span></a> illustrates the retail sales scenario. Notice the strong repeating pattern of holiday peaks. The anomaly in December 2024 stands out not because it is small in absolute terms, but because it breaks the established rhythm of the peaks.</p>
+<figure class="align-center" id="seasonal-outlier-holiday-retail-sales">
+<a class="reference internal image-reference" href="../_images/seasonal_outlier_holiday_retail_sales.png"><img alt="../_images/seasonal_outlier_holiday_retail_sales.png" src="../_images/seasonal_outlier_holiday_retail_sales.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.8 </span><span class="caption-text"><strong>Seasonal Outlier: The “Missing Peak”.</strong> The chart tracks monthly retail sales over 7 years. The orange dots highlight the expected holiday peaks (Nov-Dec), which typically reach $2.0–$3.0 million. The red ‘X’ in December 2024 marks a value of $1.2 million. While $1.2M is higher than any non-holiday month (blue dots), it is a massive failure compared to the expected holiday performance. A global outlier detector would likely miss this, seeing it as a “high” value, but a seasonal detector correctly flags it as an anomaly.</span><a class="headerlink" href="#seasonal-outlier-holiday-retail-sales" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#seasonal-outlier-holiday-retail-sales"><span class="std std-numref">Fig. 5.8</span></a> shows monthly retail sales with clear seasonal peaks during November-December (holiday season). The red marker in December 2024 indicates a value of $1.2M. While this exceeds most months throughout the year, it falls dramatically below the typical holiday season performance of $2M–$3M observed in previous years. This seasonal underperformance requires investigation—potential causes include failed marketing campaigns, supply chain disruptions, or changing economic conditions. Detection of this pattern requires seasonal decomposition methods such as STL (Seasonal and Trend decomposition using Loess) or ARIMA-based approaches that model expected seasonal behavior.</p>
+</section>
+</section>
+<section id="non-seasonal-outliers">
+<h2><span class="section-number">5.3.3. </span>Non-Seasonal Outliers<a class="headerlink" href="#non-seasonal-outliers" title="Link to this heading">#</a></h2>
+<p>Non-seasonal outliers are anomalies that exist independently of repeating cycles. Unlike seasonal outliers, which are defined by their deviation from an expected periodic pattern, non-seasonal outliers represent fundamental disruptions to the data generating process itself. They are “pure” anomalies—unexpected events that would be considered outliers regardless of when they occurred.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Non-Seasonal Outliers</p>
+<ul class="simple">
+<li><p><strong>Season-Independent:</strong> The anomaly is not tied to a specific calendar period (e.g., it is not just a “bad December”).</p></li>
+<li><p><strong>Universal Deviation:</strong> The value is unusual relative to the immediate local trend or the global distribution, not just a seasonal benchmark.</p></li>
+<li><p><strong>Structural Impact:</strong> These often signal external shocks (e.g., policy changes, system failures) rather than cyclical variations.</p></li>
+<li><p><strong>Classification by Duration:</strong> They are typically categorized by how long their impact persists—ranging from a single point to a permanent shift.</p></li>
+</ul>
+</div>
+<section id="the-four-types-of-temporal-impact">
+<h3><span class="section-number">5.3.3.1. </span>The Four Types of Temporal Impact<a class="headerlink" href="#the-four-types-of-temporal-impact" title="Link to this heading">#</a></h3>
+<p>When a non-seasonal outlier occurs, its most important characteristic is not just its magnitude, but its <strong>persistence</strong>. Does the system snap back to normal immediately, or does the outlier change the future trajectory? We classify these into four distinct types <span id="id1">[<a class="reference internal" href="../References.html#id2" title="A. J. Fox. Outliers in Time Series. Journal of the Royal Statistical Society Series B: Statistical Methodology, 34(3):350–363, July 1972. doi:10.1111/j.2517-6161.1972.tb00912.x.">Fox, 1972</a>, <a class="reference internal" href="../References.html#id403" title="Ruey S. Tsay. Outliers, level shifts, and variance changes in time series. Journal of Forecasting, 7(1):1–20, January 1988. URL: https://onlinelibrary.wiley.com/doi/10.1002/for.3980070102, doi:10.1002/for.3980070102.">Tsay, 1988</a>]</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Additive Outliers (AO):</strong> A one-time spike that affects a single observation. The system returns to normal immediately (e.g., a data entry error).</p></li>
+<li><p><strong>Innovational Outliers (IO):</strong> A shock to the underlying system that affects the current value and propagates into future values, often decaying over time (e.g., a marketing campaign that boosts sales for several weeks).</p></li>
+<li><p><strong>Level Shifts (LS):</strong> A step-change where the baseline of the series moves to a new level permanently (e.g., a new regulation that permanently lowers production capacity).</p></li>
+<li><p><strong>Transient Changes (TC):</strong> A sudden spike that decays exponentially back to the original baseline (e.g., a natural disaster recovery).</p></li>
+</ol>
+<figure class="align-center" id="types-of-outliers-and-level-shifts">
+<a class="reference internal image-reference" href="../_images/types_of_outliers_and_level_shifts.png"><img alt="../_images/types_of_outliers_and_level_shifts.png" src="../_images/types_of_outliers_and_level_shifts.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.9 </span><span class="caption-text">Four types of non-seasonal outliers classified by their temporal impact patterns: (Type 1) Additive outlier showing isolated spike, (Type 2) Innovative outlier with gradual decay, (Type 3) Level shift causing permanent mean change, (Type 4) Transient change with temporary elevation.</span><a class="headerlink" href="#types-of-outliers-and-level-shifts" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="type-1-additive-outliers-ao-isolated-impact">
+<h3><span class="section-number">5.3.3.2. </span>Type 1: Additive Outliers (AO) – Isolated Impact<a class="headerlink" href="#type-1-additive-outliers-ao-isolated-impact" title="Link to this heading">#</a></h3>
+<p>An additive outlier represents an extraordinary event that affects a single observation only. The effect is completely isolated, and the time series immediately returns to its normal pattern after the outlier. Think of it as a one-off spike that appears and disappears without leaving any trace.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Additive Outliers</p>
+<ul class="simple">
+<li><p><strong>Duration:</strong> Single time period only</p></li>
+<li><p><strong>Effect:</strong> No impact on subsequent observations</p></li>
+<li><p><strong>Recovery:</strong> Immediate return to baseline</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Data Entry Error</strong></p>
+<ul>
+<li><p class="sd-card-text">A clerk accidentally enters <span class="math notranslate nohighlight">\(50,000 instead of \)</span>5,000 for a single day’s sales</p></li>
+<li><p class="sd-card-text">Next day’s sales return to the normal range around $5,000</p></li>
+<li><p class="sd-card-text">No lasting impact on the business or data pattern</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Momentary Sensor Malfunction</strong></p>
+<ul>
+<li><p class="sd-card-text">Temperature sensor briefly reads 150°C due to electrical interference</p></li>
+<li><p class="sd-card-text">Next reading shows normal 22°C</p></li>
+<li><p class="sd-card-text">System and actual temperature remain unaffected</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Viral Social Media Spike</strong></p>
+<ul>
+<li><p class="sd-card-text">A single tweet from a celebrity drives 100,000 website visits in one day</p></li>
+<li><p class="sd-card-text">Normal daily traffic averages 5,000 visits</p></li>
+<li><p class="sd-card-text">Next day returns to 5,000 with no sustained interest</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mathematical Form</div>
+<p class="sd-card-text">The mathematical representation of an Additive Outlier is expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a5b98766-79cd-4bae-801c-4270a454cb91">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-a5b98766-79cd-4bae-801c-4270a454cb91" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Y_t' = \begin{cases} Y_t + \omega_a &amp; \text{if } t = T \\ Y_t &amp; \text{if } t \neq T \end{cases}
+\end{equation}\]</div>
+<p class="sd-card-text"><strong>Component Definitions:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t'\)</span> = The observed (contaminated) value at time <span class="math notranslate nohighlight">\(t\)</span> that we actually measure</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t\)</span> = The true underlying value that would exist without any outlier present (the clean, uncontaminated data)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\omega_a\)</span> = The additive magnitude or amplitude of the outlier—the fixed amount by which the observation deviates. This can be positive (upward spike) or negative (downward dip)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(T\)</span> = The specific time index where the outlier occurs (a single, fixed point in time)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(t\)</span> = Any time point in the series</p></li>
+</ul>
+<p class="sd-card-text"><strong>What This Equation Means:</strong></p>
+<p class="sd-card-text">At the outlier time point <span class="math notranslate nohighlight">\(t = T\)</span>, the observed value equals the true value plus an additive shock of magnitude <span class="math notranslate nohighlight">\(\omega_a\)</span>. For all other times (<span class="math notranslate nohighlight">\(t \neq T\)</span>), the observed value equals the true value exactly—no contamination occurs before or after the outlier.</p>
+</div>
+</div>
+<div class="proof example admonition" id="example_additive_outlier">
+<p class="admonition-title"><span class="caption-number">Example 5.1 </span></p>
+<section class="example-content" id="proof-content">
+<p>Consider a scenario tracking daily website traffic over 120 days (January to April 2024). The baseline series includes:</p>
+<ul class="simple">
+<li><p>A mild upward trend (organic growth of 0.02 units per day)</p></li>
+<li><p>Weekly seasonality (higher traffic on weekdays, lower on weekends)</p></li>
+<li><p>Random noise representing daily fluctuations</p></li>
+</ul>
+<p>On Day 75 (March 16, 2024), a system malfunction or data logging error occurs that causes the recorded traffic <span class="math notranslate nohighlight">\(Y_{75}'\)</span> to spike by exactly <span class="math notranslate nohighlight">\(\omega_a = 12.0\)</span> units above the true value <span class="math notranslate nohighlight">\(Y_{75}\)</span>.</p>
+<p><strong>Mathematical representation:</strong></p>
+<p>If the true traffic on Day 75 was <span class="math notranslate nohighlight">\(Y_{75} = 48.5\)</span> visits (baseline), then:</p>
+<ul class="simple">
+<li><p>Observed value with outlier: <span class="math notranslate nohighlight">\(Y_{75}' = 48.5 + 12.0 = 60.5\)</span> visits</p></li>
+<li><p>Day 74 (unaffected): <span class="math notranslate nohighlight">\(Y_{74}' = Y_{74} = 49.2\)</span> visits</p></li>
+<li><p>Day 76 (unaffected): <span class="math notranslate nohighlight">\(Y_{76}' = Y_{76} = 50.1\)</span> visits</p></li>
+</ul>
+<p>The outlier only contaminates the single observation at Day 75. The day immediately before and after show normal behavior with no lasting impact. The sharp red spike in the visualization clearly illustrates this isolated disturbance—it appears suddenly, deviates significantly from the baseline (gray line), then the series resumes its normal pattern.</p>
+<figure class="align-center" id="additive-outlier-illustration">
+<a class="reference internal image-reference" href="../_images/additive_outlier_illustration.png"><img alt="../_images/additive_outlier_illustration.png" src="../_images/additive_outlier_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.10 </span><span class="caption-text">Additive Outlier (AO): Isolated spike at time <span class="math notranslate nohighlight">\(T\)</span> with immediate return to baseline and no lasting effect on subsequent observations.</span><a class="headerlink" href="#additive-outlier-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The time series shows stable baseline behavior with typical fluctuations. The sharp spike appears suddenly on one day, reaching a value far above the normal range. The critical feature is that the day after the spike, the series immediately returns to its previous baseline level. There is no gradual decay, no shift in the mean, no persistent effect—just an isolated anomaly that affects only a single time point.</p>
+</section>
+</div></section>
+<section id="type-2-innovative-outliers-io-decaying-persistence">
+<h3><span class="section-number">5.3.3.3. </span>Type 2: Innovative Outliers (IO) – Decaying Persistence<a class="headerlink" href="#type-2-innovative-outliers-io-decaying-persistence" title="Link to this heading">#</a></h3>
+<p>An innovative outlier represents an extraordinary event that creates a shock to the underlying system, affecting not just the current observation but also subsequent ones with gradually diminishing impact over time. Unlike an additive outlier’s isolated spike, an innovative outlier leaves a memory in the system that fades exponentially <span id="id2">[<a class="reference internal" href="../References.html#id82" title="Chung Chen and Lon-Mu Liu. Joint Estimation of Model Parameters and Outlier Effects in Time Series. Journal of the American Statistical Association, 88(421):284–297, March 1993. URL: https://www.tandfonline.com/doi/full/10.1080/01621459.1993.10594321, doi:10.1080/01621459.1993.10594321.">Chen and Liu, 1993</a>, <a class="reference internal" href="../References.html#id261" title="Benjamin Lindemann, Benjamin Maschler, Nada Sahlab, and Michael Weyrich. A survey on anomaly detection for technical systems using LSTM networks. Computers in Industry, 131:103498, October 2021. URL: https://linkinghub.elsevier.com/retrieve/pii/S0166361521001056, doi:10.1016/j.compind.2021.103498.">Lindemann <em>et al.</em>, 2021</a>, <a class="reference internal" href="../References.html#id419" title="Gajendra K. Vishwakarma, Chinmoy Paul, and A.M. Elsawah. An algorithm for outlier detection in a time series model using backpropagation neural network. Journal of King Saud University - Science, 32(8):3328–3336, December 2020. URL: https://jksus.org/an-algorithm-for-outlier-detection-in-a-time-series-model-using-backpropagation-neural-network/, doi:10.1016/j.jksus.2020.09.018.">Vishwakarma <em>et al.</em>, 2020</a>]</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Innovative Outliers (IO)</p>
+<ul class="simple">
+<li><p><strong>Duration:</strong> Affects current and multiple future observations</p></li>
+<li><p><strong>Effect:</strong> Persistent but decreasing—strongest at occurrence, then fades</p></li>
+<li><p><strong>Recovery:</strong> Gradual return to baseline over several periods</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Successful Marketing Campaign</strong></p>
+<ul>
+<li><p class="sd-card-text">A major promotional campaign boosts sales from $50K/week baseline in Week 1</p></li>
+<li><p class="sd-card-text">Week 1: $150K (initial shock from campaign launch)</p></li>
+<li><p class="sd-card-text">Week 2: $90K (elevated but declining—lingering campaign effects)</p></li>
+<li><p class="sd-card-text">Week 3: $70K (still above baseline—word-of-mouth continues)</p></li>
+<li><p class="sd-card-text">Week 4: $55K (nearly back to normal—momentum dissipates)</p></li>
+<li><p class="sd-card-text">The initial shock creates momentum that takes time to dissipate</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Viral Content Effect</strong></p>
+<ul>
+<li><p class="sd-card-text">A viral YouTube video drives 500K website visits on Day 1 (baseline: approximately 10K)</p></li>
+<li><p class="sd-card-text">Day 2: 200K (still very high—shares continue)</p></li>
+<li><p class="sd-card-text">Day 3: 80K (declining—algorithm stops prioritizing)</p></li>
+<li><p class="sd-card-text">Day 4: 30K (approaching normal)</p></li>
+<li><p class="sd-card-text">Day 7: 12K (back to baseline of approximately 10K)</p></li>
+<li><p class="sd-card-text">The viral effect gradually wears off as momentum decays</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Product Launch</strong></p>
+<ul>
+<li><p class="sd-card-text">New smartphone model creates demand shock on launch</p></li>
+<li><p class="sd-card-text">Week 1: Initial rush of early adopters (baseline plus 200%)</p></li>
+<li><p class="sd-card-text">Week 2-4: Word-of-mouth drives continued elevated demand (declining each week)</p></li>
+<li><p class="sd-card-text">Week 5-8: Demand slowly stabilizes back to baseline</p></li>
+<li><p class="sd-card-text">The launch event triggers a lingering effect that gradually vanishes</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mathematical Form</div>
+<p class="sd-card-text">The mathematical representation of an Innovative Outlier is expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a9b199cc-34ff-4ab3-af7a-86175fd4cb18">
+<span class="eqno">(5.3)<a class="headerlink" href="#equation-a9b199cc-34ff-4ab3-af7a-86175fd4cb18" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Y_t' = \begin{cases} Y_t + \psi_{t-T} \omega_i &amp; \text{if } t \geq T \\ Y_t &amp; \text{if } t &lt; T \end{cases}
+\end{equation}\]</div>
+<p class="sd-card-text">where the decay function is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-59d2080f-6387-4be3-aadb-9004994cb869">
+<span class="eqno">(5.4)<a class="headerlink" href="#equation-59d2080f-6387-4be3-aadb-9004994cb869" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\psi_{t-T} = \phi^{t-T}, \quad 0 &lt; \phi &lt; 1
+\end{equation}\]</div>
+<p class="sd-card-text"><strong>Component Definitions:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text">(Y_t’) = The observed (contaminated) value at time (t)</p></li>
+<li><p class="sd-card-text">(Y_t) = The true underlying value without the outlier</p></li>
+<li><p class="sd-card-text">(\omega_i) = The initial shock magnitude at time (T)—the maximum additive impact at the moment the event occurs</p></li>
+<li><p class="sd-card-text">(\psi_{t-T}) = The decay function that controls how the shock effect diminishes over time</p></li>
+<li><p class="sd-card-text">(\phi) = The decay factor ((0 &lt; \phi &lt; 1)), which determines how quickly the impact fades</p>
+<ul>
+<li><p class="sd-card-text">(\phi = 0.9): Slow decay (effect lingers a long time)</p></li>
+<li><p class="sd-card-text">(\phi = 0.7): Moderate decay (effect fades in weeks)</p></li>
+<li><p class="sd-card-text">(\phi = 0.5): Fast decay (effect mostly gone in a few periods)</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text">(T) = The time index when the shock event occurs</p></li>
+<li><p class="sd-card-text">(t - T) = The number of periods since the shock</p></li>
+</ul>
+<p class="sd-card-text"><strong>What This Equation Means:</strong></p>
+<p class="sd-card-text">At time (T), the outlier injects a full shock of magnitude (\omega_i). As time progresses beyond (T), the shock’s influence is multiplied by the decay function (\psi_{t-T} = \phi^{t-T}), which shrinks exponentially. The effect never completely disappears mathematically, but becomes negligible after several periods.</p>
+<p class="sd-card-text">For example, with (\phi = 0.85):</p>
+<ul class="simple">
+<li><p class="sd-card-text">At (t = T) (Day 0): Impact = (0.85^0 \times \omega_i = 1.0 \times \omega_i) (full shock)</p></li>
+<li><p class="sd-card-text">At (t = T+1) (Day 1): Impact = (0.85^1 \times \omega_i = 0.85 \times \omega_i) (85% remaining)</p></li>
+<li><p class="sd-card-text">At (t = T+2) (Day 2): Impact = (0.85^2 \times \omega_i = 0.72 \times \omega_i) (72% remaining)</p></li>
+<li><p class="sd-card-text">At (t = T+5) (Day 5): Impact = (0.85^5 \times \omega_i = 0.44 \times \omega_i) (44% remaining)</p></li>
+<li><p class="sd-card-text">At (t = T+10) (Day 10): Impact = (0.85^{10} \times \omega_i = 0.20 \times \omega_i) (20% remaining)</p></li>
+</ul>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mathematical Form</div>
+<p class="sd-card-text">:label: example_innovative_outlier</p>
+<p class="sd-card-text">Consider a scenario tracking daily website traffic over 150 days (January to May 2024). The baseline series includes:</p>
+<ul class="simple">
+<li><p class="sd-card-text">A mild upward trend (organic growth of 0.015 units per day)</p></li>
+<li><p class="sd-card-text">Weekly seasonality (higher traffic on weekdays, lower on weekends)</p></li>
+<li><p class="sd-card-text">Random noise representing daily fluctuations</p></li>
+</ul>
+<p class="sd-card-text">On Day 70 (March 11, 2024), a successful viral marketing campaign launches that creates an initial shock of (\omega_i = 10.0) additional visits. However, unlike a data entry error (which affects only one day), this campaign’s effect decays gradually with decay factor (\phi = 0.85).</p>
+<p class="sd-card-text"><strong>Mathematical representation:</strong></p>
+<p class="sd-card-text">If the baseline traffic on Day 70 was (Y_{70} = 62.5) visits, then:</p>
+<ul class="simple">
+<li><p class="sd-card-text">Day 70 (shock event at T): (Y_{70}’ = 62.5 + (0.85^0 \times 10.0) = 62.5 + 10.0 = 72.5) visits</p></li>
+<li><p class="sd-card-text">Day 71 (one day later): (Y_{71}’ = Y_{71} + (0.85^1 \times 10.0) = Y_{71} + 8.5) visits</p></li>
+<li><p class="sd-card-text">Day 72: (Y_{72}’ = Y_{72} + (0.85^2 \times 10.0) = Y_{72} + 7.2) visits</p></li>
+<li><p class="sd-card-text">Day 75 (5 days later): (Y_{75}’ = Y_{75} + (0.85^5 \times 10.0) = Y_{75} + 4.4) visits</p></li>
+<li><p class="sd-card-text">Day 80 (10 days later): (Y_{80}’ = Y_{80} + (0.85^{10} \times 10.0) = Y_{80} + 2.0) visits</p></li>
+</ul>
+<p class="sd-card-text">The outlier’s effect does not vanish after one day like an additive outlier. Instead, it persists and gradually decays—each day the additional impact is 85% of the previous day’s impact. After approximately 10 days, the campaign’s effect has diminished to just 20% of its original shock value, but it continues to fade slowly.</p>
+<figure class="align-center" id="innovative-outlier-illustration">
+<a class="reference internal image-reference" href="../_images/innovative_outlier_illustration.png"><img alt="../_images/innovative_outlier_illustration.png" src="../_images/innovative_outlier_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.11 </span><span class="caption-text">Innovative Outlier (IO): Shock with exponentially decaying persistence over multiple time periods.</span><a class="headerlink" href="#innovative-outlier-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p class="sd-card-text">The figure shows the difference between baseline behavior (gray line) and the observed data with the innovative outlier (blue line). The sharp upward shift begins at Day 70 when the campaign launches. Rather than returning to baseline the next day, the series gradually descends back toward the baseline in an exponential decay pattern. The orange shaded area between the two lines represents the persistent impact zone—notice how its width shrinks as days pass, illustrating the decaying nature of the effect.</p>
+<p class="sd-card-text">The initial shock appears as a dramatic spike above baseline. However, unlike an additive outlier, the series does not immediately return to the previous level. Instead, you observe a gradual decay pattern—each subsequent observation is closer to the baseline than the previous one, creating an exponential decay curve back to normal. The system has been perturbed and takes time to settle. The gap between the observed and baseline values shrinks in a smooth, mathematically predictable way rather than dropping sharply.</p>
+</div>
+</div>
+</section>
+<section id="type-3-level-shift-ls-permanent-structural-change">
+<h3><span class="section-number">5.3.3.4. </span>Type 3: Level Shift (LS) – Permanent Structural Change<a class="headerlink" href="#type-3-level-shift-ls-permanent-structural-change" title="Link to this heading">#</a></h3>
+<p>A level shift represents an abrupt and permanent change in the mean level of the time series. After the shift occurs, the series stabilizes at a new baseline that persists indefinitely. Unlike an innovative outlier that decays, a level shift represents a structural break where the underlying system itself has changed <span id="id3">[<a class="reference internal" href="../References.html#id82" title="Chung Chen and Lon-Mu Liu. Joint Estimation of Model Parameters and Outlier Effects in Time Series. Journal of the American Statistical Association, 88(421):284–297, March 1993. URL: https://www.tandfonline.com/doi/full/10.1080/01621459.1993.10594321, doi:10.1080/01621459.1993.10594321.">Chen and Liu, 1993</a>, <a class="reference internal" href="../References.html#id401" title="Charles Truong, Laurent Oudre, and Nicolas Vayatis. Selective review of offline change point detection methods. Signal Processing, 167:107299, February 2020. URL: https://linkinghub.elsevier.com/retrieve/pii/S0165168419303494, doi:10.1016/j.sigpro.2019.107299.">Truong <em>et al.</em>, 2020</a>]</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Level Shift (LS)</p>
+<ul class="simple">
+<li><p><strong>Duration:</strong> Permanent, indefinite persistence</p></li>
+<li><p><strong>Effect:</strong> Constant long-term impact on series level</p></li>
+<li><p><strong>Recovery:</strong> No recovery—the change is permanent</p></li>
+<li><p><strong>Pattern:</strong> Step function—immediate jump to new mean level</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Retail Store Expansion</strong></p>
+<ul>
+<li><p class="sd-card-text">Company operates at baseline revenue of $500K/month</p></li>
+<li><p class="sd-card-text">After opening 10 new store locations, immediate jump occurs</p></li>
+<li><p class="sd-card-text">Post-expansion: $1.2M/month (permanent new baseline)</p></li>
+<li><p class="sd-card-text">Revenue remains elevated indefinitely—no decay back to original level</p></li>
+<li><p class="sd-card-text">The structural change in business capacity creates a permanent revenue increase</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>New Government Regulation</strong></p>
+<ul>
+<li><p class="sd-card-text">Environmental tax implemented on manufacturing</p></li>
+<li><p class="sd-card-text">Pre-tax production cost: $80/unit (baseline)</p></li>
+<li><p class="sd-card-text">Post-tax implementation: $95/unit (permanent new cost)</p></li>
+<li><p class="sd-card-text">Production costs remain elevated indefinitely due to policy change</p></li>
+<li><p class="sd-card-text">Once the tax is in place, costs do not gradually return to previous levels</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Company Merger</strong></p>
+<ul>
+<li><p class="sd-card-text">Company A (revenue: <span class="math notranslate nohighlight">\(5M/quarter) merges with Company B (revenue: \)</span>3M/quarter)</p></li>
+<li><p class="sd-card-text">Pre-merger: $5M/quarter baseline</p></li>
+<li><p class="sd-card-text">Post-merger: $8M/quarter (new permanent baseline)</p></li>
+<li><p class="sd-card-text">Combined entity operates at structurally higher revenue level indefinitely</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Technology Implementation</strong></p>
+<ul>
+<li><p class="sd-card-text">Factory implements automation system, reducing production time per unit</p></li>
+<li><p class="sd-card-text">Pre-automation baseline: 100 units/day</p></li>
+<li><p class="sd-card-text">Post-automation: 250 units/day (permanent efficiency gain)</p></li>
+<li><p class="sd-card-text">Operational capacity remains elevated—the automation does not wear off</p></li>
+<li><p class="sd-card-text">Productivity increase is structural, not temporary</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mathematical Form</div>
+<p class="sd-card-text">The mathematical representation of a Level Shift is expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a1d6e2da-aeac-4776-9ec2-3f656bb100f6">
+<span class="eqno">(5.5)<a class="headerlink" href="#equation-a1d6e2da-aeac-4776-9ec2-3f656bb100f6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Y_t' = \begin{cases} Y_t &amp; \text{if } t &lt; T \\ Y_t + \omega_{ls} &amp; \text{if } t \geq T \end{cases}
+\end{equation}\]</div>
+<p class="sd-card-text"><strong>Component Definitions:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t'\)</span> = The observed value at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t\)</span> = The true underlying value without the shift</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\omega_{ls}\)</span> = The level shift magnitude—the permanent, fixed amount by which the entire series level changes. This remains constant for all <span class="math notranslate nohighlight">\(t \geq T\)</span></p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(T\)</span> = The time index when the structural shift occurs (the change point)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(t\)</span> = Any time point in the series</p></li>
+</ul>
+<p class="sd-card-text"><strong>What This Equation Means:</strong></p>
+<p class="sd-card-text">Before the shift time <span class="math notranslate nohighlight">\(t = T\)</span>, the observed value equals the true value (no contamination). At <span class="math notranslate nohighlight">\(t = T\)</span> and for all subsequent times <span class="math notranslate nohighlight">\(t &gt; T\)</span>, the observed value equals the true value plus a constant, permanent additive amount <span class="math notranslate nohighlight">\(\omega_{ls}\)</span>. This shift never decays, never changes—it represents a permanent structural alteration to the system’s baseline level.</p>
+<p class="sd-card-text">The key distinction from other outlier types:</p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Additive Outlier (AO):</strong> Affects only <span class="math notranslate nohighlight">\(t = T\)</span>, then disappears</p></li>
+<li><p class="sd-card-text"><strong>Innovative Outlier (IO):</strong> Affects <span class="math notranslate nohighlight">\(t \geq T\)</span> but decays exponentially over time</p></li>
+<li><p class="sd-card-text"><strong>Level Shift (LS):</strong> Affects <span class="math notranslate nohighlight">\(t \geq T\)</span> with constant magnitude forever—no decay</p></li>
+</ul>
+<p class="sd-card-text">For example, with a shift magnitude <span class="math notranslate nohighlight">\(\omega_{ls} = 8.0\)</span> occurring at <span class="math notranslate nohighlight">\(T = 100\)</span>:</p>
+<ul class="simple">
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 99\)</span> (before shift): <span class="math notranslate nohighlight">\(Y_{99}' = Y_{99}\)</span> (no offset)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 100\)</span> (shift occurs): <span class="math notranslate nohighlight">\(Y_{100}' = Y_{100} + 8.0\)</span> (offset appears)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 101\)</span>: <span class="math notranslate nohighlight">\(Y_{101}' = Y_{101} + 8.0\)</span> (same offset persists)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 200\)</span>: <span class="math notranslate nohighlight">\(Y_{200}' = Y_{200} + 8.0\)</span> (offset unchanged, even 100 periods later)</p></li>
+</ul>
+</div>
+</div>
+<div class="proof example admonition" id="example_level_shift">
+<p class="admonition-title"><span class="caption-number">Example 5.2 </span></p>
+<section class="example-content" id="proof-content">
+<p>Consider a scenario tracking daily production output over 200 days (January to July 2024). The baseline series includes:</p>
+<ul class="simple">
+<li><p>A small upward trend (organic efficiency gains of 0.01 units/day)</p></li>
+<li><p>Weekly seasonality (lower output on Mondays, higher on Thursdays)</p></li>
+<li><p>Random noise representing daily operational variability</p></li>
+</ul>
+<p>On Day 100 (April 10, 2024), the company implements a new automation system that permanently increases production capacity. This creates a level shift of <span class="math notranslate nohighlight">\(\omega_{ls} = 8.0\)</span> units—production immediately jumps and stays at this elevated level.</p>
+<p><strong>Mathematical representation:</strong></p>
+<p>If the baseline production on Day 100 was <span class="math notranslate nohighlight">\(Y_{100} = 82.5\)</span> units, then:</p>
+<ul class="simple">
+<li><p>Day 99 (before automation): <span class="math notranslate nohighlight">\(Y_{99}' = Y_{99} = 81.2\)</span> units (no shift)</p></li>
+<li><p>Day 100 (automation implemented at T): <span class="math notranslate nohighlight">\(Y_{100}' = 82.5 + 8.0 = 90.5\)</span> units (shift occurs)</p></li>
+<li><p>Day 101 (one day later): <span class="math notranslate nohighlight">\(Y_{101}' = Y_{101} + 8.0\)</span> units (offset persists)</p></li>
+<li><p>Day 150 (50 days later): <span class="math notranslate nohighlight">\(Y_{150}' = Y_{150} + 8.0\)</span> units (still elevated by same amount)</p></li>
+<li><p>Day 200 (100 days later): <span class="math notranslate nohighlight">\(Y_{200}' = Y_{200} + 8.0\)</span> units (offset remains unchanged)</p></li>
+</ul>
+<p>Unlike an innovative outlier that decays back toward the original baseline, or an additive outlier that affects only a single day, this level shift permanently alters the series level. The production output remains 8.0 units higher every single day for the rest of the observation period—and would continue indefinitely. There is no recovery to the original level; the structural change is permanent.</p>
+<figure class="align-center" id="level-shift-illustration">
+<a class="reference internal image-reference" href="../_images/level_shift_illustration.png"><img alt="../_images/level_shift_illustration.png" src="../_images/level_shift_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.12 </span><span class="caption-text">Level Shift (LS): Permanent step change in mean level with no return to baseline.</span><a class="headerlink" href="#level-shift-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The figure clearly shows the difference between baseline behavior (gray line) and the observed data with the level shift (blue line). Before Day 100, both lines fluctuate around the same baseline level. At Day 100 (marked by the vertical red dashed line), the observed series immediately jumps upward. After the jump, the series does not drift back downward—instead, it continues to fluctuate around a permanently elevated mean level (shown by the green dashed line). The orange dashed line represents the pre-shift mean, illustrating how the mean has permanently increased. The constant vertical distance between baseline and observed post-shift demonstrates the persistent, unchanging nature of <span class="math notranslate nohighlight">\(\omega_{ls}\)</span>.</p>
+<p>Before the change point, the series fluctuates around one stable baseline level. At a specific change point, there is a sharp, immediate jump. After the change point, the series fluctuates around a new, higher (or lower) baseline with no tendency to return to the previous level. The sections before and after appear like two separate time series at different mean levels. Unlike a decaying outlier where the gap shrinks over time, the gap between pre-shift and post-shift levels remains constant—the shift is truly structural and permanent.</p>
+</section>
+</div></section>
+<section id="type-4-transient-change-tc-temporary-structural-change">
+<h3><span class="section-number">5.3.3.5. </span>Type 4: Transient Change (TC) – Temporary Structural Change<a class="headerlink" href="#type-4-transient-change-tc-temporary-structural-change" title="Link to this heading">#</a></h3>
+<p>A transient change represents a temporary structural change similar to a level shift, but its effect gradually decays over time rather than being permanent. The series initially experiences a shock or shift, then slowly drifts back to its original baseline. This can be understood as a temporary new normal that eventually fades away <span id="id4">[<a class="reference internal" href="../References.html#id82" title="Chung Chen and Lon-Mu Liu. Joint Estimation of Model Parameters and Outlier Effects in Time Series. Journal of the American Statistical Association, 88(421):284–297, March 1993. URL: https://www.tandfonline.com/doi/full/10.1080/01621459.1993.10594321, doi:10.1080/01621459.1993.10594321.">Chen and Liu, 1993</a>, <a class="reference internal" href="../References.html#id403" title="Ruey S. Tsay. Outliers, level shifts, and variance changes in time series. Journal of Forecasting, 7(1):1–20, January 1988. URL: https://onlinelibrary.wiley.com/doi/10.1002/for.3980070102, doi:10.1002/for.3980070102.">Tsay, 1988</a>, <a class="reference internal" href="../References.html#id419" title="Gajendra K. Vishwakarma, Chinmoy Paul, and A.M. Elsawah. An algorithm for outlier detection in a time series model using backpropagation neural network. Journal of King Saud University - Science, 32(8):3328–3336, December 2020. URL: https://jksus.org/an-algorithm-for-outlier-detection-in-a-time-series-model-using-backpropagation-neural-network/, doi:10.1016/j.jksus.2020.09.018.">Vishwakarma <em>et al.</em>, 2020</a>]</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Transient Change (TC)</p>
+<ul class="simple">
+<li><p><strong>Duration:</strong> Temporary with exponential decay</p></li>
+<li><p><strong>Effect:</strong> Initial impact resembles a level shift, then gradual return</p></li>
+<li><p><strong>Recovery:</strong> Exponential decay back to baseline</p></li>
+<li><p><strong>Pattern:</strong> Step change, then smooth exponential decay downward</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Labor Strike</strong></p>
+<ul>
+<li><p class="sd-card-text">Factory operates at baseline: 1,000 units/day</p></li>
+<li><p class="sd-card-text">Strike occurs—immediate drop to 200 units/day</p></li>
+<li><p class="sd-card-text">Strike ends but productivity does not immediately recover</p></li>
+<li><p class="sd-card-text">Week 1 post-strike: 400 units/day (still impaired)</p></li>
+<li><p class="sd-card-text">Week 2: 600 units/day (improving)</p></li>
+<li><p class="sd-card-text">Week 4: 900 units/day (nearly recovered)</p></li>
+<li><p class="sd-card-text">Week 6: 1,000 units/day (full recovery)</p></li>
+<li><p class="sd-card-text">The impact decays gradually as production ramping accelerates</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Supply Chain Disruption</strong></p>
+<ul>
+<li><p class="sd-card-text">Hurricane damages supplier facility, forcing use of expensive alternative suppliers</p></li>
+<li><p class="sd-card-text">Unit cost jumps from <span class="math notranslate nohighlight">\(50 to \)</span>80 (immediate impact)</p></li>
+<li><p class="sd-card-text">As supplier rebuilds and resumes production:</p>
+<ul>
+<li><p class="sd-card-text">Month 1: $75/unit (partial recovery)</p></li>
+<li><p class="sd-card-text">Month 2: $62/unit (improving)</p></li>
+<li><p class="sd-card-text">Month 3: $52/unit (nearly back)</p></li>
+<li><p class="sd-card-text">Month 4: $50/unit (fully recovered)</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text">The cost advantage from the normal supplier gradually returns</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Seasonal Marketing Campaign</strong></p>
+<ul>
+<li><p class="sd-card-text">Major holiday advertising campaign boosts sales temporarily</p></li>
+<li><p class="sd-card-text">Campaign ends, but brand awareness and momentum linger</p></li>
+<li><p class="sd-card-text">Sales remain elevated for several weeks post-campaign</p></li>
+<li><p class="sd-card-text">Gradually decay back to baseline as brand recall fades naturally</p></li>
+<li><p class="sd-card-text">Unlike permanent level shifts, the effect is truly temporary</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><strong>Weather Event Impact</strong></p>
+<ul>
+<li><p class="sd-card-text">Severe winter storm disrupts retail operations</p></li>
+<li><p class="sd-card-text">Sales drop 60% during storm week (initial shock)</p></li>
+<li><p class="sd-card-text">Recovery is gradual as store repairs, restocking, and customer confidence return</p></li>
+<li><p class="sd-card-text">Week 1 post-storm: 50% of baseline (still recovering)</p></li>
+<li><p class="sd-card-text">Week 2: 75% of baseline (improving)</p></li>
+<li><p class="sd-card-text">Week 4: 95% of baseline (nearly normal)</p></li>
+<li><p class="sd-card-text">Takes 3-4 weeks to fully return to normal sales patterns</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mathematical Form</div>
+<p class="sd-card-text">The mathematical representation of a Transient Change is expressed as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-91d3a88b-d997-4d03-bd20-b2a01c2a385e">
+<span class="eqno">(5.6)<a class="headerlink" href="#equation-91d3a88b-d997-4d03-bd20-b2a01c2a385e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Y_t' = \begin{cases} Y_t &amp; \text{if } t &lt; T \\ Y_t + \delta^{t-T} \cdot \omega_{tc} &amp; \text{if } t \geq T \end{cases}
+\end{equation}\]</div>
+<p class="sd-card-text">where the decay function is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1ba7ece1-4056-423b-9952-ecef583ede4b">
+<span class="eqno">(5.7)<a class="headerlink" href="#equation-1ba7ece1-4056-423b-9952-ecef583ede4b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\psi_{t-T} = \delta^{t-T}, \quad 0 &lt; \delta &lt; 1
+\end{equation}\]</div>
+<p class="sd-card-text"><strong>Component Definitions:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t'\)</span> = The observed value at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(Y_t\)</span> = The true underlying value without the transient change</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\omega_{tc}\)</span> = The initial magnitude of the transient change at <span class="math notranslate nohighlight">\(t = T\)</span>—the immediate shock size</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\psi_{t-T}\)</span> = The decay function that controls how the transient effect diminishes</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\delta\)</span> = The decay factor (<span class="math notranslate nohighlight">\(0 &lt; \delta &lt; 1\)</span>), which determines the rate of recovery</p>
+<ul>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\delta = 0.95\)</span>: Very slow decay (effect lingers for months)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\delta = 0.80\)</span>: Moderate decay (effect fades over weeks)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\delta = 0.60\)</span>: Faster decay (effect largely gone in 10-15 days)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(\delta = 0.30\)</span>: Very fast decay (effect nearly gone in a few days)</p></li>
+</ul>
+</li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(T\)</span> = The time index when the transient event occurs (the onset point)</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(t - T\)</span> = The number of periods since the transient change began</p></li>
+</ul>
+<p class="sd-card-text"><strong>What This Equation Means:</strong></p>
+<p class="sd-card-text">Before time <span class="math notranslate nohighlight">\(T\)</span>, the observed value equals the true value (no disturbance). At <span class="math notranslate nohighlight">\(t = T\)</span>, the transient change begins with full magnitude <span class="math notranslate nohighlight">\(\omega_{tc}\)</span>. Unlike a level shift that remains constant, the transient effect decays exponentially through the function <span class="math notranslate nohighlight">\(\psi_{t-T} = \delta^{t-T}\)</span>. As time progresses, the observed value gradually approaches the baseline again. Mathematically, the effect approaches zero asymptotically but never quite disappears.</p>
+<p class="sd-card-text"><strong>Comparison with Other Outlier Types:</strong></p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Additive Outlier (AO):</strong> <span class="math notranslate nohighlight">\(Y_T' = Y_T + \omega_a\)</span>, then <span class="math notranslate nohighlight">\(Y_{T+1}' = Y_{T+1}\)</span> (disappears immediately)</p></li>
+<li><p class="sd-card-text"><strong>Innovative Outlier (IO):</strong> Similar decay form as TC, but the decay represents system memory effects</p></li>
+<li><p class="sd-card-text"><strong>Level Shift (LS):</strong> <span class="math notranslate nohighlight">\(Y_t' = Y_t + \omega_{ls}\)</span> for all <span class="math notranslate nohighlight">\(t \geq T\)</span> (constant, no decay)</p></li>
+<li><p class="sd-card-text"><strong>Transient Change (TC):</strong> Combines level shift’s initial step with exponential decay (temporary structural change)</p></li>
+</ul>
+<p class="sd-card-text">For example, with initial impact <span class="math notranslate nohighlight">\(\omega_{tc} = 9.0\)</span> and decay factor <span class="math notranslate nohighlight">\(\delta = 0.80\)</span> occurring at <span class="math notranslate nohighlight">\(T = 60\)</span>:</p>
+<ul class="simple">
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 60\)</span> (onset): Impact = <span class="math notranslate nohighlight">\(0.80^0 \times 9.0 = 9.0\)</span> (full initial impact)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 61\)</span>: Impact = <span class="math notranslate nohighlight">\(0.80^1 \times 9.0 = 7.2\)</span> (80% of initial)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 62\)</span>: Impact = <span class="math notranslate nohighlight">\(0.80^2 \times 9.0 = 5.76\)</span> (64% of initial)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 65\)</span>: Impact = <span class="math notranslate nohighlight">\(0.80^5 \times 9.0 = 2.95\)</span> (33% of initial)</p></li>
+<li><p class="sd-card-text">At <span class="math notranslate nohighlight">\(t = 75\)</span>: Impact = <span class="math notranslate nohighlight">\(0.80^{15} \times 9.0 = 0.34\)</span> (4% of initial)</p></li>
+</ul>
+</div>
+</div>
+<div class="proof example admonition" id="example_transient_change">
+<p class="admonition-title"><span class="caption-number">Example 5.3 </span></p>
+<section class="example-content" id="proof-content">
+<p>Consider a scenario tracking daily retail sales over 180 days (January to June 2024). The baseline series includes:</p>
+<ul class="simple">
+<li><p>A small upward trend (seasonal growth of 0.012 units/day)</p></li>
+<li><p>Weekly seasonality (higher sales on weekends, lower on Mondays)</p></li>
+<li><p>Random noise representing daily customer variability</p></li>
+</ul>
+<p>On Day 60 (March 1, 2024), a major supply chain disruption occurs—a hurricane damages the primary supplier facility. This forces the company to use more expensive alternative suppliers, creating an initial shock of <span class="math notranslate nohighlight">\(\omega_{tc} = 9.0\)</span> in daily unit costs. However, as the primary supplier rebuilds and resumes operations, the disruption’s effect gradually decays with factor <span class="math notranslate nohighlight">\(\delta = 0.80\)</span>.</p>
+<p><strong>Mathematical representation:</strong></p>
+<p>If the baseline cost per unit on Day 60 was <span class="math notranslate nohighlight">\(Y_{60} = 70.0\)</span>, then:</p>
+<ul class="simple">
+<li><p>Day 59 (before disruption): <span class="math notranslate nohighlight">\(Y_{59}' = Y_{59} = 70.0\)</span> (no change)</p></li>
+<li><p>Day 60 (disruption onset at T): <span class="math notranslate nohighlight">\(Y_{60}' = 70.0 + (0.80^0 \times 9.0) = 70.0 + 9.0 = 79.0\)</span> (full impact)</p></li>
+<li><p>Day 61 (one day later): <span class="math notranslate nohighlight">\(Y_{61}' = Y_{61} + (0.80^1 \times 9.0) = Y_{61} + 7.2\)</span> (80% of impact remains)</p></li>
+<li><p>Day 62: <span class="math notranslate nohighlight">\(Y_{62}' = Y_{62} + (0.80^2 \times 9.0) = Y_{62} + 5.76\)</span> (64% of impact)</p></li>
+<li><p>Day 65 (5 days later): <span class="math notranslate nohighlight">\(Y_{65}' = Y_{65} + (0.80^5 \times 9.0) = Y_{65} + 2.95\)</span> (only 33% remains)</p></li>
+<li><p>Day 75 (15 days later): <span class="math notranslate nohighlight">\(Y_{75}' = Y_{75} + (0.80^{15} \times 9.0) = Y_{75} + 0.34\)</span> (only 4% remains)</p></li>
+</ul>
+<p>The transient change creates an initial spike that resembles a level shift—costs jump from 70 to 79. However, unlike a permanent level shift, the excess cost gradually declines. By Day 75 (two weeks after the event), the disruption’s effect has diminished to nearly nothing, and the series has recovered most of the way back to its original baseline. The recovery follows an exponential decay pattern rather than remaining stuck at the elevated level or returning immediately.</p>
+<figure class="align-center" id="transient-change-illustration">
+<a class="reference internal image-reference" href="../_images/transient_change_illustration.png"><img alt="../_images/transient_change_illustration.png" src="../_images/transient_change_illustration.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.13 </span><span class="caption-text">Transient Change (TC): Temporary structural change with gradual exponential decay back to baseline.</span><a class="headerlink" href="#transient-change-illustration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The figure shows the behavior of a transient change. Before Day 60 (marked by the vertical red dashed line), the baseline (gray line) and observed series (blue line) are identical. At Day 60, the observed series jumps upward due to the disruption—resembling a level shift. However, the series does not stay at this elevated level. Instead, the orange shaded area between the baseline and observed lines gradually shrinks, indicating the decaying nature of the transient effect. The observed series curves back toward the baseline in an exponential decay pattern, eventually approaching it asymptotically.</p>
+<p>The series shows a sudden step change (upward or downward) similar to a level shift. However, unlike a level shift that permanently stays at the new level, you observe a gradual drift back toward the original baseline. The recovery is not immediate like an additive outlier, and it is not a continuous decay from the shock point like an innovative outlier. Instead, the series appears to step to a new level momentarily, then slowly recover from that temporarily elevated (or depressed) state. The gap between observed and baseline systematically shrinks over time in an exponential decay pattern.</p>
+</section>
+</div></section>
+</section>
+<section id="distinguishing-among-outlier-types">
+<h2><span class="section-number">5.3.4. </span>Distinguishing Among Outlier Types<a class="headerlink" href="#distinguishing-among-outlier-types" title="Link to this heading">#</a></h2>
+<p>The critical feature that distinguishes these four outlier types is their temporal fingerprint—the pattern of influence they exert on observations following the initial event. Understanding these distinctions is essential for proper model specification and accurate forecasting.</p>
+<section id="temporal-signatures">
+<h3><span class="section-number">5.3.4.1. </span>Temporal Signatures<a class="headerlink" href="#temporal-signatures" title="Link to this heading">#</a></h3>
+<p>Each outlier type creates a distinct pattern in the time series post-event:</p>
+<ul class="simple">
+<li><p><strong>Additive Outliers</strong> affect only the observation at time <span class="math notranslate nohighlight">\(T\)</span>, with no influence on subsequent values. The series returns to its baseline immediately, creating an isolated spike that appears disconnected from the surrounding pattern.</p></li>
+<li><p><strong>Innovative Outliers</strong> create a shock that propagates through the system’s autoregressive structure. The effect diminishes exponentially according to the decay parameter <span class="math notranslate nohighlight">\(\phi\)</span>, with each subsequent observation carrying a fraction of the previous period’s impact. The visual pattern resembles a sharp initial spike followed by a curved, smooth decline back to baseline.</p></li>
+<li><p><strong>Level Shifts</strong> introduce a permanent change in the series mean. All observations at <span class="math notranslate nohighlight">\(t \geq T\)</span> are shifted by a constant amount <span class="math notranslate nohighlight">\(\omega_{ls}\)</span>, creating a clear step function in the data. The pre-shift and post-shift segments appear as two distinct processes operating at different mean levels.</p></li>
+<li><p><strong>Transient Changes</strong> combine characteristics of level shifts and innovative outliers. The series experiences an initial step change at time <span class="math notranslate nohighlight">\(T\)</span>, but unlike a permanent level shift, the deviation decays exponentially. This creates a plateau-like pattern where the series temporarily operates at an elevated (or depressed) level before gradually returning to baseline.</p></li>
+</ul>
+</section>
+<section id="implications-for-time-series-analysis">
+<h3><span class="section-number">5.3.4.2. </span>Implications for Time Series Analysis<a class="headerlink" href="#implications-for-time-series-analysis" title="Link to this heading">#</a></h3>
+<p>The distinction among these outlier types has direct consequences for model identification, parameter estimation, and forecasting accuracy. Chen and Liu (1993) demonstrated that misclassifying outlier types can lead to severely biased parameter estimates in ARIMA models and degraded forecast performance <span id="id5">[<a class="reference internal" href="../References.html#id82" title="Chung Chen and Lon-Mu Liu. Joint Estimation of Model Parameters and Outlier Effects in Time Series. Journal of the American Statistical Association, 88(421):284–297, March 1993. URL: https://www.tandfonline.com/doi/full/10.1080/01621459.1993.10594321, doi:10.1080/01621459.1993.10594321.">Chen and Liu, 1993</a>]</span>.</p>
+<p>When a level shift is incorrectly treated as an additive outlier and removed from the data, the model will consistently underpredict (or overpredict) all future values because it fails to recognize the structural change in the process mean. Conversely, treating a transient change as a permanent level shift will lead to forecast errors that persist long after the transient effect has dissipated.</p>
+<p>The temporal pattern also provides diagnostic information about the underlying cause. Additive outliers typically result from measurement errors, data entry mistakes, or brief equipment malfunctions that do not affect the actual system state. Level shifts indicate fundamental structural changes—policy interventions, technological implementations, or business model changes that permanently alter system behavior. Innovative and transient outliers often arise from external shocks that temporarily disturb the system but do not permanently change its fundamental dynamics.</p>
+</section>
+<section id="detection-strategy-considerations">
+<h3><span class="section-number">5.3.4.3. </span>Detection Strategy Considerations<a class="headerlink" href="#detection-strategy-considerations" title="Link to this heading">#</a></h3>
+<p>Accurate outlier classification requires methods that can distinguish among these temporal patterns. Simple threshold-based approaches that only examine the magnitude of deviations at individual time points cannot distinguish an additive outlier from the initial observation of a level shift. Both appear as extreme values at time <span class="math notranslate nohighlight">\(T\)</span>, but they require completely different modeling responses.</p>
+<p>Effective detection algorithms must evaluate not just the magnitude of deviation at a single point, but the pattern of residuals in the neighborhood surrounding the candidate outlier. The iterative outlier detection procedure proposed by Chen and Liu (1993) <span id="id6">[<a class="reference internal" href="../References.html#id82" title="Chung Chen and Lon-Mu Liu. Joint Estimation of Model Parameters and Outlier Effects in Time Series. Journal of the American Statistical Association, 88(421):284–297, March 1993. URL: https://www.tandfonline.com/doi/full/10.1080/01621459.1993.10594321, doi:10.1080/01621459.1993.10594321.">Chen and Liu, 1993</a>]</span> and implemented in various statistical software packages tests for each outlier type simultaneously by fitting intervention models and comparing likelihood ratios. Change-point detection algorithms such as PELT (Pruned Exact Linear Time) <span id="id7">[<a class="reference internal" href="../References.html#id183" title="Kaylea Haynes, Paul Fearnhead, and Idris A. Eckley. A computationally efficient nonparametric approach for changepoint detection. Statistics and Computing, 27(5):1293–1305, September 2017. doi:10.1007/s11222-016-9687-5.">Haynes <em>et al.</em>, 2017</a>]</span> and Binary Segmentation can identify level shifts by detecting abrupt changes in distributional parameters.</p>
+<p>For seasonal time series, proper decomposition into trend, seasonal, and residual components is essential before applying outlier detection. STL (Seasonal and Trend decomposition using Loess) and X-13-ARIMA-SEATS provide robust frameworks for separating these components, allowing outlier detection methods to operate on the deseasonalized residuals where deviations from expected patterns become more apparent.</p>
+</section>
+<section id="forecasting-implications">
+<h3><span class="section-number">5.3.4.4. </span>Forecasting Implications<a class="headerlink" href="#forecasting-implications" title="Link to this heading">#</a></h3>
+<p>The choice of how to handle each outlier type directly impacts forecast accuracy. Additive outliers should be replaced with interpolated values or treated as missing data during model estimation to prevent them from distorting parameter estimates. Level shifts require updating the model structure to include an intervention variable that captures the permanent change in mean level. Innovative and transient outliers may require explicit modeling through transfer functions that capture the temporal dynamics of the shock’s decay.</p>
+<p>Ignoring these distinctions leads to systematic forecast errors. Forecasts from models that fail to account for level shifts will exhibit persistent bias, while models that inappropriately retain additive outliers will show inflated residual variance and wider prediction intervals than warranted.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C05S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>Outlier Classification by Scope</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C05S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.4. </span>Visual Methods for Outlier Detection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-seasonality-matters">5.3.1. Why Seasonality Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seasonal-outliers-so">5.3.2. Seasonal Outliers (SO)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-seasonal-anomalies">5.3.2.1. Visualizing Seasonal Anomalies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-seasonal-outliers">5.3.3. Non-Seasonal Outliers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-four-types-of-temporal-impact">5.3.3.1. The Four Types of Temporal Impact</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-additive-outliers-ao-isolated-impact">5.3.3.2. Type 1: Additive Outliers (AO) – Isolated Impact</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-innovative-outliers-io-decaying-persistence">5.3.3.3. Type 2: Innovative Outliers (IO) – Decaying Persistence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-3-level-shift-ls-permanent-structural-change">5.3.3.4. Type 3: Level Shift (LS) – Permanent Structural Change</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-4-transient-change-tc-temporary-structural-change">5.3.3.5. Type 4: Transient Change (TC) – Temporary Structural Change</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-among-outlier-types">5.3.4. Distinguishing Among Outlier Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-signatures">5.3.4.1. Temporal Signatures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implications-for-time-series-analysis">5.3.4.2. Implications for Time Series Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-strategy-considerations">5.3.4.3. Detection Strategy Considerations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">5.3.4.4. Forecasting Implications</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

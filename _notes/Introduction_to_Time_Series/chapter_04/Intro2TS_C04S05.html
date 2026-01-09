@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.5. ARIMA Models in Practice &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2TS_C04S05';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.6. SARIMA and SARIMAX" href="Intro2TS_C04S06.html" />
+    <link rel="prev" title="4.4. ARIMA Models" href="Intro2TS_C04S04.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C04.html">4. Classical Time Series Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ARIMA Models in Practice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-the-complete-solution">4.5.1. ARIMA: The Complete Solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-differencing">4.5.1.1. <strong>What is Differencing?</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-p-d-q-structure">4.5.1.2. <strong>ARIMA(p,d,q) Structure</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arma-on-stationary-data-sunspot-activity">4.5.2. ARMA on Stationary Data: Sunspot Activity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-ar-models-via-arima-p-0-0">4.5.2.1. Fitting AR Models via ARIMA(p,0,0)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-diagnostics">4.5.2.2. Residual Diagnostics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-on-non-stationary-data-cpi-example">4.5.3. ARIMA on Non-Stationary Data: CPI Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differencing-and-stationarity">4.5.3.1. Differencing and Stationarity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acf-pacf-on-second-differenced-cpi">4.5.3.2. ACF/PACF on Second Differenced CPI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-arima-models-d-2">4.5.3.3. Fitting ARIMA Models (<span class="math notranslate nohighlight">\(d=2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-arima-0-2-1">4.5.3.4. Interpreting the ARIMA(0,2,1)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-with-arima">4.5.3.5. Forecasting with ARIMA</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="arima-models-in-practice">
+<h1><span class="section-number">4.5. </span>ARIMA Models in Practice<a class="headerlink" href="#arima-models-in-practice" title="Link to this heading">#</a></h1>
+<p>In the previous section, we developed intuition for AR, MA, and ARMA models on stationary data. We saw how autoregressive terms capture persistence, while moving-average terms capture short-lived shock responses. In this section, we move from theory to practice and build ARIMA models on real datasets using <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>. Our goal is to see when pure ARMA is sufficient and when we must extend to ARIMA with differencing.</p>
+<p>We will work with two standard datasets from <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> <span id="id1">[<a class="reference internal" href="../References.html#id120" title="Statsmodels Developers. Statsmodels api reference. https://www.statsmodels.org/stable/api.html, 2023. [Online; accessed 01-August-2023].">Statsmodels Developers, 2023</a>]</span>:</p>
+<ul class="simple">
+<li><p><strong>Sunspots</strong>: Annual sunspot counts (roughly stationary, suitable for AR/ARMA).</p></li>
+<li><p><strong>Macro CPI</strong>: Quarterly consumer price index (strong upward trend, requiring differencing).</p></li>
+</ul>
+<p>These examples are adapted and modernized from the official <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> ARMA/ARIMA notebooks so that our code and workflows match what students will encounter in the documentation.</p>
+<section id="arima-the-complete-solution">
+<h2><span class="section-number">4.5.1. </span>ARIMA: The Complete Solution<a class="headerlink" href="#arima-the-complete-solution" title="Link to this heading">#</a></h2>
+<p><strong>ARIMA(p,d,q)</strong> extends ARMA by adding <strong>differencing</strong> to handle non-stationarity.</p>
+<section id="what-is-differencing">
+<h3><span class="section-number">4.5.1.1. </span><strong>What is Differencing?</strong><a class="headerlink" href="#what-is-differencing" title="Link to this heading">#</a></h3>
+<p>Differencing means computing the <strong>change</strong> from one period to the next:</p>
+<p><strong>First Difference (<span class="math notranslate nohighlight">\(d=1\)</span>):</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-825b063c-0de8-4f3c-a753-39c9856fef26">
+<span class="eqno">(4.20)<a class="headerlink" href="#equation-825b063c-0de8-4f3c-a753-39c9856fef26" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\nabla X_t = X_t - X_{t-1}
+\end{equation}\]</div>
+<p><strong>Second Difference (<span class="math notranslate nohighlight">\(d=2\)</span>):</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-3f0a896a-633e-435a-a3cd-6920f50adc27">
+<span class="eqno">(4.21)<a class="headerlink" href="#equation-3f0a896a-633e-435a-a3cd-6920f50adc27" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\nabla^2 X_t = \nabla X_t - \nabla X_{t-1} = (X_t - X_{t-1}) - (X_{t-1} - X_{t-2})
+\end{equation}\]</div>
+<p><strong>Why it works:</strong> Differencing removes trends. If prices rise steadily, the price-to-price change is stable.</p>
+</section>
+<section id="arima-p-d-q-structure">
+<h3><span class="section-number">4.5.1.2. </span><strong>ARIMA(p,d,q) Structure</strong><a class="headerlink" href="#arima-p-d-q-structure" title="Link to this heading">#</a></h3>
+<div class="amsmath math notranslate nohighlight" id="equation-9b40485e-4ae3-481f-b50d-59b667f1a9ec">
+<span class="eqno">(4.22)<a class="headerlink" href="#equation-9b40485e-4ae3-481f-b50d-59b667f1a9ec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{ARIMA}(p, d, q) = \text{Difference } d \text{ times, then fit } \text{ARMA}(p, q)
+\end{equation}\]</div>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(p\)</span>:</strong> AutoRegressive order (past values)</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(d\)</span>:</strong> Differencing order (0, 1, or 2)</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(q\)</span>:</strong> Moving Average order (past errors)</p></li>
+</ul>
+<p><strong>Process:</strong></p>
+<ol class="arabic simple">
+<li><p>Apply <span class="math notranslate nohighlight">\(d\)</span> differences to original data → stationary series</p></li>
+<li><p>Fit ARMA(p,q) to differenced data</p></li>
+<li><p>Forecast and <strong>integrate back</strong> to original scale</p></li>
+</ol>
+<div class="pst-scrollable-table-container"><table class="table" id="table-arima-examples">
+<caption><span class="caption-number">Table 4.8 </span><span class="caption-text">ARIMA Examples</span><a class="headerlink" href="#table-arima-examples" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>When to Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ARIMA(1,0,0)</p></td>
+<td><p>AR(1), no differencing</p></td>
+<td><p>Stationary data with autoregression</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARIMA(0,1,1)</p></td>
+<td><p>MA(1) with one differencing</p></td>
+<td><p>Trend, no AR component (like life expectancy)</p></td>
+</tr>
+<tr class="row-even"><td><p>ARIMA(1,1,1)</p></td>
+<td><p>AR(1) + MA(1) with differencing</p></td>
+<td><p>Trend with autoregressive behavior</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARIMA(2,1,0)</p></td>
+<td><p>AR(2) with differencing</p></td>
+<td><p>Trend with stronger autocorrelation</p></td>
+</tr>
+<tr class="row-even"><td><p>ARIMA(0,2,1)</p></td>
+<td><p>MA(1) with two differences</p></td>
+<td><p>Very strong trend (rare)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="arma-on-stationary-data-sunspot-activity">
+<h2><span class="section-number">4.5.2. </span>ARMA on Stationary Data: Sunspot Activity<a class="headerlink" href="#arma-on-stationary-data-sunspot-activity" title="Link to this heading">#</a></h2>
+<p>We begin with the classic sunspots dataset, which records yearly counts of sunspots from 1700 to 2008. This series fluctuates around a long-run level with an approximate 11-year cycle but does not exhibit a strong deterministic trend in the mean, so ARMA-type models with <span class="math notranslate nohighlight">\(d=0\)</span> are a reasonable starting point.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+
+<span class="c1"># Load annual sunspot data (1700–2008)</span>
+<span class="n">sunspots_data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">sunspots</span><span class="o">.</span><span class="n">load_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+<span class="n">sunspots_data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">datetools</span><span class="o">.</span><span class="n">dates_from_range</span><span class="p">(</span><span class="s2">&quot;1700&quot;</span><span class="p">,</span> <span class="s2">&quot;2008&quot;</span><span class="p">))</span>
+<span class="n">sunspots_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">sunspots_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">inferred_freq</span>
+<span class="n">sunspots_data</span> <span class="o">=</span> <span class="n">sunspots_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;YEAR&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="annual-sunspot-data">
+<a class="reference internal image-reference" href="../_images/annual_sunspot_data.png"><img alt="../_images/annual_sunspot_data.png" src="../_images/annual_sunspot_data.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.15 </span><span class="caption-text">Annual sunspot counts from 1700 to 2008, showing pronounced multi-year cycles in solar activity with varying peak intensity over time.</span><a class="headerlink" href="#annual-sunspot-data" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#annual-sunspot-data"><span class="std std-numref">Fig. 4.15</span></a> shows oscillatory behavior without an obvious linear trend, so we tentatively treat the series as stationary in mean after accounting for its stochastic structure. To confirm the type of dependence, we examine its autocorrelation functions:</p>
+<figure class="align-center" id="sunspot-acf-pacf">
+<a class="reference internal image-reference" href="../_images/sunspot_acf_pacf.png"><img alt="../_images/sunspot_acf_pacf.png" src="../_images/sunspot_acf_pacf.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.16 </span><span class="caption-text">Sample ACF and PACF for annual sunspot counts, showing slowly decaying autocorrelations and several significant partial autocorrelations at low lags—patterns consistent with a low-order autoregressive structure rather than a pure moving-average process.</span><a class="headerlink" href="#sunspot-acf-pacf" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The PACF shows significant autocorrelation at the first few lags before decaying, suggesting that a low-order AR model may be appropriate, while the ACF decays more gradually, which is consistent with AR(p) behavior rather than a pure MA(q) cut-off.</p>
+<section id="fitting-ar-models-via-arima-p-0-0">
+<h3><span class="section-number">4.5.2.1. </span>Fitting AR Models via ARIMA(p,0,0)<a class="headerlink" href="#fitting-ar-models-via-arima-p-0-0" title="Link to this heading">#</a></h3>
+<p>We now fit AR(2) and AR(3) models, implemented as ARIMA with <span class="math notranslate nohighlight">\(d=0\)</span> and <span class="math notranslate nohighlight">\(q=0\)</span>:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.arima.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARIMA</span>
+
+<span class="c1"># Fit AR(2) and AR(3) as ARIMA(p,0,0)</span>
+<span class="n">arma_mod20</span> <span class="o">=</span> <span class="n">ARIMA</span><span class="p">(</span><span class="n">sunspots_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">arma_mod30</span> <span class="o">=</span> <span class="n">ARIMA</span><span class="p">(</span><span class="n">sunspots_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># AR(2)</span>
+<span class="n">title_20</span> <span class="o">=</span> <span class="n">arma_mod20</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># model title string</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title_20</span><span class="si">}</span><span class="s2"> — AIC: </span><span class="si">{</span><span class="n">arma_mod20</span><span class="o">.</span><span class="n">aic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;BIC: </span><span class="si">{</span><span class="n">arma_mod20</span><span class="o">.</span><span class="n">bic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, HQIC: </span><span class="si">{</span><span class="n">arma_mod20</span><span class="o">.</span><span class="n">hqic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AR(2) parameters:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">arma_mod20</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># AR(3)</span>
+<span class="n">title_30</span> <span class="o">=</span> <span class="n">arma_mod30</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">title_30</span><span class="si">}</span><span class="s2"> — AIC: </span><span class="si">{</span><span class="n">arma_mod30</span><span class="o">.</span><span class="n">aic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;BIC: </span><span class="si">{</span><span class="n">arma_mod30</span><span class="o">.</span><span class="n">bic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, HQIC: </span><span class="si">{</span><span class="n">arma_mod30</span><span class="o">.</span><span class="n">hqic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AR(3) parameters:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">arma_mod30</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dep. Variable: — AIC: 2622.637, BIC: 2637.570, HQIC: 2628.607
+AR(2) parameters:
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>const      49.7462
+ar.L1       1.3906
+ar.L2      -0.6886
+sigma2    274.7272
+dtype: float64
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dep. Variable: — AIC: 2619.404, BIC: 2638.070, HQIC: 2626.867
+AR(3) parameters:
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>const      49.7519
+ar.L1       1.3008
+ar.L2      -0.5081
+ar.L3      -0.1296
+sigma2    270.1011
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The AR(3) model achieves slightly lower AIC and BIC than AR(2), indicating a better fit despite the extra parameter. The estimated AR coefficients reflect the medium-term memory in the sunspot cycle—each year’s value depends on several previous years.</p>
+</section>
+<section id="residual-diagnostics">
+<h3><span class="section-number">4.5.2.2. </span>Residual Diagnostics<a class="headerlink" href="#residual-diagnostics" title="Link to this heading">#</a></h3>
+<p>A model is only acceptable if its residuals behave like white noise. We check this using residual plots, normality diagnostics, and autocorrelation of residuals:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.stattools</span><span class="w"> </span><span class="kn">import</span> <span class="n">durbin_watson</span>
+<span class="n">resid</span> <span class="o">=</span> <span class="n">arma_mod30</span><span class="o">.</span><span class="n">resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Durbin-Watson statistic: </span><span class="si">{</span><span class="n">durbin_watson</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Durbin-Watson statistic: 1.956
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="sunspot-arma30-resid-diagnostics">
+<a class="reference internal image-reference" href="../_images/sunspot_arma30_resid_diagnostics.png"><img alt="../_images/sunspot_arma30_resid_diagnostics.png" src="../_images/sunspot_arma30_resid_diagnostics.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.17 </span><span class="caption-text">Residual diagnostics for the AR(3) model fitted to annual sunspot counts. Panel <strong>(a)</strong> shows residuals fluctuating around zero without obvious long-term trends, suggesting that most large-scale structure in the series has been captured. Panel <strong>(b)</strong> presents a Q–Q plot comparing residual quantiles to a normal distribution; points follow the reference line closely in the center but deviate in the extreme tails, indicating only mild departures from normality. Panel <strong>(c)</strong> displays the ACF of the residuals, with most autocorrelations inside the confidence band, implying little remaining temporal dependence and supporting the adequacy of the AR(3) specification.</span><a class="headerlink" href="#sunspot-arma30-resid-diagnostics" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>After fitting the AR(3) model to the sunspot series, we use these diagnostics to check whether our model assumptions are reasonable. In <a class="reference internal" href="#sunspot-arma30-resid-diagnostics"><span class="std std-numref">Fig. 4.17</span></a>, Panel <strong>(a)</strong> reassures us that residuals behave like noise rather than showing leftover trend or cyclic structure, which would indicate model underfitting. Panel <strong>(b)</strong> suggests that, for most quantiles, the Gaussian error assumption is acceptable for inference and prediction, even though extreme values are slightly heavier-tailed than a perfect normal distribution. Panel <strong>(c)</strong> shows that residual autocorrelations are small and mostly insignificant beyond lag 0, so the AR(3) model has successfully removed the main temporal dependence and leaves us with approximately white-noise errors, a key requirement for reliable ARMA/ARIMA forecasting.</p>
+<p>The Durbin–Watson statistic of <strong>1.956</strong> is very close to 2, indicating minimal residual autocorrelation, and the residual ACF remains within the confidence bounds for nearly all lags, with only minor hints of remaining structure at longer lags. The Q–Q plot shows small deviations from normality in the tails, which is typical for real-world time series data. Taken together, these diagnostics suggest that the AR(3) model provides a reasonable stationary representation of the sunspot counts and serves as a clear example of ARMA-type modeling in the case <span class="math notranslate nohighlight">\(d = 0\)</span>.</p>
+</section>
+</section>
+<section id="arima-on-non-stationary-data-cpi-example">
+<h2><span class="section-number">4.5.3. </span>ARIMA on Non-Stationary Data: CPI Example<a class="headerlink" href="#arima-on-non-stationary-data-cpi-example" title="Link to this heading">#</a></h2>
+<p>We now turn to a series that clearly violates the stationarity assumption: U.S. quarterly CPI from 1959Q1 to 2009Q3. This series exhibits a strong upward trend, so an ARMA(p,q) model on the raw levels would be inappropriate.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+
+<span class="c1"># Load macro data and extract CPI</span>
+<span class="n">macrosunspots_data</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">macrodata</span><span class="o">.</span><span class="n">load_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+<span class="n">macrosunspots_data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">tsa</span><span class="o">.</span><span class="n">datetools</span><span class="o">.</span><span class="n">dates_from_range</span><span class="p">(</span><span class="s2">&quot;1959Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;2009Q3&quot;</span><span class="p">))</span>
+<span class="n">cpi</span> <span class="o">=</span> <span class="n">macrosunspots_data</span><span class="p">[</span><span class="s2">&quot;cpi&quot;</span><span class="p">]</span>
+<span class="n">macrosunspots_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="s1">&#39;QE&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="quarterly-cpi">
+<a class="reference internal image-reference" href="../_images/quarterly_cpi.png"><img alt="../_images/quarterly_cpi.png" src="../_images/quarterly_cpi.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.18 </span><span class="caption-text">Quarterly U.S. Consumer Price Index (CPI) from 1959Q1 to 2009Q3, showing a persistent upward trend with no visible mean reversion—clear evidence of non-stationary behavior that motivates differencing before ARIMA modeling.</span><a class="headerlink" href="#quarterly-cpi" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#quarterly-cpi"><span class="std std-numref">Fig. 4.18</span></a> reveals a clear upward trajectory—CPI values do not fluctuate around a constant mean but increase persistently over time. To formalize this, we apply the Augmented Dickey–Fuller (ADF) test for a unit root:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.stattools</span><span class="w"> </span><span class="kn">import</span> <span class="n">adfuller</span>
+
+<span class="n">adf_result</span> <span class="o">=</span> <span class="n">adfuller</span><span class="p">(</span><span class="n">cpi</span><span class="p">)</span>
+<span class="n">adf_stat</span><span class="p">,</span> <span class="n">adf_pvalue</span><span class="p">,</span> <span class="n">used_lag</span><span class="p">,</span> <span class="n">nobs</span><span class="p">,</span> <span class="n">crit_vals</span><span class="p">,</span> <span class="n">icbest</span> <span class="o">=</span> <span class="n">adf_result</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF statistic on CPI levels: </span><span class="si">{</span><span class="n">adf_stat</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF p-value on CPI levels: </span><span class="si">{</span><span class="n">adf_pvalue</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Used lags: </span><span class="si">{</span><span class="n">used_lag</span><span class="si">}</span><span class="s2">, observations: </span><span class="si">{</span><span class="n">nobs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ADF statistic on CPI levels: 0.7308
+ADF p-value on CPI levels: 0.9904
+Used lags: 12, observations: 190
+</pre></div>
+</div>
+</div>
+</div>
+<p>The very high p-value (around 0.99) indicates that we cannot reject the null of a unit root, confirming that CPI levels are non-stationary. This is exactly the type of series for which ARIMA was designed.</p>
+<section id="differencing-and-stationarity">
+<h3><span class="section-number">4.5.3.1. </span>Differencing and Stationarity<a class="headerlink" href="#differencing-and-stationarity" title="Link to this heading">#</a></h3>
+<p>We begin by taking the <strong>first difference</strong> to remove the linear trend:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpi_diff</span> <span class="o">=</span> <span class="n">cpi</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="differenced-quarterly-cpi">
+<a class="reference internal image-reference" href="../_images/differenced_quarterly_cpi.png"><img alt="../_images/differenced_quarterly_cpi.png" src="../_images/differenced_quarterly_cpi.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.19 </span><span class="caption-text"><strong>First Difference (<span class="math notranslate nohighlight">\(d=1\)</span>).</strong> Quarter-to-quarter changes in CPI. While the strong upward trend is gone, the series still shows signs of wandering behavior, particularly in the later years, suggesting that a single difference may not be enough to achieve full stationarity.</span><a class="headerlink" href="#differenced-quarterly-cpi" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check stationarity of first difference</span>
+<span class="n">adf_pvalue_diff</span> <span class="o">=</span> <span class="n">adfuller</span><span class="p">(</span><span class="n">cpi_diff</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF statistic (d=1): </span><span class="si">{</span><span class="n">adf_pvalue_diff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF p-value (d=1):   </span><span class="si">{</span><span class="n">adf_pvalue_diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ADF statistic (d=1): -2.7955
+ADF p-value (d=1):   0.0589
+</pre></div>
+</div>
+</div>
+</div>
+<p>The ADF test yields a p-value of <strong>0.0589</strong>, which is slightly above the standard 0.05 significance threshold. This suggests the series is still borderline non-stationary.</p>
+<p>To address this, we apply a <strong>second difference</strong> (i.e., the change in the change):</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpi_diff2</span> <span class="o">=</span> <span class="n">cpi_diff</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="c1"># Check stationarity of second difference</span>
+<span class="n">adf_pvalue_diff2</span> <span class="o">=</span> <span class="n">adfuller</span><span class="p">(</span><span class="n">cpi_diff2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF statistic (d=2): </span><span class="si">{</span><span class="n">adf_pvalue_diff2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADF p-value (d=2):   </span><span class="si">{</span><span class="n">adf_pvalue_diff2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ADF statistic (d=2): -4.6675
+ADF p-value (d=2):   0.0001
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="second-differenced-quarterly-cpi">
+<a class="reference internal image-reference" href="../_images/second_differenced_quarterly_cpi.png"><img alt="../_images/second_differenced_quarterly_cpi.png" src="../_images/second_differenced_quarterly_cpi.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.20 </span><span class="caption-text"><strong>Second Difference (<span class="math notranslate nohighlight">\(d=2\)</span>).</strong> The acceleration of prices (change in inflation). This series oscillates rapidly around a constant mean of zero with stable variance. The ADF test confirms this is fully stationary (<span class="math notranslate nohighlight">\(p &lt; 0.01\)</span>), identifying <span class="math notranslate nohighlight">\(d=2\)</span> as the appropriate differencing order for our ARIMA model.</span><a class="headerlink" href="#second-differenced-quarterly-cpi" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="acf-pacf-on-second-differenced-cpi">
+<h3><span class="section-number">4.5.3.2. </span>ACF/PACF on Second Differenced CPI<a class="headerlink" href="#acf-pacf-on-second-differenced-cpi" title="Link to this heading">#</a></h3>
+<p>Since we determined that <span class="math notranslate nohighlight">\(d=2\)</span> is required, we examine the ACF and PACF of the <strong>second differenced</strong> series (<code class="docutils literal notranslate"><span class="pre">cpi_diff2</span></code>) to identify the AR (<span class="math notranslate nohighlight">\(p\)</span>) and MA (<span class="math notranslate nohighlight">\(q\)</span>) orders.</p>
+<figure class="align-center" id="cpi-diff-second-acf-pacf">
+<a class="reference internal image-reference" href="../_images/cpi_diff_second_acf_pacf.png"><img alt="../_images/cpi_diff_second_acf_pacf.png" src="../_images/cpi_diff_second_acf_pacf.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.21 </span><span class="caption-text">Sample ACF and PACF of the <strong>second differenced</strong> CPI.
+<strong>Panel (a):</strong> The ACF shows a significant negative spike at Lag 1, followed by a sharp cutoff. This is the classic signature of an <strong>MA(1)</strong> process with a negative coefficient.
+<strong>Panel (b):</strong> The PACF shows a decaying or oscillating pattern (damped sine wave), which confirms the MA(1) diagnosis.
+<strong>Conclusion:</strong> The structure suggests an <strong>ARIMA(0,2,1)</strong> model.</span><a class="headerlink" href="#cpi-diff-second-acf-pacf" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="fitting-arima-models-d-2">
+<h3><span class="section-number">4.5.3.3. </span>Fitting ARIMA Models (<span class="math notranslate nohighlight">\(d=2\)</span>)<a class="headerlink" href="#fitting-arima-models-d-2" title="Link to this heading">#</a></h3>
+<p>Based on the ACF/PACF analysis, <strong>ARIMA(0,2,1)</strong> is our primary candidate. However, we will check neighbors like ARIMA(0,2,2) and ARIMA(1,2,1) to verify it is robust.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.arima.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ARIMA</span>
+
+<span class="c1"># We set d=2 for all models</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ARIMA(0,2,1)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s2">&quot;ARIMA(0,2,2)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;ARIMA(1,2,1)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ARIMA</span><span class="p">(</span><span class="n">cpi</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
+
+<span class="c1"># Compare AIC</span>
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="n">name</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;AIC&quot;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">aic</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">})</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;AIC&quot;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">comparison</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>ARIMA(0,2,2)</th>
+      <td>485.490740</td>
+    </tr>
+    <tr>
+      <th>ARIMA(1,2,1)</th>
+      <td>486.399113</td>
+    </tr>
+    <tr>
+      <th>ARIMA(0,2,1)</th>
+      <td>489.927914</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The comparison table reveals that <strong>ARIMA(0,2,2)</strong> achieves the lowest AIC (485.49), slightly outperforming the simpler ARIMA(0,2,1) (489.93) and the ARIMA(1,2,1).</p>
+<p>While the ACF plot showed a clear spike at lag 1 suggestive of an MA(1), the lower AIC for the MA(2) model implies that adding a second moving-average term captures additional residual structure that the simpler model misses. This result highlights the value of using Information Criteria (like AIC) alongside visual diagnostics: visual plots give us a starting point (MA(1)), but the quantitative metrics guide us to the optimal refinement (MA(2)).</p>
+</section>
+<section id="interpreting-the-arima-0-2-1">
+<h3><span class="section-number">4.5.3.4. </span>Interpreting the ARIMA(0,2,1)<a class="headerlink" href="#interpreting-the-arima-0-2-1" title="Link to this heading">#</a></h3>
+<p>The estimated model is:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+ \nabla^2 X_t = \varepsilon_t + \theta_1 \varepsilon_{t-1} 
+\end{equation*}\]</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Although ARIMA(0,2,2) had a slightly lower AIC, we examine the ARIMA(0,2,1) here as it is the more parsimonious candidate suggested by the ACF plots and serves as a clear baseline.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;ARIMA(0,2,1)&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">best_res</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                               SARIMAX Results                                
+==============================================================================
+Dep. Variable:                    cpi   No. Observations:                  203
+Model:                 ARIMA(0, 2, 1)   Log Likelihood                -242.964
+Date:                Fri, 02 Jan 2026   AIC                            489.928
+Time:                        12:14:13   BIC                            496.535
+Sample:                    03-31-1959   HQIC                           492.601
+                         - 09-30-2009                                         
+Covariance Type:                  opg                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+ma.L1         -0.8497      0.028    -30.891      0.000      -0.904      -0.796
+sigma2         0.6527      0.019     33.712      0.000       0.615       0.691
+===================================================================================
+Ljung-Box (L1) (Q):                   3.40   Jarque-Bera (JB):              4231.57
+Prob(Q):                              0.07   Prob(JB):                         0.00
+Heteroskedasticity (H):              23.57   Skew:                            -2.61
+Prob(H) (two-sided):                  0.00   Kurtosis:                        24.86
+===================================================================================
+
+Warnings:
+[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+</pre></div>
+</div>
+</div>
+</div>
+<p>The coefficient <span class="math notranslate nohighlight">\(\theta_1 \approx -0.85\)</span> is highly significant (<span class="math notranslate nohighlight">\(P &lt; 0.001\)</span>) and negative. A negative MA parameter in a differenced series is very common; it acts as a “correction” mechanism. It implies that if the acceleration of prices “overshoots” in one quarter (a large positive shock), the model expects a partial reversal (a negative contribution) in the next quarter’s acceleration. This negative correlation helps stabilize the second-differenced series, keeping it stationary around zero.</p>
+</section>
+<section id="forecasting-with-arima">
+<h3><span class="section-number">4.5.3.5. </span>Forecasting with ARIMA<a class="headerlink" href="#forecasting-with-arima" title="Link to this heading">#</a></h3>
+<p>To illustrate forecasting, we split the CPI data into training (first 85%) and test (last 15%) sets. We then fit our chosen <strong>ARIMA(0,2,1)</strong> model to the training data and project it forward.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cpi</span><span class="p">)</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_total</span> <span class="o">*</span> <span class="mf">0.85</span><span class="p">)</span>
+
+<span class="n">train_cpi</span> <span class="o">=</span> <span class="n">cpi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span>
+<span class="n">test_cpi</span> <span class="o">=</span> <span class="n">cpi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span>
+
+<span class="c1"># Fit the chosen ARIMA(0,2,1) model on training data</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ARIMA</span><span class="p">(</span><span class="n">train_cpi</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Generate forecasts for the test period</span>
+<span class="n">forecast_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get_forecast</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">test_cpi</span><span class="p">))</span>
+<span class="n">forecast_mean</span> <span class="o">=</span> <span class="n">forecast_res</span><span class="o">.</span><span class="n">predicted_mean</span>
+<span class="n">forecast_ci</span> <span class="o">=</span> <span class="n">forecast_res</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>We plot the results to visually assess the model’s performance:</p>
+<figure class="align-center" id="cpi-arima-forecast">
+<a class="reference internal image-reference" href="../_images/cpi_arima_forecast.png"><img alt="../_images/cpi_arima_forecast.png" src="../_images/cpi_arima_forecast.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.22 </span><span class="caption-text"><strong>Forecasting with ARIMA(0,2,1).</strong> The black curve shows the training data, the navy curve shows the actual held-out observations, and the red dashed line is the forecast. Because the model uses <span class="math notranslate nohighlight">\(d=2\)</span> (second differencing), it projects a linear trend based on the most recent “velocity” (change in inflation) at the end of the training set. The 95% prediction interval (red shaded region) widens rapidly, correctly reflecting the high uncertainty of predicting non-stationary macroeconomic data over long horizons.</span><a class="headerlink" href="#cpi-arima-forecast" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Finally, we compute quantitative accuracy metrics on the test set:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_error</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">test_cpi</span><span class="p">,</span> <span class="n">forecast_mean</span><span class="p">))</span>
+<span class="n">mae</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">test_cpi</span><span class="p">,</span> <span class="n">forecast_mean</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test RMSE: </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test MAE:  </span><span class="si">{</span><span class="n">mae</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test RMSE: 15.371
+Test MAE:  13.005
+</pre></div>
+</div>
+</div>
+</div>
+<p>The test RMSE of <strong>15.371</strong> indicates a reasonably strong fit, especially compared to simpler trend models. The ARIMA(0,2,1) model successfully captured the local “velocity” of inflation at the end of the training period and projected it forward. Because <span class="math notranslate nohighlight">\(d=2\)</span> implies a flexible trend (allowing for acceleration/deceleration), the model was able to adapt to the changing slope of the CPI curve better than a linear trend model (<span class="math notranslate nohighlight">\(d=1\)</span>) would have.</p>
+<p>This completes a full ARIMA workflow on a trending macroeconomic series using standard <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> datasets and APIs.</p>
+<div class="admonition-summary admonition">
+<p class="admonition-title">Summary</p>
+<ul class="simple">
+<li><p><strong>Sunspots (Stationary):</strong> We used an <strong>AR(2)</strong> (or ARIMA(2,0,0)) because the data was effectively stationary. The workflow focused on capturing the periodic cycle.</p></li>
+<li><p><strong>CPI (Non-Stationary):</strong> We used an <strong>ARIMA(0,2,1)</strong> because the data exhibited a non-linear trend. The workflow required:</p>
+<ol class="arabic simple">
+<li><p><strong>Stationarity Testing:</strong> Using the ADF test to determine that <strong>second differencing</strong> (<span class="math notranslate nohighlight">\(d=2\)</span>) was necessary to achieve stationarity.</p></li>
+<li><p><strong>Order Selection:</strong> Using ACF/PACF on the second-differenced data to identify an <strong>MA(1)</strong> signature.</p></li>
+<li><p><strong>Forecasting:</strong> Projecting the acceleration of prices forward, resulting in a robust forecast with appropriate uncertainty bounds.</p></li>
+</ol>
+</li>
+</ul>
+</div>
+<p>In the next section, we will extend these ideas to <strong>Seasonal ARIMA (SARIMA)</strong> models, which add seasonal AR, MA, and differencing components to handle recurring patterns such as yearly cycles in monthly data.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C04S04.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.4. </span>ARIMA Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C04S06.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.6. </span>SARIMA and SARIMAX</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-the-complete-solution">4.5.1. ARIMA: The Complete Solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-differencing">4.5.1.1. <strong>What is Differencing?</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-p-d-q-structure">4.5.1.2. <strong>ARIMA(p,d,q) Structure</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arma-on-stationary-data-sunspot-activity">4.5.2. ARMA on Stationary Data: Sunspot Activity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-ar-models-via-arima-p-0-0">4.5.2.1. Fitting AR Models via ARIMA(p,0,0)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-diagnostics">4.5.2.2. Residual Diagnostics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arima-on-non-stationary-data-cpi-example">4.5.3. ARIMA on Non-Stationary Data: CPI Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differencing-and-stationarity">4.5.3.1. Differencing and Stationarity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acf-pacf-on-second-differenced-cpi">4.5.3.2. ACF/PACF on Second Differenced CPI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-arima-models-d-2">4.5.3.3. Fitting ARIMA Models (<span class="math notranslate nohighlight">\(d=2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-arima-0-2-1">4.5.3.4. Interpreting the ARIMA(0,2,1)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-with-arima">4.5.3.5. Forecasting with ARIMA</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

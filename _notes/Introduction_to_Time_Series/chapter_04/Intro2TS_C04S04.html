@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.4. ARIMA Models &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2TS_C04S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.5. ARIMA Models in Practice" href="Intro2TS_C04S05.html" />
+    <link rel="prev" title="4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework" href="Intro2TS_C04S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C04.html">4. Classical Time Series Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S02.html">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ARIMA Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-arima-modeling-workflow-a-roadmap">4.4.1. The ARIMA Modeling Workflow: A Roadmap</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-three-building-blocks">4.4.1.1. The Three Building Blocks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-building-blocks-ar-ma-and-arma">4.4.2. The Building Blocks: AR, MA, and ARMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ar-autoregressive-model-ar-p">4.4.3. AR (AutoRegressive) Model: AR(p)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-ar-1-simple-persistence">4.4.3.1. Example 1: AR(1) – Simple Persistence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-ar-2-momentum-plus-correction-cloud-auto-scaling">4.4.3.2. Example 2: AR(2) – Momentum plus Correction (Cloud Auto-Scaling)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ma-moving-average-model-ma-q">4.4.4. MA (Moving Average) Model: MA(q)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-model">4.4.4.1. Reading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-ma-1-for-database-query-latency-anomalies">4.4.4.2. Example: MA(1) for Database Query Latency Anomalies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arma-combined-arma-p-q">4.4.5. ARMA (Combined): ARMA(p,q)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.4.5.1. Reading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xample-arma-1-1-for-ml-model-throughput">4.4.5.2. xample: ARMA(1,1) for ML Model Throughput</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-arma-breaks-down-the-non-stationarity-problem">4.4.6. When ARMA Breaks Down: The Non-Stationarity Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solution-differencing">4.4.6.1. The Solution: Differencing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together-diagnosing-and-selecting-arima-models">4.4.7. Putting It All Together: Diagnosing and Selecting ARIMA Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-1-achieving-stationarity-determining-d">4.4.7.1. Stage 1: Achieving Stationarity (Determining d)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-2-identifying-autocorrelation-structure-determining-p-and-q">4.4.7.2. Stage 2: Identifying Autocorrelation Structure (Determining p and q)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-3-model-comparison-and-selection">4.4.7.3. Stage 3: Model Comparison and Selection</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="arima-models">
+<h1><span class="section-number">4.4. </span>ARIMA Models<a class="headerlink" href="#arima-models" title="Link to this heading">#</a></h1>
+<section id="the-arima-modeling-workflow-a-roadmap">
+<h2><span class="section-number">4.4.1. </span>The ARIMA Modeling Workflow: A Roadmap<a class="headerlink" href="#the-arima-modeling-workflow-a-roadmap" title="Link to this heading">#</a></h2>
+<p>Before we explore the technical components of ARIMA models, let’s understand the modeling workflow at a high level. When we encounter a new time series in production—whether it’s API request rates, user engagement metrics, or system latency—we face a fundamental question: <strong>How do we systematically build a model that captures the temporal patterns in our data?</strong></p>
+<p>The ARIMA framework provides a structured approach built on three diagnostic questions:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Question 1: Is our data stable over time, or does it drift?</label><div class="sd-tab-content docutils">
+<p>Most real-world metrics aren’t stable—revenue grows, user counts increase, system load evolves. When the mean or variance changes systematically over time, we say the series is <strong>non-stationary</strong>. We’ll learn to diagnose this using statistical tests and transform non-stationary data into stable patterns through <strong>differencing</strong> (computing period-to-period changes). The number of differencing operations needed becomes our <strong>d parameter</strong>.</p>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Question 2: How does the past influence the present?</label><div class="sd-tab-content docutils">
+<p>Once we have stable data, we need to understand its memory structure. Does today’s value depend strongly on yesterday’s value (persistence)? Or does it primarily respond to recent unexpected shocks (error correction)? These two mechanisms—<strong>autoregression</strong> and <strong>moving averages</strong>—capture different types of temporal dependence. We’ll learn to identify which mechanisms are active using diagnostic plots called ACF and PACF, which reveal correlation patterns at different time lags. This analysis guides our <strong>p and q parameters</strong>.</p>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Question 3: Which model specification works best?</label><div class="sd-tab-content docutils">
+<p>Theory and visual diagnostics suggest candidate models, but the ultimate test is performance. We fit multiple plausible specifications, compare them using information criteria (AIC/BIC) and out-of-sample forecast accuracy, and validate that the winning model’s residuals show no remaining patterns. This systematic comparison ensures we choose models that generalize well to new data.</p>
+</div>
+</div>
+<section id="the-three-building-blocks">
+<h3><span class="section-number">4.4.1.1. </span>The Three Building Blocks<a class="headerlink" href="#the-three-building-blocks" title="Link to this heading">#</a></h3>
+<p>To answer these questions, we need to understand three fundamental mechanisms that ARIMA combines:</p>
+<ul class="simple">
+<li><p><strong>AR (AutoRegressive)</strong>: Current values depend on past values—capturing persistence and momentum</p></li>
+<li><p><strong>MA (Moving Average)</strong>: Current values depend on past forecast errors—capturing shock responses and corrections</p></li>
+<li><p><strong>I (Integration/Differencing)</strong>: Transforming non-stationary data to stationary by modeling changes rather than levels</p></li>
+</ul>
+<p>In the sections that follow, we’ll build intuition for each mechanism through concrete examples from data science practice. We’ll simulate each process to see the patterns it creates, learn to recognize these patterns in real data, and understand when each component is needed. By the end, you’ll have a systematic toolkit for diagnosing temporal structure and building appropriate ARIMA models for production forecasting systems.</p>
+</section>
+</section>
+<section id="the-building-blocks-ar-ma-and-arma">
+<h2><span class="section-number">4.4.2. </span>The Building Blocks: AR, MA, and ARMA<a class="headerlink" href="#the-building-blocks-ar-ma-and-arma" title="Link to this heading">#</a></h2>
+<p>Before we can understand why ARIMA has become the workhorse model for time series forecasting in data science, we need to build intuition for its foundational components. Think of this section as learning the individual instruments before understanding how an orchestra works together.</p>
+<p>We start with AR and MA processes, which assume our data is already stationary—meaning its statistical properties remain constant over time. This assumption is restrictive (most real data has trends), but understanding these building blocks first makes the full ARIMA framework much clearer. Once we see how AR and MA work on stationary data, we’ll understand why we need the “I” (Integration/differencing) component to handle non-stationary reality.</p>
+</section>
+<section id="ar-autoregressive-model-ar-p">
+<h2><span class="section-number">4.4.3. </span>AR (AutoRegressive) Model: AR(p)<a class="headerlink" href="#ar-autoregressive-model-ar-p" title="Link to this heading">#</a></h2>
+<p>In many real-world systems, today’s value naturally depends on yesterday’s value. Consider these common scenarios:</p>
+<ul class="simple">
+<li><p><strong>API Response Times</strong>: If our service’s average response time was 250ms yesterday, it is likely 240-260ms today, not 50ms or 2000ms—latency has persistence.</p></li>
+<li><p><strong>Daily Active Users (DAU)</strong>: If 50,000 users logged in yesterday, we expect 48,000-52,000 today, not 10,000 or 200,000.</p></li>
+<li><p><strong>Server CPU Utilization</strong>: Yesterday’s 70% average usage predicts today’s 68-72% usage—workloads rarely change drastically overnight.</p></li>
+<li><p><strong>E-commerce Conversion Rates</strong>: If yesterday’s rate was 3.2%, today’s is likely 3.0-3.4%, not 1% or 8%.</p></li>
+</ul>
+<p>This persistence is the essence of autoregression—the series is correlated with its own past values.</p>
+<p><strong>Mathematical Formulation:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-7586d4d2-d3f4-480b-a1cf-cd57954e7554">
+<span class="eqno">(4.12)<a class="headerlink" href="#equation-7586d4d2-d3f4-480b-a1cf-cd57954e7554" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = c + \phi_1 X_{t-1} + \phi_2 X_{t-2} + \cdots + \phi_p X_{t-p} + \varepsilon_t
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(X_t\)</span> is the current value, <span class="math notranslate nohighlight">\(c\)</span> is a baseline constant, <span class="math notranslate nohighlight">\(\phi_1, \ldots, \phi_p\)</span> are coefficients measuring the influence of past values, <span class="math notranslate nohighlight">\(p\)</span> is the order (how far back we look), and <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> is a random shock (noise).</p>
+<section id="example-1-ar-1-simple-persistence">
+<h3><span class="section-number">4.4.3.1. </span>Example 1: AR(1) – Simple Persistence<a class="headerlink" href="#example-1-ar-1-simple-persistence" title="Link to this heading">#</a></h3>
+<p>Suppose we fit an AR(1) model to a microservice’s daily error count:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6a34fbf1-bd61-4219-8265-d35b0ae92ce0">
+<span class="eqno">(4.13)<a class="headerlink" href="#equation-6a34fbf1-bd61-4219-8265-d35b0ae92ce0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = 100 + 0.75 X_{t-1} + \varepsilon_t
+\end{equation}\]</div>
+<p>Interpretation:</p>
+<ul class="simple">
+<li><p><strong>Baseline:</strong> If yesterday were “typical,” the process gravitates around a baseline error level (400 in our simulation below).</p></li>
+<li><p><strong>Persistence:</strong> If yesterday had abnormally high errors, today’s count will also be high, but only <strong>75% of that excess carries over</strong>. The remaining 25% decays away.</p></li>
+<li><p><strong>Intuition:</strong> A high value today doesn’t vanish tomorrow; instead, it <strong>leans</strong> toward yesterday’s value.</p></li>
+</ul>
+<p>This creates a “smooth” time series where excursions above or below the mean tend to persist for multiple days.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Simulate AR(1): X_t = 100 + 0.75*X_{t-1} + noise</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="mf">0.75</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">mean_level</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">phi</span><span class="p">)</span>  <span class="c1"># Theoretical mean = 400</span>
+
+<span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_level</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">shock</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">errors</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">errors</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">shock</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="ar1-model-example">
+<a class="reference internal image-reference" href="../_images/ar1_model_example.png"><img alt="../_images/ar1_model_example.png" src="../_images/ar1_model_example.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.11 </span><span class="caption-text"><strong>Visualizing Persistence.</strong> An AR(1) process simulating daily error counts. The plot shows how the series fluctuates around a baseline level (mean = 400). Notice that when errors spike (e.g., around day 10 or day 60), they don’t disappear instantly but decay gradually over several days. This visual “smoothness”—where the line stays high or low for a stretch—is the hallmark of autoregressive processes with a positive coefficient (<span class="math notranslate nohighlight">\(\phi_1=0.75\)</span>).</span><a class="headerlink" href="#ar1-model-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="example-2-ar-2-momentum-plus-correction-cloud-auto-scaling">
+<h3><span class="section-number">4.4.3.2. </span>Example 2: AR(2) – Momentum plus Correction (Cloud Auto-Scaling)<a class="headerlink" href="#example-2-ar-2-momentum-plus-correction-cloud-auto-scaling" title="Link to this heading">#</a></h3>
+<p>Now consider the number of active containers in an auto-scaling cluster. The system adds instances when load is high and terminates them when load falls. A simple model might be:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+X_t = 20 + 0.6 X_{t-1} - 0.3 X_{t-2} + \varepsilon_t
+\end{equation*}\]</div>
+<p>Think of this as <strong>“push-pull” dynamics</strong>:</p>
+<ul class="simple">
+<li><p><strong>Momentum term (<span class="math notranslate nohighlight">\(\phi_1 = 0.6\)</span>):</strong> If we scaled up last period, we are likely still somewhat scaled up now. Yesterday’s value pushes today’s in the same direction.</p></li>
+<li><p><strong>Correction term (<span class="math notranslate nohighlight">\(\phi_2 = -0.3\)</span>):</strong> If the system was very high two periods ago, the negative coefficient acts like a brake, pulling the series back down (e.g., the auto-scaler realizes it over-provisioned and terminates instances).</p></li>
+</ul>
+<p>This combination of <strong>positive first lag</strong> and <strong>negative second lag</strong> produces gentle <strong>oscillations</strong>: the process overshoots, corrects, and then settles back toward its long-run mean.</p>
+<p>Let’s simulate this AR(2) model to visualize this behavior compared to the smoother AR(1) process.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Configuration</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">2.0</span>         <span class="c1"># Baseline constant</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.5</span>     <span class="c1"># Noise level</span>
+
+<span class="c1"># --- 1. Generate AR(2): Cloud Scaling Scenario ---</span>
+<span class="c1"># X_t = c + 0.6*X_{t-1} - 0.3*X_{t-2} + noise</span>
+<span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span>
+<span class="n">X_ar2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">X_ar2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+<span class="n">X_ar2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">phi1</span> <span class="o">*</span> <span class="n">X_ar2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">X_ar2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">phi1</span> <span class="o">*</span> <span class="n">X_ar2</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">phi2</span> <span class="o">*</span> <span class="n">X_ar2</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">epsilon</span>
+
+<span class="c1"># --- 2. Generate AR(1): Simple Persistence ---</span>
+<span class="c1"># X_t = c + 0.8*X_{t-1} + noise (High persistence, no oscillation)</span>
+<span class="n">X_ar1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">X_ar1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">X_ar1</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">X_ar1</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">epsilon</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="ar-model-example">
+<a class="reference internal image-reference" href="../_images/ar_model_example.png"><img alt="../_images/ar_model_example.png" src="../_images/ar_model_example.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.12 </span><span class="caption-text"><strong>Comparing AR Dynamics.</strong>
+<strong>(a) AR(2) Process:</strong> This series mimics our auto-scaling cluster. Notice the “wiggle”—when values spike, they tend to correct sharply downward shortly after. This is the effect of the negative <span class="math notranslate nohighlight">\(\phi_2\)</span> term (<span class="math notranslate nohighlight">\(-0.3\)</span>) acting as a dampener to prevent runaway growth.
+<strong>(b) AR(1) Process:</strong> By contrast, this series shows “pure momentum.” When it drifts above the mean, it tends to float there for longer periods. With only a positive <span class="math notranslate nohighlight">\(\phi_1\)</span> (<span class="math notranslate nohighlight">\(0.8\)</span>), there is no secondary correction force, resulting in smoother, wavier paths.
+<strong>(c) Lag Relationship:</strong> The scatter plot confirms the autoregressive nature: today’s value is strongly correlated with yesterday’s. The points cluster around the red line, but the spread is wider than a simple line because <span class="math notranslate nohighlight">\(X_t\)</span> also depends on the “hidden” variable <span class="math notranslate nohighlight">\(X_{t-2}\)</span>.</span><a class="headerlink" href="#ar-model-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+When AR Models Work Well</div>
+<p class="sd-card-text">AR models excel when data shows <strong>state dependence</strong>—where the best predictor of the future is the immediate past. We commonly apply them to:</p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>System Monitoring:</strong> CPU usage, memory consumption, and request latency, where workloads shift gradually.</p></li>
+<li><p class="sd-card-text"><strong>User Analytics:</strong> Session counts or active users, which typically exhibit day-to-day inertia.</p></li>
+<li><p class="sd-card-text"><strong>Anomaly Detection:</strong> We can flag observations that deviate significantly from the AR-predicted value. If the model predicts 50 active instances and we suddenly see 200, it indicates an incident (e.g., a DDoS attack) rather than normal organic growth.</p></li>
+</ul>
+<p class="sd-card-text"><strong>Limitation:</strong> AR models are best for <strong>short-term</strong> horizons (1–5 steps ahead). Because they feed their own predictions back into the model to predict further out, errors compound rapidly, causing long-term forecasts to revert to the mean.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="ma-moving-average-model-ma-q">
+<h2><span class="section-number">4.4.4. </span>MA (Moving Average) Model: MA(q)<a class="headerlink" href="#ma-moving-average-model-ma-q" title="Link to this heading">#</a></h2>
+<p>While AR models capture persistence (high yesterday → high today), MA models capture a different phenomenon: <strong>shock propagation</strong>. Instead of depending on past values, the current observation depends on past forecast errors. This might sound abstract, so let’s see where this appears in practice:</p>
+<ul class="simple">
+<li><p><strong>A/B Test Metrics</strong>: When we launch a new feature, there’s an immediate user reaction (shock), but the impact fades over the next few days as novelty wears off</p></li>
+<li><p><strong>Alert Fatigue in Monitoring</strong>: When a false-positive alert fires, engineers ignore subsequent alerts for a short period (error propagation), then revert to normal vigilance</p></li>
+<li><p><strong>Inventory Adjustments</strong>: A stockout event causes temporary over-ordering to compensate (shock response), which corrects within 1-2 periods</p></li>
+<li><p><strong>Marketing Campaign Effects</strong>: An email blast drives a traffic spike (shock), which decays over 24-48 hours as recipients act and then stop</p></li>
+</ul>
+<p>In each case, a disturbance has temporary but predictable influence on subsequent observations—this is the essence of the MA process.</p>
+<p><strong>Mathematical Formulation:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-3ab6ed6d-c7b3-4823-bfeb-9e73fe4ca2ac">
+<span class="eqno">(4.14)<a class="headerlink" href="#equation-3ab6ed6d-c7b3-4823-bfeb-9e73fe4ca2ac" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = \mu + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \theta_2 \varepsilon_{t-2} + \cdots + \theta_q \varepsilon_{t-q}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the series mean, <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> is the current random shock, <span class="math notranslate nohighlight">\(\theta_1, \theta_2, \ldots, \theta_q\)</span> are coefficients determining how much past shocks influence the current value, and <span class="math notranslate nohighlight">\(q\)</span> is the MA order (how many past shocks we include).</p>
+<section id="reading-the-model">
+<h3><span class="section-number">4.4.4.1. </span>Reading the Model<a class="headerlink" href="#reading-the-model" title="Link to this heading">#</a></h3>
+<p>Suppose we model daily website signup rate deviations from baseline as <span class="math notranslate nohighlight">\(X_t = 0 + \varepsilon_t - 0.3 \varepsilon_{t-1}\)</span>. This tells us:</p>
+<ul class="simple">
+<li><p>Today’s deviation from baseline is primarily driven by today’s random events (<span class="math notranslate nohighlight">\(\varepsilon_t\)</span>)</p></li>
+<li><p>But if yesterday had a positive shock (e.g., viral social media post driving +500 signups), today we see a correction of <span class="math notranslate nohighlight">\(-0.3 \times (+500) = -150\)</span> signups as the viral effect fades</p></li>
+<li><p>The negative coefficient creates mean reversion: unexpected surges are followed by slight dips back toward normal</p></li>
+</ul>
+</section>
+<section id="example-ma-1-for-database-query-latency-anomalies">
+<h3><span class="section-number">4.4.4.2. </span>Example: MA(1) for Database Query Latency Anomalies<a class="headerlink" href="#example-ma-1-for-database-query-latency-anomalies" title="Link to this heading">#</a></h3>
+<p>Imagine we’re monitoring query latency deviations from our 50ms baseline. We might model anomalies as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-847e4be2-ae0d-4709-9bf6-cfd31a7bd7b4">
+<span class="eqno">(4.15)<a class="headerlink" href="#equation-847e4be2-ae0d-4709-9bf6-cfd31a7bd7b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = 0 + \varepsilon_t - 0.4 \varepsilon_{t-1}
+\end{equation}\]</div>
+<p>This captures:</p>
+<ul class="simple">
+<li><p>Latency spikes are primarily driven by current events (network blip, query optimization issue)</p></li>
+<li><p>If last minute had a +20ms spike (shock), this minute shows a slight over-correction of <span class="math notranslate nohighlight">\(-0.4 \times 20 = -8ms\)</span> as the system recovers</p></li>
+<li><p>Unlike AR models (where high yesterday → high today), MA models exhibit rapid mean reversion</p></li>
+</ul>
+<p>Let’s simulate this MA(1) model to see how shocks propagate:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="c1"># Generate MA(1) process: X_t = 70 + epsilon_t - 0.3*epsilon_{t-1}</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># Generate white noise errors</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># MA(1) process</span>
+<span class="n">X_ma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">X_ma1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">X_ma1</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># MA(2) process for comparison</span>
+<span class="n">theta2</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">X_ma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">X_ma2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">X_ma2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">X_ma2</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta2</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="ma-model-example">
+<a class="reference internal image-reference" href="../_images/ma_model_example.png"><img alt="../_images/ma_model_example.png" src="../_images/ma_model_example.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.13 </span><span class="caption-text">MA(1) and MA(2) process visualization. <strong>(a):</strong> One simulated MA(1) time series from the model <span class="math notranslate nohighlight">\(X_t = 70 + \varepsilon_t - 0.3 \varepsilon_{t-1}\)</span>, plotted together with the horizontal blue dashed line at the long‑run mean 70 and the underlying white‑noise errors as red points; this panel shows how each random shock <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> hits the series but is partially undone by the <span class="math notranslate nohighlight">\(-0.3 \varepsilon_{t-1}\)</span> term on the next step, producing quick mean reversion back toward 70. <strong>(b):</strong> A simulated MA(2) series from <span class="math notranslate nohighlight">\(X_t = 70 + \varepsilon_t - 0.3 \varepsilon_{t-1} + 0.2 \varepsilon_{t-2}\)</span>, again around mean 70, which looks smoother because each value averages over two past errors—the extra <span class="math notranslate nohighlight">\(\varepsilon_{t-2}\)</span> term spreads the effect of shocks out over more periods and reduces the variability seen in the summary statistics printed below the plot. <strong>(c):</strong> The sample autocorrelation function (ACF) of the MA(1) series, showing a strong spike at lag 1 and then values near zero for higher lags, illustrating the theoretical property that an MA(1) process has non‑zero autocorrelation only at lag 1, with a sharp cut‑off after that.</span><a class="headerlink" href="#ma-model-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Observations in <a class="reference internal" href="#ma-model-example"><span class="std std-numref">Fig. 4.13</span></a>:</strong></p>
+<ul class="simple">
+<li><p>Both MA series fluctuate around the constant mean 70 and do not drift, because the model is built as “mean + noise + weighted past noise,” so there is no autoregressive component that could push the mean level up or down over time.</p></li>
+<li><p>Individual shocks <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> have <strong>temporary</strong> influence: in the MA(1) case, a positive shock today raises <span class="math notranslate nohighlight">\(X_t\)</span>, but tomorrow the <span class="math notranslate nohighlight">\(-0.3 \varepsilon_{t-1}\)</span> term partially cancels it out, which you can see in the top panel as upward spikes that quickly drop back toward the blue mean line.</p></li>
+<li><p>The negative coefficient <span class="math notranslate nohighlight">\(\theta_1 = -0.3\)</span> induces a slight “zig‑zag” behavior: a positive error today tends to be followed by a slightly lower value tomorrow, and conversely, which is why the MA(1) path wiggles around the mean rather than moving in long runs in one direction.</p></li>
+<li><p>Comparing the printed standard deviations, the MA(2) series has smaller variability than the MA(1) series, reflecting the more damped, smoothed behavior visible in the middle panel—aggregating two past errors spreads shock effects out and reduces their impact at any single time step.</p></li>
+<li><p>The ACF panel shows the <strong>fingerprint</strong> of an MA(1) process: a large, significant autocorrelation at lag 1 and near‑zero autocorrelations for lags 2 and beyond, which is exactly the pattern theory predicts for MA(q) models (non‑zero up to lag q, then a sharp cut‑off).</p></li>
+</ul>
+</section>
+</section>
+<section id="arma-combined-arma-p-q">
+<h2><span class="section-number">4.4.5. </span>ARMA (Combined): ARMA(p,q)<a class="headerlink" href="#arma-combined-arma-p-q" title="Link to this heading">#</a></h2>
+<p>Most real-world systems exhibit both persistence and shock response simultaneously. Consider these scenarios:</p>
+<ul class="simple">
+<li><p><strong>Cloud Resource Utilization</strong>: CPU usage shows daily patterns that persist hour-to-hour (AR), but deployments cause temporary spikes that quickly normalize (MA)</p></li>
+<li><p><strong>E-commerce Conversion Rates</strong>: Baseline rates show day-of-week persistence (AR), but flash sales create temporary bumps followed by rapid reversion (MA)</p></li>
+<li><p><strong>Model Prediction Latency</strong>: Typical response times persist based on workload (AR), but cache clears cause brief slowdowns that self-correct (MA)</p></li>
+<li><p><strong>User Session Duration</strong>: Average session length shows weekly patterns (AR), but new feature launches create temporary engagement spikes that fade (MA)</p></li>
+</ul>
+<p>When our data combines these behaviors—both momentum from past values and temporary shock effects—we need the ARMA framework that unifies AR and MA components.</p>
+<p><strong>Mathematical Formulation:</strong></p>
+<div class="amsmath math notranslate nohighlight" id="equation-292defda-aaaf-4341-9274-293bc4f64475">
+<span class="eqno">(4.16)<a class="headerlink" href="#equation-292defda-aaaf-4341-9274-293bc4f64475" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = c + \phi_1 X_{t-1} + \cdots + \phi_p X_{t-p} + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \cdots + \theta_q \varepsilon_{t-q}
+\end{equation}\]</div>
+<p>where the AR part (<span class="math notranslate nohighlight">\(\phi\)</span> coefficients) captures momentum and persistence, the MA part (<span class="math notranslate nohighlight">\(\theta\)</span> coefficients) captures shock absorption and mean reversion, and together they create a more flexible model for complex temporal patterns.</p>
+<section id="id1">
+<h3><span class="section-number">4.4.5.1. </span>Reading the Model<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Suppose we model hourly API request volume as <span class="math notranslate nohighlight">\(X_t = 5000 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}\)</span>. This tells us:</p>
+<ul class="simple">
+<li><p>Base traffic is 5,000 requests per hour</p></li>
+<li><p>The AR component (<span class="math notranslate nohighlight">\(\phi_1 = 0.7\)</span>) means 70% of last hour’s deviation from baseline persists—if last hour was busy, this hour tends to stay busy</p></li>
+<li><p>The MA component (<span class="math notranslate nohighlight">\(\theta_1 = -0.4\)</span>) means if last hour had an unexpected surge (positive shock), we see a 40% correction this hour as the surge effect fades</p></li>
+<li><p>Together: sustained increases persist (AR), but temporary spikes self-correct (MA)</p></li>
+</ul>
+</section>
+<section id="xample-arma-1-1-for-ml-model-throughput">
+<h3><span class="section-number">4.4.5.2. </span>xample: ARMA(1,1) for ML Model Throughput<a class="headerlink" href="#xample-arma-1-1-for-ml-model-throughput" title="Link to this heading">#</a></h3>
+<p>Imagine we’re monitoring predictions per second (PPS) for a deployed model. We might model deviations from baseline as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a5e2c15b-26ef-412d-9ff6-9a1811eb2631">
+<span class="eqno">(4.17)<a class="headerlink" href="#equation-a5e2c15b-26ef-412d-9ff6-9a1811eb2631" title="Permalink to this equation">#</a></span>\[\begin{equation}
+X_t = 1000 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}
+\end{equation}\]</div>
+<p>This captures:</p>
+<ul class="simple">
+<li><p>Baseline throughput of 1,000 PPS</p></li>
+<li><p>If last minute had high throughput, this minute likely continues high (AR persistence from sustained load)</p></li>
+<li><p>But if last minute had a sudden spike (e.g., batch job), we see partial correction this minute (MA mean reversion)</p></li>
+<li><p>The balance between persistence and correction creates realistic dynamics</p></li>
+</ul>
+<p>Let’s simulate this ARMA(1,1) model and compare it to pure AR:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate ARMA(1,1): X_t = 100 + 0.7*X_{t-1} + epsilon_t - 0.4*epsilon_{t-1}</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">phi1</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">theta1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.4</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.5</span>
+
+<span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">X_arma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">X_arma</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">epsilon</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">X_arma</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">phi1</span> <span class="o">*</span> <span class="n">X_arma</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta1</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Pure AR(1) for comparison</span>
+<span class="n">ar1_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">ar1_sim</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">epsilon</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">ar1_sim</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">phi1</span> <span class="o">*</span> <span class="n">ar1_sim</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<figure class="align-center" id="arma-model-example">
+<a class="reference internal image-reference" href="../_images/arma_model_example.png"><img alt="../_images/arma_model_example.png" src="../_images/arma_model_example.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.14 </span><span class="caption-text">ARMA(1,1) process visualization. <strong>Top-left:</strong> One simulated ARMA(1,1) series from the model <span class="math notranslate nohighlight">\(X_t = 100 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}\)</span>, plotted with a red dashed line at the long‑run mean 100 and a light band from <span class="math notranslate nohighlight">\(c-5\)</span> to <span class="math notranslate nohighlight">\(c+5\)</span>, showing that the process stays in a stable range while exhibiting both persistence (values “remember” where they came from) and mean reversion (shocks do not permanently shift the level). <strong>Top-right:</strong> A side‑by‑side comparison of a pure AR(1) series with <span class="math notranslate nohighlight">\(X_t = 100 + 0.7 X_{t-1} + \varepsilon_t\)</span> and the ARMA(1,1) series, where both share the same AR coefficient 0.7, but the ARMA path is visibly more stable and less volatile because the MA part <span class="math notranslate nohighlight">\(-0.4 \varepsilon_{t-1}\)</span> counteracts part of each shock and dampens swings. <strong>Bottom-left:</strong> The sample autocorrelation function (ACF) of the ARMA(1,1) series, which decays gradually rather than cutting off sharply at a specific lag, reflecting the combined influence of AR and MA terms. <strong>Bottom-right:</strong> The partial autocorrelation function (PACF), which also decays gradually instead of stopping abruptly, reinforcing the idea that neither a pure AR nor a pure MA pattern is present—both components are active in shaping the dependence structure.</span><a class="headerlink" href="#arma-model-example" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Observations in <a class="reference internal" href="#arma-model-example"><span class="std std-numref">Fig. 4.14</span></a>:</strong></p>
+<ul class="simple">
+<li><p>The AR component with <span class="math notranslate nohighlight">\(\phi = 0.7\)</span> generates <strong>persistence</strong>: when the series moves above or below 100, it tends to stay on that side for a while, which you can see in the long runs of high or low values in the ARMA path and in the AR(1) comparison.</p></li>
+<li><p>The MA component with <span class="math notranslate nohighlight">\(\theta = -0.4\)</span> introduces <strong>mean reversion</strong>: a positive shock today is partially offset tomorrow by the negative multiple of yesterday’s error, so extreme moves are pulled back toward the mean more quickly than in the pure AR(1) case, leading to a smaller standard deviation in the printed summary.</p></li>
+<li><p>Because AR and MA effects are both present, the ACF and PACF do <strong>not</strong> show the clean “cut‑off” patterns of pure AR or pure MA models; instead, they both taper off gradually over several lags, which is the typical diagnostic signature of an ARMA process.</p></li>
+<li><p>ARMA(1,1) is therefore more flexible than either AR(1) or MA(1) alone: it can represent data where there is both noticeable momentum and clear shock‑correction behavior, making it a natural choice when the ACF/PACF patterns do not strongly favor a purely AR or purely MA specification.</p></li>
+</ul>
+</section>
+</section>
+<section id="when-arma-breaks-down-the-non-stationarity-problem">
+<h2><span class="section-number">4.4.6. </span>When ARMA Breaks Down: The Non-Stationarity Problem<a class="headerlink" href="#when-arma-breaks-down-the-non-stationarity-problem" title="Link to this heading">#</a></h2>
+<p>The ARMA models we’ve explored—whether pure AR, pure MA, or combined ARMA—share a critical assumption: <strong>the time series must be stationary</strong> . Stationarity means the series has constant mean, constant variance, and stable autocorrelation structure over time . This requirement isn’t just a mathematical nicety—it’s fundamental to how these models work .</p>
+<p>Consider what happens when we violate this assumption in practice:</p>
+<p><strong>Cloud Cost Data</strong>: Our monthly AWS spend has increased from <span class="math notranslate nohighlight">\(5,000 to \)</span>50,000 over three years as the product scales. An ARMA model assumes a constant baseline level <span class="math notranslate nohighlight">\(c\)</span>, but here the “baseline” itself is rising. The model has no mechanism to track this upward drift—it will systematically underpredict future costs because it keeps reverting to an outdated mean.</p>
+<p><strong>User Engagement Metrics</strong>: Daily active users (DAU) show clear growth—from 10k to 100k users over two years. If we fit an ARMA model, the AR component will create persistence around the wrong level. The model learned that “high values around 30k” tend to follow “high values around 30k,” but when the current level reaches 80k, those learned patterns become irrelevant.</p>
+<p><strong>Stock Prices</strong>: Equity prices exhibit strong momentum without mean reversion—they can trend upward for years without returning to historical levels. An ARMA model will struggle catastrophically because its fundamental assumption (eventual reversion to a stable mean) is violated .</p>
+<p>The mathematical issue is that ARMA parameters (<span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(c\)</span>) estimated on data with mean 100 won’t generalize when the mean shifts to 200 . The model’s entire learned structure becomes obsolete as the series evolves.</p>
+<section id="the-solution-differencing">
+<h3><span class="section-number">4.4.6.1. </span>The Solution: Differencing<a class="headerlink" href="#the-solution-differencing" title="Link to this heading">#</a></h3>
+<p>The key insight that leads to ARIMA is remarkably simple: <strong>if the level is changing but the rate of change is stable, model the changes instead of the levels</strong> . This transformation is called differencing:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c2227a8f-b07b-4593-bd0f-f78c0788be0d">
+<span class="eqno">(4.18)<a class="headerlink" href="#equation-c2227a8f-b07b-4593-bd0f-f78c0788be0d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\nabla X_t = X_t - X_{t-1}
+\end{equation}\]</div>
+<p>When we apply first differencing to our AWS cost data ($5k → <span class="math notranslate nohighlight">\(50k\)</span> over 36 months), we get monthly changes that fluctuate around a stable mean increase of roughly <span class="math notranslate nohighlight">\(+1,250\)</span> per month. This differenced series is stationary—it has no drift, and ARMA models can now work .</p>
+<p>The “I” in ARIMA stands for “Integrated,” which is the mathematical inverse of differencing. An ARIMA(p,d,q) model works by:</p>
+<ol class="arabic simple">
+<li><p>Differencing the data <span class="math notranslate nohighlight">\(d\)</span> times to achieve stationarity</p></li>
+<li><p>Fitting an ARMA(p,q) model to the differenced data</p></li>
+<li><p>Integrating (cumulative summing) the forecasts back to the original scale</p></li>
+</ol>
+<p>This framework elegantly extends ARMA to handle non-stationary data without abandoning the AR and MA structures we’ve learned. We now turn to see how this works in practice.</p>
+</section>
+</section>
+<section id="putting-it-all-together-diagnosing-and-selecting-arima-models">
+<h2><span class="section-number">4.4.7. </span>Putting It All Together: Diagnosing and Selecting ARIMA Models<a class="headerlink" href="#putting-it-all-together-diagnosing-and-selecting-arima-models" title="Link to this heading">#</a></h2>
+<p>Now that we understand what AR, MA, and differencing do individually, we can tackle the central modeling challenge: Given a time series, how do we systematically choose the appropriate values for p, d, and q?</p>
+<p>The answer emerges from a three-stage diagnostic workflow, where each stage maps directly to the components we’ve just learned.</p>
+<section id="stage-1-achieving-stationarity-determining-d">
+<h3><span class="section-number">4.4.7.1. </span>Stage 1: Achieving Stationarity (Determining d)<a class="headerlink" href="#stage-1-achieving-stationarity-determining-d" title="Link to this heading">#</a></h3>
+<p>The first diagnostic question is whether our data is stationary. Recall from the previous section that ARMA models assume constant mean and variance—but real data often has trends. We need to apply differencing until the series becomes stationary.</p>
+<p>Consider our earlier example: global life expectancy rose approximately 14 years from 1960 to 2018, exhibiting a clear upward trend. The original series is non-stationary because its mean increases systematically. However, computing the year-to-year change (first difference) gives us a series that fluctuates around a stable mean—this differenced series is stationary.</p>
+<p>We formalize this diagnostic using the <strong>Augmented Dickey-Fuller (ADF) test</strong>, which provides a statistical hypothesis test for stationarity:</p>
+<ul class="simple">
+<li><p><strong>Null hypothesis</strong>: Series has a unit root (non-stationary)</p></li>
+<li><p><strong>Alternative</strong>: Series is stationary</p></li>
+<li><p><strong>Decision rule</strong>: If p-value &lt; 0.05, reject null → series is stationary</p></li>
+</ul>
+<p>The workflow:</p>
+<ol class="arabic simple">
+<li><p>Apply <a class="reference external" href="https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test">ADF test</a> to original data</p></li>
+<li><p>If p-value &gt; 0.05, apply first difference and retest</p></li>
+<li><p>If still non-stationary, apply second difference</p></li>
+<li><p>The number of differences needed is your <strong>d parameter</strong></p></li>
+</ol>
+<p>In practice, most economic and environmental time series require <span class="math notranslate nohighlight">\(d=0\)</span> (already stationary), <span class="math notranslate nohighlight">\(d=1\)</span> (one difference), or occasionally <span class="math notranslate nohighlight">\(d=2\)</span> (two differences). Values of d &gt; 2 are rare and suggest the series may need a different modeling approach.</p>
+</section>
+<section id="stage-2-identifying-autocorrelation-structure-determining-p-and-q">
+<h3><span class="section-number">4.4.7.2. </span>Stage 2: Identifying Autocorrelation Structure (Determining p and q)<a class="headerlink" href="#stage-2-identifying-autocorrelation-structure-determining-p-and-q" title="Link to this heading">#</a></h3>
+<p>Once we have stationary data (either original or differenced), we analyze its autocorrelation structure using two complementary diagnostic tools:</p>
+<p><strong>ACF (Autocorrelation Function)</strong>: Measures total correlation at each lag, including both direct and indirect effects. Recall that MA(q) processes have a distinctive ACF signature—they show significant correlation up to lag q, then cut off sharply to near-zero values beyond that lag.</p>
+<p><strong>PACF (Partial Autocorrelation Function)</strong>: Measures direct correlation at each lag, controlling for intermediate lags. AR(p) processes have a distinctive PACF signature—they show significant partial correlation up to lag p, then cut off sharply.</p>
+<p><strong>Reading the patterns</strong>: Now that you’ve seen how AR and MA processes behave, these diagnostic rules should make intuitive sense:</p>
+<ul class="simple">
+<li><p><strong>ACF cuts off at lag q, PACF decays gradually</strong> → Pure MA(q) process</p>
+<ul>
+<li><p>Example: ACF significant only at lag 1 suggests MA(1)</p></li>
+</ul>
+</li>
+<li><p><strong>PACF cuts off at lag p, ACF decays gradually</strong> → Pure AR(p) process</p>
+<ul>
+<li><p>Example: PACF significant only at lags 1 and 2 suggests AR(2)</p></li>
+</ul>
+</li>
+<li><p><strong>Both ACF and PACF decay gradually</strong> → Mixed ARMA(p,q) process</p>
+<ul>
+<li><p>Example: Both decay slowly suggests ARMA(1,1) or ARMA(2,1)</p></li>
+</ul>
+</li>
+</ul>
+<p>In practice, we identify 2-3 candidate models from these patterns. For instance, if ACF cuts off after lag 1 and PACF decays, we might test MA(1), MA(2), and ARMA(1,1) to see which performs best.</p>
+</section>
+<section id="stage-3-model-comparison-and-selection">
+<h3><span class="section-number">4.4.7.3. </span>Stage 3: Model Comparison and Selection<a class="headerlink" href="#stage-3-model-comparison-and-selection" title="Link to this heading">#</a></h3>
+<p>With several candidate models identified from ACF/PACF analysis, we fit each specification and compare using three criteria:</p>
+<p><strong>AIC/BIC (Information Criteria)</strong>: Balance model fit against complexity using the formulas:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4ba4e416-dcf3-493d-8b38-c18d56413d4e">
+<span class="eqno">(4.19)<a class="headerlink" href="#equation-4ba4e416-dcf3-493d-8b38-c18d56413d4e" title="Permalink to this equation">#</a></span>\[\begin{align}
+AIC &amp;= -2 \log(L) + 2k \\
+BIC &amp;= -2 \log(L) + k \log(n)
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(L\)</span> is the likelihood, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(n\)</span> is the sample size. Lower values indicate better models. BIC penalizes complexity more heavily than AIC, so it tends to favor simpler models.</p>
+<p><strong>Out-of-Sample RMSE</strong>: Information criteria measure in-sample fit, but the ultimate test is out-of-sample forecast accuracy. We always hold out a test set (typically 15-20% of data) and compare forecast RMSE. The model with lowest test error wins.</p>
+<p><strong>Residual Diagnostics</strong>: Even if a model has good AIC and test error, we must verify that residuals behave like white noise:</p>
+<ul class="simple">
+<li><p>No significant autocorrelation (Ljung-Box test p-value &gt; 0.05)</p></li>
+<li><p>Approximately normal distribution (Q-Q plot)</p></li>
+<li><p>Constant variance over time (no heteroscedasticity)</p></li>
+</ul>
+<p>If residuals show patterns, the model is missing structure and we need to try different orders.</p>
+<div class="admonition-the-complete-workflow admonition">
+<p class="admonition-title">The Complete Workflow</p>
+<p>Putting it all together, here’s the systematic process we follow:</p>
+<ol class="arabic simple">
+<li><p><strong>Test stationarity</strong> (ADF test) → Determine d</p></li>
+<li><p><strong>Difference d times</strong> (if d &gt; 0) → Obtain stationary series</p></li>
+<li><p><strong>Plot ACF/PACF</strong> → Identify candidate (p, q) combinations</p></li>
+<li><p><strong>Fit 2-4 candidate models</strong> → Compare AIC/BIC</p></li>
+<li><p><strong>Validate on test data</strong> → Measure out-of-sample RMSE</p></li>
+<li><p><strong>Check residuals</strong> → Verify white noise assumption</p></li>
+<li><p><strong>Select final model</strong> → Best balance of criteria</p></li>
+</ol>
+<p>This disciplined approach ensures we build models that both capture the true data-generating process (via ACF/PACF diagnosis) and generalize well to new data (via test set validation). We now apply this workflow to real datasets.</p>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C04S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.3. </span>Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C04S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.5. </span>ARIMA Models in Practice</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-arima-modeling-workflow-a-roadmap">4.4.1. The ARIMA Modeling Workflow: A Roadmap</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-three-building-blocks">4.4.1.1. The Three Building Blocks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-building-blocks-ar-ma-and-arma">4.4.2. The Building Blocks: AR, MA, and ARMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ar-autoregressive-model-ar-p">4.4.3. AR (AutoRegressive) Model: AR(p)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-ar-1-simple-persistence">4.4.3.1. Example 1: AR(1) – Simple Persistence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-ar-2-momentum-plus-correction-cloud-auto-scaling">4.4.3.2. Example 2: AR(2) – Momentum plus Correction (Cloud Auto-Scaling)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ma-moving-average-model-ma-q">4.4.4. MA (Moving Average) Model: MA(q)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-model">4.4.4.1. Reading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-ma-1-for-database-query-latency-anomalies">4.4.4.2. Example: MA(1) for Database Query Latency Anomalies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arma-combined-arma-p-q">4.4.5. ARMA (Combined): ARMA(p,q)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.4.5.1. Reading the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xample-arma-1-1-for-ml-model-throughput">4.4.5.2. xample: ARMA(1,1) for ML Model Throughput</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-arma-breaks-down-the-non-stationarity-problem">4.4.6. When ARMA Breaks Down: The Non-Stationarity Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solution-differencing">4.4.6.1. The Solution: Differencing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together-diagnosing-and-selecting-arima-models">4.4.7. Putting It All Together: Diagnosing and Selecting ARIMA Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-1-achieving-stationarity-determining-d">4.4.7.1. Stage 1: Achieving Stationarity (Determining d)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-2-identifying-autocorrelation-structure-determining-p-and-q">4.4.7.2. Stage 2: Identifying Autocorrelation Structure (Determining p and q)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-3-model-comparison-and-selection">4.4.7.3. Stage 3: Model Comparison and Selection</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

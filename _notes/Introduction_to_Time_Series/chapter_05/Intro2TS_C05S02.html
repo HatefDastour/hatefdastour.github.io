@@ -1,0 +1,699 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.2. Outlier Classification by Scope &#8212; Introduction to Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2TS_C05S02';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.3. Outlier Classification by Seasonality" href="Intro2TS_C05S03.html" />
+    <link rel="prev" title="5.1. Outlier Detection in Time Series" href="Intro2TS_C05S01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Time Series - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Time Series - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2TS_C01.html">1. Introduction to Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S01.html">1.1. What are Time Series?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S02.html">1.2. Best Sources for Public Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S03.html">1.3. Time Series Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S04.html">1.4. Time Series Visualizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S05.html">1.5. What Are ACF and PACF?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2TS_C01S06.html">1.6. Cross-Correlation in Time Series</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2TS_C02.html">2. Missing Data in Time Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S01.html">3.1. Understanding Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S02.html">3.2. Seasonal-Trend Decomposition using LOESS (STL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S03.html">3.3. Additive vs. Multiplicative Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S04.html">3.4. Robust STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2TS_C03S05.html">3.5. Stationarity and Non-Stationarity in Time-Series Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2TS_C04.html">4. Classical Time Series Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S01.html">4.1. Time Series Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S02.html">4.2. Foundations of Exponential Smoothing: Level &amp; Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S03.html">4.3. Advanced Exponential Smoothing: Seasonality &amp; Statistical Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S04.html">4.4. ARIMA Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S05.html">4.5. ARIMA Models in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S06.html">4.6. SARIMA and SARIMAX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2TS_C04S07.html">4.7. Automated ARIMA Models</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2TS_C05.html">5. Outlier Detection in Time Series</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S01.html">5.1. Outlier Detection in Time Series</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.2. Outlier Classification by Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S03.html">5.3. Outlier Classification by Seasonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S04.html">5.4. Visual Methods for Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S05.html">5.5. Descriptive Statistics-Based Methods for Outlier Detection in Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2TS_C05S06.html">5.6. Time Series Modeling-Based Methods for Outlier Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Outlier Classification by Scope</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#point-outliers-global-outliers">5.2.1. Point Outliers (Global Outliers)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-industrial-sensor-monitoring">5.2.1.1. Example: Industrial Sensor Monitoring</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-outliers-conditional-outliers">5.2.2. Contextual Outliers (Conditional Outliers)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-temperature-and-web-traffic">5.2.2.1. Example: Temperature and Web Traffic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collective-outliers-group-anomalies">5.2.3. Collective Outliers (Group Anomalies)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-network-traffic-monitoring">5.2.3.1. Example: Network Traffic Monitoring</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-perspective">5.2.4. Choosing the Right Perspective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-implications-for-your-workflow">5.2.4.1. Practical Implications for Your Workflow</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>Please be aware that these lecture notes are accessible online in an ‘<strong>early access</strong>’ format. They are actively being developed, and certain sections will be further enriched to provide a comprehensive understanding of the subject matter.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="outlier-classification-by-scope">
+<h1><span class="section-number">5.2. </span>Outlier Classification by Scope<a class="headerlink" href="#outlier-classification-by-scope" title="Link to this heading">#</a></h1>
+<p>Outliers vary in how they appear in datasets. Some anomalies are easy to spot through visual inspection or basic statistical analysis, while others only become visible under specific conditions or when multiple data points form unusual patterns together.</p>
+<p>Understanding how outliers differ is essential for selecting the right detection method. Different types of outliers require different analytical approaches. Using the wrong method can lead to missing important anomalies or flagging too many normal observations as outliers.</p>
+<p>This section examines three fundamental types of outliers based on their <strong>scope</strong>: how they appear in your data and what makes them anomalous. Understanding these differences will help you choose the most appropriate detection strategy for your specific situation <span id="id1">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>]</span>.</p>
+<div class="important admonition">
+<p class="admonition-title">Note</p>
+<p>This section introduces the <strong>types</strong> of outliers and their <strong>visual characteristics</strong>. For detailed <strong>statistical detection methods</strong> (such as Modified Z-Score, IQR, DBSCAN, and change-point detection) <span id="id2">[<a class="reference internal" href="../References.html#id162" title="Markus Goldstein and Seiichi Uchida. A Comparative Evaluation of Unsupervised Anomaly Detection Algorithms for Multivariate Data. PLOS ONE, 11(4):e0152173, April 2016. URL: https://dx.plos.org/10.1371/journal.pone.0152173, doi:10.1371/journal.pone.0152173.">Goldstein and Uchida, 2016</a>]</span>, please refer to <a class="reference internal" href="Intro2TS_C05S05.html#descriptive-stats-methods-outlier"><span class="std std-numref">Section 5.5</span></a> and <a class="reference internal" href="Intro2TS_C05S06.html#time-series-modeling-methods-outlier"><span class="std std-numref">Section 5.6</span></a>. The following sections will explain the technical methods used to detect each type of outlier.</p>
+</div>
+<section id="point-outliers-global-outliers">
+<h2><span class="section-number">5.2.1. </span>Point Outliers (Global Outliers)<a class="headerlink" href="#point-outliers-global-outliers" title="Link to this heading">#</a></h2>
+<p>Point outliers are individual data points that differ significantly from the entire dataset. These values are extreme enough that they are clearly visible in basic visualizations and do not require additional context to identify as anomalous <span id="id3">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>, <a class="reference internal" href="../References.html#id215" title="Klaus Kammerer, Burkhard Hoppenstedt, Rüdiger Pryss, Steffen Stökler, Johannes Allgaier, and Manfred Reichert. Anomaly Detections for Manufacturing Systems Based on Sensor Data—Insights into Two Challenging Real-World Production Settings. Sensors, 19(24):5370, December 2019. URL: https://www.mdpi.com/1424-8220/19/24/5370, doi:10.3390/s19245370.">Kammerer <em>et al.</em>, 2019</a>, <a class="reference internal" href="../References.html#id356" title="Mahmood Safaei, Maha Driss, Wadii Boulila, Elankovan A. Sundararajan, and Mitra Safaei. Global outliers detection in wireless sensor networks: A novel approach integrating time‐series analysis, entropy, and random forest‐based classification. Software: Practice and Experience, 52(1):277–295, January 2022. URL: https://onlinelibrary.wiley.com/doi/10.1002/spe.3020, doi:10.1002/spe.3020.">Safaei <em>et al.</em>, 2022</a>]</span>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Point Outliers</p>
+<ul class="simple">
+<li><p><strong>Standalone:</strong> A single observation at a single point in time</p></li>
+<li><p><strong>Global:</strong> Anomalous compared to <em>all</em> other data points in the dataset</p></li>
+<li><p><strong>Context-Free:</strong> The outlier status does not depend on surrounding observations or temporal patterns</p></li>
+<li><p><strong>Easy to Spot:</strong> Appears clearly in standard plots and summary statistics</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Financial Fraud:</strong> A credit card usually charges $20–$100. A single transaction of <strong>$25,000</strong> is a point outlier.</p></li>
+<li><p class="sd-card-text"><strong>Sensor Failure:</strong> A thermometer reads 20°C–25°C all day. Suddenly, it logs <strong>105°C</strong>. This is physically impossible for the environment and indicates a malfunction.</p></li>
+<li><p class="sd-card-text"><strong>Viral Traffic:</strong> A blog gets 1,000 daily hits. On one day, it receives <strong>500,000 hits</strong>. This isolated spike is a point outlier relative to the site’s history.</p></li>
+</ul>
+</div>
+</div>
+<section id="example-industrial-sensor-monitoring">
+<h3><span class="section-number">5.2.1.1. </span>Example: Industrial Sensor Monitoring<a class="headerlink" href="#example-industrial-sensor-monitoring" title="Link to this heading">#</a></h3>
+<p>Consider a temperature sensor in a manufacturing plant monitored daily for 4 months (120 days). Under normal conditions, the sensor shows a gradual calibration drift from 50°C to 56°C, with minor daily noise (<span class="math notranslate nohighlight">\(\pm 2.5^\circ\)</span>C).</p>
+<p>We can visualize this data to identify malfunctions. The code below generates a synthetic sensor dataset and highlights the anomalies.</p>
+<figure class="align-center" id="point-outliers-chart">
+<a class="reference internal image-reference" href="../_images/point_outliers_chart.png"><img alt="../_images/point_outliers_chart.png" src="../_images/point_outliers_chart.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.5 </span><span class="caption-text"><strong>Visualizing Point Outliers.</strong> The blue line shows the normal behavior of the sensor: a steady drift with consistent variance. The three red ‘X’ markers identify point outliers—isolated moments where the sensor reported values (e.g., +20°C spike, -18°C drop) that are statistically impossible given the global distribution of the data.</span><a class="headerlink" href="#point-outliers-chart" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Notice how the outliers are unmistakable. You do not need to know the day of the week or the time of day to identify them. The value <strong>75°C</strong> (Day 21) is anomalous simply because the rest of the data never exceeds 60°C. This “global” nature allows simple statistical methods (like Z-Scores or Box Plots) to detect them effectively.</p>
+<!-- ```{figure} point_outliers_chart.png
+```
+---
+width: 900px
+align: center
+name: point_outliers_chart
+---
+Point Outliers: Individual sensor malfunctions appearing as isolated spikes
+
+```
+```
+
+**What's happening here?**
+
+The baseline shows normal sensor behavior: a gradual upward drift (calibration decay) with small daily fluctuations. The three red X markers show **point outliers**—individual days where sensors malfunctioned and reported values completely inconsistent with the baseline pattern.
+
+Notice how these outliers:
+- Are **isolated**: The day before and after each spike looks normal
+- Are **extreme**: They're not just "a bit high"—they're 20–30°C off
+- **Don't fit any pattern**: They're not part of a trend or cycle
+
+### How to Identify Point Outliers
+
+**Step 1: Visual Inspection**
+- Plot your time series
+- Look for values that visually stand out
+- Check if they're isolated (one-offs) or part of a pattern
+
+**Step 2: Statistical Detection**
+
+The **Modified Z-Score** is robust to outliers themselves (unlike regular z-scores):
+
+\begin{equation}
+M_i = \frac{0.6745(x_i - \text{median})}{\text{MAD}}
+\end{equation}
+
+where MAD (Median Absolute Deviation) is:
+
+\begin{equation}
+\text{MAD} = \text{median}(|x_i - \text{median}(x)|)
+\end{equation}
+
+**Rule:** Flag as outlier if $ |M_i| > 3.5 $
+
+**Why this works:** The median and MAD are resistant to extreme values, so outliers don't contaminate the baseline statistics. The threshold of 3.5 is roughly equivalent to 3 standard deviations for normally distributed data but works better when outliers are present. --></section>
+</section>
+<section id="contextual-outliers-conditional-outliers">
+<h2><span class="section-number">5.2.2. </span>Contextual Outliers (Conditional Outliers)<a class="headerlink" href="#contextual-outliers-conditional-outliers" title="Link to this heading">#</a></h2>
+<p>Contextual outliers are data points that appear normal when viewing the dataset globally but become anomalous when considered within their specific <strong>context</strong>—such as time of day, day of week, season, or location.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Contextual Outliers</p>
+<ul class="simple">
+<li><p><strong>Conditionally Anomalous:</strong> The value itself (<span class="math notranslate nohighlight">\(x_t\)</span>) is often within the normal global range <span class="math notranslate nohighlight">\([min, max]\)</span>.</p></li>
+<li><p><strong>Context-Dependent:</strong> The anomaly arises from the relationship between the value and its context attributes (e.g., <span class="math notranslate nohighlight">\(x_t\)</span> vs. <span class="math notranslate nohighlight">\(hour_t\)</span>).</p></li>
+<li><p><strong>Harder to Detect:</strong> Simple global thresholds (like <span class="math notranslate nohighlight">\(x &gt; 3\sigma\)</span>) will fail because the value isn’t extreme in absolute terms.</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Climate:</strong> A temperature of <strong>75°F</strong> is normal globally. But 75°F in <strong>Minnesota in January</strong> is physically impossible.</p></li>
+<li><p class="sd-card-text"><strong>Cybersecurity:</strong> 600 requests/hour is normal for a server at noon. But <strong>600 requests/hour at 3:00 AM</strong> suggests a botnet attack.</p></li>
+<li><p class="sd-card-text"><strong>Retail:</strong> Selling 500 coats is normal in December. Selling <strong>500 coats in July</strong> indicates a data error or a massive clearance event.</p></li>
+</ul>
+</div>
+</div>
+<section id="example-temperature-and-web-traffic">
+<h3><span class="section-number">5.2.2.1. </span>Example: Temperature and Web Traffic<a class="headerlink" href="#example-temperature-and-web-traffic" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="#contextual-outliers-chart"><span class="std std-numref">Fig. 5.6</span></a> demonstrates two scenarios where context is key.</p>
+<ol class="arabic simple">
+<li><p><strong>Panel (a):</strong> Hourly temperature data. Global thresholds would miss the anomalies because they fall within the yearly min/max.</p></li>
+<li><p><strong>Panel (b):</strong> Hourly web traffic. A spike at 3:00 AM is suspicious, even though it is smaller than a typical midday peak.</p></li>
+</ol>
+<figure class="align-center" id="contextual-outliers-chart">
+<a class="reference internal image-reference" href="../_images/contextual_outliers_chart.png"><img alt="../_images/contextual_outliers_chart.png" src="../_images/contextual_outliers_chart.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.6 </span><span class="caption-text"><strong>Visualizing Contextual Outliers.</strong>
+<strong>Panel (a):</strong> The red star marks a 75°F reading in January. While 75°F is common in July (orange line), it is physically impossible for the winter trend (blue line).
+<strong>Panel (b):</strong> The purple ‘X’ marks a traffic spike of 600 requests at 3:00 AM on a Sunday. While 600 requests is standard during business hours (green shaded region), it is highly anomalous during the off-hours trough.</span><a class="headerlink" href="#contextual-outliers-chart" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="collective-outliers-group-anomalies">
+<h2><span class="section-number">5.2.3. </span>Collective Outliers (Group Anomalies)<a class="headerlink" href="#collective-outliers-group-anomalies" title="Link to this heading">#</a></h2>
+<p>Collective outliers are subsets of data points that are anomalous <strong>as a group</strong>, even if the individual data points appear normal in isolation. The anomaly is not defined by any single value but by the pattern, sequence, or relationship of the collection.</p>
+<div class="tip admonition">
+<p class="admonition-title">Characteristics of Collective Outliers</p>
+<ul class="simple">
+<li><p><strong>Group Phenomenon:</strong> The “unit” of interest is a sequence or window, not a single point.</p></li>
+<li><p><strong>Individual Normality:</strong> Each data point (<span class="math notranslate nohighlight">\(x_t\)</span>) typically falls within valid global ranges.</p></li>
+<li><p><strong>Pattern Violation:</strong> The anomaly manifests as an unexpected structural change—such as a prolonged plateau, a frequency shift, or a break in rhythm.</p></li>
+<li><p><strong>Hard to Detect:</strong> Standard point-based methods (Z-Score, Box Plot) will fail completely because no single value is extreme.</p></li>
+</ul>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>ECG Monitoring:</strong> A heart voltage of 0mV is normal (between beats). But 0mV for <strong>5 continuous seconds</strong> (flatline) is a collective outlier indicating cardiac arrest.</p></li>
+<li><p class="sd-card-text"><strong>Stock Market:</strong> A stock price ticking up by $0.01 is normal. But ticking up by exactly $0.01 <strong>every second for 5 minutes</strong> is a collective outlier indicating an algorithmic trading loop.</p></li>
+<li><p class="sd-card-text"><strong>Network Security:</strong> A single failed login is common. A sequence of <strong>100 failed logins in 60 seconds</strong> from different IPs is a distributed brute-force attack.</p></li>
+</ul>
+</div>
+</div>
+<section id="example-network-traffic-monitoring">
+<h3><span class="section-number">5.2.3.1. </span>Example: Network Traffic Monitoring<a class="headerlink" href="#example-network-traffic-monitoring" title="Link to this heading">#</a></h3>
+<p>Consider a 24-hour log of network events recorded in 5-minute intervals. Normal traffic follows a “diurnal” pattern: rising in the morning, peaking in the afternoon, and dropping overnight, with natural random variance.</p>
+<p><a class="reference internal" href="#collective-outliers-chart"><span class="std std-numref">Fig. 5.7</span></a> below visualizes two distinct collective outliers injected into this stream.</p>
+<figure class="align-center" id="collective-outliers-chart">
+<a class="reference internal image-reference" href="../_images/collective_outliers_chart.png"><img alt="../_images/collective_outliers_chart.png" src="../_images/collective_outliers_chart.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.7 </span><span class="caption-text"><strong>Visualizing Collective Outliers.</strong> The blue line tracks network activity over 24 hours. The shaded regions highlight two groups of anomalies:</span><a class="headerlink" href="#collective-outliers-chart" title="Link to this image">#</a></p>
+<div class="legend">
+<ol class="arabic simple">
+<li><p><strong>Orange Region (10:15 AM):</strong> A sudden, dense burst of activity. While the peak values (~90 events) are not impossible, the <em>density</em> and rapid oscillation of this 45-minute sequence is unnatural compared to the smoother organic traffic around it.</p></li>
+<li><p><strong>Red Region (8:00 PM):</strong> A sustained plateau. The values (~50 events) are perfectly average. However, the <em>lack of variance</em> for 60 minutes is highly suspicious—real traffic fluctuates. This “flatline” behavior suggests a system hang or an automated script running at a fixed rate.</p></li>
+</ol>
+</div>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="choosing-the-right-perspective">
+<h2><span class="section-number">5.2.4. </span>Choosing the Right Perspective<a class="headerlink" href="#choosing-the-right-perspective" title="Link to this heading">#</a></h2>
+<p>Correctly classifying an outlier’s type is the single most important step in the detection pipeline. A mismatched method will not just fail—it will mislead you.</p>
+<p><a class="reference internal" href="#table-outlier-scope"><span class="std std-numref">Table 5.1</span></a> table maps each of the three outlier scopes (Point, Contextual, Collective) to the fundamental assumption they violate and the specific family of algorithms best suited to detect them. Matching the method to the anomaly type is critical; for example, using a global IQR method (designed for Point outliers) will completely miss a Collective outlier like a system freeze, because the individual values remain within the interquartile range <span id="id4">[<a class="reference internal" href="../References.html#id78" title="Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM Computing Surveys, 41(3):1–58, July 2009. URL: https://dl.acm.org/doi/10.1145/1541880.1541882, doi:10.1145/1541880.1541882.">Chandola <em>et al.</em>, 2009</a>]</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-outlier-scope">
+<caption><span class="caption-number">Table 5.1 </span><span class="caption-text">Mapping Outlier Scope to Detection Strategy</span><a class="headerlink" href="#table-outlier-scope" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Outlier Scope</p></th>
+<th class="head text-left"><p>Underlying Assumption Violated</p></th>
+<th class="head text-left"><p>Best Detection Strategies</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Point (Global)</strong></p></td>
+<td class="text-left"><p>“This value is too extreme to exist in this dataset.”</p></td>
+<td class="text-left"><p><strong>Univariate Statistics:</strong> Modified Z-Score, IQR Method, Box Plots, Isolation Forest (for high-dim data).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Contextual</strong></p></td>
+<td class="text-left"><p>“This value is plausible globally, but impossible <em>right now</em>.”</p></td>
+<td class="text-left"><p><strong>Conditional Modeling:</strong> Seasonal Decomposition (STL), Rolling Statistics, Regression Residuals, Segmented Analysis (e.g., separate thresholds for Day/Night).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Collective</strong></p></td>
+<td class="text-left"><p>“These values are normal individually, but their <em>sequence</em> is unnatural.”</p></td>
+<td class="text-left"><p><strong>Sequence Analysis:</strong> Change-Point Detection (PELT), Sliding Window Variance, Markov Models, LSTM Autoencoders.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="practical-implications-for-your-workflow">
+<h3><span class="section-number">5.2.4.1. </span>Practical Implications for Your Workflow<a class="headerlink" href="#practical-implications-for-your-workflow" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Start Simple:</strong> Always check for <strong>Point Outliers</strong> first. They are the “low-hanging fruit” and often represent data quality issues (errors) that should be cleaned before more complex modeling.</p></li>
+<li><p><strong>Define Context:</strong> If your data has time, space, or category attributes, you likely have <strong>Contextual Outliers</strong>. Don’t just calculate a global mean; calculate a mean <em>per hour</em> or <em>per region</em> to find the true anomalies.</p></li>
+<li><p><strong>Watch the Pattern:</strong> If individual values look fine but the system behavior feels “off” (e.g., a frozen sensor), you are dealing with <strong>Collective Outliers</strong>. Stop looking at points and start looking at windows or sequences.</p></li>
+</ol>
+<p>In the next sections, we will move from concepts to code, implementing specific algorithms for each of these categories—starting with the Modified Z-Score and IQR methods for robust point outlier detection.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2TS_C05S01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.1. </span>Outlier Detection in Time Series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2TS_C05S03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Outlier Classification by Seasonality</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#point-outliers-global-outliers">5.2.1. Point Outliers (Global Outliers)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-industrial-sensor-monitoring">5.2.1.1. Example: Industrial Sensor Monitoring</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-outliers-conditional-outliers">5.2.2. Contextual Outliers (Conditional Outliers)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-temperature-and-web-traffic">5.2.2.1. Example: Temperature and Web Traffic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collective-outliers-group-anomalies">5.2.3. Collective Outliers (Group Anomalies)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-network-traffic-monitoring">5.2.3.1. Example: Network Traffic Monitoring</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-perspective">5.2.4. Choosing the Right Perspective</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-implications-for-your-workflow">5.2.4.1. Practical Implications for Your Workflow</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
