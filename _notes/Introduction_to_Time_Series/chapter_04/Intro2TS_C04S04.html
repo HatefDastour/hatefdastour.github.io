@@ -189,6 +189,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S01.html">2.1. Types of Missing Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S02.html">2.2. Identifying Patterns of Missingness</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S03.html">2.3. Handling Missing Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2TS_C02S04.html">2.4. Advanced Imputation with K-Nearest Neighbors (KNN)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2TS_C03.html">3. Seasonality and Stationarity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -414,16 +415,16 @@ Question 3: Which model specification works best?</label><div class="sd-tab-cont
 </ul>
 <p>This persistence is the essence of autoregression—the series is correlated with its own past values.</p>
 <p><strong>Mathematical Formulation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-7586d4d2-d3f4-480b-a1cf-cd57954e7554">
-<span class="eqno">(4.12)<a class="headerlink" href="#equation-7586d4d2-d3f4-480b-a1cf-cd57954e7554" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a64812ee-afa7-4867-af34-f52ffc0ca31f">
+<span class="eqno">(4.12)<a class="headerlink" href="#equation-a64812ee-afa7-4867-af34-f52ffc0ca31f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = c + \phi_1 X_{t-1} + \phi_2 X_{t-2} + \cdots + \phi_p X_{t-p} + \varepsilon_t
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(X_t\)</span> is the current value, <span class="math notranslate nohighlight">\(c\)</span> is a baseline constant, <span class="math notranslate nohighlight">\(\phi_1, \ldots, \phi_p\)</span> are coefficients measuring the influence of past values, <span class="math notranslate nohighlight">\(p\)</span> is the order (how far back we look), and <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> is a random shock (noise).</p>
 <section id="example-1-ar-1-simple-persistence">
 <h3><span class="section-number">4.4.3.1. </span>Example 1: AR(1) – Simple Persistence<a class="headerlink" href="#example-1-ar-1-simple-persistence" title="Link to this heading">#</a></h3>
 <p>Suppose we fit an AR(1) model to a microservice’s daily error count:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6a34fbf1-bd61-4219-8265-d35b0ae92ce0">
-<span class="eqno">(4.13)<a class="headerlink" href="#equation-6a34fbf1-bd61-4219-8265-d35b0ae92ce0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e33136ec-40a0-493a-9a90-0aa66ed2b9c5">
+<span class="eqno">(4.13)<a class="headerlink" href="#equation-e33136ec-40a0-493a-9a90-0aa66ed2b9c5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = 100 + 0.75 X_{t-1} + \varepsilon_t
 \end{equation}\]</div>
 <p>Interpretation:</p>
@@ -558,8 +559,8 @@ When AR Models Work Well</div>
 </ul>
 <p>In each case, a disturbance has temporary but predictable influence on subsequent observations—this is the essence of the MA process.</p>
 <p><strong>Mathematical Formulation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-3ab6ed6d-c7b3-4823-bfeb-9e73fe4ca2ac">
-<span class="eqno">(4.14)<a class="headerlink" href="#equation-3ab6ed6d-c7b3-4823-bfeb-9e73fe4ca2ac" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-508500cf-a618-40f2-bf1d-4f741c2b6b1d">
+<span class="eqno">(4.14)<a class="headerlink" href="#equation-508500cf-a618-40f2-bf1d-4f741c2b6b1d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = \mu + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \theta_2 \varepsilon_{t-2} + \cdots + \theta_q \varepsilon_{t-q}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the series mean, <span class="math notranslate nohighlight">\(\varepsilon_t\)</span> is the current random shock, <span class="math notranslate nohighlight">\(\theta_1, \theta_2, \ldots, \theta_q\)</span> are coefficients determining how much past shocks influence the current value, and <span class="math notranslate nohighlight">\(q\)</span> is the MA order (how many past shocks we include).</p>
@@ -575,8 +576,8 @@ X_t = \mu + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \theta_2 \varepsilon_{t
 <section id="example-ma-1-for-database-query-latency-anomalies">
 <h3><span class="section-number">4.4.4.2. </span>Example: MA(1) for Database Query Latency Anomalies<a class="headerlink" href="#example-ma-1-for-database-query-latency-anomalies" title="Link to this heading">#</a></h3>
 <p>Imagine we’re monitoring query latency deviations from our 50ms baseline. We might model anomalies as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-847e4be2-ae0d-4709-9bf6-cfd31a7bd7b4">
-<span class="eqno">(4.15)<a class="headerlink" href="#equation-847e4be2-ae0d-4709-9bf6-cfd31a7bd7b4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f117f71f-f1ed-4bc1-8531-11d5d9b3eca2">
+<span class="eqno">(4.15)<a class="headerlink" href="#equation-f117f71f-f1ed-4bc1-8531-11d5d9b3eca2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = 0 + \varepsilon_t - 0.4 \varepsilon_{t-1}
 \end{equation}\]</div>
 <p>This captures:</p>
@@ -650,8 +651,8 @@ X_t = 0 + \varepsilon_t - 0.4 \varepsilon_{t-1}
 </ul>
 <p>When our data combines these behaviors—both momentum from past values and temporary shock effects—we need the ARMA framework that unifies AR and MA components.</p>
 <p><strong>Mathematical Formulation:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-292defda-aaaf-4341-9274-293bc4f64475">
-<span class="eqno">(4.16)<a class="headerlink" href="#equation-292defda-aaaf-4341-9274-293bc4f64475" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f80513f4-6b3f-46f5-b084-00e2cd0accb8">
+<span class="eqno">(4.16)<a class="headerlink" href="#equation-f80513f4-6b3f-46f5-b084-00e2cd0accb8" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = c + \phi_1 X_{t-1} + \cdots + \phi_p X_{t-p} + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \cdots + \theta_q \varepsilon_{t-q}
 \end{equation}\]</div>
 <p>where the AR part (<span class="math notranslate nohighlight">\(\phi\)</span> coefficients) captures momentum and persistence, the MA part (<span class="math notranslate nohighlight">\(\theta\)</span> coefficients) captures shock absorption and mean reversion, and together they create a more flexible model for complex temporal patterns.</p>
@@ -668,8 +669,8 @@ X_t = c + \phi_1 X_{t-1} + \cdots + \phi_p X_{t-p} + \varepsilon_t + \theta_1 \v
 <section id="xample-arma-1-1-for-ml-model-throughput">
 <h3><span class="section-number">4.4.5.2. </span>xample: ARMA(1,1) for ML Model Throughput<a class="headerlink" href="#xample-arma-1-1-for-ml-model-throughput" title="Link to this heading">#</a></h3>
 <p>Imagine we’re monitoring predictions per second (PPS) for a deployed model. We might model deviations from baseline as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a5e2c15b-26ef-412d-9ff6-9a1811eb2631">
-<span class="eqno">(4.17)<a class="headerlink" href="#equation-a5e2c15b-26ef-412d-9ff6-9a1811eb2631" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6c7cef6e-5195-4282-8dde-f13a362acbe0">
+<span class="eqno">(4.17)<a class="headerlink" href="#equation-6c7cef6e-5195-4282-8dde-f13a362acbe0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 X_t = 1000 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}
 \end{equation}\]</div>
 <p>This captures:</p>
@@ -739,8 +740,8 @@ X_t = 1000 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}
 <section id="the-solution-differencing">
 <h3><span class="section-number">4.4.6.1. </span>The Solution: Differencing<a class="headerlink" href="#the-solution-differencing" title="Link to this heading">#</a></h3>
 <p>The key insight that leads to ARIMA is remarkably simple: <strong>if the level is changing but the rate of change is stable, model the changes instead of the levels</strong> . This transformation is called differencing:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c2227a8f-b07b-4593-bd0f-f78c0788be0d">
-<span class="eqno">(4.18)<a class="headerlink" href="#equation-c2227a8f-b07b-4593-bd0f-f78c0788be0d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-cf68e3f8-8639-4b90-8473-6e72955c2d40">
+<span class="eqno">(4.18)<a class="headerlink" href="#equation-cf68e3f8-8639-4b90-8473-6e72955c2d40" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \nabla X_t = X_t - X_{t-1}
 \end{equation}\]</div>
 <p>When we apply first differencing to our AWS cost data ($5k → <span class="math notranslate nohighlight">\(50k\)</span> over 36 months), we get monthly changes that fluctuate around a stable mean increase of roughly <span class="math notranslate nohighlight">\(+1,250\)</span> per month. This differenced series is stationary—it has no drift, and ARMA models can now work .</p>
@@ -805,8 +806,8 @@ X_t = 1000 + 0.7 X_{t-1} + \varepsilon_t - 0.4 \varepsilon_{t-1}
 <h3><span class="section-number">4.4.7.3. </span>Stage 3: Model Comparison and Selection<a class="headerlink" href="#stage-3-model-comparison-and-selection" title="Link to this heading">#</a></h3>
 <p>With several candidate models identified from ACF/PACF analysis, we fit each specification and compare using three criteria:</p>
 <p><strong>AIC/BIC (Information Criteria)</strong>: Balance model fit against complexity using the formulas:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4ba4e416-dcf3-493d-8b38-c18d56413d4e">
-<span class="eqno">(4.19)<a class="headerlink" href="#equation-4ba4e416-dcf3-493d-8b38-c18d56413d4e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5be21a90-dcac-4c8a-b806-a5d4d041b438">
+<span class="eqno">(4.19)<a class="headerlink" href="#equation-5be21a90-dcac-4c8a-b806-a5d4d041b438" title="Permalink to this equation">#</a></span>\[\begin{align}
 AIC &amp;= -2 \log(L) + 2k \\
 BIC &amp;= -2 \log(L) + k \log(n)
 \end{align}\]</div>
