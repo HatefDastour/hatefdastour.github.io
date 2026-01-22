@@ -322,12 +322,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-cross-validation-fails-for-time-series">1.3.2. Why Standard Cross-Validation Fails for Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3.3. Time Series Cross-Validation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-time-series-cross-validation">1.3.4. Types of Time Series Cross-Validation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window">1.3.4.1. Expanding Window</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window-cross-validation">1.3.4.1. Expanding Window Cross-Validation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-sliding-window-cross-validation">1.3.4.2. Rolling/Sliding Window Cross-Validation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-cross-validation">1.3.4.3. Blocked Cross-Validation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-considerations-for-time-series-cv">1.3.5. Practical Considerations for Time Series CV</a></li>
 </ul>
             </nav>
         </div>
@@ -757,11 +756,11 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 <li><p>Use <strong>Blocked CV</strong> when autocorrelation is present and realistic performance estimates are critical</p></li>
 </ul>
 <p>Each method serves different analytical needs and data characteristics, making the choice dependent on your specific time series properties and forecasting objectives.</p>
-<section id="expanding-window">
-<h3><span class="section-number">1.3.4.1. </span>Expanding Window<a class="headerlink" href="#expanding-window" title="Link to this heading">#</a></h3>
+<section id="expanding-window-cross-validation">
+<h3><span class="section-number">1.3.4.1. </span>Expanding Window Cross-Validation<a class="headerlink" href="#expanding-window-cross-validation" title="Link to this heading">#</a></h3>
 <p>The <strong>Expanding Window</strong> approach (also known as “growing window” or “anchored walk-forward”) is the default method in scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code>. This technique progressively increases the training window size while maintaining consistent test set sizes, making it particularly valuable for capturing evolving patterns in time series data.</p>
-<div class="admonition-key-characteristics admonition">
-<p class="admonition-title">Key Characteristics</p>
+<div class="admonition-characteristics-of-expanding-window-cross-validation admonition">
+<p class="admonition-title">Characteristics of Expanding Window Cross-Validation</p>
 <p><strong>Progressive Data Accumulation</strong>: Each subsequent split incorporates all previous training data plus additional historical observations, creating an ever-expanding knowledge base for the model. This cumulative approach ensures that valuable historical patterns and long-term trends are preserved across all validation splits.</p>
 <p><strong>Mimicking Real-World Scenarios</strong>: In practice, analysts and traders typically have access to all historical data when making forecasts. The expanding window method closely replicates this reality, where decision-makers use the entirety of available historical information rather than discarding older data.</p>
 <p><strong>Long-term Pattern Recognition</strong>: By retaining all historical data, this method is particularly effective at capturing:</p>
@@ -864,20 +863,24 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 <section id="rolling-sliding-window-cross-validation">
 <h3><span class="section-number">1.3.4.2. </span>Rolling/Sliding Window Cross-Validation<a class="headerlink" href="#rolling-sliding-window-cross-validation" title="Link to this heading">#</a></h3>
 <p><strong>Definition</strong>: Rolling Window Cross-Validation (also known as Fixed Window or Sliding Window) maintains a constant training window size that slides forward with each split, emphasizing recent data patterns over historical information.</p>
-<p><strong>Key Characteristics</strong>:</p>
+<div class="admonition-characteristics-of-rolling-sliding-window-cross-validation admonition">
+<p class="admonition-title">Characteristics of Rolling/Sliding Window Cross-Validation</p>
 <ul class="simple">
 <li><p>Training window size remains <strong>fixed</strong> as it moves forward</p></li>
 <li><p>Useful when recent patterns are more relevant than distant history</p></li>
 <li><p>Also called “Rolling Origin” validation</p></li>
 <li><p>Preferable when older history may not be relevant due to structural changes</p></li>
 </ul>
-<p><strong>When to Use</strong>:</p>
+</div>
+<div class="admonition-when-to-use-rolling-sliding-window admonition">
+<p class="admonition-title">When to Use Rolling/Sliding Window</p>
 <ul class="simple">
 <li><p>Large datasets with sufficient observations</p></li>
 <li><p>When structural changes occur over time (e.g., market regime shifts)</p></li>
 <li><p>When you want to simulate real-world scenarios where only recent data is available</p></li>
 <li><p>Example: Using exactly 252 trading days (1 year) for training, always</p></li>
 </ul>
+</div>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -961,39 +964,27 @@ Split 4:
 </figcaption>
 </figure>
 <!-- ```` -->
-<p><strong>Split Structure Comparison with Expanding Window</strong>:</p>
-<ul class="simple">
-<li><p><strong>Training Data</strong>: Green shaded areas maintain <strong>constant size</strong> (200 days each), sliding forward through time</p></li>
-<li><p><strong>Data Focus</strong>: Each split emphasizes recent patterns by discarding older historical data</p></li>
-<li><p><strong>Temporal Progression</strong>: Windows move forward systematically, maintaining the same “memory length”</p></li>
-</ul>
-<p><strong>Key Observations from Rolling Window Method</strong>:</p>
-<p><strong>Rolling Window Advantages Demonstrated</strong>:</p>
-<ul class="simple">
-<li><p><strong>Adaptability</strong>: Each model focuses on the most recent 200-day pattern, quickly adapting to new market conditions</p></li>
-<li><p><strong>Structural Change Detection</strong>: Better captures the evolving nature of NVIDIA’s business model transformation</p></li>
-<li><p><strong>Reduced Historical Bias</strong>: Avoids influence from outdated market patterns (e.g., pre-AI era pricing)</p></li>
-<li><p><strong>Consistent Memory</strong>: All models use identical training periods, enabling fair performance comparisons</p></li>
-</ul>
-<p><strong>Market Context Analysis</strong>:</p>
-<ul class="simple">
-<li><p><strong>Early Splits</strong>: Focus on gaming and cryptocurrency mining demand cycles</p></li>
-<li><p><strong>Later Splits</strong>: Begin incorporating early AI/data center growth signals</p></li>
-<li><p><strong>Pattern Evolution</strong>: Shows how rolling windows capture the company’s strategic pivot more dynamically than expanding windows</p></li>
-</ul>
-<p><strong>Advantages</strong>:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Advantages</label><div class="sd-tab-content docutils">
 <ul class="simple">
 <li><p>Adapts to new data trends through the rolling mechanism</p></li>
 <li><p>Provides more robust forecasts in dynamic environments</p></li>
 <li><p>Prevents overfitting through consistent window size</p></li>
 <li><p>Better for non-stationary time series with structural breaks</p></li>
 </ul>
-<p><strong>Disadvantages</strong>:</p>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Disadvantages</label><div class="sd-tab-content docutils">
 <ul class="simple">
 <li><p>May discard valuable historical information</p></li>
 <li><p>Requires sufficient data for meaningful window sizes</p></li>
 <li><p>Less suitable for capturing long-term patterns</p></li>
 </ul>
+</div>
+</div>
 </section>
 <section id="blocked-cross-validation">
 <h3><span class="section-number">1.3.4.3. </span>Blocked Cross-Validation<a class="headerlink" href="#blocked-cross-validation" title="Link to this heading">#</a></h3>
@@ -1134,7 +1125,7 @@ Split 4:
 </figcaption>
 </figure>
 <!-- ```` -->
-<p><strong>Critical Features of Blocked Cross-Validation Visualization</strong>:</p>
+<p>In <a class="reference internal" href="#blocked-cv"><span class="std std-numref">Fig. 1.5</span></a>:</p>
 <p><strong>Purged Gaps (Red Areas)</strong>:</p>
 <ul class="simple">
 <li><p><strong>25-day buffer zones</strong> between training and test sets</p></li>
@@ -1155,54 +1146,68 @@ Split 4:
 <li><p><strong>Split 3</strong>: Evaluates 2023-2024 AI boom period with comprehensive pre-2023 training</p></li>
 <li><p><strong>Split 4</strong>: Tests most recent period (2024-2025) with maximum historical context</p></li>
 </ul>
-<p><strong>Applications</strong>:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Applications</label><div class="sd-tab-content docutils">
 <ul class="simple">
 <li><p><strong>Financial Time Series</strong>: Where price movements exhibit strong autocorrelation</p></li>
 <li><p><strong>High-frequency Data</strong>: Where serial correlation extends over multiple periods</p></li>
 <li><p><strong>Label Overlap</strong>: When features are constructed using forward-looking windows</p></li>
 <li><p><strong>Regulatory Compliance</strong>: When avoiding look-ahead bias is critical</p></li>
 </ul>
-<p><strong>Benefits</strong>:</p>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Benefits</label><div class="sd-tab-content docutils">
 <ul class="simple">
 <li><p>More accurate error estimates than standard CV</p></li>
 <li><p>Reduces data leakage from temporal dependencies</p></li>
 <li><p>Better model selection in presence of autocorrelation</p></li>
 <li><p>Provides more conservative (realistic) performance estimates</p></li>
 </ul>
-<p><strong>Practical Considerations</strong>:</p>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Practical Considerations</label><div class="sd-tab-content docutils">
 <ul class="simple">
 <li><p><strong>Gap Size</strong>: Should be based on autocorrelation function analysis</p></li>
 <li><p><strong>Embargo Period</strong>: Typically 5-10% of total sample size</p></li>
 <li><p><strong>Trade-off</strong>: Larger gaps provide better independence but reduce training data</p></li>
 <li><p><strong>Computational Cost</strong>: More complex than standard CV but essential for time series</p></li>
 </ul>
-</section>
-</section>
-<section id="practical-considerations-for-time-series-cv">
-<h2><span class="section-number">1.3.5. </span>Practical Considerations for Time Series CV<a class="headerlink" href="#practical-considerations-for-time-series-cv" title="Link to this heading">#</a></h2>
+</div>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Practical Considerations for Time Series CV</div>
 <ol class="arabic simple">
-<li><p><strong>Choosing the Number of Splits:</strong></p>
+<li><p class="sd-card-text"><strong>Choosing the Number of Splits:</strong></p>
 <ul class="simple">
-<li><p>More splits provide better performance estimates but increase computational cost</p></li>
-<li><p>Consider the trade-off between statistical reliability and practical constraints</p></li>
-<li><p>Typically 3-10 splits depending on dataset size and computational resources</p></li>
+<li><p class="sd-card-text">More splits provide better performance estimates but increase computational cost</p></li>
+<li><p class="sd-card-text">Consider the trade-off between statistical reliability and practical constraints</p></li>
+<li><p class="sd-card-text">Typically 3-10 splits depending on dataset size and computational resources</p></li>
 </ul>
 </li>
-<li><p><strong>Test Set Size:</strong></p>
+<li><p class="sd-card-text"><strong>Test Set Size:</strong></p>
 <ul class="simple">
-<li><p>Should reflect the actual forecasting horizon of interest</p></li>
-<li><p>For daily data: 30-90 days for monthly forecasting, 252 days for annual</p></li>
-<li><p>Balance between having enough test data for reliable evaluation and sufficient training data</p></li>
+<li><p class="sd-card-text">Should reflect the actual forecasting horizon of interest</p></li>
+<li><p class="sd-card-text">For daily data: 30-90 days for monthly forecasting, 252 days for annual</p></li>
+<li><p class="sd-card-text">Balance between having enough test data for reliable evaluation and sufficient training data</p></li>
 </ul>
 </li>
-<li><p><strong>Temporal Alignment:</strong></p>
+<li><p class="sd-card-text"><strong>Temporal Alignment:</strong></p>
 <ul class="simple">
-<li><p>Ensure splits align with natural time boundaries (e.g., month/quarter ends for business data)</p></li>
-<li><p>Consider seasonal patterns when determining split points</p></li>
-<li><p>Account for calendar effects (holidays, weekends) in financial data</p></li>
+<li><p class="sd-card-text">Ensure splits align with natural time boundaries (e.g., month/quarter ends for business data)</p></li>
+<li><p class="sd-card-text">Consider seasonal patterns when determining split points</p></li>
+<li><p class="sd-card-text">Account for calendar effects (holidays, weekends) in financial data</p></li>
 </ul>
 </li>
 </ol>
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -1274,12 +1279,11 @@ Split 4:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-cross-validation-fails-for-time-series">1.3.2. Why Standard Cross-Validation Fails for Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3.3. Time Series Cross-Validation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-time-series-cross-validation">1.3.4. Types of Time Series Cross-Validation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window">1.3.4.1. Expanding Window</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-window-cross-validation">1.3.4.1. Expanding Window Cross-Validation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-sliding-window-cross-validation">1.3.4.2. Rolling/Sliding Window Cross-Validation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocked-cross-validation">1.3.4.3. Blocked Cross-Validation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-considerations-for-time-series-cv">1.3.5. Practical Considerations for Time Series CV</a></li>
 </ul>
   </nav></div>
 
