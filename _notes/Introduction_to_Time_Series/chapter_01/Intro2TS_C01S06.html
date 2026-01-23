@@ -322,7 +322,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-background">1.6.1. Mathematical Background</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain-definition">1.6.1.1. Time Domain Definition</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-concepts">1.6.1.2. <strong>Frequency Domain: Concepts</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-concepts">1.6.1.2. Frequency Domain: Concepts</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-coherence">1.6.1.3. Frequency Domain: Coherence</a></li>
 </ul>
 </li>
@@ -357,15 +357,15 @@ document.write(`
 <section id="time-domain-definition">
 <h3><span class="section-number">1.6.1.1. </span>Time Domain Definition<a class="headerlink" href="#time-domain-definition" title="Link to this heading">#</a></h3>
 <p>Mathematically, the relationship starts with the “sliding dot product” known as the cross-covariance. For two sequences <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(y_t\)</span> at lag <span class="math notranslate nohighlight">\(\tau\)</span>, this is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f30b1248-f4df-4a67-b962-b85f6f3abed9">
-<span class="eqno">(1.2)<a class="headerlink" href="#equation-f30b1248-f4df-4a67-b962-b85f6f3abed9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-10358c88-c95c-4b2e-b2cb-d10b8a2f9808">
+<span class="eqno">(1.2)<a class="headerlink" href="#equation-10358c88-c95c-4b2e-b2cb-d10b8a2f9808" title="Permalink to this equation">#</a></span>\[\begin{equation}
 
 R_{xy}(\tau) = \sum_{t} x_t y_{t + \tau}
 
 \end{equation}\]</div>
 <p>However, the magnitude of this sum depends on the units of the data. To make the metric comparable across different datasets, we normalize it by the standard deviations. This yields the Sample Cross-Correlation Function (CCF), denoted as <span class="math notranslate nohighlight">\(\hat{\rho}_{xy}(\tau)\)</span> <span id="id1">[<a class="reference internal" href="../References.html#id63" title="Peter J. Brockwell and Richard A. Davis. Introduction to time series and forecasting. Springer texts in statistics. Springer, Switzerland, 3rd ed edition, 2016. ISBN 978-3-319-29854-2.">Brockwell and Davis, 2016</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-normalized-ccf-eq">
-<span class="eqno">(1.3)<a class="headerlink" href="#equation-normalized-ccf-eq" title="Link to this equation">#</a></span>\[\text{Normalized } R_{xy}(\tau) = \dfrac{1}{N} \sum_{t} \dfrac{(x_t - \mu_x)}{\sigma_x}\dfrac{(y_{t+\tau} - \mu_y)}{\sigma_y} \cdot \]</div>
+<span class="eqno">(1.3)<a class="headerlink" href="#equation-normalized-ccf-eq" title="Link to this equation">#</a></span>\[\text{Normalized } R_{xy}(\tau) = \dfrac{1}{N} \sum_{t} \dfrac{(x_t - \mu_x)}{\sigma_x}\dfrac{(y_{t+\tau} - \mu_y)}{\sigma_y}.\]</div>
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mu_x, \mu_y\)</span>: Means of the series.</p></li>
@@ -377,49 +377,65 @@ R_{xy}(\tau) = \sum_{t} x_t y_{t + \tau}
 The resulting value ranges from <span class="math notranslate nohighlight">\(-1\)</span> to <span class="math notranslate nohighlight">\(+1\)</span>:</p>
 <ul class="simple">
 <li><p><strong>Peak at <span class="math notranslate nohighlight">\(\tau = 0\)</span></strong>: The series are synchronized.</p></li>
-<li><p><strong>Peak at <span class="math notranslate nohighlight">\(\tau &lt; 0\)</span></strong>: <span class="math notranslate nohighlight">\(x_t\)</span> leads <span class="math notranslate nohighlight">\(y_t\)</span> (or <span class="math notranslate nohighlight">\(y_t\)</span> leads <span class="math notranslate nohighlight">\(x_t\)</span> depending on convention; see implementation below).</p></li>
-<li><p><strong>Peak at <span class="math notranslate nohighlight">\(\tau &gt; 0\)</span></strong>: The opposite relationship holds.</p></li>
+<li><p><strong>Peak at <span class="math notranslate nohighlight">\(\tau &gt; 0\)</span></strong>: <span class="math notranslate nohighlight">\(x_t\)</span> leads <span class="math notranslate nohighlight">\(y_t\)</span> (Current <span class="math notranslate nohighlight">\(x\)</span> predicts future <span class="math notranslate nohighlight">\(y\)</span>).</p></li>
+<li><p><strong>Peak at <span class="math notranslate nohighlight">\(\tau &lt; 0\)</span></strong>: <span class="math notranslate nohighlight">\(y_t\)</span> leads <span class="math notranslate nohighlight">\(x_t\)</span> (Future <span class="math notranslate nohighlight">\(x\)</span> predicts current <span class="math notranslate nohighlight">\(y\)</span>, or <span class="math notranslate nohighlight">\(x\)</span> lags <span class="math notranslate nohighlight">\(y\)</span>).</p></li>
 </ul>
+<figure class="align-center" id="lag-lead-concept">
+<a class="reference internal image-reference" href="../_images/lag_lead_concept.png"><img alt="../_images/lag_lead_concept.png" src="../_images/lag_lead_concept.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1.11 </span><span class="caption-text"><strong>Lead–lag concept for cross-correlation.</strong> Red curve is signal <span class="math notranslate nohighlight">\(Y\)</span> and blue curve is signal <span class="math notranslate nohighlight">\(X\)</span>. Panel (a) shows a <strong>positive</strong> time shift where <span class="math notranslate nohighlight">\(X\)</span> occurs later than <span class="math notranslate nohighlight">\(Y\)</span> (<span class="math notranslate nohighlight">\(X\)</span> lags <span class="math notranslate nohighlight">\(Y\)</span>), so <span class="math notranslate nohighlight">\(Y\)</span> is predictive of future <span class="math notranslate nohighlight">\(X\)</span>; panel (b) shows a <strong>negative</strong> shift where <span class="math notranslate nohighlight">\(X\)</span> occurs earlier than <span class="math notranslate nohighlight">\(Y\)</span> (<span class="math notranslate nohighlight">\(X\)</span> leads <span class="math notranslate nohighlight">\(Y\)</span>), so <span class="math notranslate nohighlight">\(X\)</span> is predictive of future <span class="math notranslate nohighlight">\(Y\)</span>. Note that the sign of “lag” depends on the cross-correlation definition and software convention; here using <code class="docutils literal notranslate"><span class="pre">scipy.signal.correlate(target,</span> <span class="pre">source)</span></code>, a positive optimal lag means the <strong>source</strong> series leads the <strong>target</strong> and must be shifted forward by that many time steps to align visually.</span><a class="headerlink" href="#lag-lead-concept" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="frequency-domain-concepts">
-<h3><span class="section-number">1.6.1.2. </span><strong>Frequency Domain: Concepts</strong><a class="headerlink" href="#frequency-domain-concepts" title="Link to this heading">#</a></h3>
-<p>While cross-correlation gives us a single “average” lag, it lumps all timescales together. To separate short-term weather from long-term seasons, we need the Frequency Domain.</p>
-<p><strong>Frequency (<span class="math notranslate nohighlight">\(f\)</span>) vs. Period (<span class="math notranslate nohighlight">\(T\)</span>):</strong></p>
-<p>Students often find “frequency” abstract, but it is simply the inverse of a cycle’s duration.</p>
+<h3><span class="section-number">1.6.1.2. </span>Frequency Domain: Concepts<a class="headerlink" href="#frequency-domain-concepts" title="Link to this heading">#</a></h3>
+<p>While cross-correlation gives one “best” lag, it effectively averages over <em>all</em> time scales in the data (day-to-day swings and slow seasonal cycles mixed together). Frequency-domain thinking helps answer: “Are these two series related mainly through seasons (slow cycles), synoptic weather (multi-day cycles), or fast local noise?”</p>
+<p><strong>Frequency (<span class="math notranslate nohighlight">\(f\)</span>) vs. Period (<span class="math notranslate nohighlight">\(T\)</span>)</strong></p>
+<p>A cycle can be described in two equivalent ways:</p>
 <ul class="simple">
-<li><p><strong>Period (<span class="math notranslate nohighlight">\(T\)</span>):</strong> The time it takes for a full cycle to repeat (e.g., “365 days”).</p></li>
-<li><p><strong>Frequency (<span class="math notranslate nohighlight">\(f\)</span>):</strong> How many cycles occur in one unit of time (e.g., “cycles per day”).</p></li>
+<li><p><strong>Period (<span class="math notranslate nohighlight">\(T\)</span>)</strong>: Time for one full repeat (e.g., 365 days).</p></li>
+<li><p><strong>Frequency (<span class="math notranslate nohighlight">\(f\)</span>)</strong>: Repeats per unit time (e.g., cycles/day).</p></li>
 </ul>
-<p>The relationship is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6ce93320-64fa-4173-99fa-6b07bf5b2d53">
-<span class="eqno">(1.4)<a class="headerlink" href="#equation-6ce93320-64fa-4173-99fa-6b07bf5b2d53" title="Permalink to this equation">#</a></span>\[\begin{equation}
-f = \frac{1}{T}
-\end{equation}\]</div>
-<p>In weather data, we often check specific physical drivers:</p>
+<p>They are inverses:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+f = \dfrac{1}{T}
+\end{equation*}\]</div>
+<p>Examples (daily data):</p>
 <ul class="simple">
-<li><p><strong>Annual Cycle (<span class="math notranslate nohighlight">\(T=365\)</span> days):</strong> <span class="math notranslate nohighlight">\(f = 1/365 \approx 0.0027\)</span> cycles/day.</p></li>
-<li><p><strong>Weekly/Synoptic Cycle (<span class="math notranslate nohighlight">\(T=7\)</span> days):</strong> <span class="math notranslate nohighlight">\(f = 1/7 \approx 0.143\)</span> cycles/day.</p></li>
+<li><p><strong>Annual cycle</strong>: <span class="math notranslate nohighlight">\(T = 365\)</span> days <span class="math notranslate nohighlight">\(\Rightarrow f \approx 1/365 \approx 0.0027\)</span> cycles/day.</p></li>
+<li><p><strong>Weekly / synoptic</strong>: <span class="math notranslate nohighlight">\(T = 7\)</span> days <span class="math notranslate nohighlight">\(\Rightarrow f \approx 1/7 \approx 0.143\)</span> cycles/day.</p></li>
 </ul>
 <div class="warning admonition">
-<p class="admonition-title">Notes</p>
+<p class="admonition-title">Notes (units + sampling)</p>
 <ol class="arabic simple">
-<li><p>The equation <span class="math notranslate nohighlight">\(f = 1/T\)</span> is always true, but the <strong>units must match</strong>:</p></li>
-</ol>
+<li><p><strong>Units must match (dimensional check).</strong><br />
+The identity <span class="math notranslate nohighlight">\(f = 1/T\)</span> is always true, but the <em>time unit</em> you use for <span class="math notranslate nohighlight">\(T\)</span> determines the unit of <span class="math notranslate nohighlight">\(f\)</span>:</p>
 <ul class="simple">
-<li><p><strong>Physics:</strong> If <span class="math notranslate nohighlight">\(T\)</span> is in <strong>seconds</strong>, <span class="math notranslate nohighlight">\(f\)</span> is in <strong>Hertz (Hz)</strong>.</p></li>
-<li><p><strong>Weather Data:</strong> If <span class="math notranslate nohighlight">\(T\)</span> is in <strong>days</strong>, <span class="math notranslate nohighlight">\(f\)</span> is in <strong>Cycles per Day</strong>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(T\)</span> is in seconds, <span class="math notranslate nohighlight">\(f\)</span> is cycles/second = <strong>Hertz (Hz)</strong>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(T\)</span> is in days, <span class="math notranslate nohighlight">\(f\)</span> is <strong>cycles/day</strong>.<br />
+A quick sanity check: if you say “a 7‑day cycle,” the frequency must be “about 0.14 cycles/day,” not Hz.</p></li>
 </ul>
-<ol class="arabic simple" start="2">
-<li><p>When using Python functions (like <code class="docutils literal notranslate"><span class="pre">scipy.signal</span></code>), you must explicitly set the sampling frequency <code class="docutils literal notranslate"><span class="pre">fs=1.0</span></code> (1 sample per day). If you leave it out, the computer assumes <span class="math notranslate nohighlight">\(T\)</span> is just “1 sample,” and your frequency axis will be wrong.</p></li>
+</li>
+<li><p><strong>Sampling frequency is how the code knows your time unit.</strong><br />
+For evenly sampled data, define the sampling interval <span class="math notranslate nohighlight">\(\Delta t\)</span> and sampling frequency <span class="math notranslate nohighlight">\(f_s\)</span>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Delta t\)</span> = time between observations (e.g., 1 day).</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_s = 1/\Delta t\)</span> (e.g., <span class="math notranslate nohighlight">\(f_s = 1\)</span> sample/day).<br />
+In many Python signal-processing functions, if you do not provide <span class="math notranslate nohighlight">\(f_s\)</span>, the frequency axis may be returned in “cycles per sample” rather than “cycles per day,” which makes it easy to misread where the annual or weekly peaks should appear.</p></li>
+</ul>
+</li>
 </ol>
 </div>
-</section>
+<!-- 3. (**Optional technical note**) **Nyquist limit (what frequencies are even possible).**  
+   With daily data ($f_s = 1$ sample/day), the highest resolvable frequency is $f_s/2 = 0.5$ cycles/day (a 2‑day period). Cycles faster than that cannot be represented correctly and may appear distorted (“aliased”). --></section>
 <section id="frequency-domain-coherence">
 <h3><span class="section-number">1.6.1.3. </span>Frequency Domain: Coherence<a class="headerlink" href="#frequency-domain-coherence" title="Link to this heading">#</a></h3>
 <p>While cross-correlation measures similarity in the time domain, <strong>Coherence</strong> measures the correlation between two signals as a function of frequency. It is analogous to a squared correlation coefficient for each frequency component.</p>
 <p>The Magnitude Squared Coherence <span class="math notranslate nohighlight">\(C_{xy}(f)\)</span> is defined as:</p>
 <div class="math notranslate nohighlight" id="equation-coherence-eq">
-<span class="eqno">(1.5)<a class="headerlink" href="#equation-coherence-eq" title="Link to this equation">#</a></span>\[C_{xy}(f) = \dfrac{|P_{xy}(f)|^2}{P_{xx}(f) P_{yy}(f)}\]</div>
+<span class="eqno">(1.4)<a class="headerlink" href="#equation-coherence-eq" title="Link to this equation">#</a></span>\[C_{xy}(f) = \dfrac{|P_{xy}(f)|^2}{P_{xx}(f) P_{yy}(f)}\]</div>
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(P_{xy}(f)\)</span>: Cross-spectral density between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
@@ -720,7 +736,7 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 <a class="reference internal image-reference" href="../_images/como_calgary_daily_mean_temp.png"><img alt="../_images/como_calgary_daily_mean_temp.png" src="../_images/como_calgary_daily_mean_temp.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1.11 </span><span class="caption-text">Daily mean temperature in Columbia, MO (solid, purple) and Calgary, AB (dashed, red) for 2024. The series share a clear annual seasonal cycle (warming in summer, cooling in winter), but differ in amplitude and baseline. Notably, many warm and cold spells appear to occur nearly simultaneously, though slight timing offsets may exist within short intervals. This visual similarity motivates the search for an optimal time lag.</span><a class="headerlink" href="#como-calgary-daily-mean-temp" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1.12 </span><span class="caption-text">Daily mean temperature in Columbia, MO (solid, purple) and Calgary, AB (dashed, red) for 2024. The series share a clear annual seasonal cycle (warming in summer, cooling in winter), but differ in amplitude and baseline. Notably, many warm and cold spells appear to occur nearly simultaneously, though slight timing offsets may exist within short intervals. This visual similarity motivates the search for an optimal time lag.</span><a class="headerlink" href="#como-calgary-daily-mean-temp" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Visual observations:</strong></p>
@@ -811,7 +827,7 @@ Original Correlation (Lag 0): 0.7813
 <a class="reference internal image-reference" href="../_images/como_calgary_cross_corr_aligned.png"><img alt="../_images/como_calgary_cross_corr_aligned.png" src="../_images/como_calgary_cross_corr_aligned.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1.12 </span><span class="caption-text"><strong>(a)</strong> Normalized cross-correlation between Calgary and Columbia daily temperatures for lags from −50 to +50 days. The peak occurs at <span class="math notranslate nohighlight">\(\tau = +2\)</span> days with a correlation of 0.83, substantially higher than the lag-0 correlation of 0.78. The dashed red line marks the optimal lag; the vertical black line shows lag zero for reference. <strong>(b)</strong> Time series overlay after shifting Calgary by +2 days. The two curves now track closely, confirming visual alignment. Deviations reflect either local weather noise or synoptic features that do not propagate uniformly across the distance.</span><a class="headerlink" href="#como-calgary-cross-corr-aligned" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1.13 </span><span class="caption-text"><strong>(a)</strong> Normalized cross-correlation between Calgary and Columbia daily temperatures for lags from −50 to +50 days. The peak occurs at <span class="math notranslate nohighlight">\(\tau = +2\)</span> days with a correlation of 0.83, substantially higher than the lag-0 correlation of 0.78. The dashed red line marks the optimal lag; the vertical black line shows lag zero for reference. <strong>(b)</strong> Time series overlay after shifting Calgary by +2 days. The two curves now track closely, confirming visual alignment. Deviations reflect either local weather noise or synoptic features that do not propagate uniformly across the distance.</span><a class="headerlink" href="#como-calgary-cross-corr-aligned" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Interpretation:</strong></p>
@@ -839,8 +855,8 @@ Original Correlation (Lag 0): 0.7813
 <li><p><strong>High Frequency:</strong> Local noise (<span class="math notranslate nohighlight">\(T &lt; 3\)</span> days).</p></li>
 </ul>
 <p>Recall our unit conversion:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-37327890-3925-40fb-8a8a-7560b60c24aa">
-<span class="eqno">(1.6)<a class="headerlink" href="#equation-37327890-3925-40fb-8a8a-7560b60c24aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-42f6759e-70a8-475e-b4eb-e4099306bb0f">
+<span class="eqno">(1.5)<a class="headerlink" href="#equation-42f6759e-70a8-475e-b4eb-e4099306bb0f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 f = \frac{1}{T}
 \end{equation}\]</div>
 <ul class="simple">
@@ -874,21 +890,21 @@ f = \frac{1}{T}
 <a class="reference internal image-reference" href="../_images/como_calgary_freq_cross_corr.png"><img alt="../_images/como_calgary_freq_cross_corr.png" src="../_images/como_calgary_freq_cross_corr.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1.13 </span><span class="caption-text">Magnitude-squared coherence between Calgary and Columbia daily temperatures versus frequency (in cycles per day). Two vertical dashed lines mark reference timescales: the annual cycle at 1/365 ≈ 0.0027 cycles/day (red), and the weekly cycle at 1/7 ≈ 0.143 cycles/day (green). Coherence peaks sharply near the annual frequency (as expected), but importantly <em>remains high</em> in the 3–7 day band (around 0.15 cycles/day), indicating that synoptic weather patterns drive a substantial portion of the shared variability beyond simple seasonality.</span><a class="headerlink" href="#como-calgary-freq-cross-corr" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1.14 </span><span class="caption-text">Magnitude-squared coherence between Calgary and Columbia daily temperatures versus frequency (in cycles per day). Two vertical dashed lines mark reference timescales: the annual cycle at 1/365 ≈ 0.0027 cycles/day (red), and the weekly cycle at 1/7 ≈ 0.143 cycles/day (green). Coherence peaks sharply near the annual frequency (as expected), but importantly <em>remains high</em> in the 3–7 day band (around 0.15 cycles/day), indicating that synoptic weather patterns drive a substantial portion of the shared variability beyond simple seasonality.</span><a class="headerlink" href="#como-calgary-freq-cross-corr" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p><strong>Interpretation</strong>:</p>
 <ol class="arabic simple">
 <li><p><strong>Low Frequencies (Left side, Annual):</strong></p>
 <ul class="simple">
-<li><p><strong>Coherence <span class="math notranslate nohighlight">\(approx\)</span> 1.0.</strong></p></li>
+<li><p><strong>Coherence <span class="math notranslate nohighlight">\(\approx\)</span> 1.0.</strong></p></li>
 <li><p><strong>Physics:</strong> This is the seasonal envelope. Both cities warm up in summer and cool down in winter. This is expected (trivial), but confirms the data quality.</p></li>
 </ul>
 </li>
 <li><p><strong>Intermediate Frequencies (The “Synoptic Band”, Center):</strong></p>
 <ul class="simple">
-<li><p><strong>Coherence <span class="math notranslate nohighlight">\(approx\)</span> 0.4 – 0.6.</strong></p></li>
-<li><p><strong>Physics:</strong> This is the <strong>critical finding</strong>. Look at the top axis between “Week” and “3 Days” (<span class="math notranslate nohighlight">\(f approx 0.14\)</span>). The coherence is well above zero. This proves that <strong>Synoptic Weather Systems</strong> (cold fronts, high pressure ridges) are a shared driver. The same storm system that hits Calgary propagates to Columbia.</p></li>
+<li><p><strong>Coherence <span class="math notranslate nohighlight">\(\approx\)</span> 0.4 – 0.6.</strong></p></li>
+<li><p><strong>Physics:</strong> This is the <strong>critical finding</strong>. Look at the top axis between “Week” and “3 Days” (<span class="math notranslate nohighlight">\(f \approx 0.14\)</span>). The coherence is well above zero. This proves that <strong>Synoptic Weather Systems</strong> (cold fronts, high pressure ridges) are a shared driver. The same storm system that hits Calgary propagates to Columbia.</p></li>
 </ul>
 </li>
 <li><p><strong>High Frequencies (Right side, &lt; 3 Days):</strong></p>
@@ -1018,7 +1034,7 @@ In operations, knowing that Calgary temperature anomalies lead Columbia by ~2 da
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-background">1.6.1. Mathematical Background</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-domain-definition">1.6.1.1. Time Domain Definition</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-concepts">1.6.1.2. <strong>Frequency Domain: Concepts</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-concepts">1.6.1.2. Frequency Domain: Concepts</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-domain-coherence">1.6.1.3. Frequency Domain: Coherence</a></li>
 </ul>
 </li>
