@@ -323,7 +323,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-framework">3.3.1. Mathematical Framework</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-air-passengers-multiplicative-decomposition">3.3.2. Example: Air Passengers (Multiplicative Decomposition)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-vs-multiplicative-visual-comparison">3.3.3. Additive vs. Multiplicative: Visual Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.4. Forecasting Implications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplicative-seasonal-pattern-example">3.3.4. Multiplicative Seasonal Pattern Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-verifying-the-multiplicative-decomposition">3.3.5. Reconstruction: Verifying the Multiplicative Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.6. Forecasting Implications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-stl-based-multiplicative-forecasts">3.3.6.1. Example: STL-Based Multiplicative Forecasts</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -345,23 +350,23 @@ document.write(`
 <h2><span class="section-number">3.3.1. </span>Mathematical Framework<a class="headerlink" href="#mathematical-framework" title="Link to this heading">#</a></h2>
 <p>For a time series <span class="math notranslate nohighlight">\(y_t\)</span>, two decomposition models exist <span id="id1">[<a class="reference internal" href="../References.html#id91" title="Robert B Cleveland, William S Cleveland, Jean E McRae, and Irma Terpenning. STL: a seasonal-trend decomposition. Journal of Official Stattistics, 6(1):3–73, 1990. URL: https://www.math.unm.edu/~lil/Stat581/STL.pdf.">Cleveland <em>et al.</em>, 1990</a>, <a class="reference internal" href="../References.html#id428" title="Qingsong Wen, Jingkun Gao, Xiaomin Song, Liang Sun, Huan Xu, and Shenghuo Zhu. RobustSTL: A Robust Seasonal-Trend Decomposition Algorithm for Long Time Series. Proceedings of the AAAI Conference on Artificial Intelligence, 33(01):5409–5416, July 2019. doi:10.1609/aaai.v33i01.33015409.">Wen <em>et al.</em>, 2019</a>, <a class="reference internal" href="../References.html#id429" title="Qingsong Wen, Zhe Zhang, Yan Li, and Liang Sun. Fast RobustSTL: Efficient and Robust Seasonal-Trend Decomposition for Time Series with Complex Patterns. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining, 2203–2213. Virtual Event CA USA, August 2020. ACM. doi:10.1145/3394486.3403271.">Wen <em>et al.</em>, 2020</a>]</span>:</p>
 <p><strong>Additive model</strong> (appropriate when seasonal amplitude is constant):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c9fff1c0-0459-4076-8c2b-29934cc0d55e">
-<span class="eqno">(3.8)<a class="headerlink" href="#equation-c9fff1c0-0459-4076-8c2b-29934cc0d55e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f093a7a1-de7c-45b5-a6cd-3c34b20c66e1">
+<span class="eqno">(3.8)<a class="headerlink" href="#equation-f093a7a1-de7c-45b5-a6cd-3c34b20c66e1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_t = T_t + S_t + R_t
 \end{equation}\]</div>
 <p><strong>Multiplicative model</strong> (appropriate when seasonal amplitude grows with trend):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4aaed321-48b4-47c5-84c7-726665a38758">
-<span class="eqno">(3.9)<a class="headerlink" href="#equation-4aaed321-48b4-47c5-84c7-726665a38758" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-21e41634-de12-4409-a3d1-81b4d8d56076">
+<span class="eqno">(3.9)<a class="headerlink" href="#equation-21e41634-de12-4409-a3d1-81b4d8d56076" title="Permalink to this equation">#</a></span>\[\begin{equation}
 y_t = T_t \times S_t \times R_t
 \end{equation}\]</div>
 <p>When seasonal variations scale proportionally with the series level, a multiplicative model is more appropriate. STL, which assumes an additive structure, handles multiplicative data via <strong>logarithmic transformation</strong>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b2e7c675-f507-4011-8522-121ad94b33b9">
-<span class="eqno">(3.10)<a class="headerlink" href="#equation-b2e7c675-f507-4011-8522-121ad94b33b9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-03f5979c-8339-4cb6-a8f8-1623ff3ffe88">
+<span class="eqno">(3.10)<a class="headerlink" href="#equation-03f5979c-8339-4cb6-a8f8-1623ff3ffe88" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \log(y_t) = \log(T_t \times S_t \times R_t) = \log(T_t) + \log(S_t) + \log(R_t)
 \end{equation}\]</div>
 <p>After decomposing <span class="math notranslate nohighlight">\(\log(y_t)\)</span> additively, components are back-transformed:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-071dabf4-64c2-446c-9286-cf6416536393">
-<span class="eqno">(3.11)<a class="headerlink" href="#equation-071dabf4-64c2-446c-9286-cf6416536393" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-043e42f0-c1d0-4c60-b93f-49f9913d4400">
+<span class="eqno">(3.11)<a class="headerlink" href="#equation-043e42f0-c1d0-4c60-b93f-49f9913d4400" title="Permalink to this equation">#</a></span>\[\begin{align}
 T_t &amp;= \exp(\tilde{T}_t) \\
 S_t &amp;= \exp(\tilde{S}_t) \\
 R_t &amp;= \exp(\tilde{R}_t)
@@ -381,6 +386,26 @@ R_t &amp;= \exp(\tilde{R}_t)
 </section>
 <section id="additive-vs-multiplicative-visual-comparison">
 <h2><span class="section-number">3.3.3. </span>Additive vs. Multiplicative: Visual Comparison<a class="headerlink" href="#additive-vs-multiplicative-visual-comparison" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform both additive and multiplicative (log-transformed) STL</span>
+<span class="n">stl_additive</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">air_series</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">seasonal</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">stl_multiplicative</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">air_series</span><span class="p">),</span> <span class="n">period</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">seasonal</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Back-transform multiplicative components</span>
+<span class="n">mult_trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">trend</span><span class="p">)</span>
+<span class="n">mult_seasonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">seasonal</span><span class="p">)</span>
+<span class="n">mult_resid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">resid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <div class="full-width docutils">
 <figure class="align-center" id="fig-additive-vs-multiplicative">
 <a class="reference internal image-reference" href="../_images/air_passengers_additive_vs_multiplicative.png"><img alt="../_images/air_passengers_additive_vs_multiplicative.png" src="../_images/air_passengers_additive_vs_multiplicative.png" style="width: 900px;" />
@@ -421,11 +446,47 @@ Multiplicative model (right)</div>
 </div>
 </div>
 </div>
+</section>
+<section id="multiplicative-seasonal-pattern-example">
+<h2><span class="section-number">3.3.4. </span>Multiplicative Seasonal Pattern Example<a class="headerlink" href="#multiplicative-seasonal-pattern-example" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Variance decomposition for multiplicative model</span>
+<span class="n">total_var</span> <span class="o">=</span> <span class="n">air_series</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">trend_var</span> <span class="o">=</span> <span class="n">mult_trend</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">seasonal_var</span> <span class="o">=</span> <span class="n">mult_seasonal</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">residual_var</span> <span class="o">=</span> <span class="n">mult_resid</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+<span class="c1"># For multiplicative, we compute variance on log scale for interpretability</span>
+<span class="n">log_total_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">air_series</span><span class="p">)</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">log_trend_var</span> <span class="o">=</span> <span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">trend</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">log_seasonal_var</span> <span class="o">=</span> <span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">seasonal</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">log_residual_var</span> <span class="o">=</span> <span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">resid</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+<span class="n">var_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Component&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Trend&quot;</span><span class="p">,</span> <span class="s2">&quot;Seasonal&quot;</span><span class="p">,</span> <span class="s2">&quot;Residual&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Variance (log scale)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">log_trend_var</span><span class="p">,</span> <span class="n">log_seasonal_var</span><span class="p">,</span> <span class="n">log_residual_var</span><span class="p">],</span>
+    <span class="s2">&quot;Percent_of_total&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mi">100</span> <span class="o">*</span> <span class="n">log_trend_var</span> <span class="o">/</span> <span class="n">log_total_var</span><span class="p">,</span>
+        <span class="mi">100</span> <span class="o">*</span> <span class="n">log_seasonal_var</span> <span class="o">/</span> <span class="n">log_total_var</span><span class="p">,</span>
+        <span class="mi">100</span> <span class="o">*</span> <span class="n">log_residual_var</span> <span class="o">/</span> <span class="n">log_total_var</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <figure class="align-center" id="fig-air-passengers-variance">
 <a class="reference internal image-reference" href="../_images/air_passengers_variance.png"><img alt="../_images/air_passengers_variance.png" src="../_images/air_passengers_variance.png" style="width: 600px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Variance decomposition for the multiplicative STL decomposition of Air Passengers (on log scale). The trend dominates, explaining approximately 80% of total log-variance, while seasonality accounts for ~8.5%, and residuals capture only ~2.5%, indicating an excellent fit.</span><a class="headerlink" href="#fig-air-passengers-variance" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Variance decomposition for the multiplicative STL decomposition of Air Passengers. The trend dominates, explaining approximately 91.15% of total log-variance, while seasonality accounts for ~8.53%, and residuals capture only ~0.25%, indicating an excellent fit.</span><a class="headerlink" href="#fig-air-passengers-variance" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="pst-scrollable-table-container"><table class="table" id="table-air-passengers-variance">
@@ -451,6 +512,26 @@ Multiplicative model (right)</div>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract seasonal pattern (one complete 12-month cycle on multiplicative scale)</span>
+<span class="n">seasonal_cycle</span> <span class="o">=</span> <span class="n">mult_seasonal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span>
+
+<span class="n">seasonal_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Month&quot;</span><span class="p">:</span> <span class="n">seasonal_cycle</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month_name</span><span class="p">(),</span>
+    <span class="s2">&quot;Seasonal_Multiplier&quot;</span><span class="p">:</span> <span class="n">seasonal_cycle</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="s2">&quot;Percent_Change&quot;</span><span class="p">:</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">seasonal_cycle</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</details>
 </div>
 <figure class="align-center" id="fig-seasonal-pattern-multipliers">
 <a class="reference internal image-reference" href="../_images/air_passengers_seasonal_pattern.png"><img alt="../_images/air_passengers_seasonal_pattern.png" src="../_images/air_passengers_seasonal_pattern.png" style="width: 800px;" />
@@ -519,26 +600,14 @@ Multiplicative model (right)</div>
 </tbody>
 </table>
 </div>
-<p>Here is a version consistent with the new seasonal multipliers:</p>
 <ol class="arabic simple">
 <li><p><strong>Exponential trend growth</strong>: Air travel still exhibits strong exponential growth over 1949–1960, with passenger volumes increasing several‑fold over the sample, consistent with post‑war economic expansion and rapid adoption of commercial aviation.</p></li>
 <li><p><strong>Proportional seasonality</strong>: Seasonal multipliers now range from about 0.80 in November (roughly 20% below trend) to about 1.17 in July–August (roughly 17% above trend). This confirms a strongly <strong>multiplicative</strong> seasonal structure: as the baseline travel volume rises over time, the absolute seasonal swings become larger (e.g., from tens of thousands of passengers early in the sample to many tens of thousands later), while the <strong>relative percentage variation by month</strong> remains roughly stable from year to year.</p></li>
 <li><p><strong>Stable residuals</strong>: After accounting for the exponential trend and these proportional seasonal effects, the remaining residuals continue to show approximately constant variance and no systematic temporal pattern, indicating that the multiplicative decomposition captures the main systematic features of the series.</p></li>
 </ol>
 </section>
-<section id="forecasting-implications">
-<h2><span class="section-number">3.3.4. </span>Forecasting Implications<a class="headerlink" href="#forecasting-implications" title="Link to this heading">#</a></h2>
-<p>For forecasting, the multiplicative decomposition enables:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bdf2b53e-6bc9-4746-82b2-d801629dffe5">
-<span class="eqno">(3.12)<a class="headerlink" href="#equation-bdf2b53e-6bc9-4746-82b2-d801629dffe5" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\hat{y}_{T+h} = \hat{T}_{T+h} \times \hat{S}_{(T+h \mod 12)}
-\end{equation}\]</div>
-<p>where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\hat{T}_{T+h}\)</span> is an extrapolated trend (e.g., via exponential smoothing or regression on log-trend)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\hat{S}_{(T+h \mod 12)}\)</span> is the seasonal multiplier for month <span class="math notranslate nohighlight">\(h\)</span></p></li>
-</ul>
-<p>This formulation ensures that forecasted seasonal fluctuations <strong>grow proportionally</strong> with the trend, unlike additive forecasts which would underestimate future seasonal peaks.</p>
+<section id="reconstruction-verifying-the-multiplicative-decomposition">
+<h2><span class="section-number">3.3.5. </span>Reconstruction: Verifying the Multiplicative Decomposition<a class="headerlink" href="#reconstruction-verifying-the-multiplicative-decomposition" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -572,6 +641,105 @@ Root mean squared error: 0.0000
 <p><span class="caption-number">Fig. 3.17 </span><span class="caption-text"><strong>Top panel</strong>: Original Air Passengers series (black) versus reconstructed series from multiplicative STL components <span class="math notranslate nohighlight">\(T_t \times S_t \times R_t\)</span> (red dashed). The two curves are nearly indistinguishable. <strong>Bottom panel</strong>: Reconstruction error, showing negligible deviations (&lt; 1 passenger on average), confirming that the multiplicative decomposition accurately represents the observed data.</span><a class="headerlink" href="#fig-reconstruction" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+</section>
+<section id="forecasting-implications">
+<h2><span class="section-number">3.3.6. </span>Forecasting Implications<a class="headerlink" href="#forecasting-implications" title="Link to this heading">#</a></h2>
+<p>For forecasting, the multiplicative decomposition enables:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-41499348-164a-4804-814f-203b267bb54f">
+<span class="eqno">(3.12)<a class="headerlink" href="#equation-41499348-164a-4804-814f-203b267bb54f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y}_{T+h} = \hat{T}_{T+h} \times \hat{S}_{(T+h \mod 12)}
+\end{equation}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{T}_{T+h}\)</span> is an extrapolated trend (e.g., via exponential smoothing or regression on log-trend)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{S}_{(T+h \mod 12)}\)</span> is the seasonal multiplier for month <span class="math notranslate nohighlight">\(h\)</span></p></li>
+</ul>
+<p>This formulation ensures that forecasted seasonal fluctuations <strong>grow proportionally</strong> with the trend, unlike additive forecasts which would underestimate future seasonal peaks.</p>
+<section id="example-stl-based-multiplicative-forecasts">
+<h3><span class="section-number">3.3.6.1. </span>Example: STL-Based Multiplicative Forecasts<a class="headerlink" href="#example-stl-based-multiplicative-forecasts" title="Link to this heading">#</a></h3>
+<p>Here, we construct a simple <strong>STL-based multiplicative forecast</strong> using the Air Passengers series:</p>
+<ol class="arabic">
+<li><p>Work on the <strong>log scale</strong> and reuse the multiplicative STL decomposition <code class="docutils literal notranslate"><span class="pre">stl_multiplicative</span></code> already computed earlier.</p></li>
+<li><p>Fit a <strong>linear trend</strong> to the STL trend component on the log scale.</p></li>
+<li><p>Extrapolate the <strong>log-trend</strong> <span class="math notranslate nohighlight">\(h\)</span> steps ahead.</p></li>
+<li><p>Reuse the <strong>seasonal pattern</strong> in a seasonal-naive fashion (cycle the last 12 monthly seasonal effects).</p></li>
+<li><p>Combine trend and seasonality according to</p>
+<div class="amsmath math notranslate nohighlight" id="equation-038a41f6-5854-4354-9b22-c2c9fed44716">
+<span class="eqno">(3.13)<a class="headerlink" href="#equation-038a41f6-5854-4354-9b22-c2c9fed44716" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\hat{y}_{T+h} = \exp\big(\hat{\ell}_{T+h} + \hat{s}_{(T+h \bmod 12)}\big),
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\ell}_{T+h}\)</span> is the extrapolated log-trend and <span class="math notranslate nohighlight">\(\hat{s}_{(T+h \bmod 12)}\)</span> the STL seasonal component on the log scale.</p>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># STL-based multiplicative forecasting example</span>
+
+<span class="c1"># Forecast horizon (e.g., 3 years ahead)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">36</span>
+
+<span class="c1"># Work with the STL decomposition on the log scale</span>
+<span class="n">log_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">air_series</span><span class="p">)</span>
+<span class="n">log_trend</span> <span class="o">=</span> <span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">trend</span><span class="o">.</span><span class="n">values</span>
+<span class="n">log_seasonal</span> <span class="o">=</span> <span class="n">stl_multiplicative</span><span class="o">.</span><span class="n">seasonal</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># 1. Fit a simple linear trend model to the STL log-trend</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">log_trend</span><span class="p">))</span>
+<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">log_trend</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 2. Extrapolate the log-trend h steps ahead</span>
+<span class="n">t_forecast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">log_trend</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_trend</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>
+<span class="n">log_trend_forecast</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">t_forecast</span>
+
+<span class="c1"># 3. Build seasonal pattern for the forecast horizon (seasonal-naive)</span>
+<span class="c1"># Use one full seasonal cycle (12 months) from the STL seasonal component</span>
+<span class="n">log_seasonal_cycle</span> <span class="o">=</span> <span class="n">log_seasonal</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:]</span>  <span class="c1"># last full year</span>
+<span class="n">log_seasonal_forecast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">log_seasonal_cycle</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">h</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)))[:</span><span class="n">h</span><span class="p">]</span>
+
+<span class="c1"># 4. Combine trend and seasonality on the log scale, then back-transform</span>
+<span class="n">log_forecast</span> <span class="o">=</span> <span class="n">log_trend_forecast</span> <span class="o">+</span> <span class="n">log_seasonal_forecast</span>
+<span class="n">y_forecast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_forecast</span><span class="p">)</span>
+
+<span class="c1"># 5. Create forecast index</span>
+<span class="n">forecast_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+    <span class="n">start</span><span class="o">=</span><span class="n">air_series</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">MonthEnd</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">periods</span><span class="o">=</span><span class="n">h</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;ME&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">stl_forecast_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y_forecast</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">forecast_index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;STL_forecast&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot historical data and STL-based forecasts</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">air_series</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Observed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stl_forecast_series</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;STL-based forecast&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orangered&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;STL-Based Multiplicative Forecast: Air Passengers&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Number of passengers (thousands)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;air_passengers_stl_forecast.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="fig-stl-forecast">
+<a class="reference internal image-reference" href="../_images/air_passengers_stl_forecast.png"><img alt="../_images/air_passengers_stl_forecast.png" src="../_images/air_passengers_stl_forecast.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.18 </span><span class="caption-text">STL-based multiplicative forecasts for the Air Passengers series. The STL decomposition is used to extract a smooth log-trend and stable multiplicative seasonal pattern. A simple linear model extrapolates the log-trend, while the seasonal multipliers are reused in a seasonal-naive fashion. The resulting forecasts preserve <strong>proportional seasonal variation</strong> around a growing trend, consistent with the multiplicative formulation.</span><a class="headerlink" href="#fig-stl-forecast" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 </section>
 
@@ -642,7 +810,12 @@ Root mean squared error: 0.0000
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-framework">3.3.1. Mathematical Framework</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-air-passengers-multiplicative-decomposition">3.3.2. Example: Air Passengers (Multiplicative Decomposition)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additive-vs-multiplicative-visual-comparison">3.3.3. Additive vs. Multiplicative: Visual Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.4. Forecasting Implications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplicative-seasonal-pattern-example">3.3.4. Multiplicative Seasonal Pattern Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-verifying-the-multiplicative-decomposition">3.3.5. Reconstruction: Verifying the Multiplicative Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-implications">3.3.6. Forecasting Implications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-stl-based-multiplicative-forecasts">3.3.6.1. Example: STL-Based Multiplicative Forecasts</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
