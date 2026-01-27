@@ -400,16 +400,16 @@ document.write(`
 <section id="mathematical-framework-bisquare-weights">
 <h2><span class="section-number">3.4.3. </span>Mathematical Framework: Bisquare Weights<a class="headerlink" href="#mathematical-framework-bisquare-weights" title="Link to this heading">#</a></h2>
 <p>The critical mechanism for robust downweighting is the <strong>bisquare (biweight) robustness function</strong>. This function calculates the weight <span class="math notranslate nohighlight">\(w_t\)</span> after each inner loop using the following formula:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ef7ab956-2730-4c40-96ce-f15b99ebab3e">
-<span class="eqno">(3.14)<a class="headerlink" href="#equation-ef7ab956-2730-4c40-96ce-f15b99ebab3e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-39446bae-62d1-4ae1-9c95-050e4ce2952a">
+<span class="eqno">(3.14)<a class="headerlink" href="#equation-39446bae-62d1-4ae1-9c95-050e4ce2952a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 w_t = \begin{cases}
 \left(1 - u_t^2\right)^2 &amp; \text{if } |u_t| \leq 1 \\
 0 &amp; \text{if } |u_t| &gt; 1
 \end{cases}
 \end{equation}\]</div>
 <p>The calculation depends on the <strong>standardized residual</strong> (<span class="math notranslate nohighlight">\(u_t\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-aa1efa5d-7de9-4aca-855a-606aa2fbe4de">
-<span class="eqno">(3.15)<a class="headerlink" href="#equation-aa1efa5d-7de9-4aca-855a-606aa2fbe4de" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e02e70ce-5965-405a-a33e-21b3e46cbc5e">
+<span class="eqno">(3.15)<a class="headerlink" href="#equation-e02e70ce-5965-405a-a33e-21b3e46cbc5e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 u_t = \frac{R_t}{c \cdot \text{MAD}(R)}
 \end{equation}\]</div>
 <p>Here, <span class="math notranslate nohighlight">\(\text{MAD}(R)\)</span> is the <strong>median absolute deviation</strong> (<span class="math notranslate nohighlight">\(\text{median}(|R_t - \text{median}(R)|)\)</span>). The MAD is a robust measure of scale that is highly resistant to outliers. The tuning constant, <span class="math notranslate nohighlight">\(c=6\)</span>, determines the threshold at which an observation receives a zero weight.</p>
@@ -510,8 +510,49 @@ u_t = \frac{R_t}{c \cdot \text{MAD}(R)}
 </section>
 <section id="example-1-synthetic-outliers-in-co2-data">
 <h2><span class="section-number">3.4.4. </span>Example 1: Synthetic Outliers in CO₂ Data<a class="headerlink" href="#example-1-synthetic-outliers-in-co2-data" title="Link to this heading">#</a></h2>
-<p>When learning about robust time series methods, it’s helpful to start with a controlled example where we know exactly what the problems are. To demonstrate how Robust STL handles outliers, we’ll use the monthly atmospheric CO₂ concentration data you’ve seen earlier in this course (familiar from {numref<code class="docutils literal notranslate"><span class="pre">_stk_</span></code>}), but with a twist: we’ll deliberately introduce some problematic data points.</p>
+<p>When learning about robust time series methods, it’s helpful to start with a controlled example where we know exactly what the problems are. To demonstrate how Robust STL handles outliers, we’ll use the monthly atmospheric CO₂ concentration data you’ve seen earlier in this course (familiar from <a class="reference internal" href="Intro2TS_C03S02.html#stl"><span class="std std-numref">Section 3.2</span></a>), but with a twist: we’ll deliberately introduce some problematic data points.</p>
 <p>In real-world time series analysis, outliers are unfortunately common. They can come from measurement errors, instrument malfunctions, data recording mistakes, or other anomalies. By artificially adding outliers to clean data, we can clearly see how different decomposition methods handle these problems. This controlled experiment lets us understand exactly what’s happening before tackling messier real-world data.</p>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+CO₂ Dataset Background</div>
+<p class="sd-card-text">The underlying dataset contains monthly atmospheric carbon dioxide (<span class="math notranslate nohighlight">\(CO_2\)</span>) concentration measurements from the Mauna Loa Observatory in Hawaii and is a standard benchmark for demonstrating Seasonal-Trend decomposition using LOESS (STL) in both the statistics and time series literature. It exhibits a very clear combination of long-term trend and strong seasonal structure and is shipped as the <code class="docutils literal notranslate"><span class="pre">co2</span></code> example dataset in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>.</p>
+<p class="sd-card-text">In this chapter, we work with the commonly used subset that spans January 1959 to December 1987, giving 348 monthly observations. This window is long enough to reveal multi-decade changes in the carbon cycle while remaining computationally lightweight for classroom examples.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-co2-characteristics">
+<caption><span class="caption-number">Table 3.7 </span><span class="caption-text">Mauna Loa CO₂ dataset characteristics (statsmodels co2 subset, 1959–1987).</span><a class="headerlink" href="#table-co2-characteristics" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p class="sd-card-text">Attribute</p></th>
+<th class="head text-left"><p class="sd-card-text">Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p class="sd-card-text"><strong>Variable</strong></p></td>
+<td class="text-left"><p class="sd-card-text">Atmospheric <span class="math notranslate nohighlight">\(CO_2\)</span> concentration in parts per million by volume (ppmv).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p class="sd-card-text"><strong>Temporal resolution</strong></p></td>
+<td class="text-left"><p class="sd-card-text">Monthly averages (aggregated from higher-frequency measurements).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p class="sd-card-text"><strong>Time span</strong></p></td>
+<td class="text-left"><p class="sd-card-text">January 1959 – December 1987 (348 observations).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p class="sd-card-text"><strong>Statistical range</strong></p></td>
+<td class="text-left"><p class="sd-card-text">Approximately 313.5 ppm to 351.3 ppm over this window.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p class="sd-card-text"><strong>Key features</strong></p></td>
+<td class="text-left"><p class="sd-card-text">Strong upward trend plus a highly regular annual seasonal cycle.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="sd-card-text">From a decomposition perspective, this series is particularly instructive because it contains three visually distinct components:</p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Long-term trend:</strong> A pronounced, nearly monotone increase in <span class="math notranslate nohighlight">\(CO_2\)</span> levels over the sample, driven primarily by anthropogenic emissions (e.g., fossil fuel combustion and land-use change).</p></li>
+<li><p class="sd-card-text"><strong>Seasonality:</strong> A very regular annual oscillation, with <span class="math notranslate nohighlight">\(CO_2\)</span> peaking in late spring and bottoming out in early autumn, reflecting the Northern Hemisphere growing season (net photosynthetic uptake in summer, net respiration in winter).</p></li>
+<li><p class="sd-card-text"><strong>Residuals:</strong> Short-term deviations around the trend–seasonal structure, capturing measurement noise, small-scale meteorological variability, and any remaining unexplained dynamics.</p></li>
+</ul>
+</div>
+</div>
+<p>In the next step, we will corrupt a small number of monthly observations in this otherwise well-behaved CO₂ series with large artificial spikes and drops. This will allow us to directly compare how standard STL versus Robust STL respond when the same, carefully controlled outliers are present in the data.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -566,10 +607,10 @@ Outlier dates: [&#39;1967-05&#39;, &#39;1971-02&#39;, &#39;1978-03&#39;, &#39;19
 <a class="reference internal image-reference" href="../_images/co2_with_outliers.png"><img alt="../_images/co2_with_outliers.png" src="../_images/co2_with_outliers.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.19 </span><span class="caption-text">Monthly atmospheric CO₂ concentration with 8 synthetic outliers introduced (red circles). These outliers simulate measurement errors, instrument malfunctions, or data recording anomalies that can occur in real observational datasets.</span><a class="headerlink" href="#fig-co2-outliers" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.20 </span><span class="caption-text">Monthly atmospheric CO₂ concentration with 8 synthetic outliers introduced (red circles). These outliers simulate measurement errors, instrument malfunctions, or data recording anomalies that can occur in real observational datasets.</span><a class="headerlink" href="#fig-co2-outliers" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>As you can see in <a class="reference internal" href="#fig-co2-outliers"><span class="std std-numref">Fig. 3.19</span></a>, the red circles mark our intentionally corrupted observations. The original smooth trend is now interrupted by these extreme values. This is exactly the kind of messy data that challenges standard decomposition methods.</p>
+<p>As you can see in <a class="reference internal" href="#fig-co2-outliers"><span class="std std-numref">Fig. 3.20</span></a>, the red circles mark our intentionally corrupted observations. The original smooth trend is now interrupted by these extreme values. This is exactly the kind of messy data that challenges standard decomposition methods.</p>
 <section id="standard-vs-robust-stl-co2-example">
 <h3><span class="section-number">3.4.4.1. </span>Standard vs. Robust STL: CO₂ Example<a class="headerlink" href="#standard-vs-robust-stl-co2-example" title="Link to this heading">#</a></h3>
 <p>Now comes the crucial question: how do these two methods handle the contaminated data? We ran both algorithms on the same corrupted CO₂ series using identical parameters (12-month seasonal period, seasonal window of 13).</p>
@@ -599,7 +640,7 @@ Outlier dates: [&#39;1967-05&#39;, &#39;1971-02&#39;, &#39;1978-03&#39;, &#39;19
 <a class="reference internal image-reference" href="../_images/co2_standard_vs_robust.png"><img alt="../_images/co2_standard_vs_robust.png" src="../_images/co2_standard_vs_robust.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.20 </span><span class="caption-text">Comparison of standard (non-robust) versus robust STL decomposition on CO₂ data with synthetic outliers. <strong>(a)</strong> Observed series with 8 outliers (red circles). <strong>(b)</strong> Trend components: Standard STL exhibits visible distortions (local bumps/dips) near outlier locations, while robust STL maintains smooth trend continuity. <strong>(c)</strong> Seasonal patterns (first 48 months): Standard STL shows irregular seasonal shapes where outliers appear; robust STL preserves consistent seasonal structure. <strong>(d)</strong> Residuals: Standard STL produces elevated residuals not only at outlier locations but also in neighboring points (contamination effect). Robust STL isolates large residuals exclusively at outlier positions.</span><a class="headerlink" href="#fig-co2-standard-vs-robust" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.21 </span><span class="caption-text">Comparison of standard (non-robust) versus robust STL decomposition on CO₂ data with synthetic outliers. <strong>(a)</strong> Observed series with 8 outliers (red circles). <strong>(b)</strong> Trend components: Standard STL exhibits visible distortions (local bumps/dips) near outlier locations, while robust STL maintains smooth trend continuity. <strong>(c)</strong> Seasonal patterns (first 48 months): Standard STL shows irregular seasonal shapes where outliers appear; robust STL preserves consistent seasonal structure. <strong>(d)</strong> Residuals: Standard STL produces elevated residuals not only at outlier locations but also in neighboring points (contamination effect). Robust STL isolates large residuals exclusively at outlier positions.</span><a class="headerlink" href="#fig-co2-standard-vs-robust" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>When examining the decomposition results across the four panels, pay attention to several key differences:</p>
@@ -619,10 +660,10 @@ Outlier dates: [&#39;1967-05&#39;, &#39;1971-02&#39;, &#39;1978-03&#39;, &#39;19
 <a class="reference internal image-reference" href="../_images/robustness_weights_co2.png"><img alt="../_images/robustness_weights_co2.png" src="../_images/robustness_weights_co2.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.21 </span><span class="caption-text"><strong>(a)</strong> CO₂ series (red) overlaid with robustness weights (green). Most observations receive full weight ($<span class="math notranslate nohighlight">\(w_t = 1\)</span>), but outlier locations show dramatic weight reductions. <strong>(b)</strong> Detailed view of robustness weights. The bisquare function smoothly downweights deviations, with extreme outliers receiving weights near zero. This ensures outliers have minimal influence on trend and seasonal LOESS fits in the next iteration.</span><a class="headerlink" href="#fig-robustness-weights-co2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.22 </span><span class="caption-text"><strong>(a)</strong> CO₂ series (red) overlaid with robustness weights (green). Most observations receive full weight ($<span class="math notranslate nohighlight">\(w_t = 1\)</span>), but outlier locations show dramatic weight reductions. <strong>(b)</strong> Detailed view of robustness weights. The bisquare function smoothly downweights deviations, with extreme outliers receiving weights near zero. This ensures outliers have minimal influence on trend and seasonal LOESS fits in the next iteration.</span><a class="headerlink" href="#fig-robustness-weights-co2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In <a class="reference internal" href="#fig-robustness-weights-co2"><span class="std std-numref">Fig. 3.21</span></a>:</p>
+<p>In <a class="reference internal" href="#fig-robustness-weights-co2"><span class="std std-numref">Fig. 3.22</span></a>:</p>
 <ul class="simple">
 <li><p>Panel (a) overlays the robustness weights (green line) on top of the CO₂ data. Most of the time, the weight stays at 1.0 (full weight), meaning normal observations are fully trusted. But at each outlier location, the weight drops dramatically—often all the way to zero.</p></li>
 <li><p>Panel (b) provides a detailed view of just the weights. The algorithm has automatically identified our synthetic outliers and assigned them weights near zero. This is remarkable: we never told the algorithm where the outliers were—it figured it out by itself through the iterative reweighting process.</p></li>
@@ -704,7 +745,7 @@ Outlier dates: [&#39;1967-05&#39;, &#39;1971-02&#39;, &#39;1978-03&#39;, &#39;19
 </details>
 </div>
 <div class="pst-scrollable-table-container"><table class="table" id="table-co2-comparison">
-<caption><span class="caption-number">Table 3.7 </span><span class="caption-text">Quantitative comparison of standard versus robust STL on CO₂ data with synthetic outliers. Robust STL achieves lower residual variance and superior performance on clean data points.</span><a class="headerlink" href="#table-co2-comparison" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 3.8 </span><span class="caption-text">Quantitative comparison of standard versus robust STL on CO₂ data with synthetic outliers. Robust STL achieves lower residual variance and superior performance on clean data points.</span><a class="headerlink" href="#table-co2-comparison" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metric</p></th>
 <th class="head text-right"><p>Standard STL</p></th>
@@ -735,7 +776,7 @@ Outlier dates: [&#39;1967-05&#39;, &#39;1971-02&#39;, &#39;1978-03&#39;, &#39;19
 </tbody>
 </table>
 </div>
-<p><a class="reference internal" href="#table-co2-comparison"><span class="std std-numref">Table 3.7</span></a> shows that, when all observations are included, Robust STL has a slightly larger residual standard deviation than the standard STL (2.77 vs 2.38 ppm). This happens because the robust version deliberately refuses to bend the trend and seasonal components toward the extreme outliers, so those points remain as large residuals rather than being partially absorbed.</p>
+<p><a class="reference internal" href="#table-co2-comparison"><span class="std std-numref">Table 3.8</span></a> shows that, when all observations are included, Robust STL has a slightly larger residual standard deviation than the standard STL (2.77 vs 2.38 ppm). This happens because the robust version deliberately refuses to bend the trend and seasonal components toward the extreme outliers, so those points remain as large residuals rather than being partially absorbed.</p>
 <p>The second row is the most informative for model quality: after removing the eight outlier timestamps, the residual standard deviation drops from 1.02 ppm under standard STL to 0.23 ppm under Robust STL. This is a drastic improvement in how well the decomposition fits the “normal” part of the series, and it shows that downweighting outliers allows the method to capture the underlying signal much more accurately.</p>
 <p>The trend and seasonal variances change only slightly between the two methods (roughly 2% lower trend variance and 31% lower seasonal variance for Robust STL), which indicates that the robust reweighting does not fundamentally distort the long‑term trend or the recurring seasonal cycle. Instead, it mainly cleans up the noise around them.</p>
 <p>Finally, the maximum absolute residual is larger for Robust STL (24.35 vs 19.10 ppm). This is actually desirable in this context: because robust STL does not attempt to “explain away” the outliers through the smooth components, those points stand out as very large residuals. That clear separation makes the outliers easier to detect and diagnose, while leaving the bulk of the series well behaved.</p>
@@ -1045,7 +1086,7 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 <a class="reference internal image-reference" href="../_images/elec_equip_original.png"><img alt="../_images/elec_equip_original.png" src="../_images/elec_equip_original.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.22 </span><span class="caption-text">Monthly electrical equipment orders index (1996–2012). The series exhibits a clear upward trend and strong seasonality up to 2007, followed by a sharp collapse during the 2008–2009 financial crisis (shaded region) and a partial recovery afterwards. This sudden, deep downturn provides a realistic stress test for STL decomposition methods.</span><a class="headerlink" href="#fig-elec-equip-original" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.23 </span><span class="caption-text">Monthly electrical equipment orders index (1996–2012). The series exhibits a clear upward trend and strong seasonality up to 2007, followed by a sharp collapse during the 2008–2009 financial crisis (shaded region) and a partial recovery afterwards. This sudden, deep downturn provides a realistic stress test for STL decomposition methods.</span><a class="headerlink" href="#fig-elec-equip-original" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -1072,16 +1113,16 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 </div>
 <div class="cell tag_remove-input docutils container">
 </div>
-<div class="full-width docutils">
+<!-- ````{div} full-width -->
 <figure class="align-center" id="fig-elec-standard-vs-robust">
 <a class="reference internal image-reference" href="../_images/elec_equip_standard_vs_robust.png"><img alt="../_images/elec_equip_standard_vs_robust.png" src="../_images/elec_equip_standard_vs_robust.png" style="width: 1000px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.23 </span><span class="caption-text">Comparison of standard (left column) versus robust (right column) STL on electrical equipment orders. <strong>(a)</strong> Original series with the 2008–2009 crisis shaded. <strong>(b–c) Trend</strong>: Standard STL (blue) closely follows the crisis collapse, dragging the trend down toward the temporary low and then back up, which can overemphasize a short-lived event. Robust STL (green) yields a smoother trend that acknowledges the downturn but treats it more as a transient shock superimposed on the longer-term trajectory. <strong>(d–e) Seasonal</strong>: Around the crisis years, standard STL’s seasonal component becomes irregular and its amplitude varies noticeably, indicating contamination by the extreme observations. The robust seasonal component remains much more stable, preserving a consistent annual pattern across the full sample. <strong>(f–g) Residuals</strong>: Standard STL shows elevated residuals not only during the crisis but also in neighboring years, suggesting that the shock has “bled” into the fitted components. Robust STL concentrates large residuals mainly within 2008–2009, cleanly isolating the crisis impact in the residual term.</span><a class="headerlink" href="#fig-elec-standard-vs-robust" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.24 </span><span class="caption-text">Comparison of standard (left column) versus robust (right column) STL on electrical equipment orders. <strong>(a)</strong> Original series with the 2008–2009 crisis shaded. <strong>(b–c) Trend</strong>: Standard STL (blue) closely follows the crisis collapse, dragging the trend down toward the temporary low and then back up, which can overemphasize a short-lived event. Robust STL (green) yields a smoother trend that acknowledges the downturn but treats it more as a transient shock superimposed on the longer-term trajectory. <strong>(d–e) Seasonal</strong>: Around the crisis years, standard STL’s seasonal component becomes irregular and its amplitude varies noticeably, indicating contamination by the extreme observations. The robust seasonal component remains much more stable, preserving a consistent annual pattern across the full sample. <strong>(f–g) Residuals</strong>: Standard STL shows elevated residuals not only during the crisis but also in neighboring years, suggesting that the shock has “bled” into the fitted components. Robust STL concentrates large residuals mainly within 2008–2009, cleanly isolating the crisis impact in the residual term.</span><a class="headerlink" href="#fig-elec-standard-vs-robust" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-</div>
-<p>Visual comparison in <a class="reference internal" href="#fig-elec-standard-vs-robust"><span class="std std-numref">Fig. 3.23</span></a> highlights the key trade-off. Standard STL tries to fit everything, including rare crises, into the smooth trend and seasonal components. Robust STL instead allows those extreme periods to appear as large residuals, protecting the structure estimated from the more typical months.</p>
+<!-- ```` -->
+<p>Visual comparison in <a class="reference internal" href="#fig-elec-standard-vs-robust"><span class="std std-numref">Fig. 3.24</span></a> highlights the key trade-off. Standard STL tries to fit everything, including rare crises, into the smooth trend and seasonal components. Robust STL instead allows those extreme periods to appear as large residuals, protecting the structure estimated from the more typical months.</p>
 </section>
 <section id="robustness-weights-how-the-algorithm-sees-the-crisis">
 <h3><span class="section-number">3.4.5.3. </span>Robustness weights: how the algorithm “sees” the crisis<a class="headerlink" href="#robustness-weights-how-the-algorithm-sees-the-crisis" title="Link to this heading">#</a></h3>
@@ -1090,7 +1131,7 @@ width="64" viewBox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
 <a class="reference internal image-reference" href="../_images/elec_equip_weights.png"><img alt="../_images/elec_equip_weights.png" src="../_images/elec_equip_weights.png" style="width: 900px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.24 </span><span class="caption-text"><strong>(a)</strong> Electrical equipment orders with the 2008–2009 crisis shaded. <strong>(b)</strong> Robustness weights (w_t) estimated by the algorithm. For most months, the weight remains near (w_t = 1), meaning these observations fully drive the decomposition. Around the crisis period, however, weights fall sharply—many months are downweighted to (w_t \approx 0.1)–(0.3), and some receive effectively zero weight. A handful of earlier and later months with unusually large spikes or drops are also downweighted. In effect, robust STL automatically flags the crisis and other unusual months as extreme deviations and prevents them from dominating the fitted trend and seasonal components.</span><a class="headerlink" href="#fig-elec-robustness-weights" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3.25 </span><span class="caption-text"><strong>(a)</strong> Electrical equipment orders with the 2008–2009 crisis shaded. <strong>(b)</strong> Robustness weights <span class="math notranslate nohighlight">\(w_t\)</span> estimated by the algorithm. For most months, the weight remains near <span class="math notranslate nohighlight">\(w_t = 1\)</span>, meaning these observations fully drive the decomposition. Around the crisis period, however, weights fall sharply—many months are downweighted to <span class="math notranslate nohighlight">\(w_t \approx 0.1\)</span>–<span class="math notranslate nohighlight">\(0.3\)</span>, and some receive effectively zero weight. A handful of earlier and later months with unusually large spikes or drops are also downweighted. In effect, robust STL automatically flags the crisis and other unusual months as extreme deviations and prevents them from dominating the fitted trend and seasonal components.</span><a class="headerlink" href="#fig-elec-robustness-weights" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="cell tag_hide-input docutils container">
@@ -1205,7 +1246,7 @@ Downweighted periods:
 </details>
 </div>
 <div class="pst-scrollable-table-container"><table class="table" id="table-elec-comparison">
-<caption><span class="caption-number">Table 3.8 </span><span class="caption-text">Quantitative comparison of standard versus robust STL on electrical equipment orders. Values summarize residual behavior, and the variability of the trend and seasonal components, for both methods.</span><a class="headerlink" href="#table-elec-comparison" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 3.9 </span><span class="caption-text">Quantitative comparison of standard versus robust STL on electrical equipment orders. Values summarize residual behavior, and the variability of the trend and seasonal components, for both methods.</span><a class="headerlink" href="#table-elec-comparison" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Metric</p></th>
 <th class="head text-right"><p>Standard STL</p></th>
