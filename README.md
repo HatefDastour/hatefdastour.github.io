@@ -33,14 +33,14 @@ University of Missouri, Columbia
 
 ## 🌐 Website Sections
 
-| Section | Description | Link |
-|---------|-------------|------|
-| 🏠 **Home** | Introduction and overview | [Visit](https://hatefdastour.github.io/) |
-| 📚 **Publications** | Peer-reviewed articles and papers | [View](https://hatefdastour.github.io/publications/) |
-| 🔬 **Research** | Current and past research projects | [Explore](https://hatefdastour.github.io/research/) |
-| 👨‍🏫 **Teaching** | Course materials and syllabi | [Browse](https://hatefdastour.github.io/teaching/) |
-| 🎤 **Talks** | Presentations and seminars | [View](https://hatefdastour.github.io/talks/) |
-| 📝 **Notes** | Lecture notes and tutorials | [Read](https://hatefdastour.github.io/notes/) |
+| Section | Description |
+|---------|-------------|
+| 🏠 **Home** | [Introduction and overview](https://hatefdastour.github.io/)  |
+| 📚 **Publications** | [Peer-reviewed articles and papers](https://hatefdastour.github.io/publications/) |
+| 🔬 **Research** | [Current and past research projects](https://hatefdastour.github.io/research/) |
+| 👨‍🏫 **Teaching** | [Course information and syllabi](https://hatefdastour.github.io/teaching/) |
+| 🎤 **Talks** | [Presentations and seminars](https://hatefdastour.github.io/talks/) |
+| 📝 **Notes** | [Lecture notes and tutorials](https://hatefdastour.github.io/notes/) |
 
 ---
 
