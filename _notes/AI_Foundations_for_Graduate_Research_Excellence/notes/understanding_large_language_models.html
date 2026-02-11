@@ -32,9 +32,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -181,10 +181,9 @@
 <li class="toctree-l1"><a class="reference internal" href="mini_lab_and_practical_application.html">5. Part 5: Mini-Lab and Practical Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="specialized_tools_and_resources.html">6. Part 6: Specialized Tools and Resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethical_considerations_and_best_practices.html">7. Part 7: Ethical Considerations and Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">8. Appendix: Prompt Template Library</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="appendix.html">9. Appendix: Prompt Template Library</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../References.html">11. References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">10. References</a></li>
 </ul>
 
     </div>
@@ -312,11 +311,22 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="part-1-understanding-large-language-models">
 <h1><span class="section-number">1. </span>Part 1: Understanding Large Language Models<a class="headerlink" href="#part-1-understanding-large-language-models" title="Link to this heading">#</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Learning Objectives</p>
+<p>By the end of this section, you will be able to:</p>
+<ol class="arabic simple">
+<li><p>Explain how LLMs generate text through probability-based token prediction</p></li>
+<li><p>Calculate approximate token counts for research documents</p></li>
+<li><p>Design prompts that respect context window limitations</p></li>
+<li><p>Identify when to use quantized vs. full-precision models</p></li>
+<li><p>Develop strategies for working within context window constraints</p></li>
+</ol>
+</div>
 <section id="what-are-large-language-models">
 <h2><span class="section-number">1.1. </span>What Are Large Language Models?<a class="headerlink" href="#what-are-large-language-models" title="Link to this heading">#</a></h2>
 <div class="tip admonition">
-<p class="admonition-title">Definition – Large Language Models (LLMs)</p>
-<p>Large Language Models (LLMs) are neural networks trained on massive text datasets (billions of words) that predict the next word based on context—repeatedly <span id="id1">[<a class="reference internal" href="../References.html#id2" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D. Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020. URL: https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html (visited on 2026-02-11).">Brown <em>et al.</em>, 2020</a>]</span>. They can perform diverse tasks without task-specific training through a process called “in-context learning.”</p>
+<p class="admonition-title">Definition</p>
+<p><strong>Large Language Models (LLMs)</strong> are neural networks trained on massive text datasets (billions of words) that predict the next word based on context—repeatedly <span id="id1">[<a class="reference internal" href="../References.html#id2" title="Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D. Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. Advances in Neural Information Processing Systems, 33:1877–1901, 2020. URL: https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html (visited on 2026-02-11).">Brown <em>et al.</em>, 2020</a>]</span>. They can perform diverse tasks without task-specific training through a process called “in-context learning.”</p>
 </div>
 <div class="proof example admonition" id="example_01">
 <p class="admonition-title"><span class="caption-number">Example 1.1 </span> (Key Examples (Early 2026))</p>
@@ -338,8 +348,9 @@ document.write(`
 <section id="interactive-exercise-you-be-the-model">
 <h2><span class="section-number">1.2. </span>Interactive Exercise: You Be the Model<a class="headerlink" href="#interactive-exercise-you-be-the-model" title="Link to this heading">#</a></h2>
 <p>Understanding how LLMs work becomes clearer through hands-on experience.</p>
+<p><strong>⏱️ Time:</strong> 5 minutes | <strong>📊 Difficulty:</strong> Beginner | <strong>🎯 Skills:</strong> Pattern recognition, probability thinking</p>
 <p><strong>Objective:</strong> Internalize LLM mechanics through experiential learning.</p>
-<p><strong>Activity (5 minutes):</strong></p>
+<p><strong>Activity:</strong></p>
 <ol class="arabic simple">
 <li><p>Present: <em>“The capital of Northern Ireland is ____”</em></p></li>
 <li><p>Students write down:</p>
@@ -357,19 +368,31 @@ document.write(`
 <li><p>What if you’d never heard of Northern Ireland?</p></li>
 </ul>
 <div class="warning admonition">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">Key Insight</p>
 <p>Your brain just performed pattern matching based on prior knowledge—exactly what an LLM does, but with billions of training examples rather than personal experience.</p>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🎯 Checkpoint</div>
+<p class="sd-card-text">Before continuing, make sure you understand:</p>
+<ul class="simple">
+<li><p class="sd-card-text">[ ] LLMs predict tokens, not “understand” meaning</p></li>
+<li><p class="sd-card-text">[ ] Predictions are based on probability from training data</p></li>
+<li><p class="sd-card-text">[ ] Pattern matching is the core mechanism</p></li>
+</ul>
+</div>
 </div>
 </section>
 <section id="tokens-tokenization-the-foundation">
 <h2><span class="section-number">1.3. </span>Tokens &amp; Tokenization: The Foundation<a class="headerlink" href="#tokens-tokenization-the-foundation" title="Link to this heading">#</a></h2>
 <p>Before diving deeper into how LLMs work, we need to understand their basic unit of processing.</p>
 <div class="tip admonition">
-<p class="admonition-title">Definition – Tokens</p>
-<p>Tokens are the basic units of text that LLMs process. Words are broken into smaller pieces (subwords or characters) for processing.</p>
+<p class="admonition-title">Definition</p>
+<p><strong>Tokens</strong> are the basic units of text that LLMs process. Words are broken into smaller pieces (subwords or characters) for processing.</p>
 </div>
-<div class="proof example admonition" id="example_011">
-<p class="admonition-title"><span class="caption-number">Example 1.2 </span></p>
+<div class="proof example admonition" id="example_02">
+<p class="admonition-title"><span class="caption-number">Example 1.2 </span> (Token Examples)</p>
 <section class="example-content" id="proof-content">
 <ul class="simple">
 <li><p>“Hello” = 1 token</p></li>
@@ -389,7 +412,7 @@ document.write(`
 <section id="how-llms-work-the-generation-pipeline">
 <h2><span class="section-number">1.4. </span>How LLMs Work: The Generation Pipeline<a class="headerlink" href="#how-llms-work-the-generation-pipeline" title="Link to this heading">#</a></h2>
 <p>Now that we understand tokens, let’s see how models transform them into meaningful output.</p>
-<div class="proof example admonition" id="example_02">
+<div class="proof example admonition" id="example_03">
 <p class="admonition-title"><span class="caption-number">Example 1.3 </span> (Generation Process)</p>
 <section class="example-content" id="proof-content">
 <p><strong>Example Demonstration:</strong></p>
@@ -427,14 +450,16 @@ document.write(`
 <li><p><strong>7B parameter model</strong> = Standard notebook (good for many tasks, faster, more efficient)</p></li>
 <li><p><strong>405B parameter model</strong> = Supercomputer cluster (exceptional capabilities, expensive to run)</p></li>
 </ul>
-<div class="proof example admonition" id="example_021">
+<div class="proof example admonition" id="example_04">
 <p class="admonition-title"><span class="caption-number">Example 1.4 </span> (Parameter Scale in Practice)</p>
 <section class="example-content" id="proof-content">
 <p>GPT-4 reportedly has ~1.76 trillion parameters, while smaller models like Llama 3-8B have 8 billion. More parameters generally mean better performance on complex reasoning tasks but require more computational resources <span id="id4">[<a class="reference internal" href="../References.html#id7" title="Anthropic. Prompt engineering overview. https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview, 2026. Accessed: 2026-02-10.">Anthropic, 2026</a>]</span>.</p>
 </section>
-</div><div class="warning admonition">
-<p class="admonition-title">The Trade-off</p>
-<p>We sacrifice tiny amounts of precision for the ability to run world-class AI on standard research laptops. For most research tasks, quantized models perform nearly identically to full-precision versions <span id="id5">[<a class="reference internal" href="../References.html#id8" title="Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. QLoRA: Efficient Finetuning of Quantized LLMs. Advances in Neural Information Processing Systems, 36:10088–10115, December 2023. URL: https://proceedings.neurips.cc/paper_files/paper/2023/hash/1feb87871436031bdc0f2beaa62a049b-Abstract-Conference.html (visited on 2026-02-11).">Dettmers <em>et al.</em>, 2023</a>]</span>.</p>
+</div><div class="danger admonition">
+<p class="admonition-title">Common Mistake: Confusing Parameters with Performance</p>
+<p>❌ <strong>Misconception:</strong> “More parameters always means better output”</p>
+<p>✓ <strong>Reality:</strong> Larger models excel at complex reasoning but may be overkill for simple tasks. A 7B model often performs just as well as a 70B model for straightforward text summarization.</p>
+<p><strong>Rule of Thumb:</strong> Start with smaller models; upgrade only if output quality suffers.</p>
 </div>
 </section>
 <section id="quantization-the-camera-megapixel-analogy">
@@ -457,6 +482,22 @@ document.write(`
 <li><p>INT8 (quantized): 8 bits per parameter</p></li>
 <li><p>4-bit quantization: Aggressive compression, ~75% reduction in size</p></li>
 </ul>
+<div class="warning admonition">
+<p class="admonition-title">The Trade-off</p>
+<p>We sacrifice tiny amounts of precision for the ability to run world-class AI on standard research laptops. For most research tasks, quantized models perform nearly identically to full-precision versions <span id="id5">[<a class="reference internal" href="../References.html#id8" title="Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. QLoRA: Efficient Finetuning of Quantized LLMs. Advances in Neural Information Processing Systems, 36:10088–10115, December 2023. URL: https://proceedings.neurips.cc/paper_files/paper/2023/hash/1feb87871436031bdc0f2beaa62a049b-Abstract-Conference.html (visited on 2026-02-11).">Dettmers <em>et al.</em>, 2023</a>]</span>.</p>
+</div>
+<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+🎯 Checkpoint</div>
+<p class="sd-card-text">Before continuing, make sure you understand:</p>
+<ul class="simple">
+<li><p class="sd-card-text">[ ] Parameters determine model capability</p></li>
+<li><p class="sd-card-text">[ ] Quantization reduces size with minimal quality loss</p></li>
+<li><p class="sd-card-text">[ ] Smaller models can be sufficient for many tasks</p></li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="the-context-window-active-memory-limits">
@@ -477,6 +518,7 @@ document.write(`
 <li><p><strong>Hard Cutoff:</strong> Once full, new data pushes old data out (FIFO - First In, First Out)</p></li>
 <li><p><strong>Can’t See the Floor:</strong> The model can only work with what’s on the desk</p></li>
 </ul>
+<div class="full-width docutils">
 <div class="pst-scrollable-table-container"><table class="table" id="table-01">
 <caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Context Window Comparison (Early 2026)</span><a class="headerlink" href="#table-01" title="Link to this table">#</a></caption>
 <thead>
@@ -515,6 +557,7 @@ document.write(`
 </tbody>
 </table>
 </div>
+</div>
 <p><strong>Critical Research Limitations:</strong> While context windows have grown dramatically, significant limitations remain:</p>
 <ol class="arabic simple">
 <li><p><strong>Recall Decay:</strong> Even within context limits, models struggle with information buried in the middle (the “lost in the middle” problem) <span id="id6">[<a class="reference internal" href="../References.html#id9" title="Zhenyu Zhang, Runjin Chen, Shiwei Liu, Zhewei Yao, Olatunji Ruwase, Beidi Chen, Xiaoxia Wu, and Zhangyang Wang. Found in the Middle: How Language Models Use Long Contexts Better via Plug-and-Play Positional Encoding. Advances in Neural Information Processing Systems, 37:60755–60775, December 2024. doi:10.52202/079017-1943.">Zhang <em>et al.</em>, 2024</a>]</span></p></li>
@@ -538,14 +581,22 @@ document.write(`
 </ul>
 </div>
 <div class="danger admonition">
-<p class="admonition-title">Note</p>
-<p>Keep in mind, generally speaking, we are <strong>not allowed</strong> to upload any PDF from any publisher to any proprietary chat LLM platform (e.g., ChatGPT, Google Gemini, etc.). Make sure to use an open source and offline model or ensure that you have rights to upload those documents to these platforms.</p>
+<p class="admonition-title">Copyright &amp; Access Considerations</p>
+<p>Keep in mind, generally speaking, we are <strong>not allowed</strong> to upload any PDF from any publisher to any proprietary chat LLM platform (e.g., ChatGPT, Google Gemini, etc.).</p>
+<p><strong>Alternatives:</strong></p>
+<ul class="simple">
+<li><p>Use open-source offline models (e.g., Ollama with Llama)</p></li>
+<li><p>Extract and paste only relevant sections (within fair use)</p></li>
+<li><p>Use institutional LLM services with data protection agreements</p></li>
+<li><p>Rely on abstracts from public databases (PubMed, arXiv)</p></li>
+</ul>
 </div>
 </section>
 </section>
 <section id="exercise-working-beyond-context-limits">
 <h2><span class="section-number">1.7. </span>Exercise: Working Beyond Context Limits<a class="headerlink" href="#exercise-working-beyond-context-limits" title="Link to this heading">#</a></h2>
 <p>When your research task exceeds context limits, strategic planning becomes essential.</p>
+<p><strong>⏱️ Time:</strong> 8 minutes (5 min individual, 3 min pair-share) | <strong>📊 Difficulty:</strong> Intermediate | <strong>🎯 Skills:</strong> Strategic thinking, chunking strategies</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-0">
@@ -563,7 +614,7 @@ The Problem</label><div class="sd-tab-content docutils">
 </div>
 <input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-2">
-Student Task (5 minutes)</label><div class="sd-tab-content docutils">
+Student Task</label><div class="sd-tab-content docutils">
 <p>Think through these questions:</p>
 <ol class="arabic simple">
 <li><p>How would you break this into smaller pieces?</p>
@@ -579,13 +630,35 @@ Student Task (5 minutes)</label><div class="sd-tab-content docutils">
 </li>
 <li><p>How would you handle overlaps or conflicts between batches?</p></li>
 </ol>
-<p><strong>Pair-Share (3 minutes):</strong> Compare approaches with neighbor.</p>
+<p><strong>Pair-Share:</strong> Compare approaches with neighbor.</p>
 </div>
 </div>
 <div class="warning admonition">
 <p class="admonition-title">Design Principle</p>
 <p>When tasks exceed context limits, design multi-stage workflows rather than single prompts. Think of it as breaking a research paper into introduction, methods, results, and discussion—each section is manageable, together they form a complete work <span id="id7">[<a class="reference internal" href="../References.html#id10" title="Stig Pedersen Korsholm. Mastering prompt engineering: a comparative guide to nine prompt engineering frameworks for tech professionals. https://www.linkedin.com/pulse/mastering-prompt-engineering-comparative-guide-nine-tech-korsholm-hnjif/, February 2024. Accessed: 2026-02-10.">Korsholm, 2024</a>]</span>.</p>
 </div>
+<!-- ## Quick Reference: Key Concepts
+
+````{dropdown} Token Calculation
+**Rule of Thumb:** 1 token ≈ 0.75 words (or 1 word ≈ 1.33 tokens)
+
+**Example:** 1,000-word document ≈ 1,333 tokens
+
+**Check exact count:** <a href="https://platform.openai.com/tokenizer" target="_blank">OpenAI Tokenizer</a>
+````
+
+````{dropdown} Model Selection Guide
+- **Simple tasks** (summaries, formatting): 7B models
+- **Complex reasoning** (analysis, critiques): 70B models
+- **Specialized domains** (code, math): Domain-specific models
+- **Cost-sensitive**: Use quantized versions
+````
+
+````{dropdown} Context Window Strategy
+1. **Small tasks** (<10K tokens): Process in one go
+2. **Medium tasks** (10-50K tokens): Split into logical chunks
+3. **Large tasks** (>50K tokens): Multi-stage hierarchical processing
+```` -->
 </section>
 </section>
 
