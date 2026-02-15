@@ -11,5 +11,5 @@ location: "Calgary, AB, Canada"
 This course covers the fundamental elements of digital engineering systems and basic programming structures for implementation. It teaches programming strategies to aid data analysis, including data acquisition and cleansing, validation, and visualization. The course introduces fundamental machine learning methods and data-centric modeling, with practical examples from various engineering fields.
 </p>
 
-* [Lecture Notes](/notes/Introduction_to_Digital_Engineering/){:target="_blank"}
+<!-- * [Lecture Notes](/notes/Introduction_to_Digital_Engineering/){:target="_blank"} -->
 * [More Details](https://contacts.ucalgary.ca/info/enel/courses/f23/ENGG680){:target="_blank"}

@@ -33,7 +33,7 @@ Classification of ordinary differential equations, first and second order equati
 Finite Difference Method for solving PDEs.
 </p> -->
 
-<hr style="height:2px; visibility:hidden;" />
+<!-- <hr style="height:2px; visibility:hidden;" />
 
 <p style='text-align: justify;'>
 <font size="+2"><b>
@@ -41,7 +41,7 @@ Finite Difference Method for solving PDEs.
 </b></font>
 <br>
 This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
-</p>
+</p> -->
 
 <hr style="height:2px; visibility:hidden;" />
 
