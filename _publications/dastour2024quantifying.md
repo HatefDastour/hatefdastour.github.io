@@ -1,0 +1,13 @@
+---
+title: "Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis"
+collection: publications
+permalink: /publication/dastour2024quantifying
+date: 2024-03-16
+venue: 'Earth Systems and Environment'
+paperurl: 'https://doi.org/10.1007/s41748-024-00384-2'
+citation: '<b>Dastour, H.</b> and Hassan, Q. K. (2024). Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis. <i>Earth Systems and Environment</i>. [IF: 7.2; IF Quartile: Q1]'
+---
+<b>Abstract:</b> 
+<p style='text-align: justify;'>
+The exchange of energy, water, and carbon between the land surface and the atmosphere is critically influenced by vegetation. However, vegetation cover has been changing due to climate variability and human activities, which can affect ecosystems, biodiversity, land management, and human well-being. This study aimed to examine the impact of climate factors on different vegetation types in Alberta, Canada. Remote sensing and climate data from various sites were collected and analyzed using spatial and temporal correlation analysis methods. During the study period of 2001–2022, this study revealed that temporal dynamics between NDVI and climate variables were assessed using NCC analyses on various land cover types. The results revealed a lead of 3.5–4 months of NDVI over the Relative Humidity Average. Additionally, LST-Day demonstrated a lead of two weeks over NDVI, while LST-Night exhibited minimal lag with NDVI, except in regions characterized by sparse vegetation. Furthermore, NDVI displayed a lag of 2–4 weeks behind Precipitation. Land cover dynamics in Alberta from 2001 to 2022 reveal significant trends. Cropland areas, covering nearly 20%, consistently increased with increasing relative humidity, except for deviations in 2001 and 2002. Evergreen Needleleaf forests, constituting around 14.5%, exhibited an upward trend correlated with increased precipitation. Grasslands, comprising 13.8%, showed diminishing coverage despite rising humidity and precipitation. Woody Savannas, accounting for approximately 29%, displayed increased coverage in 2006 but exhibited a declining trend over the study period. These trends highlight the complex interplay between land cover changes and climatic factors in Alberta. The quantification of the influence of climate variables on NDVI revealed the pivotal roles of LST-Day and LST-Night, with average feature importance values of 37.42% and 40.35%, respectively, across all land cover types.
+</p>
