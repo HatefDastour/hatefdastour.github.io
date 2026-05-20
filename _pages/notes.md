@@ -125,15 +125,3 @@ SQL Server, MySQL_Connector, SQLite, PyMySQL, …
 <br>
 This workshop provides researchers and faculty with a practical introduction to large language models and their applications in teaching and research. Through hands-on demonstrations and interactive exercises, participants learn evidence-based techniques for effective AI integration in academic work. These materials are meant to be companion workshop notes organized by Hatef Dastour.
 </p>
-
-<br><br>
-<h2>Workshops & Short Courses</h2>
-<hr style="height:1px; background-color:#ccc; border:none;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Making_AI_Work_for_You/Preface.html" target="_blank" rel="noopener noreferrer">Making AI Work for You</a>
-</b></font>
-<br>
-This workshop provides researchers and faculty with a practical introduction to large language models and their applications in teaching and research. Through hands-on demonstrations and interactive exercises, participants learn evidence-based techniques for effective AI integration in academic work. These materials are meant to be companion workshop notes organized by Hatef Dastour.
-</p>
