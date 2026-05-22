@@ -1,0 +1,992 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.1. From Tokens to Vectors: Classical Encoders &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_02/Intro2LLM_C02S01';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.2. Bag-of-Words and TF–IDF in Practice" href="Intro2LLM_C02S02.html" />
+    <link rel="prev" title="2. Text Representations and Vectorization" href="Intro2LLM_C02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">3. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>From Tokens to Vectors: Classical Encoders</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">2.1.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-vectorize-text">2.1.2. Why vectorize text?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary-construction">2.1.3. Vocabulary construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-vocabulary-building">2.1.3.1. Step-by-step vocabulary building</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encodings">2.1.4. One-hot encodings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-one-hot-token-representation">2.1.4.1. Example: one-hot token representation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-vectors-do-not-capture-similarity">2.1.4.2. One-hot vectors do not capture similarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentterm-matrices-with-scikit-learn">2.1.5. Document–term matrices with scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co-occurrence-context">2.1.6. Co-occurrence context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-choices-and-limitations">2.1.7. Design choices and limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">2.1.8. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="from-tokens-to-vectors-classical-encoders">
+<h1><span class="section-number">2.1. </span>From Tokens to Vectors: Classical Encoders<a class="headerlink" href="#from-tokens-to-vectors-classical-encoders" title="Link to this heading">#</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Section Goal</p>
+<p>By the end of this section you will understand why machine learning models need
+numerical vectors, be able to construct one-hot and count-based representations
+by hand and with scikit-learn, and critically evaluate the limitations of these
+representations as a springboard for the richer encodings introduced in later
+sections.</p>
+</div>
+<section id="learning-objectives">
+<h2><span class="section-number">2.1.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain why we need numerical vector representations of text for machine learning models.</p></li>
+<li><p>Define and construct one-hot encodings for tokens and documents.</p></li>
+<li><p>Build a vocabulary from a corpus and represent tokens as integer indices.</p></li>
+<li><p>Construct count-based document–term matrices using scikit-learn’s <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code>.</p></li>
+<li><p>Interpret the structure of document–term matrices on small corpora.</p></li>
+<li><p>List the key limitations of one-hot and count-based representations.</p></li>
+</ul>
+</section>
+<section id="why-vectorize-text">
+<h2><span class="section-number">2.1.2. </span>Why vectorize text?<a class="headerlink" href="#why-vectorize-text" title="Link to this heading">#</a></h2>
+<p>Most machine learning models—from logistic regression to deep neural networks—operate on fixed-length <strong>numerical vectors</strong>: arrays of real numbers that the model can add, multiply, and differentiate through. Raw text, however, is variable-length, symbolic, and structured. A sentence is not a number; it is a sequence of tokens with grammar and meaning.</p>
+<p>The purpose of <strong>vectorization</strong> (also called <em>feature extraction</em> or <em>encoding</em>) is to map documents, sentences, or tokens into a mathematical space where:</p>
+<ul class="simple">
+<li><p><strong>Closeness reflects similarity</strong>: texts that are semantically related should have nearby representations.</p></li>
+<li><p><strong>Dimensions correspond to features</strong>: each coordinate measures some meaningful property (e.g., “does this word appear?”).</p></li>
+<li><p><strong>Downstream models can consume the input</strong>: classifiers, regressors, and sequence models all expect numerical arrays, not strings.</p></li>
+</ul>
+<p>Classical encoders build these vectors directly from token identities or counts, with <em>no learned parameters</em>. They are transparent, interpretable, and surprisingly strong baselines for many tasks.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why not just feed strings to a model?</p>
+<p>Modern deep-learning libraries (PyTorch, TensorFlow) require numerical tensors as input. Even if a model ultimately “understands” language (like a large language model does), somewhere in its pipeline a text string is converted to numbers—through an embedding layer or tokenizer. Classical encoders make this conversion explicit and interpretable, and understanding them is essential for understanding more complex approaches.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Intuition: a bag of coloured tiles</p>
+<p>Imagine replacing each word with a uniquely coloured tile and dropping all the tiles from a document into a bag. The bag does not remember the order of the tiles, but you can describe its contents by listing how many tiles of each colour it contains. This is exactly what a count-based document vector does: each “colour” is a vocabulary word, and each count is how many times that word appeared.</p>
+</div>
+</section>
+<section id="vocabulary-construction">
+<h2><span class="section-number">2.1.3. </span>Vocabulary construction<a class="headerlink" href="#vocabulary-construction" title="Link to this heading">#</a></h2>
+<p>Before we can represent any token numerically, we need a <strong>vocabulary</strong> — a fixed, finite set of strings that our encoder recognizes. The vocabulary maps each known word to a unique integer index.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Terms</p>
+<ul class="simple">
+<li><p><strong>Vocabulary</strong> (<span class="math notranslate nohighlight">\(V\)</span>): the set of all word <em>types</em> the encoder is aware of. A <em>type</em> is a unique string (e.g., “flood”); each occurrence of that string in text is called a <em>token</em>.</p></li>
+<li><p><strong>OOV (out-of-vocabulary)</strong>: any token whose string is not in the vocabulary. Classical encoders typically ignore OOV tokens or map them to a special <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code> entry.</p></li>
+<li><p><strong>Vocabulary size</strong> (<span class="math notranslate nohighlight">\(|V|\)</span>): the total number of distinct entries. For real corpora this ranges from thousands to hundreds of thousands.</p></li>
+</ul>
+</div>
+<p>When you train a vectorizer on a corpus you are essentially deciding: <em>which strings count as features?</em> Everything not in the vocabulary is invisible to the model at inference time.</p>
+<section id="step-by-step-vocabulary-building">
+<h3><span class="section-number">2.1.3.1. </span>Step-by-step vocabulary building<a class="headerlink" href="#step-by-step-vocabulary-building" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Flood warnings issued for the river basin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Drought conditions persist in the northern region&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Heavy rain increases flood risk downstream&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Step 1: tokenize (lowercased words)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+
+<span class="n">all_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">tok</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">corpus</span> <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">simple_tokenize</span><span class="p">(</span><span class="n">doc</span><span class="p">)]</span>
+
+<span class="c1"># Step 2: build vocabulary (sorted for reproducibility)</span>
+<span class="n">vocab_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_tokens</span><span class="p">))</span>
+<span class="n">vocab</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab_list</span><span class="p">)}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vocabulary size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]),</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary size: 18
+{&#39;basin&#39;: 0, &#39;conditions&#39;: 1, &#39;downstream&#39;: 2, &#39;drought&#39;: 3, &#39;flood&#39;: 4, &#39;for&#39;: 5, &#39;heavy&#39;: 6, &#39;in&#39;: 7} ...
+</pre></div>
+</div>
+</div>
+</div>
+<p>Running this on the three-document corpus produces a vocabulary of roughly 18 words. In real settings, you would add preprocessing steps (removing punctuation, stopwords, etc.) and limit vocabulary size to the top-<em>k</em> most frequent terms.</p>
+<div class="tip admonition">
+<p class="admonition-title">Why sort the vocabulary?</p>
+<p>The specific ordering of words in the vocabulary is arbitrary — what matters is <em>consistency</em>: the same word must always map to the same index so that vectors produced from different documents are comparable. Sorting alphabetically is one common convention; another is sorting by frequency (most frequent first). Scikit-learn uses alphabetical order by default.</p>
+</div>
+</section>
+</section>
+<section id="one-hot-encodings">
+<h2><span class="section-number">2.1.4. </span>One-hot encodings<a class="headerlink" href="#one-hot-encodings" title="Link to this heading">#</a></h2>
+<p>The simplest way to represent a token numerically is a <strong>one-hot vector</strong>: a binary vector of length <span class="math notranslate nohighlight">\(|V|\)</span> with a single <code class="docutils literal notranslate"><span class="pre">1</span></code> at the position corresponding to the word’s index and <code class="docutils literal notranslate"><span class="pre">0</span></code>s everywhere else.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-66ecd54f-0ba4-48a2-90d4-762df9cb655c">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-66ecd54f-0ba4-48a2-90d4-762df9cb655c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathbf{e}_i \in \{0,1\}^{|V|}, \quad (\mathbf{e}_i)_j = \begin{cases} 1 &amp; \text{if } j = i \\ 0 &amp; \text{otherwise} \end{cases}
+\end{equation}\]</div>
+<p>Here <span class="math notranslate nohighlight">\(i\)</span> is the vocabulary index of the target word and <span class="math notranslate nohighlight">\(|V|\)</span> is the vocabulary size.</p>
+<p><strong>Properties of one-hot vectors:</strong></p>
+<ul class="simple">
+<li><p>All one-hot vectors are <em>orthogonal</em>: <span class="math notranslate nohighlight">\(\mathbf{e}_i \cdot \mathbf{e}_j = 0\)</span> for <span class="math notranslate nohighlight">\(i \neq j\)</span>. Two distinct words are always maximally “different.”</p></li>
+<li><p>The Euclidean distance between any two one-hot vectors is <span class="math notranslate nohighlight">\(\sqrt{2}\)</span>, regardless of whether the words are semantically related.</p></li>
+<li><p>Vectors are <strong>sparse</strong>: for a vocabulary of 50,000 words, a one-hot vector has exactly one <code class="docutils literal notranslate"><span class="pre">1</span></code> among 49,999 <code class="docutils literal notranslate"><span class="pre">0</span></code>s. Storing or computing with thousands of such vectors is expensive, which is one motivation for the dense embeddings introduced in Section 3.</p></li>
+</ul>
+<section id="example-one-hot-token-representation">
+<h3><span class="section-number">2.1.4.1. </span>Example: one-hot token representation<a class="headerlink" href="#example-one-hot-token-representation" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rain&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;flood&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;drought&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;river&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">one_hot</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vocab</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a one-hot vector for `token` given a vocabulary mapping.&quot;&quot;&quot;</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">vocab</span><span class="p">:</span>
+        <span class="n">vec</span><span class="p">[</span><span class="n">vocab</span><span class="p">[</span><span class="n">token</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">vec</span>
+
+<span class="c1"># Demonstrate known and unknown tokens</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rain&quot;</span><span class="p">,</span> <span class="s2">&quot;river&quot;</span><span class="p">,</span> <span class="s2">&quot;flood&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">one_hot</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rain       -&gt; [1, 0, 0, 0]
+river      -&gt; [0, 0, 0, 1]
+flood      -&gt; [0, 1, 0, 0]
+unknown    -&gt; [0, 0, 0, 0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the vector for <code class="docutils literal notranslate"><span class="pre">&quot;unknown&quot;</span></code> is the all-zeros vector — a common handling for OOV tokens in simple encoders. More sophisticated approaches use a dedicated <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code> token with its own index, so the model at least knows <em>that</em> an unknown word appeared.</p>
+</section>
+<section id="one-hot-vectors-do-not-capture-similarity">
+<h3><span class="section-number">2.1.4.2. </span>One-hot vectors do not capture similarity<a class="headerlink" href="#one-hot-vectors-do-not-capture-similarity" title="Link to this heading">#</a></h3>
+<p>A critical limitation is that one-hot vectors encode <em>no</em> notion of similarity between words. Let us verify this using <strong>cosine similarity</strong>, a standard measure of similarity between two vectors:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-eb4c9c4a-38cc-44c4-a85b-c03ca15c5673">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-eb4c9c4a-38cc-44c4-a85b-c03ca15c5673" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{cosine_sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \, \|\mathbf{b}\|}
+\end{equation}\]</div>
+<p>Cosine similarity equals 1 for identical direction, 0 for orthogonal vectors, and −1 for opposite direction. For sparse one-hot vectors, any two <em>different</em> words are orthogonal:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">v_rain</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;rain&quot;</span><span class="p">,</span>    <span class="n">vocab</span><span class="p">))</span>
+<span class="n">v_flood</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;flood&quot;</span><span class="p">,</span>   <span class="n">vocab</span><span class="p">))</span>
+<span class="n">v_drought</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;drought&quot;</span><span class="p">,</span> <span class="n">vocab</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span><span class="p">)</span> <span class="k">if</span> <span class="n">denom</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(rain,   flood)  =&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_rain</span><span class="p">,</span>    <span class="n">v_flood</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(rain,   drought)=&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_rain</span><span class="p">,</span>    <span class="n">v_drought</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(flood,  drought)=&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_flood</span><span class="p">,</span>   <span class="n">v_drought</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sim(rain,   flood)  = 0.0
+sim(rain,   drought)= 0.0
+sim(flood,  drought)= 0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every pair of distinct words has a cosine similarity of 0 — they are all maximally dissimilar from the encoder’s perspective, regardless of how semantically related they actually are. “Flood” and “inundation” look no more similar than “flood” and “philosophy.” This motivates the richer representations developed in later sections.</p>
+</section>
+</section>
+<section id="documentterm-matrices-with-scikit-learn">
+<h2><span class="section-number">2.1.5. </span>Document–term matrices with scikit-learn<a class="headerlink" href="#documentterm-matrices-with-scikit-learn" title="Link to this heading">#</a></h2>
+<p>A <strong>document–term matrix</strong> (DTM) generalizes one-hot encodings from individual tokens to full documents. Instead of representing one word, each row represents a <em>document</em> as the sum of the one-hot vectors for all tokens it contains — which is just the <em>count</em> of each vocabulary word in the document.</p>
+<div class="tip admonition">
+<p class="admonition-title">Document vector = sum of token one-hots</p>
+<p>If a document contains the words [“flood”, “river”, “flood”], its document vector has <code class="docutils literal notranslate"><span class="pre">flood</span></code> → 2, <code class="docutils literal notranslate"><span class="pre">river</span></code> → 1, all others → 0. This is equivalent to adding the one-hot vectors: <strong>e</strong>_flood + <strong>e</strong>_river + <strong>e</strong>_flood = [2, 1, 0, …]. The result is no longer a one-hot vector (multiple non-zero entries), but it is still sparse.</p>
+</div>
+<p>Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> automates vocabulary construction and DTM creation:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Flood warnings issued for the river basin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Drought conditions persist in the northern region&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Heavy rain increases flood risk downstream&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+
+<span class="c1"># Display as a readable DataFrame</span>
+<span class="n">dtm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;doc</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">))]</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Matrix shape: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> documents × </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> terms)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>basin</th>
+      <th>conditions</th>
+      <th>downstream</th>
+      <th>drought</th>
+      <th>flood</th>
+      <th>for</th>
+      <th>heavy</th>
+      <th>in</th>
+      <th>increases</th>
+      <th>issued</th>
+      <th>northern</th>
+      <th>persist</th>
+      <th>rain</th>
+      <th>region</th>
+      <th>risk</th>
+      <th>river</th>
+      <th>the</th>
+      <th>warnings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>doc1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>doc2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>doc3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matrix shape: (3, 18)  (3 documents × 18 terms)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each row is a sparse numerical summary of the document. Documents that share words will have overlapping non-zero columns, forming the basis for simple similarity measures such as cosine distance between document vectors.</p>
+<p>`````{admonition} <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> vs. <code class="docutils literal notranslate"><span class="pre">transform</span></code>
+:class: note</p>
+<p><code class="docutils literal notranslate"><span class="pre">vectorizer.fit_transform(corpus)</span></code> does two things in one call: it <strong>fits</strong> (builds the vocabulary from the corpus) and then <strong>transforms</strong> (converts each document to a vector). At inference time you should call <code class="docutils literal notranslate"><span class="pre">vectorizer.transform(new_docs)</span></code> only—never re-fit on new data, or the vocabulary and feature indices will change, making old vectors incomparable with new ones.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+### Controlling vocabulary size
+
+For large corpora, the raw vocabulary can exceed 100,000 words. A common strategy is to keep only the top-*k* most frequent terms and remove **stopwords** — high-frequency function words (articles, prepositions, etc.) that carry little distinctive meaning:
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer_top10</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span>
+<span class="n">X_top10</span> <span class="o">=</span> <span class="n">vectorizer_top10</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top-10 vocabulary:&quot;</span><span class="p">,</span> <span class="n">vectorizer_top10</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matrix shape:&quot;</span><span class="p">,</span> <span class="n">X_top10</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top-10 vocabulary: [&#39;basin&#39; &#39;conditions&#39; &#39;downstream&#39; &#39;drought&#39; &#39;flood&#39; &#39;heavy&#39; &#39;increases&#39;
+ &#39;issued&#39; &#39;northern&#39; &#39;persist&#39;]
+Matrix shape: (3, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Removing English stopwords (<code class="docutils literal notranslate"><span class="pre">stop_words=&quot;english&quot;</span></code>) trims function words that appear in nearly every document and carry little discriminative signal. The impact of this choice is task-dependent; for example, in sentiment analysis, negation words like “not” are stopwords but are critically important.</p>
+<p>Other useful <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> parameters:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-countvectorizer-params">
+<caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Useful CountVectorizer Parameters</span><a class="headerlink" href="#table-nlp-countvectorizer-params" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Parameter</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code></p></td>
+<td class="text-left"><p>None (keep all)</p></td>
+<td class="text-left"><p>Retain only the top-<em>k</em> most frequent terms</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">stop_words</span></code></p></td>
+<td class="text-left"><p>None</p></td>
+<td class="text-left"><p>Remove a predefined or custom list of words</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">min_df</span></code></p></td>
+<td class="text-left"><p>1</p></td>
+<td class="text-left"><p>Ignore terms appearing in fewer than <em>n</em> documents</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_df</span></code></p></td>
+<td class="text-left"><p>1.0</p></td>
+<td class="text-left"><p>Ignore terms appearing in more than <em>p</em> fraction of documents</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ngram_range</span></code></p></td>
+<td class="text-left"><p>(1,1)</p></td>
+<td class="text-left"><p>Include n-grams up to the given range (see Section 2)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">lowercase</span></code></p></td>
+<td class="text-left"><p>True</p></td>
+<td class="text-left"><p>Convert all tokens to lowercase before counting</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="co-occurrence-context">
+<h2><span class="section-number">2.1.6. </span>Co-occurrence context<a class="headerlink" href="#co-occurrence-context" title="Link to this heading">#</a></h2>
+<p>One-hot vectors and raw count matrices capture <em>term identity</em>, not <em>context</em>. However, context turns out to be deeply informative: words that frequently appear near each other are often semantically related. A <strong>co-occurrence matrix</strong> records, for each pair of words, how often they appear within a fixed window of each other:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cooccurrence_matrix</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a word × word co-occurrence count matrix.&quot;&quot;&quot;</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">window</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="n">window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">counts</span><span class="p">[</span><span class="n">tok</span><span class="p">][</span><span class="n">tokens</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span>
+
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;flood warning river basin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;flood risk downstream river&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;drought conditions northern region&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rainfall deficit drought&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">co</span> <span class="o">=</span> <span class="n">cooccurrence_matrix</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;flood&quot;</span><span class="p">,</span> <span class="s2">&quot;river&quot;</span><span class="p">,</span> <span class="s2">&quot;drought&quot;</span><span class="p">]:</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">neighbors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>flood     : [(&#39;warning&#39;, 1), (&#39;risk&#39;, 1)]
+river     : [(&#39;warning&#39;, 1), (&#39;basin&#39;, 1), (&#39;downstream&#39;, 1)]
+drought   : [(&#39;conditions&#39;, 1), (&#39;deficit&#39;, 1)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Words that share contexts (like “flood” and “river”) naturally have higher co-occurrence counts. This observation is the foundation of <strong>distributional semantics</strong> — the idea that meaning is captured by context. Section 2.3 develops this intuition into dense word embeddings.</p>
+</section>
+<section id="design-choices-and-limitations">
+<h2><span class="section-number">2.1.7. </span>Design choices and limitations<a class="headerlink" href="#design-choices-and-limitations" title="Link to this heading">#</a></h2>
+<p>When constructing classical encoders, several design choices matter:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-design-choices">
+<caption><span class="caption-number">Table 2.2 </span><span class="caption-text">Design Choices in Classical Encoders</span><a class="headerlink" href="#table-nlp-design-choices" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Choice</p></th>
+<th class="head text-left"><p>Options</p></th>
+<th class="head text-left"><p>Impact</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Vocabulary size</strong></p></td>
+<td class="text-left"><p>All tokens vs. top-<em>k</em></p></td>
+<td class="text-left"><p>Dimensionality, sparsity, OOV handling</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Tokenization</strong></p></td>
+<td class="text-left"><p>Whitespace, regex, subword</p></td>
+<td class="text-left"><p>Which strings become vocabulary items</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Case normalization</strong></p></td>
+<td class="text-left"><p>Lowercase vs. preserve case</p></td>
+<td class="text-left"><p>Deduplication of vocabulary</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Stopword removal</strong></p></td>
+<td class="text-left"><p>None, standard list, domain list</p></td>
+<td class="text-left"><p>Feature count, noise reduction</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Minimum frequency (<code class="docutils literal notranslate"><span class="pre">min_df</span></code>)</strong></p></td>
+<td class="text-left"><p>Integer threshold</p></td>
+<td class="text-left"><p>Filters noisy low-count terms</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fundamental limitations of pure one-hot and raw count representations:</p>
+<ol class="arabic simple">
+<li><p><strong>No semantic similarity</strong> — words that never appear together get identical distance regardless of their meaning. “Flood” and “inundation” are as dissimilar as “flood” and “philosophy.”</p></li>
+<li><p><strong>Order is ignored</strong> — “the dog bit the man” and “the man bit the dog” get identical representations.</p></li>
+<li><p><strong>High dimensionality</strong> — a vocabulary of 50,000 terms means 50,000-dimensional vectors; almost all values are zero. This “curse of dimensionality” affects storage, computation, and some learning algorithms.</p></li>
+<li><p><strong>No sub-word structure</strong> — “run”, “running”, and “runner” are treated as completely different items unless preprocessing (stemming, lemmatization) is applied.</p></li>
+</ol>
+<p>These limitations motivate the richer representations introduced in the following sections.</p>
+<div class="important admonition">
+<p class="admonition-title">Key Takeaways</p>
+<ul class="simple">
+<li><p>One-hot vectors assign each vocabulary word a unique axis; they are orthogonal, sparse, and capture no similarity information.</p></li>
+<li><p>A document–term matrix is the sum of one-hot vectors for all tokens in a document: rows are documents, columns are vocabulary words, entries are counts.</p></li>
+<li><p>Vocabulary size, tokenization, and stopword choices significantly affect the resulting representation.</p></li>
+<li><p>Classical count encoders are an essential baseline and building block, but their limitations (sparsity, no similarity, no word order) motivate weighting schemes (TF–IDF, Section 2.2) and dense embeddings (Sections 2.3–2.4).</p></li>
+</ul>
+</div>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">2.1.8. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Manual one-hot design</strong>
+Construct a small vocabulary from a set of 5–10 domain-specific terms (e.g., climate hazards or clinical conditions). Write down the one-hot vectors for each term. Calculate the Euclidean distance and cosine similarity between every pair, and discuss which relationships are captured and which are missing.</p></li>
+<li><p><strong>Exploring document–term matrices</strong>
+Using <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code>, build a document–term matrix for a small corpus of news headlines on a topic of your choice. Inspect the vocabulary and the matrix. Which tokens dominate? Are there tokens you would filter out or merge (e.g., synonyms, morphological variants)? Try adding <code class="docutils literal notranslate"><span class="pre">min_df=2</span></code> and observe the effect on vocabulary size.</p></li>
+<li><p><strong>OOV handling strategies</strong>
+Modify the <code class="docutils literal notranslate"><span class="pre">one_hot</span></code> function to add an <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code> token at the end of the vocabulary vector instead of returning an all-zeros vector for unseen words. Discuss the trade-offs: when does an explicit <code class="docutils literal notranslate"><span class="pre">&lt;UNK&gt;</span></code> representation help, and when could it cause problems?</p></li>
+<li><p><strong>Sparsity and memory</strong>
+For a vocabulary of <span class="math notranslate nohighlight">\(|V| = 20{,}000\)</span> words and a corpus of <span class="math notranslate nohighlight">\(N = 10{,}000\)</span> documents, what is the total number of entries in a dense document–term matrix? If on average each document contains 50 distinct words, how many entries are non-zero? Compute the sparsity ratio (fraction of zero entries) and discuss why scikit-learn stores these matrices in a sparse format by default.</p></li>
+<li><p><strong>Connecting to labs</strong>
+In the <code class="docutils literal notranslate"><span class="pre">l201_text_processing_one_hot_encoding</span></code> lab, you will work with a slightly larger corpus and visualize encodings. After completing the lab, revisit this section and note how your understanding of one-hot and count-based representations has changed.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Text Representations and Vectorization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C02S02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Bag-of-Words and TF–IDF in Practice</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">2.1.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-vectorize-text">2.1.2. Why vectorize text?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary-construction">2.1.3. Vocabulary construction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-vocabulary-building">2.1.3.1. Step-by-step vocabulary building</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encodings">2.1.4. One-hot encodings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-one-hot-token-representation">2.1.4.1. Example: one-hot token representation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-vectors-do-not-capture-similarity">2.1.4.2. One-hot vectors do not capture similarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentterm-matrices-with-scikit-learn">2.1.5. Document–term matrices with scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#co-occurrence-context">2.1.6. Co-occurrence context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-choices-and-limitations">2.1.7. Design choices and limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">2.1.8. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

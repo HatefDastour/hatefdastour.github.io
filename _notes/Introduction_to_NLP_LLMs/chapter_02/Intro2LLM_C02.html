@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Text Representations and Vectorization &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_02/Intro2LLM_C02';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.1. From Tokens to Vectors: Classical Encoders" href="Intro2LLM_C02S01.html" />
+    <link rel="prev" title="1.5. Modern Modeling and Evaluation Strategies" href="../chapter_01/Intro2LLM_C01S05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">2. Text Representations and Vectorization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">3. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Text Representations and Vectorization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="text-representations-and-vectorization">
+<h1><span class="section-number">2. </span>Text Representations and Vectorization<a class="headerlink" href="#text-representations-and-vectorization" title="Link to this heading">#</a></h1>
+<p>Natural language is inherently symbolic and structured, but most machine learning models expect fixed-length numerical vectors. This chapter focuses on <strong>how we turn text into vectors</strong> that can be fed into classical and neural models.</p>
+<p>Consider two short sentences:</p>
+<blockquote>
+<div><p><em>“The river burst its banks after days of heavy rain.”</em>
+<em>“Flooding damaged crops and livestock in the lowland areas.”</em></p>
+</div></blockquote>
+<p>A human reader immediately understands these sentences describe related events. A machine learning model, however, can only process numbers. The bridge between these two worlds is a text representation: a principled mapping from words and documents to points in a mathematical space.</p>
+<p>The choice of representation has a profound impact on every downstream task:</p>
+<ul class="simple">
+<li><p>A poor representation may make similar documents look completely different.</p></li>
+<li><p>A rich representation can allow a simple linear classifier to outperform a complex model trained on a weak one.</p></li>
+<li><p>In retrieval and semantic search, representations determine which documents are found.</p></li>
+</ul>
+<p>This chapter traces the arc from the simplest possible representations (individual indicator bits) to the richest currently available (contextual neural embeddings), building intuition at each step.</p>
+<p>In this chapter, you will learn to:</p>
+<ul class="simple">
+<li><p>Explain why text must be vectorized for use in machine learning models.</p></li>
+<li><p>Compare one-hot, bag-of-words, and TF–IDF representations, and reason about when each is appropriate.</p></li>
+<li><p>Compute TF–IDF weights by hand for a small corpus and interpret the results.</p></li>
+<li><p>Describe the intuition behind distributional word embeddings and their advantages over sparse representations.</p></li>
+<li><p>Use pretrained word vectors to find nearest neighbors and perform vector arithmetic.</p></li>
+<li><p>Explain what makes contextual embeddings (e.g., from BERT) different from static word embeddings.</p></li>
+<li><p>Implement basic vectorization pipelines in Python and interpret their outputs on small corpora.</p></li>
+<li><p>Choose an appropriate encoder for a given task, balancing accuracy, interpretability, and computational cost.</p></li>
+</ul>
+<p>In Chapter 1, we focused on <em>what</em> NLP is, how to acquire and preprocess text, and how linguistic structure relates to modern models. This chapter deepens the second course theme—text preprocessing and representations—by making the step from cleaned tokens to numerical features explicit. These representations will be used throughout later modules: in Core NLP modeling (Chapter 3) for supervised classifiers and sequence labelers; in Applied neural NLP and LLM modules to compare classical representations against learned embeddings; and in Agentic AI settings, where embeddings and vector spaces underpin retrieval and tool-using workflows.</p>
+<div class="tip admonition">
+<p class="admonition-title">Connection to Chapter 1</p>
+<p>Chapter 1 introduced preprocessing steps such as tokenization, stopword removal, stemming, and lemmatization. The quality of those preprocessing decisions directly affects the quality of the representations built in this chapter. Before vectorizing, always ask: <em>Has the text been cleaned and normalized consistently?</em></p>
+</div>
+<p>The chapter is organized into four sections, each corresponding to a teaching session and paired with slides, labs, and practice notebooks in <code class="docutils literal notranslate"><span class="pre">chapter_02_context</span></code>. The figure below sketches the progression from raw text to rich representations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Raw text
+   │
+   ▼  (tokenization, normalization – Chapter 1)
+Token sequences
+   │
+   ├──▶ One-hot / Count vectors  (Section 1)
+   │
+   ├──▶ Bag-of-words / TF–IDF    (Section 2)
+   │
+   ├──▶ Static word embeddings   (Section 3)
+   │
+   └──▶ Contextual embeddings    (Section 4)
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>From tokens to vectors: classical encoders.</strong>
+We introduce the fundamental idea of representing text as numerical vectors, starting with one-hot encodings and count-based document–term matrices. These simple representations build conceptual scaffolding for everything that follows. This section connects to slide deck <code class="docutils literal notranslate"><span class="pre">s201_basic_vectorization_approaches</span></code> and the one-hot encoding lab.</p></li>
+<li><p><strong>Bag-of-words and TF–IDF in practice.</strong>
+We extend raw counts into full document-term matrices and introduce TF–IDF weighting as a principled way to highlight characteristic terms. We derive the formulas from first principles, work through a manual example, and demonstrate classification pipelines on small corpora. Code examples mirror the bag-of-words and TF–IDF labs and benchmark practices.</p></li>
+<li><p><strong>Word embeddings and distributional semantics.</strong>
+We move from high-dimensional sparse vectors to dense, low-dimensional word embeddings (word2vec, GloVe, fastText). You will see how co-occurrence patterns give rise to semantic structure in vector space—including the famous vector-arithmetic analogy—and learn how to use pretrained embeddings in downstream models.</p></li>
+<li><p><strong>Contextual embeddings and BERT.</strong>
+Finally, we introduce BERT-style encoders as a bridge toward LLMs. We explain how self-attention produces context-dependent token vectors, compare pooling strategies for sentence-level representations, and survey the broader family of pretrained transformers available through the Hugging Face ecosystem.</p></li>
+</ol>
+<p>Throughout the chapter, code examples are drawn from the accompanying labs and practice notebooks. Each section includes short, focused Python snippets that mirror the workflows you will implement more fully in the Jupyter notebooks—such as building sparse matrices with <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, computing TF–IDF weights, loading pretrained embeddings with <code class="docutils literal notranslate"><span class="pre">gensim</span></code>, and extracting contextual vectors with <code class="docutils literal notranslate"><span class="pre">transformers</span></code>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_01/Intro2LLM_C01S05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.5. </span>Modern Modeling and Evaluation Strategies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C02S01.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>From Tokens to Vectors: Classical Encoders</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1090 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2. Bag-of-Words and TF–IDF in Practice &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_02/Intro2LLM_C02S02';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.3. Word Embeddings and Distributional Semantics" href="Intro2LLM_C02S03.html" />
+    <link rel="prev" title="2.1. From Tokens to Vectors: Classical Encoders" href="Intro2LLM_C02S01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">3. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bag-of-Words and TF–IDF in Practice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">2.2.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-counts-to-bag-of-words">2.2.2. From counts to bag-of-words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-bag-of-words-with-countvectorizer">2.2.2.1. Example: bag-of-words with CountVectorizer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tfidf">2.2.3. Why TF–IDF?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#term-frequency-tf">2.2.3.1. Term frequency (TF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-document-frequency-idf">2.2.3.2. Inverse document frequency (IDF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#worked-manual-example">2.2.3.3. Worked manual example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidf-with-scikit-learn">2.2.4. TF–IDF with scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-to-n-grams">2.2.5. Extending to N-grams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-classification-pipeline">2.2.6. End-to-end classification pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-comparison-summary">2.2.7. Encoder comparison summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-considerations">2.2.8. Design considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">2.2.9. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="bag-of-words-and-tfidf-in-practice">
+<span id="sec2-2"></span><h1><span class="section-number">2.2. </span>Bag-of-Words and TF–IDF in Practice<a class="headerlink" href="#bag-of-words-and-tfidf-in-practice" title="Link to this heading">#</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Section Goal</p>
+<p>By the end of this section you will understand the bag-of-words model, be able
+to derive TF–IDF weights from first principles, compute them by hand for a small
+corpus, apply them with scikit-learn, and critically evaluate their impact on
+a downstream classification task.</p>
+</div>
+<section id="learning-objectives">
+<h2><span class="section-number">2.2.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Construct bag-of-words document–term matrices from a small corpus.</p></li>
+<li><p>Define term frequency (TF) and inverse document frequency (IDF) and explain their motivations.</p></li>
+<li><p>Compute TF–IDF weights by hand for at least one example.</p></li>
+<li><p>Use scikit-learn to build TF–IDF features and inspect their values.</p></li>
+<li><p>Extend BoW to bigrams and explain when n-gram features are useful.</p></li>
+<li><p>Build an end-to-end text classification pipeline using TF–IDF features.</p></li>
+<li><p>Relate encoder choices to downstream performance on simple benchmarks.</p></li>
+</ul>
+</section>
+<section id="from-counts-to-bag-of-words">
+<h2><span class="section-number">2.2.2. </span>From counts to bag-of-words<a class="headerlink" href="#from-counts-to-bag-of-words" title="Link to this heading">#</a></h2>
+<p>The <strong>bag-of-words (BoW)</strong> model represents each document by the multiset of vocabulary items it contains, <em>ignoring word order</em>. Conceptually, a BoW representation is a histogram over tokens:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-80fdbdf4-b27d-41ba-b948-4939d3dee652">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-80fdbdf4-b27d-41ba-b948-4939d3dee652" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathbf{x}_d \in \mathbb{Z}_{\geq 0}^{|V|}, \quad x_{d,t} = \text{count of term } t \text{ in document } d
+\end{equation}\]</div>
+<p>Despite its simplicity, BoW often performs surprisingly well for tasks such as topic classification and sentiment analysis, especially when combined with suitable weighting schemes.</p>
+<div class="warning admonition">
+<p class="admonition-title">What information is discarded?</p>
+<p>“The dog bit the man” and “the man bit the dog” produce <em>identical</em> BoW vectors. Order, syntax, and discourse structure are all lost. For many classification tasks this is acceptable; for tasks that require understanding of compositional or relational meaning — such as question answering or logical inference — it is not.</p>
+</div>
+<section id="example-bag-of-words-with-countvectorizer">
+<h3><span class="section-number">2.2.2.1. </span>Example: bag-of-words with CountVectorizer<a class="headerlink" href="#example-bag-of-words-with-countvectorizer" title="Link to this heading">#</a></h3>
+<p>The example below extends the count-based encoding from the previous section, following patterns from <code class="docutils literal notranslate"><span class="pre">l202_text_processing_bag_of_words</span></code>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Flood warnings issued for the river basin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Drought conditions persist in the northern region&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Heavy rain increases flood risk downstream&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;New climate report highlights increased flood and drought frequency&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">dtm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;doc</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">))]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Document–term matrix (counts):&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Document–term matrix (counts):
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>basin</th>
+      <th>climate</th>
+      <th>conditions</th>
+      <th>downstream</th>
+      <th>drought</th>
+      <th>flood</th>
+      <th>frequency</th>
+      <th>heavy</th>
+      <th>highlights</th>
+      <th>increased</th>
+      <th>increases</th>
+      <th>issued</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>doc1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>doc2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>doc3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>doc4</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Observe that:</p>
+<ul class="simple">
+<li><p><strong>doc4</strong> shares the words “flood” and “drought” with <strong>doc1</strong> and <strong>doc2</strong>, making it a candidate for similarity-based retrieval.</p></li>
+<li><p>High-frequency stopwords like “the”, “and”, “in” are removed, so the matrix focuses on content words.</p></li>
+</ul>
+</section>
+</section>
+<section id="why-tfidf">
+<h2><span class="section-number">2.2.3. </span>Why TF–IDF?<a class="headerlink" href="#why-tfidf" title="Link to this heading">#</a></h2>
+<p>Raw counts treat all tokens equally — but they clearly are not equal. Consider the word “the”: it appears in virtually every English document and tells us almost nothing about the document’s topic. Conversely, a term like “inundation” is so specific that its presence in a document is highly informative.</p>
+<p><strong>TF–IDF</strong> (Term Frequency–Inverse Document Frequency) addresses this by rewarding specificity: a word that is frequent <em>in a particular document</em> but rare <em>across the corpus</em> is likely characteristic of that document and therefore receives a high score.</p>
+<p>The TF–IDF score is the product of two components:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-04701858-29d1-4e54-958e-57591ab2f5fc">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-04701858-29d1-4e54-958e-57591ab2f5fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
+\end{equation}\]</div>
+<section id="term-frequency-tf">
+<h3><span class="section-number">2.2.3.1. </span>Term frequency (TF)<a class="headerlink" href="#term-frequency-tf" title="Link to this heading">#</a></h3>
+<p>TF measures <em>how often</em> term <span class="math notranslate nohighlight">\(t\)</span> appears in document <span class="math notranslate nohighlight">\(d\)</span>. The raw count can be normalized in several ways:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-tf-variants">
+<caption><span class="caption-number">Table 2.3 </span><span class="caption-text">Term Frequency Normalization Variants</span><a class="headerlink" href="#table-nlp-tf-variants" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Variant</p></th>
+<th class="head text-left"><p>Formula</p></th>
+<th class="head text-left"><p>When to use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Raw count</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{TF}(t,d) = f_{t,d}\)</span></p></td>
+<td class="text-left"><p>Simplest; works for short, similar-length documents</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Log normalized</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{TF}(t,d) = 1 + \log f_{t,d}\)</span> if <span class="math notranslate nohighlight">\(f_{t,d} &gt; 0\)</span>, else 0</p></td>
+<td class="text-left"><p>Reduces the effect of very frequent terms; common in information retrieval</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Binary</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{TF}(t,d) = \mathbf{1}[f_{t,d} &gt; 0]\)</span></p></td>
+<td class="text-left"><p>Ignores repetition; suitable when presence/absence matters more than count</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="inverse-document-frequency-idf">
+<h3><span class="section-number">2.2.3.2. </span>Inverse document frequency (IDF)<a class="headerlink" href="#inverse-document-frequency-idf" title="Link to this heading">#</a></h3>
+<p>IDF measures <em>how rare</em> term <span class="math notranslate nohighlight">\(t\)</span> is across the <span class="math notranslate nohighlight">\(N\)</span>-document corpus. A term that appears in every document is not useful for distinguishing documents, so it receives a low IDF weight. A term that appears in only one or two documents receives a high IDF weight.</p>
+<p>The classic IDF formula is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a3d04d95-1816-4bd9-9602-a991644e7b60">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-a3d04d95-1816-4bd9-9602-a991644e7b60" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{IDF}(t) = \log \frac{N}{|\{d : t \in d\}|}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(|\{d : t \in d\}|\)</span> is the <strong>document frequency</strong> <span class="math notranslate nohighlight">\(\text{df}(t)\)</span> — the number of documents that contain term <span class="math notranslate nohighlight">\(t\)</span> at least once.</p>
+<div class="note admonition">
+<p class="admonition-title">Scikit-learn’s smoothed IDF</p>
+<p>Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> uses a slightly different, <strong>smoothed</strong> formula to avoid division by zero and to prevent IDF from being 0 for terms that appear in all documents:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5f4ef282-7ea5-4324-863d-8cc6f9a841aa">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-5f4ef282-7ea5-4324-863d-8cc6f9a841aa" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{IDF}(t) = \log \frac{1 + N}{1 + \text{df}(t)} + 1\end{equation}\]</div>
+<p>The smoothing adds 1 to both numerator and denominator. The extra <code class="docutils literal notranslate"><span class="pre">+1</span></code> at the end ensures that terms appearing in every document still receive a positive (non-zero) IDF weight. This is why scikit-learn’s numbers will differ from the manual calculation below, which uses the unsmoothed formula.</p>
+</div>
+</section>
+<section id="worked-manual-example">
+<h3><span class="section-number">2.2.3.3. </span>Worked manual example<a class="headerlink" href="#worked-manual-example" title="Link to this heading">#</a></h3>
+<p>Let us compute TF–IDF by hand for the word <strong>“flood”</strong> and <strong>“drought”</strong> using the unsmoothed formula.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Corpus (4 documents):
+  doc1: &quot;Flood warnings issued for the river basin&quot;         → flood: 1 time
+  doc2: &quot;Drought conditions persist in the northern region&quot; → flood: 0 times
+  doc3: &quot;Heavy rain increases flood risk downstream&quot;        → flood: 1 time
+  doc4: &quot;New climate report highlights increased flood and drought frequency&quot;
+                                                            → flood: 1 time
+
+N = 4,  df(flood) = 3  (appears in doc1, doc3, doc4)
+
+IDF(flood) = log(4 / 3) ≈ 0.288
+
+TF-IDF(flood, doc1) = 1 × 0.288 = 0.288
+TF-IDF(flood, doc2) = 0 × 0.288 = 0.000   ← word absent; score is 0
+TF-IDF(flood, doc3) = 1 × 0.288 = 0.288
+TF-IDF(flood, doc4) = 1 × 0.288 = 0.288
+</pre></div>
+</div>
+<p>Now compare with <strong>“drought”</strong>, which appears only in doc2 and doc4:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>df(drought) = 2    IDF(drought) = log(4 / 2) ≈ 0.693
+
+TF-IDF(drought, doc2) = 1 × 0.693 = 0.693
+TF-IDF(drought, doc4) = 1 × 0.693 = 0.693
+</pre></div>
+</div>
+<p>“Drought” receives a <em>higher</em> TF–IDF weight than “flood” because it appears in fewer documents and is therefore more discriminative. This is the intended behavior of IDF: rare terms earn higher scores.</p>
+</section>
+</section>
+<section id="tfidf-with-scikit-learn">
+<h2><span class="section-number">2.2.4. </span>TF–IDF with scikit-learn<a class="headerlink" href="#tfidf-with-scikit-learn" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Flood warnings issued for the river basin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Drought conditions persist in the northern region&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Heavy rain increases flood risk downstream&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;New climate report highlights increased flood and drought frequency&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span>
+<span class="n">X_tfidf</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">tfidf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">X_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;doc</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">))]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TF–IDF matrix:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tfidf_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TF–IDF matrix:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>basin</th>
+      <th>climate</th>
+      <th>conditions</th>
+      <th>downstream</th>
+      <th>drought</th>
+      <th>flood</th>
+      <th>frequency</th>
+      <th>heavy</th>
+      <th>highlights</th>
+      <th>increased</th>
+      <th>increases</th>
+      <th>issued</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>doc1</th>
+      <td>0.645</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.411</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.645</td>
+    </tr>
+    <tr>
+      <th>doc2</th>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.785</td>
+      <td>0.000</td>
+      <td>0.619</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>doc3</th>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.542</td>
+      <td>0.000</td>
+      <td>0.346</td>
+      <td>0.000</td>
+      <td>0.542</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.542</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>doc4</th>
+      <td>0.000</td>
+      <td>0.446</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>0.352</td>
+      <td>0.285</td>
+      <td>0.446</td>
+      <td>0.000</td>
+      <td>0.446</td>
+      <td>0.446</td>
+      <td>0.000</td>
+      <td>0.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Compare the TF–IDF matrix to the raw count matrix from the previous example. Notice how:</p>
+<ul class="simple">
+<li><p>Rare, informative terms (e.g., “drought”, “river”, “basin”) receive higher weights.</p></li>
+<li><p>Terms that appear across many documents (like “flood”) are somewhat suppressed.</p></li>
+<li><p>By default, <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> also applies <strong>L2 normalization</strong> to each document row, so the values reflect relative importance rather than raw counts. This normalization ensures that longer documents do not automatically dominate similarity scores.</p></li>
+</ul>
+</section>
+<section id="extending-to-n-grams">
+<h2><span class="section-number">2.2.5. </span>Extending to N-grams<a class="headerlink" href="#extending-to-n-grams" title="Link to this heading">#</a></h2>
+<p>Single words (unigrams) miss multi-word phrases. Consider:</p>
+<ul class="simple">
+<li><p>“climate” and “change” as separate unigrams vs. “climate change” as a bigram.</p></li>
+<li><p>“public” and “health” as unigrams vs. “public health” as a bigram.</p></li>
+</ul>
+<p>An <strong>n-gram</strong> is a contiguous sequence of <span class="math notranslate nohighlight">\(n\)</span> tokens. Using <code class="docutils literal notranslate"><span class="pre">ngram_range=(1,</span> <span class="pre">2)</span></code> includes both unigrams (<span class="math notranslate nohighlight">\(n=1\)</span>) and bigrams (<span class="math notranslate nohighlight">\(n=2\)</span>):</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+
+<span class="n">headlines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Climate change increases flood frequency&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Climate models predict more frequent droughts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Flood control infrastructure under climate pressure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Public health risks from heatwaves and flooding&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">ngram_label</span><span class="p">,</span> <span class="n">ngram_range</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;Unigrams only&quot;</span><span class="p">,</span>       <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                                   <span class="p">(</span><span class="s2">&quot;Bigrams only&quot;</span><span class="p">,</span>        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+                                   <span class="p">(</span><span class="s2">&quot;Unigrams + Bigrams&quot;</span><span class="p">,</span>  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]:</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">ngram_range</span><span class="o">=</span><span class="n">ngram_range</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">X</span>   <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">headlines</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">ngram_label</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> features):&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unigrams only (15 features):
+[&#39;and&#39;, &#39;change&#39;, &#39;climate&#39;, &#39;control&#39;, &#39;droughts&#39;, &#39;flood&#39;, &#39;flooding&#39;, &#39;frequency&#39;, &#39;frequent&#39;, &#39;from&#39;, &#39;health&#39;, &#39;heatwaves&#39;, &#39;increases&#39;, &#39;infrastructure&#39;, &#39;models&#39;]
+
+Bigrams only (15 features):
+[&#39;and flooding&#39;, &#39;change increases&#39;, &#39;climate change&#39;, &#39;climate models&#39;, &#39;climate pressure&#39;, &#39;control infrastructure&#39;, &#39;flood control&#39;, &#39;flood frequency&#39;, &#39;frequent droughts&#39;, &#39;from heatwaves&#39;, &#39;health risks&#39;, &#39;heatwaves and&#39;, &#39;increases flood&#39;, &#39;infrastructure under&#39;, &#39;models predict&#39;]
+
+Unigrams + Bigrams (15 features):
+[&#39;and&#39;, &#39;and flooding&#39;, &#39;change&#39;, &#39;change increases&#39;, &#39;climate&#39;, &#39;climate change&#39;, &#39;climate models&#39;, &#39;climate pressure&#39;, &#39;control&#39;, &#39;control infrastructure&#39;, &#39;droughts&#39;, &#39;flood&#39;, &#39;flood control&#39;, &#39;flood frequency&#39;, &#39;flooding&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Bigrams such as “climate change”, “flood frequency”, and “public health” capture domain-specific compound concepts that unigrams alone cannot distinguish.</p>
+<div class="warning admonition">
+<p class="admonition-title">Trade-off: expressiveness vs. dimensionality</p>
+<p>Adding bigrams increases the feature space substantially. For a vocabulary of <span class="math notranslate nohighlight">\(|V|\)</span> words, there are up to <span class="math notranslate nohighlight">\(|V|^2\)</span> possible bigrams (though most are never observed). In practice, <code class="docutils literal notranslate"><span class="pre">max_features</span></code> and <code class="docutils literal notranslate"><span class="pre">min_df</span></code> are essential to keep the feature space manageable.</p>
+</div>
+</section>
+<section id="end-to-end-classification-pipeline">
+<h2><span class="section-number">2.2.6. </span>End-to-end classification pipeline<a class="headerlink" href="#end-to-end-classification-pipeline" title="Link to this heading">#</a></h2>
+<p>The real value of TF–IDF emerges in classification tasks. The following example builds a full pipeline using scikit-learn’s <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> object, which chains a vectorizer and a classifier into a single estimator:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Tiny labelled dataset: topic classification</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Severe flooding hit coastal towns after heavy rainfall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Drought conditions are spreading across the southern plains&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Flash floods cause widespread damage to infrastructure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Water shortage declared in drought-stricken areas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;River levels rising rapidly due to persistent rain&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Heatwave intensifies drought in farming regions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Flood defences overwhelmed by record storm surge&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Crops failing across regions affected by prolonged drought&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;flood&quot;</span><span class="p">,</span> <span class="s2">&quot;drought&quot;</span><span class="p">,</span> <span class="s2">&quot;flood&quot;</span><span class="p">,</span> <span class="s2">&quot;drought&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;flood&quot;</span><span class="p">,</span> <span class="s2">&quot;drought&quot;</span><span class="p">,</span> <span class="s2">&quot;flood&quot;</span><span class="p">,</span>  <span class="s2">&quot;drought&quot;</span><span class="p">]</span>
+
+<span class="c1"># Pipeline: TF-IDF → Logistic Regression</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;tfidf&quot;</span><span class="p">,</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                              <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span>   <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">)),</span>
+<span class="p">])</span>
+
+<span class="c1"># 4-fold cross-validation (small corpus, so results are indicative only)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">documents</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cross-validation accuracy: </span><span class="si">{</span><span class="n">scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">scores</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Inspect top features for each class</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;tfidf&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="n">coef</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;clf&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">top_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">coef</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">top_neg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">coef</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top features → &#39;flood&#39;  :&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_pos</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top features → &#39;drought&#39;:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">feature_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_neg</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cross-validation accuracy: 1.00 ± 0.00
+
+Top features → &#39;flood&#39;  : [&#39;persistent&#39;, &#39;persistent rain&#39;, &#39;levels&#39;, &#39;levels rising&#39;, &#39;overwhelmed&#39;]
+Top features → &#39;drought&#39;: [&#39;drought&#39;, &#39;regions&#39;, &#39;declared&#39;, &#39;areas&#39;, &#39;declared drought&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This shows the full production pattern:</p>
+<ol class="arabic simple">
+<li><p><strong>Fit</strong> a TF–IDF vectorizer on training data (builds vocabulary and learns IDF weights).</p></li>
+<li><p><strong>Transform</strong> documents to TF–IDF feature vectors.</p></li>
+<li><p><strong>Train</strong> a classifier on those feature vectors.</p></li>
+<li><p><strong>Inspect</strong> feature weights to understand what drives predictions.</p></li>
+</ol>
+<div class="tip admonition">
+<p class="admonition-title">Why logistic regression?</p>
+<p>Logistic regression is a natural pairing with TF–IDF: it is a linear model that assigns a weight to each feature (vocabulary term), and those weights can be inspected directly to understand which terms push the model toward each class. This interpretability is one of the strongest arguments for the TF–IDF + logistic regression baseline.</p>
+</div>
+<!-- 
+In practice notebooks `p201_encoding_benchmarks_biomedical` and `p202_encoding_benchmarks_climate_news`, you will apply this pattern to larger corpora and compare BoW, TF–IDF, and embedding-based classifiers. -->
+</section>
+<section id="encoder-comparison-summary">
+<h2><span class="section-number">2.2.7. </span>Encoder comparison summary<a class="headerlink" href="#encoder-comparison-summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-encoder-comparison">
+<caption><span class="caption-number">Table 2.4 </span><span class="caption-text">Comparison of NLP Document Representations and Capabilities</span><a class="headerlink" href="#table-nlp-encoder-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Representation</p></th>
+<th class="head"><p>Captures frequency</p></th>
+<th class="head"><p>Penalizes common terms</p></th>
+<th class="head"><p>Captures word order</p></th>
+<th class="head"><p>Captures word similarity</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>One-hot</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>Bag-of-words (raw count)</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>TF–IDF</p></td>
+<td><p>Yes (log-normalized)</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>TF–IDF + n-grams</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Partial (local phrases only)</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>Word embeddings (<a class="reference internal" href="Intro2LLM_C02S03.html#sec2-3"><span class="std std-numref">Section 2.3</span></a>)</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Contextual embeddings (<a class="reference internal" href="Intro2LLM_C02S04.html#sec2-4"><span class="std std-numref">Section 2.4</span></a>)</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="reference internal" href="#table-nlp-encoder-comparison"><span class="std std-numref">Table 2.4</span></a> highlights the evolution of how we represent text, showing how each approach addresses the limitations of the last.</p>
+</section>
+<section id="design-considerations">
+<h2><span class="section-number">2.2.8. </span>Design considerations<a class="headerlink" href="#design-considerations" title="Link to this heading">#</a></h2>
+<p>When using BoW and TF–IDF in practice:</p>
+<ul class="simple">
+<li><p><strong>N-grams</strong>: including bigrams or trigrams captures short phrases (e.g., “climate change”, “public health”) at the cost of a much larger feature space. Start with unigrams and add bigrams only if needed.</p></li>
+<li><p><strong>Stopword handling</strong>: removing stopwords reduces dimensionality but may discard useful function words for some tasks (e.g., negation in sentiment analysis: “not good” vs. “good”). Evaluate empirically.</p></li>
+<li><p><strong>Vocabulary curation</strong>: domain-specific stop lists or term-selection criteria can improve interpretability and performance. For biomedical text, generic English stopwords may not remove domain-specific ubiquitous terms (e.g., “patient”, “study”).</p></li>
+<li><p><strong>Document length normalization</strong>: <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> applies L2 normalization by default, ensuring that longer documents do not automatically dominate similarity scores. If you use <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code>, you may want to normalize manually.</p></li>
+<li><p><strong>IDF formula choice</strong>: the smoothed formula in scikit-learn avoids extreme values but may differ from formulas in textbooks. Always check which variant your tool uses.</p></li>
+</ul>
+<div class="important admonition">
+<p class="admonition-title">Key Takeaways</p>
+<ul class="simple">
+<li><p>The bag-of-words model represents documents as count vectors over a fixed vocabulary; word order is discarded.</p></li>
+<li><p>TF–IDF reweights counts so that terms rare across the corpus but frequent in a document receive higher scores — they are the “characteristic” terms of that document.</p></li>
+<li><p>N-gram features extend BoW to capture local word combinations, improving performance when phrases are informative.</p></li>
+<li><p>A TF–IDF + logistic regression pipeline is a strong, interpretable baseline worth trying before moving to heavier models.</p></li>
+<li><p>Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> uses a smoothed IDF formula and L2 normalization; always be aware of which formula your tool applies.</p></li>
+<li><p>TF–IDF still cannot capture word similarity or global context — motivating the move to embeddings in Section 2.3.</p></li>
+</ul>
+</div>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">2.2.9. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>TF–IDF intuition</strong>
+Construct a tiny corpus of 4–5 documents by hand and compute TF and IDF values for a few chosen words using the formula <span class="math notranslate nohighlight">\(\text{IDF}(t) = \log(N / \text{df}(t))\)</span>. Identify which terms should receive high versus low TF–IDF scores, and verify your intuition with scikit-learn. Then compare the values to scikit-learn’s output — can you account for the difference?</p></li>
+<li><p><strong>N-gram exploration</strong>
+Using <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code>, compare unigram, bigram, and unigram+bigram representations for a small set of topic-labeled headlines. Which n-grams seem most informative for distinguishing topics? Does adding bigrams always improve classification accuracy in your cross-validation experiment?</p></li>
+<li><p><strong>Domain-specific stopwords</strong>
+For a corpus of climate or biomedical text, propose a list of domain-specific stopwords (e.g., very common terms that are uninformative for your specific task). How would including or excluding them affect your classification model? Implement the change and compare results.</p></li>
+<li><p><strong>Encoding benchmark</strong>
+Extend the classification pipeline above to compare raw-count BoW, TF–IDF (unigrams), and TF–IDF (unigrams + bigrams) on the same data. Report accuracy and the top-5 most predictive features for each configuration. What does this tell you about the relative importance of term weighting versus feature scope?</p></li>
+<li><p><strong>IDF formula comparison</strong>
+Compute IDF scores manually using both the classic formula <span class="math notranslate nohighlight">\(\log(N / \text{df}(t))\)</span> and scikit-learn’s smoothed formula <span class="math notranslate nohighlight">\(\log\!\left(\frac{1+N}{1+\text{df}(t)}\right) + 1\)</span> for the same small corpus. For which terms do the formulas agree most closely? For which do they differ the most, and why?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C02S01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>From Tokens to Vectors: Classical Encoders</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C02S03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Word Embeddings and Distributional Semantics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">2.2.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-counts-to-bag-of-words">2.2.2. From counts to bag-of-words</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-bag-of-words-with-countvectorizer">2.2.2.1. Example: bag-of-words with CountVectorizer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-tfidf">2.2.3. Why TF–IDF?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#term-frequency-tf">2.2.3.1. Term frequency (TF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-document-frequency-idf">2.2.3.2. Inverse document frequency (IDF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#worked-manual-example">2.2.3.3. Worked manual example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfidf-with-scikit-learn">2.2.4. TF–IDF with scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-to-n-grams">2.2.5. Extending to N-grams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-classification-pipeline">2.2.6. End-to-end classification pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoder-comparison-summary">2.2.7. Encoder comparison summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-considerations">2.2.8. Design considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">2.2.9. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
