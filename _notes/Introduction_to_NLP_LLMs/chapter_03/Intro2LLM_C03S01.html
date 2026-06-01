@@ -1,0 +1,967 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.1. Text Classification: Problem Framing and Pipeline Design &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_03/Intro2LLM_C03S01';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.2. One Pipeline, Many Classifiers" href="Intro2LLM_C03S02.html" />
+    <link rel="prev" title="3. Core NLP Modeling: Classification and Embeddings" href="Intro2LLM_C03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">4. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Text Classification: Problem Framing and Pipeline Design</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.1.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivating-example-automating-customer-feedback-triage">3.1.2. Motivating example: automating customer feedback triage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-classification">3.1.3. What is text classification?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-variants">3.1.3.1. Problem variants</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-standard-pipeline">3.1.4. The standard pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-1-data-acquisition-and-labeling">3.1.4.1. Stage 1 — Data acquisition and labeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-2-text-preprocessing">3.1.4.2. Stage 2 — Text preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-3-feature-extraction-vectorization">3.1.4.3. Stage 3 — Feature extraction (vectorization)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-4-model-training">3.1.4.4. Stage 4 — Model training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-5-evaluation">3.1.4.5. Stage 5 — Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-6-error-analysis-and-iteration">3.1.4.6. Stage 6 — Error analysis and iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-minimal-scikit-learn-pipeline">3.1.4.7. A minimal scikit-learn pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">3.1.5. Evaluation metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">3.1.5.1. Accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-and-f1">3.1.5.2. Precision, Recall, and F1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-auc">3.1.5.3. ROC AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">3.1.5.4. Confusion matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-metric">3.1.5.5. Choosing the right metric</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-benchmarks">3.1.6. Common benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-splits-and-cross-validation">3.1.7. Data splits and cross-validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">3.1.8. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">3.1.9. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="text-classification-problem-framing-and-pipeline-design">
+<span id="sec3-1"></span><h1><span class="section-number">3.1. </span>Text Classification: Problem Framing and Pipeline Design<a class="headerlink" href="#text-classification-problem-framing-and-pipeline-design" title="Link to this heading">#</a></h1>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>By the end of this section you will understand how to <em>frame</em> any text labeling problem as a supervised classification task, how to assemble a systematic end-to-end pipeline, and how to choose metrics that give an honest picture of model performance — especially when classes are imbalanced.</p>
+</div>
+<section id="learning-objectives">
+<h2><span class="section-number">3.1.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Define text classification and give examples of binary, multi-class, and multi-label variants.</p></li>
+<li><p>List the main stages of a supervised text classification pipeline and explain the role of each stage.</p></li>
+<li><p>Compute and interpret common evaluation metrics — accuracy, precision, recall, F1, ROC AUC — from a confusion matrix.</p></li>
+<li><p>Explain why accuracy is a poor metric for imbalanced datasets and identify better alternatives.</p></li>
+<li><p>Describe common benchmark datasets used to develop and test text classifiers.</p></li>
+</ul>
+</section>
+<section id="motivating-example-automating-customer-feedback-triage">
+<h2><span class="section-number">3.1.2. </span>Motivating example: automating customer feedback triage<a class="headerlink" href="#motivating-example-automating-customer-feedback-triage" title="Link to this heading">#</a></h2>
+<p>Imagine you work for a large e-commerce company that receives thousands of customer messages every day. Messages arrive mixed together: some are complaints about late deliveries, some ask about return policies, some are billing disputes, and some are generic praise. A human team cannot read every message in real time and route it to the right department.</p>
+<p><strong>Text classification</strong> solves this directly: train a model to read each message and assign it a category — <em>delivery issue</em>, <em>returns</em>, <em>billing</em>, <em>compliment</em>, <em>other</em> — so the correct team is notified immediately.</p>
+<p>This example illustrates the three things you always need to frame a classification problem:</p>
+<ol class="arabic simple">
+<li><p>A corpus of input texts (the customer messages).</p></li>
+<li><p>A set of discrete categories (the department labels).</p></li>
+<li><p>Ground-truth labels for training (messages that human agents have already categorized).</p></li>
+</ol>
+<p>Once these three elements are in place, the pipeline described below applies regardless of the domain.</p>
+</section>
+<section id="what-is-text-classification">
+<h2><span class="section-number">3.1.3. </span>What is text classification?<a class="headerlink" href="#what-is-text-classification" title="Link to this heading">#</a></h2>
+<p><strong>Text classification</strong> (also called text categorization) is the task of assigning one or more predefined labels to a piece of text — a document, a sentence, or a fragment — based on its content. It is arguably the most common NLP task in industry and research, appearing in:</p>
+<ul class="simple">
+<li><p><strong>Sentiment analysis</strong>: labeling a product review as <em>positive</em> or <em>negative</em>.</p></li>
+<li><p><strong>Topic categorization</strong>: tagging a news article with one or more subject areas (e.g., politics, sports, technology).</p></li>
+<li><p><strong>Spam detection</strong>: classifying email as <em>spam</em> or <em>not spam</em>.</p></li>
+<li><p><strong>Intent detection</strong>: determining what a user wants in a conversational system (e.g., “book a flight”, “check weather”).</p></li>
+<li><p><strong>Relevance filtering</strong>: deciding whether a document is relevant to a query or domain (as in the economic news task we study in Section 2).</p></li>
+<li><p><strong>Medical triage</strong>: routing patient records or clinical notes to appropriate care pathways.</p></li>
+<li><p><strong>Hate speech and content moderation</strong>: flagging text that violates community guidelines.</p></li>
+<li><p><strong>Language identification</strong>: determining which language a document is written in.</p></li>
+</ul>
+<p>Formally, given an input text <span class="math notranslate nohighlight">\(x\)</span> and a set of classes <span class="math notranslate nohighlight">\(\mathcal{C} = \{c_1, c_2, \ldots, c_k\}\)</span>, the goal is to learn a function <span class="math notranslate nohighlight">\(f: x \mapsto c_i\)</span> that generalizes well to unseen documents.</p>
+<section id="problem-variants">
+<h3><span class="section-number">3.1.3.1. </span>Problem variants<a class="headerlink" href="#problem-variants" title="Link to this heading">#</a></h3>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-classification-variants">
+<caption><span class="caption-number">Table 3.1 </span><span class="caption-text">Text Classification Problem Variants</span><a class="headerlink" href="#table-nlp-classification-variants" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Variant</p></th>
+<th class="head text-left"><p>Description</p></th>
+<th class="head text-left"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Binary</strong> (<span class="math notranslate nohighlight">\(k = 2\)</span>)</p></td>
+<td class="text-left"><p>Each document receives exactly one of two labels</p></td>
+<td class="text-left"><p>Spam vs. not spam</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Multi-class</strong> (<span class="math notranslate nohighlight">\(k &gt; 2\)</span>)</p></td>
+<td class="text-left"><p>Each document receives exactly one of <span class="math notranslate nohighlight">\(k &gt; 2\)</span> labels</p></td>
+<td class="text-left"><p>News topic: politics / sports / technology / …</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Multi-label</strong></p></td>
+<td class="text-left"><p>Each document may receive zero or more labels simultaneously</p></td>
+<td class="text-left"><p>A tweet tagged as both <em>politics</em> and <em>humor</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Ordinal</strong></p></td>
+<td class="text-left"><p>Labels have a natural order</p></td>
+<td class="text-left"><p>Star rating: 1 ★ through 5 ★</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Most pipeline components described below apply to all four variants. The primary differences lie in the <strong>loss function</strong> used during training and the <strong>evaluation metrics</strong> chosen.</p>
+<div class="note admonition">
+<p class="admonition-title">Multi-label vs. multi-class</p>
+<p>These two terms are often confused:</p>
+<ul class="simple">
+<li><p><strong>Multi-class</strong>: one document, one label, but the label is chosen from more than two options (e.g., a news article is either <em>politics</em>, <em>sports</em>, or <em>technology</em> — not two of those at once).</p></li>
+<li><p><strong>Multi-label</strong>: one document, potentially <em>many</em> labels simultaneously (e.g., a research paper can be tagged as both <em>machine learning</em> and <em>natural language processing</em>).</p></li>
+</ul>
+<p>In scikit-learn, multi-class classifiers such as <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> handle the multi-class case automatically. Multi-label classification requires either a separate binary classifier per label (<code class="docutils literal notranslate"><span class="pre">OneVsRestClassifier</span></code>) or a purpose-built multi-label model.</p>
+</div>
+</section>
+</section>
+<section id="the-standard-pipeline">
+<h2><span class="section-number">3.1.4. </span>The standard pipeline<a class="headerlink" href="#the-standard-pipeline" title="Link to this heading">#</a></h2>
+<p>A supervised text classification system is built from a sequence of well-defined stages. Think of the pipeline as an assembly line: each stage transforms the data into a form the next stage can use.</p>
+<!-- ```
+Raw Text → [Preprocessing] → Clean Text → [Vectorization] → Feature Matrix
+         → [Model Training] → Trained Model → [Evaluation] → Performance Report
+         → [Error Analysis] → Improved Pipeline
+``` -->
+<figure class="align-center" id="text-classification-pipeline">
+<a class="reference internal image-reference" href="../_images/text_classification_pipeline.png"><img alt="../_images/text_classification_pipeline.png" src="../_images/text_classification_pipeline.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Supervised text classification pipeline.</span><a class="headerlink" href="#text-classification-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="stage-1-data-acquisition-and-labeling">
+<h3><span class="section-number">3.1.4.1. </span>Stage 1 — Data acquisition and labeling<a class="headerlink" href="#stage-1-data-acquisition-and-labeling" title="Link to this heading">#</a></h3>
+<p>Obtain a corpus of text documents together with ground-truth labels. Labels may come from:</p>
+<ul class="simple">
+<li><p><strong>Human annotation</strong>: crowdsourcing platforms (e.g., Figure Eight, Amazon MTurk) or domain experts.</p></li>
+<li><p><strong>Implicit signals</strong>: user behavior (clicks, purchases, complaints filed) used as weak labels.</p></li>
+<li><p><strong>Programmatic heuristics</strong>: rule-based patterns that assign labels automatically (with some noise).</p></li>
+</ul>
+<p><strong>Example.</strong> For a movie review sentiment classifier, labels could come from star ratings: reviews with 4–5 stars are labeled <em>positive</em>, and those with 1–2 stars are labeled <em>negative</em>.</p>
+<p>Key considerations at this stage: sufficient dataset size, representative sampling across all classes, and <strong>inter-annotator agreement</strong> for human-labeled data. Inter-annotator agreement measures how consistently different human raters assign the same label to the same document; Cohen’s kappa is the most common metric.</p>
+</section>
+<section id="stage-2-text-preprocessing">
+<h3><span class="section-number">3.1.4.2. </span>Stage 2 — Text preprocessing<a class="headerlink" href="#stage-2-text-preprocessing" title="Link to this heading">#</a></h3>
+<p>Clean and normalize the raw text to reduce noise and vocabulary size. Common operations include:</p>
+<ul class="simple">
+<li><p>Lowercasing all tokens.</p></li>
+<li><p>Removing HTML markup, URLs, and boilerplate text.</p></li>
+<li><p>Stripping punctuation and digits (or retaining them if they carry meaning).</p></li>
+<li><p>Removing <strong>stopwords</strong> (very common words like <em>the</em>, <em>is</em>, <em>at</em> that rarely help classification).</p></li>
+<li><p><strong>Stemming</strong> or <strong>lemmatization</strong> to collapse morphological variants (e.g., <em>running</em> → <em>run</em>).</p></li>
+</ul>
+<p><strong>Example.</strong> The raw review text <code class="docutils literal notranslate"><span class="pre">&quot;&lt;br</span> <span class="pre">/&gt;Absolutely</span> <span class="pre">LOVED</span> <span class="pre">this</span> <span class="pre">film!!</span> <span class="pre">10/10&quot;</span></code> becomes <code class="docutils literal notranslate"><span class="pre">loved</span> <span class="pre">film</span></code> after stripping HTML tags, lowercasing, removing punctuation and digits, and dropping stopwords.</p>
+<p>Which operations to apply depends on the task. For sentiment analysis, exclamation marks and capitalization can signal intensity, so you might keep them. For topic classification, they are usually noise.</p>
+</section>
+<section id="stage-3-feature-extraction-vectorization">
+<h3><span class="section-number">3.1.4.3. </span>Stage 3 — Feature extraction (vectorization)<a class="headerlink" href="#stage-3-feature-extraction-vectorization" title="Link to this heading">#</a></h3>
+<p>Convert the cleaned text into a numerical representation that a machine learning algorithm can process. Common choices include (in order of increasing complexity):</p>
+<ul class="simple">
+<li><p><strong>Bag-of-words / TF–IDF</strong> (Chapter 2): sparse vectors counting word occurrences, optionally reweighted by inverse document frequency.</p></li>
+<li><p><strong>Pre-trained word embeddings</strong> (this chapter, Section 3): dense 300-dimensional vectors averaged over words.</p></li>
+<li><p><strong>Document embeddings</strong> (this chapter, Section 4): a single dense vector learned jointly for each document.</p></li>
+<li><p><strong>Contextual representations from BERT-style models</strong> (this chapter, Section 5): vectors that change based on a word’s context in a sentence.</p></li>
+</ul>
+<p>A guiding principle: <strong>start simple</strong>. A TF–IDF + logistic regression baseline is fast to build, easy to interpret, and often surprisingly competitive. Only move to more complex representations when you have a clear performance gap to close.</p>
+</section>
+<section id="stage-4-model-training">
+<h3><span class="section-number">3.1.4.4. </span>Stage 4 — Model training<a class="headerlink" href="#stage-4-model-training" title="Link to this heading">#</a></h3>
+<p>Fit a supervised model using the numerical features and ground-truth labels. The training set is used to adjust model parameters; the validation set is used to tune hyperparameters (e.g., regularization strength, number of layers). The test set is held out until the very end to estimate generalization performance.</p>
+<p>Common models for text classification:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-classification-models">
+<caption><span class="caption-number">Table 3.2 </span><span class="caption-text">Common Models for Text Classification</span><a class="headerlink" href="#table-nlp-classification-models" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-left"><p>Strengths</p></th>
+<th class="head text-left"><p>Typical use case</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Naive Bayes</strong></p></td>
+<td class="text-left"><p>Very fast, works well with small data</p></td>
+<td class="text-left"><p>Spam filtering, quick baselines</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Logistic Regression</strong></p></td>
+<td class="text-left"><p>Interpretable, handles imbalance via class weighting</p></td>
+<td class="text-left"><p>General-purpose baseline</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>LinearSVC</strong></p></td>
+<td class="text-left"><p>Fast, strong on high-dimensional sparse data</p></td>
+<td class="text-left"><p>TF–IDF features</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Random Forest</strong></p></td>
+<td class="text-left"><p>Robust, little tuning needed</p></td>
+<td class="text-left"><p>Mixed feature types</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>CNN / LSTM</strong></p></td>
+<td class="text-left"><p>Captures local / sequential patterns</p></td>
+<td class="text-left"><p>Sentence-level tasks</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Fine-tuned BERT</strong></p></td>
+<td class="text-left"><p>State-of-the-art performance</p></td>
+<td class="text-left"><p>When compute budget allows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="stage-5-evaluation">
+<h3><span class="section-number">3.1.4.5. </span>Stage 5 — Evaluation<a class="headerlink" href="#stage-5-evaluation" title="Link to this heading">#</a></h3>
+<p>Measure generalization on the held-out test set. Report multiple metrics (see the next subsection) rather than relying on a single number.</p>
+</section>
+<section id="stage-6-error-analysis-and-iteration">
+<h3><span class="section-number">3.1.4.6. </span>Stage 6 — Error analysis and iteration<a class="headerlink" href="#stage-6-error-analysis-and-iteration" title="Link to this heading">#</a></h3>
+<p>Inspect misclassified examples. Common patterns to look for:</p>
+<ul class="simple">
+<li><p><strong>Systematic errors</strong>: the model consistently confuses two particular classes (e.g., <em>fear</em> vs. <em>sadness</em>). This may indicate overlapping vocabulary or insufficient training examples.</p></li>
+<li><p><strong>Label noise</strong>: some “true” labels are actually wrong, causing the model to learn conflicting signals.</p></li>
+<li><p><strong>Domain mismatch</strong>: test examples come from a distribution not well represented in training.</p></li>
+</ul>
+<p>Error analysis guides targeted improvements: collecting more data for weak classes, adding features, or adjusting the preprocessing strategy.</p>
+</section>
+<section id="a-minimal-scikit-learn-pipeline">
+<h3><span class="section-number">3.1.4.7. </span>A minimal scikit-learn pipeline<a class="headerlink" href="#a-minimal-scikit-learn-pipeline" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> object from scikit-learn chains preprocessing and modeling steps, making it easy to swap out components and avoid data leakage between training and test sets.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;tfidf&quot;</span><span class="p">,</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span>   <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)),</span>
+<span class="p">])</span>
+
+<span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Compute accuracy on the held-out test set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test accuracy: </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ngram_range=(1,</span> <span class="pre">2)</span></code> argument instructs the vectorizer to include both individual words (<strong>unigrams</strong>) and consecutive word pairs (<strong>bigrams</strong>) as features. Bigrams help capture phrases like “not good” that a unigram model would misrepresent.</p>
+<div class="note admonition">
+<p class="admonition-title">What is an n-gram?</p>
+<p>An <strong>n-gram</strong> is a contiguous sequence of <span class="math notranslate nohighlight">\(n\)</span> tokens from a text. The most common types are:</p>
+<ul class="simple">
+<li><p><strong>Unigram</strong> (<span class="math notranslate nohighlight">\(n=1\)</span>): individual words — <em>“not”</em>, <em>“good”</em></p></li>
+<li><p><strong>Bigram</strong> (<span class="math notranslate nohighlight">\(n=2\)</span>): consecutive word pairs — <em>“not good”</em>, <em>“very fast”</em></p></li>
+<li><p><strong>Trigram</strong> (<span class="math notranslate nohighlight">\(n=3\)</span>): consecutive triples — <em>“not very good”</em></p></li>
+</ul>
+<p>Using bigrams alongside unigrams allows the classifier to treat “not good” as a distinct feature rather than treating “not” and “good” independently — which is crucial for negation-sensitive tasks like sentiment analysis.</p>
+</div>
+</section>
+</section>
+<section id="evaluation-metrics">
+<h2><span class="section-number">3.1.5. </span>Evaluation metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading">#</a></h2>
+<p>Choosing the right metric is as important as choosing the right model. The primary metrics for text classification are:</p>
+<section id="accuracy">
+<h3><span class="section-number">3.1.5.1. </span>Accuracy<a class="headerlink" href="#accuracy" title="Link to this heading">#</a></h3>
+<p>The fraction of correctly labeled documents:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-15a00040-e14c-474e-836e-c0a313484f32">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-15a00040-e14c-474e-836e-c0a313484f32" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Accuracy} = \frac{\text{Correct predictions}}{\text{Total predictions}}
+\end{equation}\]</div>
+<p><strong>Straightforward but misleading on imbalanced datasets.</strong> Consider a fraud-detection classifier where only 1% of transactions are fraudulent. A model that always predicts “not fraud” achieves 99% accuracy while being completely useless. Never report accuracy alone on an imbalanced dataset.</p>
+</section>
+<section id="precision-recall-and-f1">
+<h3><span class="section-number">3.1.5.2. </span>Precision, Recall, and F1<a class="headerlink" href="#precision-recall-and-f1" title="Link to this heading">#</a></h3>
+<p>These three metrics are defined per class and jointly characterize the quality of predictions for that class. For a binary problem with positive class <span class="math notranslate nohighlight">\(P\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-60f2d99c-1d08-48ef-b467-cf63b0fdb7ed">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-60f2d99c-1d08-48ef-b467-cf63b0fdb7ed" title="Permalink to this equation">#</a></span>\[\begin{align}
+\text{Precision} &amp;= \frac{TP}{TP + FP} \\
+\text{Recall} &amp;= \frac{TP}{TP + FN} \\
+F_1 &amp;= \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(TP\)</span> = true positives, <span class="math notranslate nohighlight">\(FP\)</span> = false positives, <span class="math notranslate nohighlight">\(FN\)</span> = false negatives, <span class="math notranslate nohighlight">\(TN\)</span> = true negatives.</p>
+<figure class="align-center" id="precision-recall">
+<a class="reference internal image-reference" href="../_images/precision_recall.png"><img alt="../_images/precision_recall.png" src="../_images/precision_recall.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">A minimalist diagram illustrating precision and recall as overlaps among true positives, false positives, and false negatives.</span><a class="headerlink" href="#precision-recall" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="proof example admonition" id="example_C02S02_03">
+<p class="admonition-title"><span class="caption-number">Example 3.1 </span></p>
+<section class="example-content" id="proof-content">
+<p>Suppose a spam filter is tested on 100 emails: 10 are spam and 90 are legitimate.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-spam-confusion-matrix">
+<caption><span class="caption-number">Table 3.3 </span><span class="caption-text">Confusion Matrix for Spam Filter Example</span><a class="headerlink" href="#table-nlp-spam-confusion-matrix" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p>Predicted Spam</p></th>
+<th class="head text-left"><p>Predicted Legitimate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Actual Spam</strong></p></td>
+<td class="text-left"><p>7 (TP)</p></td>
+<td class="text-left"><p>3 (FN)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Actual Legitimate</strong></p></td>
+<td class="text-left"><p>5 (FP)</p></td>
+<td class="text-left"><p>85 (TN)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="amsmath math notranslate nohighlight" id="equation-88eb4ca5-055d-42e1-a336-775e57732713">
+<span class="eqno">(3.3)<a class="headerlink" href="#equation-88eb4ca5-055d-42e1-a336-775e57732713" title="Permalink to this equation">#</a></span>\[\begin{align}
+\text{Precision} &amp;= \frac{7}{7+5} = 0.583 \\
+\text{Recall} &amp;= \frac{7}{7+3} = 0.700 \\
+F_1 &amp;= \frac{2 \times 0.583 \times 0.700}{0.583 + 0.700} = 0.636
+\end{align}\]</div>
+<p>High precision means few legitimate emails are incorrectly blocked. High recall means few spam emails slip through. The F1 score balances both. The appropriate trade-off depends on the application: a spam filter should prioritize precision (don’t block legitimate mail), while a fraud detector should prioritize recall (don’t miss fraud).</p>
+</section>
+</div><div class="tip admonition">
+<p class="admonition-title">Intuition for precision and recall</p>
+<p>Think of it this way:</p>
+<ul class="simple">
+<li><p><strong>Precision</strong> answers: “Of all the documents I flagged as positive, what fraction were truly positive?” It measures how <em>careful</em> your model is — whether its alarms are trustworthy.</p></li>
+<li><p><strong>Recall</strong> answers: “Of all the truly positive documents, what fraction did I catch?” It measures how <em>thorough</em> your model is — whether it misses real positives.</p></li>
+</ul>
+<p>A model that always predicts “positive” has perfect recall (catches everything) but terrible precision (many false alarms). A model that only predicts “positive” when it is very confident has high precision but low recall (misses many true positives).</p>
+</div>
+<p>For <strong>multi-class</strong> problems, scikit-learn computes per-class precision, recall, and F1, then aggregates them in two ways:</p>
+<ul class="simple">
+<li><p><strong>Macro average</strong>: mean over all classes (treats every class equally, regardless of size).</p></li>
+<li><p><strong>Weighted average</strong>: mean weighted by class support (gives more weight to frequent classes).</p></li>
+</ul>
+<p>When your dataset is imbalanced, these two averages can diverge substantially. A macro F1 of 0.50 and a weighted F1 of 0.75 would indicate that the model performs well on the large classes but poorly on the small ones.</p>
+</section>
+<section id="roc-auc">
+<h3><span class="section-number">3.1.5.3. </span>ROC AUC<a class="headerlink" href="#roc-auc" title="Link to this heading">#</a></h3>
+<p>The <strong>Receiver Operating Characteristic (ROC) curve</strong> plots the true positive rate (recall) against the false positive rate as the classification threshold varies. The <strong>Area Under the Curve (AUC)</strong> summarizes this curve in a single number between 0 and 1. An AUC of 0.5 corresponds to random guessing; AUC of 1.0 is a perfect classifier.</p>
+<p>ROC AUC is particularly useful because it is <strong>threshold-independent</strong>: it measures the model’s ability to rank positive examples above negative ones, regardless of where you set the decision boundary. This makes it a reliable metric for comparing models even on imbalanced datasets.</p>
+</section>
+<section id="confusion-matrix">
+<h3><span class="section-number">3.1.5.4. </span>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h3>
+<p>A <span class="math notranslate nohighlight">\(k \times k\)</span> table where entry <span class="math notranslate nohighlight">\((i, j)\)</span> is the number of documents truly in class <span class="math notranslate nohighlight">\(i\)</span> that were predicted as class <span class="math notranslate nohighlight">\(j\)</span>. The diagonal contains correct predictions; off-diagonal cells reveal specific error patterns.</p>
+<p>The confusion matrix is the single most informative diagnostic tool for understanding <em>where</em> a classifier makes mistakes, especially in multi-class settings.</p>
+</section>
+<section id="choosing-the-right-metric">
+<h3><span class="section-number">3.1.5.5. </span>Choosing the right metric<a class="headerlink" href="#choosing-the-right-metric" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-evaluation-metrics">
+<caption><span class="caption-number">Table 3.4 </span><span class="caption-text">Recommended Evaluation Metrics for Different Scenarios</span><a class="headerlink" href="#table-nlp-evaluation-metrics" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Situation</p></th>
+<th class="head text-left"><p>Recommended metric(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Balanced classes, interpretability needed</strong></p></td>
+<td class="text-left"><p>Accuracy + Confusion matrix</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Imbalanced classes</strong></p></td>
+<td class="text-left"><p>F1 (macro or weighted) + ROC AUC</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Threshold matters (e.g., fixed cutoff)</strong></p></td>
+<td class="text-left"><p>Precision + Recall at threshold</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Ranking matters (e.g., info retrieval)</strong></p></td>
+<td class="text-left"><p>ROC AUC, Average Precision</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Multi-label classification</strong></p></td>
+<td class="text-left"><p>Per-label F1, Hamming loss</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="common-benchmarks">
+<h2><span class="section-number">3.1.6. </span>Common benchmarks<a class="headerlink" href="#common-benchmarks" title="Link to this heading">#</a></h2>
+<p>Several publicly available datasets serve as standard touchstones for text classification research. Evaluating your system on established benchmarks lets you compare against the published literature.</p>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-nlp-benchmark-datasets">
+<caption><span class="caption-number">Table 3.5 </span><span class="caption-text">Common Benchmark Datasets for Text Classification</span><a class="headerlink" href="#table-nlp-benchmark-datasets" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Dataset</p></th>
+<th class="head text-left"><p>Task</p></th>
+<th class="head text-left"><p>Classes</p></th>
+<th class="head text-left"><p>Size</p></th>
+<th class="head text-left"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>IMDB Large Movie Reviews</strong></p></td>
+<td class="text-left"><p>Sentiment analysis</p></td>
+<td class="text-left"><p>2</p></td>
+<td class="text-left"><p>50,000</p></td>
+<td class="text-left"><p>Balanced; long documents</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>SST-2</strong></p></td>
+<td class="text-left"><p>Sentiment analysis</p></td>
+<td class="text-left"><p>2</p></td>
+<td class="text-left"><p>~67,000</p></td>
+<td class="text-left"><p>Sentence-level; part of GLUE</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>20 Newsgroups</strong></p></td>
+<td class="text-left"><p>Topic classification</p></td>
+<td class="text-left"><p>20</p></td>
+<td class="text-left"><p>~20,000</p></td>
+<td class="text-left"><p>Classic; high-dimensional vocabulary</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>AG News</strong></p></td>
+<td class="text-left"><p>News topic classification</p></td>
+<td class="text-left"><p>4</p></td>
+<td class="text-left"><p>~120,000</p></td>
+<td class="text-left"><p>Balanced; short documents</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Economic News</strong></p></td>
+<td class="text-left"><p>Relevance filtering</p></td>
+<td class="text-left"><p>2</p></td>
+<td class="text-left"><p>~8,000</p></td>
+<td class="text-left"><p>Imbalanced (~82:18)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>dair-ai/emotion</strong></p></td>
+<td class="text-left"><p>Emotion classification</p></td>
+<td class="text-left"><p>6</p></td>
+<td class="text-left"><p>~416,000</p></td>
+<td class="text-left"><p>Heavily imbalanced</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>DBpedia</strong></p></td>
+<td class="text-left"><p>Ontology classification</p></td>
+<td class="text-left"><p>14</p></td>
+<td class="text-left"><p>~630,000</p></td>
+<td class="text-left"><p>Wikipedia-based</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Yelp Polarity</strong></p></td>
+<td class="text-left"><p>Sentiment analysis</p></td>
+<td class="text-left"><p>2</p></td>
+<td class="text-left"><p>560,000</p></td>
+<td class="text-left"><p>Consumer reviews</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- In the labs for this chapter, we will work with:
+- The **Economic News** dataset (Section 2): a real-world imbalanced binary classification task.
+- The **UCI Sentiment Labelled Sentences** dataset (Section 3): balanced binary sentiment from three review platforms.
+- The **dair-ai/emotion** dataset (Section 4): imbalanced six-class emotion detection.
+- The **IMDB** dataset (Section 5): balanced binary sentiment for deep learning benchmarking. -->
+</section>
+<section id="data-splits-and-cross-validation">
+<h2><span class="section-number">3.1.7. </span>Data splits and cross-validation<a class="headerlink" href="#data-splits-and-cross-validation" title="Link to this heading">#</a></h2>
+<p>Before running any experiment, divide your data into three non-overlapping subsets:</p>
+<ul class="simple">
+<li><p><strong>Training set</strong> (~70–80%): used to fit model parameters.</p></li>
+<li><p><strong>Validation set</strong> (~10–15%): used to tune hyperparameters without contaminating the test set.</p></li>
+<li><p><strong>Test set</strong> (~10–20%): used <em>only once</em> at the end to report final performance.</p></li>
+</ul>
+<p>When data is scarce, use <strong>k-fold cross-validation</strong> on the training set instead of a fixed validation split. In k-fold cross-validation, the training set is divided into <span class="math notranslate nohighlight">\(k\)</span> equal folds; the model is trained on <span class="math notranslate nohighlight">\(k-1\)</span> folds and evaluated on the remaining fold, rotating which fold is held out. The <span class="math notranslate nohighlight">\(k\)</span> evaluation scores are averaged to give a more stable estimate of generalization performance than a single split.</p>
+<div class="warning admonition">
+<p class="admonition-title">Data Leakage Warning</p>
+<p>A pipeline step that is “fitted” on data (e.g., a TF–IDF vectorizer building its vocabulary) must be fitted <strong>only on training data</strong> and then applied to validation and test data. Fitting on the full dataset — including test examples — is called <strong>data leakage</strong> and produces optimistically biased evaluation results. Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> object prevents this automatically when used correctly.</p>
+<p><strong>Common leakage mistakes:</strong></p>
+<ul class="simple">
+<li><p>Fitting a <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> or <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> on the entire dataset before splitting.</p></li>
+<li><p>Using test-set information to choose preprocessing parameters (e.g., vocabulary size).</p></li>
+<li><p>Reporting performance on the same split used to select hyperparameters.</p></li>
+</ul>
+</div>
+</section>
+<section id="key-takeaways">
+<h2><span class="section-number">3.1.8. </span>Key takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<div class="seealso admonition">
+<p class="admonition-title">Summary</p>
+<ul class="simple">
+<li><p>Text classification assigns predefined labels to text; variants include binary, multi-class, multi-label, and ordinal classification.</p></li>
+<li><p>Every supervised text classifier follows the same pipeline: data → preprocessing → vectorization → training → evaluation → error analysis.</p></li>
+<li><p>Accuracy is misleading on imbalanced datasets; prefer F1 score, ROC AUC, and the confusion matrix.</p></li>
+<li><p>Always use a train/validation/test split (or cross-validation) and avoid data leakage by fitting preprocessing only on training data.</p></li>
+<li><p>Start with the simplest pipeline (TF–IDF + logistic regression) and add complexity only when needed.</p></li>
+</ul>
+</div>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">3.1.9. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Task framing</strong>
+Choose a domain you are familiar with (e.g., healthcare, finance, social media). Describe a concrete text classification problem in that domain. Specify: (a) the input text, (b) the set of classes, (c) how you would obtain ground-truth labels, and (d) whether the task is binary, multi-class, or multi-label.</p></li>
+<li><p><strong>Metric selection</strong>
+Suppose you are building a system to detect fraudulent insurance claims from written descriptions. Missing a fraudulent claim (false negative) costs the company money; incorrectly flagging a legitimate claim (false positive) harms customers. (a) Which metric would you prioritize? (b) How would your answer change if false positives were very costly to investigate?</p></li>
+<li><p><strong>Confusion matrix interpretation</strong>
+A model trained on the 20 Newsgroups dataset achieves 85% macro-averaged F1 across all 20 categories, but only 62% F1 on the <em>religion</em> category. What could explain this weak performance on religion? What steps would you take to diagnose and improve it?</p></li>
+<li><p><strong>Pipeline design</strong>
+Sketch a complete pipeline for classifying customer support tickets into five categories: <em>billing</em>, <em>technical support</em>, <em>returns</em>, <em>general inquiry</em>, and <em>feedback</em>. For each pipeline stage, specify: the transformation applied, why it is needed, and one potential pitfall to watch for.</p></li>
+<li><p><strong>Imbalance experiment</strong> <em>(hands-on)</em>
+Using the <code class="docutils literal notranslate"><span class="pre">make_classification</span></code> function from scikit-learn, create an imbalanced binary dataset (90% class 0, 10% class 1) with 1,000 samples. Train a logistic regression classifier and compare accuracy, macro F1, and ROC AUC. Then experiment with <code class="docutils literal notranslate"><span class="pre">class_weight=&quot;balanced&quot;</span></code> and report how each metric changes.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_03"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Core NLP Modeling: Classification and Embeddings</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C03S02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>One Pipeline, Many Classifiers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.1.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivating-example-automating-customer-feedback-triage">3.1.2. Motivating example: automating customer feedback triage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-text-classification">3.1.3. What is text classification?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-variants">3.1.3.1. Problem variants</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-standard-pipeline">3.1.4. The standard pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-1-data-acquisition-and-labeling">3.1.4.1. Stage 1 — Data acquisition and labeling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-2-text-preprocessing">3.1.4.2. Stage 2 — Text preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-3-feature-extraction-vectorization">3.1.4.3. Stage 3 — Feature extraction (vectorization)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-4-model-training">3.1.4.4. Stage 4 — Model training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-5-evaluation">3.1.4.5. Stage 5 — Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-6-error-analysis-and-iteration">3.1.4.6. Stage 6 — Error analysis and iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-minimal-scikit-learn-pipeline">3.1.4.7. A minimal scikit-learn pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-metrics">3.1.5. Evaluation metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">3.1.5.1. Accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-and-f1">3.1.5.2. Precision, Recall, and F1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-auc">3.1.5.3. ROC AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">3.1.5.4. Confusion matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-metric">3.1.5.5. Choosing the right metric</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-benchmarks">3.1.6. Common benchmarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-splits-and-cross-validation">3.1.7. Data splits and cross-validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">3.1.8. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">3.1.9. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

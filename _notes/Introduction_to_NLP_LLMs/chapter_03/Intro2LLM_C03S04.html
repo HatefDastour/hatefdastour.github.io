@@ -1,0 +1,1076 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.4. Document Embeddings with Doc2Vec &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_03/Intro2LLM_C03S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.5. Deep Learning for Text Classification" href="Intro2LLM_C03S05.html" />
+    <link rel="prev" title="3.3. Word Embeddings for Text Classification" href="Intro2LLM_C03S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">4. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Document Embeddings with Doc2Vec</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-word-averaging-revisited">3.4.2. Limitations of word averaging revisited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-doc2vec-works">3.4.3. How Doc2Vec works</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-memory-dm">3.4.3.1. Distributed Memory (DM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-bag-of-words-dbow">3.4.3.2. Distributed Bag of Words (DBOW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-difference-from-word-averaging">3.4.3.3. Key difference from word averaging</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-emotion-dataset">3.4.4. The emotion dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-preprocessing-for-doc2vec">3.4.5. Text preprocessing for Doc2Vec</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-doc2vec-model">3.4.6. Training a Doc2Vec model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-hyperparameters">3.4.6.1. Key hyperparameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-dynamics">3.4.6.2. Training dynamics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inferring-vectors-and-classifying">3.4.7. Inferring vectors and classifying</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-inference-stochasticity">3.4.7.1. A note on inference stochasticity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-results">3.4.8. Interpreting results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-results">3.4.8.1. Reading the results</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix-for-emotion-classification">3.4.8.2. Confusion matrix for emotion classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-similarity-with-doc2vec">3.4.8.3. Document similarity with Doc2Vec</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#doc2vec-vs-word-averaging-when-to-choose-each">3.4.9. Doc2Vec vs. word averaging: when to choose each</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">3.4.10. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">3.4.11. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="document-embeddings-with-doc2vec">
+<span id="sec3-4"></span><h1><span class="section-number">3.4. </span>Document Embeddings with Doc2Vec<a class="headerlink" href="#document-embeddings-with-doc2vec" title="Link to this heading">#</a></h1>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>By the end of this section you will understand how Doc2Vec learns a single, fixed-length vector for every document without aggregating word vectors, and you will be able to train a Doc2Vec model on a real six-class emotion dataset, infer document vectors for unseen text, and critically interpret classification performance in the presence of severe class imbalance.</p>
+</div>
+<section id="learning-objectives">
+<h2><span class="section-number">3.4.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain how Doc2Vec (Paragraph Vectors) differs from word-averaging approaches to document representation.</p></li>
+<li><p>Describe the two Doc2Vec variants (Distributed Memory and Distributed Bag of Words) and their trade-offs.</p></li>
+<li><p>Prepare a corpus for Doc2Vec training using Gensim’s <code class="docutils literal notranslate"><span class="pre">TaggedDocument</span></code> format.</p></li>
+<li><p>Train a Doc2Vec model and infer vectors for unseen documents.</p></li>
+<li><p>Use Doc2Vec features with a logistic regression classifier for multi-class text classification.</p></li>
+<li><p>Interpret classification results in the presence of significant class imbalance, distinguishing macro from weighted F1.</p></li>
+</ul>
+</section>
+<section id="limitations-of-word-averaging-revisited">
+<h2><span class="section-number">3.4.2. </span>Limitations of word averaging revisited<a class="headerlink" href="#limitations-of-word-averaging-revisited" title="Link to this heading">#</a></h2>
+<p>In the previous section, we built sentence representations by averaging word vectors. While effective for many tasks, this approach has a fundamental weakness: it discards word order and produces the same representation for <em>any permutation</em> of the same words.</p>
+<p>Consider these two sentences:</p>
+<ul class="simple">
+<li><p>“I am not happy, I am sad.”</p></li>
+<li><p>“I am not sad, I am happy.”</p></li>
+</ul>
+<p>Both contain exactly the same vocabulary ({<em>I</em>, <em>am</em>, <em>not</em>, <em>happy</em>, <em>sad</em>}) and therefore produce the identical average word vector, despite having opposite meanings. A classifier cannot distinguish them.</p>
+<p>More broadly, word averaging maps every document to a single point that is the center of its vocabulary’s embedding cloud. This representation works well when topic (which words appear) is the primary discriminant, but fails when fine-grained differences in composition or word order matter.</p>
+<p><strong>Doc2Vec</strong> addresses this by learning a dedicated vector for each document that captures properties not expressed by any individual word’s embedding.</p>
+</section>
+<section id="how-doc2vec-works">
+<h2><span class="section-number">3.4.3. </span>How Doc2Vec works<a class="headerlink" href="#how-doc2vec-works" title="Link to this heading">#</a></h2>
+<p>Doc2Vec (also called Paragraph Vectors, introduced by Le &amp; Mikolov, 2014) extends Word2Vec by introducing a <strong>document token</strong> — a unique identifier for each document — that acts as an additional, document-specific context signal during training.</p>
+<p>The key insight is that while word vectors must generalize across many documents, the document vector only needs to represent <em>one</em> document. So it can encode whatever distinguishing features — topic, style, sentiment, tone — are unique to that document.</p>
+<p>There are two variants:</p>
+<section id="distributed-memory-dm">
+<h3><span class="section-number">3.4.3.1. </span>Distributed Memory (DM)<a class="headerlink" href="#distributed-memory-dm" title="Link to this heading">#</a></h3>
+<p>In the DM variant, the model predicts a target word using both:</p>
+<ol class="arabic simple">
+<li><p>A fixed-size window of surrounding words (as in Word2Vec CBOW).</p></li>
+<li><p>The document vector for the document containing those words.</p></li>
+</ol>
+<p>The document vector acts as a <em>memory</em> that holds information about the document’s topic and style. Because it participates in every prediction within that document, it must encode whatever information about the document is <em>not</em> captured by the local word context.</p>
+</section>
+<section id="distributed-bag-of-words-dbow">
+<h3><span class="section-number">3.4.3.2. </span>Distributed Bag of Words (DBOW)<a class="headerlink" href="#distributed-bag-of-words-dbow" title="Link to this heading">#</a></h3>
+<p>In the DBOW variant, the model predicts randomly sampled words from the document using only the document vector — no word context is used. This is faster to train and sometimes performs comparably to DM.</p>
+<p>DBOW is faster and works well when documents are long, but DM often produces better representations for short texts like tweets or sentences.</p>
+<figure class="align-center" id="fig-doc2vec-variants">
+<a class="reference internal image-reference" href="../_images/doc2vec_architectures.jpg"><img alt="../_images/doc2vec_architectures.jpg" src="../_images/doc2vec_architectures.jpg" style="width: 500px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.14 </span><span class="caption-text">Neural network architectures for Doc2Vec variants. <strong>Left (Distributed Memory - DM):</strong> The document token is treated as an extra word vector, concatenated or averaged with local context words to predict a target word. <strong>Right (Distributed Bag of Words - DBOW):</strong> The model ignores context windows entirely and trains the document vector by forcing it to predict randomly sampled words from the document.</span><a class="headerlink" href="#fig-doc2vec-variants" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="key-difference-from-word-averaging">
+<h3><span class="section-number">3.4.3.3. </span>Key difference from word averaging<a class="headerlink" href="#key-difference-from-word-averaging" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="table-doc2vec-variants">
+<caption><span class="caption-number">Table 3.16 </span><span class="caption-text">Comparing Doc2Vec variants</span><a class="headerlink" href="#table-doc2vec-variants" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Aspect</p></th>
+<th class="head text-left"><p>Word Averaging</p></th>
+<th class="head text-left"><p>Doc2Vec (DM)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Vector per word</strong></p></td>
+<td class="text-left"><p>Pre-trained, fixed</p></td>
+<td class="text-left"><p>Trained jointly with doc vector</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Vector per document</strong></p></td>
+<td class="text-left"><p>Derived (average)</p></td>
+<td class="text-left"><p>Directly learned</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Word order</strong></p></td>
+<td class="text-left"><p>Ignored</p></td>
+<td class="text-left"><p>Partially captured (window context)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Document identity</strong></p></td>
+<td class="text-left"><p>Implicit (via avg)</p></td>
+<td class="text-left"><p>Explicit (separate document token)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Inference on new docs</strong></p></td>
+<td class="text-left"><p>No retraining needed</p></td>
+<td class="text-left"><p>Requires <code class="docutils literal notranslate"><span class="pre">infer_vector()</span></code> call</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Training time</strong></p></td>
+<td class="text-left"><p>Fast (just load model + average)</p></td>
+<td class="text-left"><p>Slower (trains embedding model)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">What does “training” mean for Doc2Vec?</p>
+<p>When we say Doc2Vec <em>trains</em> a document vector, we mean the model runs gradient descent to find the vector that best predicts the words in that specific document. This is the same optimization used in Word2Vec, but applied to a document-level token.</p>
+<p>For training documents, the document vector is learned once and stored in the model. For <strong>new, unseen documents</strong> (the test set), the model runs a short inference procedure — <code class="docutils literal notranslate"><span class="pre">infer_vector()</span></code> — that freezes the word vectors and only updates the new document vector via a few gradient descent steps. This is why Doc2Vec requires a separate inference call for test documents.</p>
+</div>
+</section>
+</section>
+<section id="the-emotion-dataset">
+<h2><span class="section-number">3.4.4. </span>The emotion dataset<a class="headerlink" href="#the-emotion-dataset" title="Link to this heading">#</a></h2>
+<p>The lab <code class="docutils literal notranslate"><span class="pre">l303_doc2vec_emotion</span></code> uses the <a class="reference external" href="https://huggingface.co/datasets/dair-ai/emotion">dair-ai/emotion</a> dataset from Hugging Face. It contains over 400,000 English text samples, each labeled with one of six emotion categories.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-emotion-dataset">
+<caption><span class="caption-number">Table 3.17 </span><span class="caption-text">Emotion dataset summary</span><a class="headerlink" href="#table-emotion-dataset" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Label</p></th>
+<th class="head text-left"><p>Emotion</p></th>
+<th class="head text-left"><p>Approximate count</p></th>
+<th class="head text-left"><p>% of total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>1</strong></p></td>
+<td class="text-left"><p>Joy</p></td>
+<td class="text-left"><p>141,067</p></td>
+<td class="text-left"><p>~34%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>0</strong></p></td>
+<td class="text-left"><p>Sadness</p></td>
+<td class="text-left"><p>121,187</p></td>
+<td class="text-left"><p>~29%</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>3</strong></p></td>
+<td class="text-left"><p>Anger</p></td>
+<td class="text-left"><p>57,317</p></td>
+<td class="text-left"><p>~14%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>4</strong></p></td>
+<td class="text-left"><p>Fear</p></td>
+<td class="text-left"><p>47,712</p></td>
+<td class="text-left"><p>~11%</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>2</strong></p></td>
+<td class="text-left"><p>Love</p></td>
+<td class="text-left"><p>34,554</p></td>
+<td class="text-left"><p>~8%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>5</strong></p></td>
+<td class="text-left"><p>Surprise</p></td>
+<td class="text-left"><p>14,972</p></td>
+<td class="text-left"><p>~4%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The dataset is <strong>heavily imbalanced</strong>: Joy and Sadness together account for about 63% of all samples, while Surprise represents only about 4%. This imbalance strongly affects which classes a model handles well and how aggregate metrics should be interpreted.</p>
+<p>The texts come from Twitter-style short messages, so they use informal language, contractions, hashtags, and emoji-adjacent expressions.</p>
+<p><strong>Example entries:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-emotion-examples">
+<caption><span class="caption-number">Table 3.18 </span><span class="caption-text">Emotion dataset example entries</span><a class="headerlink" href="#table-emotion-examples" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Emotion</p></th>
+<th class="head text-left"><p>Text</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Joy</strong></p></td>
+<td class="text-left"><p>“i feel so lucky to have found such an amazing group of friends”</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Sadness</strong></p></td>
+<td class="text-left"><p>“im feeling quite sad and sorry for myself”</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Anger</strong></p></td>
+<td class="text-left"><p>“im feeling incredibly frustrated and angry with this situation”</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Fear</strong></p></td>
+<td class="text-left"><p>“i feel like ive been walking on eggshells im so scared”</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Love</strong></p></td>
+<td class="text-left"><p>“i just feel so warm and loved when i am with you”</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Surprise</strong></p></td>
+<td class="text-left"><p>“i feel astonished that things have changed so dramatically”</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">splits</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;unsplit&#39;</span><span class="p">:</span> <span class="s1">&#39;unsplit/train-00000-of-00001.parquet&#39;</span><span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;hf://datasets/dair-ai/emotion/&quot;</span> <span class="o">+</span> <span class="n">splits</span><span class="p">[</span><span class="s2">&quot;unsplit&quot;</span><span class="p">])</span>
+
+<span class="n">label2emotion</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Sadness&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Joy&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Love&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Anger&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Fear&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Surprise&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The 9.4x imbalance ratio (Joy vs. Surprise) is the key challenge: a naive classifier that always predicts “Joy” would achieve 34% accuracy, higher than many weakly-trained multi-class models.</p>
+</section>
+<section id="text-preprocessing-for-doc2vec">
+<h2><span class="section-number">3.4.5. </span>Text preprocessing for Doc2Vec<a class="headerlink" href="#text-preprocessing-for-doc2vec" title="Link to this heading">#</a></h2>
+<p>The text samples come from tweets, so we use NLTK’s <code class="docutils literal notranslate"><span class="pre">TweetTokenizer</span></code> to handle mentions, hashtags, and informal language. Stopwords and digit-only tokens are removed; punctuation and emoticons are kept since they carry emotional signals — an exclamation mark or a sad-face emoticon is genuinely informative for emotion classification.</p>
+<div class="note admonition">
+<p class="admonition-title">TweetTokenizer vs. word_tokenize</p>
+<p>NLTK provides several tokenizers for different purposes:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">word_tokenize</span></code></strong>: splits text on whitespace and punctuation following Penn Treebank conventions. Works well for formal text but treats Twitter-specific tokens (&#64;mentions, #hashtags, emoticons) poorly.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">TweetTokenizer</span></code></strong>: handles Twitter-specific conventions: <code class="docutils literal notranslate"><span class="pre">strip_handles=True</span></code> removes &#64;mentions, <code class="docutils literal notranslate"><span class="pre">preserve_case=False</span></code> lowercases everything, and emoticons like <code class="docutils literal notranslate"><span class="pre">:)</span></code> or <code class="docutils literal notranslate"><span class="pre">:(</span></code> are kept as single tokens rather than split into punctuation characters.</p></li>
+</ul>
+<p>For social-media text like the emotion dataset, <code class="docutils literal notranslate"><span class="pre">TweetTokenizer</span></code> is the better choice.</p>
+</div>
+<div class="cell tag_hide-input tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.tokenize</span><span class="w"> </span><span class="kn">import</span> <span class="n">TweetTokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">stopwords</span>
+
+<span class="n">tweeter</span> <span class="o">=</span> <span class="n">TweetTokenizer</span><span class="p">(</span><span class="n">strip_handles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">preserve_case</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mystopwords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s2">&quot;english&quot;</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_corpus</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tokenize with TweetTokenizer; remove stopwords and digits.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_stops_digits</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mystopwords</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">remove_stops_digits</span><span class="p">(</span><span class="n">tweeter</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">))</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+
+<span class="n">mydata</span> <span class="o">=</span> <span class="n">preprocess_corpus</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="n">mycats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>Example — before and after preprocessing:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Before</span><span class="p">:</span> <span class="s2">&quot;i feel so lucky to have found such an amazing group of friends&quot;</span>
+<span class="n">After</span><span class="p">:</span>  <span class="p">[</span><span class="s2">&quot;feel&quot;</span><span class="p">,</span> <span class="s2">&quot;lucky&quot;</span><span class="p">,</span> <span class="s2">&quot;found&quot;</span><span class="p">,</span> <span class="s2">&quot;amazing&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;friends&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Stopwords (<em>i</em>, <em>so</em>, <em>to</em>, <em>have</em>, <em>such</em>, <em>an</em>, <em>of</em>) are removed, leaving only the content words. For emotion detection, the retained words — <em>lucky</em>, <em>amazing</em>, <em>friends</em> — are strong Joy indicators.</p>
+</section>
+<section id="training-a-doc2vec-model">
+<h2><span class="section-number">3.4.6. </span>Training a Doc2Vec model<a class="headerlink" href="#training-a-doc2vec-model" title="Link to this heading">#</a></h2>
+<p>Gensim’s Doc2Vec requires documents to be wrapped in <code class="docutils literal notranslate"><span class="pre">TaggedDocument</span></code> objects, pairing each token list with a unique string tag. We use the string representation of the training index as the tag. The tag is used internally by the model to look up each document’s dedicated vector during training.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models.doc2vec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Doc2Vec</span><span class="p">,</span> <span class="n">TaggedDocument</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">train_cats</span><span class="p">,</span> <span class="n">test_cats</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">mydata</span><span class="p">,</span> <span class="n">mycats</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">mycats</span>
+<span class="p">)</span>
+
+<span class="c1"># Tag each training document with a unique identifier</span>
+<span class="n">train_doc2vec</span> <span class="o">=</span> <span class="p">[</span><span class="n">TaggedDocument</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_data</span><span class="p">)]</span>
+
+<span class="c1"># Train the model (DM = Distributed Memory variant)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Doc2Vec</span><span class="p">(</span><span class="n">vector_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train_doc2vec</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_doc2vec</span><span class="p">,</span> <span class="n">total_examples</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">corpus_count</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">epochs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="key-hyperparameters">
+<h3><span class="section-number">3.4.6.1. </span>Key hyperparameters<a class="headerlink" href="#key-hyperparameters" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="table-doc2vec-hyperparameters">
+<caption><span class="caption-number">Table 3.19 </span><span class="caption-text">Key hyperparameters for Doc2Vec</span><a class="headerlink" href="#table-doc2vec-hyperparameters" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p><strong>Hyperparameter</strong></p></th>
+<th class="head text-left"><p><strong>Value</strong></p></th>
+<th class="head text-left"><p><strong>Effect</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">vector_size</span></code></p></td>
+<td class="text-left"><p>50</p></td>
+<td class="text-left"><p>Dimensionality of document and word vectors</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></td>
+<td class="text-left"><p>0.025</p></td>
+<td class="text-left"><p>Initial learning rate</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">min_count</span></code></p></td>
+<td class="text-left"><p>5</p></td>
+<td class="text-left"><p>Ignore words appearing fewer than 5 times</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">dm</span></code></p></td>
+<td class="text-left"><p>1</p></td>
+<td class="text-left"><p>Distributed Memory (DM=1) vs. Distributed Bag of Words (DBOW=0) variant (see <a class="reference internal" href="#fig-doc2vec-variants"><span class="std std-numref">Fig. 3.14</span></a>).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code></p></td>
+<td class="text-left"><p>100</p></td>
+<td class="text-left"><p>Number of training passes over the corpus</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Choosing <code class="docutils literal notranslate"><span class="pre">min_count=5</span></code> is important for this noisy social-media corpus: words that appear fewer than 5 times are likely typos or very rare terms that would add noise rather than signal.</p>
+</section>
+<section id="training-dynamics">
+<h3><span class="section-number">3.4.6.2. </span>Training dynamics<a class="headerlink" href="#training-dynamics" title="Link to this heading">#</a></h3>
+<p>Doc2Vec uses a <em>decaying learning rate</em>: starting at <code class="docutils literal notranslate"><span class="pre">alpha=0.025</span></code> and linearly decreasing to <code class="docutils literal notranslate"><span class="pre">min_alpha=0.0001</span></code> over the specified number of epochs. More epochs generally improve representation quality, but with diminishing returns after 50–100 epochs for this dataset.</p>
+<p>The three-step Doc2Vec training procedure:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">build_vocab</span></code></strong>: scans the corpus once to build the vocabulary, applying <code class="docutils literal notranslate"><span class="pre">min_count</span></code> to filter rare words.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">model.train</span></code></strong>: runs the gradient descent optimization for the specified number of epochs. This updates both word vectors and document vectors simultaneously.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">model.infer_vector</span></code></strong> (inference time): for a new document not seen during training, runs gradient descent while keeping word vectors frozen — only the new document vector is updated.</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title">Why build_vocab before train?</p>
+<p><code class="docutils literal notranslate"><span class="pre">build_vocab</span></code> collects all unique tokens and creates the internal lookup tables that <code class="docutils literal notranslate"><span class="pre">train</span></code> needs. It also computes word frequencies used for subsampling and negative sampling — techniques that improve training quality and speed. Calling <code class="docutils literal notranslate"><span class="pre">train</span></code> without first calling <code class="docutils literal notranslate"><span class="pre">build_vocab</span></code> will raise an error.</p>
+</div>
+</section>
+</section>
+<section id="inferring-vectors-and-classifying">
+<h2><span class="section-number">3.4.7. </span>Inferring vectors and classifying<a class="headerlink" href="#inferring-vectors-and-classifying" title="Link to this heading">#</a></h2>
+<p>After training, we infer a vector for each document in both the training and test sets, then train a logistic regression classifier on top. The <code class="docutils literal notranslate"><span class="pre">infer_vector()</span></code> method runs a few gradient descent steps to find the best document vector for a new (unseen) token list.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="c1"># Infer document vectors for training and test sets</span>
+<span class="n">train_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">infer_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">]</span>
+<span class="n">test_vectors</span>  <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">infer_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">]</span>
+
+<span class="c1"># Train classifier with balanced class weights to handle imbalance</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">class_weight</span><span class="o">=</span><span class="s2">&quot;balanced&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_vectors</span><span class="p">,</span> <span class="n">train_cats</span><span class="p">)</span>
+
+<span class="n">preds</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_vectors</span><span class="p">)</span>
+<span class="n">emotion_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">label2emotion</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">clf</span><span class="o">.</span><span class="n">classes_</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">test_cats</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">emotion_labels</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="a-note-on-inference-stochasticity">
+<h3><span class="section-number">3.4.7.1. </span>A note on inference stochasticity<a class="headerlink" href="#a-note-on-inference-stochasticity" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">infer_vector()</span></code> method uses random initialization, so repeated calls on the same document will produce slightly different vectors. For reproducibility, fix the random seed when building the model and use a consistent number of inference epochs:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># More deterministic inference</span>
+<span class="n">vec</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infer_vector</span><span class="p">([</span><span class="s2">&quot;feel&quot;</span><span class="p">,</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="s2">&quot;today&quot;</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.025</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Increasing the number of inference epochs (default is the same as <code class="docutils literal notranslate"><span class="pre">model.epochs</span></code>) produces more stable vectors but takes proportionally longer.</p>
+</section>
+</section>
+<section id="interpreting-results">
+<h2><span class="section-number">3.4.8. </span>Interpreting results<a class="headerlink" href="#interpreting-results" title="Link to this heading">#</a></h2>
+<p>Typical results from the lab (test set):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Emotion</p></th>
+<th class="head"><p>Precision</p></th>
+<th class="head"><p>Recall</p></th>
+<th class="head"><p>F1</p></th>
+<th class="head"><p>Support</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sadness</p></td>
+<td><p>0.72</p></td>
+<td><p>0.51</p></td>
+<td><p>0.60</p></td>
+<td><p>24,237</p></td>
+</tr>
+<tr class="row-odd"><td><p>Joy</p></td>
+<td><p>0.80</p></td>
+<td><p>0.56</p></td>
+<td><p>0.66</p></td>
+<td><p>28,213</p></td>
+</tr>
+<tr class="row-even"><td><p>Love</p></td>
+<td><p>0.32</p></td>
+<td><p>0.56</p></td>
+<td><p>0.41</p></td>
+<td><p>6,911</p></td>
+</tr>
+<tr class="row-odd"><td><p>Anger</p></td>
+<td><p>0.48</p></td>
+<td><p>0.58</p></td>
+<td><p>0.53</p></td>
+<td><p>11,463</p></td>
+</tr>
+<tr class="row-even"><td><p>Fear</p></td>
+<td><p>0.49</p></td>
+<td><p>0.62</p></td>
+<td><p>0.55</p></td>
+<td><p>9,542</p></td>
+</tr>
+<tr class="row-odd"><td><p>Surprise</p></td>
+<td><p>0.18</p></td>
+<td><p>0.53</p></td>
+<td><p>0.27</p></td>
+<td><p>2,994</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Macro avg</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p><strong>~0.50</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Weighted avg</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p><strong>~0.57</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Accuracy</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p><strong>~0.55</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="reading-the-results">
+<h3><span class="section-number">3.4.8.1. </span>Reading the results<a class="headerlink" href="#reading-the-results" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Joy and Sadness</strong> achieve the highest F1 scores (0.66 and 0.60). This reflects both their large support (more training examples) and their relatively distinct vocabulary. Joy texts use words like <em>happy</em>, <em>lucky</em>, <em>grateful</em>; Sadness texts use <em>sad</em>, <em>lonely</em>, <em>depressed</em>.</p></li>
+<li><p><strong>Love and Surprise</strong> are the hardest classes. Love may be expressed using language similar to Joy (<em>happy</em>, <em>warm</em>, <em>wonderful</em>), making the two classes difficult to separate. Surprise is severely under-represented (only ~4% of the dataset), so even with balanced class weights, the model has very little signal to learn from.</p></li>
+<li><p><strong>Macro F1</strong> (~0.50) is much lower than <strong>Weighted F1</strong> (~0.57). This gap shows how imbalance distorts aggregate scores: the weighted F1 is dominated by Joy and Sadness performance and masks poor results on Love and Surprise. When reporting to stakeholders, always clarify which averaging method you are using.</p></li>
+<li><p><strong>Accuracy</strong> (~55%) seems modest, but consider that random guessing on a six-class problem achieves only 1/6 ≈ 17%, and a majority-class classifier (always predict Joy) achieves only ~34%. Doc2Vec at 55% is doing genuine work.</p></li>
+</ul>
+<div class="full-width docutils">
+<figure class="align-center" id="macro-vs-weighted-f1">
+<a class="reference internal image-reference" href="../_images/macro_vs_weighted_f1.png"><img alt="../_images/macro_vs_weighted_f1.png" src="../_images/macro_vs_weighted_f1.png" style="width: 1000px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">Conceptual mechanics of <span class="math notranslate nohighlight">\(F_1\)</span> aggregation. Macro-averaging treats all categories equally, exposing weaknesses in minority classes like <em>Surprise</em>. Weighted-averaging scales each score by its support size, allowing high-volume classes (<em>Joy</em> and <em>Sadness</em>) to artificially inflate the apparent health of the overall system.</span><a class="headerlink" href="#macro-vs-weighted-f1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="confusion-matrix-for-emotion-classification">
+<h3><span class="section-number">3.4.8.2. </span>Confusion matrix for emotion classification<a class="headerlink" href="#confusion-matrix-for-emotion-classification" title="Link to this heading">#</a></h3>
+<p>The confusion matrix typically reveals that:</p>
+<ul class="simple">
+<li><p>Joy and Love are frequently confused (both positive emotions with overlapping vocabulary).</p></li>
+<li><p>Fear and Sadness are sometimes confused (both negative, both described with loss/vulnerability words).</p></li>
+<li><p>Surprise is frequently misclassified as Joy or Sadness (due to very low support).</p></li>
+</ul>
+</section>
+<section id="document-similarity-with-doc2vec">
+<h3><span class="section-number">3.4.8.3. </span>Document similarity with Doc2Vec<a class="headerlink" href="#document-similarity-with-doc2vec" title="Link to this heading">#</a></h3>
+<p>A useful property of trained document vectors is that you can find <em>similar documents</em> using cosine similarity — documents about the same emotion topic cluster together in the 50-dimensional space. This nearest-neighbor search is a practical tool for error analysis and data exploration.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find training documents most similar to a query vector</span>
+<span class="n">query_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;feel&quot;</span><span class="p">,</span> <span class="s2">&quot;overjoyed&quot;</span><span class="p">,</span> <span class="s2">&quot;wonderful&quot;</span><span class="p">,</span> <span class="s2">&quot;amazing&quot;</span><span class="p">,</span> <span class="s2">&quot;happy&quot;</span><span class="p">]</span>
+<span class="n">query_vector</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infer_vector</span><span class="p">(</span><span class="n">query_tokens</span><span class="p">)</span>
+
+<span class="c1"># Most similar documents by tag (training index)</span>
+<span class="n">similar_docs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">dv</span><span class="o">.</span><span class="n">most_similar</span><span class="p">([</span><span class="n">query_vector</span><span class="p">],</span> <span class="n">topn</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Documents most similar to a joy-expressing query:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">similar_docs</span><span class="p">:</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+    <span class="n">emotion_name</span> <span class="o">=</span> <span class="n">label2emotion</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">train_cats</span><span class="p">)[</span><span class="n">idx</span><span class="p">]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><span class="n">emotion_name</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">idx</span><span class="p">][:</span><span class="mi">10</span><span class="p">])</span><span class="si">}</span><span class="s2">... (score=</span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Documents most similar to a joy-expressing query:
+  [Sadness] want feel completely devastated utterly overjoyed... (score=0.6737)
+  [Fear] know happy feeling little threatened... (score=0.6089)
+  [Sadness] feel strangely hopeless also happy excited weird... (score=0.6025)
+  [Joy] would feel flattered b incredibly relieved... (score=0.5849)
+  [Joy] feel glad glad feel sad sad knew going smile without... (score=0.5825)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">Note</p>
+<p>Notice that the top retrieved documents are labeled <code class="docutils literal notranslate"><span class="pre">[Sadness]</span></code> and <code class="docutils literal notranslate"><span class="pre">[Fear]</span></code>. This occurs because these short tweets contain mixed signals (e.g., combining “devastated” with “overjoyed”). In a lower-dimensional 50-dimensional vector space trained for only 100 epochs, complex or noisy sentences can easily cross fine-grained emotional boundaries. This highlights that while Doc2Vec excels at capturing broad thematic concepts, it can struggle with crisp boundaries on short, highly conflicting text strings.</p>
+</div>
+<p>This nearest-neighbor search confirms that similar emotions cluster together, and highlights boundary cases where the model might confuse two emotions.</p>
+</section>
+</section>
+<section id="doc2vec-vs-word-averaging-when-to-choose-each">
+<h2><span class="section-number">3.4.9. </span>Doc2Vec vs. word averaging: when to choose each<a class="headerlink" href="#doc2vec-vs-word-averaging-when-to-choose-each" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Criterion</p></th>
+<th class="head"><p>Word Averaging</p></th>
+<th class="head"><p>Doc2Vec</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Training needed?</p></td>
+<td><p>No (just load pre-trained vectors)</p></td>
+<td><p>Yes (train on your corpus)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Works out-of-the-box on new domains?</p></td>
+<td><p>Yes, if vocabulary coverage is sufficient</p></td>
+<td><p>Requires training data</p></td>
+</tr>
+<tr class="row-even"><td><p>Captures document-level style?</p></td>
+<td><p>Weakly</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Short document quality</p></td>
+<td><p>Can be poor (few words to average)</p></td>
+<td><p>Better (dedicated vector)</p></td>
+</tr>
+<tr class="row-even"><td><p>Inference time</p></td>
+<td><p>Very fast (lookup + mean)</p></td>
+<td><p>Moderate (gradient descent steps)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Interpretability</p></td>
+<td><p>Low</p></td>
+<td><p>Low</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For very small datasets (a few hundred documents), word averaging with pre-trained vectors is usually preferable — there is not enough data to train good Doc2Vec representations. For larger corpora (tens of thousands or more), Doc2Vec can capture document-level patterns that word averaging misses.</p>
+</section>
+<section id="key-takeaways">
+<h2><span class="section-number">3.4.10. </span>Key takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<div class="seealso admonition">
+<p class="admonition-title">Summary</p>
+<ul class="simple">
+<li><p>Doc2Vec learns a dedicated vector for each document by including a document token as an additional context during Word2Vec-style training, allowing it to capture topic and style information that word averaging misses.</p></li>
+<li><p>The Distributed Memory (DM) variant uses both word context and the document vector to predict words; the Distributed Bag of Words (DBOW) variant uses only the document vector. DM generally works better for short texts.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">class_weight=&quot;balanced&quot;</span></code> when training on imbalanced corpora; without it, the classifier will heavily bias toward majority classes.</p></li>
+<li><p>Always report both macro-averaged and weighted-averaged F1 on imbalanced datasets and interpret them separately. Macro F1 shows average performance across all classes; weighted F1 reflects the user’s overall experience on the actual class distribution.</p></li>
+<li><p>Doc2Vec document vectors support nearest-neighbor document retrieval as a by-product of classification training — a useful tool for error analysis and dataset exploration.</p></li>
+<li><p>For small datasets, word averaging with pre-trained vectors is usually a safer choice than training a Doc2Vec model from scratch.</p></li>
+</ul>
+</div>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">3.4.11. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Vector size effect</strong>
+Train Doc2Vec models with <code class="docutils literal notranslate"><span class="pre">vector_size</span></code> of 20, 50, and 100 (keeping other parameters fixed) and compare their test-set accuracy and macro F1. At what point does increasing the vector size stop helping? Plot the trade-off curve.</p></li>
+<li><p><strong>DM vs. DBOW</strong>
+Gensim’s Doc2Vec supports two variants: Distributed Memory (<code class="docutils literal notranslate"><span class="pre">dm=1</span></code>) and Distributed Bag of Words (<code class="docutils literal notranslate"><span class="pre">dm=0</span></code>). Train both on the emotion dataset and compare macro F1 per class. Which variant works better for Surprise and Love — the hardest classes?</p></li>
+<li><p><strong>Combining word and document vectors</strong>
+Try concatenating the Doc2Vec document vector with the average Word2Vec vector for the same document as a combined 350-dimensional feature (50 + 300). Does combining representations improve macro F1? Which emotion class benefits most?</p></li>
+<li><p><strong>Epoch sensitivity</strong>
+Train models with <code class="docutils literal notranslate"><span class="pre">epochs</span></code> of 10, 50, and 100. Plot macro F1 vs. number of epochs. How much do additional epochs help, and is there a point of diminishing returns?</p></li>
+<li><p><strong>Error analysis</strong>
+Extract all test-set examples where the true label is <em>Surprise</em> (label 5). What fraction does the model correctly identify? What emotion labels are the Surprise examples most often confused with? Read 10 misclassified Surprise examples and explain in one sentence per example why the model might have predicted the wrong class.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_03"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C03S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Word Embeddings for Text Classification</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C03S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.5. </span>Deep Learning for Text Classification</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-word-averaging-revisited">3.4.2. Limitations of word averaging revisited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-doc2vec-works">3.4.3. How Doc2Vec works</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-memory-dm">3.4.3.1. Distributed Memory (DM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-bag-of-words-dbow">3.4.3.2. Distributed Bag of Words (DBOW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-difference-from-word-averaging">3.4.3.3. Key difference from word averaging</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-emotion-dataset">3.4.4. The emotion dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-preprocessing-for-doc2vec">3.4.5. Text preprocessing for Doc2Vec</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-doc2vec-model">3.4.6. Training a Doc2Vec model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-hyperparameters">3.4.6.1. Key hyperparameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-dynamics">3.4.6.2. Training dynamics</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inferring-vectors-and-classifying">3.4.7. Inferring vectors and classifying</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-inference-stochasticity">3.4.7.1. A note on inference stochasticity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-results">3.4.8. Interpreting results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-results">3.4.8.1. Reading the results</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix-for-emotion-classification">3.4.8.2. Confusion matrix for emotion classification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#document-similarity-with-doc2vec">3.4.8.3. Document similarity with Doc2Vec</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#doc2vec-vs-word-averaging-when-to-choose-each">3.4.9. Doc2Vec vs. word averaging: when to choose each</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">3.4.10. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">3.4.11. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
