@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.6. Tokenization Across Models: A Comparative Study &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2LLM_C04S06';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.7. Clinical NLP: Tokenization, Embeddings, and Applications" href="Intro2LLM_C04S07.html" />
+    <link rel="prev" title="4.5. Token Embeddings and the Text-to-Numbers Pipeline" href="Intro2LLM_C04S05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tokenization Across Models: A Comparative Study</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.6.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-cross-model-tokenizer-comparison-matters">4.6.2. Why Cross-Model Tokenizer Comparison Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#five-sentence-types-for-stress-testing">4.6.3. Five Sentence Types for Stress Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-1-wordpiece-vs-bpe-vs-sentencepiece">4.6.4. Comparison 1: WordPiece vs. BPE vs. SentencePiece</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-2-bert-vs-roberta-architecture-siblings-different-tokenizers">4.6.5. Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.6.6. Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-3-modern-production-tokenizers">4.6.7. Comparison 3: Modern Production Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-geometry-from-tokenization">4.6.8. Embedding Geometry from Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenizer-efficiency-and-inference-cost">4.6.9. Tokenizer Efficiency and Inference Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.6.10. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.6.11. Tokenizer Efficiency and Inference Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.6.12. Exercises and Discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="tokenization-across-models-a-comparative-study">
+<h1><span class="section-number">4.6. </span>Tokenization Across Models: A Comparative Study<a class="headerlink" href="#tokenization-across-models-a-comparative-study" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">4.6.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Compare tokenization behavior across at least four model families on identical inputs.</p></li>
+<li><p>Explain how WordPiece, BPE, and SentencePiece algorithms differ in handling formal text, informal slang, emoji, and code/math notation.</p></li>
+<li><p>Interpret a token count comparison chart and connect token efficiency to context window utilization and inference cost.</p></li>
+<li><p>Analyze the 2D PCA projection of token embeddings and identify structural patterns in the embedding geometry.</p></li>
+<li><p>Connect tokenizer design choices to downstream generation quality differences.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>This section brings together the tokenization concepts of the previous section and applies them comparatively across five model families on carefully chosen stress-test inputs. You will visualize how different tokenizers segment the same text, compute efficiency metrics, and project token embeddings into 2D to explore the geometry of the representation space. By the end, you will understand concretely how tokenizer choice affects context window utilization, API cost, and model behavior on non-standard input types.</p>
+</div>
+</section>
+<section id="why-cross-model-tokenizer-comparison-matters">
+<h2><span class="section-number">4.6.2. </span>Why Cross-Model Tokenizer Comparison Matters<a class="headerlink" href="#why-cross-model-tokenizer-comparison-matters" title="Link to this heading">#</a></h2>
+<p>Choosing a tokenizer — and by extension a model — is not a neutral decision. The same sentence can become 6 tokens under one scheme and 14 under another. A single emoji can be handled as a single semantic unit or explode into 8 byte-level fragments. These differences are not cosmetic: they directly affect context window utilization, model accuracy on edge-case inputs, inference cost, and the geometric structure of the embedding space.</p>
+<p>The three comparisons that follow explore tokenization behavior systematically across five sentence types that stress-test each algorithm’s vocabulary coverage and efficiency.</p>
+</section>
+<section id="five-sentence-types-for-stress-testing">
+<h2><span class="section-number">4.6.3. </span>Five Sentence Types for Stress Testing<a class="headerlink" href="#five-sentence-types-for-stress-testing" title="Link to this heading">#</a></h2>
+<p>A thorough comparison examines tokenizer behavior on inputs that reveal algorithmic differences rather than inputs where all tokenizers behave similarly:</p>
+<div class="full-width docutils">
+<div class="pst-scrollable-table-container"><table class="table" id="table-stress-test-types">
+<caption><span class="caption-number">Table 4.4 </span><span class="caption-text">Five Sentence Types for Stress Testing</span><a class="headerlink" href="#table-stress-test-types" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Sentence Type</p></th>
+<th class="head text-left"><p>Example</p></th>
+<th class="head text-left"><p>What it tests</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Formal academic</p></td>
+<td class="text-left"><p>“The neural network optimizer converged after 50 epochs.”</p></td>
+<td class="text-left"><p>Baseline efficiency, scientific vocabulary</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Informal/slang</p></td>
+<td class="text-left"><p>“omg this model is lowkey goated ngl fr fr lol 🔥”</p></td>
+<td class="text-left"><p>OOV handling, emoji, internet language</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Mathematical notation</p></td>
+<td class="text-left"><p>“The loss function is L(θ) = −∑ᵢ yᵢ log(p̂ᵢ)”</p></td>
+<td class="text-left"><p>Unicode symbols, subscript characters</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Python code</p></td>
+<td class="text-left"><p>“def sigmoid(x): return 1/(1+np.exp(-x))”</p></td>
+<td class="text-left"><p>Code tokens, operators, identifiers</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Non-English</p></td>
+<td class="text-left"><p>“Das Modell wurde auf deutschen Texten trainiert.”</p></td>
+<td class="text-left"><p>Multilingual coverage</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="comparison-1-wordpiece-vs-bpe-vs-sentencepiece">
+<h2><span class="section-number">4.6.4. </span>Comparison 1: WordPiece vs. BPE vs. SentencePiece<a class="headerlink" href="#comparison-1-wordpiece-vs-bpe-vs-sentencepiece" title="Link to this heading">#</a></h2>
+<p>The code below compares BERT (WordPiece), GPT-2 (BPE), and Flan-T5 (SentencePiece) on all five sentence types.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="c1"># Load three different tokenizers representing distinct algorithms</span>
+<span class="n">tokenizers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># WordPiece algorithm</span>
+    <span class="s2">&quot;BERT&quot;</span><span class="p">:</span>    <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">),</span>
+    <span class="c1"># Byte-Pair Encoding (BPE)</span>
+    <span class="s2">&quot;GPT-2&quot;</span><span class="p">:</span>   <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">),</span>
+    <span class="c1"># SentencePiece/Unigram LM</span>
+    <span class="s2">&quot;Flan-T5&quot;</span><span class="p">:</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;google/flan-t5-small&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="c1"># Define five stress-test sentences that reveal tokenizer differences</span>
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Formal academic text</span>
+    <span class="s2">&quot;The neural network optimizer converged after 50 epochs.&quot;</span><span class="p">,</span>
+    <span class="c1"># Informal/slang with emoji</span>
+    <span class="s2">&quot;omg this model is lowkey goated ngl fr fr lol 🔥&quot;</span><span class="p">,</span>
+    <span class="c1"># Mathematical notation with Unicode</span>
+    <span class="s2">&quot;The loss function is L(θ) = −∑ᵢ yᵢ log(p̂ᵢ)&quot;</span><span class="p">,</span>
+    <span class="c1"># Python code</span>
+    <span class="s2">&quot;def sigmoid(x): return 1/(1+np.exp(-x))&quot;</span><span class="p">,</span>
+    <span class="c1"># Non-English (German)</span>
+    <span class="s2">&quot;Das Modell wurde auf deutschen Texten trainiert.&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Tokenize each sentence with all three tokenizers and display results</span>
+<span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">sent</span><span class="p">[:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span>
+        <span class="c1"># Show tokenizer name, total token count, and first 8 tokens for compact comparison</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> tokens — </span><span class="si">{</span><span class="n">tokens</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The neural network optimizer converged after 50 epochs.&#39;
+  BERT      : 13 tokens — [&#39;the&#39;, &#39;neural&#39;, &#39;network&#39;, &#39;opt&#39;, &#39;##imi&#39;, &#39;##zer&#39;, &#39;converge&#39;, &#39;##d&#39;]...
+  GPT-2     : 12 tokens — [&#39;The&#39;, &#39;Ġneural&#39;, &#39;Ġnetwork&#39;, &#39;Ġoptim&#39;, &#39;izer&#39;, &#39;Ġconver&#39;, &#39;ged&#39;, &#39;Ġafter&#39;]...
+  Flan-T5   : 16 tokens — [&#39;▁The&#39;, &#39;▁neural&#39;, &#39;▁network&#39;, &#39;▁optimize&#39;, &#39;r&#39;, &#39;▁&#39;, &#39;converge&#39;, &#39;d&#39;]...
+
+&#39;omg this model is lowkey goated ngl fr fr lol 🔥&#39;
+  BERT      : 16 tokens — [&#39;om&#39;, &#39;##g&#39;, &#39;this&#39;, &#39;model&#39;, &#39;is&#39;, &#39;low&#39;, &#39;##key&#39;, &#39;goat&#39;]...
+  GPT-2     : 17 tokens — [&#39;om&#39;, &#39;g&#39;, &#39;Ġthis&#39;, &#39;Ġmodel&#39;, &#39;Ġis&#39;, &#39;Ġlow&#39;, &#39;key&#39;, &#39;Ġgo&#39;]...
+  Flan-T5   : 19 tokens — [&#39;▁&#39;, &#39;o&#39;, &#39;m&#39;, &#39;g&#39;, &#39;▁this&#39;, &#39;▁model&#39;, &#39;▁is&#39;, &#39;▁low&#39;]...
+
+&#39;The loss function is L(θ) = −∑ᵢ yᵢ log(p̂ᵢ)&#39;
+  BERT      : 17 tokens — [&#39;the&#39;, &#39;loss&#39;, &#39;function&#39;, &#39;is&#39;, &#39;l&#39;, &#39;(&#39;, &#39;θ&#39;, &#39;)&#39;]...
+  GPT-2     : 26 tokens — [&#39;The&#39;, &#39;Ġloss&#39;, &#39;Ġfunction&#39;, &#39;Ġis&#39;, &#39;ĠL&#39;, &#39;(&#39;, &#39;Î&#39;, &#39;¸&#39;]...
+  Flan-T5   : 21 tokens — [&#39;▁The&#39;, &#39;▁loss&#39;, &#39;▁function&#39;, &#39;▁is&#39;, &#39;▁L&#39;, &#39;(&#39;, &#39;θ&#39;, &#39;)&#39;]...
+
+&#39;def sigmoid(x): return 1/(1+np.exp(-x))&#39;
+  BERT      : 23 tokens — [&#39;def&#39;, &#39;si&#39;, &#39;##gm&#39;, &#39;##oid&#39;, &#39;(&#39;, &#39;x&#39;, &#39;)&#39;, &#39;:&#39;]...
+  GPT-2     : 18 tokens — [&#39;def&#39;, &#39;Ġs&#39;, &#39;igm&#39;, &#39;oid&#39;, &#39;(&#39;, &#39;x&#39;, &#39;):&#39;, &#39;Ġreturn&#39;]...
+  Flan-T5   : 26 tokens — [&#39;▁de&#39;, &#39;f&#39;, &#39;▁&#39;, &#39;sig&#39;, &#39;moi&#39;, &#39;d&#39;, &#39;(&#39;, &#39;x&#39;]...
+
+&#39;Das Modell wurde auf deutschen Texten trainiert.&#39;
+  BERT      : 14 tokens — [&#39;das&#39;, &#39;model&#39;, &#39;##l&#39;, &#39;wu&#39;, &#39;##rde&#39;, &#39;auf&#39;, &#39;deutsche&#39;, &#39;##n&#39;]...
+  GPT-2     : 19 tokens — [&#39;D&#39;, &#39;as&#39;, &#39;ĠMod&#39;, &#39;ell&#39;, &#39;Ġw&#39;, &#39;urd&#39;, &#39;e&#39;, &#39;Ġa&#39;]...
+  Flan-T5   : 11 tokens — [&#39;▁Das&#39;, &#39;▁Modell&#39;, &#39;▁wurde&#39;, &#39;▁auf&#39;, &#39;▁&#39;, &#39;deutschen&#39;, &#39;▁Text&#39;, &#39;en&#39;]...
+</pre></div>
+</div>
+</div>
+</div>
+<p>Typical observations across sentence types:</p>
+<p><strong>Formal academic text</strong>: All three tokenizers handle common English words efficiently. BERT lowercases everything; GPT-2 and Flan-T5 preserve case. Scientific terms like “optimizer” and “converged” may be split differently: BERT may produce <code class="docutils literal notranslate"><span class="pre">[&quot;optim&quot;,</span> <span class="pre">&quot;##izer&quot;]</span></code> while GPT-2 produces <code class="docutils literal notranslate"><span class="pre">[&quot;Ġoptim&quot;,</span> <span class="pre">&quot;izer&quot;]</span></code>.</p>
+<p><strong>Informal/slang</strong>: Neologisms like “lowkey” and “goated” are handled very differently. BERT produces <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> for the emoji (🔥). GPT-2 fragments the emoji into 4 byte tokens. Flan-T5 represents it as a single token if it appears in the vocabulary.</p>
+<p><strong>Mathematical notation</strong>: BERT produces <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> for Greek letters (θ, ∑) and other Unicode mathematical symbols. GPT-2 represents them as byte sequences. Flan-T5 may handle some common mathematical characters as direct vocabulary entries.</p>
+<p><strong>Python code</strong>: All three tokenizers fragment code differently. Operator sequences (<code class="docutils literal notranslate"><span class="pre">1/(1+</span></code>) may become many single-character tokens under word-level models but merge into multi-character tokens under byte-level BPE.</p>
+</section>
+<section id="comparison-2-bert-vs-roberta-architecture-siblings-different-tokenizers">
+<h2><span class="section-number">4.6.5. </span>Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers<a class="headerlink" href="#comparison-2-bert-vs-roberta-architecture-siblings-different-tokenizers" title="Link to this heading">#</a></h2>
+<p>This comparison focuses deliberately on BERT and RoBERTa, which share nearly identical model architectures (both are bidirectional transformers with masked language modeling pre-training) but use fundamentally different tokenization algorithms.</p>
+<p>This comparison isolates the tokenizer as the controlled variable — how much does the tokenization algorithm change what the model can process, even when the architecture is the same?</p>
+<p>The most revealing contrast is on the emoji sentence:</p>
+</section>
+<section id="id1">
+<h2><span class="section-number">4.6.6. </span>Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>This comparison focuses deliberately on BERT and RoBERTa, which share nearly identical model architectures (both are bidirectional transformers with masked language modeling pre-training) but use fundamentally different tokenization algorithms.</p>
+<p>This comparison isolates the tokenizer as the controlled variable — how much does the tokenization algorithm change what the model can process, even when the architecture is the same?</p>
+<p>The most revealing contrast is on the emoji sentence. Examine the output carefully: BERT collapses unknown characters into a single <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> token, while RoBERTa’s byte-level BPE preserves every character — at the cost of fragmentation.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bert_tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">)</span>
+<span class="n">roberta_tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;roberta-base&quot;</span><span class="p">)</span>
+
+<span class="c1"># Emoji-rich sentence to highlight UNK vs byte-level BPE differences</span>
+<span class="n">emoji_sentence</span> <span class="o">=</span> <span class="s2">&quot;I love this! 😍 It&#39;s absolutely amazing 🎉🔥&quot;</span>
+
+<span class="c1"># BERT (WordPiece): collapses unknown characters (emoji) into [UNK]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BERT:   &quot;</span><span class="p">,</span> <span class="n">bert_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">emoji_sentence</span><span class="p">))</span>
+<span class="c1"># [&#39;i&#39;, &#39;love&#39;, &#39;this&#39;, &#39;!&#39;, &#39;[UNK]&#39;, &#39;it&#39;, &quot;&#39;&quot;, &#39;s&#39;, &#39;absolutely&#39;, &#39;amazing&#39;, &#39;[UNK]&#39;, &#39;[UNK]&#39;]</span>
+
+<span class="c1"># RoBERTa (byte-level BPE): no [UNK] — every character is representable as bytes,</span>
+<span class="c1"># but emoji are fragmented into multiple byte-level tokens</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RoBERTa:&quot;</span><span class="p">,</span> <span class="n">roberta_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">emoji_sentence</span><span class="p">))</span>
+<span class="c1"># [&#39;I&#39;, &#39;Ġlove&#39;, &#39;Ġthis&#39;, &#39;!&#39;, &#39;ĠðŁĳ&#39;, &#39;Ŀ&#39;, &#39;ĠIt&#39;, &quot;&#39;s&quot;, &#39;Ġabsolutely&#39;, &#39;Ġamazing&#39;, &#39;ĠðŁŃ&#39;, &#39;Ī&#39;, &#39;ðŁ&#39;, &#39;Ķ&#39;, &#39;ĳ&#39;]</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BERT:    [&#39;i&#39;, &#39;love&#39;, &#39;this&#39;, &#39;!&#39;, &#39;[UNK]&#39;, &#39;it&#39;, &quot;&#39;&quot;, &#39;s&#39;, &#39;absolutely&#39;, &#39;amazing&#39;, &#39;[UNK]&#39;]
+RoBERTa: [&#39;I&#39;, &#39;Ġlove&#39;, &#39;Ġthis&#39;, &#39;!&#39;, &#39;ĠðŁĺ&#39;, &#39;į&#39;, &#39;ĠIt&#39;, &quot;&#39;s&quot;, &#39;Ġabsolutely&#39;, &#39;Ġamazing&#39;, &#39;ĠðŁ&#39;, &#39;İ&#39;, &#39;ī&#39;, &#39;ðŁ&#39;, &#39;Ķ&#39;, &#39;¥&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>BERT collapses every emoji to <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> — three emotionally significant tokens become three identical meaningless tokens. RoBERTa never emits <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> but fragments each emoji into 3–6 byte-level tokens, each carrying statistical byte co-occurrence information rather than semantic meaning.</p>
+<p>For downstream tasks where emoji carry sentiment signal (social media analysis, product reviews), this difference in tokenization strategy directly affects model performance even before any training occurs.</p>
+</section>
+<section id="comparison-3-modern-production-tokenizers">
+<h2><span class="section-number">4.6.7. </span>Comparison 3: Modern Production Tokenizers<a class="headerlink" href="#comparison-3-modern-production-tokenizers" title="Link to this heading">#</a></h2>
+<p>This comparison examines three contemporary production tokenizers: RoBERTa (byte-level BPE), Phi-3 Mini (reasoning-optimized large-vocabulary BPE), and Flan-T5 (multilingual SentencePiece).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-modern-tokenizers">
+<caption><span class="caption-number">Table 4.5 </span><span class="caption-text">Modern Production Tokenizers</span><a class="headerlink" href="#table-modern-tokenizers" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Property</p></th>
+<th class="head text-left"><p>RoBERTa</p></th>
+<th class="head text-left"><p>Phi-3 Mini</p></th>
+<th class="head text-left"><p>Flan-T5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Algorithm</p></td>
+<td class="text-left"><p>Byte-level BPE</p></td>
+<td class="text-left"><p>Large-vocab BPE</p></td>
+<td class="text-left"><p>Unigram LM</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Vocabulary size</p></td>
+<td class="text-left"><p>50,265</p></td>
+<td class="text-left"><p>32,064</p></td>
+<td class="text-left"><p>32,100</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>UNK handling</p></td>
+<td class="text-left"><p>Byte fallback</p></td>
+<td class="text-left"><p>Byte fallback</p></td>
+<td class="text-left"><p><unk> (rare)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Code/math tuning</p></td>
+<td class="text-left"><p>No</p></td>
+<td class="text-left"><p>Yes (explicit)</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Multilingual</p></td>
+<td class="text-left"><p>Partial</p></td>
+<td class="text-left"><p>Partial</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Phi-3’s tokenizer was explicitly optimized for reasoning and instruction-following tasks, with code, mathematical notation, and structured text (JSON, tables) as first-class merge targets. This results in fewer, more semantically coherent splits for technical content compared to RoBERTa’s general-purpose training.</p>
+</section>
+<section id="embedding-geometry-from-tokenization">
+<h2><span class="section-number">4.6.8. </span>Embedding Geometry from Tokenization<a class="headerlink" href="#embedding-geometry-from-tokenization" title="Link to this heading">#</a></h2>
+<p>Beyond the token count, tokenization choices affect the geometric structure of the embedding space. Visualizing this geometry reveals patterns invisible in raw token lists.</p>
+<p>The code below:</p>
+<ol class="arabic simple">
+<li><p>Loads a pre-trained RoBERTa model and tokenizes a Python function definition.</p></li>
+<li><p>Extracts the <strong>last hidden state</strong> — the contextual embedding vector for each token position.</p></li>
+<li><p>Projects the high-dimensional vectors (768-dim) to 2D using PCA and annotates each point with its token string.</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Contextual Embeddings</p>
+<p>Unlike static word embeddings (e.g., Word2Vec), <strong>contextual embeddings</strong> assign a different vector to each token depending on its surrounding context. The word “bank” receives a different embedding in <em>“river bank”</em> than in <em>“bank account”</em> because the encoder attends to all other tokens when computing each representation. In transformer models, the <em>last hidden state</em> is the output of the final encoder layer — a matrix of shape <code class="docutils literal notranslate"><span class="pre">(sequence_length,</span> <span class="pre">hidden_size)</span></code> where each row is the contextual embedding for one token position.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="c1"># Load the RoBERTa tokenizer and model used for the embedding visualization</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;roberta-base&quot;</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+<span class="c1"># Example input: a short Python expression to inspect token-level embeddings</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;def sigmoid(x): return 1 / (1 + np.exp(-x))&quot;</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run a forward pass without gradient tracking since this is inference only</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="c1"># Extract contextual embeddings for each token in the sequence</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="c1"># Convert token IDs back to readable token strings for annotation in the plot</span>
+<span class="n">token_texts</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Reduce the 768-dimensional token embeddings to 2D for visualization</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d1945b5a82a945cda42cff654d43f697", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[transformers] <span class=" -Color -Color-Bold">RobertaModel LOAD REPORT</span> from: roberta-base
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center" id="token-embedding-pca">
+<a class="reference internal image-reference" href="../_images/token_embedding_pca.png"><img alt="../_images/token_embedding_pca.png" src="../_images/token_embedding_pca.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Token Embedding PCA: ‘def sigmoid(x): return 1 / (1 + np.exp(-x))’</span><a class="headerlink" href="#token-embedding-pca" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the 2D projection, structurally related tokens often cluster: Python keywords (<code class="docutils literal notranslate"><span class="pre">def</span></code>, <code class="docutils literal notranslate"><span class="pre">return</span></code>) may appear near each other; numeric tokens cluster away from keywords; operator tokens (<code class="docutils literal notranslate"><span class="pre">/</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>) form their own neighborhood. The special tokens <code class="docutils literal notranslate"><span class="pre">&lt;s&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/s&gt;</span></code> typically appear as outliers — their embedding vectors are trained primarily for positional/structural signaling rather than semantic content.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — PCA (Principal Component Analysis)</p>
+<p><strong>Principal Component Analysis (PCA)</strong> is a dimensionality reduction technique that projects high-dimensional data onto a lower-dimensional space while preserving as much variance as possible. Token embedding vectors are typically 768 or 1024 dimensional — impossible to visualize directly. PCA finds the two directions (<em>principal components</em>) along which the data varies most, and projects each vector onto those axes, producing a 2D scatter plot. Clusters and distances in the 2D projection reflect (imperfectly) the structure of the original high-dimensional embedding space. PCA is a common first step in embedding visualization; for larger datasets, t-SNE and UMAP often reveal finer structure.</p>
+</div>
+</section>
+<section id="tokenizer-efficiency-and-inference-cost">
+<h2><span class="section-number">4.6.9. </span>Tokenizer Efficiency and Inference Cost<a class="headerlink" href="#tokenizer-efficiency-and-inference-cost" title="Link to this heading">#</a></h2>
+<p>Token efficiency — how many tokens are required to represent a given text — has direct practical implications:</p>
+<ul class="simple">
+<li><p><strong>Context window</strong>: every prompt token consumes capacity from the model’s maximum context length. An inefficient tokenizer effectively reduces the usable context window.</p></li>
+<li><p><strong>API cost</strong>: commercial LLM providers charge per token. A tokenizer that requires 30% more tokens for the same input increases costs by 30%.</p></li>
+<li><p><strong>Inference speed</strong>: more tokens means more forward passes (for generation) and longer attention sequences — both increase latency.</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Context Window</p>
+<p>A model’s <strong>context window</strong> (also called <em>context length</em> or <em>sequence length limit</em>) is the maximum number of tokens it can process in a single forward pass — the combined length of the prompt and the generated response. For Phi-3-Mini this is 4,096 tokens; for Llama-3.1 it is 128,000 tokens. If the total token count exceeds this limit, the model must either truncate the input (losing information) or use chunking strategies. Tokenizer efficiency directly affects how much text you can fit: a tokenizer that uses 20% more tokens for the same text effectively gives you a 20% smaller usable context window.</p>
+</div>
+<p>The practices include a systematic efficiency comparison across all five sentence types. Key findings:</p>
+<ul class="simple">
+<li><p>All three tokenizers are comparably efficient on common English text.</p></li>
+<li><p>Emoji and Unicode symbols cause dramatically different token counts: a single emoji may be 1 token (Flan-T5) or 4–8 tokens (BERT/GPT-2).</p></li>
+<li><p>Mathematical notation with Greek letters and subscripts is handled most compactly by Phi-3’s optimized tokenizer.</p></li>
+<li><p>Non-English text favors Flan-T5’s multilingual vocabulary.</p></li>
+</ul>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">4.6.10. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Emoji count comparison</strong>
+Choose five emoji (e.g., 😍, 🔥, 🎉, 🤔, 👋) and tokenize each with BERT, GPT-2, RoBERTa, and Flan-T5. Record the token count for each emoji under each tokenizer. Which tokenizer handles emoji most compactly, and what does this reveal about its vocabulary construction?</p></li>
+<li><p><strong>Code tokenization</strong>
+Write a Python function of 5–10 lines and tokenize it with BERT and Phi-3’s tokenizers. Compare the total token counts and identify which code elements (operators, keywords, identifiers, whitespace) are most differently tokenized. How might Phi-3’s code-aware tokenizer affect a model’s ability to reason about code structure?</p></li>
+<li><p><strong>Vocabulary coverage analysis</strong>
+For each of the five sentence types, identify which tokenizer achieves the lowest token count (most efficient). Is there a single tokenizer that dominates across all types, or does the best tokenizer depend on the input domain? What does this imply for choosing a tokenizer/model for a specific application?</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title">Key Term — PCA (Principal Component Analysis)</p>
+<p><strong>Principal Component Analysis (PCA)</strong> is a dimensionality reduction technique that projects high-dimensional data onto a lower-dimensional space while preserving as much variance as possible. Token embedding vectors are typically 768 or 1024 dimensional — impossible to visualize directly. PCA finds the two directions (<em>principal components</em>) along which the data varies most, and projects each vector onto those axes, producing a 2D scatter plot.</p>
+<p>The fraction of variance explained by each component is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-29fd88a6-0f6f-4cef-900c-835f89695c60">
+<span class="eqno">(4.14)<a class="headerlink" href="#equation-29fd88a6-0f6f-4cef-900c-835f89695c60" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Explained variance ratio}_k = \frac{\lambda_k}{\sum_{j} \lambda_j}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_k\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>-th eigenvalue of the data covariance matrix. A two-component PCA that explains 60–70% of total variance provides a reasonable geometric sketch; values below 40% suggest the structure is too high-dimensional for 2D to capture faithfully. For larger token sets, t-SNE and UMAP often reveal finer cluster structure that PCA misses.</p>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.6.11. </span>Tokenizer Efficiency and Inference Cost<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>Token efficiency — how many tokens are required to represent a given text — has direct practical implications:</p>
+<ul class="simple">
+<li><p><strong>Context window</strong>: every prompt token consumes capacity from the model’s maximum context length. An inefficient tokenizer effectively reduces the usable context window.</p></li>
+<li><p><strong>API cost</strong>: commercial LLM providers charge per token. A tokenizer that requires 30% more tokens for the same input increases costs by 30%.</p></li>
+<li><p><strong>Inference speed</strong>: more tokens means more attention computations during the forward pass and more decoding steps during generation — both increase latency.</p></li>
+</ul>
+<p>A simple way to quantify relative efficiency across tokenizers is the <strong>token compression ratio</strong>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2a9f8317-e5d1-4242-a726-1236edf79a10">
+<span class="eqno">(4.15)<a class="headerlink" href="#equation-2a9f8317-e5d1-4242-a726-1236edf79a10" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Compression ratio} = \frac{\text{number of characters in input}}{\text{number of tokens produced}}
+\end{equation}\]</div>
+<p>Higher is more efficient. For typical English prose, modern tokenizers achieve ratios of 3–5 characters per token; emoji-heavy or mathematical text can drop this below 1.5 for poorly matched tokenizers.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Context Window</p>
+<p>A model’s <strong>context window</strong> (also called <em>context length</em> or <em>sequence length limit</em>) is the maximum number of tokens it can process in a single forward pass — the combined length of the prompt and the generated response. For Phi-3-Mini this is 4,096 tokens; for Llama-3.1-8B it is 128,000 tokens. If the total token count exceeds this limit, the model must either truncate the input (losing information) or use chunking strategies. Tokenizer efficiency directly affects how much text you can fit: a tokenizer that uses 20% more tokens for the same text effectively gives you a 20% smaller usable context window.</p>
+</div>
+<p>Key findings from the efficiency comparison across all five sentence types:</p>
+<ul class="simple">
+<li><p>All three tokenizers are comparably efficient on common English text.</p></li>
+<li><p>Emoji and Unicode symbols cause dramatically different token counts: a single emoji may be 1 token (Flan-T5) or 4–8 tokens (BERT/GPT-2).</p></li>
+<li><p>Mathematical notation with Greek letters and subscripts is handled most compactly by Phi-3’s optimized tokenizer.</p></li>
+<li><p>Non-English text strongly favors Flan-T5’s multilingual vocabulary.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.6.12. </span>Exercises and Discussion<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p><strong>1. Emoji Count Comparison</strong><br />
+Choose five emoji (e.g., 😍, 🔥, 🎉, 🤔, 👋) and tokenize each with BERT, GPT-2, RoBERTa, and Flan-T5. Record the token count for each emoji under each tokenizer. Which tokenizer handles emoji most compactly, and what does this reveal about its vocabulary construction?</p>
+<p><strong>2. Code Tokenization</strong><br />
+Write a Python function of 5–10 lines and tokenize it with BERT and Phi-3’s tokenizers. Compare the total token counts and identify which code elements (operators, keywords, identifiers, whitespace) are most differently tokenized. How might Phi-3’s code-aware tokenizer affect a model’s ability to reason about code structure?</p>
+<p><strong>3. Vocabulary Coverage Analysis</strong><br />
+For each of the five sentence types, identify which tokenizer achieves the lowest token count (most efficient). Is there a single tokenizer that dominates across all types, or does the best tokenizer depend on the input domain? What does this imply for choosing a tokenizer/model for a specific application?</p>
+<p><strong>4. Compression Ratio Calculation</strong> <em>(Extension)</em><br />
+Compute the compression ratio (characters ÷ tokens) for each tokenizer on each of the five sentence types. Rank the tokenizers by average compression ratio. Then recompute after removing the emoji sentence — does the ranking change? What does this tell you about where tokenizer design choices have the most impact?</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C04S05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.5. </span>Token Embeddings and the Text-to-Numbers Pipeline</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C04S07.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.7. </span>Clinical NLP: Tokenization, Embeddings, and Applications</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.6.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-cross-model-tokenizer-comparison-matters">4.6.2. Why Cross-Model Tokenizer Comparison Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#five-sentence-types-for-stress-testing">4.6.3. Five Sentence Types for Stress Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-1-wordpiece-vs-bpe-vs-sentencepiece">4.6.4. Comparison 1: WordPiece vs. BPE vs. SentencePiece</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-2-bert-vs-roberta-architecture-siblings-different-tokenizers">4.6.5. Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.6.6. Comparison 2: BERT vs. RoBERTa — Architecture Siblings, Different Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-3-modern-production-tokenizers">4.6.7. Comparison 3: Modern Production Tokenizers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-geometry-from-tokenization">4.6.8. Embedding Geometry from Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenizer-efficiency-and-inference-cost">4.6.9. Tokenizer Efficiency and Inference Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.6.10. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.6.11. Tokenizer Efficiency and Inference Cost</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.6.12. Exercises and Discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

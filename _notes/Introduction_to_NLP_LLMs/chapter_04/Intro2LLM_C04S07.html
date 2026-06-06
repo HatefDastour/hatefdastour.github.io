@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.7. Clinical NLP: Tokenization, Embeddings, and Applications &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2LLM_C04S07';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Inside Transformer LLMs and Text Classification" href="../chapter_05/Intro2LLM_C05.html" />
+    <link rel="prev" title="4.6. Tokenization Across Models: A Comparative Study" href="Intro2LLM_C04S06.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clinical NLP: Tokenization, Embeddings, and Applications</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.7.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-clinical-nlp-is-a-high-stakes-domain">4.7.2. Why Clinical NLP is a High-Stakes Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-three-tokenizers-compared-on-clinical-text">4.7.3. The Three Tokenizers Compared on Clinical Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-term-fragmentation-audit">4.7.4. Per-Term Fragmentation Audit</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-algorithms-at-a-glance">4.7.4.1. Tokenization Algorithms at a Glance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-case-for-domain-specific-models">4.7.5. The Case for Domain-Specific Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-geometry-of-clinical-text">4.7.6. Embedding Geometry of Clinical Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-embeddings-and-pca">4.7.7. Contextualized Embeddings and PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-vs-static-embeddings">4.7.7.1. Contextualized vs. Static Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-pca">4.7.7.2. Why PCA?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-quality-on-clinical-tasks">4.7.8. Generation Quality on Clinical Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-dimensions">4.7.8.1. Evaluation Dimensions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-accuracy-safety-score">4.7.8.2. A Simple Accuracy-Safety Score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.7.9. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="clinical-nlp-tokenization-embeddings-and-applications">
+<h1><span class="section-number">4.7. </span>Clinical NLP: Tokenization, Embeddings, and Applications<a class="headerlink" href="#clinical-nlp-tokenization-embeddings-and-applications" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">4.7.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain why general-purpose tokenizers struggle with clinical and biomedical text.</p></li>
+<li><p>Conduct a per-term tokenization audit for drug names, clinical abbreviations, and diagnostic terminology.</p></li>
+<li><p>Interpret the embedding geometry of a clinical sentence projected to 2D via PCA.</p></li>
+<li><p>Describe why domain-specific models (BioBERT, ClinicalBERT) are motivated by the tokenization failures of general-purpose tokenizers.</p></li>
+<li><p>Evaluate LLM generation quality on clinical text completion tasks and assess its suitability for real-world deployment.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>This section applies the tokenization and embedding analysis from previous sections to one of the most consequential NLP domains: clinical and biomedical text. You will conduct a systematic fragmentation audit of drug names and clinical abbreviations, visualize the resulting embedding geometry, and understand why general-purpose models fall short — and what domain-specific alternatives such as BioBERT and ClinicalBERT provide. The section closes with an evaluation of LLM generation quality on clinical tasks, connecting tokenization failures to downstream generation errors.</p>
+</div>
+</section>
+<section id="why-clinical-nlp-is-a-high-stakes-domain">
+<h2><span class="section-number">4.7.2. </span>Why Clinical NLP is a High-Stakes Domain<a class="headerlink" href="#why-clinical-nlp-is-a-high-stakes-domain" title="Link to this heading">#</a></h2>
+<p>Electronic health records (EHRs), discharge summaries, radiology reports, and clinical trial documentation contain dense abbreviations, proprietary drug names, diagnostic codes, and Latin medical terminology — all of which fall far outside the training distribution of general-purpose tokenizers built from web text.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Electronic Health Record (EHR)</p>
+<p>An <strong>Electronic Health Record (EHR)</strong> is the digitized record of a patient’s medical history, maintained by a healthcare provider. EHRs contain highly heterogeneous text: narrative clinical notes written by physicians in telegraphic style, medication lists with proprietary drug names and dosage instructions, lab results with numeric values and normal ranges, diagnostic codes from controlled vocabularies (ICD-10, SNOMED-CT), and imaging report summaries. NLP systems applied to EHRs must handle this variety of text types, all of which differ sharply from the web-crawled corpora that most general-purpose models were trained on.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Key Term — ICD-10 Codes</p>
+<p><strong>ICD-10</strong> (International Classification of Diseases, 10th Revision) is the World Health Organization’s standardized system for classifying medical diagnoses and procedures. Each diagnosis is assigned an alphanumeric code: for example, <em>E11.9</em> means “Type 2 diabetes mellitus without complications” and <em>I21.9</em> means “Acute myocardial infarction, unspecified.” ICD codes appear extensively in EHRs and billing records. Tokenizers that fragment these codes into generic alphanumeric subwords lose the structured semantics that make the codes meaningful.</p>
+</div>
+<p>The practical consequences of poor tokenization in clinical NLP are severe:</p>
+<ul class="simple">
+<li><p><strong>Drug name fragmentation</strong>: A tokenizer that splits <code class="docutils literal notranslate"><span class="pre">metformin</span></code> into <code class="docutils literal notranslate"><span class="pre">met</span></code> + <code class="docutils literal notranslate"><span class="pre">##form</span></code> + <code class="docutils literal notranslate"><span class="pre">##in</span></code> produces three embedding vectors where one well-formed medical token should exist. A named entity recognition model trained on these fragments will struggle to identify medication boundaries correctly.</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Named Entity Recognition (NER)</p>
+<p><strong>Named Entity Recognition (NER)</strong> is the task of identifying and classifying mentions of named entities (people, organizations, locations, dates, quantities, medical terms, etc.) in text and tagging their boundaries. In clinical NLP, NER is used to extract medication names, dosages, diagnoses, procedures, and patient information from unstructured notes. Tokenization quality directly affects NER performance: if a drug name like <code class="docutils literal notranslate"><span class="pre">clopidogrel</span></code> is split into 4 subword tokens, the NER model must correctly label all 4 fragments as parts of a single medication entity — a harder learning problem than labeling one coherent token.</p>
+</div>
+<ul class="simple">
+<li><p><strong>Abbreviation handling</strong>: Clinical text is saturated with abbreviations — <code class="docutils literal notranslate"><span class="pre">SOB</span></code> (shortness of breath), <code class="docutils literal notranslate"><span class="pre">CABG</span></code> (coronary artery bypass grafting), <code class="docutils literal notranslate"><span class="pre">PRN</span></code> (as needed), <code class="docutils literal notranslate"><span class="pre">BID</span></code> (twice daily), <code class="docutils literal notranslate"><span class="pre">Hgb</span></code> (hemoglobin). General-purpose tokenizers may split <code class="docutils literal notranslate"><span class="pre">SOB</span></code> into <code class="docutils literal notranslate"><span class="pre">S</span></code> + <code class="docutils literal notranslate"><span class="pre">##OB</span></code> (WordPiece) or <code class="docutils literal notranslate"><span class="pre">S</span></code> + <code class="docutils literal notranslate"><span class="pre">OB</span></code> (BPE), producing fragments that appear in many non-medical contexts and carry no clinical abbreviation meaning in their embeddings.</p></li>
+<li><p><strong>ICD codes and Latin terminology</strong>: Diagnostic codes (<code class="docutils literal notranslate"><span class="pre">ICD-10:</span> <span class="pre">E11.9</span></code>, <code class="docutils literal notranslate"><span class="pre">CPT:</span> <span class="pre">99213</span></code>) and Latin terms (<code class="docutils literal notranslate"><span class="pre">dyspnea</span></code>, <code class="docutils literal notranslate"><span class="pre">tachycardia</span></code>, <code class="docutils literal notranslate"><span class="pre">echocardiogram</span></code>) are systematically rare or absent in web-scraped training corpora.</p></li>
+</ul>
+<p>In clinical NLP deployment — medication extraction, ICD code prediction, clinical note summarization — these tokenization failures translate directly into reduced recall on rare but critical medical entities.</p>
+<div class="warning admonition">
+<p class="admonition-title">Disclaimer</p>
+<p>The practices in this section are for <strong>educational purposes only</strong>. They demonstrate tokenizer behavior on synthetic clinical examples. No real patient data is used. Language models should never replace clinical judgment or be used for actual medical decision-making without rigorous validation and regulatory approval.</p>
+</div>
+</section>
+<section id="the-three-tokenizers-compared-on-clinical-text">
+<h2><span class="section-number">4.7.3. </span>The Three Tokenizers Compared on Clinical Text<a class="headerlink" href="#the-three-tokenizers-compared-on-clinical-text" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">p406_clinical_nlp_audit_roberta_phi3</span></code> and <code class="docutils literal notranslate"><span class="pre">p407_clinical_nlp_application</span></code> practices compare three production tokenizers on clinical text:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tokenizer</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Vocab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Byte-level BPE</p></td>
+<td><p>RoBERTa (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code>)</p></td>
+<td><p>BPE on 256-byte vocabulary</p></td>
+<td><p>50,265</p></td>
+</tr>
+<tr class="row-odd"><td><p>tiktoken-style BPE</p></td>
+<td><p>Phi-3 Mini (<code class="docutils literal notranslate"><span class="pre">microsoft/Phi-3-mini-4k-instruct</span></code>)</p></td>
+<td><p>Large-vocab reasoning-optimized BPE</p></td>
+<td><p>32,064</p></td>
+</tr>
+<tr class="row-even"><td><p>SentencePiece Unigram</p></td>
+<td><p>Flan-T5 (<code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)</p></td>
+<td><p>Unigram LM on multilingual C4</p></td>
+<td><p>32,100</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All three tokenizers were trained primarily on general web text and are therefore baseline cases — a diagnostic exercise that motivates domain-specific alternatives.</p>
+</section>
+<section id="per-term-fragmentation-audit">
+<h2><span class="section-number">4.7.4. </span>Per-Term Fragmentation Audit<a class="headerlink" href="#per-term-fragmentation-audit" title="Link to this heading">#</a></h2>
+<p>The most revealing analysis for clinical NLP is a per-term audit: for each medical term of interest, how many tokens does each tokenizer produce, and what are they?</p>
+<section id="tokenization-algorithms-at-a-glance">
+<h3><span class="section-number">4.7.4.1. </span>Tokenization Algorithms at a Glance<a class="headerlink" href="#tokenization-algorithms-at-a-glance" title="Link to this heading">#</a></h3>
+<p>Before running the audit it helps to recall how each algorithm builds its vocabulary, since that directly determines how clinical terms are split.</p>
+<p><strong>Byte-Pair Encoding (BPE)</strong> starts with individual characters (or bytes) and iteratively merges the most frequent adjacent pair until the target vocabulary size is reached. Formally, at each step the algorithm selects the pair <span class="math notranslate nohighlight">\((a, b)\)</span> with the highest joint frequency <span class="math notranslate nohighlight">\(f(a, b)\)</span> across the corpus and adds the merged symbol <span class="math notranslate nohighlight">\(ab\)</span> to the vocabulary:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{merge}^* = \arg\max_{(a,\, b)} f(a, b)
+\]</div>
+<p>Because BPE merges are driven by frequency in the training corpus, medical terms that appear rarely in web text receive few merges and are left heavily fragmented.</p>
+<p><strong>SentencePiece Unigram LM</strong> (used by Flan-T5) instead begins with a large candidate vocabulary and <em>prunes</em> it. Each token <span class="math notranslate nohighlight">\(x_i\)</span> is assigned a log-probability <span class="math notranslate nohighlight">\(\log p(x_i)\)</span>, and the tokenizer selects the segmentation <span class="math notranslate nohighlight">\(\mathbf{x}^* \)</span> that maximises the total log-likelihood:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}^* = \arg\max_{\mathbf{x}} \sum_{i} \log p(x_i)
+\]</div>
+<p>Tokens that do not improve likelihood on the training corpus are removed until the vocabulary reaches its target size. Again, rare clinical tokens are unlikely to survive.</p>
+<p><strong>Quantifying fragmentation — the Token-per-Term Ratio (TTR)</strong></p>
+<p>A simple metric for comparing tokenizers on any term set <span class="math notranslate nohighlight">\(T\)</span> is the average number of tokens per term:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{TTR} = \frac{1}{|T|} \sum_{t \in T} \text{tokens}(t)
+\]</div>
+<p>A TTR of 1.0 means every term is represented as a single token (ideal). The audit below will let you compute a TTR across the clinical term set for each tokenizer.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">tokenizers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;RoBERTa&quot;</span><span class="p">:</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;roberta-base&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Phi-3&quot;</span><span class="p">:</span>   <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Flan-T5&quot;</span><span class="p">:</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;google/flan-t5-small&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">clinical_terms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;metformin&quot;</span><span class="p">,</span>        <span class="c1"># common diabetes drug</span>
+    <span class="s2">&quot;clopidogrel&quot;</span><span class="p">,</span>      <span class="c1"># antiplatelet medication</span>
+    <span class="s2">&quot;CABG&quot;</span><span class="p">,</span>            <span class="c1"># coronary artery bypass grafting</span>
+    <span class="s2">&quot;SOB&quot;</span><span class="p">,</span>             <span class="c1"># shortness of breath</span>
+    <span class="s2">&quot;tachycardia&quot;</span><span class="p">,</span>     <span class="c1"># rapid heart rate</span>
+    <span class="s2">&quot;echocardiogram&quot;</span><span class="p">,</span>  <span class="c1"># cardiac imaging</span>
+    <span class="s2">&quot;PRN&quot;</span><span class="p">,</span>             <span class="c1"># as needed</span>
+    <span class="s2">&quot;dyspnea&quot;</span><span class="p">,</span>         <span class="c1"># difficulty breathing</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">clinical_terms</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">tokenizers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="si">}</span><span class="s2"> token(s) — </span><span class="si">{</span><span class="n">tokens</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>metformin:
+  RoBERTa   : 3 token(s) — [&#39;met&#39;, &#39;form&#39;, &#39;in&#39;]
+  Phi-3     : 3 token(s) — [&#39;▁met&#39;, &#39;form&#39;, &#39;in&#39;]
+  Flan-T5   : 3 token(s) — [&#39;▁met&#39;, &#39;form&#39;, &#39;in&#39;]
+
+clopidogrel:
+  RoBERTa   : 5 token(s) — [&#39;cl&#39;, &#39;op&#39;, &#39;id&#39;, &#39;og&#39;, &#39;rel&#39;]
+  Phi-3     : 5 token(s) — [&#39;▁c&#39;, &#39;lop&#39;, &#39;id&#39;, &#39;og&#39;, &#39;rel&#39;]
+  Flan-T5   : 6 token(s) — [&#39;▁&#39;, &#39;clo&#39;, &#39;pid&#39;, &#39;o&#39;, &#39;gre&#39;, &#39;l&#39;]
+
+CABG:
+  RoBERTa   : 3 token(s) — [&#39;C&#39;, &#39;AB&#39;, &#39;G&#39;]
+  Phi-3     : 3 token(s) — [&#39;▁C&#39;, &#39;AB&#39;, &#39;G&#39;]
+  Flan-T5   : 2 token(s) — [&#39;▁CA&#39;, &#39;BG&#39;]
+
+SOB:
+  RoBERTa   : 2 token(s) — [&#39;S&#39;, &#39;OB&#39;]
+  Phi-3     : 2 token(s) — [&#39;▁SO&#39;, &#39;B&#39;]
+  Flan-T5   : 2 token(s) — [&#39;▁SO&#39;, &#39;B&#39;]
+
+tachycardia:
+  RoBERTa   : 4 token(s) — [&#39;t&#39;, &#39;achy&#39;, &#39;card&#39;, &#39;ia&#39;]
+  Phi-3     : 5 token(s) — [&#39;▁t&#39;, &#39;ach&#39;, &#39;y&#39;, &#39;card&#39;, &#39;ia&#39;]
+  Flan-T5   : 6 token(s) — [&#39;▁&#39;, &#39;t&#39;, &#39;a&#39;, &#39;chy&#39;, &#39;cardi&#39;, &#39;a&#39;]
+
+echocardiogram:
+  RoBERTa   : 4 token(s) — [&#39;ech&#39;, &#39;oc&#39;, &#39;ardi&#39;, &#39;ogram&#39;]
+  Phi-3     : 5 token(s) — [&#39;▁e&#39;, &#39;ch&#39;, &#39;oc&#39;, &#39;ardi&#39;, &#39;ogram&#39;]
+  Flan-T5   : 3 token(s) — [&#39;▁echo&#39;, &#39;cardi&#39;, &#39;ogram&#39;]
+
+PRN:
+  RoBERTa   : 2 token(s) — [&#39;PR&#39;, &#39;N&#39;]
+  Phi-3     : 2 token(s) — [&#39;▁PR&#39;, &#39;N&#39;]
+  Flan-T5   : 2 token(s) — [&#39;▁PR&#39;, &#39;N&#39;]
+
+dyspnea:
+  RoBERTa   : 4 token(s) — [&#39;d&#39;, &#39;ys&#39;, &#39;p&#39;, &#39;nea&#39;]
+  Phi-3     : 4 token(s) — [&#39;▁d&#39;, &#39;ys&#39;, &#39;p&#39;, &#39;nea&#39;]
+  Flan-T5   : 5 token(s) — [&#39;▁dys&#39;, &#39;p&#39;, &#39;n&#39;, &#39;e&#39;, &#39;a&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Representative results reveal a consistent pattern:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Term</p></th>
+<th class="head"><p>RoBERTa</p></th>
+<th class="head"><p>Phi-3</p></th>
+<th class="head"><p>Flan-T5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">metformin</span></code></p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clopidogrel</span></code></p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CABG</span></code></p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SOB</span></code></p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tachycardia</span></code></p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">echocardiogram</span></code></p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+<td><p>6</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Key observations:</p>
+<ul class="simple">
+<li><p><strong>No tokenizer represents any of these clinical terms as a single token.</strong> All are fragmented into subword pieces that carry no clinical meaning individually.</p></li>
+<li><p><strong>Phi-3 tends to produce slightly fewer fragments</strong> for longer drug names, likely due to its technically-oriented training corpus including some scientific literature.</p></li>
+<li><p><strong>Abbreviations</strong> (<code class="docutils literal notranslate"><span class="pre">CABG</span></code>, <code class="docutils literal notranslate"><span class="pre">SOB</span></code>) are handled particularly poorly — the resulting subwords have no relationship to the abbreviation’s clinical meaning.</p></li>
+<li><p><strong>Longer Latin-derived terms</strong> (<code class="docutils literal notranslate"><span class="pre">echocardiogram</span></code>, <code class="docutils literal notranslate"><span class="pre">tachycardia</span></code>) are fragmented into 3–6 pieces even though they represent single clinical concepts.</p></li>
+</ul>
+</section>
+</section>
+<section id="the-case-for-domain-specific-models">
+<h2><span class="section-number">4.7.5. </span>The Case for Domain-Specific Models<a class="headerlink" href="#the-case-for-domain-specific-models" title="Link to this heading">#</a></h2>
+<p>The fragmentation patterns above motivate the development of <strong>domain-specific language models</strong> whose tokenizers and pre-training are adapted to biomedical and clinical text:</p>
+<ul class="simple">
+<li><p><strong>BioBERT</strong> (<code class="docutils literal notranslate"><span class="pre">dmis-lab/biobert-v1.1</span></code>): BERT pre-trained additionally on 18 GB of PubMed abstracts and 4.5 GB of PMC full-text articles. Its vocabulary and pre-training distribution bring it much closer to biomedical literature, reducing fragmentation of medical terms.</p></li>
+<li><p><strong>ClinicalBERT</strong> (<code class="docutils literal notranslate"><span class="pre">emilyalsentzer/Bio_ClinicalBERT</span></code>): Further pre-trained on MIMIC-III clinical notes (over 2 million patient discharge summaries), adapting the model to the specific language patterns of clinical documentation.</p></li>
+<li><p><strong>BioGPT</strong> (<code class="docutils literal notranslate"><span class="pre">microsoft/biogpt</span></code>): A GPT-style decoder pre-trained on PubMed abstracts, enabling biomedical text generation and question answering.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Why Domain-Specific Pre-training Helps</p>
+<p>Domain-specific models like BioBERT improve over general-purpose BERT in two reinforcing ways. First, <strong>vocabulary coverage</strong>: because the model was trained on biomedical corpora, the tokenizer encountered many medical terms frequently enough for the BPE merge rules to produce compact, single-token representations of common drugs, diseases, and procedures. Second, <strong>contextual representations</strong>: the transformer weights learn to encode relationships specific to biomedical text — for example, that <em>“metformin”</em> co-occurs with <em>“type 2 diabetes”</em> and <em>“glucose”</em> rather than with the general contexts of its constituent subwords <em>“met”</em> and <em>“form”</em>. These two improvements compound at every layer of the NLP pipeline.</p>
+</div>
+<p>The practices in this section establish a baseline with general-purpose tokenizers to demonstrate <em>why</em> domain adaptation is necessary — the fragmentation audit serves as a quantitative motivation for reaching beyond general-purpose tools.</p>
+</section>
+<section id="embedding-geometry-of-clinical-text">
+<h2><span class="section-number">4.7.6. </span>Embedding Geometry of Clinical Text<a class="headerlink" href="#embedding-geometry-of-clinical-text" title="Link to this heading">#</a></h2>
+<p>After tokenization, the contextualized embeddings of a clinical sentence reveal how the model has structured the medical concepts in embedding space.</p>
+</section>
+<section id="contextualized-embeddings-and-pca">
+<h2><span class="section-number">4.7.7. </span>Contextualized Embeddings and PCA<a class="headerlink" href="#contextualized-embeddings-and-pca" title="Link to this heading">#</a></h2>
+<p>Before examining the code, recall what a <strong>contextualized embedding</strong> is and why projecting to 2D is informative.</p>
+<section id="contextualized-vs-static-embeddings">
+<h3><span class="section-number">4.7.7.1. </span>Contextualized vs. Static Embeddings<a class="headerlink" href="#contextualized-vs-static-embeddings" title="Link to this heading">#</a></h3>
+<p>A static word embedding (e.g., Word2Vec) assigns each word type a single fixed vector regardless of context. A <strong>contextualized embedding</strong> produced by a transformer assigns each <em>token occurrence</em> a vector that depends on all surrounding tokens via self-attention. Formally, for token <span class="math notranslate nohighlight">\(t_i\)</span> in a sequence of length <span class="math notranslate nohighlight">\(n\)</span>, the embedding at layer <span class="math notranslate nohighlight">\(l\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{h}_i^{(l)} = \text{TransformerBlock}^{(l)}\!\left(\mathbf{h}_1^{(l-1)}, \ldots, \mathbf{h}_n^{(l-1)}\right)_i
+\]</div>
+<p>We use the <strong>last hidden state</strong> <span class="math notranslate nohighlight">\(\mathbf{h}_i^{(L)}\)</span> as the token’s contextual representation. This vector lives in a high-dimensional space (768 dimensions for RoBERTa-base).</p>
+</section>
+<section id="why-pca">
+<h3><span class="section-number">4.7.7.2. </span>Why PCA?<a class="headerlink" href="#why-pca" title="Link to this heading">#</a></h3>
+<p><strong>Principal Component Analysis (PCA)</strong> finds the directions of maximum variance in the data. For a matrix <span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{R}^{n \times d}\)</span> of token embeddings, PCA computes the eigendecomposition of the covariance matrix and projects the data onto the top-<span class="math notranslate nohighlight">\(k\)</span> eigenvectors:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{Z} = \mathbf{X} \mathbf{W}_k, \quad \mathbf{W}_k \in \mathbb{R}^{d \times k}
+\]</div>
+<p>Setting <span class="math notranslate nohighlight">\(k = 2\)</span> allows us to plot the tokens on a 2D plane. While much information is lost, the projection preserves the <em>dominant</em> structure of the embedding space — tokens that are similar in 768D tend to appear close together in 2D.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Principal Component Analysis (PCA)</p>
+<p><strong>PCA</strong> is a linear dimensionality reduction technique that transforms a high-dimensional dataset into a lower-dimensional representation by projecting onto the directions of greatest variance. In the context of token embeddings, it is used as a visualization tool: similar tokens cluster together, while dissimilar ones appear far apart. PCA does not change the model or the embeddings themselves — it only changes how we <em>view</em> them.</p>
+</div>
+<p>The code below extracts the last-hidden-state embeddings for every token in a clinical sentence and projects them to 2D using PCA for visualization.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;roberta-base&quot;</span>
+<span class="n">tokenizer</span>  <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span>      <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+<span class="n">clinical_sentence</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The patient was prescribed metformin 500 mg BID for type 2 diabetes &quot;</span>
+    <span class="s2">&quot;and lisinopril 10 mg PRN for hypertension.&quot;</span>
+<span class="p">)</span>
+
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">clinical_sentence</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="n">embeddings</span>  <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">token_texts</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">pca</span>  <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">token_texts</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">tok</span><span class="p">,</span> <span class="p">(</span><span class="n">proj</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Clinical Sentence Token Embeddings (RoBERTa, PCA)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1780366610.434541    2798 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Some weights of RobertaModel were not initialized from the model checkpoint at roberta-base and are newly initialized: [&#39;pooler.dense.bias&#39;, &#39;pooler.dense.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+</pre></div>
+</div>
+<img alt="../_images/cf58a31473505df80f93f9c62af0131729ac3f5c52db5cbb54023f9de010af2a.png" src="../_images/cf58a31473505df80f93f9c62af0131729ac3f5c52db5cbb54023f9de010af2a.png" />
+</div>
+</div>
+<p>In the 2D projection, one typically observes:</p>
+<ul class="simple">
+<li><p>Drug name fragments cluster near each other (the subwords of <code class="docutils literal notranslate"><span class="pre">metformin</span></code> appear adjacent because they were derived from the same word).</p></li>
+<li><p>Dosage information (<code class="docutils literal notranslate"><span class="pre">500</span></code>, <code class="docutils literal notranslate"><span class="pre">mg</span></code>, <code class="docutils literal notranslate"><span class="pre">BID</span></code>) clusters separately from diagnosis terms.</p></li>
+<li><p>The special tokens <code class="docutils literal notranslate"><span class="pre">&lt;s&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;/s&gt;</span></code> appear as outliers.</p></li>
+<li><p>Structurally, the layout reflects the statistical co-occurrence patterns from the general web corpus rather than clinical meaning — drug names and disease names do not cluster together as they would in a biomedically-trained embedding space.</p></li>
+</ul>
+</section>
+</section>
+<section id="generation-quality-on-clinical-tasks">
+<h2><span class="section-number">4.7.8. </span>Generation Quality on Clinical Tasks<a class="headerlink" href="#generation-quality-on-clinical-tasks" title="Link to this heading">#</a></h2>
+<p>LLM generation on clinical text is evaluated differently from general-purpose text because errors can have safety-critical consequences. Before reading the outputs, it helps to have a structured evaluation framework.</p>
+<section id="evaluation-dimensions">
+<h3><span class="section-number">4.7.8.1. </span>Evaluation Dimensions<a class="headerlink" href="#evaluation-dimensions" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dimension</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>What to look for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Clinical Accuracy</strong></p></td>
+<td><p>Does the output reflect correct medical facts?</p></td>
+<td><p>Wrong drug interactions, incorrect dosages, misattributed symptoms</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Safety Framing</strong></p></td>
+<td><p>Does the model add appropriate disclaimers?</p></td>
+<td><p>Referral to a physician, warnings against self-diagnosis</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Terminology</strong></p></td>
+<td><p>Is the vocabulary appropriate to the audience?</p></td>
+<td><p>Clinical terms for a professional audience; plain language for a patient</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fluency</strong></p></td>
+<td><p>Is the text coherent and grammatically correct?</p></td>
+<td><p>Hallucinated sentences, repetition, incoherent transitions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a-simple-accuracy-safety-score">
+<h3><span class="section-number">4.7.8.2. </span>A Simple Accuracy-Safety Score<a class="headerlink" href="#a-simple-accuracy-safety-score" title="Link to this heading">#</a></h3>
+<p>For a quick numerical comparison across models you can rate each output on a 1–5 scale for accuracy (<span class="math notranslate nohighlight">\(A\)</span>) and safety (<span class="math notranslate nohighlight">\(S\)</span>), then compute a combined score that weights safety more heavily — reflecting the asymmetry of clinical risk:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Score} = 0.4 \cdot A + 0.6 \cdot S
+\]</div>
+<p>This weighting is illustrative; real clinical NLP evaluation uses expert annotation and task-specific benchmarks (e.g., MedNLI, BioASQ, n2c2 shared tasks).</p>
+<p>The practices also evaluate how well general-purpose LLMs handle two clinical text generation tasks:</p>
+<ol class="arabic simple">
+<li><p><strong>Clinical note completion</strong>: “The patient presented with chest pain and shortness of breath. ECG revealed…”</p></li>
+<li><p><strong>Lay health explanation</strong>: “Explain to a patient why they need to take metformin every day.”</p></li>
+</ol>
+<p>Key evaluation dimensions:</p>
+<ul class="simple">
+<li><p><strong>Accuracy</strong>: Does the model produce clinically correct content?</p></li>
+<li><p><strong>Safety framing</strong>: Does the model add appropriate medical disclaimers?</p></li>
+<li><p><strong>Terminology</strong>: Does the model use appropriate clinical vocabulary (or fall back to lay terms)?</p></li>
+<li><p><strong>Tokenization effects</strong>: Do fragmented drug names or abbreviations cause the model to generate incorrect continuations?</p></li>
+</ul>
+<p>General-purpose LLMs can produce plausible-sounding clinical text but are unreliable for actual clinical decision support. Phi-3’s reasoning-oriented training tends to produce more structured, medically coherent outputs than general-purpose models of similar size, while Flan-T5’s encoder-decoder architecture excels at controlled text transformation (rewriting clinical notes in lay language) rather than open-ended generation.</p>
+</section>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">4.7.9. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Fragmentation audit expansion</strong>
+Extend the per-term fragmentation audit to ten additional clinical terms of your choice: include at least two abbreviations, two drug names, two diagnostic codes, and two anatomical terms. For each term, identify which tokenizer produces the fewest fragments. Is there a pattern in which types of clinical terms each tokenizer handles best?</p></li>
+<li><p><strong>BioBERT comparison</strong>
+If you have access to BioBERT (<code class="docutils literal notranslate"><span class="pre">dmis-lab/biobert-v1.1</span></code>), run the same per-term fragmentation audit and compare the results to the three general-purpose tokenizers. For which terms does BioBERT produce fewer fragments, and why? What does this reveal about the relationship between pre-training corpus and tokenizer vocabulary?</p></li>
+<li><p><strong>Clinical generation evaluation</strong>
+Run the two clinical generation tasks (note completion and lay explanation) through a general-purpose LLM of your choice. Evaluate each output on three criteria: (a) clinical accuracy, (b) appropriate safety framing (disclaimers, referral to professionals), and (c) correct use of medical terminology. Identify one failure mode in each output and explain its likely cause.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C04S06.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.6. </span>Tokenization Across Models: A Comparative Study</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_05/Intro2LLM_C05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Inside Transformer LLMs and Text Classification</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.7.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-clinical-nlp-is-a-high-stakes-domain">4.7.2. Why Clinical NLP is a High-Stakes Domain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-three-tokenizers-compared-on-clinical-text">4.7.3. The Three Tokenizers Compared on Clinical Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-term-fragmentation-audit">4.7.4. Per-Term Fragmentation Audit</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-algorithms-at-a-glance">4.7.4.1. Tokenization Algorithms at a Glance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-case-for-domain-specific-models">4.7.5. The Case for Domain-Specific Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embedding-geometry-of-clinical-text">4.7.6. Embedding Geometry of Clinical Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-embeddings-and-pca">4.7.7. Contextualized Embeddings and PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextualized-vs-static-embeddings">4.7.7.1. Contextualized vs. Static Embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-pca">4.7.7.2. Why PCA?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-quality-on-clinical-tasks">4.7.8. Generation Quality on Clinical Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-dimensions">4.7.8.1. Evaluation Dimensions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-accuracy-safety-score">4.7.8.2. A Simple Accuracy-Safety Score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.7.9. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

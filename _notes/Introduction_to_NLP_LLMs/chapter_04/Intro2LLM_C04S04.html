@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.4. Tokens and Tokenization &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2LLM_C04S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.5. Token Embeddings and the Text-to-Numbers Pipeline" href="Intro2LLM_C04S05.html" />
+    <link rel="prev" title="4.3. LLM Robustness and Model Comparison" href="Intro2LLM_C04S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tokens and Tokenization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-token">4.4.2. What is a Token?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-not-use-words-or-characters">4.4.3. Why Not Use Words or Characters?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subword-tokenization-algorithms">4.4.4. Subword Tokenization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wordpiece-bert-bert-base-uncased">4.4.4.1. WordPiece (BERT — <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byte-pair-encoding-bpe-gpt-2-roberta">4.4.4.2. Byte-Pair Encoding (BPE — GPT-2, RoBERTa)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small">4.4.4.3. SentencePiece with Unigram LM (Flan-T5 — <code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-tokens">4.4.5. Special Tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-token-ids">4.4.6. Inspecting Token IDs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-count-and-context-window-implications">4.4.7. Token Count and Context Window Implications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.4.8. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="tokens-and-tokenization">
+<h1><span class="section-number">4.4. </span>Tokens and Tokenization<a class="headerlink" href="#tokens-and-tokenization" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">4.4.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain what a token is and why text must be tokenized before a model can process it.</p></li>
+<li><p>Describe why character-level and word-level tokenization fail at scale and how subword tokenization addresses these failures.</p></li>
+<li><p>Explain the core algorithmic difference between WordPiece (BERT), Byte-Pair Encoding (GPT-2), and SentencePiece (Flan-T5).</p></li>
+<li><p>Inspect raw token ID sequences and decode them back into text to understand exactly what the model receives as input.</p></li>
+<li><p>Identify special tokens (<code class="docutils literal notranslate"><span class="pre">[CLS]</span></code>, <code class="docutils literal notranslate"><span class="pre">[SEP]</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;|assistant|&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;pad&gt;</span></code>) and explain the role each plays.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>Before a language model can process text, the text must be converted into integers. This section explains the entire tokenization pipeline: why it exists, what can go wrong with naive approaches, and how modern subword algorithms solve the coverage-efficiency trade-off. By the end, you will be able to tokenize any string with BERT, GPT-2, or Flan-T5, inspect the resulting IDs, decode them back to text, and identify the special tokens that appear automatically.</p>
+</div>
+</section>
+<section id="what-is-a-token">
+<h2><span class="section-number">4.4.2. </span>What is a Token?<a class="headerlink" href="#what-is-a-token" title="Link to this heading">#</a></h2>
+<p>A <strong>token</strong> is the fundamental unit of text that a language model processes. Every model has a fixed vocabulary of tokens — a lookup table mapping integer indices (token IDs) to pieces of text. The model never sees characters or words directly: it sees sequences of integers, each representing a token from this vocabulary.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Vocabulary and Token ID</p>
+<p>A tokenizer’s <strong>vocabulary</strong> is the complete set of text pieces it knows, each assigned a unique integer called a <strong>token ID</strong>. For example, BERT has a vocabulary of ~30,522 entries; GPT-2 has 50,257. When the tokenizer processes a string, it returns a sequence of integers — the <em>token ID sequence</em> — which is the only representation the model ever works with. All subsequent computation (embedding lookup, transformer layers, output projection) operates on these integer sequences.</p>
+</div>
+<p>Tokens are not words. Depending on the tokenization algorithm, a token may be:</p>
+<ul class="simple">
+<li><p>A whole common word: <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> → ID 15339</p></li>
+<li><p>A word fragment (subword): <code class="docutils literal notranslate"><span class="pre">&quot;##ing&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Ġtrans&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;▁forma&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tion&quot;</span></code></p></li>
+<li><p>A single character: <code class="docutils literal notranslate"><span class="pre">&quot;z&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;5&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;!&quot;</span></code></p></li>
+<li><p>A special symbol: <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;/s&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;|user|&gt;</span></code></p></li>
+<li><p>A byte (in byte-level tokenizers): <code class="docutils literal notranslate"><span class="pre">Ġ0x41</span></code></p></li>
+</ul>
+<p>The journey from text to model input always passes through tokenization:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&quot;Mizzou is a top research university.&quot;
+              ↓  tokenizer
+    Token IDs: [1, 59172, 338, 263, 2246, 5925, 3014, 29889, 2]
+              ↓  embedding lookup
+    Token vectors (one per ID) → Transformer layers → output
+</pre></div>
+</div>
+</section>
+<section id="why-not-use-words-or-characters">
+<h2><span class="section-number">4.4.3. </span>Why Not Use Words or Characters?<a class="headerlink" href="#why-not-use-words-or-characters" title="Link to this heading">#</a></h2>
+<p><strong>Word-level tokenization</strong> splits on whitespace and punctuation, producing one token per word. This approach has two critical problems:</p>
+<ol class="arabic simple">
+<li><p><strong>Vocabulary explosion</strong>: English has millions of words including inflected forms, compounds, and proper nouns. A vocabulary large enough to cover all words would require billions of embeddings, making the model impractical.</p></li>
+<li><p><strong>Out-of-vocabulary (OOV) tokens</strong>: Any word not seen during training gets mapped to a special <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> token, collapsing all unknown words into a single meaningless representation. New terms, technical vocabulary, and misspellings are systematically lost.</p></li>
+</ol>
+<p><strong>Character-level tokenization</strong> avoids the OOV problem — any string is representable as a character sequence — but introduces a different problem: sequences become extremely long. A 512-word passage becomes roughly 2,500 characters, making it difficult for the model to learn long-range dependencies across the sequence.</p>
+<p><strong>Subword tokenization</strong> strikes a balance: common words are represented as single tokens (short sequences), while rare or unknown words are split into familiar subword pieces. The total vocabulary size can be kept to 30,000–100,000 tokens while maintaining full coverage of any input.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Subword Tokenization</p>
+<p><strong>Subword tokenization</strong> is a family of algorithms that segment text into pieces that are larger than single characters but smaller than whole words. The key insight is that many words share meaningful fragments — <em>“play”</em>, <em>“plays”</em>, <em>“played”</em>, <em>“player”</em> all contain <em>“play”</em>. By representing these as a root subword plus affixes, a model can generalize across word forms. Unlike word-level tokenization, subword schemes guarantee full coverage: any unseen word can be decomposed into known pieces (or individual bytes), eliminating the out-of-vocabulary problem.</p>
+</div>
+</section>
+<section id="subword-tokenization-algorithms">
+<h2><span class="section-number">4.4.4. </span>Subword Tokenization Algorithms<a class="headerlink" href="#subword-tokenization-algorithms" title="Link to this heading">#</a></h2>
+<p>Three algorithms dominate modern NLP. All three start from the same observation — a fixed vocabulary should balance frequency (common sequences get their own token) against coverage (rare sequences can always be decomposed) — but they differ in how they build that vocabulary and how they apply it at inference time.</p>
+<section id="wordpiece-bert-bert-base-uncased">
+<h3><span class="section-number">4.4.4.1. </span>WordPiece (BERT — <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code>)<a class="headerlink" href="#wordpiece-bert-bert-base-uncased" title="Link to this heading">#</a></h3>
+<p>WordPiece builds its vocabulary by iteratively selecting merges that maximise the <strong>likelihood</strong> of the training corpus under a unigram language model. At each step it scores every candidate pair <span class="math notranslate nohighlight">\((A, B)\)</span> and picks the merge that gives the largest gain:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4290a001-d6b2-4f5f-ad3d-4af54896bce5">
+<span class="eqno">(4.7)<a class="headerlink" href="#equation-4290a001-d6b2-4f5f-ad3d-4af54896bce5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{score}(A, B) = \frac{\text{freq}(AB)}{\text{freq}(A) \times \text{freq}(B)}
+\end{equation}\]</div>
+<p>This ratio rewards pairs that co-occur far more often than chance — essentially a pointwise mutual information criterion. The algorithm operates on Unicode characters (not bytes), lowercases all text, and prefixes continuation subwords (those that are not word-starts) with <code class="docutils literal notranslate"><span class="pre">##</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span><span class="p">:</span> <span class="s2">&quot;Tokenization is fascinating.&quot;</span>
+<span class="n">BERT</span><span class="p">:</span>  <span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="s2">&quot;##ization&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;fascinating&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Vocabulary size: ~30,522. Any character not in the vocabulary is mapped to <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code>, so emoji, rare Unicode symbols, and many non-Latin scripts are silently collapsed to a single unknown token.</p>
+</section>
+<section id="byte-pair-encoding-bpe-gpt-2-roberta">
+<h3><span class="section-number">4.4.4.2. </span>Byte-Pair Encoding (BPE — GPT-2, RoBERTa)<a class="headerlink" href="#byte-pair-encoding-bpe-gpt-2-roberta" title="Link to this heading">#</a></h3>
+<p>BPE initialises the vocabulary with all individual characters (or bytes), then iteratively merges the <strong>most frequent adjacent pair</strong> across the entire corpus until a target vocabulary size is reached:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-52a28087-f3cd-4634-a6a6-9a3a6da507c3">
+<span class="eqno">(4.8)<a class="headerlink" href="#equation-52a28087-f3cd-4634-a6a6-9a3a6da507c3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{merge} = \underset{(A,\,B)}{\arg\max}\; \text{freq}(AB)
+\end{equation}\]</div>
+<p>GPT-2 applies BPE at the <strong>byte level</strong>: the initial vocabulary consists of all 256 possible byte values, so any Unicode string can be encoded without ever emitting <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code>. Word boundaries are marked with a space prefix shown as <code class="docutils literal notranslate"><span class="pre">Ġ</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span><span class="p">:</span> <span class="s2">&quot;Tokenization is fascinating.&quot;</span>
+<span class="n">GPT</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Token&quot;</span><span class="p">,</span> <span class="s2">&quot;ization&quot;</span><span class="p">,</span> <span class="s2">&quot;Ġis&quot;</span><span class="p">,</span> <span class="s2">&quot;Ġfascinating&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Vocabulary size: 50,257. The byte-level guarantee means even emoji and mathematical symbols are representable — though they may expand into several byte tokens.</p>
+</section>
+<section id="sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small">
+<h3><span class="section-number">4.4.4.3. </span>SentencePiece with Unigram LM (Flan-T5 — <code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)<a class="headerlink" href="#sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small" title="Link to this heading">#</a></h3>
+<p>SentencePiece trains a <strong>unigram language model</strong> directly on raw text without any whitespace pre-tokenisation. It starts with a large candidate vocabulary and prunes it by repeatedly removing the token whose removal causes the smallest drop in corpus log-likelihood:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-683377f2-84ae-4d4f-9119-094594d0d97f">
+<span class="eqno">(4.9)<a class="headerlink" href="#equation-683377f2-84ae-4d4f-9119-094594d0d97f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathcal{L}(\mathcal{V}) = \sum_{x \in \mathcal{D}} \log P(x \mid \mathcal{V}), \qquad P(x \mid \mathcal{V}) = \max_{\mathbf{s} \in S(x)} \prod_{i} p(s_i)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(S(x)\)</span> is the set of all possible segmentations of sentence <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p(s_i)\)</span> is the unigram probability of subword <span class="math notranslate nohighlight">\(s_i\)</span>. Word-starting subwords are prefixed with <code class="docutils literal notranslate"><span class="pre">▁</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span><span class="p">:</span> <span class="s2">&quot;Tokenization is fascinating.&quot;</span>
+<span class="n">Flan</span><span class="o">-</span><span class="n">T5</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;▁Token&quot;</span><span class="p">,</span> <span class="s2">&quot;ization&quot;</span><span class="p">,</span> <span class="s2">&quot;▁is&quot;</span><span class="p">,</span> <span class="s2">&quot;▁fascin&quot;</span><span class="p">,</span> <span class="s2">&quot;ating&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Vocabulary size: 32,100. Because the model is probabilistic, the same string can in principle be segmented in multiple ways; at inference time the most probable segmentation (via the Viterbi algorithm) is used.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>WordPiece (BERT)</p></th>
+<th class="head"><p>BPE (GPT-2)</p></th>
+<th class="head"><p>SentencePiece (Flan-T5)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Algorithm</p></td>
+<td><p>Likelihood-maximising merges</p></td>
+<td><p>Frequency-based merges</p></td>
+<td><p>Unigram language model</p></td>
+</tr>
+<tr class="row-odd"><td><p>Base unit</p></td>
+<td><p>Unicode characters</p></td>
+<td><p>Bytes</p></td>
+<td><p>Raw text (no whitespace pre-split)</p></td>
+</tr>
+<tr class="row-even"><td><p>UNK handling</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[UNK]</span></code> for unknown chars</p></td>
+<td><p>Never — byte fallback</p></td>
+<td><p>Rarely — <code class="docutils literal notranslate"><span class="pre">&lt;unk&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Word boundary</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">##</span></code> continuation prefix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Ġ</span></code> space prefix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">▁</span></code> word-start prefix</p></td>
+</tr>
+<tr class="row-even"><td><p>Multilingual</p></td>
+<td><p>Poor (Unicode chars only)</p></td>
+<td><p>Partial (byte-level)</p></td>
+<td><p>Yes (native)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vocabulary size</p></td>
+<td><p>~30,522</p></td>
+<td><p>50,257</p></td>
+<td><p>~32,100</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="special-tokens">
+<h2><span class="section-number">4.4.5. </span>Special Tokens<a class="headerlink" href="#special-tokens" title="Link to this heading">#</a></h2>
+<p>Every tokenizer defines a set of <strong>special tokens</strong> that carry structural rather than semantic meaning. They are added automatically by the tokenizer and are never part of the raw input text:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Token</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[CLS]</span></code></p></td>
+<td><p>BERT</p></td>
+<td><p>Classification token — prepended to every input; the <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> vector is used as the sentence representation for classification tasks</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[SEP]</span></code></p></td>
+<td><p>BERT</p></td>
+<td><p>Separator — appended to each segment; separates sentence pairs in tasks like NLI</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[PAD]</span></code></p></td>
+<td><p>BERT/RoBERTa</p></td>
+<td><p>Padding — fills shorter sequences in a batch to a common length</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[MASK]</span></code></p></td>
+<td><p>BERT</p></td>
+<td><p>Mask — replaces tokens during masked language modelling pre-training</p></td>
+</tr>
+<tr class="row-even"><td><p>`&lt;</p></td>
+<td><p>endoftext</p></td>
+<td><p>&gt;`</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;/s&gt;</span></code></p></td>
+<td><p>Flan-T5, RoBERTa</p></td>
+<td><p>End of sequence</p></td>
+</tr>
+<tr class="row-even"><td><p>`&lt;</p></td>
+<td><p>user</p></td>
+<td><p>&gt;<code class="docutils literal notranslate"><span class="pre">,</span> </code>&lt;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note — Special tokens and the token ID sequence</p>
+<p>Special tokens are invisible when you call <code class="docutils literal notranslate"><span class="pre">.tokenize()</span></code> because that method returns only the surface pieces. They <em>do</em> appear in the integer sequence returned by <code class="docutils literal notranslate"><span class="pre">.encode()</span></code>. This means the model receives more tokens than the raw text contains — always account for special tokens when estimating prompt length against a context window limit.</p>
+</div>
+</section>
+<section id="inspecting-token-ids">
+<h2><span class="section-number">4.4.6. </span>Inspecting Token IDs<a class="headerlink" href="#inspecting-token-ids" title="Link to this heading">#</a></h2>
+<p>Three <code class="docutils literal notranslate"><span class="pre">AutoTokenizer</span></code> methods cover the full round-trip between text and integers:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.tokenize(text)</span></code></strong> — splits text into subword strings; special tokens are <em>not</em> added.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.encode(text)</span></code></strong> — converts text to a list of integer IDs; special tokens <em>are</em> added automatically.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.decode(ids)</span></code></strong> — converts a list of integer IDs back to a human-readable string, including any special tokens.</p></li>
+</ul>
+<p>The example below demonstrates all three on a sentence about the University of Missouri:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="c1"># BERT tokenizer</span>
+<span class="n">bert_tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The University of Missouri was founded in 1839.&quot;</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">bert_tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">ids</span>    <span class="o">=</span> <span class="n">bert_tok</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tokens :&quot;</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IDs    :&quot;</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Decoded:&quot;</span><span class="p">,</span> <span class="n">bert_tok</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bfb0ebe1133a44ab9d407a447543f534", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "307e1f4a575048609194eaa5f81f0a2a", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "a05c60575c524e7f9e743b8fd337cc61", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f1660296f1d4498b81d4b9e9d94baf3e", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tokens : [&#39;the&#39;, &#39;university&#39;, &#39;of&#39;, &#39;missouri&#39;, &#39;was&#39;, &#39;founded&#39;, &#39;in&#39;, &#39;1839&#39;, &#39;.&#39;]
+IDs    : [101, 1996, 2118, 1997, 5284, 2001, 2631, 1999, 10011, 1012, 102]
+Decoded: [CLS] the university of missouri was founded in 1839. [SEP]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tokens</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;university&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;missouri&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;founded&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;1839&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">]</span>
+<span class="n">IDs</span>    <span class="p">:</span> <span class="p">[</span><span class="mi">101</span><span class="p">,</span> <span class="mi">1996</span><span class="p">,</span> <span class="mi">2118</span><span class="p">,</span> <span class="mi">1997</span><span class="p">,</span> <span class="mi">4585</span><span class="p">,</span> <span class="mi">2001</span><span class="p">,</span> <span class="mi">2631</span><span class="p">,</span> <span class="mi">1999</span><span class="p">,</span> <span class="mi">13423</span><span class="p">,</span> <span class="mi">1012</span><span class="p">,</span> <span class="mi">102</span><span class="p">]</span>
+<span class="n">Decoded</span><span class="p">:</span> <span class="p">[</span><span class="n">CLS</span><span class="p">]</span> <span class="n">the</span> <span class="n">university</span> <span class="n">of</span> <span class="n">missouri</span> <span class="n">was</span> <span class="n">founded</span> <span class="ow">in</span> <span class="mf">1839.</span> <span class="p">[</span><span class="n">SEP</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Notice that IDs 101 and 102 correspond to <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> and <code class="docutils literal notranslate"><span class="pre">[SEP]</span></code> — added automatically by BERT’s tokenizer even though <code class="docutils literal notranslate"><span class="pre">.tokenize()</span></code> did not show them. The decoded output reveals these structural tokens: 9 words of text became an 11-token sequence.</p>
+</section>
+<section id="token-count-and-context-window-implications">
+<h2><span class="section-number">4.4.7. </span>Token Count and Context Window Implications<a class="headerlink" href="#token-count-and-context-window-implications" title="Link to this heading">#</a></h2>
+<p>Every model has a <strong>maximum context length</strong> — the maximum number of tokens it can process in a single forward pass. Tokens consumed by the prompt reduce the tokens available for the model’s response. Some examples from models covered in this course:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Max context (tokens)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BERT-base</p></td>
+<td><p>512</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPT-2</p></td>
+<td><p>1,024</p></td>
+</tr>
+<tr class="row-even"><td><p>Phi-3-Mini</p></td>
+<td><p>4,096</p></td>
+</tr>
+<tr class="row-odd"><td><p>Llama-3.1</p></td>
+<td><p>128,000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Fertility</p>
+<p><strong>Fertility</strong> (also called <em>token fertility</em>) measures how many tokens a tokenizer produces per word on a given text:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-43989171-8a35-4808-9920-523086d75281">
+<span class="eqno">(4.10)<a class="headerlink" href="#equation-43989171-8a35-4808-9920-523086d75281" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{fertility} = \frac{\text{number of tokens}}{\text{number of whitespace-delimited words}}
+\end{equation}\]</div>
+<p>A fertility of 1.0 means every word maps to exactly one token — ideal but rare. Values above 1.5 on standard English text usually signal either a mismatch between the tokenizer’s training domain and the input, or the presence of rare vocabulary (proper nouns, code, non-Latin scripts). Higher fertility means more tokens, which fills the context window faster and increases API cost.</p>
+</div>
+<p>Because different tokenizers are trained on different corpora with different vocabulary sizes, the same sentence can produce very different token counts. The cells below load all three tokenizers and compare them on a single sentence:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
+
+<span class="n">bert_tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-uncased&quot;</span><span class="p">)</span>
+<span class="n">gpt2_tok</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
+<span class="n">t5_tok</span>   <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;google/flan-t5-small&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "4a84d34458844b02b5075609d69c4552", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "dc4c61ed7e9740b88fb9480c5eaca56d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "a9bf524995044a8aa4092d4919fbd26d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "38e1fafe7fef4c59a33613d4cfc43ad9", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "3ba9d4a037354074a82f52d76c55a871", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f600cbac7c43400684ce702133bada21", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "d1b028946e534612afb552ff84fc15a6", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6f18cc852730490f97bb06ec97229a4b", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "104622cf03a447fbbe541162884e67e8", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The University of Missouri offers 300+ degree programs across 19 colleges.&quot;</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;BERT&quot;</span><span class="p">,</span> <span class="n">bert_tok</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;GPT-2&quot;</span><span class="p">,</span> <span class="n">gpt2_tok</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Flan-T5&quot;</span><span class="p">,</span> <span class="n">t5_tok</span><span class="p">)]:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">fertility</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">words</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">10s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> tokens  (</span><span class="si">{</span><span class="n">words</span><span class="si">}</span><span class="s2"> words → fertility </span><span class="si">{</span><span class="n">fertility</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BERT      :  15 tokens  (11 words → fertility 1.36)
+GPT-2     :  13 tokens  (11 words → fertility 1.18)
+Flan-T5   :  14 tokens  (11 words → fertility 1.27)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The same sentence can require 6 tokens under one tokenizer and 14 under another. For API providers (OpenAI, Anthropic, Google) that charge per token, this difference directly affects both context window capacity and cost.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">4.4.8. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>OOV analysis with WordPiece</strong>
+Feed BERT’s tokenizer five sentences containing proper nouns, technical jargon, and informal abbreviations. For each sentence, identify which tokens were split into subwords and which were replaced with <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code>. What pattern determines whether a word is split vs. unknown?</p></li>
+<li><p><strong>Byte-level vs. character-level comparison</strong>
+Take a sentence containing an emoji and two non-Latin characters (e.g., Chinese or Arabic). Compare how BERT’s WordPiece tokenizer and GPT-2’s byte-level BPE handle it. Count the resulting tokens and decode the output. What does this reveal about the two approaches to unknown characters?</p></li>
+<li><p><strong>Token efficiency across tokenizers</strong>
+Choose five sentences covering different text types: formal English, informal slang, mathematical notation, Python code, and a sentence in a non-English language. Tokenize each with BERT, GPT-2, and Flan-T5 and compare token counts. Which tokenizer is most efficient for each text type? Can you explain why based on their vocabulary construction approaches?</p></li>
+<li><p><strong>Fertility in practice</strong>
+Compute the fertility of each tokenizer on the five sentences from Exercise 3. For the sentence with the highest fertility, inspect which specific words or characters are being split the most. Does this align with the algorithmic properties described in this section?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C04S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.3. </span>LLM Robustness and Model Comparison</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C04S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.5. </span>Token Embeddings and the Text-to-Numbers Pipeline</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-token">4.4.2. What is a Token?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-not-use-words-or-characters">4.4.3. Why Not Use Words or Characters?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subword-tokenization-algorithms">4.4.4. Subword Tokenization Algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wordpiece-bert-bert-base-uncased">4.4.4.1. WordPiece (BERT — <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byte-pair-encoding-bpe-gpt-2-roberta">4.4.4.2. Byte-Pair Encoding (BPE — GPT-2, RoBERTa)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small">4.4.4.3. SentencePiece with Unigram LM (Flan-T5 — <code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-tokens">4.4.5. Special Tokens</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-token-ids">4.4.6. Inspecting Token IDs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#token-count-and-context-window-implications">4.4.7. Token Count and Context Window Implications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.4.8. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

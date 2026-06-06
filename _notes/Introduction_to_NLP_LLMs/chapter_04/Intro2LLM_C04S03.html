@@ -1,0 +1,808 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.3. LLM Robustness and Model Comparison &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2LLM_C04S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.4. Tokens and Tokenization" href="Intro2LLM_C04S04.html" />
+    <link rel="prev" title="4.2. Essentials of Large Language Models" href="Intro2LLM_C04S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LLM Robustness and Model Comparison</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-robustness-evaluation-matters">4.3.2. Why Robustness Evaluation Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-augmentation-strategies">4.3.3. Prompt Augmentation Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paraphrase">4.3.3.1. 1. Paraphrase</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#typos-and-slang">4.3.3.2. 2. Typos and Slang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction-style-variation">4.3.3.3. 3. Instruction-Style Variation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-output-metrics">4.3.4. Quantitative Output Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#response-length">4.3.4.1. Response Length</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-token-ratio-ttr">4.3.4.2. Type-Token Ratio (TTR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#readability-flesch-reading-ease">4.3.4.3. Readability (Flesch Reading Ease)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-diversity">4.3.4.4. N-gram Diversity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.3.5. Exercises and Discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="llm-robustness-and-model-comparison">
+<h1><span class="section-number">4.3. </span>LLM Robustness and Model Comparison<a class="headerlink" href="#llm-robustness-and-model-comparison" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">4.3.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Design a prompt evaluation framework with original and augmented prompt variants.</p></li>
+<li><p>Apply three prompt augmentation strategies: paraphrase, typos/slang, and instruction-style variation.</p></li>
+<li><p>Compute and interpret four quantitative output metrics: response length, type-token ratio, readability score, and n-gram diversity.</p></li>
+<li><p>Analyze robustness degradation across augmentation conditions for two or more LLMs.</p></li>
+<li><p>Critically compare LLMs along axes beyond accuracy: training data philosophy, safety framing, and response style.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>This section moves from running a single model on clean prompts to systematically measuring how model quality changes when prompts are noisy, rephrased, or adversarially perturbed. You will build a reusable evaluation framework, apply it to two model pairs across two domains, and learn to interpret the four quantitative metrics that capture different dimensions of output quality. The emphasis is on developing a critical, empirical mindset toward LLM evaluation rather than accepting first-pass outputs at face value.</p>
+</div>
+</section>
+<section id="why-robustness-evaluation-matters">
+<h2><span class="section-number">4.3.2. </span>Why Robustness Evaluation Matters<a class="headerlink" href="#why-robustness-evaluation-matters" title="Link to this heading">#</a></h2>
+<p>Running a model on a clean, well-formed prompt tells you its best-case behavior. In real-world deployments, however, users rarely write perfectly structured prompts: they misspell words, switch between formal and informal registers, phrase the same request five different ways, and occasionally introduce adversarial noise intentionally or accidentally.</p>
+<p><strong>Robustness</strong> asks a different question than raw quality: <em>does performance degrade gracefully when prompts deviate from the ideal?</em> A model that achieves excellent quality on clean prompts but collapses when a word is misspelled may be unsuitable for consumer-facing applications. The practices in this section (<code class="docutils literal notranslate"><span class="pre">p401_robustness_phi3_stablelm</span></code>, <code class="docutils literal notranslate"><span class="pre">p402_robustness_gemma_phi3_health</span></code>) build systematic frameworks for measuring this degradation.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Robustness</p>
+<p>In machine learning, <strong>robustness</strong> refers to a model’s ability to maintain performance when its inputs deviate from the training distribution. For LLMs, robustness is evaluated across several axes: <em>linguistic variation</em> (paraphrases, synonyms), <em>surface noise</em> (typos, abbreviations, slang), <em>structural changes</em> (different instruction formats), and <em>adversarial perturbations</em> (deliberately misleading or confusing prompts). A robust model produces consistently useful outputs across all these input variants; a brittle model degrades sharply on even minor deviations.</p>
+</div>
+</section>
+<section id="prompt-augmentation-strategies">
+<h2><span class="section-number">4.3.3. </span>Prompt Augmentation Strategies<a class="headerlink" href="#prompt-augmentation-strategies" title="Link to this heading">#</a></h2>
+<p>Given a set of original prompts on a theme (university programs, health and wellness), three augmentation strategies are applied to each prompt:</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Prompt Augmentation</p>
+<p><strong>Prompt augmentation</strong> is the process of systematically generating multiple variants of an original prompt to test how sensitive a model’s output is to input form. Unlike data augmentation in supervised learning (where you augment training examples), here you augment <em>evaluation</em> prompts. Each variant preserves the core information need but changes some surface property — vocabulary, word order, register, or noise level. Comparing model outputs across variants reveals which models generalize beyond the exact wording of the prompt.</p>
+</div>
+<section id="paraphrase">
+<h3><span class="section-number">4.3.3.1. </span>1. Paraphrase<a class="headerlink" href="#paraphrase" title="Link to this heading">#</a></h3>
+<p>The semantic content is preserved but the surface form is changed — synonyms are substituted, sentence structure is reorganized, and phrasing is varied. This tests whether the model’s output quality depends on the specific words used or on the underlying meaning.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Original</span><span class="p">:</span>   <span class="s2">&quot;What career paths are available for a data science graduate?&quot;</span>
+<span class="n">Paraphrase</span><span class="p">:</span> <span class="s2">&quot;Which professional routes can someone with a data science degree pursue?&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="typos-and-slang">
+<h3><span class="section-number">4.3.3.2. </span>2. Typos and Slang<a class="headerlink" href="#typos-and-slang" title="Link to this heading">#</a></h3>
+<p>Common typing errors (transpositions, missing letters, phonetic misspellings), abbreviations, and informal language are introduced. This tests robustness to the natural noise present in user-generated text.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Original</span><span class="p">:</span> <span class="s2">&quot;Explain the admission requirements for an MBA program.&quot;</span>
+<span class="n">Noisy</span><span class="p">:</span>    <span class="s2">&quot;wut r the admissin requirments 4 an MBA prog lol&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="instruction-style-variation">
+<h3><span class="section-number">4.3.3.3. </span>3. Instruction-Style Variation<a class="headerlink" href="#instruction-style-variation" title="Link to this heading">#</a></h3>
+<p>The same semantic content is expressed with different instructional framing: imperative (“List the…”), interrogative (“What are the…”), and conversational (“Can you tell me about…”) forms. This tests whether the model is sensitive to the surface form of the instruction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Original</span><span class="p">:</span>       <span class="s2">&quot;Describe the key differences between online and in-person learning.&quot;</span>
+<span class="n">Imperative</span><span class="p">:</span>     <span class="s2">&quot;List the main differences between online and in-person learning.&quot;</span>
+<span class="n">Conversational</span><span class="p">:</span> <span class="s2">&quot;Hey, I was wondering if you could explain how online learning differs from going to class in person?&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quantitative-output-metrics">
+<h2><span class="section-number">4.3.4. </span>Quantitative Output Metrics<a class="headerlink" href="#quantitative-output-metrics" title="Link to this heading">#</a></h2>
+<p>Four metrics quantify output quality and generation tendencies across conditions. All four are computed on the raw text of the model’s response; no reference output is required, making them <em>reference-free</em> metrics that can be applied to any generation task.</p>
+<p>The cells below define each metric as a reusable Python function. The required libraries are imported first:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textstat</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ngrams</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="response-length">
+<h3><span class="section-number">4.3.4.1. </span>Response Length<a class="headerlink" href="#response-length" title="Link to this heading">#</a></h3>
+<p>The number of whitespace-delimited tokens in the generated response. This is a simple word-count proxy for token count (the two correlate closely for English text).</p>
+<p>Substantial length reductions under noisy prompts indicate the model becomes less informative when input is unclear. Conversely, unexpectedly long responses to simple prompts may indicate verbosity or repetition.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">response_length</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Count words by splitting on whitespace; used as a simple length proxy.</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>Example:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define two test sentences with different complexity levels</span>
+<span class="n">simple_text</span> <span class="o">=</span> <span class="s2">&quot;The cat chased the mouse, and then the mouse chased the cheese.&quot;</span>
+<span class="n">complex_text</span> <span class="o">=</span> <span class="s2">&quot;The quantitative evaluation of language models necessitates robust metrics to mitigate adversarial vulnerabilities.&quot;</span>
+
+<span class="c1"># Calculate and display response length for both test sentences</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- RESPONSE LENGTH COUNT ---&quot;</span><span class="p">)</span>
+<span class="c1"># Simple sentence with repetitive vocabulary and straightforward structure</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simple Text Word Count:  </span><span class="si">{</span><span class="n">response_length</span><span class="p">(</span><span class="n">simple_text</span><span class="p">)</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+<span class="c1"># Complex sentence with technical terminology and longer structure</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complex Text Word Count: </span><span class="si">{</span><span class="n">response_length</span><span class="p">(</span><span class="n">complex_text</span><span class="p">)</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- RESPONSE LENGTH COUNT ---
+Simple Text Word Count:  12 words
+Complex Text Word Count: 13 words
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="type-token-ratio-ttr">
+<h3><span class="section-number">4.3.4.2. </span>Type-Token Ratio (TTR)<a class="headerlink" href="#type-token-ratio-ttr" title="Link to this heading">#</a></h3>
+<p>The ratio of unique word types to total word tokens. A higher TTR indicates greater lexical diversity; a lower TTR suggests repetitive output.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b6540871-0615-4399-a491-2e460400a6f6">
+<span class="eqno">(4.4)<a class="headerlink" href="#equation-b6540871-0615-4399-a491-2e460400a6f6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{TTR} = \frac{|\text{unique words}|}{|\text{total words}|}
+\end{equation}\]</div>
+<div class="warning admonition">
+<p class="admonition-title">Limitation — Length Bias</p>
+<p>TTR decreases as text length increases, even when lexical richness stays constant, because longer texts are more likely to repeat common function words. This means raw TTR scores are not directly comparable across responses of very different lengths. When comparing models that produce responses of substantially different length, prefer <strong>MATTR</strong> (Moving-Average Type-Token Ratio), which computes TTR over a sliding fixed-length window and averages across windows, making it length-invariant. For the short responses typical of LLM evaluations (50–300 words), raw TTR is generally sufficient.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">type_token_ratio</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Normalize to lowercase and split on whitespace to get word tokens.</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="c1"># TTR = unique tokens / total tokens; return 0 for empty input.</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">words</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>Example:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Demonstrate lexical diversity using Type-Token Ratio (TTR)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- TYPE-TOKEN RATIO (TTR) ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># `simple_text` reuses several tokens, so the unique/total token ratio is lower.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simple Text TTR:  </span><span class="si">{</span><span class="n">type_token_ratio</span><span class="p">(</span><span class="n">simple_text</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (Lower diversity due to repeated words)&quot;</span><span class="p">)</span>
+
+<span class="c1"># `complex_text` has no repeated tokens in this short example, so TTR reaches 1.00.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complex Text TTR: </span><span class="si">{</span><span class="n">type_token_ratio</span><span class="p">(</span><span class="n">complex_text</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (Maximum diversity in this sample)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- TYPE-TOKEN RATIO (TTR) ---
+Simple Text TTR:  0.67 (Low diversity due to repetition)
+Complex Text TTR: 1.00 (Perfect diversity)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="readability-flesch-reading-ease">
+<h3><span class="section-number">4.3.4.3. </span>Readability (Flesch Reading Ease)<a class="headerlink" href="#readability-flesch-reading-ease" title="Link to this heading">#</a></h3>
+<p>The Flesch Reading Ease score estimates how difficult a text is to read, based on average sentence length and average syllable count per word:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9819fdff-4bed-4b91-acdf-903dd28897ff">
+<span class="eqno">(4.5)<a class="headerlink" href="#equation-9819fdff-4bed-4b91-acdf-903dd28897ff" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{FRE} = 206.835 - 1.015 \left(\frac{\text{total words}}{\text{total sentences}}\right) - 84.6 \left(\frac{\text{total syllables}}{\text{total words}}\right)
+\end{equation}\]</div>
+<p>Scores range from 0 (very difficult — dense academic prose) to 100 (very easy — simple conversational text). Typical ranges:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Score range</p></th>
+<th class="head"><p>Approximate reading level</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>90–100</p></td>
+<td><p>Very easy (5th grade)</p></td>
+</tr>
+<tr class="row-odd"><td><p>60–70</p></td>
+<td><p>Standard (8th–9th grade)</p></td>
+</tr>
+<tr class="row-even"><td><p>30–50</p></td>
+<td><p>Difficult (college level)</p></td>
+</tr>
+<tr class="row-odd"><td><p>0–30</p></td>
+<td><p>Very difficult (professional/technical)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In robustness evaluation, a drop in readability score under noisy prompts can indicate that the model is producing longer, more convoluted sentences as it struggles to interpret unclear input.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">readability_score</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># Calculate Flesch Reading Ease score using textstat library.</span>
+    <span class="c1"># Scores range from 0 (very difficult) to 100 (very easy).</span>
+    <span class="k">return</span> <span class="n">textstat</span><span class="o">.</span><span class="n">flesch_reading_ease</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>Example:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the test sentences already defined in the notebook</span>
+<span class="n">simple_text</span> <span class="o">=</span> <span class="s2">&quot;The cat chased the mouse, and then the mouse chased the cheese.&quot;</span>
+<span class="n">complex_text</span> <span class="o">=</span> <span class="s2">&quot;The quantitative evaluation of language models necessitates robust metrics to mitigate adversarial vulnerabilities.&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- READABILITY (Flesch Reading Ease) ---&quot;</span><span class="p">)</span>
+<span class="c1"># FRE scores: 90–100 (easy) to 0–30 (very difficult)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simple Text Readability:  </span><span class="si">{</span><span class="n">readability_score</span><span class="p">(</span><span class="n">simple_text</span><span class="p">)</span><span class="si">}</span><span class="s2"> (Very Easy / 5th Grade Level)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complex Text Readability: </span><span class="si">{</span><span class="n">readability_score</span><span class="p">(</span><span class="n">complex_text</span><span class="p">)</span><span class="si">}</span><span class="s2"> (Very Difficult / Graduate Level)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- READABILITY (Flesch Reading Ease) ---
+Simple Text Readability:  110.055 (Very Easy / 5th Grade Level)
+Complex Text Readability: -53.65230769230766 (Very Difficult / Graduate Level)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="n-gram-diversity">
+<h3><span class="section-number">4.3.4.4. </span>N-gram Diversity<a class="headerlink" href="#n-gram-diversity" title="Link to this heading">#</a></h3>
+<p>The ratio of unique n-grams to total n-gram occurrences, measuring how much the model repeats short phrases rather than generating varied text. Defined for n-gram order <span class="math notranslate nohighlight">\(n\)</span> as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-cd982ad9-6881-4282-be20-4d363453340a">
+<span class="eqno">(4.6)<a class="headerlink" href="#equation-cd982ad9-6881-4282-be20-4d363453340a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Diversity}_n = \frac{|\{g : g \text{ is a unique } n\text{-gram in } w\}|}{|\text{total } n\text{-grams in } w|}
+\end{equation}\]</div>
+<p>A score of 1.0 means every n-gram in the response is unique (maximum diversity); a score near 0 indicates near-total repetition. Bigrams (<span class="math notranslate nohighlight">\(n=2\)</span>) are most commonly used; trigrams (<span class="math notranslate nohighlight">\(n=3\)</span>) are more sensitive to phrase-level repetition.</p>
+<div class="note admonition">
+<p class="admonition-title">Relation to Self-BLEU</p>
+<p>N-gram diversity is the complement of <strong>self-BLEU</strong>, a metric used in text generation research to measure how similar a set of generated samples are to each other. High self-BLEU (low diversity) signals mode collapse — the model produces nearly identical responses regardless of minor prompt variation. When applied to a <em>single</em> response rather than a set, n-gram diversity captures intra-response repetition specifically.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ngram_diversity</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="c1"># Tokenize on whitespace; this keeps punctuation attached to tokens.</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    
+    <span class="c1"># Build all contiguous n-grams of size `n` from the token sequence.</span>
+    <span class="n">all_ngrams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ngrams</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    
+    <span class="c1"># Convert to a set to keep only unique n-grams.</span>
+    <span class="n">unique_ngrams</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_ngrams</span><span class="p">)</span>
+    
+    <span class="c1"># Diversity = unique n-grams / total n-grams; return 0 if text is too short.</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_ngrams</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ngrams</span><span class="p">)</span> <span class="k">if</span> <span class="n">all_ngrams</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>Example:</strong></p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate N-Gram Diversity (using Bigrams, n=2)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- N-GRAM DIVERSITY (n=2) ---&quot;</span><span class="p">)</span>
+<span class="c1"># Simple text repeats phrases like &quot;the mouse&quot; and &quot;chased the&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simple Text Diversity:  </span><span class="si">{</span><span class="n">ngram_diversity</span><span class="p">(</span><span class="n">simple_text</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (Contains repetitive phrases)&quot;</span><span class="p">)</span>
+<span class="c1"># Complex text has entirely unique word pairings</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complex Text Diversity: </span><span class="si">{</span><span class="n">ngram_diversity</span><span class="p">(</span><span class="n">complex_text</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (100% unique phrases)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- N-GRAM DIVERSITY (n=2) ---
+Simple Text Diversity:  0.91 (Contains repetitive phrases)
+Complex Text Diversity: 1.00 (100% unique phrases)
+</pre></div>
+</div>
+</div>
+</div>
+<p>With all four metrics defined, the following sections describe how they are applied in the two model comparison practices. Each practice runs the same set of original and augmented prompts through two models, records the four metric values per response, and then compares the degradation profiles across augmentation conditions.</p>
+</section>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">4.3.5. </span>Exercises and Discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Metric selection</strong><br />
+Of the four output metrics introduced in this section (length, TTR, readability, n-gram diversity), which is most likely to detect a model that responds to noisy prompts by repeating the same phrase? Which would you use to detect a model that produces very short, unhelpful responses under adversarial conditions?</p></li>
+<li><p><strong>Adversarial prompt design</strong><br />
+Design three adversarial prompts in a domain of your choice (e.g., finance, legal, education) that represent vague framing, misleading context, and urgency injection. Run them through two models and compare the responses qualitatively.</p></li>
+<li><p><strong>Safety vs. helpfulness trade-off</strong><br />
+Models trained with RLHF tend to add safety hedges (e.g., “consult a professional”) more frequently in sensitive domains. Describe a scenario where excessive hedging is a failure mode rather than a feature. How would you measure this trade-off quantitatively?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C04S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.2. </span>Essentials of Large Language Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C04S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.4. </span>Tokens and Tokenization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-robustness-evaluation-matters">4.3.2. Why Robustness Evaluation Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-augmentation-strategies">4.3.3. Prompt Augmentation Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paraphrase">4.3.3.1. 1. Paraphrase</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#typos-and-slang">4.3.3.2. 2. Typos and Slang</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction-style-variation">4.3.3.3. 3. Instruction-Style Variation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-output-metrics">4.3.4. Quantitative Output Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#response-length">4.3.4.1. Response Length</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-token-ratio-ttr">4.3.4.2. Type-Token Ratio (TTR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#readability-flesch-reading-ease">4.3.4.3. Readability (Flesch Reading Ease)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#n-gram-diversity">4.3.4.4. N-gram Diversity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.3.5. Exercises and Discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

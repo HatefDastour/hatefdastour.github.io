@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.5. Token Embeddings and the Text-to-Numbers Pipeline &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_04/Intro2LLM_C04S05';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.6. Tokenization Across Models: A Comparative Study" href="Intro2LLM_C04S06.html" />
+    <link rel="prev" title="4.4. Tokens and Tokenization" href="Intro2LLM_C04S04.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Token Embeddings and the Text-to-Numbers Pipeline</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.5.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-four-layer-pipeline">4.5.2. The Four-Layer Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-2-static-embedding-lookup">4.5.3. Layer 2: Static Embedding Lookup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-3-contextualized-embeddings-via-transformer-layers">4.5.4. Layer 3: Contextualized Embeddings via Transformer Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-4-pooling-to-sentence-embeddings">4.5.5. Layer 4: Pooling to Sentence Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-similarity-with-sentence-embeddings">4.5.6. Semantic Similarity with Sentence Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-the-layers">4.5.7. Connecting the Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.5.8. Exercises and Discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="token-embeddings-and-the-text-to-numbers-pipeline">
+<h1><span class="section-number">4.5. </span>Token Embeddings and the Text-to-Numbers Pipeline<a class="headerlink" href="#token-embeddings-and-the-text-to-numbers-pipeline" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">4.5.1. </span>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Describe the four-layer pipeline from raw text to sentence embedding: tokenization, static embedding lookup, transformer contextualization, and pooling.</p></li>
+<li><p>Distinguish between static token embeddings (one vector per token type) and contextualized embeddings (one vector per token instance).</p></li>
+<li><p>Obtain token-level contextualized embeddings from a transformer encoder and interpret the shape of the output tensor.</p></li>
+<li><p>Produce sentence-level embeddings using Sentence Transformers and apply them to compute semantic similarity.</p></li>
+<li><p>Explain why semantic similarity is a more useful downstream signal than raw cosine distance between averaged word vectors.</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Section Goal</p>
+<p>This section traces the complete path from a raw text string to a single numerical vector that represents its meaning. Understanding this pipeline is essential for any application that goes beyond text generation: semantic search, clustering, recommendation, and retrieval-augmented generation all rely on sentence embeddings as their foundation. By the end, you will have computed contextualized embeddings with DeBERTa and sentence embeddings with Sentence Transformers, and will understand when each is appropriate.</p>
+</div>
+</section>
+<section id="the-four-layer-pipeline">
+<h2><span class="section-number">4.5.2. </span>The Four-Layer Pipeline<a class="headerlink" href="#the-four-layer-pipeline" title="Link to this heading">#</a></h2>
+<p>Everything in this course — from the first bag-of-words model to the large language models of the previous sections — requires one foundational transformation: converting human-readable text into numbers. This transformation proceeds through four distinct layers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Layer 1: Tokenization
+  &quot;Mizzou is a top research university.&quot;
+   ↓
+  Token IDs: [1, 59172, 338, 263, 2246, 5925, 3014, 29889, 2]
+  (The ONLY thing the model ever sees)
+
+Layer 2: Static Embedding Lookup
+  &quot;Mizzou&quot;     → [0.12, -0.34,  0.87, ...]  (768-dim vector)
+  &quot;research&quot;   → [0.44, -0.11,  0.63, ...]
+  One vector per token type, always the same regardless of context.
+
+Layer 3: Transformer Layers (Contextualization)
+  &quot;bank&quot; in &quot;river bank&quot;     → [0.83, -0.21,  0.94, ...]
+  &quot;bank&quot; in &quot;bank account&quot;   → [0.61,  0.44, -0.37, ...]
+  Now each vector reflects the full surrounding context.
+
+Layer 4: Pooling (Sentence-Level)
+  [ 0.21, -0.05,  0.74, ...]
+  ONE vector for the whole sentence.
+  Used for search, clustering, classification, recommendations.
+</pre></div>
+</div>
+<p>Understanding each layer separately — and how they compose — is essential for choosing the right tool for a given task.</p>
+</section>
+<section id="layer-2-static-embedding-lookup">
+<h2><span class="section-number">4.5.3. </span>Layer 2: Static Embedding Lookup<a class="headerlink" href="#layer-2-static-embedding-lookup" title="Link to this heading">#</a></h2>
+<p>The first trainable component inside a transformer model is an <strong>embedding matrix</strong> <span class="math notranslate nohighlight">\(E \in \mathbb{R}^{V \times d}\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size and <span class="math notranslate nohighlight">\(d\)</span> is the embedding dimension. Given a token ID sequence <span class="math notranslate nohighlight">\([t_1, t_2, \ldots, t_n]\)</span>, the embedding layer performs a simple row lookup:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c3dc6a9c-4be0-48d2-8d76-5f5854e9502f">
+<span class="eqno">(4.11)<a class="headerlink" href="#equation-c3dc6a9c-4be0-48d2-8d76-5f5854e9502f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\mathbf{e}_i = E[t_i] \in \mathbb{R}^d
+\end{equation}\]</div>
+<p>Each token ID <span class="math notranslate nohighlight">\(t_i\)</span> selects the corresponding row from <span class="math notranslate nohighlight">\(E\)</span>, producing a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. The full input to the transformer is the matrix <span class="math notranslate nohighlight">\([\mathbf{e}_1, \mathbf{e}_2, \ldots, \mathbf{e}_n] \in \mathbb{R}^{n \times d}\)</span>.</p>
+<p>These are <strong>static</strong> embeddings: the vector for token <code class="docutils literal notranslate"><span class="pre">bank</span></code> is identical regardless of whether it appears in a financial context or a riverbank context. The embedding matrix is initialized randomly and updated during pre-training; after training, it captures distributional semantics — tokens that appear in similar contexts have similar vectors.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Distributional Semantics</p>
+<p><strong>Distributional semantics</strong> is the principle that words with similar meanings tend to appear in similar contexts: <em>“You shall know a word by the company it keeps”</em> (J.R. Firth, 1957). This principle underlies all word embedding methods — Word2Vec, GloVe, and the embedding matrices inside transformers. If “doctor” and “physician” consistently appear near words like “hospital”, “patient”, and “diagnosis”, their learned vectors will be close in the embedding space.</p>
+</div>
+</section>
+<section id="layer-3-contextualized-embeddings-via-transformer-layers">
+<h2><span class="section-number">4.5.4. </span>Layer 3: Contextualized Embeddings via Transformer Layers<a class="headerlink" href="#layer-3-contextualized-embeddings-via-transformer-layers" title="Link to this heading">#</a></h2>
+<p>The transformer stack transforms the sequence of static token embeddings into <strong>contextualized embeddings</strong> — representations that encode not just the identity of each token, but its meaning given all other tokens in the sequence.</p>
+<p>Each transformer layer applies multi-head self-attention. For a single attention head, the computation for query matrix <span class="math notranslate nohighlight">\(Q\)</span>, key matrix <span class="math notranslate nohighlight">\(K\)</span>, and value matrix <span class="math notranslate nohighlight">\(V\)</span> is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-58405b02-1581-4a6b-a3fc-14c988cf777e">
+<span class="eqno">(4.12)<a class="headerlink" href="#equation-58405b02-1581-4a6b-a3fc-14c988cf777e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the key/query dimension (used to prevent the dot products from growing too large). The output of the final transformer layer is a sequence of contextualized vectors <span class="math notranslate nohighlight">\([\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_n]\)</span>, one per input token.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Self-Attention</p>
+<p><strong>Self-attention</strong> allows each token to incorporate information from every other token in the sequence (or, in causal/decoder models, every preceding token). For each token, the model computes a weighted combination of all other tokens’ <em>value</em> vectors, where the weights are determined by the <em>query–key</em> dot product: how relevant is each other token to the current one? After applying a softmax, these weights form an <em>attention distribution</em>. Multi-head self-attention runs several such computations in parallel — each “head” may focus on different linguistic relationships — and their outputs are concatenated and projected. This is what gives transformer models their ability to capture both local and long-range dependencies.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Why DeBERTa?</p>
+<p><strong>DeBERTa</strong> (Decoding-Enhanced BERT with Disentangled Attention) is a strong encoder model from Microsoft that improves on BERT and RoBERTa by disentangling the positional and content components of attention. We use it here because its <code class="docutils literal notranslate"><span class="pre">last_hidden_state</span></code> outputs serve as clean examples of contextualized token embeddings, and because it is compact enough to run on a free Colab T4 GPU without quantization.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;microsoft/deberta-v3-base&quot;</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Mizzou is a top research university.&quot;</span>
+<span class="c1"># Tokenize text and return PyTorch tensors</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Disable gradient computation for inference (saves memory)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+<span class="c1"># Extract the last hidden state: one contextualized vector per token</span>
+<span class="c1"># Shape: (batch_size=1, sequence_length=9, hidden_size=768)</span>
+<span class="c1"># The 9 tokens include [CLS], &quot;Mizzou&quot;, &quot;is&quot;, &quot;a&quot;, &quot;top&quot;, &quot;research&quot;, &quot;university&quot;, &quot;.&quot;, [SEP]</span>
+<span class="n">hidden_states</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output shape: </span><span class="si">{</span><span class="n">hidden_states</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "4db41848b36e4e23acbec2630a604c20", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[transformers] <span class=" -Color -Color-Bold">DebertaV2Model LOAD REPORT</span> from: microsoft/deberta-v3-base
+Key                                     | Status     |  | 
+----------------------------------------+------------+--+-
+lm_predictions.lm_head.dense.weight     | UNEXPECTED |  | 
+lm_predictions.lm_head.bias             | UNEXPECTED |  | 
+mask_predictions.LayerNorm.weight       | UNEXPECTED |  | 
+mask_predictions.dense.bias             | UNEXPECTED |  | 
+mask_predictions.dense.weight           | UNEXPECTED |  | 
+lm_predictions.lm_head.dense.bias       | UNEXPECTED |  | 
+mask_predictions.LayerNorm.bias         | UNEXPECTED |  | 
+lm_predictions.lm_head.LayerNorm.weight | UNEXPECTED |  | 
+mask_predictions.classifier.weight      | UNEXPECTED |  | 
+mask_predictions.classifier.bias        | UNEXPECTED |  | 
+lm_predictions.lm_head.LayerNorm.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output shape: torch.Size([1, 9, 768])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output tensor has shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">sequence_length,</span> <span class="pre">hidden_size)</span></code>. For DeBERTa-base with a 10-token input, this is <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">10,</span> <span class="pre">768)</span></code>: one batch, ten token vectors each of dimension 768.</p>
+<p>Key observations:</p>
+<ul class="simple">
+<li><p>The same word <code class="docutils literal notranslate"><span class="pre">&quot;bank&quot;</span></code> produces <strong>two different 768-dimensional vectors</strong> depending on its context — the defining property of contextualized representations.</p></li>
+<li><p>The output is one vector <strong>per token position</strong>, not one per word type. If <code class="docutils literal notranslate"><span class="pre">&quot;university&quot;</span></code> is split into two subwords by the tokenizer, there are two corresponding vectors.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> token’s vector (position 0) is often used as a summary representation for classification tasks, though it was not explicitly trained for that purpose in all models.</p></li>
+</ul>
+</section>
+<section id="layer-4-pooling-to-sentence-embeddings">
+<h2><span class="section-number">4.5.5. </span>Layer 4: Pooling to Sentence Embeddings<a class="headerlink" href="#layer-4-pooling-to-sentence-embeddings" title="Link to this heading">#</a></h2>
+<p>For tasks like semantic search, clustering, or sentence similarity, we need a single fixed-length vector representing the entire sentence. <strong>Pooling</strong> aggregates the sequence of token vectors <span class="math notranslate nohighlight">\([\mathbf{h}_1, \ldots, \mathbf{h}_n]\)</span> into one vector <span class="math notranslate nohighlight">\(\mathbf{s} \in \mathbb{R}^d\)</span>. Common strategies:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Strategy</p></th>
+<th class="head"><p>Formula</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CLS pooling</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf{s} = \mathbf{h}_1\)</span></p></td>
+<td><p>Simple; uses the <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> token vector</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Mean pooling</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf{s} = \frac{1}{n}\sum_{i=1}^{n} m_i \mathbf{h}_i\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(m_i=1\)</span> for real tokens, 0 for padding; generally more stable</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Max pooling</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf{s}_j = \max_i \, h_{ij}\)</span></p></td>
+<td><p>Element-wise max across all positions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Sentence Transformers</strong> (<code class="docutils literal notranslate"><span class="pre">sentence-transformers</span></code> library) provide models explicitly fine-tuned for sentence-level tasks using contrastive learning objectives, producing far better similarity estimates than naive pooling of general-purpose token embeddings.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Term — Contrastive Learning and Sentence Transformers</p>
+<p><strong>Contrastive learning</strong> is a training objective that pulls similar examples together and pushes dissimilar examples apart in embedding space. A <strong>Sentence Transformer</strong> is fine-tuned on pairs of semantically equivalent sentences (e.g., paraphrase corpora or natural language inference data) with a loss that minimizes the distance between equivalent sentence vectors and maximizes the distance between unrelated ones. The result is an embedding space where cosine similarity directly reflects semantic similarity — “The cat sat on the mat” and “A feline rested on a rug” will be nearby, while “The cat sat” and “The stock market crashed” will be far apart.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+
+<span class="c1"># Load a compact Sentence Transformer model tuned for sentence-level semantics.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">&quot;all-MiniLM-L6-v2&quot;</span><span class="p">)</span>
+
+<span class="c1"># Example inputs:</span>
+<span class="c1"># - Sentences 1 and 2 are semantically similar (paraphrases).</span>
+<span class="c1"># - Sentence 3 is less similar, so cosine scores should be lower.</span>
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;The student enrolled in a machine learning course.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;A learner signed up for an AI class.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The professor submitted the final exam grades.&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Convert each sentence to a dense embedding vector.</span>
+<span class="c1"># Output shape: (number_of_sentences, embedding_dimension)</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding shape: </span><span class="si">{</span><span class="n">embeddings</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (3, 384)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "740e308f6a0c4f1bb4c13277fbbe09db", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Embedding shape: (3, 384)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="semantic-similarity-with-sentence-embeddings">
+<h2><span class="section-number">4.5.6. </span>Semantic Similarity with Sentence Embeddings<a class="headerlink" href="#semantic-similarity-with-sentence-embeddings" title="Link to this heading">#</a></h2>
+<p>Given sentence embeddings, <strong>cosine similarity</strong> measures the angle between two vectors, independent of their magnitude:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d1580f74-08ca-437a-8648-c22f22b78a50">
+<span class="eqno">(4.13)<a class="headerlink" href="#equation-d1580f74-08ca-437a-8648-c22f22b78a50" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{cosine\_similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\| \cdot \|\mathbf{v}\|}
+\end{equation}\]</div>
+<p>Values range from <span class="math notranslate nohighlight">\(-1\)</span> (opposite directions) to <span class="math notranslate nohighlight">\(+1\)</span> (identical directions), with <span class="math notranslate nohighlight">\(0\)</span> indicating orthogonality. For unit-normalized embeddings, cosine similarity equals the dot product <span class="math notranslate nohighlight">\(\mathbf{u} \cdot \mathbf{v}\)</span>.</p>
+<p>Sentence Transformer embeddings capture <em>semantic</em> similarity rather than surface-form similarity. The pair <em>“The student enrolled in a machine learning course”</em> and <em>“A learner signed up for an AI class”</em> should achieve high cosine similarity despite sharing almost no words, because they describe the same event.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Compute pairwise cosine similarity between all sentence embeddings.</span>
+<span class="c1"># The diagonal entries are 1.0 because each sentence is compared with itself.</span>
+<span class="n">sims</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+
+<span class="c1"># Print only unique sentence pairs once (i &lt; j) to avoid duplicate comparisons.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Sim(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">sims</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    &#39;</span><span class="si">{</span><span class="n">sentences</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    &#39;</span><span class="si">{</span><span class="n">sentences</span><span class="p">[</span><span class="n">j</span><span class="p">][:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Sim(1,2) = 0.6745
+    &#39;The student enrolled in a machine learning course.&#39;
+    &#39;A learner signed up for an AI class.&#39;
+
+  Sim(1,3) = 0.3236
+    &#39;The student enrolled in a machine learning course.&#39;
+    &#39;The professor submitted the final exam grades.&#39;
+
+  Sim(2,3) = 0.2338
+    &#39;A learner signed up for an AI class.&#39;
+    &#39;The professor submitted the final exam grades.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="connecting-the-layers">
+<h2><span class="section-number">4.5.7. </span>Connecting the Layers<a class="headerlink" href="#connecting-the-layers" title="Link to this heading">#</a></h2>
+<p>The complete text-to-numbers pipeline can now be summarized:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Input</p></th>
+<th class="head"><p>Output</p></th>
+<th class="head"><p>Key property</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tokenization</p></td>
+<td><p>Raw text string</p></td>
+<td><p>Integer token ID sequence</p></td>
+<td><p>Maps text to discrete indices</p></td>
+</tr>
+<tr class="row-odd"><td><p>Static embedding lookup</p></td>
+<td><p>Token ID sequence</p></td>
+<td><p>Matrix of token vectors</p></td>
+<td><p>One vector per token <em>type</em></p></td>
+</tr>
+<tr class="row-even"><td><p>Transformer layers</p></td>
+<td><p>Token vector matrix</p></td>
+<td><p>Matrix of contextualized vectors</p></td>
+<td><p>One vector per token <em>instance</em>, context-sensitive</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pooling</p></td>
+<td><p>Matrix of token vectors</p></td>
+<td><p>Single sentence vector</p></td>
+<td><p>Fixed-length representation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each layer connects to topics covered earlier in the course:</p>
+<ul class="simple">
+<li><p><strong>Labs 2.01–2.03 (BoW, TF-IDF):</strong> Bag-of-words representations bypass the embedding layer entirely, using sparse count vectors instead.</p></li>
+<li><p><strong>Lab 2.04 (Word2Vec):</strong> Pre-trained static token embeddings used as fixed features — Layer 2 only, no contextualization.</p></li>
+<li><p><strong>Lab 3.05 (BERT fine-tuning):</strong> Contextualized representations from a transformer encoder, fine-tuned end-to-end — Layers 2 and 3.</p></li>
+<li><p><strong>This section:</strong> The complete pipeline, from tokenization through pooling to sentence-level semantics — all four layers.</p></li>
+</ul>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">4.5.8. </span>Exercises and Discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Shape interpretation</strong>
+Load DeBERTa and run it on a sentence of your choice. Print the shape of <code class="docutils literal notranslate"><span class="pre">outputs.last_hidden_state</span></code>. Verify that the second dimension (sequence length) equals the number of tokens produced by the tokenizer for that input, including any special tokens such as <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> and <code class="docutils literal notranslate"><span class="pre">[SEP]</span></code>.</p></li>
+<li><p><strong>Context sensitivity demonstration</strong>
+Create two sentences where the same word appears in different semantic contexts (e.g., <em>“I went to the river bank”</em> and <em>“I deposited money at the bank”</em>). Extract the contextualized embedding for the ambiguous word from each sentence and compute the cosine similarity between the two vectors. Is the similarity high (word identity dominates) or low (context dominates)?</p></li>
+<li><p><strong>CLS vs. mean pooling comparison</strong>
+Using a Sentence Transformer or a BERT model, compare CLS pooling versus mean pooling for five sentence pairs. Does the choice of pooling strategy change the ranking of similarity scores? For which types of sentences is the difference largest?</p></li>
+<li><p><strong>Static vs. contextualized embeddings</strong>
+Retrieve the static embedding for a polysemous word (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;plant&quot;</span></code>) directly from the model’s embedding matrix (<code class="docutils literal notranslate"><span class="pre">model.embeddings.word_embeddings</span></code>). Then obtain two contextualized embeddings for the same word in different sentences. Compare all three vectors. What does this reveal about the information added by the transformer layers?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C04S04.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4.4. </span>Tokens and Tokenization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C04S06.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4.6. </span>Tokenization Across Models: A Comparative Study</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">4.5.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-four-layer-pipeline">4.5.2. The Four-Layer Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-2-static-embedding-lookup">4.5.3. Layer 2: Static Embedding Lookup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-3-contextualized-embeddings-via-transformer-layers">4.5.4. Layer 3: Contextualized Embeddings via Transformer Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-4-pooling-to-sentence-embeddings">4.5.5. Layer 4: Pooling to Sentence Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-similarity-with-sentence-embeddings">4.5.6. Semantic Similarity with Sentence Embeddings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-the-layers">4.5.7. Connecting the Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">4.5.8. Exercises and Discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

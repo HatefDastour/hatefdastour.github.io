@@ -1,0 +1,1037 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3.1. Inside Transformer LLMs &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S01';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. References" href="../References.html" />
+    <link rel="prev" title="5. Inside Transformer LLMs and Text Classification" href="Intro2LLM_C05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.1. Inside Transformer LLMs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Inside Transformer LLMs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.1.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-look-inside">5.3.1.2. Why Look Inside?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-decoder-architecture">5.3.1.3. The Transformer Decoder Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-model-hierarchy">5.3.1.4. Inspecting the Model Hierarchy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-distribution">5.3.1.4.1. Parameter Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-pass-step-by-step">5.3.1.5. Forward Pass Step by Step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logits-probabilities-and-the-vocabulary-distribution">5.3.1.6. Logits, Probabilities, and the Vocabulary Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-temperature">5.3.1.6.1. The Role of Temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-states-across-layers">5.3.1.7. Hidden States Across Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-language-model-head">5.3.1.8. The Language Model Head</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-value-caching">5.3.1.9. Key-Value Caching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-complete-forward-pass-summary">5.3.1.10. The Complete Forward Pass Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.1.11. Exercises and Discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="inside-transformer-llms">
+<h1><span class="section-number">5.3.1. </span>Inside Transformer LLMs<a class="headerlink" href="#inside-transformer-llms" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">5.3.1.1. </span>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Inspect the full PyTorch module hierarchy of a transformer LLM and describe what each named component does.</p></li>
+<li><p>Identify the five major architectural components of a decoder-only transformer: token embeddings, decoder layers, self-attention, MLP blocks, and the language model head.</p></li>
+<li><p>Trace a forward pass through Phi-3-Mini step by step, interpreting the shape of each intermediate tensor.</p></li>
+<li><p>Explain what logits are, how they differ from probabilities, and how the softmax function converts one to the other.</p></li>
+<li><p>Extract the top-<span class="math notranslate nohighlight">\(k\)</span> most probable next tokens from the model’s output distribution and interpret what each prediction means.</p></li>
+<li><p>Explain what key-value (KV) caching is, why it exists, and quantify its impact on generation speed.</p></li>
+</ul>
+</section>
+<section id="why-look-inside">
+<h2><span class="section-number">5.3.1.2. </span>Why Look Inside?<a class="headerlink" href="#why-look-inside" title="Link to this heading">#</a></h2>
+<p>In Chapter 4 we treated LLMs as black boxes: prompts go in, text comes out. Understanding the internal architecture is essential for moving beyond that surface-level interaction:</p>
+<ul class="simple">
+<li><p><strong>Debugging unexpected outputs</strong> — knowing which component is responsible for which transformation.</p></li>
+<li><p><strong>Efficient deployment</strong> — understanding why KV caching makes generation 5–7× faster.</p></li>
+<li><p><strong>Fine-tuning</strong> — knowing which layers to freeze and which to update.</p></li>
+<li><p><strong>Prompt engineering</strong> — understanding why longer contexts affect generation quality and speed.</p></li>
+<li><p><strong>Research</strong> — interpreting model behavior through the lens of its architecture.</p></li>
+</ul>
+</section>
+<section id="the-transformer-decoder-architecture">
+<h2><span class="section-number">5.3.1.3. </span>The Transformer Decoder Architecture<a class="headerlink" href="#the-transformer-decoder-architecture" title="Link to this heading">#</a></h2>
+<p>All modern autoregressive LLMs (GPT, LLaMA, Phi, Mistral, Gemma) share the same fundamental architecture — a <strong>transformer decoder stack</strong>. The model processes a sequence of token IDs, applies 32 (or more) layers of self-attention and feed-forward transformations, and projects the final hidden state to a vocabulary distribution.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Autoregressive Generation</p>
+<p>A model is <strong>autoregressive</strong> if it generates one token at a time, conditioning each new token on all previously generated tokens. Formally, given a sequence of tokens <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_t\)</span>, the model estimates the conditional probability <span class="math notranslate nohighlight">\(P(x_{t+1} \mid x_1, \ldots, x_t)\)</span> and samples (or selects) the next token from that distribution.</p>
+</div>
+<p>The primary model for this section is <strong>Phi-3-Mini-4K-Instruct</strong> — the same 3.8B-parameter model used in Chapter 4. Loading it requires only a few lines:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+
+<span class="c1"># Reuse the tokenizer if it already exists in the notebook to avoid re-downloading.</span>
+<span class="k">if</span> <span class="s2">&quot;tokenizer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+        <span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load Phi-3 Mini for causal language modeling.</span>
+<span class="c1"># - device_map=&quot;cuda&quot;: place weights on GPU</span>
+<span class="c1"># - torch_dtype=&quot;auto&quot;: choose a memory-efficient dtype automatically</span>
+<span class="c1"># - trust_remote_code=False: use only library-native model code</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">,</span>
+    <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>
+    <span class="n">torch_dtype</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "736da94dead5430193f8977502926489", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "0ccdafbef43c4dc2862e0c7550098d8e", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<blockquote>
+<div><p>Here <code class="docutils literal notranslate"><span class="pre">device_map=&quot;cuda&quot;</span></code> places model weights on the GPU, and <code class="docutils literal notranslate"><span class="pre">torch_dtype=&quot;auto&quot;</span></code> lets the library choose the most memory-efficient floating-point precision (typically <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> on modern hardware).</p>
+</div></blockquote>
+</section>
+<section id="inspecting-the-model-hierarchy">
+<h2><span class="section-number">5.3.1.4. </span>Inspecting the Model Hierarchy<a class="headerlink" href="#inspecting-the-model-hierarchy" title="Link to this heading">#</a></h2>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">print(model)</span></code> on a Hugging Face model prints its full PyTorch module tree. For Phi-3-Mini:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Phi3ForCausalLM</span><span class="p">(</span>
+  <span class="p">(</span><span class="n">model</span><span class="p">):</span> <span class="n">Phi3Model</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">embed_tokens</span><span class="p">):</span> <span class="n">Embedding</span><span class="p">(</span><span class="mi">32064</span><span class="p">,</span> <span class="mi">3072</span><span class="p">,</span> <span class="n">padding_idx</span><span class="o">=</span><span class="mi">32000</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">layers</span><span class="p">):</span> <span class="n">ModuleList</span><span class="p">(</span>
+      <span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="mi">31</span><span class="p">):</span> <span class="mi">32</span> <span class="n">x</span> <span class="n">Phi3DecoderLayer</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">self_attn</span><span class="p">):</span> <span class="n">Phi3Attention</span><span class="p">(</span>
+          <span class="p">(</span><span class="n">o_proj</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+          <span class="p">(</span><span class="n">qkv_proj</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">9216</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="n">mlp</span><span class="p">):</span> <span class="n">Phi3MLP</span><span class="p">(</span>
+          <span class="p">(</span><span class="n">gate_up_proj</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">16384</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+          <span class="p">(</span><span class="n">down_proj</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">8192</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+          <span class="p">(</span><span class="n">activation_fn</span><span class="p">):</span> <span class="n">SiLU</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="p">(</span><span class="n">input_layernorm</span><span class="p">):</span> <span class="n">Phi3RMSNorm</span><span class="p">((</span><span class="mi">3072</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">post_attention_layernorm</span><span class="p">):</span> <span class="n">Phi3RMSNorm</span><span class="p">((</span><span class="mi">3072</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">)</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">(</span><span class="n">norm</span><span class="p">):</span> <span class="n">Phi3RMSNorm</span><span class="p">((</span><span class="mi">3072</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">rotary_emb</span><span class="p">):</span> <span class="n">Phi3RotaryEmbedding</span><span class="p">()</span>
+  <span class="p">)</span>
+  <span class="p">(</span><span class="n">lm_head</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">3072</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">32064</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Reading this printout reveals the full computational graph. Each named module corresponds to a specific transformation:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">embed_tokens</span></code></p></td>
+<td><p>Embedding(32064, 3072)</p></td>
+<td><p>Lookup table: maps token IDs to 3072-dim vectors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layers</span></code> (×32)</p></td>
+<td><p>—</p></td>
+<td><p>32 stacked decoder layers</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">qkv_proj</span></code></p></td>
+<td><p>Linear(3072 → 9216)</p></td>
+<td><p>Projects hidden state to Q, K, V simultaneously</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">o_proj</span></code></p></td>
+<td><p>Linear(3072 → 3072)</p></td>
+<td><p>Projects concatenated attention heads back to hidden dim</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gate_up_proj</span></code></p></td>
+<td><p>Linear(3072 → 16384)</p></td>
+<td><p>Projects to gate + up streams (SwiGLU)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">down_proj</span></code></p></td>
+<td><p>Linear(8192 → 3072)</p></td>
+<td><p>Projects MLP output back to hidden dim</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">input_layernorm</span></code></p></td>
+<td><p>RMSNorm(3072)</p></td>
+<td><p>Applied before self-attention</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">post_attention_layernorm</span></code></p></td>
+<td><p>RMSNorm(3072)</p></td>
+<td><p>Applied before MLP</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">norm</span></code></p></td>
+<td><p>RMSNorm(3072)</p></td>
+<td><p>Final normalization after all layers</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rotary_emb</span></code></p></td>
+<td><p>—</p></td>
+<td><p>Computes position-dependent rotations for Q and K</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lm_head</span></code></p></td>
+<td><p>Linear(3072 → 32064)</p></td>
+<td><p>Projects hidden state to vocabulary logits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Hidden Dimension (<span class="math notranslate nohighlight">\(d_\text{model}\)</span>)</p>
+<p>The <strong>hidden dimension</strong> <span class="math notranslate nohighlight">\(d_\text{model} = 3072\)</span> is the width of every intermediate representation in Phi-3-Mini. Every token is represented as a vector of this size throughout the entire forward pass, from the embedding lookup all the way to the final layer normalization.</p>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — RMSNorm</p>
+<p><strong>Root Mean Square Normalization (RMSNorm)</strong> is a simplified alternative to Layer Normalization. Given a hidden vector <span class="math notranslate nohighlight">\(\mathbf{h} \in \mathbb{R}^d\)</span>, it rescales each element by the inverse of the root-mean-square of the vector:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c45eec22-fa53-4b76-b9c3-ed8d246a9d58">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-c45eec22-fa53-4b76-b9c3-ed8d246a9d58" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  \text{RMSNorm}(\mathbf{h}) = \frac{\mathbf{h}}{\sqrt{\frac{1}{d}\sum_{i=1}^{d} h_i^2 + \epsilon}} \odot \boldsymbol{\gamma}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\gamma}\)</span> is a learned scale parameter and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant (here <span class="math notranslate nohighlight">\(10^{-5}\)</span>) for numerical stability. RMSNorm is computationally cheaper than Layer Norm because it omits the mean-centering step.</p>
+</div>
+<section id="parameter-distribution">
+<h3><span class="section-number">5.3.1.4.1. </span>Parameter Distribution<a class="headerlink" href="#parameter-distribution" title="Link to this heading">#</a></h3>
+<p>The following snippet counts parameters per component and highlights where most of the model’s capacity resides:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">count_params</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count total number of parameters in a module.&quot;&quot;&quot;</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="c1"># Display parameter counts for each major component</span>
+<span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Embedding layer (embed_tokens)&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">embed_tokens</span><span class="p">,</span>
+    <span class="s2">&quot;All 32 decoder layers&quot;</span><span class="p">:</span>          <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">,</span>
+    <span class="s2">&quot;Final norm&quot;</span><span class="p">:</span>                     <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">norm</span><span class="p">,</span>
+    <span class="s2">&quot;LM head&quot;</span><span class="p">:</span>                        <span class="n">model</span><span class="o">.</span><span class="n">lm_head</span><span class="p">,</span>
+    <span class="s2">&quot;Full model&quot;</span><span class="p">:</span>                     <span class="n">model</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;35</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">count_params</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;15,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Embedding layer (embed_tokens)           98,500,608
+All 32 decoder layers                 3,624,075,264
+Final norm                                    3,072
+LM head                                  98,500,608
+Full model                            3,821,079,552
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>Key observations:</p>
+<ul class="simple">
+<li><p>The embedding layer and LM head each contain approximately <strong>98.5 M parameters</strong> (<span class="math notranslate nohighlight">\(32{,}064 \times 3{,}072\)</span>).</p></li>
+<li><p>In Phi-3, these weights are <strong>tied</strong> — the same matrix serves as both input embedding lookup and output logit projection. This saves 98.5 M parameters with no measurable quality loss.</p></li>
+<li><p>The 32 decoder layers together contain approximately <strong>3.3 B of the 3.8 B</strong> total parameters, meaning the vast majority of the model’s learned capacity lives in those stacked transformer blocks.</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="forward-pass-step-by-step">
+<h2><span class="section-number">5.3.1.5. </span>Forward Pass Step by Step<a class="headerlink" href="#forward-pass-step-by-step" title="Link to this heading">#</a></h2>
+<p>Instead of using <code class="docutils literal notranslate"><span class="pre">pipeline</span></code>, we can run the forward pass manually to observe the exact tensor shapes at each stage. This makes the data flow concrete and inspectable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;The capital of Japan is&quot;</span>
+
+<span class="c1"># Step 1: Tokenize</span>
+<span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+<span class="c1"># Shape: (1, 5)  — batch=1, seq_len=5</span>
+
+<span class="c1"># Step 2: Run through the transformer backbone (32 layers)</span>
+<span class="n">model_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+<span class="c1"># model.model = Phi3Model (backbone without LM head)</span>
+<span class="c1"># Output hidden state shape: (1, 5, 3072)</span>
+
+<span class="c1"># Step 3: Project through the LM head</span>
+<span class="n">lm_head_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">lm_head</span><span class="p">(</span><span class="n">model_output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Shape: (1, 5, 32064)  — a score for every vocabulary token at every position</span>
+
+<span class="c1"># Step 4: Extract next-token prediction from the last position</span>
+<span class="n">last_logits</span> <span class="o">=</span> <span class="n">lm_head_output</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>   <span class="c1"># Shape: (32064,)</span>
+<span class="n">token_id_greedy</span> <span class="o">=</span> <span class="n">last_logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted next token: &#39;</span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token_id_greedy</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="c1">#.input_ids.to(&quot;cuda&quot;)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Shape: (1, 5)  — batch=1, seq_len=5</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># Step 2: Run through the transformer backbone (32 layers)</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">model_output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1"># model.model = Phi3Model (backbone without LM head)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1"># Output hidden state shape: (1, 5, 3072)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> 
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/modules/module.py:1779,</span> in <span class="ni">Module._wrapped_call_impl</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1777</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_call_impl</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1778</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1779</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_impl</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/modules/module.py:1790,</span> in <span class="ni">Module._call_impl</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1785</span> <span class="c1"># If we don&#39;t have any hooks, we want to skip the rest of the logic in</span>
+<span class="g g-Whitespace">   </span><span class="mi">1786</span> <span class="c1"># this function, and just call forward.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1787</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_pre_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_pre_hooks</span>
+<span class="g g-Whitespace">   </span><span class="mi">1788</span>         <span class="ow">or</span> <span class="n">_global_backward_pre_hooks</span> <span class="ow">or</span> <span class="n">_global_backward_hooks</span>
+<span class="g g-Whitespace">   </span><span class="mi">1789</span>         <span class="ow">or</span> <span class="n">_global_forward_hooks</span> <span class="ow">or</span> <span class="n">_global_forward_pre_hooks</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1790</span>     <span class="k">return</span> <span class="n">forward_call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1792</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1793</span> <span class="n">called_always_called_hooks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/transformers/utils/generic.py:1032,</span> in <span class="ni">merge_with_config_defaults.&lt;locals&gt;.wrapper</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1030</span>             <span class="n">output</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1031</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1032</span>         <span class="n">output</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1033</span> <span class="c1"># Restore original config value</span>
+<span class="g g-Whitespace">   </span><span class="mi">1034</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1035</span>     <span class="k">if</span> <span class="n">is_causal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/transformers/utils/output_capturing.py:252,</span> in <span class="ni">capture_outputs.&lt;locals&gt;.wrapped_fn.&lt;locals&gt;.wrapper</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">250</span> <span class="c1"># Run the forward</span>
+<span class="g g-Whitespace">    </span><span class="mi">251</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">252</span>     <span class="n">outputs</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span> <span class="c1"># Reset the states</span>
+<span class="g g-Whitespace">    </span><span class="mi">254</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>     <span class="n">_active_collector</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">output_token</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/transformers/models/phi3/modeling_phi3.py:393,</span> in <span class="ni">Phi3Model.forward</span><span class="nt">(self, input_ids, attention_mask, position_ids, past_key_values, inputs_embeds, use_cache, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">390</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must specify exactly one of input_ids or inputs_embeds&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">392</span> <span class="k">if</span> <span class="n">inputs_embeds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">393</span>     <span class="n">inputs_embeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_tokens</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">395</span> <span class="k">if</span> <span class="n">use_cache</span> <span class="ow">and</span> <span class="n">past_key_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">396</span>     <span class="n">past_key_values</span> <span class="o">=</span> <span class="n">DynamicCache</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/modules/module.py:1779,</span> in <span class="ni">Module._wrapped_call_impl</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1777</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_call_impl</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[misc]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1778</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1779</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_impl</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/modules/module.py:1790,</span> in <span class="ni">Module._call_impl</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1785</span> <span class="c1"># If we don&#39;t have any hooks, we want to skip the rest of the logic in</span>
+<span class="g g-Whitespace">   </span><span class="mi">1786</span> <span class="c1"># this function, and just call forward.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1787</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_pre_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_hooks</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_pre_hooks</span>
+<span class="g g-Whitespace">   </span><span class="mi">1788</span>         <span class="ow">or</span> <span class="n">_global_backward_pre_hooks</span> <span class="ow">or</span> <span class="n">_global_backward_hooks</span>
+<span class="g g-Whitespace">   </span><span class="mi">1789</span>         <span class="ow">or</span> <span class="n">_global_forward_hooks</span> <span class="ow">or</span> <span class="n">_global_forward_pre_hooks</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1790</span>     <span class="k">return</span> <span class="n">forward_call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1792</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1793</span> <span class="n">called_always_called_hooks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/modules/sparse.py:189,</span> in <span class="ni">Embedding.forward</span><span class="nt">(self, input)</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">189</span>     <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span>         <span class="nb">input</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span>         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span>         <span class="bp">self</span><span class="o">.</span><span class="n">padding_idx</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span>         <span class="bp">self</span><span class="o">.</span><span class="n">max_norm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">194</span>         <span class="bp">self</span><span class="o">.</span><span class="n">norm_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span>         <span class="bp">self</span><span class="o">.</span><span class="n">scale_grad_by_freq</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span>         <span class="bp">self</span><span class="o">.</span><span class="n">sparse</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">197</span>     <span class="p">)</span>
+
+<span class="nn">File ~/miniconda/lib/python3.13/site-packages/torch/nn/functional.py:2567,</span> in <span class="ni">embedding</span><span class="nt">(input, weight, padding_idx, max_norm, norm_type, scale_grad_by_freq, sparse)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2561</span>     <span class="c1"># Note [embedding_renorm set_grad_enabled]</span>
+<span class="g g-Whitespace">   </span><span class="mi">2562</span>     <span class="c1"># XXX: equivalent to</span>
+<span class="g g-Whitespace">   </span><span class="mi">2563</span>     <span class="c1"># with torch.no_grad():</span>
+<span class="g g-Whitespace">   </span><span class="mi">2564</span>     <span class="c1">#   torch.embedding_renorm_</span>
+<span class="g g-Whitespace">   </span><span class="mi">2565</span>     <span class="c1"># remove once script supports set_grad_enabled</span>
+<span class="g g-Whitespace">   </span><span class="mi">2566</span>     <span class="n">_no_grad_embedding_renorm_</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">max_norm</span><span class="p">,</span> <span class="n">norm_type</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">2567</span> <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">padding_idx</span><span class="p">,</span> <span class="n">scale_grad_by_freq</span><span class="p">,</span> <span class="n">sparse</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: embedding(): argument &#39;indices&#39; (position 2) must be Tensor, not BatchEncoding
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Why the last position?</strong> In causal (left-to-right) generation, each token position can only attend to itself and the tokens that came before it — this is called <strong>causal masking</strong>. Position 0 has attended only to itself; position 4 has attended to all five tokens. The last position’s logit vector therefore contains the most context-informed prediction of what comes next, so we always read off the next token from there.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Causal Masking</p>
+<p><strong>Causal masking</strong> (also called an <em>autoregressive mask</em>) prevents each token from attending to future positions during self-attention. Concretely, the attention weight from position <span class="math notranslate nohighlight">\(i\)</span> to position <span class="math notranslate nohighlight">\(j\)</span> is set to <span class="math notranslate nohighlight">\(-\infty\)</span> (before softmax) whenever <span class="math notranslate nohighlight">\(j &gt; i\)</span>. This enforces the left-to-right generation order.</p>
+</div>
+</section>
+<section id="logits-probabilities-and-the-vocabulary-distribution">
+<h2><span class="section-number">5.3.1.6. </span>Logits, Probabilities, and the Vocabulary Distribution<a class="headerlink" href="#logits-probabilities-and-the-vocabulary-distribution" title="Link to this heading">#</a></h2>
+<p><strong>Logits</strong> are the raw, unnormalized scores output by the LM head. They can be any real number — positive, negative, large, or small. The <strong>softmax</strong> function converts them into a proper probability distribution over all <span class="math notranslate nohighlight">\(V = 32{,}064\)</span> vocabulary tokens.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Softmax</p>
+<p>Given a logit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^V\)</span>, the softmax function produces a probability distribution <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^V\)</span> where every entry is non-negative and the entries sum to 1:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f5295e81-eba5-4112-9a12-4a2ae0e46929">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-f5295e81-eba5-4112-9a12-4a2ae0e46929" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  p_i = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}, \quad \sum_{i=1}^{V} p_i = 1
+\end{equation}\]</div>
+<p>Tokens with higher logits receive higher probabilities, but even tokens with negative logits receive a small non-zero probability.</p>
+</div>
+<p>A concrete example for the prompt <code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">capital</span> <span class="pre">of</span> <span class="pre">Japan</span> <span class="pre">is&quot;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Logit for &quot;Tokyo&quot;  :  47.25  (highest)
+Logit for &quot;Kyoto&quot;  :  43.10
+Logit for &quot;a&quot;      :  39.80
+...
+Logit for &quot;banana&quot; : -12.50  (very unlikely)
+
+After softmax:
+P(&quot;Tokyo&quot;)  ≈ 0.836  (83.6% probability)
+P(&quot;Kyoto&quot;)  ≈ 0.009  (0.9%)
+...
+Sum of all 32,064 probabilities = 1.000
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">last_logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of all probs: </span><span class="si">{</span><span class="n">probs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># → 1.000000</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">top_probs</span><span class="p">,</span> <span class="n">top_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="p">(</span><span class="n">token_id</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">top_ids</span><span class="p">,</span> <span class="n">top_probs</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">token_str</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">([</span><span class="n">token_id</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">. &#39;</span><span class="si">{</span><span class="n">token_str</span><span class="si">}</span><span class="s2">&#39; — </span><span class="si">{</span><span class="n">prob</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="the-role-of-temperature">
+<h3><span class="section-number">5.3.1.6.1. </span>The Role of Temperature<a class="headerlink" href="#the-role-of-temperature" title="Link to this heading">#</a></h3>
+<p>During inference, <strong>temperature</strong> reshapes the logit distribution before applying softmax. All logits are divided by a scalar <span class="math notranslate nohighlight">\(T &gt; 0\)</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-3dea0939-1063-443b-92cd-9dd5422ccef5">
+<span class="eqno">(5.3)<a class="headerlink" href="#equation-3dea0939-1063-443b-92cd-9dd5422ccef5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  \tilde{z}_i = \frac{z_i}{T}
+\end{equation}\]</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Temperature</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T = 0.1\)</span></p></td>
+<td><p>Very peaked: top token gets near-100% probability → near-deterministic output</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(T = 1.0\)</span></p></td>
+<td><p>Original unmodified distribution (default)</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T = 2.0\)</span></p></td>
+<td><p>Flatter: more probability mass on lower-ranked tokens → more diverse but less coherent</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(T \to 0\)</span></p></td>
+<td><p>Equivalent to argmax (greedy decoding)</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(T \to \infty\)</span></p></td>
+<td><p>Uniform random selection over all 32,064 vocabulary tokens</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Intuitively, low temperature makes the model more confident (and repetitive), while high temperature makes it more creative (and error-prone). In practice, values between <span class="math notranslate nohighlight">\(T = 0.7\)</span> and <span class="math notranslate nohighlight">\(T = 1.2\)</span> are most common.</p>
+</section>
+</section>
+<section id="hidden-states-across-layers">
+<h2><span class="section-number">5.3.1.7. </span>Hidden States Across Layers<a class="headerlink" href="#hidden-states-across-layers" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">output_hidden_states=True</span></code> flag causes the model to return the hidden state tensor after every decoder layer. This lets us observe how representations evolve through the network — an important diagnostic for understanding what the model has learned and where.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># outputs.hidden_states is a tuple of (num_layers + 1) tensors</span>
+<span class="c1"># Shape of each: (batch, seq_len, 3072)</span>
+<span class="c1"># Index 0 = raw token embeddings; indices 1–32 = after each decoder layer</span>
+
+<span class="k">for</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="n">hidden</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">):</span>
+    <span class="n">last_token</span> <span class="o">=</span> <span class="n">hidden</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>   <span class="c1"># last token&#39;s representation at this layer</span>
+    <span class="n">l2_norm</span> <span class="o">=</span> <span class="n">last_token</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Layer </span><span class="si">{</span><span class="n">layer_idx</span><span class="si">:</span><span class="s2">&gt;2</span><span class="si">}</span><span class="s2">: last-token L2 norm = </span><span class="si">{</span><span class="n">l2_norm</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The L2 norm of the last-token representation tends to grow through the layers as each decoder block adds a <strong>residual update</strong>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8c79c8ac-8036-453d-98d7-7bd454c820d5">
+<span class="eqno">(5.4)<a class="headerlink" href="#equation-8c79c8ac-8036-453d-98d7-7bd454c820d5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  \mathbf{h}^{(\ell)} = \mathbf{h}^{(\ell-1)} + \Delta_\text{attn}^{(\ell)} + \Delta_\text{MLP}^{(\ell)}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{h}^{(\ell-1)}\)</span> is the input to layer <span class="math notranslate nohighlight">\(\ell\)</span>, <span class="math notranslate nohighlight">\(\Delta_\text{attn}\)</span> is the self-attention update, and <span class="math notranslate nohighlight">\(\Delta_\text{MLP}\)</span> is the feed-forward update. This <strong>residual (skip) connection</strong> ensures that gradient can flow directly back to early layers during training and that early representations are preserved as later layers refine them.</p>
+<p>The final layer’s representation contains the richest context-aware encoding, which the LM head then projects into vocabulary space.</p>
+</section>
+<section id="the-language-model-head">
+<h2><span class="section-number">5.3.1.8. </span>The Language Model Head<a class="headerlink" href="#the-language-model-head" title="Link to this heading">#</a></h2>
+<p>The LM head is a single linear layer — the simplest possible transformation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>hidden_state: (batch, seq_len, 3072)   ← rich contextual representation
+      ↓
+  Linear(3072 → 32064, bias=False)     ← learned projection matrix W
+      ↓
+logits: (batch, seq_len, 32064)        ← unnormalized score for each vocabulary token
+</pre></div>
+</div>
+<p>Formally, for a hidden vector <span class="math notranslate nohighlight">\(\mathbf{h} \in \mathbb{R}^{d_\text{model}}\)</span>, the LM head computes:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f58730df-b89b-4055-8bc9-d9ed138b23bf">
+<span class="eqno">(5.5)<a class="headerlink" href="#equation-f58730df-b89b-4055-8bc9-d9ed138b23bf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  \mathbf{z} = W\,\mathbf{h}, \quad W \in \mathbb{R}^{V \times d_\text{model}}
+\end{equation}\]</div>
+<p>No activation function, no bias, no normalization — just a matrix multiplication. The power comes entirely from the rich 3,072-dimensional hidden state built up through 32 transformer layers.</p>
+<p><strong>Weight tying</strong> connects the embedding lookup table to the LM head using the same matrix <span class="math notranslate nohighlight">\(W\)</span>. When embedding “Tokyo,” the model retrieves a 3,072-dim row vector representing “Tokyo’s meaning.” When predicting “Tokyo” as the next token, the LM head scores how similar the hidden state is to that same vector. High similarity → high logit for “Tokyo.” This symmetry saves 98.5 M parameters with no measurable quality loss.</p>
+</section>
+<section id="key-value-caching">
+<h2><span class="section-number">5.3.1.9. </span>Key-Value Caching<a class="headerlink" href="#key-value-caching" title="Link to this heading">#</a></h2>
+<p>When generating text autoregressively, the model must produce one token at a time. Without caching, every generation step recomputes the attention keys and values for all previous tokens from scratch.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Self-Attention Keys and Values</p>
+<p>In self-attention, each token’s hidden vector <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> is projected into three separate vectors:</p>
+<ul class="simple">
+<li><p><strong>Query</strong> <span class="math notranslate nohighlight">\(\mathbf{q} = W_Q \mathbf{h}\)</span> — what this token is looking for.</p></li>
+<li><p><strong>Key</strong> <span class="math notranslate nohighlight">\(\mathbf{k} = W_K \mathbf{h}\)</span> — what this token advertises about itself.</p></li>
+<li><p><strong>Value</strong> <span class="math notranslate nohighlight">\(\mathbf{v} = W_V \mathbf{h}\)</span> — the information this token contributes if attended to.</p></li>
+</ul>
+<p>The attention score between position <span class="math notranslate nohighlight">\(i\)</span> (query) and position <span class="math notranslate nohighlight">\(j\)</span> (key) is:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1b370164-8cd2-4ef7-85bf-6d99d1b035e3">
+<span class="eqno">(5.6)<a class="headerlink" href="#equation-1b370164-8cd2-4ef7-85bf-6d99d1b035e3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+  a_{ij} = \frac{\mathbf{q}_i^\top \mathbf{k}_j}{\sqrt{d_k}}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the key dimension. After softmax over <span class="math notranslate nohighlight">\(j\)</span>, these scores weight the values <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> to produce the output for position <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</div>
+<p>Without caching, every step recomputes <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> for all prior tokens:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Without KV cache (generating N tokens from a prompt of length P):
+
+Step 1: compute K, V for all P tokens → predict token 1
+Step 2: recompute K, V for P+1 tokens → predict token 2  (P redundant)
+Step 3: recompute K, V for P+2 tokens → predict token 3  (P+1 redundant)
+...
+Total wasted computation: O(n²) for n tokens generated
+</pre></div>
+</div>
+<p>With KV caching, computed keys and values are stored after each step. On subsequent steps, only the new token’s <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> need to be computed and appended:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>With KV cache:
+
+Step 1: compute K, V for all P tokens → SAVE to cache → predict token 1
+Step 2: compute K, V for NEW token only → CONCAT with cache → predict token 2
+Step 3: compute K, V for NEW token only → CONCAT with cache → predict token 3
+...
+Total complexity: O(n) per step instead of O(n²)
+</pre></div>
+</div>
+<p>The practical speedup is substantial. For Phi-3-Mini generating 100 tokens:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Without cache</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">output_no_cache</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">use_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">time_no_cache</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="c1"># With cache (default)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">output_cache</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">use_cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">time_cache</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Without cache: </span><span class="si">{</span><span class="n">time_no_cache</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;With cache   : </span><span class="si">{</span><span class="n">time_cache</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Speedup      : </span><span class="si">{</span><span class="n">time_no_cache</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">time_cache</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">×&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Typical speedup: <strong>5–7× for 100 tokens</strong>, growing with sequence length because the cache eliminates an increasingly large fraction of redundant computation. The trade-off is memory: the KV cache grows linearly with sequence length and the number of layers, which is one reason long-context inference requires significantly more GPU memory.</p>
+</section>
+<section id="the-complete-forward-pass-summary">
+<h2><span class="section-number">5.3.1.10. </span>The Complete Forward Pass Summary<a class="headerlink" href="#the-complete-forward-pass-summary" title="Link to this heading">#</a></h2>
+<p>The table below summarizes every stage of the forward pass, from raw text to a predicted next token:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Stage</p></th>
+<th class="head"><p>Operation</p></th>
+<th class="head"><p>Shapes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tokenization</p></td>
+<td><p>Text → integer IDs</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Embedding lookup</p></td>
+<td><p>IDs → dense vectors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5)</span></code> → <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">3072)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>×32 Decoder layers</p></td>
+<td><p>Attention + MLP + residuals</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">3072)</span></code> → <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">3072)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Final RMSNorm</p></td>
+<td><p>Normalize hidden states</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">3072)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>LM head</p></td>
+<td><p>Project to vocabulary</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">3072)</span></code> → <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">5,</span> <span class="pre">32064)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Next-token selection</p></td>
+<td><p>Last position → argmax or sample</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(32064,)</span></code> → single token ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Notice that the hidden dimension <span class="math notranslate nohighlight">\(d_\text{model} = 3072\)</span> is preserved throughout the 32 decoder layers. Each layer refines the representation without changing its shape. Only the LM head expands it to the full vocabulary size <span class="math notranslate nohighlight">\(V = 32{,}064\)</span>.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">5.3.1.11. </span>Exercises and Discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Architecture reading</strong>
+Load any Hugging Face causal LM (e.g., <code class="docutils literal notranslate"><span class="pre">distilgpt2</span></code> or <code class="docutils literal notranslate"><span class="pre">openai-community/gpt2</span></code>) and call <code class="docutils literal notranslate"><span class="pre">print(model)</span></code>. Identify the embedding layer, the attention modules, the MLP blocks, and the LM head. How does the architecture differ from Phi-3-Mini?</p></li>
+<li><p><strong>Logit inspection</strong>
+For the prompt <code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">University</span> <span class="pre">of</span> <span class="pre">Missouri</span> <span class="pre">was</span> <span class="pre">founded</span> <span class="pre">in,&quot;</span></code> extract the top-10 next-token predictions with their probabilities. Do the top predictions make sense factually? Is the probability distribution concentrated around a few tokens or spread broadly?</p></li>
+<li><p><strong>KV cache speedup</strong>
+Run the KV cache benchmarking experiment above with <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> set to 50, 100, and 200. Plot the speedup ratio as a function of generated sequence length. Does the speedup grow, shrink, or remain roughly constant as sequence length increases? Explain why in terms of the computational complexity analysis above.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Inside Transformer LLMs and Text Classification</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../References.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.1.1. Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-look-inside">5.3.1.2. Why Look Inside?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-transformer-decoder-architecture">5.3.1.3. The Transformer Decoder Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-model-hierarchy">5.3.1.4. Inspecting the Model Hierarchy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-distribution">5.3.1.4.1. Parameter Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-pass-step-by-step">5.3.1.5. Forward Pass Step by Step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logits-probabilities-and-the-vocabulary-distribution">5.3.1.6. Logits, Probabilities, and the Vocabulary Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-temperature">5.3.1.6.1. The Role of Temperature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-states-across-layers">5.3.1.7. Hidden States Across Layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-language-model-head">5.3.1.8. The Language Model Head</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-value-caching">5.3.1.9. Key-Value Caching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-complete-forward-pass-summary">5.3.1.10. The Complete Forward Pass Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.1.11. Exercises and Discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
