@@ -34,9 +34,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -198,11 +198,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">5. References</a></li>
 </ul>
 
     </div>
@@ -357,14 +353,23 @@ a downstream classification task.</p>
 <section id="from-counts-to-bag-of-words">
 <h2><span class="section-number">2.2.2. </span>From counts to bag-of-words<a class="headerlink" href="#from-counts-to-bag-of-words" title="Link to this heading">#</a></h2>
 <p>The <strong>bag-of-words (BoW)</strong> model <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span> represents each document by the multiset of vocabulary items it contains, <em>ignoring word order</em>. Conceptually, a BoW representation is a histogram over tokens <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-71dfc3bd-243e-4818-a1fa-5402a8eebb9f">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-71dfc3bd-243e-4818-a1fa-5402a8eebb9f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3e9b8455-7efe-4c40-a0a5-8c8859346cdd">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-3e9b8455-7efe-4c40-a0a5-8c8859346cdd" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{x}_d \in \mathbb{Z}_{\geq 0}^{|V|}, \quad x_{d,t} = \text{count of term } t \text{ in document } d
 \end{equation}\]</div>
 <p>Despite its simplicity, BoW often performs surprisingly well for tasks such as topic classification and sentiment analysis, especially when combined with suitable weighting schemes.</p>
 <div class="warning admonition">
 <p class="admonition-title">What information is discarded?</p>
 <p>“The dog bit the man” and “the man bit the dog” produce <em>identical</em> BoW vectors. Order, syntax, and discourse structure are all lost. For many classification tasks this is acceptable; for tasks that require understanding of compositional or relational meaning — such as question answering or logical inference — it is not.</p>
+<figure class="align-center" id="bag-of-word-loses-order">
+<a class="reference internal image-reference" href="../_images/bag_of_word_loses_order.png"><img alt="../_images/bag_of_word_loses_order.png" src="../_images/bag_of_word_loses_order.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.3 </span><span class="caption-text">Bag of Words Loses Word Order</span><a class="headerlink" href="#bag-of-word-loses-order" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Bag-of-Words is acceptable for some classification tasks where word presence/frequency matters (e.g., spam detection, topic classification).
+It is <strong>not suitable</strong> for tasks that require understanding word order or meaning, such as question answering, translation, or logical inference.</p>
 </div>
 <section id="example-bag-of-words-with-countvectorizer">
 <h3><span class="section-number">2.2.2.1. </span>Example: bag-of-words with CountVectorizer<a class="headerlink" href="#example-bag-of-words-with-countvectorizer" title="Link to this heading">#</a></h3>
@@ -514,8 +519,8 @@ a downstream classification task.</p>
 <p>Raw counts treat all tokens equally — but they clearly are not equal. Consider the word “the”: it appears in virtually every English document and tells us almost nothing about the document’s topic. Conversely, a term like “inundation” is so specific that its presence in a document is highly informative.</p>
 <p><strong>TF–IDF</strong> (Term Frequency–Inverse Document Frequency) <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span> addresses this by rewarding specificity: a word that is frequent <em>in a particular document</em> but rare <em>across the corpus</em> is likely characteristic of that document and therefore receives a high score.</p>
 <p>The TF–IDF score is the product of two components <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-812f6643-504f-464a-93d9-cd2470e45778">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-812f6643-504f-464a-93d9-cd2470e45778" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4330f042-5b8e-4589-b4fe-6b84e4b5deaf">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-4330f042-5b8e-4589-b4fe-6b84e4b5deaf" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
 \end{equation}\]</div>
 <section id="term-frequency-tf">
@@ -552,16 +557,16 @@ a downstream classification task.</p>
 <h3><span class="section-number">2.2.3.2. </span>Inverse document frequency (IDF)<a class="headerlink" href="#inverse-document-frequency-idf" title="Link to this heading">#</a></h3>
 <p>IDF measures <em>how rare</em> term <span class="math notranslate nohighlight">\(t\)</span> is across the <span class="math notranslate nohighlight">\(N\)</span>-document corpus. A term that appears in every document is not useful for distinguishing documents, so it receives a low IDF weight. A term that appears in only one or two documents receives a high IDF weight.</p>
 <p>The classic IDF formula is <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-47034a7a-e3ad-4b20-8158-d8db589aa8bc">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-47034a7a-e3ad-4b20-8158-d8db589aa8bc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5bd85830-d7ba-4895-9bad-f6de21356f41">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-5bd85830-d7ba-4895-9bad-f6de21356f41" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{IDF}(t) = \log \frac{N}{|\{d : t \in d\}|}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(|\{d : t \in d\}|\)</span> is the <strong>document frequency</strong> <span class="math notranslate nohighlight">\(\text{df}(t)\)</span> — the number of documents that contain term <span class="math notranslate nohighlight">\(t\)</span> at least once.</p>
 <div class="note admonition">
 <p class="admonition-title">Scikit-learn’s smoothed IDF</p>
 <p>Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> uses a slightly different, <strong>smoothed</strong> formula to avoid division by zero and to prevent IDF from being 0 for terms that appear in all documents <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id121" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2d9ac439-3bde-47de-9327-90624700021b">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-2d9ac439-3bde-47de-9327-90624700021b" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{IDF}(t) = \log \frac{1 + N}{1 + \text{df}(t)} + 1\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-f9aadf83-04b7-4608-8cd9-f67846a133c2">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-f9aadf83-04b7-4608-8cd9-f67846a133c2" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{IDF}(t) = \log \frac{1 + N}{1 + \text{df}(t)} + 1\end{equation}\]</div>
 <p>The smoothing adds 1 to both numerator and denominator. The extra <code class="docutils literal notranslate"><span class="pre">+1</span></code> at the end ensures that terms appearing in every document still receive a positive (non-zero) IDF weight. This is why scikit-learn’s numbers will differ from the manual calculation below, which uses the unsmoothed formula.</p>
 </div>
 </section>
@@ -593,8 +598,8 @@ unsmoothed formula.</p>
 </table>
 </div>
 <p><strong>Step 1 — Compute IDF for each term:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-1496dbc3-1933-445b-807c-c506adf88ba8">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-1496dbc3-1933-445b-807c-c506adf88ba8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-73a97217-00bb-440c-bf88-1121e236953d">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-73a97217-00bb-440c-bf88-1121e236953d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{IDF(flood)}  = \log\!\left(\frac{4}{3}\right) \approx 0.288
 \qquad
 \text{IDF(drought)} = \log\!\left(\frac{4}{2}\right) \approx 0.693
@@ -639,12 +644,12 @@ unsmoothed formula.</p>
 </tbody>
 </table>
 </div>
-<p>The full step-by-step pipeline is shown in <a class="reference internal" href="#tf-idf-flowchart"><span class="std std-numref">Fig. 2.2</span></a> below.</p>
+<p>The full step-by-step pipeline is shown in <a class="reference internal" href="#tf-idf-flowchart"><span class="std std-numref">Fig. 2.4</span></a> below.</p>
 <figure class="align-center" id="tf-idf-flowchart">
 <a class="reference internal image-reference" href="../_images/tf_idf_flowchart.png"><img alt="../_images/tf_idf_flowchart.png" src="../_images/tf_idf_flowchart.png" style="width: 700px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Step-by-step TF–IDF computation for <em>flood</em> and <em>drought</em> across a four-document
+<p><span class="caption-number">Fig. 2.4 </span><span class="caption-text">Step-by-step TF–IDF computation for <em>flood</em> and <em>drought</em> across a four-document
 corpus. Each stage — document frequency, IDF calculation, per-document TF, and
 final TF–IDF scores — is traced in parallel for both terms.</span><a class="headerlink" href="#tf-idf-flowchart" title="Link to this image">#</a></p>
 </figcaption>
