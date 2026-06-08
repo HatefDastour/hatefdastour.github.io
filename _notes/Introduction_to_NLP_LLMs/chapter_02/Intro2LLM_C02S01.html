@@ -431,8 +431,8 @@ sections.</p>
 <section id="one-hot-encodings">
 <h2><span class="section-number">2.1.4. </span>One-hot encodings<a class="headerlink" href="#one-hot-encodings" title="Link to this heading">#</a></h2>
 <p>The simplest way to represent a token numerically is a <strong>one-hot vector</strong>: a binary vector of length <span class="math notranslate nohighlight">\(|V|\)</span> with a single <code class="docutils literal notranslate"><span class="pre">1</span></code> at the position corresponding to the word’s index and <code class="docutils literal notranslate"><span class="pre">0</span></code>s everywhere else <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id469" title="John Wang, editor. Encyclopedia of data science and machine learning. Engineering Science Reference, an imprint of IGI Global, Hershey, PA, 2023. ISBN 978-1-7998-9220-5 978-1-6684-8161-5 978-1-6684-8162-2 978-1-6684-8163-9 978-1-6684-8164-6 978-1-6684-8165-3.">Wang, 2023</a>]</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bcb57f91-a21e-4ac2-b9ca-f970fd87965c">
-<span class="eqno">(2.1)<a class="headerlink" href="#equation-bcb57f91-a21e-4ac2-b9ca-f970fd87965c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e31f014b-47ee-4fdf-b443-911944ab0650">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-e31f014b-47ee-4fdf-b443-911944ab0650" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{e}_i \in \{0,1\}^{|V|}, \quad (\mathbf{e}_i)_j = \begin{cases} 1 &amp; \text{if } j = i \\ 0 &amp; \text{otherwise} \end{cases}
 \end{equation}\]</div>
 <p>Here <span class="math notranslate nohighlight">\(i\)</span> is the vocabulary index of the target word and <span class="math notranslate nohighlight">\(|V|\)</span> is the vocabulary size.</p>
@@ -442,6 +442,13 @@ sections.</p>
 <li><p>The Euclidean distance between any two one-hot vectors is <span class="math notranslate nohighlight">\(\sqrt{2}\)</span>, regardless of whether the words are semantically related.</p></li>
 <li><p>Vectors are <strong>sparse</strong>: for a vocabulary of 50,000 words, a one-hot vector has exactly one <code class="docutils literal notranslate"><span class="pre">1</span></code> among 49,999 <code class="docutils literal notranslate"><span class="pre">0</span></code>s. Storing or computing with thousands of such vectors is expensive, which is one motivation for the dense embeddings introduced in Section 3.</p></li>
 </ul>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/one_hot_encoding.png"><img alt="../_images/one_hot_encoding.png" src="../_images/one_hot_encoding.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">One-hot token representation, where each word is mapped to a sparse binary vector with a single active position; unknown tokens are shown here as an all-zeros vector.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <section id="example-one-hot-token-representation">
 <h3><span class="section-number">2.1.4.1. </span>Example: one-hot token representation<a class="headerlink" href="#example-one-hot-token-representation" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
@@ -480,12 +487,19 @@ unknown    -&gt; [0, 0, 0, 0]
 </section>
 <section id="one-hot-vectors-do-not-capture-similarity">
 <h3><span class="section-number">2.1.4.2. </span>One-hot vectors do not capture similarity<a class="headerlink" href="#one-hot-vectors-do-not-capture-similarity" title="Link to this heading">#</a></h3>
-<p>A critical limitation is that one-hot vectors encode <em>no</em> notion of similarity between words. Let us verify this using <strong>cosine similarity</strong>, a standard measure of similarity between two vectors <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id476" title="Christine P. Chai. Comparison of text preprocessing methods. Natural Language Engineering, 29(3):509–553, May 2023. doi:10.1017/S1351324922000213.">Chai, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bdd536a3-df0b-44b4-a864-ea0ee380c9ac">
-<span class="eqno">(2.2)<a class="headerlink" href="#equation-bdd536a3-df0b-44b4-a864-ea0ee380c9ac" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p>A critical limitation is that one-hot vectors encode <em>no</em> notion of similarity between words. Let us verify this using <strong>cosine similarity</strong>, a standard measure of similarity between two vectors <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id476" title="Christine P. Chai. Comparison of text preprocessing methods. Natural Language Engineering, 29(3):509–553, May 2023. doi:10.1017/S1351324922000213.">Chai, 2023</a>]</span>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-351184f4-abc5-4260-aee8-3818e7be9ec9">
+<span class="eqno">(2.2)<a class="headerlink" href="#equation-351184f4-abc5-4260-aee8-3818e7be9ec9" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{cosine_sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \, \|\mathbf{b}\|}
 \end{equation}\]</div>
 <p>Cosine similarity equals 1 for identical direction, 0 for orthogonal vectors, and −1 for opposite direction. For sparse one-hot vectors, any two <em>different</em> words are orthogonal:</p>
+<figure class="align-center" id="cosine-similarity-angle">
+<a class="reference internal image-reference" href="../_images/cosine_angle.png"><img alt="../_images/cosine_angle.png" src="../_images/cosine_angle.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.3 </span><span class="caption-text">Cosine similarity measures the angle between vectors: smaller angles indicate greater similarity, while orthogonal vectors have cosine similarity 0.</span><a class="headerlink" href="#cosine-similarity-angle" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -495,35 +509,39 @@ unknown    -&gt; [0, 0, 0, 0]
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">v_rain</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;rain&quot;</span><span class="p">,</span>    <span class="n">vocab</span><span class="p">))</span>
-<span class="n">v_flood</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;flood&quot;</span><span class="p">,</span>   <span class="n">vocab</span><span class="p">))</span>
-<span class="n">v_drought</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">one_hot</span><span class="p">(</span><span class="s2">&quot;drought&quot;</span><span class="p">,</span> <span class="n">vocab</span><span class="p">))</span>
+<span class="c1"># Vector setup: [rain, flood, drought]</span>
+<span class="n">v_doc_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">v_doc_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">v_doc_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span><span class="p">)</span> <span class="k">if</span> <span class="n">denom</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(rain,   flood)  =&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_rain</span><span class="p">,</span>    <span class="n">v_flood</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(rain,   drought)=&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_rain</span><span class="p">,</span>    <span class="n">v_drought</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sim(flood,  drought)=&quot;</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_flood</span><span class="p">,</span>   <span class="n">v_drought</span><span class="p">))</span>
+<span class="c1"># 1. Related (Doc A and Doc B share &#39;flood&#39; and &#39;rain&#39;)</span>
+<span class="n">sim_related</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_doc_a</span><span class="p">,</span> <span class="n">v_doc_b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Similarity (Doc A, Doc B): </span><span class="si">{</span><span class="n">sim_related</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Dissimilar (Doc A and Doc C share nothing)</span>
+<span class="n">sim_diff</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">v_doc_a</span><span class="p">,</span> <span class="n">v_doc_c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Similarity (Doc A, Doc C): </span><span class="si">{</span><span class="n">sim_diff</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sim(rain,   flood)  = 0.0
-sim(rain,   drought)= 0.0
-sim(flood,  drought)= 0.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Similarity (Doc A, Doc B): 0.95
+Similarity (Doc A, Doc C): 0.00
 </pre></div>
 </div>
 </div>
 </div>
-<p>Every pair of distinct words has a cosine similarity of 0 — they are all maximally dissimilar from the encoder’s perspective, regardless of how semantically related they actually are. “Flood” and “inundation” look no more similar than “flood” and “philosophy.” This motivates the richer representations developed in later sections.</p>
+<p>Every pair of distinct one-hot vectors has a cosine similarity of <span class="math notranslate nohighlight">\(0\)</span>—they are all treated as perfectly orthogonal, regardless of how semantically related they actually are. In this ‘one-hot’ view, ‘flood’ and ‘inundation’ look no more similar than ‘flood’ and ‘philosophy’.</p>
+<p>However, by moving to count-based vectors, we begin to capture relationships through shared context. When documents share vocabulary counts, their vectors start to align, producing non-zero similarity scores. While this is a significant improvement, it still relies on exact word matches. To truly capture that ‘flood’ and ‘inundation’ are similar even when they don’t appear in the same document, we turn to dense embeddings—the richer, continuous representations explored in the following sections, which map words into a shared space based on their actual meaning.</p>
 </section>
 </section>
 <section id="documentterm-matrices-with-scikit-learn">
 <h2><span class="section-number">2.1.5. </span>Document–term matrices with scikit-learn<a class="headerlink" href="#documentterm-matrices-with-scikit-learn" title="Link to this heading">#</a></h2>
-<p>A <strong>document–term matrix</strong> (DTM) <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id468" title="Wouter van Atteveldt, Damian Trilling, and Carlos Arcíla Calderón. Computational analysis of communication: a practical introduction to the analysis of texts, networks, and images with code examples in Python and R. Wiley Blackwell, Hoboken, USA Sussex, UK, 2022. ISBN 978-1-119-68028-4 978-1-119-68023-9.">Atteveldt <em>et al.</em>, 2022</a>]</span> generalizes one-hot encodings from individual tokens to full documents. Instead of representing one word, each row represents a <em>document</em> as the sum of the one-hot vectors for all tokens it contains — which is just the <em>count</em> of each vocabulary word in the document.</p>
+<p>A <strong>document–term matrix</strong> (DTM) <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id468" title="Wouter van Atteveldt, Damian Trilling, and Carlos Arcíla Calderón. Computational analysis of communication: a practical introduction to the analysis of texts, networks, and images with code examples in Python and R. Wiley Blackwell, Hoboken, USA Sussex, UK, 2022. ISBN 978-1-119-68028-4 978-1-119-68023-9.">Atteveldt <em>et al.</em>, 2022</a>]</span> generalizes one-hot encodings from individual tokens to full documents. Instead of representing one word, each row represents a <em>document</em> as the sum of the one-hot vectors for all tokens it contains — which is just the <em>count</em> of each vocabulary word in the document.</p>
 <div class="tip admonition">
 <p class="admonition-title">Document vector = sum of token one-hots</p>
 <p>If a document contains the words [“flood”, “river”, “flood”], its document vector has <code class="docutils literal notranslate"><span class="pre">flood</span></code> → 2, <code class="docutils literal notranslate"><span class="pre">river</span></code> → 1, all others → 0. This is equivalent to adding the one-hot vectors: <strong>e</strong>_flood + <strong>e</strong>_river + <strong>e</strong>_flood = [2, 1, 0, …]. The result is no longer a one-hot vector (multiple non-zero entries), but it is still sparse.</p>
@@ -531,7 +549,7 @@ sim(flood,  drought)= 0.0
 <a class="reference internal image-reference" href="../_images/bag_of_words_example.png"><img alt="../_images/bag_of_words_example.png" src="../_images/bag_of_words_example.png" style="width: 700px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Bag-of-Words Model as a Sum of One-Hot Vectors</span><a class="headerlink" href="#bag-of-words-example" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 2.4 </span><span class="caption-text">Bag-of-Words Model as a Sum of One-Hot Vectors</span><a class="headerlink" href="#bag-of-words-example" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>

@@ -385,8 +385,8 @@
 <section id="wordpiece-bert-bert-base-uncased">
 <h3><span class="section-number">4.4.4.1. </span>WordPiece (BERT — <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code>)<a class="headerlink" href="#wordpiece-bert-bert-base-uncased" title="Link to this heading">#</a></h3>
 <p>WordPiece builds its vocabulary by iteratively selecting merges that maximise the <strong>likelihood</strong> of the training corpus under a unigram language model. At each step it scores every candidate pair <span class="math notranslate nohighlight">\((A, B)\)</span> and picks the merge that gives the largest gain:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7bd1a1cc-28b1-43fd-ac32-b2dfcb6aee03">
-<span class="eqno">(4.7)<a class="headerlink" href="#equation-7bd1a1cc-28b1-43fd-ac32-b2dfcb6aee03" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1e73768f-508d-4841-ac80-eeff84e418be">
+<span class="eqno">(4.7)<a class="headerlink" href="#equation-1e73768f-508d-4841-ac80-eeff84e418be" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{score}(A, B) = \frac{\text{freq}(AB)}{\text{freq}(A) \times \text{freq}(B)}
 \end{equation}\]</div>
 <p>This ratio rewards pairs that co-occur far more often than chance — essentially a pointwise mutual information criterion. The algorithm operates on Unicode characters (not bytes), lowercases all text, and prefixes continuation subwords (those that are not word-starts) with <code class="docutils literal notranslate"><span class="pre">##</span></code>.</p>
@@ -399,8 +399,8 @@
 <section id="byte-pair-encoding-bpe-gpt-2-roberta">
 <h3><span class="section-number">4.4.4.2. </span>Byte-Pair Encoding (BPE — GPT-2, RoBERTa)<a class="headerlink" href="#byte-pair-encoding-bpe-gpt-2-roberta" title="Link to this heading">#</a></h3>
 <p>BPE initialises the vocabulary with all individual characters (or bytes), then iteratively merges the <strong>most frequent adjacent pair</strong> across the entire corpus until a target vocabulary size is reached:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-94a0fda8-d683-4bf1-8831-d0dc5b285800">
-<span class="eqno">(4.8)<a class="headerlink" href="#equation-94a0fda8-d683-4bf1-8831-d0dc5b285800" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-03e245a1-d35c-4181-aa27-bd5fa56395d2">
+<span class="eqno">(4.8)<a class="headerlink" href="#equation-03e245a1-d35c-4181-aa27-bd5fa56395d2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{merge} = \underset{(A,\,B)}{\arg\max}\; \text{freq}(AB)
 \end{equation}\]</div>
 <p>GPT-2 applies BPE at the <strong>byte level</strong>: the initial vocabulary consists of all 256 possible byte values, so any Unicode string can be encoded without ever emitting <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code>. Word boundaries are marked with a space prefix shown as <code class="docutils literal notranslate"><span class="pre">Ġ</span></code>.</p>
@@ -413,8 +413,8 @@
 <section id="sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small">
 <h3><span class="section-number">4.4.4.3. </span>SentencePiece with Unigram LM (Flan-T5 — <code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)<a class="headerlink" href="#sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small" title="Link to this heading">#</a></h3>
 <p>SentencePiece trains a <strong>unigram language model</strong> directly on raw text without any whitespace pre-tokenisation. It starts with a large candidate vocabulary and prunes it by repeatedly removing the token whose removal causes the smallest drop in corpus log-likelihood:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1bd7b531-36c4-4940-ac39-ff083f450641">
-<span class="eqno">(4.9)<a class="headerlink" href="#equation-1bd7b531-36c4-4940-ac39-ff083f450641" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-85afdf61-fe9d-4a6b-9eb0-039be5e33eb7">
+<span class="eqno">(4.9)<a class="headerlink" href="#equation-85afdf61-fe9d-4a6b-9eb0-039be5e33eb7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathcal{L}(\mathcal{V}) = \sum_{x \in \mathcal{D}} \log P(x \mid \mathcal{V}), \qquad P(x \mid \mathcal{V}) = \max_{\mathbf{s} \in S(x)} \prod_{i} p(s_i)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S(x)\)</span> is the set of all possible segmentations of sentence <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p(s_i)\)</span> is the unigram probability of subword <span class="math notranslate nohighlight">\(s_i\)</span>. Word-starting subwords are prefixed with <code class="docutils literal notranslate"><span class="pre">▁</span></code>.</p>
@@ -589,8 +589,8 @@ Decoded: [CLS] the university of missouri was founded in 1839. [SEP]
 <div class="note admonition">
 <p class="admonition-title">Key Term — Fertility</p>
 <p><strong>Fertility</strong> (also called <em>token fertility</em>) measures how many tokens a tokenizer produces per word on a given text:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-86e33c52-3119-4980-baba-c8ecf8769d2a">
-<span class="eqno">(4.10)<a class="headerlink" href="#equation-86e33c52-3119-4980-baba-c8ecf8769d2a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a59948d3-3ef0-4440-909b-9db3cff32721">
+<span class="eqno">(4.10)<a class="headerlink" href="#equation-a59948d3-3ef0-4440-909b-9db3cff32721" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{fertility} = \frac{\text{number of tokens}}{\text{number of whitespace-delimited words}}
 \end{equation}\]</div>
 <p>A fertility of 1.0 means every word maps to exactly one token — ideal but rare. Values above 1.5 on standard English text usually signal either a mismatch between the tokenizer’s training domain and the input, or the presence of rare vocabulary (proper nouns, code, non-Latin scripts). Higher fertility means more tokens, which fills the context window faster and increases API cost.</p>
