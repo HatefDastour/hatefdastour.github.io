@@ -4,7 +4,7 @@ excerpt: "This field examines the effects of climate change on the hydrological 
 collection: research
 ---
 
-<img src='/images/hydrological_climate_effects.jpg'>
+<!-- <img src='/images/hydrological_climate_effects.jpg'> -->
 
 <p style='text-align: justify;'>
 Hydrology, the study of water movement and distribution, is significantly affected by climate change. Changes in precipitation patterns, temperature, and extreme weather events alter the hydrological cycle, impacting water availability and quality. Monitoring and understanding these changes are vital for managing water resources sustainably and mitigating the risks of floods and droughts.

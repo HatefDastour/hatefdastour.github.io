@@ -4,7 +4,7 @@ excerpt: "Studies focusing on the interactions between climate patterns and vege
 collection: research
 ---
 
-<img src='/images/climate_vegetation_dynamics.jpg'>
+<!-- <img src='/images/climate_vegetation_dynamics.jpg'> -->
 
 <p style='text-align: justify;'>
 Climate and vegetation are intricately linked, with climate influencing vegetation distribution and health, and vegetation affecting climate patterns through processes like transpiration and carbon sequestration. Recent studies have highlighted the importance of considering both the characteristics of climate and its geographic attributes to understand global biodiversity patterns. Changes in vegetation activity due to climate trends have been observed globally, with ecosystems responding differently based on their location and climate conditions.

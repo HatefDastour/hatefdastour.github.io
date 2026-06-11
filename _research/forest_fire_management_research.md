@@ -4,7 +4,7 @@ excerpt: "Exploring innovative fire management techniques and remote sensing to 
 collection: research
 ---
 
-<img src='/images/forest_fire_management_research.jpg'>
+<!-- <img src='/images/forest_fire_management_research.jpg'> -->
 
 <p style='text-align: justify;'>
 Our research focuses on innovative techniques in fire management and remote sensing. We explore active fire clustering and spatiotemporal dynamics to improve forest fire management. Additionally, we compare various perimeter delineation methods for remote sensing fire spot data, aiming to enhance near-real-time applications. These studies contribute to more effective and timely wildfire responses.

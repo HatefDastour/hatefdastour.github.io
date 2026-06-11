@@ -4,7 +4,7 @@ excerpt: "This area involves the development and application of numerical method
 collection: research
 ---
 
-<img src='/images/numerical_computational_analysis.jpg'>
+<!-- <img src='/images/numerical_computational_analysis.jpg'> -->
 
 <p style='text-align: justify;'>
 Numerical analysis and computational mathematics involve developing and analyzing computer methods to solve mathematical problems arising in scientific areas. This field combines numerical analysis, symbolic computations, and computer graphics to simplify setting up, solving, and interpreting complex mathematical models of the real world.

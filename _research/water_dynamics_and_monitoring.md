@@ -4,7 +4,7 @@ excerpt: "Research here focuses on the observation and analysis of water bodiesâ
 collection: research
 ---
 
-<img src='/images/water_dynamics_and_monitoring.jpg'>
+<!-- <img src='/images/water_dynamics_and_monitoring.jpg'> -->
 
 <p style='text-align: justify;'>
 Monitoring inland water dynamics is increasingly important due to global change. Remote sensing offers various methods to delineate surface water using optical and microwave sensors. This is essential for devising effective water management strategies, assessing the impact of human actions on water security, and understanding the interplay between surface water dynamics and climate change.
