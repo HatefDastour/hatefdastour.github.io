@@ -26,7 +26,7 @@ author_profile: true
 <!-- \[IF: 2.7; IF Quartile: Q1\] -->
 
 
-1. **Dastour, H.** and Hassan, Q.K., 2024. [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://rdcu.be/dBtBI){:target="_blank"}. *Earth Systems and Environment*, 8, pp.165–180.
+1. **Dastour, H.** and Hassan, Q.K., 2024. [Quantifying the Influence of Climate Variables on Vegetation Through Remote Sensing and Multi-dimensional Data Analysis](https://link.springer.com/article/10.1007/s41748-024-00384-2){:target="_blank"}. *Earth Systems and Environment*, 8, pp.165–180.
 <!-- \[IF: 4.7; IF Quartile: Q1\] -->
 
 1. **Dastour, H.** , Ahmed, M.R. and Hassan, Q.K., 2024. [Analysis of Forest Fire Patterns and Their Relationship with Climate Variables in Alberta's Natural Subregions](https://doi.org/10.1016/j.ecoinf.2024.102531){:target="_blank"}. *Ecological Informatics*, 80, p.102531.

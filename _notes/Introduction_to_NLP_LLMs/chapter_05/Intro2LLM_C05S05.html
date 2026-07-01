@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3.5. Recent Improvements to the Transformer Architecture &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S05';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. References" href="../References.html" />
+    <link rel="prev" title="5.3.4. Text Classification with Leveraging Embeddings" href="Intro2LLM_C05S04.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S04.html">5.3.4. Text Classification with Leveraging Embeddings</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Recent Improvements to the Transformer Architecture</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.5.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-architecture-has-evolved">5.3.5.2. Why Architecture Has Evolved</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-1-pre-norm-with-rmsnorm">5.3.5.3. Improvement 1: Pre-Norm with RMSNorm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-original-post-norm">5.3.5.3.1. The Original: Post-Norm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solution-pre-norm">5.3.5.3.2. The Solution: Pre-Norm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsnorm-instead-of-layernorm">5.3.5.3.3. RMSNorm Instead of LayerNorm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-2-swiglu-activation">5.3.5.4. Improvement 2: SwiGLU Activation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#original-ffn-relu">5.3.5.4.1. Original FFN: ReLU</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swiglu-gated-feed-forward">5.3.5.4.2. SwiGLU: Gated Feed-Forward</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-3-rotary-position-encoding-rope">5.3.5.5. Improvement 3: Rotary Position Encoding (RoPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-progression">5.3.5.5.1. Historical Progression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-4-weight-tying">5.3.5.6. Improvement 4: Weight Tying</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-5-grouped-query-attention-gqa">5.3.5.7. Improvement 5: Grouped-Query Attention (GQA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-problem-with-multi-head-attention">5.3.5.7.1. The Memory Problem with Multi-Head Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-query-attention">5.3.5.7.2. Grouped-Query Attention</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-6-flash-attention">5.3.5.8. Improvement 6: Flash Attention</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-with-standard-attention">5.3.5.8.1. The Problem with Standard Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention-tiling">5.3.5.8.2. Flash Attention: Tiling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-modern-vs-original-transformer">5.3.5.9. Summary: Modern vs. Original Transformer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.5.10. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="recent-improvements-to-the-transformer-architecture">
+<h1><span class="section-number">5.3.5. </span>Recent Improvements to the Transformer Architecture<a class="headerlink" href="#recent-improvements-to-the-transformer-architecture" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">5.3.5.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Describe six architectural improvements in modern LLMs relative to the original 2017 transformer: pre-norm with RMSNorm, SwiGLU activation, Rotary Position Encoding (RoPE), weight tying, grouped-query attention, and flash attention.</p></li>
+<li><p>Explain the specific problem each innovation was designed to solve.</p></li>
+<li><p>Identify which innovations are present in Phi-3-Mini from its architecture printout.</p></li>
+<li><p>Describe what flash attention is and why it is important for long-context inference.</p></li>
+<li><p>Connect architectural choices to observable differences in model behavior (training stability, context length, generation speed).</p></li>
+</ul>
+</section>
+<section id="why-architecture-has-evolved">
+<h2><span class="section-number">5.3.5.2. </span>Why Architecture Has Evolved<a class="headerlink" href="#why-architecture-has-evolved" title="Link to this heading">#</a></h2>
+<p>The original transformer architecture (Vaswani et al., 2017) established the foundational design: multi-head self-attention, position-wise feed-forward networks, residual connections, and layer normalization. The models introduced in Chapter 4 and used throughout this chapter are not that original design — they incorporate a series of targeted improvements, each solving a specific problem identified through years of large-scale training experiments.</p>
+<p>Understanding these improvements has practical value:</p>
+<ul class="simple">
+<li><p>Knowing why pre-norm was adopted explains why modern LLMs train more stably than early transformers.</p></li>
+<li><p>Knowing how RoPE works explains why some models handle longer contexts than they were trained on.</p></li>
+<li><p>Knowing what grouped-query attention does explains why 70B models can be served efficiently on fewer GPUs.</p></li>
+</ul>
+</section>
+<section id="improvement-1-pre-norm-with-rmsnorm">
+<h2><span class="section-number">5.3.5.3. </span>Improvement 1: Pre-Norm with RMSNorm<a class="headerlink" href="#improvement-1-pre-norm-with-rmsnorm" title="Link to this heading">#</a></h2>
+<section id="the-original-post-norm">
+<h3><span class="section-number">5.3.5.3.1. </span>The Original: Post-Norm<a class="headerlink" href="#the-original-post-norm" title="Link to this heading">#</a></h3>
+<p>The original transformer applied layer normalization <strong>after</strong> the residual addition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Post-norm (original):
+  x → sublayer(x) → x + sublayer(x) → LayerNorm(x + sublayer(x))
+</pre></div>
+</div>
+<p>Post-norm can produce very large or very small gradient magnitudes at the beginning of training, especially in deep networks. This instability required careful learning rate warmup schedules and sometimes caused training to diverge entirely.</p>
+</section>
+<section id="the-solution-pre-norm">
+<h3><span class="section-number">5.3.5.3.2. </span>The Solution: Pre-Norm<a class="headerlink" href="#the-solution-pre-norm" title="Link to this heading">#</a></h3>
+<p>Modern LLMs (LLaMA, Mistral, Phi-3, Gemma) apply normalization <strong>before</strong> each sublayer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Pre-norm (modern):
+  x → LayerNorm(x) → sublayer(LayerNorm(x)) → x + sublayer(LayerNorm(x))
+</pre></div>
+</div>
+<p>Pre-norm ensures that each sublayer receives normalized input regardless of the scale of the residual stream. This dramatically improves training stability at large scale and allows higher learning rates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Phi-3-Mini:</span>
+<span class="c1"># input_layernorm applied BEFORE self-attention</span>
+<span class="c1"># post_attention_layernorm applied BEFORE MLP</span>
+
+<span class="n">x_norm</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">input_layernorm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>          <span class="c1"># normalize first</span>
+<span class="n">attn_out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">self_attn</span><span class="p">(</span><span class="n">x_norm</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="c1"># then attend</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">attn_out</span>                           <span class="c1"># residual</span>
+
+<span class="n">x_norm2</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">post_attention_layernorm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># normalize again</span>
+<span class="n">mlp_out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">x_norm2</span><span class="p">)</span>              <span class="c1"># then MLP</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">mlp_out</span>                            <span class="c1"># residual</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># In Phi-3-Mini:</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># input_layernorm applied BEFORE self-attention</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># post_attention_layernorm applied BEFORE MLP</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">x_norm</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">input_layernorm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>          <span class="c1"># normalize first</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">attn_out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">self_attn</span><span class="p">(</span><span class="n">x_norm</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="c1"># then attend</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">attn_out</span>                           <span class="c1"># residual</span>
+
+<span class="ne">NameError</span>: name &#39;layer&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rmsnorm-instead-of-layernorm">
+<h3><span class="section-number">5.3.5.3.3. </span>RMSNorm Instead of LayerNorm<a class="headerlink" href="#rmsnorm-instead-of-layernorm" title="Link to this heading">#</a></h3>
+<p>Layer normalization normalizes by computing both the mean and variance across features. <strong>Root Mean Square Normalization (RMSNorm)</strong> normalizes by the root mean square only, omitting the mean subtraction.</p>
+<div class="tip admonition">
+<p class="admonition-title">Key Formulas — LayerNorm vs. RMSNorm</p>
+<p><strong>Layer Normalization</strong> (original transformer):</p>
+<div class="math notranslate nohighlight">
+\[\text{LayerNorm}(x) = \frac{x - \mu}{\sigma + \epsilon} \cdot \gamma + \beta\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu = \frac{1}{d}\sum_i x_i\)</span> is the mean, <span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation, <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are learned scale and shift parameters, and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant for numerical stability.</p>
+<p><strong>Root Mean Square Normalization</strong> (modern LLMs):</p>
+<div class="math notranslate nohighlight">
+\[\text{RMSNorm}(x) = \frac{x}{\text{RMS}(x) + \epsilon} \cdot \gamma \qquad \text{where} \quad \text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}\]</div>
+<p>RMSNorm drops the mean subtraction (<span class="math notranslate nohighlight">\(\mu\)</span>) and the bias (<span class="math notranslate nohighlight">\(\beta\)</span>), reducing the computation to a single statistic. Note that <span class="math notranslate nohighlight">\(\gamma\)</span> is still a learned per-feature scale.</p>
+</div>
+<p>RMSNorm is slightly faster (one statistic instead of two) and has been found to match LayerNorm quality on large language modeling tasks. It is used in LLaMA, Mistral, Phi-3, Qwen, and most post-2022 open-source LLMs.</p>
+</section>
+</section>
+<section id="improvement-2-swiglu-activation">
+<h2><span class="section-number">5.3.5.4. </span>Improvement 2: SwiGLU Activation<a class="headerlink" href="#improvement-2-swiglu-activation" title="Link to this heading">#</a></h2>
+<section id="original-ffn-relu">
+<h3><span class="section-number">5.3.5.4.1. </span>Original FFN: ReLU<a class="headerlink" href="#original-ffn-relu" title="Link to this heading">#</a></h3>
+<p>The original transformer feed-forward network (FFN) applied:</p>
+<div class="math notranslate nohighlight">
+\[\text{FFN}(x) = \max(0, x W_1 + b_1) W_2 + b_2\]</div>
+<p>ReLU sets all negative values to zero, discarding approximately half of the network’s capacity on any given input. GELU (Gaussian Error Linear Unit), used in BERT and GPT-2, introduced a smooth approximation that partially addresses this.</p>
+</section>
+<section id="swiglu-gated-feed-forward">
+<h3><span class="section-number">5.3.5.4.2. </span>SwiGLU: Gated Feed-Forward<a class="headerlink" href="#swiglu-gated-feed-forward" title="Link to this heading">#</a></h3>
+<div class="tip admonition">
+<p class="admonition-title">Key Formula — SwiGLU</p>
+<p><strong>SwiGLU</strong> (Swish-Gated Linear Unit) replaces the single non-linearity with a learned gating mechanism:</p>
+<div class="math notranslate nohighlight">
+\[\text{SwiGLU}(x) = \text{SiLU}(x W_{\text{gate}}) \odot (x W_{\text{up}}) \cdot W_{\text{down}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{SiLU}(x) = x \cdot \sigma(x)\)</span> (Sigmoid Linear Unit, also called Swish), and <span class="math notranslate nohighlight">\(\odot\)</span> is element-wise multiplication. The network learns <strong>three</strong> projection matrices (<span class="math notranslate nohighlight">\(W_{\text{gate}}\)</span>, <span class="math notranslate nohighlight">\(W_{\text{up}}\)</span>, <span class="math notranslate nohighlight">\(W_{\text{down}}\)</span>) instead of two.</p>
+</div>
+<p>In Phi-3-Mini, the SwiGLU layers look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gate_up_proj: Linear(3072 → 16384)</span>
+<span class="c1"># Splits output into gate (8192) and up (8192)</span>
+
+<span class="n">gate_up</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">mlp</span><span class="o">.</span><span class="n">gate_up_proj</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># → (batch, seq_len, 16384)</span>
+<span class="n">gate</span><span class="p">,</span> <span class="n">up</span> <span class="o">=</span> <span class="n">gate_up</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">8192</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>         <span class="c1"># split in half</span>
+
+<span class="c1"># SwiGLU: apply SiLU to gate, multiply by up</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">gate</span><span class="p">)</span> <span class="o">*</span> <span class="n">up</span>                    <span class="c1"># → (batch, seq_len, 8192)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">mlp</span><span class="o">.</span><span class="n">down_proj</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>          <span class="c1"># → (batch, seq_len, 3072)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># gate_up_proj: Linear(3072 → 16384)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Splits output into gate (8192) and up (8192)</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">gate_up</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">mlp</span><span class="o">.</span><span class="n">gate_up_proj</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># → (batch, seq_len, 16384)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">gate</span><span class="p">,</span> <span class="n">up</span> <span class="o">=</span> <span class="n">gate_up</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">8192</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>         <span class="c1"># split in half</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># SwiGLU: apply SiLU to gate, multiply by up</span>
+
+<span class="ne">NameError</span>: name &#39;layer&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The gate <span class="math notranslate nohighlight">\(\text{SiLU}(x W_{\text{gate}})\)</span> learns to selectively suppress or amplify the information in the up-projection <span class="math notranslate nohighlight">\(x W_{\text{up}}\)</span>. This gating allows the MLP to learn richer, more conditional functions than a pure element-wise activation, consistently outperforming ReLU and GELU on language modeling tasks.</p>
+<p><strong>Why the intermediate dimension is 16384 (not 2 × 3072 = 6144):</strong> SwiGLU uses the intermediate dimension for two projections (gate + up), so the effective computation width is 8192. To keep the parameter count comparable to a standard FFN with 4× expansion, the joint projection is set to 2 × 8192 = 16384.</p>
+</section>
+</section>
+<section id="improvement-3-rotary-position-encoding-rope">
+<h2><span class="section-number">5.3.5.5. </span>Improvement 3: Rotary Position Encoding (RoPE)<a class="headerlink" href="#improvement-3-rotary-position-encoding-rope" title="Link to this heading">#</a></h2>
+<p>Position encoding was covered in detail in Section 2, but here we situate it in the broader history of positional encoding approaches:</p>
+<section id="historical-progression">
+<h3><span class="section-number">5.3.5.5.1. </span>Historical Progression<a class="headerlink" href="#historical-progression" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Year</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Key property</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2017 (original transformer)</p></td>
+<td><p>Sinusoidal absolute PE</p></td>
+<td><p>Fixed; does not generalize beyond training length</p></td>
+</tr>
+<tr class="row-odd"><td><p>2018 (BERT)</p></td>
+<td><p>Learned absolute PE</p></td>
+<td><p>Flexible during training; fixed at inference</p></td>
+</tr>
+<tr class="row-even"><td><p>2021 (RoPE, Su et al.)</p></td>
+<td><p>Rotation in Q/K space</p></td>
+<td><p>Relative positions; generalizes to longer sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p>2022+ (YaRN, LongRoPE)</p></td>
+<td><p>Extended RoPE variants</p></td>
+<td><p>Extends context to 128K+ tokens</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Key Formula — Rotary Position Encoding (RoPE)</p>
+<p>RoPE encodes positional information by rotating query and key vectors before computing attention. For token at position <span class="math notranslate nohighlight">\(m\)</span>, the rotation matrix <span class="math notranslate nohighlight">\(R_m\)</span> rotates each 2D sub-block of the query or key vector by angle <span class="math notranslate nohighlight">\(m \theta_i\)</span>, where <span class="math notranslate nohighlight">\(\theta_i = 10000^{-2i/d_k}\)</span> for dimension index <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The attended output is computed as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{(R_m Q)(R_n K)^T}{\sqrt{d_k}}\right) V\]</div>
+<p>The key property: the dot product <span class="math notranslate nohighlight">\((R_m Q) \cdot (R_n K)\)</span> depends only on the <strong>relative offset</strong> <span class="math notranslate nohighlight">\(m - n\)</span>, not on absolute positions <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> individually. This is what enables length generalization.</p>
+</div>
+<p>This relative encoding generalizes: a model trained on sequences up to 4,096 tokens can be extended to handle 8,192 or 32,768 tokens through RoPE scaling without any retraining.</p>
+</section>
+</section>
+<section id="improvement-4-weight-tying">
+<h2><span class="section-number">5.3.5.6. </span>Improvement 4: Weight Tying<a class="headerlink" href="#improvement-4-weight-tying" title="Link to this heading">#</a></h2>
+<p><strong>Weight tying</strong> shares the same parameter matrix between the embedding lookup table and the LM head projection. Instead of maintaining two independent matrices, the model reuses one:</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — Weight Tying</p>
+<p>In a standard language model, the <strong>embedding matrix</strong> <span class="math notranslate nohighlight">\(E \in \mathbb{R}^{V \times d}\)</span> maps token IDs to <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors, while the <strong>LM head</strong> <span class="math notranslate nohighlight">\(W_{\text{head}} \in \mathbb{R}^{d \times V}\)</span> maps the final hidden state back to vocabulary logits. Weight tying sets <span class="math notranslate nohighlight">\(W_{\text{head}} = E^T\)</span>, so both layers share the same <span class="math notranslate nohighlight">\(V \times d\)</span> parameter matrix.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Phi-3-Mini:</span>
+<span class="c1"># model.model.embed_tokens.weight  shared with  model.lm_head.weight</span>
+
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">embed_tokens</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span> <span class="o">==</span> <span class="n">model</span><span class="o">.</span><span class="n">lm_head</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span>
+<span class="c1"># True — same underlying tensor</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The mathematical justification:</p>
+<ul class="simple">
+<li><p>Input embedding: maps token ID → 3,072-dim vector representing the token’s meaning.</p></li>
+<li><p>LM head: maps 3,072-dim hidden state → score for each token (how probable is this token next?).</p></li>
+<li><p>If the hidden state has learned to resemble the embedding of “Tokyo,” then the dot product with the “Tokyo” embedding row should be high — exactly the behavior we want.</p></li>
+</ul>
+<p>Weight tying saves 98.5M parameters (32,064 × 3,072) with no measurable loss in quality. It is used in GPT-2, LLaMA, Phi-3, and most modern LLMs.</p>
+</section>
+<section id="improvement-5-grouped-query-attention-gqa">
+<h2><span class="section-number">5.3.5.7. </span>Improvement 5: Grouped-Query Attention (GQA)<a class="headerlink" href="#improvement-5-grouped-query-attention-gqa" title="Link to this heading">#</a></h2>
+<section id="the-memory-problem-with-multi-head-attention">
+<h3><span class="section-number">5.3.5.7.1. </span>The Memory Problem with Multi-Head Attention<a class="headerlink" href="#the-memory-problem-with-multi-head-attention" title="Link to this heading">#</a></h3>
+<p>In standard multi-head attention (MHA), every head has its own unique K and V projection matrices. For a 70B-parameter model with 64 attention heads and 8,192-dim hidden state, the KV cache for a single long sequence can consume tens of gigabytes of GPU memory.</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — KV Cache</p>
+<p>During autoregressive generation, the model computes key (<span class="math notranslate nohighlight">\(K\)</span>) and value (<span class="math notranslate nohighlight">\(V\)</span>) tensors for every previously generated token. These are stored in the <strong>KV cache</strong> so they do not need to be recomputed at each new step. KV cache size scales as:</p>
+<div class="math notranslate nohighlight">
+\[\text{KV cache size} = 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_{\text{head}} \times n_{\text{tokens}} \times \text{bytes per value}\]</div>
+<p>where the factor of 2 accounts for both K and V tensors.</p>
+</div>
+</section>
+<section id="grouped-query-attention">
+<h3><span class="section-number">5.3.5.7.2. </span>Grouped-Query Attention<a class="headerlink" href="#grouped-query-attention" title="Link to this heading">#</a></h3>
+<p><strong>Grouped-Query Attention (GQA)</strong> reduces memory by sharing K and V projections across groups of query heads while keeping separate Q projections:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Multi-Head Attention (MHA):
+  32 query heads, 32 key heads, 32 value heads
+  → 32 independent K and V projections → large KV cache
+
+Multi-Query Attention (MQA):
+  32 query heads, 1 key head, 1 value head
+  → 1 K and V shared by all queries → 32× smaller KV cache
+  → Quality degradation on some tasks
+
+Grouped-Query Attention (GQA):
+  32 query heads, 8 key/value groups (4 queries share each K/V)
+  → 4× smaller KV cache vs. MHA, with minimal quality loss
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GQA with 4 groups of 8 queries:
+
+  Q₁ Q₂ Q₃ Q₄ Q₅ Q₆ Q₇ Q₈  → attend using K₁, V₁
+  Q₉ ... Q₁₆                → attend using K₂, V₂
+  ...
+  Q₂₅ ... Q₃₂               → attend using K₄, V₄
+</pre></div>
+</div>
+<p>GQA is used in LLaMA-3, Mistral, Qwen2, and Phi-3.5. For Phi-3-Mini specifically, the <code class="docutils literal notranslate"><span class="pre">qkv_proj</span></code> projects to 9,216 = 3 × 3,072 dimensions (MHA with 32 heads), but Phi-3.5 and larger Phi-3 variants use GQA.</p>
+</section>
+</section>
+<section id="improvement-6-flash-attention">
+<h2><span class="section-number">5.3.5.8. </span>Improvement 6: Flash Attention<a class="headerlink" href="#improvement-6-flash-attention" title="Link to this heading">#</a></h2>
+<p>Flash attention is not an architectural change to the model — it is an <strong>algorithmic optimization</strong> for computing attention that is mathematically identical but dramatically faster and more memory-efficient on GPU hardware.</p>
+<section id="the-problem-with-standard-attention">
+<h3><span class="section-number">5.3.5.8.1. </span>The Problem with Standard Attention<a class="headerlink" href="#the-problem-with-standard-attention" title="Link to this heading">#</a></h3>
+<p>Standard attention materializes the full <span class="math notranslate nohighlight">\(n \times n\)</span> attention weight matrix in GPU memory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Standard attention memory: O(n²)
+  For n = 4,096 tokens: 4096² = 16.7M elements × 4 bytes = 67 MB
+  For n = 32,768 tokens: 32768² = 1.07B elements × 4 bytes = 4.3 GB (!)
+</pre></div>
+</div>
+<p>For long contexts, this memory requirement becomes prohibitive.</p>
+</section>
+<section id="flash-attention-tiling">
+<h3><span class="section-number">5.3.5.8.2. </span>Flash Attention: Tiling<a class="headerlink" href="#flash-attention-tiling" title="Link to this heading">#</a></h3>
+<div class="tip admonition">
+<p class="admonition-title">Key Idea — Flash Attention (Dao et al., 2022)</p>
+<p>Flash Attention avoids materializing the full <span class="math notranslate nohighlight">\(n \times n\)</span> attention matrix by processing tiles of <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, <span class="math notranslate nohighlight">\(V\)</span> that fit in the GPU’s fast on-chip <strong>SRAM</strong> (~256 KB on an A100), accumulating the softmax and output incrementally using the online softmax trick:</p>
+<div class="math notranslate nohighlight">
+\[m_i = \max_j s_{ij}, \qquad \ell_i = \sum_j e^{s_{ij} - m_i}, \qquad o_i = \frac{1}{\ell_i} \sum_j e^{s_{ij} - m_i} V_j\]</div>
+<p>where <span class="math notranslate nohighlight">\(s_{ij} = Q_i K_j^T / \sqrt{d_k}\)</span>. These accumulators are updated tile by tile without writing the full matrix to the slower HBM (high-bandwidth memory).</p>
+<p><strong>Memory:</strong> <span class="math notranslate nohighlight">\(O(n)\)</span> instead of <span class="math notranslate nohighlight">\(O(n^2)\)</span> — the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix is never stored.<br />
+<strong>Speed:</strong> 2–4× faster wall-clock on A100 GPU for long sequences.</p>
+</div>
+<p>Flash attention enables training and inference on much longer contexts than would otherwise be feasible. LLaMA-3 (128K context), Phi-3.5 (128K context), and Gemini (1M+ context) all depend on flash attention to operate at these context lengths.</p>
+</section>
+</section>
+<section id="summary-modern-vs-original-transformer">
+<h2><span class="section-number">5.3.5.9. </span>Summary: Modern vs. Original Transformer<a class="headerlink" href="#summary-modern-vs-original-transformer" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Original (2017)</p></th>
+<th class="head"><p>Modern LLMs (2022+)</p></th>
+<th class="head"><p>Reason for change</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Normalization position</p></td>
+<td><p>Post-norm</p></td>
+<td><p>Pre-norm</p></td>
+<td><p>Training stability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Normalization type</p></td>
+<td><p>LayerNorm</p></td>
+<td><p>RMSNorm</p></td>
+<td><p>Speed; no quality loss</p></td>
+</tr>
+<tr class="row-even"><td><p>Activation</p></td>
+<td><p>ReLU / GELU</p></td>
+<td><p>SwiGLU</p></td>
+<td><p>Better language modeling</p></td>
+</tr>
+<tr class="row-odd"><td><p>Position encoding</p></td>
+<td><p>Sinusoidal / Learned absolute</p></td>
+<td><p>RoPE</p></td>
+<td><p>Length generalization</p></td>
+</tr>
+<tr class="row-even"><td><p>Embedding/head weights</p></td>
+<td><p>Independent</p></td>
+<td><p>Tied</p></td>
+<td><p>Saves 98.5M params</p></td>
+</tr>
+<tr class="row-odd"><td><p>Attention structure</p></td>
+<td><p>MHA (all unique K, V)</p></td>
+<td><p>GQA</p></td>
+<td><p>KV cache memory</p></td>
+</tr>
+<tr class="row-even"><td><p>Attention computation</p></td>
+<td><p>Standard O(n²)</p></td>
+<td><p>Flash attention O(n)</p></td>
+<td><p>Long context feasibility</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These improvements are not independent — they interact. Pre-norm and RMSNorm together enable stable training of very deep models. RoPE and flash attention together enable very long context windows. SwiGLU and weight tying together improve parameter efficiency. Modern LLMs are the result of several years of these targeted, empirically validated improvements compounding on each other.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">5.3.5.10. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Architecture archaeology</strong><br />
+Load <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code> (2018) and <code class="docutils literal notranslate"><span class="pre">microsoft/Phi-3-mini-4k-instruct</span></code> (2024) and compare their module hierarchies using <code class="docutils literal notranslate"><span class="pre">print(model)</span></code>. For each of the six improvements discussed in this section, determine which model uses the original approach and which uses the improved version.</p></li>
+<li><p><strong>RMSNorm vs. LayerNorm</strong><br />
+Compute the mean, variance, and RMS of a sample hidden state vector. Verify that LayerNorm and RMSNorm produce different normalized outputs. For which type of vector (large mean, small mean, uniform values) does the mean subtraction in LayerNorm matter most?</p></li>
+<li><p><strong>GQA memory calculation</strong><br />
+A LLaMA-3.1-8B model has 32 layers, 32 query heads, and 8 key/value heads (GQA). The hidden dimension is 4,096. For a context of 8,192 tokens in bfloat16 (2 bytes per value), calculate the KV cache size using the formula in the KV Cache definition box. Compare this to what it would be with MHA (32 K/V heads). By how much does GQA reduce the KV cache?</p></li>
+<li><p><strong>Flash attention tile size</strong><br />
+An A100 GPU has ~40 MB of L2 cache and ~256 KB of on-chip SRAM per streaming multiprocessor. A single tile processes a block of <span class="math notranslate nohighlight">\(B_r\)</span> query rows and <span class="math notranslate nohighlight">\(B_c\)</span> key/value columns. If each value is stored in bfloat16 (2 bytes) and the head dimension <span class="math notranslate nohighlight">\(d_k = 128\)</span>, what is the maximum <span class="math notranslate nohighlight">\(B_r = B_c\)</span> that fits in 256 KB?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C05S04.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3.4. </span>Text Classification with Leveraging Embeddings</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../References.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.5.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-architecture-has-evolved">5.3.5.2. Why Architecture Has Evolved</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-1-pre-norm-with-rmsnorm">5.3.5.3. Improvement 1: Pre-Norm with RMSNorm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-original-post-norm">5.3.5.3.1. The Original: Post-Norm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solution-pre-norm">5.3.5.3.2. The Solution: Pre-Norm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsnorm-instead-of-layernorm">5.3.5.3.3. RMSNorm Instead of LayerNorm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-2-swiglu-activation">5.3.5.4. Improvement 2: SwiGLU Activation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#original-ffn-relu">5.3.5.4.1. Original FFN: ReLU</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swiglu-gated-feed-forward">5.3.5.4.2. SwiGLU: Gated Feed-Forward</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-3-rotary-position-encoding-rope">5.3.5.5. Improvement 3: Rotary Position Encoding (RoPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-progression">5.3.5.5.1. Historical Progression</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-4-weight-tying">5.3.5.6. Improvement 4: Weight Tying</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-5-grouped-query-attention-gqa">5.3.5.7. Improvement 5: Grouped-Query Attention (GQA)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-memory-problem-with-multi-head-attention">5.3.5.7.1. The Memory Problem with Multi-Head Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-query-attention">5.3.5.7.2. Grouped-Query Attention</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improvement-6-flash-attention">5.3.5.8. Improvement 6: Flash Attention</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-with-standard-attention">5.3.5.8.1. The Problem with Standard Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention-tiling">5.3.5.8.2. Flash Attention: Tiling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-modern-vs-original-transformer">5.3.5.9. Summary: Modern vs. Original Transformer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.5.10. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

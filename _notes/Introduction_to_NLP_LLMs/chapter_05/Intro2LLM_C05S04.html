@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3.4. Text Classification with Leveraging Embeddings &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.3.5. Recent Improvements to the Transformer Architecture" href="Intro2LLM_C05S05.html" />
+    <link rel="prev" title="5.3.3. Text Classification" href="Intro2LLM_C05S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.4. Text Classification with Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Text Classification with Leveraging Embeddings</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#six-approaches-to-text-classification">5.3.4.2. Six Approaches to Text Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-1-pre-trained-sentiment-classifier-roberta">5.3.4.3. Approach 1: Pre-Trained Sentiment Classifier (RoBERTa)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-2-sentence-embeddings-logistic-regression">5.3.4.4. Approach 2: Sentence Embeddings + Logistic Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-text-classification-and-semantic-embeddings">5.3.4.5. Background: Text Classification and Semantic Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-a-good-text-representation">5.3.4.5.1. What Makes a Good Text Representation?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity">5.3.4.5.2. Cosine Similarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.3.4.6. Approach 2: Sentence Embeddings + Logistic Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-3-prototype-centroid-classification">5.3.4.7. Approach 3: Prototype / Centroid Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-4-zero-shot-embedding-classification">5.3.4.8. Approach 4: Zero-Shot Embedding Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-5-generative-classification-flan-t5">5.3.4.9. Approach 5: Generative Classification (Flan-T5)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-6-chatgpt-api-classification">5.3.4.10. Approach 6: ChatGPT API Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-comparison">5.3.4.11. Full Comparison</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#six-approach-comparison-full-perspective">5.3.4.11.1. Six-Approach Comparison — Full Perspective</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-each">5.3.4.11.2. When to Use Each</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">5.3.4.12. Error Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-hard-examples">5.3.4.12.1. Common Hard Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-error-patterns-across-approaches">5.3.4.12.2. Comparing Error Patterns Across Approaches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.4.13. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">5.3.4.14. Summary</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="text-classification-with-leveraging-embeddings">
+<h1><span class="section-number">5.3.4. </span>Text Classification with Leveraging Embeddings<a class="headerlink" href="#text-classification-with-leveraging-embeddings" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">5.3.4.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Apply a pre-trained classifier (RoBERTa fine-tuned for sentiment) to a new dataset without additional training.</p></li>
+<li><p>Generate sentence embeddings using Sentence Transformers and explain what makes them suitable for classification.</p></li>
+<li><p>Train a Logistic Regression classifier on top of sentence embeddings and explain why this two-stage approach is efficient.</p></li>
+<li><p>Implement prototype-based (centroid) classification using cosine similarity and explain why it works geometrically.</p></li>
+<li><p>Implement zero-shot embedding classification by encoding natural-language class descriptions and comparing them to document embeddings.</p></li>
+<li><p>Use a generative model (Flan-T5) for text classification via prompted text generation.</p></li>
+<li><p>Compare all six approaches on accuracy, data requirements, compute cost, and latency.</p></li>
+</ul>
+</section>
+<section id="six-approaches-to-text-classification">
+<h2><span class="section-number">5.3.4.2. </span>Six Approaches to Text Classification<a class="headerlink" href="#six-approaches-to-text-classification" title="Link to this heading">#</a></h2>
+<p>This section demonstrates that the text classification problem can be solved from six fundamentally different angles, each with different assumptions about what resources are available:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Labeled data needed?</p></th>
+<th class="head"><p>Training required?</p></th>
+<th class="head"><p>Compute</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1. Pre-trained classifier</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>2. Embeddings + Logistic Regression</p></td>
+<td><p>Training set</p></td>
+<td><p>Seconds</p></td>
+<td><p>GPU/CPU</p></td>
+</tr>
+<tr class="row-even"><td><p>3. Prototype / Centroid</p></td>
+<td><p>Training set</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>4. Zero-shot embedding</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+</tr>
+<tr class="row-even"><td><p>5. Generative (Flan-T5)</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>6. ChatGPT API</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>API</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Understanding this diversity is practically valuable: the “right” approach depends on how much labeled data is available, what compute resources exist, what accuracy is required, and whether data privacy is a concern.</p>
+</section>
+<section id="approach-1-pre-trained-sentiment-classifier-roberta">
+<h2><span class="section-number">5.3.4.3. </span>Approach 1: Pre-Trained Sentiment Classifier (RoBERTa)<a class="headerlink" href="#approach-1-pre-trained-sentiment-classifier-roberta" title="Link to this heading">#</a></h2>
+<p>The simplest approach: use a RoBERTa model already fine-tuned for sentiment analysis. No additional training is required — we apply it directly to our target dataset.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">sentiment_pipeline</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="s2">&quot;text-classification&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;cardiffnlp/twitter-roberta-base-sentiment-latest&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Apply to Rotten Tomatoes reviews</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">sentiment_pipeline</span><span class="p">(</span><span class="n">test_reviews</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;positive&quot;</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Why this works:</strong> The model was trained on Twitter data (short, informal text) that shares properties with short critic reviews — colloquial language, opinions expressed in one or two sentences.</p>
+<p><strong>Limitation:</strong> Domain shift. A model fine-tuned on Twitter may not perfectly reflect the vocabulary and conventions of professional film criticism. Typical accuracy on Rotten Tomatoes: ~78–82%.</p>
+</section>
+<section id="approach-2-sentence-embeddings-logistic-regression">
+<h2><span class="section-number">5.3.4.4. </span>Approach 2: Sentence Embeddings + Logistic Regression<a class="headerlink" href="#approach-2-sentence-embeddings-logistic-regression" title="Link to this heading">#</a></h2>
+<p>Sentence Transformers produce high-quality fixed-length embeddings explicitly trained to capture semantic similarity. The <code class="docutils literal notranslate"><span class="pre">all-mpnet-base-v2</span></code> model maps any sentence to a 768-dimensional vector:</p>
+</section>
+<section id="background-text-classification-and-semantic-embeddings">
+<h2><span class="section-number">5.3.4.5. </span>Background: Text Classification and Semantic Embeddings<a class="headerlink" href="#background-text-classification-and-semantic-embeddings" title="Link to this heading">#</a></h2>
+<p><strong>Text classification</strong> assigns a predefined category label to a piece of text. Formally, given a document <span class="math notranslate nohighlight">\(x\)</span> and a label set <span class="math notranslate nohighlight">\(\mathcal{Y} = \{y_1, \ldots, y_k\}\)</span>, a classifier applies a mapping:</p>
+<div class="math notranslate nohighlight">
+\[f: x \mapsto y^* \in \mathcal{Y}\]</div>
+<p>Sentiment analysis — predicting <em>positive</em> vs. <em>negative</em> — is the canonical binary case (<span class="math notranslate nohighlight">\(k = 2\)</span>).</p>
+<section id="what-makes-a-good-text-representation">
+<h3><span class="section-number">5.3.4.5.1. </span>What Makes a Good Text Representation?<a class="headerlink" href="#what-makes-a-good-text-representation" title="Link to this heading">#</a></h3>
+<p>Raw text cannot be fed directly into classifiers. A good representation must satisfy two properties:</p>
+<ol class="arabic simple">
+<li><p><strong>Semantic similarity → geometric proximity.</strong> Documents with similar meaning should map to nearby vectors.</p></li>
+<li><p><strong>Fixed dimensionality.</strong> The vector length must be constant regardless of input length.</p></li>
+</ol>
+<p>Sentence Transformers satisfy both. They are encoder models fine-tuned with a <strong>contrastive objective</strong>: similar sentence pairs are pulled closer in embedding space, while dissimilar pairs are pushed apart.</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — Sentence Embedding</p>
+<p>A <strong>sentence embedding</strong> is a fixed-length dense vector <span class="math notranslate nohighlight">\(\mathbf{e} \in \mathbb{R}^d\)</span> produced by a model trained so that semantically similar sentences have embeddings with high cosine similarity. The <code class="docutils literal notranslate"><span class="pre">all-mpnet-base-v2</span></code> model produces <span class="math notranslate nohighlight">\(d = 768\)</span>-dimensional vectors.</p>
+</div>
+</section>
+<section id="cosine-similarity">
+<h3><span class="section-number">5.3.4.5.2. </span>Cosine Similarity<a class="headerlink" href="#cosine-similarity" title="Link to this heading">#</a></h3>
+<p>Embedding-based approaches in this section use <strong>cosine similarity</strong> to compare vectors. For <span class="math notranslate nohighlight">\(\mathbf{a}, \mathbf{b} \in \mathbb{R}^d\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \, \|\mathbf{b}\|}\]</div>
+<p>Values range from <span class="math notranslate nohighlight">\(-1\)</span> (opposite directions) to <span class="math notranslate nohighlight">\(+1\)</span> (identical directions), with <span class="math notranslate nohighlight">\(0\)</span> indicating orthogonality. Cosine similarity is preferred over Euclidean distance for embeddings because it is invariant to vector magnitude — only the <em>direction</em> (semantic content) matters.</p>
+</section>
+</section>
+<section id="id1">
+<h2><span class="section-number">5.3.4.6. </span>Approach 2: Sentence Embeddings + Logistic Regression<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>The <strong>Logistic Regression</strong> classifier learns a linear decision boundary in the 768-dimensional embedding space. Given an embedding <span class="math notranslate nohighlight">\(\mathbf{e} \in \mathbb{R}^{768}\)</span>, the predicted probability of the positive class is:</p>
+<div class="math notranslate nohighlight">
+\[P(y=1 \mid \mathbf{e}) = \sigma(\mathbf{w}^\top \mathbf{e} + b) = \frac{1}{1 + e^{-(\mathbf{w}^\top \mathbf{e} + b)}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^{768}\)</span> is a weight vector learned during training and <span class="math notranslate nohighlight">\(b\)</span> is the bias term. The document is classified as positive if <span class="math notranslate nohighlight">\(P(y=1 \mid \mathbf{e}) &gt; 0.5\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="c1"># Step 1: Generate embeddings (run once)</span>
+<span class="n">st_model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">&quot;all-mpnet-base-v2&quot;</span><span class="p">)</span>
+<span class="n">X_train_emb</span> <span class="o">=</span> <span class="n">st_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">train_reviews</span><span class="p">,</span> <span class="n">show_progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_test_emb</span>  <span class="o">=</span> <span class="n">st_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_reviews</span><span class="p">,</span>  <span class="n">show_progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Shape: (n_samples, 768)</span>
+
+<span class="c1"># Step 2: Train a fast Logistic Regression on top</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_emb</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_emb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781408706.240508    6026 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "73a74042e9f146c88dfec87d0c610a72", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "4d562f25615946cea3535eaa4460efb4", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b6f9a6febae74be9ad3fae23ce4f146d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "af0fbcc0a9404670a9138a498829501f", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "5a0e4b31422e4e949cbfe13defb106ba", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "ac85f4cedffa45fa9a841d36a60f1bf8", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "3ec70ba3efb94744872db974b5a2be0d", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "6dd732776c7f4e65b6b262fe8139f2c7", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e23d91a1ce9f4d74ae60347cd69b7afd", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "9b6ecdece6db4714b23e79358508b964", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b480c12c68b34132b82bc1e6ef961a01", "version_major": 2, "version_minor": 0}</script><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Step 1: Generate embeddings (run once)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">st_model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">&quot;all-mpnet-base-v2&quot;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">X_train_emb</span> <span class="o">=</span> <span class="n">st_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">train_reviews</span><span class="p">,</span> <span class="n">show_progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">X_test_emb</span>  <span class="o">=</span> <span class="n">st_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_reviews</span><span class="p">,</span>  <span class="n">show_progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Shape: (n_samples, 768)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1"># Step 2: Train a fast Logistic Regression on top</span>
+
+<span class="ne">NameError</span>: name &#39;train_reviews&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>This two-stage approach is efficient because:</p>
+<ul class="simple">
+<li><p>The expensive embedding step (running <code class="docutils literal notranslate"><span class="pre">all-mpnet-base-v2</span></code>) is done <strong>once</strong> per dataset.</p></li>
+<li><p>Logistic Regression training is instantaneous (milliseconds for 8,530 samples).</p></li>
+<li><p>Inference is very fast: a single matrix-vector multiplication per document.</p></li>
+</ul>
+<p>Typical accuracy: <strong>~85–87%</strong>. The LR decision boundary is linear in 768-dimensional embedding space — but this space is geometrically structured so that a hyperplane can effectively separate most sentiment classes.</p>
+</section>
+<section id="approach-3-prototype-centroid-classification">
+<h2><span class="section-number">5.3.4.7. </span>Approach 3: Prototype / Centroid Classification<a class="headerlink" href="#approach-3-prototype-centroid-classification" title="Link to this heading">#</a></h2>
+<p>Instead of training a classifier on labeled embeddings, we compute the <strong>centroid</strong> (average embedding) of all training documents in each class and classify new documents by proximity:</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — Centroid / Prototype</p>
+<p>The <strong>centroid</strong> of class <span class="math notranslate nohighlight">\(c\)</span> is the mean embedding of all training documents in that class:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\mu}_c = \frac{1}{|\mathcal{D}_c|} \sum_{i \in \mathcal{D}_c} \mathbf{e}_i\]</div>
+<p>Classification assigns a new document <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> to the nearest centroid by cosine similarity:</p>
+<div class="math notranslate nohighlight">
+\[\hat{y} = \arg\max_{c} \; \text{sim}(\mathbf{e},\, \boldsymbol{\mu}_c)\]</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_similarity</span>
+
+<span class="c1"># Compute centroids</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span> <span class="o">==</span> <span class="n">label</span>
+    <span class="n">centroids</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_train_emb</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Classify by cosine similarity to centroids</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_centroid</span><span class="p">(</span><span class="n">embedding</span><span class="p">):</span>
+    <span class="n">sims</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">cosine_similarity</span><span class="p">([</span><span class="n">embedding</span><span class="p">],</span> <span class="p">[</span><span class="n">centroid</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">centroid</span> <span class="ow">in</span> <span class="n">centroids</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">sims</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Why this works geometrically:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Embedding space (conceptualized in 2D):
+
+  ● ● ●  ← Positive reviews cluster together
+      ●
+
+  ■ ■    ← Negative reviews cluster separately
+    ■ ■
+
+  Centroid ⊕ = average of all ● positions
+  Centroid ⊗ = average of all ■ positions
+
+  New document ★: compute cosine similarity to ⊕ and ⊗,
+                  assign to nearer centroid
+</pre></div>
+</div>
+<p>Sentence Transformer embeddings are trained with contrastive objectives so that semantically similar documents cluster together. This geometric structure makes centroid-based classification competitive despite requiring no classifier training.</p>
+<p>Typical accuracy: <strong>~83–85%</strong> — slightly below Logistic Regression because no decision boundary optimization occurs.</p>
+</section>
+<section id="approach-4-zero-shot-embedding-classification">
+<h2><span class="section-number">5.3.4.8. </span>Approach 4: Zero-Shot Embedding Classification<a class="headerlink" href="#approach-4-zero-shot-embedding-classification" title="Link to this heading">#</a></h2>
+<p>The most striking approach: classify documents <strong>without any labeled training examples</strong> by encoding natural-language descriptions of the classes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define class descriptions in natural language</span>
+<span class="n">label_descriptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;A negative movie review expressing disappointment or criticism.&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;A positive movie review expressing praise or enthusiasm.&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Encode descriptions and documents into the same embedding space</span>
+<span class="n">desc_embeddings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">label</span><span class="p">:</span> <span class="n">st_model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">label_descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_zero_shot</span><span class="p">(</span><span class="n">doc_embedding</span><span class="p">):</span>
+    <span class="n">sims</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">label</span><span class="p">:</span> <span class="n">cosine_similarity</span><span class="p">([</span><span class="n">doc_embedding</span><span class="p">],</span> <span class="p">[</span><span class="n">desc_emb</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">desc_emb</span> <span class="ow">in</span> <span class="n">desc_embeddings</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">sims</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">sims</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Why this works:</strong> If the embedding space is geometrically meaningful — similar meanings → nearby vectors — then “A negative movie review expressing disappointment” should be close to actual negative reviews. The Sentence Transformer embedding space has exactly this property because it was trained to place semantically similar sentences near each other.</p>
+<p><strong>Label phrasing matters:</strong> The zero-shot approach is sensitive to how the class descriptions are written:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Less effective:</span>
+<span class="s2">&quot;negative&quot;</span><span class="p">,</span> <span class="s2">&quot;positive&quot;</span>
+
+<span class="c1"># More effective:</span>
+<span class="s2">&quot;A negative movie review expressing disappointment or criticism.&quot;</span>
+<span class="s2">&quot;A positive movie review expressing praise or enthusiasm.&quot;</span>
+
+<span class="c1"># Even better (domain-specific):</span>
+<span class="s2">&quot;The reviewer disliked this film, finding it boring or poorly made.&quot;</span>
+<span class="s2">&quot;The reviewer enjoyed this film, praising its quality or entertainment value.&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Typical accuracy with good descriptions: <strong>~82–85%</strong> — nearly competitive with approaches that use thousands of labeled examples.</p>
+</section>
+<section id="approach-5-generative-classification-flan-t5">
+<h2><span class="section-number">5.3.4.9. </span>Approach 5: Generative Classification (Flan-T5)<a class="headerlink" href="#approach-5-generative-classification-flan-t5" title="Link to this heading">#</a></h2>
+<p>Flan-T5 is a sequence-to-sequence model trained to follow natural language instructions. For classification, we prompt it to <strong>generate the class label as text</strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">t5_pipeline</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="s2">&quot;text2text-generation&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/flan-t5-small&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_flan_t5</span><span class="p">(</span><span class="n">review</span><span class="p">):</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Is the following movie review positive or negative?</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Review: </span><span class="si">{</span><span class="n">review</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Answer with only &#39;positive&#39; or &#39;negative&#39;.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">t5_pipeline</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">5</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="s2">&quot;positive&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Key insight:</strong> Flan-T5 treats all NLP tasks as text generation. Because it was instruction-tuned on tasks expressed as natural language questions and answers, it “knows” that “positive” and “negative” are the expected responses to this prompt format.</p>
+<p><strong>Risk:</strong> The model might generate unexpected text (e.g., “Positive, however the ending seems negative”). Robust parsing must handle these edge cases.</p>
+<p>Typical accuracy: <strong>~82–86%</strong> — comparable to embedding-based approaches, without requiring labeled data.</p>
+</section>
+<section id="approach-6-chatgpt-api-classification">
+<h2><span class="section-number">5.3.4.10. </span>Approach 6: ChatGPT API Classification<a class="headerlink" href="#approach-6-chatgpt-api-classification" title="Link to this heading">#</a></h2>
+<p>The highest-quality approach: route each review through a chat-based LLM with a structured prompt:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_chatgpt</span><span class="p">(</span><span class="n">review</span><span class="p">):</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant that classifies movie reviews.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">&quot;Predict whether the following document is a positive or negative &quot;</span>
+                <span class="s2">&quot;movie review:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">review</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;If it is positive return 1 and if it is negative return 0. &quot;</span>
+                <span class="s2">&quot;Do not give any other answer.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Typical accuracy: <strong>~90–93%</strong> (GPT-3.5) / <strong>~93–95%</strong> (GPT-4).</p>
+<p><strong>Trade-offs:</strong></p>
+<ul class="simple">
+<li><p>Highest accuracy — state-of-the-art quality without fine-tuning.</p></li>
+<li><p>API cost: approximately $0.05 per 1,000 reviews with GPT-3.5.</p></li>
+<li><p>Data privacy: reviews are sent to OpenAI’s servers.</p></li>
+<li><p>Latency: 0.5–2 seconds per review vs. milliseconds for local approaches.</p></li>
+<li><p>No offline use.</p></li>
+</ul>
+</section>
+<section id="full-comparison">
+<h2><span class="section-number">5.3.4.11. </span>Full Comparison<a class="headerlink" href="#full-comparison" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FULL APPROACH COMPARISON — Rotten Tomatoes Sentiment
+
+Approach                        Accuracy
+─────────────────────────────────────────────
+6. ChatGPT API                    ~0.910
+2. Embeddings + LogReg            ~0.870
+3. Prototype / Centroid           ~0.840
+4. Zero-shot embedding            ~0.840
+5. Flan-T5 generative             ~0.840
+1. RoBERTa (pre-trained)          ~0.800
+</pre></div>
+</div>
+<section id="six-approach-comparison-full-perspective">
+<h3><span class="section-number">5.3.4.11.1. </span>Six-Approach Comparison — Full Perspective<a class="headerlink" href="#six-approach-comparison-full-perspective" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Accuracy</p></th>
+<th class="head"><p>Labeled data</p></th>
+<th class="head"><p>Training</p></th>
+<th class="head"><p>Compute</p></th>
+<th class="head"><p>Cost</p></th>
+<th class="head"><p>Privacy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1. RoBERTa (pre-trained)</p></td>
+<td><p>~0.80</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Free</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-odd"><td><p>2. Embeddings + LogReg</p></td>
+<td><p>~0.87</p></td>
+<td><p>Train set</p></td>
+<td><p>Seconds</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Free</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-even"><td><p>3. Prototype / Centroid</p></td>
+<td><p>~0.84</p></td>
+<td><p>Train set</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Free</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-odd"><td><p>4. Zero-shot embedding</p></td>
+<td><p>~0.84</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Free</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-even"><td><p>5. Flan-T5 generative</p></td>
+<td><p>~0.84</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>GPU</p></td>
+<td><p>Free</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-odd"><td><p>6. ChatGPT API</p></td>
+<td><p>~0.91</p></td>
+<td><p>None</p></td>
+<td><p>None</p></td>
+<td><p>API</p></td>
+<td><p>~$0.05/1K</p></td>
+<td><p>Remote</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="when-to-use-each">
+<h3><span class="section-number">5.3.4.11.2. </span>When to Use Each<a class="headerlink" href="#when-to-use-each" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Use Approach 1</strong> when you need a quick baseline with no data and no training, and can tolerate ~80% accuracy.</p></li>
+<li><p><strong>Use Approach 2</strong> when you have a labeled training set and need fast inference at high accuracy.</p></li>
+<li><p><strong>Use Approach 3</strong> when you have labeled data but can’t afford to train a model — or as a debugging baseline.</p></li>
+<li><p><strong>Use Approach 4</strong> when you have no labeled data but can write good natural-language class descriptions.</p></li>
+<li><p><strong>Use Approach 5</strong> when you need zero-shot performance and have GPU access but no API credits.</p></li>
+<li><p><strong>Use Approach 6</strong> when you need maximum accuracy, have API budget, and data privacy is not a concern.</p></li>
+</ul>
+</section>
+</section>
+<section id="error-analysis">
+<h2><span class="section-number">5.3.4.12. </span>Error Analysis<a class="headerlink" href="#error-analysis" title="Link to this heading">#</a></h2>
+<p>Aggregate accuracy hides important patterns. Systematic error analysis reveals where models fail:</p>
+<section id="common-hard-examples">
+<h3><span class="section-number">5.3.4.12.1. </span>Common Hard Examples<a class="headerlink" href="#common-hard-examples" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Irony and sarcasm</strong></p>
+<blockquote>
+<div><p>“An absolute masterpiece… of wasted potential.”
+<em>(Contains “masterpiece” but is negative — only contextual understanding catches this.)</em></p>
+</div></blockquote>
+</li>
+<li><p><strong>Qualified praise</strong></p>
+<blockquote>
+<div><p>“While not perfect, the film offers genuine emotional moments.”
+<em>(Positive despite prominent hedging language.)</em></p>
+</div></blockquote>
+</li>
+<li><p><strong>Critic-specific vocabulary</strong></p>
+<blockquote>
+<div><p>“A lumpy, derivative genre exercise that squanders its premise.”
+<em>(Negative, but unusual vocabulary may fall outside training distribution.)</em></p>
+</div></blockquote>
+</li>
+<li><p><strong>Domain mismatch</strong></p>
+<blockquote>
+<div><p>“The ambiance was nice but the wait staff was inattentive.”
+<em>(Yelp-style review, correctly negative, but movie-trained models may miss “wait staff”.)</em></p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="comparing-error-patterns-across-approaches">
+<h3><span class="section-number">5.3.4.12.2. </span>Comparing Error Patterns Across Approaches<a class="headerlink" href="#comparing-error-patterns-across-approaches" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find examples where approaches disagree</span>
+<span class="n">disagreements</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">test_texts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_pred_roberta</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_pred_logreg</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_labels</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">y_pred_roberta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y_pred_logreg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="p">]</span>
+
+<span class="c1"># Misclassified by both — these are the genuinely hard examples</span>
+<span class="n">both_wrong</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">test_texts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_labels</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">y_pred_roberta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">test_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="ow">and</span> <span class="n">y_pred_logreg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">test_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Examples that fool all approaches tend to be genuinely ambiguous, ironic, or domain-shifted — a useful signal for identifying data quality issues or annotation inconsistencies.</p>
+</section>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">5.3.4.13. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Label description sensitivity</strong>
+For the zero-shot embedding approach (Approach 4), try four different natural-language descriptions for each class. How much does accuracy vary across description choices? What makes a description more or less effective?</p></li>
+<li><p><strong>Embeddings + LogReg interpretability</strong>
+After training the Logistic Regression on sentence embeddings (Approach 2), the weight vector lives in 768-dimensional embedding space. Identify the 10 training reviews most aligned with the positive-class weight vector and the 10 most aligned with the negative-class weight vector. Do these represent the “most prototypically positive” and “most prototypically negative” reviews?</p></li>
+<li><p><strong>Cost-accuracy trade-off</strong>
+You need to classify 100,000 reviews per day with 88% or better accuracy. Compare the monthly infrastructure cost of Approach 2 (GPU server for embedding + free LR inference) versus Approach 6 (ChatGPT API at $0.05/1K reviews). Under what accuracy threshold does Approach 6 become cost-effective despite its per-call fee?</p></li>
+</ol>
+</section>
+<section id="summary">
+<h2><span class="section-number">5.3.4.14. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>This section surveyed six fundamentally different approaches to text classification, unified by a common theme: <strong>the choice of representation determines what is possible without labeled data</strong>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Core idea</p></th>
+<th class="head"><p>Key dependency</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pre-trained classifier</p></td>
+<td><p>Apply an existing fine-tuned model</p></td>
+<td><p>Domain overlap with the source task</p></td>
+</tr>
+<tr class="row-odd"><td><p>Embeddings + LogReg</p></td>
+<td><p>Learn a linear boundary in semantic space</p></td>
+<td><p>Labeled training set</p></td>
+</tr>
+<tr class="row-even"><td><p>Prototype / Centroid</p></td>
+<td><p>Classify by proximity to class mean</p></td>
+<td><p>Labeled training set</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zero-shot embedding</p></td>
+<td><p>Encode class descriptions as prototypes</p></td>
+<td><p>Well-crafted descriptions</p></td>
+</tr>
+<tr class="row-even"><td><p>Generative (Flan-T5)</p></td>
+<td><p>Prompt a seq2seq model to produce the label</p></td>
+<td><p>Instruction-tuning of the base model</p></td>
+</tr>
+<tr class="row-odd"><td><p>ChatGPT API</p></td>
+<td><p>Delegate to a large, instruction-following LLM</p></td>
+<td><p>API access and budget</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Key Insight</p>
+<p>No single approach dominates across all dimensions. <strong>Embeddings + Logistic Regression</strong> offers the best accuracy-to-cost ratio when labeled data is available. <strong>Zero-shot embedding</strong> approaches are surprisingly competitive when they are not. <strong>ChatGPT API</strong> achieves the highest accuracy but introduces cost, latency, and privacy trade-offs. The right choice is always task-specific.</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C05S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3.3. </span>Text Classification</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C05S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3.5. </span>Recent Improvements to the Transformer Architecture</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#six-approaches-to-text-classification">5.3.4.2. Six Approaches to Text Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-1-pre-trained-sentiment-classifier-roberta">5.3.4.3. Approach 1: Pre-Trained Sentiment Classifier (RoBERTa)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-2-sentence-embeddings-logistic-regression">5.3.4.4. Approach 2: Sentence Embeddings + Logistic Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-text-classification-and-semantic-embeddings">5.3.4.5. Background: Text Classification and Semantic Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-a-good-text-representation">5.3.4.5.1. What Makes a Good Text Representation?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-similarity">5.3.4.5.2. Cosine Similarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.3.4.6. Approach 2: Sentence Embeddings + Logistic Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-3-prototype-centroid-classification">5.3.4.7. Approach 3: Prototype / Centroid Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-4-zero-shot-embedding-classification">5.3.4.8. Approach 4: Zero-Shot Embedding Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-5-generative-classification-flan-t5">5.3.4.9. Approach 5: Generative Classification (Flan-T5)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-6-chatgpt-api-classification">5.3.4.10. Approach 6: ChatGPT API Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-comparison">5.3.4.11. Full Comparison</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#six-approach-comparison-full-perspective">5.3.4.11.1. Six-Approach Comparison — Full Perspective</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-each">5.3.4.11.2. When to Use Each</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-analysis">5.3.4.12. Error Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-hard-examples">5.3.4.12.1. Common Hard Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-error-patterns-across-approaches">5.3.4.12.2. Comparing Error Patterns Across Approaches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.4.13. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">5.3.4.14. Summary</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

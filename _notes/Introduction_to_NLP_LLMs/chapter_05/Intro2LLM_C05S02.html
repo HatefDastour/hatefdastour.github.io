@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3.2. Parallel Token Processing &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S02';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.3.3. Text Classification" href="Intro2LLM_C05S03.html" />
+    <link rel="prev" title="5.3.1. Inside Transformer LLMs" href="Intro2LLM_C05S01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S04.html">5.3.4. Text Classification with Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Parallel Token Processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.2.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-vs-parallel-processing">5.3.2.2. Sequential vs. Parallel Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-the-core-mechanism">5.3.2.3. Self-Attention: the Core Mechanism</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-project-to-queries-keys-and-values">5.3.2.3.1. Step 1: Project to Queries, Keys, and Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-compute-attention-weights">5.3.2.3.2. Step 2: Compute Attention Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-causal-masking-for-autoregressive-generation">5.3.2.3.3. Step 3: Causal Masking for Autoregressive Generation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention">5.3.2.4. Multi-Head Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-position-encoding-rope">5.3.2.5. Rotary Position Encoding (RoPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-attention-alone-is-position-blind">5.3.2.5.1. Why Attention Alone Is Position-Blind</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mlp-block-position-wise-feed-forward">5.3.2.6. The MLP Block: Position-Wise Feed-Forward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-connections-and-layer-normalization">5.3.2.7. Residual Connections and Layer Normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-parallelism-matters-at-scale">5.3.2.8. Why Parallelism Matters at Scale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.2.9. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="parallel-token-processing">
+<h1><span class="section-number">5.3.2. </span>Parallel Token Processing<a class="headerlink" href="#parallel-token-processing" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">5.3.2.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain how transformers process all tokens in a sequence simultaneously and contrast this with sequential recurrent models.</p></li>
+<li><p>Describe the query-key-value (QKV) mechanism and explain how attention weights are computed as scaled dot products.</p></li>
+<li><p>Explain the role of the causal attention mask in autoregressive generation.</p></li>
+<li><p>Describe how Rotary Position Encoding (RoPE) encodes positional information within the attention computation.</p></li>
+<li><p>Interpret multi-head attention as multiple parallel attention functions applied to projected subspaces.</p></li>
+<li><p>Explain why parallel processing enables more efficient training and inference on modern hardware.</p></li>
+</ul>
+</section>
+<section id="sequential-vs-parallel-processing">
+<h2><span class="section-number">5.3.2.2. </span>Sequential vs. Parallel Processing<a class="headerlink" href="#sequential-vs-parallel-processing" title="Link to this heading">#</a></h2>
+<p>Before transformers, language models were built on recurrent neural networks (RNNs) and long short-term memory (LSTM) networks. These models processed text one token at a time in strict left-to-right order.</p>
+<p>Transformers discard the recurrence entirely. Instead, all tokens are processed <strong>simultaneously</strong> through matrix multiplication, enabling a single parallel forward pass across all input tokens.</p>
+<figure class="align-center" id="sequential-parallel">
+<a class="reference internal image-reference" href="../_images/sequential_parallel.png"><img alt="../_images/sequential_parallel.png" src="../_images/sequential_parallel.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.4 </span><span class="caption-text">Sequential processing in RNNs/LSTMs (left) requires each hidden state to depend on the previous one, forcing step-by-step computation. Transformer parallel processing (right) computes all hidden states simultaneously via a single matrix operation, fully exploiting GPU parallelism during both training and inference.</span><a class="headerlink" href="#sequential-parallel" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This is the central architectural advantage of transformers: by replacing sequential recurrence with parallel self-attention, they can exploit the full parallelism of modern GPU hardware during both training and inference.</p>
+<p>The self-attention mechanism is the primary computational unit that distinguishes transformers from prior architectures. Before examining the formal equations, it is helpful to establish the role each component plays.</p>
+<p>The input to self-attention is a matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span>, where each of the <span class="math notranslate nohighlight">\(n\)</span> rows is a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector representing one token in the sequence. The mechanism must decide, for each token, how much information to borrow from every other token. To make this decision, it needs two things from each token: a description of what it is looking for (the query), and a description of what it can offer (the key). The actual information transferred when a match is made is the value. All three are linear projections of the same input matrix — they differ only in their learned weight matrices, which allow the model to specialize each role independently.</p>
+</section>
+<section id="self-attention-the-core-mechanism">
+<h2><span class="section-number">5.3.2.3. </span>Self-Attention: the Core Mechanism<a class="headerlink" href="#self-attention-the-core-mechanism" title="Link to this heading">#</a></h2>
+<div class="note admonition">
+<p class="admonition-title">Definition — Self-Attention</p>
+<p><strong>Self-attention</strong> is a mechanism that allows each token in a sequence to compute a weighted combination of all other tokens’ representations in a single parallel operation. The weights reflect how relevant each other token is to the current token, and are computed from the tokens themselves — hence “self”-attention.</p>
+<p>Formally, given an input matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> (where <span class="math notranslate nohighlight">\(n\)</span> is sequence length and <span class="math notranslate nohighlight">\(d\)</span> is the hidden dimension), self-attention produces an output of the same shape by aggregating value vectors weighted by query–key similarities.</p>
+</div>
+<p>Self-attention allows every token to gather information from all other tokens in the sequence simultaneously. The computation proceeds in three steps.</p>
+<section id="step-1-project-to-queries-keys-and-values">
+<h3><span class="section-number">5.3.2.3.1. </span>Step 1: Project to Queries, Keys, and Values<a class="headerlink" href="#step-1-project-to-queries-keys-and-values" title="Link to this heading">#</a></h3>
+<div class="note admonition">
+<p class="admonition-title">Definition — Query, Key, and Value</p>
+<p>Self-attention uses three learned linear projections of the input:</p>
+<ul class="simple">
+<li><p><strong>Query (<span class="math notranslate nohighlight">\(Q\)</span>):</strong> represents “what this token is looking for” — the information it wants to gather from other tokens.</p></li>
+<li><p><strong>Key (<span class="math notranslate nohighlight">\(K\)</span>):</strong> represents “what this token advertises” — the kind of information it can provide.</p></li>
+<li><p><strong>Value (<span class="math notranslate nohighlight">\(V\)</span>):</strong> represents “what this token actually contains” — the information that will be aggregated if attention is paid to it.</p></li>
+</ul>
+<p>Compatibility between a query and a key (their dot product) determines how much the corresponding value is incorporated into the output.</p>
+</div>
+<p>Given the hidden state matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> (sequence length <span class="math notranslate nohighlight">\(n\)</span>, hidden dimension <span class="math notranslate nohighlight">\(d\)</span>), three linear projections produce queries (Q), keys (K), and values (V):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4ad3beea-44e7-45ea-bcd9-6e5060293c59">
+<span class="eqno">(5.14)<a class="headerlink" href="#equation-4ad3beea-44e7-45ea-bcd9-6e5060293c59" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Q = X W_Q \qquad K = X W_K \qquad V = X W_V
+\end{equation}\]</div>
+<figure class="align-center" id="qkv-projects">
+<a class="reference internal image-reference" href="../_images/qkv_projects.png"><img alt="../_images/qkv_projects.png" src="../_images/qkv_projects.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.5 </span><span class="caption-text">Step 1: Project to Queries, Keys, and Values</span><a class="headerlink" href="#qkv-projects" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In Phi-3-Mini, the <code class="docutils literal notranslate"><span class="pre">qkv_proj</span></code> layer computes all three simultaneously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># qkv_proj: Linear(3072 → 9216)  [= 3 × 3072]</span>
+<span class="c1"># Efficient: one large matrix multiply rather than three separate ones</span>
+
+<span class="n">qkv</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">self_attn</span><span class="o">.</span><span class="n">qkv_proj</span><span class="p">(</span><span class="n">hidden_states</span><span class="p">)</span>  <span class="c1"># shape: (batch, seq_len, 9216)</span>
+<span class="c1"># Split into Q, K, V each of shape (batch, seq_len, 3072)</span>
+<span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">qkv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">3072</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The attention weight matrix captures, for each pair of positions <span class="math notranslate nohighlight">\((i, j)\)</span>, how relevant token <span class="math notranslate nohighlight">\(j\)</span> is to token <span class="math notranslate nohighlight">\(i\)</span>. It is computed as the dot product between the query at position <span class="math notranslate nohighlight">\(i\)</span> and the key at position <span class="math notranslate nohighlight">\(j\)</span>. A high dot product indicates that the query and key vectors point in similar directions — geometrically, that the two tokens are compatible in the learned projection space.</p>
+<p>The scaling factor <span class="math notranslate nohighlight">\(1/\sqrt{d_k}\)</span> is applied before the softmax because dot products grow in magnitude with the dimensionality of the vectors. Without scaling, large dot products push the softmax into regions where its gradient becomes negligibly small, making training unstable. Dividing by <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> keeps the pre-softmax scores in a range where gradient flow remains healthy regardless of the head dimension.</p>
+<p>The result of applying softmax row-wise is an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix in which each row is a probability distribution over all <span class="math notranslate nohighlight">\(n\)</span> sequence positions. Multiplying this matrix by <span class="math notranslate nohighlight">\(V\)</span> produces a weighted sum of value vectors for each query position — the attended output.</p>
+</section>
+<section id="step-2-compute-attention-weights">
+<h3><span class="section-number">5.3.2.3.2. </span>Step 2: Compute Attention Weights<a class="headerlink" href="#step-2-compute-attention-weights" title="Link to this heading">#</a></h3>
+<p>Attention weights measure how much each token should attend to each other token. They are computed as <strong>scaled dot products</strong> between queries and keys:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a8bac691-f5fd-45e9-9e3a-423b0a7f2a81">
+<span class="eqno">(5.15)<a class="headerlink" href="#equation-a8bac691-f5fd-45e9-9e3a-423b0a7f2a81" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^T}{\sqrt{d_k}}\right) V
+\end{equation}\]</div>
+<p>The scaling factor <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{d_k}}\)</span> (where <span class="math notranslate nohighlight">\(d_k\)</span> is the key dimension) prevents the dot products from growing too large in magnitude, which would cause the softmax to saturate and produce near-zero gradients.</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — Softmax</p>
+<p>For a vector <span class="math notranslate nohighlight">\(z = (z_1, z_2, \ldots, z_n)\)</span>, the <strong>softmax</strong> function converts raw scores into a probability distribution:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bedb5258-74d8-47f1-96ca-bba47770eadd">
+<span class="eqno">(5.16)<a class="headerlink" href="#equation-bedb5258-74d8-47f1-96ca-bba47770eadd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}
+\end{equation}\]</div>
+<p>In attention, softmax is applied row-wise to the scaled dot-product matrix, so each row sums to 1 and represents a probability distribution over sequence positions.</p>
+</div>
+<!-- ```
+For a 5-token sequence:
+
+Q: (batch, 5, d_k)
+K: (batch, 5, d_k)
+
+Q × Kᵀ → (batch, 5, 5)  ← all-pairs similarity matrix
+           ↓
+       softmax → attention weights
+           ↓
+   × V → (batch, 5, d_v)  ← attended output
+``` -->
+<figure class="align-center" id="compute-attention-weights">
+<a class="reference internal image-reference" href="../_images/compute_attention_weights.png"><img alt="../_images/compute_attention_weights.png" src="../_images/compute_attention_weights.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.6 </span><span class="caption-text">Step 2: Compute Attention Weights</span><a class="headerlink" href="#compute-attention-weights" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Each row of the attention weight matrix is a probability distribution over all sequence positions — it specifies how much the token at that position “attends to” (draws information from) each other position.</p>
+<p>The attention weight matrix, if left unconstrained, would allow any token to attend to any other token — including tokens that appear later in the sequence. During training this is problematic because the model would have access to the answer it is supposed to predict. During generation it is structurally impossible, since future tokens have not yet been produced.</p>
+<p>The causal mask enforces the autoregressive constraint by setting upper-triangular entries of the pre-softmax score matrix to <span class="math notranslate nohighlight">\(-\infty\)</span>. When passed through softmax, <span class="math notranslate nohighlight">\(e^{-\infty} = 0\)</span>, so those positions receive exactly zero attention weight. The result is that the attention weight matrix is strictly lower-triangular: position <span class="math notranslate nohighlight">\(t\)</span> can attend to positions <span class="math notranslate nohighlight">\(1\)</span> through <span class="math notranslate nohighlight">\(t\)</span>, but never beyond. This constraint is not a restriction on what the model can learn — it is a structural guarantee that the model respects the ordering of tokens during both training and generation.</p>
+</section>
+<section id="step-3-causal-masking-for-autoregressive-generation">
+<h3><span class="section-number">5.3.2.3.3. </span>Step 3: Causal Masking for Autoregressive Generation<a class="headerlink" href="#step-3-causal-masking-for-autoregressive-generation" title="Link to this heading">#</a></h3>
+<div class="note admonition">
+<p class="admonition-title">Definition — Causal Attention Mask</p>
+<p>A <strong>causal attention mask</strong> is a lower-triangular binary (or <span class="math notranslate nohighlight">\(\{0, -\infty\}\)</span>) matrix applied to the attention score matrix before the softmax. It ensures that token <span class="math notranslate nohighlight">\(t\)</span> can only attend to tokens at positions <span class="math notranslate nohighlight">\(\leq t\)</span>, preventing any token from “seeing” future tokens during generation.</p>
+<p>After adding the mask, positions that should be blocked receive a score of <span class="math notranslate nohighlight">\(-\infty\)</span>, which maps to <span class="math notranslate nohighlight">\(0\)</span> through softmax — effectively zeroing out those attention weights.</p>
+</div>
+<p>During generation, the model must not look at future tokens — it can only attend to positions that have already been generated. This is enforced with a <strong>causal attention mask</strong>: a lower-triangular matrix that sets all upper-triangular attention weights to <span class="math notranslate nohighlight">\(-\infty\)</span> before the softmax, effectively zeroing them out:</p>
+<!-- ```
+Causal mask (5-token sequence):
+
+       t₁   t₂   t₃   t₄   t₅
+  t₁ [  0   -∞   -∞   -∞   -∞ ]  ← t₁ can only attend to t₁
+  t₂ [  0    0   -∞   -∞   -∞ ]  ← t₂ can attend to t₁, t₂
+  t₃ [  0    0    0   -∞   -∞ ]  ← t₃ can attend to t₁, t₂, t₃
+  t₄ [  0    0    0    0   -∞ ]
+  t₅ [  0    0    0    0    0 ]  ← t₅ can attend to all
+``` -->
+<figure class="align-center" id="causal-masking-for-autoregressive-generation">
+<a class="reference internal image-reference" href="../_images/causal_masking_for_autoregressive_generation.png"><img alt="../_images/causal_masking_for_autoregressive_generation.png" src="../_images/causal_masking_for_autoregressive_generation.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.7 </span><span class="caption-text">Step 3: Causal Masking for Autoregressive Generation</span><a class="headerlink" href="#causal-masking-for-autoregressive-generation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This ensures the model respects the autoregressive constraint: the representation of token <span class="math notranslate nohighlight">\(t\)</span> is conditioned only on tokens <span class="math notranslate nohighlight">\(t_1, t_2, \ldots, t_{t-1}\)</span>, never on future tokens.</p>
+<p>A single attention function computes one weighted combination of value vectors per position. While expressive, a single function is limited in the variety of relationships it can represent simultaneously — for instance, a token might need to capture both a syntactic dependency with a nearby word and a semantic relationship with a distant one.</p>
+<p>Multi-head attention addresses this by running <span class="math notranslate nohighlight">\(h\)</span> independent attention functions in parallel, each operating on a lower-dimensional projection of the queries, keys, and values. The projection matrices <span class="math notranslate nohighlight">\(W_{Q_i}\)</span>, <span class="math notranslate nohighlight">\(W_{K_i}\)</span>, <span class="math notranslate nohighlight">\(W_{V_i}\)</span> are learned separately for each head, so each head can specialize in attending to a different type of relationship. The outputs of all heads are concatenated along the feature dimension and projected back to the original hidden dimension via <span class="math notranslate nohighlight">\(W_O\)</span>.</p>
+<p>The total parameter count and computational cost are comparable to a single large attention function: splitting 3 072 dimensions across 32 heads of 96 dimensions each costs the same number of multiply-accumulate operations as one attention function over the full 3 072-dimensional space, but with substantially more representational diversity.</p>
+</section>
+</section>
+<section id="multi-head-attention">
+<h2><span class="section-number">5.3.2.4. </span>Multi-Head Attention<a class="headerlink" href="#multi-head-attention" title="Link to this heading">#</a></h2>
+<div class="note admonition">
+<p class="admonition-title">Definition — Multi-Head Attention</p>
+<p><strong>Multi-head attention</strong> runs <span class="math notranslate nohighlight">\(h\)</span> independent attention functions (“heads”) in parallel, each operating on a lower-dimensional projection of <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span>. The outputs are concatenated and linearly projected:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-17744570-82b9-4a29-a4bc-9009b9409c61">
+<span class="eqno">(5.17)<a class="headerlink" href="#equation-17744570-82b9-4a29-a4bc-9009b9409c61" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)\, W_O
+\end{equation}\]</div>
+<p>Using multiple heads allows the model to jointly attend to information from different representation subspaces — for example, one head may capture syntactic dependencies while another captures semantic similarity.</p>
+</div>
+<p>Rather than computing a single attention function over the full <span class="math notranslate nohighlight">\(d\)</span>-dimensional space, transformers split it into <span class="math notranslate nohighlight">\(h\)</span> <strong>parallel attention heads</strong>, each operating in a lower-dimensional subspace:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-5872ec35-344e-4187-8e73-5c0aaae67691">
+<span class="eqno">(5.18)<a class="headerlink" href="#equation-5872ec35-344e-4187-8e73-5c0aaae67691" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \, W_O
+\end{equation}\]</div>
+<p>where each head <span class="math notranslate nohighlight">\(i\)</span> computes:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-0552084a-40d2-4fa5-bd3e-b219a1edc04d">
+<span class="eqno">(5.19)<a class="headerlink" href="#equation-0552084a-40d2-4fa5-bd3e-b219a1edc04d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{head}_i = \text{Attention}(Q W_{Q_i},\; K W_{K_i},\; V W_{V_i})
+\end{equation}\]</div>
+<p>For Phi-3-Mini:</p>
+<ul class="simple">
+<li><p>Hidden dimension: 3072</p></li>
+<li><p>Number of heads: 32</p></li>
+<li><p>Per-head dimension: 3072 / 32 = <strong>96</strong></p></li>
+</ul>
+<!-- ```
+Multi-head attention in Phi-3-Mini:
+
+  Input: (batch, seq_len, 3072)
+  qkv_proj → (batch, seq_len, 9216) — Q, K, V concatenated
+  Reshape → (batch, 32, seq_len, 96) per head — 32 heads × 96-dim each
+
+  Head 0: attends to positional/syntactic patterns
+  Head 1: attends to entity co-reference
+  Head 2: attends to semantic similarity
+  ...
+  Head 31: attends to task-relevant relationships
+  (each head specializes empirically)
+
+  Concatenate → (batch, seq_len, 32 × 96 = 3072)
+  o_proj → (batch, seq_len, 3072)
+``` -->
+<figure class="align-center" id="multi-head-attention-in-phi-3-mini">
+<a class="reference internal image-reference" href="../_images/multi_head_attention_in_phi_3_mini.png"><img alt="../_images/multi_head_attention_in_phi_3_mini.png" src="../_images/multi_head_attention_in_phi_3_mini.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.8 </span><span class="caption-text">Multi-head attention in Phi-3-Mini.</span><a class="headerlink" href="#multi-head-attention-in-phi-3-mini" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Different heads learn to attend to different types of relationships in the data. Early layers tend to capture local syntactic patterns; later layers capture more abstract semantic relationships.</p>
+<p>Standard self-attention is a set operation: permuting the rows of the input matrix <span class="math notranslate nohighlight">\(X\)</span> permutes the output rows in exactly the same way, with no other effect. This means the attention weights between any two tokens depend only on their content vectors, not on where they appear in the sequence. For language modeling this is a fundamental problem, since word order is a primary carrier of meaning.</p>
+<p>Position encoding schemes inject order information into the computation. The key design question is whether positions are encoded absolutely (each position gets a fixed vector) or relatively (the model is given access to the distance between positions). Relative encoding is preferable because what matters linguistically is typically the relationship between two words — how far apart they are — not their absolute indices in the sequence. Absolute schemes also fail to generalize to sequence lengths longer than those seen during training, because they rely on a fixed set of learned or pre-computed position vectors.</p>
+<p>RoPE encodes position by rotating the query and key vectors before the dot product is computed. Because both <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(K\)</span> are rotated by position-dependent angles, their dot product depends only on the angular difference between the two positions — which is the relative displacement <span class="math notranslate nohighlight">\(m - n\)</span>. This property arises directly from the geometry of rotations: rotating two vectors and taking their dot product is equivalent to taking the original dot product in a rotated frame, and the frame cancels out of the relative calculation.</p>
+</section>
+<section id="rotary-position-encoding-rope">
+<h2><span class="section-number">5.3.2.5. </span>Rotary Position Encoding (RoPE)<a class="headerlink" href="#rotary-position-encoding-rope" title="Link to this heading">#</a></h2>
+<section id="why-attention-alone-is-position-blind">
+<h3><span class="section-number">5.3.2.5.1. </span>Why Attention Alone Is Position-Blind<a class="headerlink" href="#why-attention-alone-is-position-blind" title="Link to this heading">#</a></h3>
+<p>Self-attention treats the input as an <strong>unordered set</strong>: if you permute the rows of <span class="math notranslate nohighlight">\(X\)</span> (i.e., shuffle token order), the attention weights simply permute in the same way, and the output is permuted identically. There is no inherent notion of “token 3 comes after token 2.”</p>
+<p>This is a fundamental limitation for language, where word order is meaning-bearing. Position encoding schemes inject positional information into the computation so the model can distinguish sequences that differ only in word order.</p>
+<p>A critical problem for fully parallel attention: without positional information, the model cannot distinguish “The cat sat on the mat” from “The mat sat on the cat” — both produce identical attention-weight matrices if word order is ignored.</p>
+<p><strong>Rotary Position Encoding (RoPE)</strong> encodes positional information by applying a position-dependent rotation to the query and key vectors before computing attention:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7ca82b85-16f8-4fb4-a718-aa9e30e1951e">
+<span class="eqno">(5.20)<a class="headerlink" href="#equation-7ca82b85-16f8-4fb4-a718-aa9e30e1951e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Q_m = R_m Q \qquad K_n = R_n K
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(R_m\)</span> is a rotation matrix depending only on position <span class="math notranslate nohighlight">\(m\)</span>. The dot product <span class="math notranslate nohighlight">\(Q_m \cdot K_n\)</span> then depends on the <strong>relative</strong> position <span class="math notranslate nohighlight">\(m - n\)</span> rather than absolute positions:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-56893b33-166b-4ef2-ad66-e106799a6832">
+<span class="eqno">(5.21)<a class="headerlink" href="#equation-56893b33-166b-4ef2-ad66-e106799a6832" title="Permalink to this equation">#</a></span>\[\begin{equation}
+Q_m \cdot K_n = (R_m Q) \cdot (R_n K) = Q \cdot R_{m-n}^T K
+\end{equation}\]</div>
+<p>This has several advantages over earlier position encoding schemes:</p>
+<div class="note admonition">
+<p class="admonition-title">Definition — Rotary Position Encoding (RoPE)</p>
+<p><strong>RoPE</strong> encodes position by rotating query and key vectors in 2D planes within the embedding space. The hidden dimension <span class="math notranslate nohighlight">\(d_k\)</span> is divided into <span class="math notranslate nohighlight">\(d_k / 2\)</span> pairs of dimensions; pair <span class="math notranslate nohighlight">\(i\)</span> is rotated by angle <span class="math notranslate nohighlight">\(\theta_i = m / 10000^{2i/d_k}\)</span> for a token at position <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p>The rotation matrix <span class="math notranslate nohighlight">\(R_m\)</span> is block-diagonal:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8286b08c-fd18-45ea-bf75-4752b09af30b">
+<span class="eqno">(5.22)<a class="headerlink" href="#equation-8286b08c-fd18-45ea-bf75-4752b09af30b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+R_m = \text{diag}\!\left( \begin{bmatrix} \cos m\theta_1 &amp; -\sin m\theta_1 \\ \sin m\theta_1 &amp; \cos m\theta_1 \end{bmatrix}, \; \ldots,\; \begin{bmatrix} \cos m\theta_{d_k/2} &amp; -\sin m\theta_{d_k/2} \\ \sin m\theta_{d_k/2} &amp; \cos m\theta_{d_k/2} \end{bmatrix} \right)
+\end{equation}\]</div>
+<p>Because rotation is a linear operation, the dot product <span class="math notranslate nohighlight">\(Q_m \cdot K_n\)</span> depends only on the relative displacement <span class="math notranslate nohighlight">\(m - n\)</span>, not on the absolute positions. This allows RoPE to generalize to sequence lengths longer than those seen during training.</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="comparison-of-positional-encoding">
+<caption><span class="caption-number">Table 5.6 </span><span class="caption-text">Comparison of positional encoding techniques in transformer architectures.</span><a class="headerlink" href="#comparison-of-positional-encoding" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>How positions are encoded</p></th>
+<th class="head"><p>Generalizes to longer sequences?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Learned absolute (BERT)</p></td>
+<td><p>Separate embedding per position</p></td>
+<td><p>No — fixed at training length</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sinusoidal (original transformer)</p></td>
+<td><p>Fixed sine/cosine waves</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-even"><td><p>RoPE (LLaMA, Phi-3, Mistral)</p></td>
+<td><p>Rotation applied to Q, K in attention</p></td>
+<td><p>Yes — relative positions generalize</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>RoPE is applied inside each attention layer by the <code class="docutils literal notranslate"><span class="pre">rotary_emb</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Conceptual (simplified)</span>
+<span class="n">cos</span><span class="p">,</span> <span class="n">sin</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">rotary_emb</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">seq_len</span><span class="o">=</span><span class="n">seq_len</span><span class="p">)</span>
+<span class="n">q_rotated</span> <span class="o">=</span> <span class="n">apply_rotary_pos_emb</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">)</span>
+<span class="n">k_rotated</span> <span class="o">=</span> <span class="n">apply_rotary_pos_emb</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">)</span>
+<span class="c1"># Now attention(q_rotated, k_rotated, v) is position-aware</span>
+</pre></div>
+</div>
+<p>After each attention sublayer has finished mixing information across sequence positions, every token’s representation passes independently through an MLP block. This sublayer performs no communication between positions — it applies an identical nonlinear transformation to each token’s vector in isolation.</p>
+<p>The separation of roles between the two sublayers is an important architectural property. Attention is responsible for determining <em>which</em> information from other positions should be incorporated; the MLP is responsible for <em>how</em> that representation should be transformed after the mixing has occurred. This decomposition allows the two components to specialize independently during training.</p>
+<p>The SwiGLU activation used in Phi-3-Mini’s MLP differs from a standard two-layer feed-forward network in that it introduces a multiplicative gate. The projection is split into two streams of equal dimension: one stream passes through a SiLU activation to produce a gate, and the other is a linear projection. The gate modulates the linear projection element-wise. This mechanism allows the network to selectively suppress or amplify different dimensions of the intermediate representation, and has been shown empirically to outperform standard ReLU or GELU activations at the same parameter count.</p>
+</section>
+</section>
+<section id="the-mlp-block-position-wise-feed-forward">
+<h2><span class="section-number">5.3.2.6. </span>The MLP Block: Position-Wise Feed-Forward<a class="headerlink" href="#the-mlp-block-position-wise-feed-forward" title="Link to this heading">#</a></h2>
+<div class="tip admonition">
+<p class="admonition-title">Reminder — SwiGLU Activation</p>
+<p><strong>SwiGLU</strong> (Swish-Gated Linear Unit) is the activation function used in the Phi-3-Mini MLP block. It applies a gating mechanism:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-502f59be-6543-41ff-9120-707aa76f7cf9">
+<span class="eqno">(5.23)<a class="headerlink" href="#equation-502f59be-6543-41ff-9120-707aa76f7cf9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{SwiGLU}(x, W, V) = \text{SiLU}(xW) \odot (xV)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{SiLU}(z) = z \cdot \sigma(z)\)</span> is the Sigmoid Linear Unit and <span class="math notranslate nohighlight">\(\odot\)</span> is element-wise multiplication. The gate <span class="math notranslate nohighlight">\(\text{SiLU}(xW)\)</span> modulates how much of the linear projection <span class="math notranslate nohighlight">\(xV\)</span> passes through, enabling expressive non-linear transformations with smoother gradients than ReLU.</p>
+</div>
+<p>After the self-attention sublayer, each token’s representation passes independently through an <strong>MLP block</strong> (also called the feed-forward network, FFN). This is applied identically to every token position — no information flows between positions in this sublayer:</p>
+<!-- ```
+MLP block (SwiGLU — Phi-3-Mini):
+
+  Input: (batch, seq_len, 3072)
+  gate_up_proj → (batch, seq_len, 16384)  — projects to 2 × 8192
+  Split into gate (8192) and up (8192)
+  SwiGLU: output = SiLU(gate) × up       — (batch, seq_len, 8192)
+  down_proj → (batch, seq_len, 3072)      — projects back
+``` -->
+<figure class="align-center" id="mlp-block-swiglu-phi-3-mini">
+<a class="reference internal image-reference" href="../_images/mlp_block_swiglu_phi_3_mini.png"><img alt="../_images/mlp_block_swiglu_phi_3_mini.png" src="../_images/mlp_block_swiglu_phi_3_mini.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.9 </span><span class="caption-text">MLP block (SwiGLU — Phi-3-Mini)</span><a class="headerlink" href="#mlp-block-swiglu-phi-3-mini" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The MLP block applies a non-linear transformation to each token’s representation in isolation. While attention is responsible for <strong>mixing information across positions</strong>, the MLP is responsible for <strong>applying learned transformations to each position independently</strong>.</p>
+<p>Residual connections and normalization layers are not primary computational components in the sense that they do not implement attention or learned transformations — but they are essential for making deep networks trainable and stable.</p>
+<p>Without residual connections, gradients must pass through every sublayer during backpropagation. In a 32-layer network, this means the gradient of the loss with respect to early-layer parameters is the product of 64 Jacobian matrices (two sublayers per layer). Such products routinely vanish to near-zero or explode to large magnitudes, making training of deep networks difficult in practice. The residual connection provides a direct path from the output back to the input, so gradients can bypass any sublayer that is not contributing useful signal.</p>
+<p>Normalization controls the scale of the representations entering each sublayer. Without it, the hidden state magnitudes can drift across layers — growing large due to accumulated residual additions, as observed in the preceding section — and cause the projections within attention or the MLP to operate in extreme ranges where learning is slow. Pre-norm placement (normalizing before, rather than after, each sublayer) has been found empirically to produce more stable training dynamics at the scales used in modern LLMs.</p>
+</section>
+<section id="residual-connections-and-layer-normalization">
+<h2><span class="section-number">5.3.2.7. </span>Residual Connections and Layer Normalization<a class="headerlink" href="#residual-connections-and-layer-normalization" title="Link to this heading">#</a></h2>
+<div class="tip admonition">
+<p class="admonition-title">Reminder — RMSNorm</p>
+<p><strong>Root Mean Square Layer Normalization (RMSNorm)</strong> normalizes a vector <span class="math notranslate nohighlight">\(x\)</span> by its root mean square rather than its mean and variance:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1d5a0c68-399a-47b6-82d8-72330f35e973">
+<span class="eqno">(5.24)<a class="headerlink" href="#equation-1d5a0c68-399a-47b6-82d8-72330f35e973" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{RMSNorm}(x) = \frac{x}{\text{RMS}(x)} \cdot \gamma, \qquad \text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is a learned per-dimension scale parameter. RMSNorm is faster than standard LayerNorm (no mean subtraction) and is used in Phi-3-Mini, LLaMA, and most modern LLMs. It is applied <strong>before</strong> each sublayer in the pre-norm configuration used here.</p>
+</div>
+<p>Every sublayer (attention and MLP) is wrapped in a <strong>residual connection</strong>:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f144a4fa-eab0-4a06-8acf-fca28d785c99">
+<span class="eqno">(5.25)<a class="headerlink" href="#equation-f144a4fa-eab0-4a06-8acf-fca28d785c99" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{output} = \text{sublayer}(\text{input}) + \text{input}
+\end{equation}\]</div>
+<p>This addition allows gradients to flow directly through the network without passing through the sublayer — critical for training very deep networks (32+ layers).</p>
+<p>Normalization is applied <strong>before</strong> each sublayer in modern LLMs (pre-norm):</p>
+<!-- ```
+Pre-norm transformer layer:
+
+  x → RMSNorm → self-attention → + x  (residual)
+              → RMSNorm → MLP    → + x  (residual)
+``` -->
+<figure class="align-center" id="rmsnorm-self-attention-flow">
+<a class="reference internal image-reference" href="../_images/rmsnorm_self_attention_flow.png"><img alt="../_images/rmsnorm_self_attention_flow.png" src="../_images/rmsnorm_self_attention_flow.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.10 </span><span class="caption-text">Pre-norm transformer layer structure. RMSNorm is applied before each sublayer (self-attention and MLP), followed by a residual addition that bypasses the sublayer. This “gradient highway” enables stable training across 32+ layers.</span><a class="headerlink" href="#rmsnorm-self-attention-flow" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This differs from the original transformer, which applied normalization <strong>after</strong> the residual addition (post-norm). Pre-norm has been found to produce more stable training at large scale.</p>
+</section>
+<section id="why-parallelism-matters-at-scale">
+<h2><span class="section-number">5.3.2.8. </span>Why Parallelism Matters at Scale<a class="headerlink" href="#why-parallelism-matters-at-scale" title="Link to this heading">#</a></h2>
+<p>The difference between sequential and parallel processing is not merely architectural — it directly determines how much training is feasible:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>RNN training on 1 trillion tokens (sequential):
+  1T sequential steps — cannot be parallelized across time
+  Even at 1B ops/second: ~11 days per epoch, single stream
+
+Transformer training on 1 trillion tokens (parallel):
+  Process 4,096 tokens per forward pass simultaneously
+  ~244M forward passes — each is a large parallel matrix multiply
+  Scales linearly with GPU count: 1000 GPUs → ~1000× faster
+  GPT-3 (175B): trained in ~3 weeks on 1,024 A100 GPUs
+</pre></div>
+</div>
+<p>GPU hardware is optimized for <strong>large, regular matrix multiplications</strong> (the core of transformer attention and MLP layers). Transformers are, architecturally speaking, one of the best possible fits for GPU hardware — which is a significant reason they have dominated NLP since 2018.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">5.3.2.9. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Causal masking verification</strong>
+Load DistilGPT-2 with <code class="docutils literal notranslate"><span class="pre">output_attentions=True</span></code> and run a forward pass on a 5-token input. Extract the attention weights from one head in one layer. Verify that the upper-triangular entries are zero (or very small after softmax). Which position attends to the most diverse set of other positions?</p></li>
+<li><p><strong>Single vs. multi-head attention</strong>
+Conceptually, what could a single attention head with <span class="math notranslate nohighlight">\(d_k = 3072\)</span> capture that a single head with <span class="math notranslate nohighlight">\(d_k = 96\)</span> cannot? What is the advantage of using 32 smaller heads instead of one large head?</p></li>
+<li><p><strong>Positional encoding impact</strong>
+Take a simple factual sentence (e.g., “The dog chased the cat”) and permute the word order (e.g., “cat the chased The dog”). Run both through a causal LM and compare the top-5 next-token predictions. Do the predictions differ? What does this reveal about how well the model encodes word order?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C05S01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3.1. </span>Inside Transformer LLMs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C05S03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3.3. </span>Text Classification</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.2.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-vs-parallel-processing">5.3.2.2. Sequential vs. Parallel Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-attention-the-core-mechanism">5.3.2.3. Self-Attention: the Core Mechanism</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-project-to-queries-keys-and-values">5.3.2.3.1. Step 1: Project to Queries, Keys, and Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-compute-attention-weights">5.3.2.3.2. Step 2: Compute Attention Weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-causal-masking-for-autoregressive-generation">5.3.2.3.3. Step 3: Causal Masking for Autoregressive Generation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention">5.3.2.4. Multi-Head Attention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rotary-position-encoding-rope">5.3.2.5. Rotary Position Encoding (RoPE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-attention-alone-is-position-blind">5.3.2.5.1. Why Attention Alone Is Position-Blind</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mlp-block-position-wise-feed-forward">5.3.2.6. The MLP Block: Position-Wise Feed-Forward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-connections-and-layer-normalization">5.3.2.7. Residual Connections and Layer Normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-parallelism-matters-at-scale">5.3.2.8. Why Parallelism Matters at Scale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.2.9. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

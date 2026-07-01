@@ -1,0 +1,973 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.3.3. Text Classification &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.3.4. Text Classification with Leveraging Embeddings" href="Intro2LLM_C05S04.html" />
+    <link rel="prev" title="5.3.2. Parallel Token Processing" href="Intro2LLM_C05S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S04.html">5.3.4. Text Classification with Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Text Classification</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-text-classification-problem">5.3.3.2. The Text Classification Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-generations-of-approaches">5.3.3.3. Three Generations of Approaches</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-1-classical-sparse-pipelines">5.3.3.4. Generation 1: Classical Sparse Pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-svm-rotten-tomatoes">5.3.3.4.1. TF-IDF + SVM (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-naive-bayes-yelp">5.3.3.4.2. TF-IDF + Naive Bayes (Yelp)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-classical-models-learn">5.3.3.4.3. What Classical Models Learn</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-2-dense-embedding-networks">5.3.3.5. Generation 2: Dense Embedding Networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-mean-pooled-mlp-rotten-tomatoes">5.3.3.5.1. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-1d-cnn-yelp">5.3.3.5.2. GloVe + 1D CNN (Yelp)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-over-generation-1">5.3.3.5.3. Advantages Over Generation 1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-3-fine-tuned-transformers">5.3.3.6. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta-fine-tuning">5.3.3.6.1. RoBERTa Fine-Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-classifiers">5.3.3.7. Evaluating Classifiers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-classification-report">5.3.3.7.1. The Classification Report</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-evaluation">5.3.3.8. Robustness Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negation-and-sarcasm">5.3.3.8.1. 1. Negation and Sarcasm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-and-neutral-sentiment">5.3.3.8.2. 2. Mixed and Neutral Sentiment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-domain-transfer">5.3.3.8.3. 3. Cross-Domain Transfer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-approach-comparison">5.3.3.9. Full Approach Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.3.10. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="text-classification">
+<h1><span class="section-number">5.3.3. </span>Text Classification<a class="headerlink" href="#text-classification" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">5.3.3.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Describe the three generations of text classification approaches: classical sparse-feature pipelines, dense embedding networks, and fine-tuned transformers.</p></li>
+<li><p>Apply TF-IDF with SVM or Naive Bayes and explain when these classical approaches are competitive.</p></li>
+<li><p>Implement a GloVe + neural network classifier and explain the role of pooling in converting a sequence of word vectors to a fixed-length representation.</p></li>
+<li><p>Fine-tune a pre-trained RoBERTa model for binary sentiment classification.</p></li>
+<li><p>Interpret a classification report — distinguishing precision, recall, F1-score, and when each matters most.</p></li>
+<li><p>Evaluate robustness under negation, sarcasm, mixed sentiment, and cross-domain transfer.</p></li>
+</ul>
+</section>
+<section id="the-text-classification-problem">
+<h2><span class="section-number">5.3.3.2. </span>The Text Classification Problem<a class="headerlink" href="#the-text-classification-problem" title="Link to this heading">#</a></h2>
+<p>Text classification is the task of assigning a label from a predefined set to a piece of text. It encompasses a wide range of applications:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Input</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sentiment analysis</p></td>
+<td><p>Movie review</p></td>
+<td><p>Positive / Negative</p></td>
+</tr>
+<tr class="row-odd"><td><p>Topic classification</p></td>
+<td><p>News article</p></td>
+<td><p>Politics / Sports / Technology / …</p></td>
+</tr>
+<tr class="row-even"><td><p>Spam detection</p></td>
+<td><p>Email</p></td>
+<td><p>Spam / Not spam</p></td>
+</tr>
+<tr class="row-odd"><td><p>Intent recognition</p></td>
+<td><p>User utterance</p></td>
+<td><p>Book_flight / Check_weather / …</p></td>
+</tr>
+<tr class="row-even"><td><p>Toxicity detection</p></td>
+<td><p>Social media post</p></td>
+<td><p>Toxic / Non-toxic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The core challenge is the same across tasks: how do we convert variable-length text into a fixed-length feature vector that a classifier can operate on?</p>
+</section>
+<section id="three-generations-of-approaches">
+<h2><span class="section-number">5.3.3.3. </span>Three Generations of Approaches<a class="headerlink" href="#three-generations-of-approaches" title="Link to this heading">#</a></h2>
+<p>Text classification methods have evolved through three distinct generations, each with fundamentally different representations and models:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Generation 1 — Sparse, count-based features:
+  TF-IDF → SVM or Logistic Regression
+  TF-IDF → Naive Bayes
+  Fast to train, highly interpretable, strong on clean balanced data.
+
+Generation 2 — Dense, distributional embeddings:
+  Word2Vec / GloVe + mean pooling → MLP classifier
+  Word2Vec / GloVe + 1D CNN → CNN classifier
+  Captures semantic similarity; handles synonyms; smaller vocabulary footprint.
+
+Generation 3 — Contextualized transformer representations:
+  BERT / RoBERTa fine-tuned end-to-end
+  The same word receives different representations in different contexts.
+  State-of-the-art performance; expensive to train.
+</pre></div>
+</div>
+<p>The practices in this section implement all three generations on two benchmark datasets:</p>
+<ul class="simple">
+<li><p><strong>Rotten Tomatoes</strong> (8,530 training / 1,066 test): binary sentiment, short critic snippets.</p></li>
+<li><p><strong>Yelp Polarity</strong> (560K available, 12,000 used): binary sentiment, longer business reviews.</p></li>
+</ul>
+</section>
+<section id="generation-1-classical-sparse-pipelines">
+<h2><span class="section-number">5.3.3.4. </span>Generation 1: Classical Sparse Pipelines<a class="headerlink" href="#generation-1-classical-sparse-pipelines" title="Link to this heading">#</a></h2>
+<section id="tf-idf-svm-rotten-tomatoes">
+<h3><span class="section-number">5.3.3.4.1. </span>TF-IDF + SVM (Rotten Tomatoes)<a class="headerlink" href="#tf-idf-svm-rotten-tomatoes" title="Link to this heading">#</a></h3>
+<p>TF-IDF (Term Frequency–Inverse Document Frequency) converts each document to a sparse vector in which each dimension corresponds to a vocabulary term, weighted by how characteristic that term is of the document:</p>
+<div class="math notranslate nohighlight">
+\[\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\frac{N}{1 + \text{df}(t)}\]</div>
+<p>Support Vector Machines (SVMs) with a linear kernel find the maximum-margin hyperplane separating the two classes in this high-dimensional sparse space.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSVC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">pipeline_svm</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;tfidf&quot;</span><span class="p">,</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                               <span class="n">sublinear_tf</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span>   <span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">)),</span>
+<span class="p">])</span>
+
+<span class="n">pipeline_svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipeline_svm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Typical accuracy on Rotten Tomatoes: <strong>~78–82%</strong>. The SVM’s advantages are speed (seconds to train), interpretability (the highest-weight n-grams reveal what the model has learned), and competitive performance on clean, balanced datasets.</p>
+</section>
+<section id="tf-idf-naive-bayes-yelp">
+<h3><span class="section-number">5.3.3.4.2. </span>TF-IDF + Naive Bayes (Yelp)<a class="headerlink" href="#tf-idf-naive-bayes-yelp" title="Link to this heading">#</a></h3>
+<p>Multinomial Naive Bayes applies Bayes’ theorem with a feature-independence assumption: given the label, each word’s presence is assumed independent of all other words. Despite this unrealistic assumption, it works well on text:</p>
+<div class="math notranslate nohighlight">
+\[P(\text{label} \mid \text{document}) \propto P(\text{label}) \prod_{t \in \text{document}} P(t \mid \text{label})\]</div>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Multinomial Naive Bayes</p>
+<p><strong>Multinomial Naive Bayes</strong> estimates the probability of each class given a document by applying Bayes’ theorem:</p>
+<div class="math notranslate nohighlight">
+\[P(y \mid \mathbf{x}) \propto P(y) \prod_{t=1}^{T} P(x_t \mid y)\]</div>
+<p>where <span class="math notranslate nohighlight">\(y\)</span> is the class label, <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_T)\)</span> are the term counts in the document, and:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(y)\)</span> is the class prior (proportion of training documents in class <span class="math notranslate nohighlight">\(y\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(x_t \mid y)\)</span> is the smoothed term likelihood, estimated with Laplace (add-<span class="math notranslate nohighlight">\(\alpha\)</span>) smoothing:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[P(t \mid y) = \frac{\text{count}(t, y) + \alpha}{\sum_{t'} \text{count}(t', y) + \alpha \cdot |V|}\]</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">alpha=0.1</span></code> parameter in the code below controls this smoothing strength.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultinomialNB</span>
+
+<span class="n">pipeline_nb</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;tfidf&quot;</span><span class="p">,</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span>   <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)),</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultinomialNB</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">pipeline_nb</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="p">(</span><span class="s2">&quot;tfidf&quot;</span><span class="p">,</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))),</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">,</span>   <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)),</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="p">])</span>
+
+<span class="ne">NameError</span>: name &#39;Pipeline&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Key advantage: Naive Bayes is the fastest approach in the comparison, with training times under a second even on large datasets. It provides well-calibrated probability estimates and is robust to high-dimensional sparse features.</p>
+</section>
+<section id="what-classical-models-learn">
+<h3><span class="section-number">5.3.3.4.3. </span>What Classical Models Learn<a class="headerlink" href="#what-classical-models-learn" title="Link to this heading">#</a></h3>
+<p>Inspecting the highest-weight features reveals exactly what TF-IDF models learn:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Top</span> <span class="n">positive</span> <span class="n">features</span> <span class="p">(</span><span class="n">SVM</span> <span class="n">weights</span><span class="p">):</span>
+  <span class="s2">&quot;great&quot;</span><span class="p">,</span> <span class="s2">&quot;excellent&quot;</span><span class="p">,</span> <span class="s2">&quot;wonderful&quot;</span><span class="p">,</span> <span class="s2">&quot;outstanding&quot;</span><span class="p">,</span> <span class="s2">&quot;brilliant&quot;</span>
+
+<span class="n">Top</span> <span class="n">negative</span> <span class="n">features</span><span class="p">:</span>
+  <span class="s2">&quot;boring&quot;</span><span class="p">,</span> <span class="s2">&quot;waste&quot;</span><span class="p">,</span> <span class="s2">&quot;terrible&quot;</span><span class="p">,</span> <span class="s2">&quot;fails&quot;</span><span class="p">,</span> <span class="s2">&quot;disappointing&quot;</span>
+</pre></div>
+</div>
+<p>These are primarily <strong>sentiment lexicon</strong> features. The model’s intelligence comes from the training labels assigning these weights, not from any semantic understanding of how words combine.</p>
+</section>
+</section>
+<section id="generation-2-dense-embedding-networks">
+<h2><span class="section-number">5.3.3.5. </span>Generation 2: Dense Embedding Networks<a class="headerlink" href="#generation-2-dense-embedding-networks" title="Link to this heading">#</a></h2>
+<section id="glove-mean-pooled-mlp-rotten-tomatoes">
+<h3><span class="section-number">5.3.3.5.1. </span>GloVe + Mean-Pooled MLP (Rotten Tomatoes)<a class="headerlink" href="#glove-mean-pooled-mlp-rotten-tomatoes" title="Link to this heading">#</a></h3>
+<p>GloVe (Global Vectors) pre-trains word embeddings on a large corpus by factorizing a word co-occurrence matrix. Each word in the vocabulary receives a fixed 100- or 300-dimensional vector.</p>
+<p>To classify a document, we:</p>
+<ol class="arabic simple">
+<li><p>Look up the GloVe embedding for each word in the document.</p></li>
+<li><p><strong>Mean pool</strong> all word vectors to produce a single fixed-length document vector.</p></li>
+<li><p>Pass this vector to a multi-layer perceptron (MLP) classifier.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">embed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">glove</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">glove</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">glove</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">vecs</span><span class="p">:</span>
+            <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vecs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MLPClassifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Mean Pooling</p>
+<p><strong>Mean pooling</strong> aggregates a variable-length sequence of word embeddings into a single fixed-length document vector:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{d} = \frac{1}{|\mathcal{W}|} \sum_{w \in \mathcal{W}} \mathbf{e}_w\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> is the set of words in the document that appear in the vocabulary and <span class="math notranslate nohighlight">\(\mathbf{e}_w \in \mathbb{R}^d\)</span> is the pre-trained embedding for word <span class="math notranslate nohighlight">\(w\)</span>. Mean pooling is order-invariant: shuffling the words in a document yields the same vector. This is both a strength (no sensitivity to minor word-order variations) and a limitation (negation and word order are invisible).</p>
+</div>
+</section>
+<section id="glove-1d-cnn-yelp">
+<h3><span class="section-number">5.3.3.5.2. </span>GloVe + 1D CNN (Yelp)<a class="headerlink" href="#glove-1d-cnn-yelp" title="Link to this heading">#</a></h3>
+<p>While mean pooling discards all word order information, a <strong>1D Convolutional Neural Network (CNN)</strong> applies filters of varying widths over the sequence of word embeddings, capturing local n-gram patterns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GloVe embedding matrix: (seq_len, 100)
+  ↓
+Conv1D(filters=128, kernel_size=3) → captures trigram patterns
+Conv1D(filters=128, kernel_size=4) → captures 4-gram patterns
+Conv1D(filters=128, kernel_size=5) → captures 5-gram patterns
+  ↓
+MaxPool over each filter → (3 × 128,) = (384,) fixed-length
+  ↓
+Fully connected → 2 output logits
+</pre></div>
+</div>
+<p>The CNN learns which short phrase patterns are predictive of each class — for example, a filter that activates strongly on “not worth” (negative) or “highly recommend” (positive). This captures phrase-level patterns that pure mean pooling misses.</p>
+</section>
+<section id="advantages-over-generation-1">
+<h3><span class="section-number">5.3.3.5.3. </span>Advantages Over Generation 1<a class="headerlink" href="#advantages-over-generation-1" title="Link to this heading">#</a></h3>
+<p>Dense embedding methods handle vocabulary generalization — if the model has never seen “stupendous” in the training data but knows “outstanding” and “amazing” are nearby in embedding space, it can still classify the review correctly. TF-IDF representations treat each unseen word as zero, discarding potentially useful evidence.</p>
+</section>
+</section>
+<section id="generation-3-fine-tuned-transformers">
+<h2><span class="section-number">5.3.3.6. </span>Generation 3: Fine-Tuned Transformers<a class="headerlink" href="#generation-3-fine-tuned-transformers" title="Link to this heading">#</a></h2>
+<section id="roberta-fine-tuning">
+<h3><span class="section-number">5.3.3.6.1. </span>RoBERTa Fine-Tuning<a class="headerlink" href="#roberta-fine-tuning" title="Link to this heading">#</a></h3>
+<p>Fine-tuning a pre-trained transformer involves:</p>
+<ol class="arabic simple">
+<li><p>Loading a model pre-trained on large corpora (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code>: 125M parameters, trained on 160GB of text).</p></li>
+<li><p>Replacing the classification head with a task-specific linear layer.</p></li>
+<li><p>Training the entire model end-to-end on labeled data with a small learning rate.</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title">Key Concept — Fine-Tuning and Catastrophic Forgetting</p>
+<p><strong>Fine-tuning</strong> adapts a pre-trained model to a downstream task by continuing gradient-based optimization on labeled task data. The fine-tuning objective for binary classification is cross-entropy loss:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log \hat{p}_i + (1 - y_i) \log (1 - \hat{p}_i) \right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i \in \{0, 1\}\)</span> is the true label and <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> is the model’s predicted probability for class 1.</p>
+<p><strong>Catastrophic forgetting</strong> occurs when a large learning rate causes the fine-tuned weights to drift far from their pre-trained values, erasing the general language knowledge encoded during pre-training. Using a small learning rate (<span class="math notranslate nohighlight">\(2 \times 10^{-5}\)</span>) and weight decay constrains the update magnitude, preserving the pre-trained representations while still adapting to the task.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdamW</span>
+
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;roberta-base&quot;</span>
+<span class="n">tokenizer</span>  <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span>      <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="p">,</span> <span class="n">num_labels</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="c1"># Fine-tune with small learning rate to avoid catastrophic forgetting</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">2e-5</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "e8cc81f751ad49418606dfa6a949cd60", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f760a3099de641ae8de1ac671acf7174", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "5961eca11e8f43c4bb4a4e33017d1a03", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "859a203b710949698823500e3bda6f48", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "527a264a0424472da9d40d1ac56444f3", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1781408688.501718    5935 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6d667465e1ab4f54a6ebc5e72e1cb1aa", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: [&#39;classifier.dense.bias&#39;, &#39;classifier.dense.weight&#39;, &#39;classifier.out_proj.bias&#39;, &#39;classifier.out_proj.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The critical difference from Generations 1 and 2: RoBERTa produces <strong>contextualized</strong> representations — the same word gets a different vector depending on its surrounding context. “The plot is not without its charms” receives a representation that captures the nuanced sentiment, not just the individual word meanings.</p>
+<p>Fine-tuned RoBERTa typically achieves <strong>~87–91% accuracy</strong> on Rotten Tomatoes and <strong>~93–95%</strong> on Yelp — significantly above classical and embedding-based approaches.</p>
+<div class="note admonition">
+<p class="admonition-title">Key Definition — Confusion Matrix Quantities</p>
+<p>All classification metrics derive from four counts in the <strong>confusion matrix</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Predicted Positive</p></th>
+<th class="head"><p>Predicted Negative</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Actually Positive</strong></p></td>
+<td><p>True Positive (TP)</p></td>
+<td><p>False Negative (FN)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Actually Negative</strong></p></td>
+<td><p>False Positive (FP)</p></td>
+<td><p>True Negative (TN)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>From these, the primary per-class metrics are:</p>
+<div class="math notranslate nohighlight">
+\[\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \qquad \text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}, \qquad \text{F1} = \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}\]</div>
+<p>Precision answers: <em>of all items predicted positive, how many actually were?</em><br />
+Recall answers: <em>of all items that actually were positive, how many did we find?</em></p>
+</div>
+</section>
+</section>
+<section id="evaluating-classifiers">
+<h2><span class="section-number">5.3.3.7. </span>Evaluating Classifiers<a class="headerlink" href="#evaluating-classifiers" title="Link to this heading">#</a></h2>
+<p>The primary evaluation metric is accuracy, but understanding precision and recall separately is essential for asymmetric error costs.</p>
+<section id="the-classification-report">
+<h3><span class="section-number">5.3.3.7.1. </span>The Classification Report<a class="headerlink" href="#the-classification-report" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                <span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
+
+           <span class="mi">0</span>       <span class="mf">0.87</span>      <span class="mf">0.90</span>      <span class="mf">0.88</span>       <span class="mi">533</span>
+           <span class="mi">1</span>       <span class="mf">0.89</span>      <span class="mf">0.87</span>      <span class="mf">0.88</span>       <span class="mi">533</span>
+
+    <span class="n">accuracy</span>                           <span class="mf">0.88</span>      <span class="mi">1066</span>
+   <span class="n">macro</span> <span class="n">avg</span>       <span class="mf">0.88</span>      <span class="mf">0.88</span>      <span class="mf">0.88</span>      <span class="mi">1066</span>
+<span class="n">weighted</span> <span class="n">avg</span>       <span class="mf">0.88</span>      <span class="mf">0.88</span>      <span class="mf">0.88</span>      <span class="mi">1066</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Definition</p></th>
+<th class="head"><p>When to optimize</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Precision</p></td>
+<td><p>TP / (TP + FP)</p></td>
+<td><p>When false positives are costly (spam filter)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Recall</p></td>
+<td><p>TP / (TP + FN)</p></td>
+<td><p>When false negatives are costly (medical diagnosis)</p></td>
+</tr>
+<tr class="row-even"><td><p>F1-score</p></td>
+<td><p>Harmonic mean of precision and recall</p></td>
+<td><p>Balanced trade-off</p></td>
+</tr>
+<tr class="row-odd"><td><p>Macro avg</p></td>
+<td><p>Simple average across classes</p></td>
+<td><p>Equal weight per class</p></td>
+</tr>
+<tr class="row-even"><td><p>Weighted avg</p></td>
+<td><p>Support-weighted average</p></td>
+<td><p>Better for imbalanced datasets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For balanced datasets like Rotten Tomatoes and Yelp (equal positive/negative), macro avg ≈ weighted avg, and F1 is the recommended single metric.</p>
+</section>
+</section>
+<section id="robustness-evaluation">
+<h2><span class="section-number">5.3.3.8. </span>Robustness Evaluation<a class="headerlink" href="#robustness-evaluation" title="Link to this heading">#</a></h2>
+<p>Aggregate accuracy on a clean test set reveals best-case behavior. Robustness evaluation probes three challenging conditions:</p>
+<section id="negation-and-sarcasm">
+<h3><span class="section-number">5.3.3.8.1. </span>1. Negation and Sarcasm<a class="headerlink" href="#negation-and-sarcasm" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Negation:  &quot;The film is not without its charms.&quot; → Positive (despite &quot;not&quot;)
+Sarcasm:   &quot;An absolute masterpiece... of wasted potential.&quot; → Negative
+</pre></div>
+</div>
+<p>Classical TF-IDF models are particularly vulnerable: they see the word “masterpiece” and assign positive weight to it, missing the sarcastic framing. RoBERTa, with contextualized attention over the full sentence, handles these cases more reliably.</p>
+</section>
+<section id="mixed-and-neutral-sentiment">
+<h3><span class="section-number">5.3.3.8.2. </span>2. Mixed and Neutral Sentiment<a class="headerlink" href="#mixed-and-neutral-sentiment" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Mixed</span><span class="p">:</span> <span class="s2">&quot;The performances are excellent but the screenplay is a disaster.&quot;</span>
+</pre></div>
+</div>
+<p>All approaches struggle with mixed reviews. The correct label depends on which aspect outweighs the other — a judgment that varies by annotator.</p>
+</section>
+<section id="cross-domain-transfer">
+<h3><span class="section-number">5.3.3.8.3. </span>3. Cross-Domain Transfer<a class="headerlink" href="#cross-domain-transfer" title="Link to this heading">#</a></h3>
+<p>Training on Rotten Tomatoes (movie reviews) and testing on Yelp (business reviews), or vice versa, reveals how much each model’s learned features are domain-specific:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>In-domain accuracy</p></th>
+<th class="head"><p>Cross-domain accuracy</p></th>
+<th class="head"><p>Drop</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TF-IDF + SVM</p></td>
+<td><p>~80%</p></td>
+<td><p>~72%</p></td>
+<td><p>~8%</p></td>
+</tr>
+<tr class="row-odd"><td><p>GloVe + MLP</p></td>
+<td><p>~82%</p></td>
+<td><p>~76%</p></td>
+<td><p>~6%</p></td>
+</tr>
+<tr class="row-even"><td><p>RoBERTa fine-tuned</p></td>
+<td><p>~90%</p></td>
+<td><p>~83%</p></td>
+<td><p>~7%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>RoBERTa’s higher absolute performance persists across domains, but the relative degradation is similar — domain shift affects all approaches similarly in percentage terms. The generalization gap reflects domain-specific vocabulary: movie critics use “cinematography,” “screenplay,” and “ensemble” while Yelp users use “portion size,” “wait time,” and “ambience.”</p>
+</section>
+</section>
+<section id="full-approach-comparison">
+<h2><span class="section-number">5.3.3.9. </span>Full Approach Comparison<a class="headerlink" href="#full-approach-comparison" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Accuracy</p></th>
+<th class="head"><p>Training</p></th>
+<th class="head"><p>Compute</p></th>
+<th class="head"><p>Interpretable</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>TF-IDF + Naive Bayes</p></td>
+<td><p>~78%</p></td>
+<td><p>Seconds</p></td>
+<td><p>CPU</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>TF-IDF + SVM</p></td>
+<td><p>~81%</p></td>
+<td><p>Seconds</p></td>
+<td><p>CPU</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>GloVe + MLP</p></td>
+<td><p>~82%</p></td>
+<td><p>Minutes</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-odd"><td><p>GloVe + 1D CNN</p></td>
+<td><p>~84%</p></td>
+<td><p>Minutes</p></td>
+<td><p>GPU/CPU</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-even"><td><p>RoBERTa fine-tuned</p></td>
+<td><p>~90%</p></td>
+<td><p>Hours</p></td>
+<td><p>GPU</p></td>
+<td><p>✗</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The key trade-off is capability vs. cost. Classical methods are fast, cheap, and interpretable but cap out around 80–82%. Transformer fine-tuning adds 8–10 percentage points at the cost of GPU compute and training time.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">5.3.3.10. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Feature inspection</strong>
+After training a TF-IDF + SVM classifier, extract the 20 features with the highest positive and negative weights. Are the top features words, bigrams, or a mix? Do any features surprise you — words that you would not have expected to be strongly predictive?</p></li>
+<li><p><strong>Negation stress test</strong>
+Take 10 positive reviews from the test set and prepend “It is not true that:” to each one. How do the three approaches (TF-IDF+SVM, GloVe+MLP, RoBERTa) respond? Does any approach correctly flip the prediction?</p></li>
+<li><p><strong>Confusion matrix analysis</strong>
+Plot the confusion matrix for RoBERTa on the test set. Identify the categories of false positives (negative reviews predicted as positive) and false negatives. What properties do the misclassified examples share?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C05S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.3.2. </span>Parallel Token Processing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C05S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3.4. </span>Text Classification with Leveraging Embeddings</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">5.3.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-text-classification-problem">5.3.3.2. The Text Classification Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-generations-of-approaches">5.3.3.3. Three Generations of Approaches</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-1-classical-sparse-pipelines">5.3.3.4. Generation 1: Classical Sparse Pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-svm-rotten-tomatoes">5.3.3.4.1. TF-IDF + SVM (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-naive-bayes-yelp">5.3.3.4.2. TF-IDF + Naive Bayes (Yelp)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-classical-models-learn">5.3.3.4.3. What Classical Models Learn</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-2-dense-embedding-networks">5.3.3.5. Generation 2: Dense Embedding Networks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-mean-pooled-mlp-rotten-tomatoes">5.3.3.5.1. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-1d-cnn-yelp">5.3.3.5.2. GloVe + 1D CNN (Yelp)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-over-generation-1">5.3.3.5.3. Advantages Over Generation 1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-3-fine-tuned-transformers">5.3.3.6. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta-fine-tuning">5.3.3.6.1. RoBERTa Fine-Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-classifiers">5.3.3.7. Evaluating Classifiers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-classification-report">5.3.3.7.1. The Classification Report</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-evaluation">5.3.3.8. Robustness Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#negation-and-sarcasm">5.3.3.8.1. 1. Negation and Sarcasm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-and-neutral-sentiment">5.3.3.8.2. 2. Mixed and Neutral Sentiment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-domain-transfer">5.3.3.8.3. 3. Cross-Domain Transfer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-approach-comparison">5.3.3.9. Full Approach Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">5.3.3.10. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
