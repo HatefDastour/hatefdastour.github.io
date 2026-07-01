@@ -1,6 +1,6 @@
 ---
 layout: archive
-title: "Editorships"
+title: "Editorial Service"
 permalink: /editorships/
 author_profile: true
 ---
