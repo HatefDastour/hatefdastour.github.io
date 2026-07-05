@@ -34,9 +34,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -202,7 +202,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3.1. Inside Transformer LLMs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S04.html">5.3.4. Text Classification with Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S04.html">5.3.4. Text Classification by Leveraging Embeddings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
@@ -395,12 +395,49 @@
 </section>
 <section id="the-transformer-decoder-architecture">
 <h2><span class="section-number">5.3.1.3. </span>The Transformer Decoder Architecture<a class="headerlink" href="#the-transformer-decoder-architecture" title="Link to this heading">#</a></h2>
-<p>All modern autoregressive LLMs (GPT, LLaMA, Phi, Mistral, Gemma) share the same fundamental architecture — a <strong>transformer decoder stack</strong>. The model processes a sequence of token IDs, applies 32 (or more) layers of self-attention and feed-forward transformations, and projects the final hidden state to a vocabulary distribution.</p>
+<p>All modern autoregressive LLMs (GPT, LLaMA, Phi, Mistral, Gemma) share the same fundamental architecture — a <strong>transformer decoder stack</strong> <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id462" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is All you Need. In I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc., 2017. URL: https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf.">Vaswani <em>et al.</em>, 2017</a>]</span>. The model processes a sequence of token IDs, applies 32 (or more) layers of self-attention and feed-forward transformations, and projects the final hidden state to a vocabulary distribution.</p>
 <div class="note admonition">
 <p class="admonition-title">Key Definition — Autoregressive Generation</p>
 <p>A model is <strong>autoregressive</strong> if it generates one token at a time, conditioning each new token on all previously generated tokens. Formally, given a sequence of tokens <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_t\)</span>, the model estimates the conditional probability <span class="math notranslate nohighlight">\(P(x_{t+1} \mid x_1, \ldots, x_t)\)</span> and samples (or selects) the next token from that distribution.</p>
 </div>
-<p>The primary model for this section is <strong>Phi-3-Mini-4K-Instruct</strong> — the same 3.8B-parameter model used in Chapter 4. Loading it requires only a few lines:</p>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title" id="example-0"><span class="caption-number">Example </span> (Predicting Mizzou’s History)</p>
+<section class="example-content" id="proof-content">
+<p>Imagine you give an LLM the prompt:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;The</span> <span class="pre">capital</span> <span class="pre">of</span> <span class="pre">Japan</span> <span class="pre">is&quot;</span></code></p>
+</div></blockquote>
+<p>An autoregressive model doesn’t generate the full phrase or answer all at once. Instead, it runs a loop, predicting <strong>one token at a time</strong>, where each new token is strictly conditioned on everything that came before it:</p>
+<ul class="simple">
+<li><p><strong>Step 1:</strong> The model takes the initial input prefix (<span class="math notranslate nohighlight">\(x_1\)</span> to <span class="math notranslate nohighlight">\(x_4\)</span>):</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-137bf657-0071-4aec-abc1-4c783f177cb5">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-137bf657-0071-4aec-abc1-4c783f177cb5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{[The, capital, of, Japan]}
+\end{equation}\]</div>
+<p>It calculates the probabilities for the next slot (<span class="math notranslate nohighlight">\(x_5\)</span>) and selects <strong>“is”</strong> because <span class="math notranslate nohighlight">\(P(\text{&quot;is&quot;} \mid \text{The capital of Japan})\)</span> is extremely high.</p>
+<ul class="simple">
+<li><p><strong>Step 2:</strong> The model appends “is” to the sequence. The new input becomes:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-a784f775-b644-4930-b27f-63da3006e282">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-a784f775-b644-4930-b27f-63da3006e282" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{[The, capital, of, Japan, is]}
+\end{equation}\]</div>
+<p>It calculates probabilities for <span class="math notranslate nohighlight">\(x_6\)</span>. The token <strong>“Tokyo”</strong> wins the highest probability mass.</p>
+<ul class="simple">
+<li><p><strong>Step 3:</strong> The model appends “Tokyo”. The new input becomes:</p></li>
+</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-db20463a-f61c-4325-bc7a-8c5d9b58c818">
+<span class="eqno">(5.3)<a class="headerlink" href="#equation-db20463a-f61c-4325-bc7a-8c5d9b58c818" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{[The, capital, of, Japan, is, Tokyo]}
+\end{equation}\]</div>
+<p>It calculates probabilities for <span class="math notranslate nohighlight">\(x_7\)</span>. Conditioned on the semantic context and the prefix “Tokyo”, a punctuation token like <strong>“.”</strong> (a period) becomes the most probable choice to terminate the clause.</p>
+<p><strong>Final Output Array:</strong> <code class="docutils literal notranslate"><span class="pre">[&quot;The&quot;,</span> <span class="pre">&quot;capital&quot;,</span> <span class="pre">&quot;of&quot;,</span> <span class="pre">&quot;Japan&quot;,</span> <span class="pre">&quot;is&quot;,</span> <span class="pre">&quot;Tokyo&quot;,</span> <span class="pre">&quot;.&quot;]</span></code></p>
+</section>
+</div><blockquote>
+<div><p>📌 <strong>Why this matters:</strong> At Step 2, if the model forgot the token “Japan” (<span class="math notranslate nohighlight">\(x_4\)</span>) or “capital” (<span class="math notranslate nohighlight">\(x_2\)</span>), it wouldn’t know whether to generate “Tokyo” (for Japan), “Paris” (for France), or “Kyoto” (if it confused modern geographical facts with historical context). The autoregressive mechanism guarantees that <strong>every single past word</strong> directly shapes the probability distribution of the next upcoming token.</p>
+</div></blockquote>
+<p>The primary model for this section is <strong>Phi-3-Mini-4K-Instruct</strong> <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id493" title="Marah Abdin and others. Phi-3 Technical Report: A Highly Capable Language Model Locally on Your Phone. 2024. arXiv:2404.14219. URL: https://arxiv.org/abs/2404.14219.">Abdin and others, 2024</a>]</span> — the same 3.8B-parameter model used in Chapter 4. Loading it requires only a few lines, using PyTorch <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id494" title="Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas Köpf, Edward Yang, Zachary DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie Bai, and Soumith Chintala. PyTorch: An Imperative Style, High-Performance Deep Learning Library. In Advances in Neural Information Processing Systems 32 (NeurIPS 2019), 8024–8035. 2019.">Paszke <em>et al.</em>, 2019</a>]</span> and the Hugging Face <code class="docutils literal notranslate"><span class="pre">transformers</span></code> library <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id495" title="Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue, Anthony Moi, Pierric Cistac, Tim Rault, Rémi Louf, Morgan Funtowicz, and Jamie Brew. HuggingFace's Transformers: State-of-the-Art Natural Language Processing. 2020. arXiv:1910.03771. URL: https://arxiv.org/abs/1910.03771.">Wolf <em>et al.</em>, 2020</a>]</span>:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -478,8 +515,8 @@
 </div>
 <p>Before examining the formal definitions, it is worth clarifying the functional role of each module in the context of the forward pass.</p>
 <p>Every token travels through the network as a fixed-width vector of <span class="math notranslate nohighlight">\(d_\text{model} = 3{,}072\)</span> real numbers. This vector is updated — but never resized — at each layer. The modules listed in the table below can be grouped into four categories: (1) the <strong>embedding lookup</strong>, which initializes each token’s vector; (2) the <strong>attention sub-layer</strong>, which allows tokens to incorporate context from other positions; (3) the <strong>feed-forward (MLP) sub-layer</strong>, which applies a position-wise nonlinear transformation; and (4) the <strong>normalization layers</strong>, which rescale vectors to prevent numerical instability.</p>
-<p><strong>On RMSNorm.</strong> Standard Layer Normalization subtracts the mean and divides by the standard deviation. RMSNorm simplifies this by omitting the mean-centering step and rescaling solely by the root mean square of the vector. Because mean-centering is empirically unnecessary in transformer residual streams, RMSNorm achieves the same stabilizing effect at lower computational cost. The <span class="math notranslate nohighlight">\(\epsilon\)</span> term in the denominator prevents division by zero when the input is near-zero, and <span class="math notranslate nohighlight">\(\boldsymbol{\gamma}\)</span> is a learned per-element scale that restores the network’s representational capacity after normalization.</p>
-<p><strong>On SiLU.</strong> The SiLU (Sigmoid Linear Unit) is the nonlinear activation inside the SwiGLU MLP block. Unlike ReLU, which hard-clamps negative inputs to zero, SiLU allows small negative values to propagate with a scaled-down magnitude. This smooth, non-zero gradient for negative inputs improves gradient flow during training and is a standard choice in modern large language models.</p>
+<p><strong>On RMSNorm.</strong> Standard Layer Normalization subtracts the mean and divides by the standard deviation. RMSNorm <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id496" title="Biao Zhang and Rico Sennrich. Root Mean Square Layer Normalization. In Advances in Neural Information Processing Systems 32 (NeurIPS 2019), 12360–12371. 2019.">Zhang and Sennrich, 2019</a>]</span> simplifies this by omitting the mean-centering step and rescaling solely by the root mean square of the vector. Because mean-centering is empirically unnecessary in transformer residual streams, RMSNorm achieves the same stabilizing effect at lower computational cost. The <span class="math notranslate nohighlight">\(\epsilon\)</span> term in the denominator prevents division by zero when the input is near-zero, and <span class="math notranslate nohighlight">\(\boldsymbol{\gamma}\)</span> is a learned per-element scale that restores the network’s representational capacity after normalization.</p>
+<p><strong>On SiLU.</strong> The SiLU (Sigmoid Linear Unit) <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id497" title="Stefan Elfwing, Eiji Uchibe, and Kenji Doya. Sigmoid-Weighted Linear Units for Neural Network Function Approximation in Reinforcement Learning. Neural Networks, 107:3–11, 2017. arXiv:1702.03118.">Elfwing <em>et al.</em>, 2017</a>]</span> is the nonlinear activation inside the SwiGLU <span class="bibtex-citation" id="id7">[<a class="reference internal" href="../References.html#id498" title="Noam Shazeer. GLU Variants Improve Transformer. 2020. arXiv:2002.05202. URL: https://arxiv.org/abs/2002.05202.">Shazeer, 2020</a>]</span> MLP block. Unlike ReLU, which hard-clamps negative inputs to zero, SiLU allows small negative values to propagate with a scaled-down magnitude. This smooth, non-zero gradient for negative inputs improves gradient flow during training and is a standard choice in modern large language models.</p>
 <p>Reading the PyTorch printout reveals the full computational graph of Phi-3-Mini. Each named module corresponds to a specific transformation in the architecture:</p>
 <div class="full-width docutils">
 <div class="pst-scrollable-table-container"><table class="table" id="functional-breakdown-phi3">
@@ -505,7 +542,7 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rotary_emb</span></code></p></td>
 <td><p>—</p></td>
-<td><p><strong>Positional Encoding:</strong> Computes position-dependent rotations (RoPE) for the <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(K\)</span> vectors.</p></td>
+<td><p><strong>Positional Encoding:</strong> Computes position-dependent rotations (RoPE <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id500" title="Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, and Yunfeng Liu. RoFormer: Enhanced Transformer with Rotary Position Embedding. 2021. arXiv:2104.09864. URL: https://arxiv.org/abs/2104.09864.">Su <em>et al.</em>, 2021</a>]</span>) for the <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(K\)</span> vectors.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">o_proj</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Linear(3072</span> <span class="pre">→</span> <span class="pre">3072)</span></code></p></td>
@@ -551,9 +588,9 @@
 </div><div class="proof definition admonition" id="RMSNorm">
 <p class="admonition-title" id="RMSNorm"><span class="caption-number">Definition </span> (RMSNorm)</p>
 <section class="definition-content" id="proof-content">
-<p><strong>Root Mean Square Normalization (RMSNorm)</strong> is a computationally efficient alternative to Layer Normalization that omits the mean-centering step. Given a hidden vector <span class="math notranslate nohighlight">\(\mathbf{h} \in \mathbb{R}^d\)</span>, it rescales each element by the inverse of the root-mean-square of the vector:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-43c2ab84-e189-42d2-9f74-ae66d2f9bb6c">
-<span class="eqno">(5.1)<a class="headerlink" href="#equation-43c2ab84-e189-42d2-9f74-ae66d2f9bb6c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p><strong>Root Mean Square Normalization (RMSNorm)</strong> <span class="bibtex-citation" id="id9">[<a class="reference internal" href="../References.html#id496" title="Biao Zhang and Rico Sennrich. Root Mean Square Layer Normalization. In Advances in Neural Information Processing Systems 32 (NeurIPS 2019), 12360–12371. 2019.">Zhang and Sennrich, 2019</a>]</span> is a computationally efficient alternative to Layer Normalization that omits the mean-centering step. Given a hidden vector <span class="math notranslate nohighlight">\(\mathbf{h} \in \mathbb{R}^d\)</span>, it rescales each element by the inverse of the root-mean-square of the vector:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-8135eb81-14a8-46fc-99b9-69fef5897112">
+<span class="eqno">(5.4)<a class="headerlink" href="#equation-8135eb81-14a8-46fc-99b9-69fef5897112" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{RMSNorm}(\mathbf{h}) = \frac{\mathbf{h}}{\sqrt{\frac{1}{d}\sum_{i=1}^{d} h_i^2 + \epsilon}} \odot \boldsymbol{\gamma}
 \end{equation}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(\boldsymbol{\gamma}\)</span> is a learned scale parameter and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant (<span class="math notranslate nohighlight">\(10^{-5}\)</span>) added for numerical stability.</p>
@@ -561,9 +598,9 @@
 </div><div class="proof definition admonition" id="activation_function">
 <p class="admonition-title" id="activation_function"><span class="caption-number">Definition </span> (Activation Function)</p>
 <section class="definition-content" id="proof-content">
-<p>The activation function utilized within the SwiGLU MLP structure is the <strong>Sigmoid Linear Unit</strong> (also known as the Swish function), mathematically defined as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8aace5fd-c49b-4d48-9cd6-8d44efdcaa6e">
-<span class="eqno">(5.2)<a class="headerlink" href="#equation-8aace5fd-c49b-4d48-9cd6-8d44efdcaa6e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<p>The activation function utilized within the SwiGLU <span class="bibtex-citation" id="id10">[<a class="reference internal" href="../References.html#id498" title="Noam Shazeer. GLU Variants Improve Transformer. 2020. arXiv:2002.05202. URL: https://arxiv.org/abs/2002.05202.">Shazeer, 2020</a>]</span> MLP structure is the <strong>Sigmoid Linear Unit</strong> (also known as the Swish function) <span class="bibtex-citation" id="id11">[<a class="reference internal" href="../References.html#id497" title="Stefan Elfwing, Eiji Uchibe, and Kenji Doya. Sigmoid-Weighted Linear Units for Neural Network Function Approximation in Reinforcement Learning. Neural Networks, 107:3–11, 2017. arXiv:1702.03118.">Elfwing <em>et al.</em>, 2017</a>]</span>, mathematically defined as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c3b56d91-58ce-4f23-beb4-4c0dbc6abda4">
+<span class="eqno">(5.5)<a class="headerlink" href="#equation-c3b56d91-58ce-4f23-beb4-4c0dbc6abda4" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{SiLU}(x) = x \cdot \sigma(x) = \frac{x}{1 + e^{-x}}
 \end{equation}\]</div>
 </section>
@@ -622,18 +659,15 @@ Full model                            3,821,079,552
 </div>
 <section id="key-observations-structural-verification">
 <h3><span class="section-number">5.3.1.5.1. </span>Key Observations &amp; Structural Verification<a class="headerlink" href="#key-observations-structural-verification" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><ol class="arabic simple">
+<ol class="arabic simple">
 <li><p><strong>The Backbone Dominates (~3.6 B)</strong>: The 32 stacked decoder layers together contain approximately <strong>3.6 B</strong> parameters. This means the vast majority of the model’s learned capacity and reasoning power lives inside those repeating transformer blocks rather than its input/output routing.</p></li>
+<li><p><strong>Fusing the Embeddings &amp; LM Head (~98.5 M)</strong>: The claim that the embedding layer contains <span class="math notranslate nohighlight">\(\sim 98.5\text{ M}\)</span> parameters is easy to verify by hand using the shapes from the module printout:</p></li>
 </ol>
-</li>
-<li><ol class="arabic simple" start="2">
-<li><p><strong>Fusing the Embeddings &amp; LM Head (~98.5 M)</strong>: The claim that the embedding layer contains <span class="math notranslate nohighlight">\(\sim 98.5\text{ M}\)</span> parameters is easy to verify by hand using the shapes from the module printout:
-\begin{equation}\text{params}(\texttt{embed_tokens}) = V \times d_{\text{model}} = 32{,}064 \times 3{,}072 = 98{,}500{,}608 \approx 98.5\text{ M}\end{equation}
-You can verify this tensor shape interactively in your environment:</p></li>
-</ol>
-</li>
-</ul>
+<div class="amsmath math notranslate nohighlight" id="equation-a698efe2-d50a-480b-8d09-9dcb7cb56f1e">
+<span class="eqno">(5.6)<a class="headerlink" href="#equation-a698efe2-d50a-480b-8d09-9dcb7cb56f1e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+\text{params}(\texttt{embed_tokens}) = V \times d_{\text{model}} = 32{,}064 \times 3{,}072 = 98{,}500{,}608 \approx 98.5\text{ M}
+\end{equation}\]</div>
+<p>You can verify this tensor shape interactively in your environment:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -657,7 +691,7 @@ You can verify this tensor shape interactively in your environment:</p></li>
 </div>
 <div class="note admonition">
 <p class="admonition-title">Deep Dive — Weight Tying Mechanics</p>
-<p>In Phi-3, the exact same matrix <span class="math notranslate nohighlight">\(W_{\text{embed}} \in \mathbb{R}^{32064 \times 3072}\)</span> is <strong>tied</strong> (reused) as both the <code class="docutils literal notranslate"><span class="pre">embed_tokens</span></code> weight and the <code class="docutils literal notranslate"><span class="pre">lm_head</span></code> weight. This architectural choice saves <span class="math notranslate nohighlight">\(98.5\text{ M}\)</span> parameters with no measurable loss in generation quality:</p>
+<p>In Phi-3, the exact same matrix <span class="math notranslate nohighlight">\(W_{\text{embed}} \in \mathbb{R}^{32064 \times 3072}\)</span> is <strong>tied</strong> (reused) <span class="bibtex-citation" id="id12">[<a class="reference internal" href="../References.html#id499" title="Ofir Press and Lior Wolf. Using the Output Embedding to Improve Language Models. In Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers, 157–163. Valencia, Spain, 2017. Association for Computational Linguistics.">Press and Wolf, 2017</a>]</span> as both the <code class="docutils literal notranslate"><span class="pre">embed_tokens</span></code> weight and the <code class="docutils literal notranslate"><span class="pre">lm_head</span></code> weight. This architectural choice saves <span class="math notranslate nohighlight">\(98.5\text{ M}\)</span> parameters with no measurable loss in generation quality:</p>
 <ul class="simple">
 <li><p><strong>Input Path:</strong> When looking up the embedding for an incoming token <span class="math notranslate nohighlight">\(t\)</span>, the model reads <em>row <span class="math notranslate nohighlight">\(t\)</span></em> of <span class="math notranslate nohighlight">\(W_{\text{embed}}\)</span>.</p></li>
 <li><p><strong>Output Path:</strong> When scoring the next token, the LM head computes <span class="math notranslate nohighlight">\(W_{\text{embed}}\,\mathbf{h}\)</span>. This operation takes the <em>dot product</em> of the final hidden state <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> with every token’s embedding row—effectively measuring, <em>“how closely does our current semantic representation resemble each known token in our vocabulary?”</em></p></li>
@@ -733,8 +767,8 @@ Predicted next token: &#39;Tokyo&#39;
 <section id="why-does-the-hidden-dimension-3072-remain-constant-across-all-32-layers">
 <h4><span class="section-number">5.3.1.6.3.1. </span>Why does the hidden dimension (<span class="math notranslate nohighlight">\(3072\)</span>) remain constant across all 32 layers?<a class="headerlink" href="#why-does-the-hidden-dimension-3072-remain-constant-across-all-32-layers" title="Link to this heading">#</a></h4>
 <p>The core residual network identity equation is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5960a7e1-4ee9-49b1-a858-8f0c5ddd6b3b">
-<span class="eqno">(5.3)<a class="headerlink" href="#equation-5960a7e1-4ee9-49b1-a858-8f0c5ddd6b3b" title="Permalink to this equation">#</a></span>\[\begin{equation}\mathbf{h}^{(\ell)} = \mathbf{h}^{(\ell-1)} + \Delta \mathbf{h}^{(\ell)}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-44056306-ff8a-46d6-82df-b0560c3bbf2c">
+<span class="eqno">(5.7)<a class="headerlink" href="#equation-44056306-ff8a-46d6-82df-b0560c3bbf2c" title="Permalink to this equation">#</a></span>\[\begin{equation}\mathbf{h}^{(\ell)} = \mathbf{h}^{(\ell-1)} + \Delta \mathbf{h}^{(\ell)}\end{equation}\]</div>
 <p>Because vector addition must be performed element-wise, the layer update <span class="math notranslate nohighlight">\(\Delta \mathbf{h}^{(\ell)}\)</span> is strictly required to match the exact dimensional shape of the incoming hidden state <span class="math notranslate nohighlight">\(\mathbf{h}^{(\ell-1)}\)</span>. While layers scale up internally to <span class="math notranslate nohighlight">\(9216\)</span> (Attention) or <span class="math notranslate nohighlight">\(16384\)</span> (MLP), their output projections (<code class="docutils literal notranslate"><span class="pre">o_proj</span></code> and <code class="docutils literal notranslate"><span class="pre">down_proj</span></code>) act as bottlenecks to force the shape back to a width of <span class="math notranslate nohighlight">\(3072\)</span> before the residual addition.</p>
 </section>
 <section id="why-do-we-only-sample-the-last-sequence-position-1-for-the-next-token">
@@ -762,8 +796,8 @@ Predicted next token: &#39;Tokyo&#39;
 <div class="note admonition">
 <p class="admonition-title">Key Definition — Softmax</p>
 <p>Given a logit vector <span class="math notranslate nohighlight">\(\mathbf{z} \in \mathbb{R}^V\)</span>, the softmax function produces a probability distribution <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^V\)</span> where every entry is non-negative and the entries sum to 1:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-537f6e2d-aa9e-493e-af59-a38dcd79ad99">
-<span class="eqno">(5.4)<a class="headerlink" href="#equation-537f6e2d-aa9e-493e-af59-a38dcd79ad99" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9d38e9e2-f45f-4d70-9206-1825e8b8e06a">
+<span class="eqno">(5.8)<a class="headerlink" href="#equation-9d38e9e2-f45f-4d70-9206-1825e8b8e06a" title="Permalink to this equation">#</a></span>\[\begin{equation}
   p_i = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}, \quad \sum_{i=1}^{V} p_i = 1
 \end{equation}\]</div>
 <p>Tokens with higher logits receive higher probabilities, but even tokens with negative logits receive a small non-zero probability.</p>
@@ -866,8 +900,8 @@ Sum of all 32,064 probabilities = 1.000
 </table>
 </div>
 <p>Applying the softmax formula explicitly to our highest logit token:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-59308027-877e-41cd-9c70-27d5e9cfd6b9">
-<span class="eqno">(5.5)<a class="headerlink" href="#equation-59308027-877e-41cd-9c70-27d5e9cfd6b9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-113fd113-5162-44de-80fd-de9ef5943e5d">
+<span class="eqno">(5.9)<a class="headerlink" href="#equation-113fd113-5162-44de-80fd-de9ef5943e5d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p_{\text{Tokyo}} = \frac{e^{4.0}}{e^{4.0} + e^{1.503} + e^{1.25} + e^{0.5} + e^{-2.0}} \approx 0.8482
 \end{equation}\]</div>
 <p><em>(The exact values in this toy distribution match our real-world model output of 82.81% for “Tokyo,” demonstrating how a prominent logit sweeps up the majority of the probability mass.)</em></p>
@@ -877,8 +911,8 @@ p_{\text{Tokyo}} = \frac{e^{4.0}}{e^{4.0} + e^{1.503} + e^{1.25} + e^{0.5} + e^{
 <li><p><strong>The Gap Drives Confidence:</strong> Softmax amplifies relative distance. The logit gap between <code class="docutils literal notranslate"><span class="pre">&quot;Tokyo&quot;</span></code> (<span class="math notranslate nohighlight">\(4.000\)</span>) and its nearest competitor <code class="docutils literal notranslate"><span class="pre">&quot;_&quot;</span> </code> (<span class="math notranslate nohighlight">\(1.503\)</span>) is roughly <span class="math notranslate nohighlight">\(2.5\)</span>, which scales exponentially to a massive probability ratio of <span class="math notranslate nohighlight">\(e^{2.5} \approx 12.18\times\)</span>.</p></li>
 <li><p><strong>Absolute Values Do Not Matter:</strong> The transformation only measures <em>relative scaling</em>. If you add an arbitrary constant offset <span class="math notranslate nohighlight">\(c\)</span> to every single raw logit vector value, it cleanly cancels out of the division equation:</p></li>
 </ol>
-<div class="amsmath math notranslate nohighlight" id="equation-a872e97a-69e3-4115-8395-cf54067002a3">
-<span class="eqno">(5.6)<a class="headerlink" href="#equation-a872e97a-69e3-4115-8395-cf54067002a3" title="Permalink to this equation">#</a></span>\[\begin{equation}\frac{e^{z_i + c}}{\sum_j e^{z_j + c}} = \frac{e^{z_i} \cdot e^c}{e^c \cdot \sum_j e^{z_j}} = \frac{e^{z_i}}{\sum_j e^{z_j}}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-a8f3725d-8d50-4156-af91-853d85ba05de">
+<span class="eqno">(5.10)<a class="headerlink" href="#equation-a8f3725d-8d50-4156-af91-853d85ba05de" title="Permalink to this equation">#</a></span>\[\begin{equation}\frac{e^{z_i + c}}{\sum_j e^{z_j + c}} = \frac{e^{z_i} \cdot e^c}{e^c \cdot \sum_j e^{z_j}} = \frac{e^{z_i}}{\sum_j e^{z_j}}\end{equation}\]</div>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -917,8 +951,8 @@ PyTorch p_Tokyo       : 0.8482
 <section id="the-role-of-temperature">
 <h3><span class="section-number">5.3.1.7.2. </span>The Role of Temperature<a class="headerlink" href="#the-role-of-temperature" title="Link to this heading">#</a></h3>
 <p>During language generation inference, <strong>temperature</strong> acts as an adjustable scaling knob that reshapes the distribution landscape right before it gets handed off to the softmax function. All logits are divided uniformly by a scalar hyperparameter <span class="math notranslate nohighlight">\(T &gt; 0\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-423a0582-7285-450b-b465-1004f8f97880">
-<span class="eqno">(5.7)<a class="headerlink" href="#equation-423a0582-7285-450b-b465-1004f8f97880" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-60c72738-a819-4fb6-a464-a52e614d883d">
+<span class="eqno">(5.11)<a class="headerlink" href="#equation-60c72738-a819-4fb6-a464-a52e614d883d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \tilde{z}_i = \frac{z_i}{T}
 \end{equation}\]</div>
 <div class="pst-scrollable-table-container"><table class="table" id="temperature-hyperparameter">
@@ -1110,16 +1144,16 @@ Layer 32: last-token L2 norm = 77.00
 <section id="residual-dynamics-and-layer-norm-growth">
 <h3><span class="section-number">5.3.1.8.1. </span>Residual Dynamics and Layer Norm Growth<a class="headerlink" href="#residual-dynamics-and-layer-norm-growth" title="Link to this heading">#</a></h3>
 <p>As seen in the output above, the L2 norm of the last-token representation (from Layer 0 as the raw embedding up to Layer 31) tends to grow progressively through the architecture. This occurs because each successive decoder block appends a new vector to the running representation via a <strong>residual update</strong>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-76da9875-0835-40cb-a118-a0d52fac71ae">
-<span class="eqno">(5.8)<a class="headerlink" href="#equation-76da9875-0835-40cb-a118-a0d52fac71ae" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dac0ff64-09a2-4bc7-b03a-b34b83f2ccdc">
+<span class="eqno">(5.12)<a class="headerlink" href="#equation-dac0ff64-09a2-4bc7-b03a-b34b83f2ccdc" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{h}^{(\ell)} = \mathbf{h}^{(\ell-1)} + \Delta_\text{attn}^{(\ell)} + \Delta_\text{MLP}^{(\ell)}
 \end{equation}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(\mathbf{h}^{(\ell-1)}\)</span> is the input to layer <span class="math notranslate nohighlight">\(\ell\)</span>, <span class="math notranslate nohighlight">\(\Delta_\text{attn}\)</span> is the self-attention update, and <span class="math notranslate nohighlight">\(\Delta_\text{MLP}\)</span> is the feed-forward update. This <strong>residual (skip) connection</strong> ensures that gradients can flow directly back to early layers during training and that early representations are preserved as later layers refine them.</p>
 <section id="why-the-norm-accumulates-mathematically">
 <h4><span class="section-number">5.3.1.8.1.1. </span>Why the Norm Accumulates Mathematically<a class="headerlink" href="#why-the-norm-accumulates-mathematically" title="Link to this heading">#</a></h4>
 <p>If we group the total layer update as <span class="math notranslate nohighlight">\(\Delta^{(\ell)} = \Delta_\text{attn}^{(\ell)} + \Delta_\text{MLP}^{(\ell)}\)</span>, the accumulation simplifies to <span class="math notranslate nohighlight">\(\mathbf{h}^{(\ell)} = \mathbf{h}^{(\ell-1)} + \Delta^{(\ell)}\)</span>. Assuming that the update vector <span class="math notranslate nohighlight">\(\Delta^{(\ell)}\)</span> is roughly orthogonal to the incoming state <span class="math notranslate nohighlight">\(\mathbf{h}^{(\ell-1)}\)</span> (a structurally sound approximation in deep networks), the vector magnitude compounds across layers approximately as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8f8df568-d12e-480b-b626-01a5602ab1e6">
-<span class="eqno">(5.9)<a class="headerlink" href="#equation-8f8df568-d12e-480b-b626-01a5602ab1e6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2ead355a-6fe5-41d2-bb40-3961a8931f89">
+<span class="eqno">(5.13)<a class="headerlink" href="#equation-2ead355a-6fe5-41d2-bb40-3961a8931f89" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \|\mathbf{h}^{(\ell)}\| \approx \sqrt{\|\mathbf{h}^{(0)}\|^2 + \sum_{k=1}^{\ell} \|\Delta^{(k)}\|^2}
 \end{equation}\]</div>
 </section>
@@ -1144,20 +1178,20 @@ hidden_state: (batch, seq_len, 3072)   ← rich contextual representation
       ↓
 logits: (batch, seq_len, 32064)        ← unnormalized score for each vocabulary token
 ``` -->
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id13">
 <a class="reference internal image-reference" href="../_images/the_language_model_head.png"><img alt="../_images/the_language_model_head.png" src="../_images/the_language_model_head.png" style="width: 700px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">The Language Model Head reduces to a single bias-free linear projection: the 3,072-dimensional hidden state — built up across 32 transformer layers — is mapped to 32,064-dimensional logits, one per vocabulary token. Weight tying reuses the token embedding matrix as the projection weight W, so predicting a token is geometrically equivalent to measuring how similar the hidden state is to that token’s embedding vector. The resulting logits are passed through softmax to produce a next-token probability distribution.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">The Language Model Head reduces to a single bias-free linear projection: the 3,072-dimensional hidden state — built up across 32 transformer layers — is mapped to 32,064-dimensional logits, one per vocabulary token. Weight tying reuses the token embedding matrix as the projection weight W, so predicting a token is geometrically equivalent to measuring how similar the hidden state is to that token’s embedding vector. The resulting logits are passed through softmax to produce a next-token probability distribution.</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Formally, for a hidden vector <span class="math notranslate nohighlight">\(\mathbf{h} \in \mathbb{R}^{d_\text{model}}\)</span>, the LM head computes:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-51c257e3-6838-4c95-a520-ad31499de56a">
-<span class="eqno">(5.10)<a class="headerlink" href="#equation-51c257e3-6838-4c95-a520-ad31499de56a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ed086752-8af2-4bb5-8801-447e6d8a1804">
+<span class="eqno">(5.14)<a class="headerlink" href="#equation-ed086752-8af2-4bb5-8801-447e6d8a1804" title="Permalink to this equation">#</a></span>\[\begin{equation}
   \mathbf{z} = W\,\mathbf{h}, \quad W \in \mathbb{R}^{V \times d_\text{model}}
 \end{equation}\]</div>
 <p>No activation function, no bias, no normalization — just a matrix multiplication. The power comes entirely from the rich 3,072-dimensional hidden state built up through 32 transformer layers.</p>
-<p><strong>Weight tying</strong> connects the embedding lookup table to the LM head using the same matrix <span class="math notranslate nohighlight">\(W\)</span>. When embedding “Tokyo,” the model retrieves a 3,072-dim row vector representing “Tokyo’s meaning.” When predicting “Tokyo” as the next token, the LM head scores how similar the hidden state is to that same vector. High similarity → high logit for “Tokyo.” This symmetry saves 98.5 M parameters with no measurable quality loss.</p>
+<p><strong>Weight tying</strong> <span class="bibtex-citation" id="id14">[<a class="reference internal" href="../References.html#id499" title="Ofir Press and Lior Wolf. Using the Output Embedding to Improve Language Models. In Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers, 157–163. Valencia, Spain, 2017. Association for Computational Linguistics.">Press and Wolf, 2017</a>]</span> connects the embedding lookup table to the LM head using the same matrix <span class="math notranslate nohighlight">\(W\)</span>. When embedding “Tokyo,” the model retrieves a 3,072-dim row vector representing “Tokyo’s meaning.” When predicting “Tokyo” as the next token, the LM head scores how similar the hidden state is to that same vector. High similarity → high logit for “Tokyo.” This symmetry saves 98.5 M parameters with no measurable quality loss.</p>
 <section id="independent-decoupled-matrices-vs-weight-tying">
 <h3><span class="section-number">5.3.1.9.1. </span>Independent Decoupled Matrices vs. Weight Tying<a class="headerlink" href="#independent-decoupled-matrices-vs-weight-tying" title="Link to this heading">#</a></h3>
 <p>While older models often force “weight tying” (where the input embedding matrix and the output LM head share the exact same memory allocation), modern variations of the Phi-3 architecture initialize them as <strong>untied, separate parameters</strong>.</p>
@@ -1229,8 +1263,8 @@ LM head logit      : 37.0000
 <li><p><strong>Value</strong> <span class="math notranslate nohighlight">\(\mathbf{v} = W_V \mathbf{h}\)</span> — the information this token contributes if attended to.</p></li>
 </ul>
 <p>The attention score between position <span class="math notranslate nohighlight">\(i\)</span> (query) and position <span class="math notranslate nohighlight">\(j\)</span> (key) is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6e13fa6b-8e5a-465a-94ba-ea52ec63e7d8">
-<span class="eqno">(5.11)<a class="headerlink" href="#equation-6e13fa6b-8e5a-465a-94ba-ea52ec63e7d8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e92bcb95-20b7-4688-9815-3fb9b6a9a400">
+<span class="eqno">(5.15)<a class="headerlink" href="#equation-e92bcb95-20b7-4688-9815-3fb9b6a9a400" title="Permalink to this equation">#</a></span>\[\begin{equation}
   a_{ij} = \frac{\mathbf{q}_i^\top \mathbf{k}_j}{\sqrt{d_k}}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the key dimension. After softmax over <span class="math notranslate nohighlight">\(j\)</span>, these scores weight the values <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> to produce the output for position <span class="math notranslate nohighlight">\(i\)</span>.</p>
@@ -1327,11 +1361,11 @@ Speedup      : 1.0×
 <h3><span class="section-number">5.3.1.10.3. </span>Cache Memory Footprint &amp; Tensor Geometry<a class="headerlink" href="#cache-memory-footprint-tensor-geometry" title="Link to this heading">#</a></h3>
 <p>The performance gain achieved by KV caching comes with a specific engineering trade-off: it consumes GPU memory that scales linearly with sequence length, number of layers, and head configuration. For Phi-3-Mini, you can isolate and estimate this footprint analytically.</p>
 <p>Phi-3-Mini contains 32 layers, 32 attention heads, and a key/value head dimension of <span class="math notranslate nohighlight">\(d_k = 96\)</span> (derived from <span class="math notranslate nohighlight">\(3072 \div 32 = 96\)</span>). For each processed token, we preserve one key vector and one value vector per layer per head:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7a44888b-e180-4a4d-9a87-0d6b56207259">
-<span class="eqno">(5.12)<a class="headerlink" href="#equation-7a44888b-e180-4a4d-9a87-0d6b56207259" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{KV Cache Size} = 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_k \times n_{\text{tokens}} \times \text{bytes per element}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-e33abdfd-64dd-4cb8-853a-34bbb468da39">
+<span class="eqno">(5.16)<a class="headerlink" href="#equation-e33abdfd-64dd-4cb8-853a-34bbb468da39" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{KV Cache Size} = 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_k \times n_{\text{tokens}} \times \text{bytes per element}\end{equation}\]</div>
 <p>For a 1,000-token sequence using 16-bit precision precision types (<code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> or <code class="docutils literal notranslate"><span class="pre">float16</span></code>, which consume 2 bytes per element):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-249f91bf-9898-49e5-832a-fda35a6ced25">
-<span class="eqno">(5.13)<a class="headerlink" href="#equation-249f91bf-9898-49e5-832a-fda35a6ced25" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{Size} = 2 \times 32 \times 32 \times 96 \times 1000 \times 2 \;\text{bytes} = 393{,}216{,}000 \;\text{bytes} \approx 375\;\text{MB}\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-f8ed29dc-568e-4e7f-a76c-c273d1b6dd64">
+<span class="eqno">(5.17)<a class="headerlink" href="#equation-f8ed29dc-568e-4e7f-a76c-c273d1b6dd64" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{Size} = 2 \times 32 \times 32 \times 96 \times 1000 \times 2 \;\text{bytes} = 393{,}216{,}000 \;\text{bytes} \approx 375\;\text{MB}\end{equation}\]</div>
 <p>When processing Phi-3-Mini’s maximal native context window of 4,096 tokens, this active cache memory space expands to <strong>~1.5 GB</strong> of VRAM on top of the ~7 GB statically required for base model weights.</p>
 <p>You can inspect this underlying tensor matrix architecture programmatically by capturing generation dictionaries:</p>
 <div class="cell tag_hide-input docutils container">
