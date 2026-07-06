@@ -34,9 +34,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -206,7 +206,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.3.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.3.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S04.html">6.3.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S05.html">6.3.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.3.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
 </ul>
 
     </div>
@@ -538,8 +547,8 @@ The major distinction between machine learning and deep learning is the complexi
 <h3><span class="section-number">4.2.4.2. </span><code class="docutils literal notranslate"><span class="pre">do_sample</span></code> and <code class="docutils literal notranslate"><span class="pre">temperature</span></code><a class="headerlink" href="#do-sample-and-temperature" title="Link to this heading">#</a></h3>
 <p>When <code class="docutils literal notranslate"><span class="pre">do_sample=False</span></code>, the model uses <strong>greedy decoding</strong>: it always selects the single most probable next token. This produces deterministic, conservative output.</p>
 <p>When <code class="docutils literal notranslate"><span class="pre">do_sample=True</span></code>, <strong>temperature</strong> rescales the raw logit scores before converting them to probabilities. Concretely, if the model produces logit vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, the probability assigned to token <span class="math notranslate nohighlight">\(i\)</span> is <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id490" title="Ian Goodfellow, Yoshua Bengio, and Aaron Courville. Deep Learning. MIT Press, 2016. http://www.deeplearningbook.org.">Goodfellow <em>et al.</em>, 2016</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3ba4ed2e-c2e2-4018-ba8b-4d59cc483630">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-3ba4ed2e-c2e2-4018-ba8b-4d59cc483630" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c0dbc453-2264-4b03-b3a2-7d3cdf7f1f1b">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-c0dbc453-2264-4b03-b3a2-7d3cdf7f1f1b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(w_i) = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(T\)</span> is the temperature. When <span class="math notranslate nohighlight">\(T &lt; 1\)</span>, the differences between logits are amplified, concentrating probability mass on the highest-scoring tokens. When <span class="math notranslate nohighlight">\(T &gt; 1\)</span>, the distribution is flattened toward uniform.</p>
@@ -637,8 +646,8 @@ Deep learning (DL), a subset of machine learning, takes a more natural approach 
 <section id="top-p-nucleus-sampling">
 <h3><span class="section-number">4.2.4.3. </span><code class="docutils literal notranslate"><span class="pre">top_p</span></code> (Nucleus Sampling)<a class="headerlink" href="#top-p-nucleus-sampling" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">top_p</span></code> (also called <strong>nucleus sampling</strong>) restricts sampling to the smallest set of tokens whose cumulative probability meets or exceeds <span class="math notranslate nohighlight">\(p\)</span>. Formally, define the nucleus <span class="math notranslate nohighlight">\(\mathcal{V}_p\)</span> at each step as <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id491" title="Ari Holtzman, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. The Curious Case of Neural Text Degeneration. 2019. Version Number: 2. URL: https://arxiv.org/abs/1904.09751 (visited on 2026-06-05), doi:10.48550/ARXIV.1904.09751.">Holtzman <em>et al.</em>, 2019</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eba67b98-c311-4b6f-92a3-b5466dabfb8e">
-<span class="eqno">(4.2)<a class="headerlink" href="#equation-eba67b98-c311-4b6f-92a3-b5466dabfb8e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-576c6f6e-f063-471c-b2c3-1b2a25dc7fc9">
+<span class="eqno">(4.2)<a class="headerlink" href="#equation-576c6f6e-f063-471c-b2c3-1b2a25dc7fc9" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathcal{V}_p = \arg\min_{V' \subseteq V} \left\{ V' : \sum_{w \in V'} P(w) \geq p \right\}
 \end{equation}\]</div>
 <p>where tokens in <span class="math notranslate nohighlight">\(V'\)</span> are ranked from highest to lowest probability. Setting <code class="docutils literal notranslate"><span class="pre">top_p=0.9</span></code> means: at each step, rank all tokens by probability, take the smallest subset that together accounts for 90% of the probability mass, and sample only from that subset. This prevents the model from sampling extremely low-probability tokens while still allowing meaningful diversity.</p>
@@ -688,8 +697,8 @@ Deep learning (DL), a subset of machine learning, takes a more natural approach 
 <section id="repetition-penalty">
 <h3><span class="section-number">4.2.4.4. </span><code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code><a class="headerlink" href="#repetition-penalty" title="Link to this heading">#</a></h3>
 <p>Penalizes tokens that have already appeared in the generated text, reducing the tendency to repeat phrases. The penalty is applied by dividing the logit of any previously seen token <span class="math notranslate nohighlight">\(w\)</span> by the penalty factor <span class="math notranslate nohighlight">\(\theta\)</span> <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id492" title="Nitish Shirish Keskar, Bryan McCann, Lav R. Varshney, Caiming Xiong, and Richard Socher. CTRL: A Conditional Transformer Language Model for Controllable Generation. 2019. Version Number: 2. URL: https://arxiv.org/abs/1909.05858 (visited on 2026-06-05), doi:10.48550/ARXIV.1909.05858.">Keskar <em>et al.</em>, 2019</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dadae540-0303-4a98-a1f9-2269d82557f9">
-<span class="eqno">(4.3)<a class="headerlink" href="#equation-dadae540-0303-4a98-a1f9-2269d82557f9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6cd7f6cc-0f4a-43a7-922b-5baeafefd735">
+<span class="eqno">(4.3)<a class="headerlink" href="#equation-6cd7f6cc-0f4a-43a7-922b-5baeafefd735" title="Permalink to this equation">#</a></span>\[\begin{equation}
 z'_w = \begin{cases} z_w / \theta &amp; \text{if } w \text{ has appeared before} \\ z_w &amp; \text{otherwise} \end{cases}
 \end{equation}\]</div>
 <p>A value of <code class="docutils literal notranslate"><span class="pre">1.0</span></code> applies no penalty (<span class="math notranslate nohighlight">\(\theta = 1\)</span>, leaving logits unchanged); values above <code class="docutils literal notranslate"><span class="pre">1.0</span></code> increasingly discourage repetition. Typical values range from <code class="docutils literal notranslate"><span class="pre">1.1</span></code> to <code class="docutils literal notranslate"><span class="pre">1.3</span></code> for instruction-following tasks.</p>

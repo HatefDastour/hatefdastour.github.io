@@ -34,9 +34,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -206,7 +206,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.3.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.3.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S04.html">6.3.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S05.html">6.3.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.3.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
 </ul>
 
     </div>
@@ -393,8 +402,8 @@
 <section id="wordpiece-bert-bert-base-uncased">
 <h3><span class="section-number">4.4.4.1. </span>WordPiece (BERT — <code class="docutils literal notranslate"><span class="pre">bert-base-uncased</span></code>)<a class="headerlink" href="#wordpiece-bert-bert-base-uncased" title="Link to this heading">#</a></h3>
 <p>WordPiece builds its vocabulary by iteratively selecting merges that maximise the <strong>likelihood</strong> of the training corpus under a unigram language model. At each step it scores every candidate pair <span class="math notranslate nohighlight">\((A, B)\)</span> and picks the merge that gives the largest gain:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9a19d2cc-1189-4173-98ac-4a664f78234c">
-<span class="eqno">(4.7)<a class="headerlink" href="#equation-9a19d2cc-1189-4173-98ac-4a664f78234c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-92369de3-f565-4ffd-ba0d-e55d77128df0">
+<span class="eqno">(4.7)<a class="headerlink" href="#equation-92369de3-f565-4ffd-ba0d-e55d77128df0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{score}(A, B) = \frac{\text{freq}(AB)}{\text{freq}(A) \times \text{freq}(B)}
 \end{equation}\]</div>
 <p>This ratio rewards pairs that co-occur far more often than chance — essentially a pointwise mutual information criterion. The algorithm operates on Unicode characters (not bytes), lowercases all text, and prefixes continuation subwords (those that are not word-starts) with <code class="docutils literal notranslate"><span class="pre">##</span></code>.</p>
@@ -407,8 +416,8 @@
 <section id="byte-pair-encoding-bpe-gpt-2-roberta">
 <h3><span class="section-number">4.4.4.2. </span>Byte-Pair Encoding (BPE — GPT-2, RoBERTa)<a class="headerlink" href="#byte-pair-encoding-bpe-gpt-2-roberta" title="Link to this heading">#</a></h3>
 <p>BPE initialises the vocabulary with all individual characters (or bytes), then iteratively merges the <strong>most frequent adjacent pair</strong> across the entire corpus until a target vocabulary size is reached:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a3afbdd5-2c56-41e9-870a-5c144c427eba">
-<span class="eqno">(4.8)<a class="headerlink" href="#equation-a3afbdd5-2c56-41e9-870a-5c144c427eba" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f8adf787-7952-4f33-9eba-c00aadd32c40">
+<span class="eqno">(4.8)<a class="headerlink" href="#equation-f8adf787-7952-4f33-9eba-c00aadd32c40" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{merge} = \underset{(A,\,B)}{\arg\max}\; \text{freq}(AB)
 \end{equation}\]</div>
 <p>GPT-2 applies BPE at the <strong>byte level</strong>: the initial vocabulary consists of all 256 possible byte values, so any Unicode string can be encoded without ever emitting <code class="docutils literal notranslate"><span class="pre">[UNK]</span></code>. Word boundaries are marked with a space prefix shown as <code class="docutils literal notranslate"><span class="pre">Ġ</span></code>.</p>
@@ -421,8 +430,8 @@
 <section id="sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small">
 <h3><span class="section-number">4.4.4.3. </span>SentencePiece with Unigram LM (Flan-T5 — <code class="docutils literal notranslate"><span class="pre">google/flan-t5-small</span></code>)<a class="headerlink" href="#sentencepiece-with-unigram-lm-flan-t5-google-flan-t5-small" title="Link to this heading">#</a></h3>
 <p>SentencePiece trains a <strong>unigram language model</strong> directly on raw text without any whitespace pre-tokenisation. It starts with a large candidate vocabulary and prunes it by repeatedly removing the token whose removal causes the smallest drop in corpus log-likelihood:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6429a926-eb9a-4f34-924a-b36f23f516d9">
-<span class="eqno">(4.9)<a class="headerlink" href="#equation-6429a926-eb9a-4f34-924a-b36f23f516d9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dc920c70-8eab-4f7b-ba2f-de5e3bdabc3e">
+<span class="eqno">(4.9)<a class="headerlink" href="#equation-dc920c70-8eab-4f7b-ba2f-de5e3bdabc3e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathcal{L}(\mathcal{V}) = \sum_{x \in \mathcal{D}} \log P(x \mid \mathcal{V}), \qquad P(x \mid \mathcal{V}) = \max_{\mathbf{s} \in S(x)} \prod_{i} p(s_i)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S(x)\)</span> is the set of all possible segmentations of sentence <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p(s_i)\)</span> is the unigram probability of subword <span class="math notranslate nohighlight">\(s_i\)</span>. Word-starting subwords are prefixed with <code class="docutils literal notranslate"><span class="pre">▁</span></code>.</p>
@@ -597,8 +606,8 @@ Decoded: [CLS] the university of missouri was founded in 1839. [SEP]
 <div class="note admonition">
 <p class="admonition-title">Key Term — Fertility</p>
 <p><strong>Fertility</strong> (also called <em>token fertility</em>) measures how many tokens a tokenizer produces per word on a given text:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ca112b47-0471-4513-a1c9-a138dd84fbd1">
-<span class="eqno">(4.10)<a class="headerlink" href="#equation-ca112b47-0471-4513-a1c9-a138dd84fbd1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1074db83-bb88-4ada-81a1-539c6ade1443">
+<span class="eqno">(4.10)<a class="headerlink" href="#equation-1074db83-bb88-4ada-81a1-539c6ade1443" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{fertility} = \frac{\text{number of tokens}}{\text{number of whitespace-delimited words}}
 \end{equation}\]</div>
 <p>A fertility of 1.0 means every word maps to exactly one token — ideal but rare. Values above 1.5 on standard English text usually signal either a mismatch between the tokenizer’s training domain and the input, or the presence of rare vocabulary (proper nouns, code, non-Latin scripts). Higher fertility means more tokens, which fills the context window faster and increases API cost.</p>

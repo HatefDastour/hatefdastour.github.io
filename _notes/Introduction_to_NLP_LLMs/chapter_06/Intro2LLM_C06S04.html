@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.3.4. Reasoning with Generative Models &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_06/Intro2LLM_C06S04';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.3.5. Output Verification and Structured Generation" href="Intro2LLM_C06S05.html" />
+    <link rel="prev" title="6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot" href="Intro2LLM_C06S03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S04.html">5.3.4. Text Classification by Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C06.html">6. Prompt Engineering</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S01.html">6.3.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S02.html">6.3.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S03.html">6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S05.html">6.3.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S06.html">6.3.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reasoning with Generative Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-prompting-fails-on-reasoning-tasks">6.3.4.2. Why Standard Prompting Fails on Reasoning Tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-worked-example-in-the-prompt">6.3.4.3. Chain-of-Thought: Worked Example in the Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-chain-of-thought">6.3.4.4. Zero-Shot Chain-of-Thought</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-consistency-majority-voting-over-reasoning-paths">6.3.4.5. Self-Consistency: Majority Voting Over Reasoning Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-of-thought-multiple-expert-perspectives">6.3.4.6. Tree-of-Thought: Multiple Expert Perspectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.4.7. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>  <span class="c1"># Suppresses Info and Warning logs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="reasoning-with-generative-models">
+<h1><span class="section-number">6.3.4. </span>Reasoning with Generative Models<a class="headerlink" href="#reasoning-with-generative-models" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">6.3.4.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain why standard prompting fails on multi-step reasoning problems and how Chain-of-Thought addresses this.</p></li>
+<li><p>Implement few-shot Chain-of-Thought (CoT) prompting by providing worked-example reasoning traces.</p></li>
+<li><p>Apply zero-shot CoT using the “Let’s think step by step” trigger and explain why it works.</p></li>
+<li><p>Implement self-consistency decoding and explain how majority voting over multiple reasoning paths improves reliability.</p></li>
+<li><p>Apply tree-of-thought prompting for problems that require exploring multiple solution strategies.</p></li>
+</ul>
+</section>
+<section id="why-standard-prompting-fails-on-reasoning-tasks">
+<h2><span class="section-number">6.3.4.2. </span>Why Standard Prompting Fails on Reasoning Tasks<a class="headerlink" href="#why-standard-prompting-fails-on-reasoning-tasks" title="Link to this heading">#</a></h2>
+<p>When asked a multi-step arithmetic, logic, or planning problem directly, LLMs tend to produce answers in a single forward pass — jumping directly from question to conclusion without constructing an intermediate reasoning chain. This produces high error rates on problems requiring more than two or three logical steps.</p>
+<p>The root cause lies in how next-token prediction works: the model predicts each token conditioned on the preceding context, but without an explicit reasoning trace, there is no context to guide correct intermediate steps. Each token in the answer is predicted from the question alone, not from a developing chain of reasoning.</p>
+<p><strong>Standard prompt:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Q: If a store sells apples for $0.75 each and a customer buys 4 apples with a $5 bill, what is the change?
+A: $2.00
+</pre></div>
+</div>
+<p><em>(Often incorrect — model skips intermediate calculation steps)</em></p>
+<p><strong>Chain-of-Thought prompt:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Q: If a store sells apples for $0.75 each and a customer buys 4 apples with a $5 bill, what is the change?
+A: Let me work through this step by step.
+   Cost per apple: $0.75
+   Number of apples: 4
+   Total cost: 4 × $0.75 = $3.00
+   Change: $5.00 - $3.00 = $2.00
+   The change is $2.00.
+</pre></div>
+</div>
+<p>The reasoning trace forces the model to generate each intermediate step as a token in its output context — turning a single-step prediction problem into an iterative calculation where each step is conditioned on all preceding correct steps.</p>
+<p>Before we continue, let’s load back the pip from <a class="reference internal" href="Intro2LLM_C06S01.html#foundations-prompt-eng"><span class="std std-numref">Section 6.3.1</span></a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">,</span>
+    <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">)</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="s2">&quot;text-generation&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">return_full_text</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "127fe0a931d1493e9d5452a8d182ab86", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="chain-of-thought-worked-example-in-the-prompt">
+<h2><span class="section-number">6.3.4.3. </span>Chain-of-Thought: Worked Example in the Prompt<a class="headerlink" href="#chain-of-thought-worked-example-in-the-prompt" title="Link to this heading">#</a></h2>
+<p><strong>Few-shot CoT</strong> <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id523" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi, Quoc V. Le, and Denny Zhou. Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022), 24824–24837. 2022.">Wei <em>et al.</em>, 2022</a>]</span> provides a complete worked example in the <code class="docutils literal notranslate"><span class="pre">assistant</span></code> role, demonstrating explicit step-by-step reasoning. The model learns to apply the same pattern to subsequent questions.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You solve math problems by showing your work step by step.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c1"># Worked example</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;A train travels 120 km in 2 hours. How far will it travel in 5 hours at the same speed?&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;Step 1: Find the speed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Speed = Distance / Time = 120 km / 2 h = 60 km/h</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Step 2: Find the distance for 5 hours.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Distance = Speed × Time = 60 km/h × 5 h = 300 km</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;The train will travel 300 km in 5 hours.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+    <span class="c1"># Target question</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;A cyclist rides 45 km in 3 hours. &quot;</span>
+            <span class="s2">&quot;How long will it take to ride 90 km at the same speed?&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Step 1: Find the speed.
+Speed = Distance / Time = 45 km / 3 h = 15 km/h
+
+Step 2: Find the time for 90 km.
+Time = Distance / Speed = 90 km / 15 km/h = 6 hours
+
+It will take the cyclist 6 hours to ride 90 km at the same speed.
+</pre></div>
+</div>
+</div>
+</div>
+<p>By placing the worked example as an <code class="docutils literal notranslate"><span class="pre">assistant</span></code> turn before the target question, the model has a reasoning template in its immediate context and tends to mirror the structure of the demonstration.</p>
+</section>
+<section id="zero-shot-chain-of-thought">
+<h2><span class="section-number">6.3.4.4. </span>Zero-Shot Chain-of-Thought<a class="headerlink" href="#zero-shot-chain-of-thought" title="Link to this heading">#</a></h2>
+<p>Providing worked examples is effective, but requires careful example construction. <strong>Zero-shot CoT</strong> <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id524" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large Language Models are Zero-Shot Reasoners. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022). 2022.">Kojima <em>et al.</em>, 2022</a>]</span> achieves similar benefits by appending a simple trigger phrase to the prompt:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;A cyclist rides 45 km in 3 hours. &quot;</span>
+            <span class="s2">&quot;How long will it take to ride 90 km at the same speed?</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Let&#39;s think step by step.&quot;</span>  <span class="c1"># ← trigger phrase</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The phrase “Let’s think step by step” was identified by Kojima et al. <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id524" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large Language Models are Zero-Shot Reasoners. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022). 2022.">Kojima <em>et al.</em>, 2022</a>]</span> as a reliably effective trigger for CoT reasoning in instruction-tuned models. It works because instruction-tuning data contains many examples where deliberate reasoning follows this exact phrasing.</p>
+<p><strong>Why it works:</strong> The trigger phrase shifts the model’s next-token prediction into a mode where it generates structured intermediate steps — because in the training data, this phrase consistently precedes step-by-step explanations.</p>
+<p>Other effective triggers:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Let's</span> <span class="pre">work</span> <span class="pre">through</span> <span class="pre">this</span> <span class="pre">carefully.&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Think</span> <span class="pre">through</span> <span class="pre">the</span> <span class="pre">problem</span> <span class="pre">before</span> <span class="pre">answering.&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Show</span> <span class="pre">your</span> <span class="pre">reasoning,</span> <span class="pre">then</span> <span class="pre">give</span> <span class="pre">the</span> <span class="pre">final</span> <span class="pre">answer.&quot;</span></code></p></li>
+</ul>
+</section>
+<section id="self-consistency-majority-voting-over-reasoning-paths">
+<h2><span class="section-number">6.3.4.5. </span>Self-Consistency: Majority Voting Over Reasoning Paths<a class="headerlink" href="#self-consistency-majority-voting-over-reasoning-paths" title="Link to this heading">#</a></h2>
+<p>A single CoT reasoning trace can still be wrong — the model may take an incorrect intermediate step and reach a wrong conclusion confidently. <strong>Self-consistency</strong> <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id525" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V. Le, Ed H. Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-Consistency Improves Chain of Thought Reasoning in Language Models. In 11th International Conference on Learning Representations (ICLR 2023). Kigali, Rwanda, 2023.">Wang <em>et al.</em>, 2023</a>]</span> addresses this by generating multiple independent reasoning paths and taking the majority answer.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">self_consistent_answer</span><span class="p">(</span><span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Let&#39;s think step by step.&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span>
+            <span class="n">messages</span><span class="p">,</span>
+            <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Extract the final answer (assumes it appears after &quot;the answer is&quot;)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;answer is&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;result is&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Return the most common answer</span>
+    <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">answers</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">self_consistent_answer</span><span class="p">(</span>
+    <span class="s2">&quot;A factory produces 240 units per day. If it operates 5 days a week, &quot;</span>
+    <span class="s2">&quot;how many units does it produce in 4 weeks?&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>So, the factory produces 4800 units in 4 weeks.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Why self-consistency works:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Single CoT path → one reasoning trace → one answer (possibly wrong)
+
+Self-consistency with n=5:
+  Path 1: correct reasoning → correct answer
+  Path 2: arithmetic error → wrong answer
+  Path 3: correct reasoning → correct answer
+  Path 4: different approach → correct answer
+  Path 5: correct reasoning → correct answer
+
+Majority vote: correct answer wins 4:1
+</pre></div>
+</div>
+<p>The insight is that incorrect reasoning paths rarely converge to the same wrong answer — they tend to fail in different ways. Correct paths, by contrast, tend to converge to the same answer regardless of which approach they take.</p>
+<p><strong>Practical parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">=</span> <span class="pre">5</span></code> is sufficient for most arithmetic and logical reasoning tasks.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">temperature=0.5–0.7</span></code> — enough diversity to explore different paths, but not so high that outputs become incoherent.</p></li>
+<li><p>Higher <span class="math notranslate nohighlight">\(n\)</span> gives diminishing returns beyond 10 samples on most benchmarks.</p></li>
+</ul>
+</section>
+<section id="tree-of-thought-multiple-expert-perspectives">
+<h2><span class="section-number">6.3.4.6. </span>Tree-of-Thought: Multiple Expert Perspectives<a class="headerlink" href="#tree-of-thought-multiple-expert-perspectives" title="Link to this heading">#</a></h2>
+<p>For problems where the solution space branches significantly — where different initial strategies may lead to radically different approaches — <strong>Tree-of-Thought (ToT)</strong> <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id526" title="Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik Narasimhan. Tree of Thoughts: Deliberate Problem Solving with Large Language Models. In Advances in Neural Information Processing Systems 36 (NeurIPS 2023). 2023.">Yao <em>et al.</em>, 2023</a>]</span> prompting asks multiple independent reasoning agents to collaborate.</p>
+<p>The key insight: real problem-solving often requires exploring multiple strategies, abandoning dead ends, and backtracking. Standard CoT commits to a single linear path. ToT simulates multiple experts approaching the problem from different angles.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tot_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Imagine three different experts are solving this problem.</span>
+<span class="s2">Each expert writes one reasoning step, then all experts share their step.</span>
+<span class="s2">If any expert realizes their step is wrong, they stop.</span>
+<span class="s2">The process continues until all experts reach the same conclusion.</span>
+
+<span class="s2">Problem: </span><span class="si">{problem}</span>
+
+<span class="s2">Expert 1 (Analytical approach):</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">problem</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;I have 10 books to arrange on a shelf. 3 are red, 4 are blue, and 3 are green. &quot;</span>
+    <span class="s2">&quot;In how many ways can I arrange them so that all red books are together?&quot;</span>
+<span class="p">)</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">tot_prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">problem</span><span class="o">=</span><span class="n">problem</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">400</span><span class="p">)[</span>
+    <span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p><strong>When to use each reasoning strategy:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Strategy</p></th>
+<th class="head"><p>Best for</p></th>
+<th class="head"><p>Compute cost</p></th>
+<th class="head"><p>Reliability</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard prompt</p></td>
+<td><p>Simple, factual questions</p></td>
+<td><p>Low</p></td>
+<td><p>Low for multi-step</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zero-shot CoT</p></td>
+<td><p>Arithmetic, logic, single-path problems</p></td>
+<td><p>Low</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>Few-shot CoT</p></td>
+<td><p>Domain-specific reasoning</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Self-consistency</p></td>
+<td><p>Any CoT task where reliability matters</p></td>
+<td><p>Medium (5× calls)</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Tree-of-Thought</p></td>
+<td><p>Complex planning, exploration, combinatorics</p></td>
+<td><p>High</p></td>
+<td><p>Highest</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">6.3.4.7. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>CoT vs. direct comparison</strong>
+Select 10 multi-step arithmetic problems. Run each with (a) a direct answer prompt, (b) zero-shot CoT (“Let’s think step by step”), and (c) few-shot CoT with one worked example. Count correct answers in each condition. What is the improvement from direct → zero-shot CoT → few-shot CoT?</p></li>
+<li><p><strong>Self-consistency calibration</strong>
+Implement self-consistency with n = 1, 3, 5, 10 samples on a set of 20 reasoning problems. Plot accuracy as a function of n. At what value of n does improvement plateau? What is the accuracy cost of using n=1 vs. n=5?</p></li>
+<li><p><strong>Tree-of-thought decomposition</strong>
+Write a tree-of-thought prompt for a planning problem of your choice (e.g., scheduling, route optimization, or a logic puzzle). Does the model generate genuinely different strategies in each expert branch, or do the branches converge quickly? What does this reveal about the model’s diversity of reasoning?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_06"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C06S03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.3.3. </span>In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C06S05.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.3.5. </span>Output Verification and Structured Generation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.4.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-standard-prompting-fails-on-reasoning-tasks">6.3.4.2. Why Standard Prompting Fails on Reasoning Tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-thought-worked-example-in-the-prompt">6.3.4.3. Chain-of-Thought: Worked Example in the Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-chain-of-thought">6.3.4.4. Zero-Shot Chain-of-Thought</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-consistency-majority-voting-over-reasoning-paths">6.3.4.5. Self-Consistency: Majority Voting Over Reasoning Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-of-thought-multiple-expert-perspectives">6.3.4.6. Tree-of-Thought: Multiple Expert Perspectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.4.7. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

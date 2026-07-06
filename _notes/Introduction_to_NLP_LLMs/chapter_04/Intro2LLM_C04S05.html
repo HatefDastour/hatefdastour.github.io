@@ -34,9 +34,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
   
@@ -206,7 +206,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../References.html">6. References</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.3.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.3.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S04.html">6.3.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S05.html">6.3.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.3.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
 </ul>
 
     </div>
@@ -374,8 +383,8 @@ Layer 4: Pooling (Sentence-Level)
 <section id="layer-2-static-embedding-lookup">
 <h2><span class="section-number">4.5.3. </span>Layer 2: Static Embedding Lookup<a class="headerlink" href="#layer-2-static-embedding-lookup" title="Link to this heading">#</a></h2>
 <p>The first trainable component inside a transformer model is an <strong>embedding matrix</strong> <span class="math notranslate nohighlight">\(E \in \mathbb{R}^{V \times d}\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size and <span class="math notranslate nohighlight">\(d\)</span> is the embedding dimension. Given a token ID sequence <span class="math notranslate nohighlight">\([t_1, t_2, \ldots, t_n]\)</span>, the embedding layer performs a simple row lookup:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f51eb54e-c9c5-4639-9fd2-eeacaa72b165">
-<span class="eqno">(4.11)<a class="headerlink" href="#equation-f51eb54e-c9c5-4639-9fd2-eeacaa72b165" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ac1b7ebe-5ff1-432c-bee0-e9e3492c5e97">
+<span class="eqno">(4.11)<a class="headerlink" href="#equation-ac1b7ebe-5ff1-432c-bee0-e9e3492c5e97" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{e}_i = E[t_i] \in \mathbb{R}^d
 \end{equation}\]</div>
 <p>Each token ID <span class="math notranslate nohighlight">\(t_i\)</span> selects the corresponding row from <span class="math notranslate nohighlight">\(E\)</span>, producing a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. The full input to the transformer is the matrix <span class="math notranslate nohighlight">\([\mathbf{e}_1, \mathbf{e}_2, \ldots, \mathbf{e}_n] \in \mathbb{R}^{n \times d}\)</span>.</p>
@@ -389,8 +398,8 @@ Layer 4: Pooling (Sentence-Level)
 <h2><span class="section-number">4.5.4. </span>Layer 3: Contextualized Embeddings via Transformer Layers<a class="headerlink" href="#layer-3-contextualized-embeddings-via-transformer-layers" title="Link to this heading">#</a></h2>
 <p>The transformer stack transforms the sequence of static token embeddings into <strong>contextualized embeddings</strong> — representations that encode not just the identity of each token, but its meaning given all other tokens in the sequence.</p>
 <p>Each transformer layer applies multi-head self-attention. For a single attention head, the computation for query matrix <span class="math notranslate nohighlight">\(Q\)</span>, key matrix <span class="math notranslate nohighlight">\(K\)</span>, and value matrix <span class="math notranslate nohighlight">\(V\)</span> is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-aa2200e6-aad8-4598-85a2-5cd3912bbf20">
-<span class="eqno">(4.12)<a class="headerlink" href="#equation-aa2200e6-aad8-4598-85a2-5cd3912bbf20" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-525b8158-bed1-48d1-8b37-77b7f07e16e2">
+<span class="eqno">(4.12)<a class="headerlink" href="#equation-525b8158-bed1-48d1-8b37-77b7f07e16e2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the key/query dimension (used to prevent the dot products from growing too large). The output of the final transformer layer is a sequence of contextualized vectors <span class="math notranslate nohighlight">\([\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_n]\)</span>, one per input token.</p>
@@ -540,8 +549,8 @@ Notes:
 <section id="semantic-similarity-with-sentence-embeddings">
 <h2><span class="section-number">4.5.6. </span>Semantic Similarity with Sentence Embeddings<a class="headerlink" href="#semantic-similarity-with-sentence-embeddings" title="Link to this heading">#</a></h2>
 <p>Given sentence embeddings, <strong>cosine similarity</strong> measures the angle between two vectors, independent of their magnitude:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9ff7f226-1a24-40f8-a65c-9eb946a92ffb">
-<span class="eqno">(4.13)<a class="headerlink" href="#equation-9ff7f226-1a24-40f8-a65c-9eb946a92ffb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-43e0bd85-8f3a-460e-9240-9c05142490cd">
+<span class="eqno">(4.13)<a class="headerlink" href="#equation-43e0bd85-8f3a-460e-9240-9c05142490cd" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{cosine\_similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\| \cdot \|\mathbf{v}\|}
 \end{equation}\]</div>
 <p>Values range from <span class="math notranslate nohighlight">\(-1\)</span> (opposite directions) to <span class="math notranslate nohighlight">\(+1\)</span> (identical directions), with <span class="math notranslate nohighlight">\(0\)</span> indicating orthogonality. For unit-normalized embeddings, cosine similarity equals the dot product <span class="math notranslate nohighlight">\(\mathbf{u} \cdot \mathbf{v}\)</span>.</p>

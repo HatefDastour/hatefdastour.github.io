@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css?v=8c6b312c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_06/Intro2LLM_C06S03';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.3.4. Reasoning with Generative Models" href="Intro2LLM_C06S04.html" />
+    <link rel="prev" title="6.3.2. Advanced Prompt Construction" href="Intro2LLM_C06S02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.3.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S02.html">5.3.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S03.html">5.3.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S04.html">5.3.4. Text Classification by Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.3.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C06.html">6. Prompt Engineering</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S01.html">6.3.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S02.html">6.3.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.3.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S04.html">6.3.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S05.html">6.3.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C06S06.html">6.3.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.5.1. Designing Effective Few-Shot Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples">6.3.3.5.2. How Many Examples?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.6. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.7. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>  <span class="c1"># Suppresses Info and Warning logs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="in-context-learning-zero-shot-one-shot-and-few-shot">
+<h1><span class="section-number">6.3.3. </span>In-Context Learning: Zero-Shot, One-Shot, and Few-Shot<a class="headerlink" href="#in-context-learning-zero-shot-one-shot-and-few-shot" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">6.3.3.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Define in-context learning (ICL) and explain why it does not modify model weights.</p></li>
+<li><p>Apply zero-shot prompting and identify when it is sufficient.</p></li>
+<li><p>Construct one-shot and few-shot prompts by including representative input-output examples.</p></li>
+<li><p>Explain how the quality, diversity, and order of examples affect few-shot performance.</p></li>
+<li><p>Select the appropriate ICL strategy (zero-shot, one-shot, few-shot) for a given task and resource constraint.</p></li>
+</ul>
+</section>
+<section id="what-is-in-context-learning">
+<h2><span class="section-number">6.3.3.2. </span>What Is In-Context Learning?<a class="headerlink" href="#what-is-in-context-learning" title="Link to this heading">#</a></h2>
+<p><strong>In-context learning (ICL)</strong> <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span> teaches the model what output you want by showing examples directly in the prompt — no fine-tuning required. The number of examples defines the zero/one/few-shot taxonomy, first formalized alongside GPT-3 <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zero</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>  <span class="n">No</span> <span class="n">examples</span><span class="p">;</span> <span class="n">the</span> <span class="n">model</span> <span class="n">infers</span> <span class="n">output</span> <span class="nb">format</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">instruction</span> <span class="n">alone</span>
+<span class="n">One</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>   <span class="n">One</span> <span class="n">example</span><span class="p">;</span> <span class="n">provides</span> <span class="n">a</span> <span class="n">schema</span> <span class="k">for</span> <span class="n">the</span> <span class="n">model</span> <span class="n">to</span> <span class="n">follow</span>
+<span class="n">Few</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>   <span class="n">Two</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">examples</span><span class="p">;</span> <span class="n">shapes</span> <span class="n">behavior</span> <span class="k">for</span> <span class="n">consistent</span><span class="p">,</span> <span class="nb">complex</span> <span class="n">output</span> <span class="n">patterns</span>
+</pre></div>
+</div>
+<p>ICL is fundamentally different from fine-tuning: the model’s weights are never updated. The examples in the prompt are processed as ordinary context — but they activate strong associative patterns from the model’s training, causing it to mirror the demonstrated format and style.</p>
+<p>Before we continue, let’s load back the pip from <a class="reference internal" href="Intro2LLM_C06S01.html#foundations-prompt-eng"><span class="std std-numref">Section 6.3.1</span></a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">,</span>
+    <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;microsoft/Phi-3-mini-4k-instruct&quot;</span><span class="p">)</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">(</span>
+    <span class="s2">&quot;text-generation&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">return_full_text</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1e9258b8ede74b97bad8987809f8624b", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="zero-shot-prompting">
+<h2><span class="section-number">6.3.3.3. </span>Zero-Shot Prompting<a class="headerlink" href="#zero-shot-prompting" title="Link to this heading">#</a></h2>
+<p>Zero-shot prompting asks the model to perform a task with no demonstration of the desired output. Success depends entirely on whether the task and format are familiar from the model’s training data.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a data extraction assistant. Respond only with JSON.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;Extract the following fields from the text and return them as a JSON object: &quot;</span>
+            <span class="s2">&quot;{name, organization, role, location}. Return ONLY the JSON.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Text: Dr. Sarah Chen, a professor at MIT&#39;s CSAIL lab in Cambridge, &quot;</span>
+            <span class="s2">&quot;leads research on neural machine translation.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ```json
+
+{
+
+  &quot;name&quot;: &quot;Dr. Sarah Chen&quot;,
+
+  &quot;organization&quot;: &quot;MIT&#39;s CSAIL lab&quot;,
+
+  &quot;role&quot;: &quot;professor&quot;,
+
+  &quot;location&quot;: &quot;Cambridge&quot;
+
+}
+
+```
+</pre></div>
+</div>
+</div>
+</div>
+<p>Zero-shot works well when:</p>
+<ul class="simple">
+<li><p>The task type is common and well-represented in instruction-tuning data (Q&amp;A, summarization, classification).</p></li>
+<li><p>The output format is simple (yes/no, a single number, a short sentence).</p></li>
+<li><p>The model is sufficiently capable (7B+ instruction-tuned).</p></li>
+</ul>
+<p>Zero-shot often fails when:</p>
+<ul class="simple">
+<li><p>The output schema is unusual or highly specific.</p></li>
+<li><p>The model must infer implicit requirements from the instruction alone.</p></li>
+<li><p>The task requires domain-specific reasoning not covered in training.</p></li>
+</ul>
+</section>
+<section id="one-shot-prompting">
+<h2><span class="section-number">6.3.3.4. </span>One-Shot Prompting<a class="headerlink" href="#one-shot-prompting" title="Link to this heading">#</a></h2>
+<p>One-shot prompting provides a single input-output example before the query. The example acts as a schema: the model learns the exact output format and content structure from one demonstration.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a data extraction assistant. Respond only with JSON.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;Extract fields {name, organization, role, location} as JSON.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Example:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Input: John Smith, CEO of TechCorp in New York, oversees global strategy.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Output: {</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">John Smith</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">organization</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">TechCorp</span><span class="se">\&quot;</span><span class="s2">, &quot;</span>
+            <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">role</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">CEO</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">location</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">New York</span><span class="se">\&quot;</span><span class="s2">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Now extract from:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Dr. Sarah Chen, a professor at MIT&#39;s CSAIL lab in Cambridge, &quot;</span>
+            <span class="s2">&quot;leads research on neural machine translation.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The single example locks in three things:</p>
+<ol class="arabic simple">
+<li><p><strong>Schema</strong> — exactly which keys appear in the JSON</p></li>
+<li><p><strong>Style</strong> — title included in name, concise role description</p></li>
+<li><p><strong>Format</strong> — flat JSON object, no nested structures</p></li>
+</ol>
+<p>One-shot is the most cost-effective ICL strategy: a single well-chosen example captures the essential pattern while adding minimal context window overhead.</p>
+</section>
+<section id="few-shot-prompting">
+<h2><span class="section-number">6.3.3.5. </span>Few-Shot Prompting<a class="headerlink" href="#few-shot-prompting" title="Link to this heading">#</a></h2>
+<p>Few-shot prompting provides multiple examples, allowing the model to learn more complex patterns — handling edge cases, multiple entity types, or ambiguous inputs.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">few_shot_examples</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Example 1:</span>
+<span class="s2">Input: &quot;The weather was terrible, and the service was slow.&quot;</span>
+<span class="s2">Sentiment: negative</span>
+
+<span class="s2">Example 2:</span>
+<span class="s2">Input: &quot;I loved the pasta — perfectly al dente and flavorful!&quot;</span>
+<span class="s2">Sentiment: positive</span>
+
+<span class="s2">Example 3:</span>
+<span class="s2">Input: &quot;The room was okay. Nothing special, but nothing bad either.&quot;</span>
+<span class="s2">Sentiment: neutral</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You classify customer reviews. Respond with only one word: positive, negative, or neutral.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">few_shot_examples</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Now classify:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Input: </span><span class="se">\&quot;</span><span class="s2">The product works as advertised, though setup took longer than expected.</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Sentiment:&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="designing-effective-few-shot-examples">
+<h3><span class="section-number">6.3.3.5.1. </span>Designing Effective Few-Shot Examples<a class="headerlink" href="#designing-effective-few-shot-examples" title="Link to this heading">#</a></h3>
+<p>The quality of few-shot examples matters more than their quantity:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Design principle</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Diversity</strong></p></td>
+<td><p>Cover different input types — don’t show only easy or prototypical examples</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Representativeness</strong></p></td>
+<td><p>Examples should reflect the distribution of real inputs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Consistent format</strong></p></td>
+<td><p>Every example must use the exact same format the model should produce</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Edge cases</strong></p></td>
+<td><p>Include at least one example with an unusual input to prevent over-generalization</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Order</strong></p></td>
+<td><p>Later examples have stronger influence (recency); put the most representative example last. Few-shot accuracy has been shown to vary substantially with example ordering alone <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id522" title="Yao Lu, Max Bartolo, Alastair Moore, Sebastian Riedel, and Pontus Stenetorp. Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity. In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), 8086–8098. Dublin, Ireland, 2022. Association for Computational Linguistics.">Lu <em>et al.</em>, 2022</a>]</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="how-many-examples">
+<h3><span class="section-number">6.3.3.5.2. </span>How Many Examples?<a class="headerlink" href="#how-many-examples" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>0 examples (zero-shot):   Fast, cheap; works for common tasks with clear format
+1 example (one-shot):     Locks in format; best for structured output tasks
+2–3 examples (few-shot):  Covers variation; recommended for classification and extraction
+4–8 examples (many-shot): Diminishing returns; most benefit realized by 3–5 examples
+8+ examples:              Context window cost rises; prefer fine-tuning instead
+</pre></div>
+</div>
+<p>A practical rule: start with zero-shot, observe failure modes, add one example to address the most common failure, then add more only if needed.</p>
+</section>
+</section>
+<section id="choosing-between-zero-shot-one-shot-and-few-shot">
+<h2><span class="section-number">6.3.3.6. </span>Choosing Between Zero-Shot, One-Shot, and Few-Shot<a class="headerlink" href="#choosing-between-zero-shot-one-shot-and-few-shot" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Criterion</p></th>
+<th class="head"><p>Zero-shot</p></th>
+<th class="head"><p>One-shot</p></th>
+<th class="head"><p>Few-shot</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Task familiarity</p></td>
+<td><p>High</p></td>
+<td><p>Medium</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-odd"><td><p>Output schema complexity</p></td>
+<td><p>Simple</p></td>
+<td><p>Moderate</p></td>
+<td><p>Complex/unusual</p></td>
+</tr>
+<tr class="row-even"><td><p>Context window cost</p></td>
+<td><p>Lowest</p></td>
+<td><p>Low</p></td>
+<td><p>Moderate</p></td>
+</tr>
+<tr class="row-odd"><td><p>Consistency requirement</p></td>
+<td><p>Low</p></td>
+<td><p>Medium</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>Available examples</p></td>
+<td><p>None</p></td>
+<td><p>One</p></td>
+<td><p>Two or more</p></td>
+</tr>
+<tr class="row-odd"><td><p>Recommended for</p></td>
+<td><p>Common NLP tasks</p></td>
+<td><p>Structured extraction</p></td>
+<td><p>Classification, specialized tasks</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The decision tree:</p>
+<ol class="arabic simple">
+<li><p>Does the task have a well-known format (Q&amp;A, summarization)? → <strong>Zero-shot</strong></p></li>
+<li><p>Does the output have a specific schema (JSON fields, classification labels)? → <strong>One-shot</strong></p></li>
+<li><p>Are outputs inconsistent across runs or edge cases problematic? → <strong>Few-shot</strong></p></li>
+<li><p>Are failures still frequent after 5 examples? → <strong>Fine-tuning</strong></p></li>
+</ol>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">6.3.3.7. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Shot comparison</strong>
+Choose a named entity recognition task and implement it with zero-shot, one-shot, and three-shot prompts. Run each on ten sentences and count schema errors (missing fields, wrong types). How much does each additional shot reduce errors?</p></li>
+<li><p><strong>Example order effect</strong>
+Take a three-shot classification prompt and test three orderings of the examples: (a) easy-easy-hard, (b) hard-hard-easy, (c) balanced. Measure accuracy on 20 test inputs. Does example order affect performance?</p></li>
+<li><p><strong>Quality vs. quantity</strong>
+Compare: (a) three high-quality diverse examples vs. (b) six mediocre similar examples for a sentiment classification task. Which achieves higher accuracy? What does this suggest about the diminishing returns of additional examples?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_06"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C06S02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.3.2. </span>Advanced Prompt Construction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C06S04.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.3.4. </span>Reasoning with Generative Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.3.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.5.1. Designing Effective Few-Shot Examples</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples">6.3.3.5.2. How Many Examples?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.6. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.7. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
