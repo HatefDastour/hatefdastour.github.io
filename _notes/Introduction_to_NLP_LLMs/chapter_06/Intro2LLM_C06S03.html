@@ -62,6 +62,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_06/Intro2LLM_C06S03';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -312,16 +314,28 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.3.1. Learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.5.1. Designing Effective Few-Shot Examples</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples">6.3.3.5.2. How Many Examples?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-icl-operates-mechanically">6.3.3.2.1. How ICL Operates Mechanically</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.6. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.7. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategic-applicability-of-zero-shot">6.3.3.3.1. Strategic Applicability of Zero-Shot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-value-of-a-structural-template">6.3.3.4.1. The Value of a Structural Template</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.6. Designing Effective Few-Shot Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples-are-necessary">6.3.3.6.1. How Many Examples Are Necessary?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.7. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-engineering-decision-tree">6.3.3.7.1. The Engineering Decision Tree</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.8. Exercises and discussion</a></li>
 </ul>
             </nav>
         </div>
@@ -333,15 +347,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>  <span class="c1"># Suppresses Info and Warning logs</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="important admonition">
+  <div class="important admonition">
 <p class="admonition-title">Remark</p>
 <p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
 </div>
@@ -357,18 +363,13 @@
 <li><p>Explain how the quality, diversity, and order of examples affect few-shot performance.</p></li>
 <li><p>Select the appropriate ICL strategy (zero-shot, one-shot, few-shot) for a given task and resource constraint.</p></li>
 </ul>
-</section>
-<section id="what-is-in-context-learning">
-<h2><span class="section-number">6.3.3.2. </span>What Is In-Context Learning?<a class="headerlink" href="#what-is-in-context-learning" title="Link to this heading">#</a></h2>
-<p><strong>In-context learning (ICL)</strong> <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span> teaches the model what output you want by showing examples directly in the prompt — no fine-tuning required. The number of examples defines the zero/one/few-shot taxonomy, first formalized alongside GPT-3 <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zero</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>  <span class="n">No</span> <span class="n">examples</span><span class="p">;</span> <span class="n">the</span> <span class="n">model</span> <span class="n">infers</span> <span class="n">output</span> <span class="nb">format</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">instruction</span> <span class="n">alone</span>
-<span class="n">One</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>   <span class="n">One</span> <span class="n">example</span><span class="p">;</span> <span class="n">provides</span> <span class="n">a</span> <span class="n">schema</span> <span class="k">for</span> <span class="n">the</span> <span class="n">model</span> <span class="n">to</span> <span class="n">follow</span>
-<span class="n">Few</span><span class="o">-</span><span class="n">shot</span><span class="p">:</span>   <span class="n">Two</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">examples</span><span class="p">;</span> <span class="n">shapes</span> <span class="n">behavior</span> <span class="k">for</span> <span class="n">consistent</span><span class="p">,</span> <span class="nb">complex</span> <span class="n">output</span> <span class="n">patterns</span>
-</pre></div>
-</div>
-<p>ICL is fundamentally different from fine-tuning: the model’s weights are never updated. The examples in the prompt are processed as ordinary context — but they activate strong associative patterns from the model’s training, causing it to mirror the demonstrated format and style.</p>
 <p>Before we continue, let’s load back the pip from <a class="reference internal" href="Intro2LLM_C06S01.html#foundations-prompt-eng"><span class="std std-numref">Section 6.3.1</span></a></p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
@@ -393,16 +394,32 @@
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1e9258b8ede74b97bad8987809f8624b", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "df3e9b7b4a1a48a5ad85b425901f77d6", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+<section id="what-is-in-context-learning">
+<h2><span class="section-number">6.3.3.2. </span>What Is In-Context Learning?<a class="headerlink" href="#what-is-in-context-learning" title="Link to this heading">#</a></h2>
+<p><em>In-context learning (ICL)</em> <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span> is a paradigm wherein a large language model learns to perform a task switching or behavioral alignment conditioning purely on the context provided within the prompt template—without updating any underlying neural weights.</p>
+<p>The number and structure of these demonstrations define the zero/one/few-shot taxonomy:</p>
+<ul class="simple">
+<li><p><strong>Zero-shot:</strong> No exemplars are provided; the model relies entirely on its pre-trained semantic associations to parse the task instructions and infer the target schema.</p></li>
+<li><p><strong>One-shot:</strong> Exactly one input-output exemplar is provided; this acts as a definitive blueprint, clarifying syntax boundaries, formatting quirks, and task intent.</p></li>
+<li><p><strong>Few-shot:</strong> Two or more exemplars are provided; this establishes consistent statistical patterns to guide the model through complex edge cases and stylized generation rules.</p></li>
+</ul>
+<section id="how-icl-operates-mechanically">
+<h3><span class="section-number">6.3.3.2.1. </span>How ICL Operates Mechanically<a class="headerlink" href="#how-icl-operates-mechanically" title="Link to this heading">#</a></h3>
+<p>Unlike traditional gradient-based supervised fine-tuning (SFT) which structurally modifies model parameters, ICL relies on <strong>activation states</strong>. The exemplars included in your prompt are processed through the model’s self-attention layers.</p>
+<p>As the model computes attention weights across these examples, it dynamically maps the semantic features of your runtime query to the input-output patterns demonstrated in the context. This essentially coaxes the network into activating highly specific, latent processing loops already formed during its original pre-training.</p>
+</section>
+</section>
 <section id="zero-shot-prompting">
 <h2><span class="section-number">6.3.3.3. </span>Zero-Shot Prompting<a class="headerlink" href="#zero-shot-prompting" title="Link to this heading">#</a></h2>
-<p>Zero-shot prompting asks the model to perform a task with no demonstration of the desired output. Success depends entirely on whether the task and format are familiar from the model’s training data.</p>
+<p>Zero-shot prompting forces the model to execute a task using only its instruction-following capabilities. Success is strictly dependent on whether the requested task, schema, and domain-specific lexicon align with patterns highly represented in the model’s alignment data.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -412,8 +429,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a data extraction assistant. Respond only with JSON.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a data extraction assistant. Respond only with valid JSON.&quot;</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
@@ -422,9 +439,10 @@
             <span class="s2">&quot;{name, organization, role, location}. Return ONLY the JSON.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;Text: Dr. Sarah Chen, a professor at MIT&#39;s CSAIL lab in Cambridge, &quot;</span>
             <span class="s2">&quot;leads research on neural machine translation.&quot;</span>
-        <span class="p">),</span>
-    <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
 <span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
@@ -451,22 +469,34 @@
 </div>
 </div>
 </div>
-<p>Zero-shot works well when:</p>
-<ul class="simple">
-<li><p>The task type is common and well-represented in instruction-tuning data (Q&amp;A, summarization, classification).</p></li>
-<li><p>The output format is simple (yes/no, a single number, a short sentence).</p></li>
-<li><p>The model is sufficiently capable (7B+ instruction-tuned).</p></li>
-</ul>
-<p>Zero-shot often fails when:</p>
-<ul class="simple">
-<li><p>The output schema is unusual or highly specific.</p></li>
-<li><p>The model must infer implicit requirements from the instruction alone.</p></li>
-<li><p>The task requires domain-specific reasoning not covered in training.</p></li>
-</ul>
+<section id="strategic-applicability-of-zero-shot">
+<h3><span class="section-number">6.3.3.3.1. </span>Strategic Applicability of Zero-Shot<a class="headerlink" href="#strategic-applicability-of-zero-shot" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table" id="strategic-applicability-zero-shot">
+<caption><span class="caption-number">Table 6.7 </span><span class="caption-text">Strategic Applicability of Zero-Shot</span><a class="headerlink" href="#strategic-applicability-zero-shot" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><em>When Zero-Shot Succeeds</em></p></th>
+<th class="head"><p><em>When Zero-Shot Fails</em></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Commodity Tasks:</em> Standard text summaries, high-level sentiment classification, and direct translation.</p></td>
+<td><p><em>Custom Syntax Schemas:</em> Demanding odd key mappings or domain-specific formatting conventions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Highly Capable Base Instruct Models:</em> Models with robust multi-turn instruction fine-tuning (7B+ parameters).</p></td>
+<td><p><em>Complex Reason Reasoning Chains:</em> Multi-step arithmetic, logic puzzles, or non-obvious text extractions.</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Simple Output Structures:</em> Tasks requiring binary YES/NO indicators or standardized data fields (e.g., standard JSON strings).</p></td>
+<td><p><em>Nuanced Stylistic Alignment:</em> Writing code matching a highly unique, internal engineering style guide.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 <section id="one-shot-prompting">
 <h2><span class="section-number">6.3.3.4. </span>One-Shot Prompting<a class="headerlink" href="#one-shot-prompting" title="Link to this heading">#</a></h2>
-<p>One-shot prompting provides a single input-output example before the query. The example acts as a schema: the model learns the exact output format and content structure from one demonstration.</p>
+<p>When zero-shot instructions result in formatting drift or failure to adhere to constraints, <strong>One-Shot Prompting</strong> acts as the immediate corrective layer. By introducing a single explicit pairing of an inputs block and its corresponding ideal outputs block, you establish a definitive task schema.</p>
+<p>This example guides the model on how to handle structural variations, whitespace, and stylistic tone without blowing past token limitations.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -477,38 +507,42 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a data extraction assistant. Respond only with JSON.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a medical data normalizer. Convert clinical descriptions into standardized anatomical keys. Respond using raw JSON only.&quot;</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
         <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="s2">&quot;Extract fields {name, organization, role, location} as JSON.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Example:</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Input: John Smith, CEO of TechCorp in New York, oversees global strategy.</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Output: {</span><span class="se">\&quot;</span><span class="s2">name</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">John Smith</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">organization</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">TechCorp</span><span class="se">\&quot;</span><span class="s2">, &quot;</span>
-            <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">role</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">CEO</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">location</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">New York</span><span class="se">\&quot;</span><span class="s2">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Now extract from:</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Dr. Sarah Chen, a professor at MIT&#39;s CSAIL lab in Cambridge, &quot;</span>
-            <span class="s2">&quot;leads research on neural machine translation.&quot;</span>
-        <span class="p">),</span>
-    <span class="p">},</span>
+            <span class="c1"># 1. The One-Shot Exemplar Input</span>
+            <span class="s2">&quot;Example Input: Patient presents with acute inflammation of the lateral epicondyle.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="c1"># 2. The One-Shot Exemplar Output Blueprint</span>
+            <span class="s2">&quot;Example Output: {</span><span class="se">\&quot;</span><span class="s2">region</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">elbow</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">severity</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">acute</span><span class="se">\&quot;</span><span class="s2">, </span><span class="se">\&quot;</span><span class="s2">condition</span><span class="se">\&quot;</span><span class="s2">: </span><span class="se">\&quot;</span><span class="s2">epicondylitis</span><span class="se">\&quot;</span><span class="s2">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="c1"># 3. The Actual Runtime Query</span>
+            <span class="s2">&quot;Query Input: Subject exhibits mild swelling in the patellar tendon region.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Query Output:&quot;</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> {&quot;region&quot;: &quot;knee&quot;, &quot;severity&quot;: &quot;mild&quot;, &quot;condition&quot;: &quot;tendonitis&quot;}
+</pre></div>
 </div>
-<p>The single example locks in three things:</p>
-<ol class="arabic simple">
-<li><p><strong>Schema</strong> — exactly which keys appear in the JSON</p></li>
-<li><p><strong>Style</strong> — title included in name, concise role description</p></li>
-<li><p><strong>Format</strong> — flat JSON object, no nested structures</p></li>
-</ol>
-<p>One-shot is the most cost-effective ICL strategy: a single well-chosen example captures the essential pattern while adding minimal context window overhead.</p>
+</div>
+</div>
+<section id="the-value-of-a-structural-template">
+<h3><span class="section-number">6.3.3.4.1. </span>The Value of a Structural Template<a class="headerlink" href="#the-value-of-a-structural-template" title="Link to this heading">#</a></h3>
+<p>Providing a single demonstration establishes an explicit structural anchor. The model no longer needs to deduce what words like “normalizer” or “anatomical keys” mean in isolation; it simply replicates the mathematical input-to-output alignment shown in the exemplar. This is highly effective for stabilizing API responses in data pipelines where structural consistency is non-negotiable.</p>
+</section>
 </section>
 <section id="few-shot-prompting">
 <h2><span class="section-number">6.3.3.5. </span>Few-Shot Prompting<a class="headerlink" href="#few-shot-prompting" title="Link to this heading">#</a></h2>
-<p>Few-shot prompting provides multiple examples, allowing the model to learn more complex patterns — handling edge cases, multiple entity types, or ambiguous inputs.</p>
+<p>Few-shot prompting provides multiple examples, allowing the model to learn more complex patterns—handling edge cases, multiple entity types, or ambiguous inputs. By providing a sequence of exemplars, you establish a statistical pattern that guides the model through nuanced classifications or complex stylistic transformations.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -532,8 +566,8 @@
 
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You classify customer reviews. Respond with only one word: positive, negative, or neutral.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You classify customer reviews. Respond with only one word: positive, negative, or neutral.&quot;</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
@@ -542,109 +576,124 @@
             <span class="s2">&quot;Now classify:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;Input: </span><span class="se">\&quot;</span><span class="s2">The product works as advertised, though setup took longer than expected.</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;Sentiment:&quot;</span>
-        <span class="p">),</span>
-    <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> neutral
+</pre></div>
 </div>
+</div>
+</div>
+</section>
 <section id="designing-effective-few-shot-examples">
-<h3><span class="section-number">6.3.3.5.1. </span>Designing Effective Few-Shot Examples<a class="headerlink" href="#designing-effective-few-shot-examples" title="Link to this heading">#</a></h3>
-<p>The quality of few-shot examples matters more than their quantity:</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<h2><span class="section-number">6.3.3.6. </span>Designing Effective Few-Shot Examples<a class="headerlink" href="#designing-effective-few-shot-examples" title="Link to this heading">#</a></h2>
+<p>The quality of few-shot examples matters significantly more than their quantity. Poorly constructed exemplars introduce noise and degrade model output. When curating your example bank, prioritize the following five design principles:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-number">Table 6.8 </span><span class="caption-text">Designing Effective Few-Shot Examples</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Design principle</p></th>
-<th class="head"><p>Explanation</p></th>
+<tr class="row-odd"><th class="head"><p><strong>Design Principle</strong></p></th>
+<th class="head"><p><strong>Technical Rationale &amp; Explanation</strong></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Diversity</strong></p></td>
-<td><p>Cover different input types — don’t show only easy or prototypical examples</p></td>
+<td><p>Cover different input lengths, syntaxes, and vocabularies—don’t show only easy or prototypical examples.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Representativeness</strong></p></td>
-<td><p>Examples should reflect the distribution of real inputs</p></td>
+<td><p>Examples should mirror the true statistical distribution of real-world operational inputs.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Consistent format</strong></p></td>
-<td><p>Every example must use the exact same format the model should produce</p></td>
+<tr class="row-even"><td><p><strong>Consistent Format</strong></p></td>
+<td><p>Every example must use the exact same structural markers, spacing, and capitalization that the model should produce.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Edge cases</strong></p></td>
-<td><p>Include at least one example with an unusual input to prevent over-generalization</p></td>
+<tr class="row-odd"><td><p><strong>Edge Cases</strong></p></td>
+<td><p>Include at least one example featuring an unusual or borderline input to prevent the model from over-generalizing.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Order</strong></p></td>
-<td><p>Later examples have stronger influence (recency); put the most representative example last. Few-shot accuracy has been shown to vary substantially with example ordering alone <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id522" title="Yao Lu, Max Bartolo, Alastair Moore, Sebastian Riedel, and Pontus Stenetorp. Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity. In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), 8086–8098. Dublin, Ireland, 2022. Association for Computational Linguistics.">Lu <em>et al.</em>, 2022</a>]</span></p></td>
+<tr class="row-even"><td><p><strong>Order Optimization</strong></p></td>
+<td><p>Later examples exert a stronger mathematical influence due to recency effects. Always place your most representative exemplar last.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
-<section id="how-many-examples">
-<h3><span class="section-number">6.3.3.5.2. </span>How Many Examples?<a class="headerlink" href="#how-many-examples" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>0 examples (zero-shot):   Fast, cheap; works for common tasks with clear format
-1 example (one-shot):     Locks in format; best for structured output tasks
-2–3 examples (few-shot):  Covers variation; recommended for classification and extraction
-4–8 examples (many-shot): Diminishing returns; most benefit realized by 3–5 examples
-8+ examples:              Context window cost rises; prefer fine-tuning instead
-</pre></div>
-</div>
-<p>A practical rule: start with zero-shot, observe failure modes, add one example to address the most common failure, then add more only if needed.</p>
+<blockquote>
+<div><p><strong>The Permutation Sensitivity Hazard:</strong> Few-shot accuracy can vary substantially based on example ordering alone <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id522" title="Yao Lu, Max Bartolo, Alastair Moore, Sebastian Riedel, and Pontus Stenetorp. Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity. In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), 8086–8098. Dublin, Ireland, 2022. Association for Computational Linguistics.">Lu <em>et al.</em>, 2022</a>]</span>. If a model’s performance drops unexpectedly, reordering the exemplars or ensuring a balanced label distribution (e.g., matching the number of positive, negative, and neutral examples) often stabilizes the output.</p>
+</div></blockquote>
+<section id="how-many-examples-are-necessary">
+<h3><span class="section-number">6.3.3.6.1. </span>How Many Examples Are Necessary?<a class="headerlink" href="#how-many-examples-are-necessary" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>0 examples (zero-shot):</strong> Fast, lowest token cost; ideal for common tasks with clear instructions.</p></li>
+<li><p><strong>1 example (one-shot):</strong> Locks in the structural output schema; best for strict data extraction tasks.</p></li>
+<li><p><strong>2–3 examples (few-shot):</strong> Captures stylistic variation; recommended for classification and nuanced sentiment extraction.</p></li>
+<li><p><strong>4–8 examples (many-shot):</strong> Yields diminishing returns; most empirical benefits are realized by 3–5 examples.</p></li>
+<li><p><strong>8+ examples:</strong> Dramatically increases context window costs and latency; prefer fine-tuning beyond this threshold.</p></li>
+</ul>
 </section>
 </section>
 <section id="choosing-between-zero-shot-one-shot-and-few-shot">
-<h2><span class="section-number">6.3.3.6. </span>Choosing Between Zero-Shot, One-Shot, and Few-Shot<a class="headerlink" href="#choosing-between-zero-shot-one-shot-and-few-shot" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
+<h2><span class="section-number">6.3.3.7. </span>Choosing Between Zero-Shot, One-Shot, and Few-Shot<a class="headerlink" href="#choosing-between-zero-shot-one-shot-and-few-shot" title="Link to this heading">#</a></h2>
+<p>To select the optimal prompting strategy for your data pipeline, evaluate your task against structural complexity, operational constraints, and example availability:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id4">
+<caption><span class="caption-number">Table 6.9 </span><span class="caption-text">Choosing Between Zero-Shot, One-Shot, and Few-Shot</span><a class="headerlink" href="#id4" title="Link to this table">#</a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Criterion</p></th>
-<th class="head"><p>Zero-shot</p></th>
-<th class="head"><p>One-shot</p></th>
-<th class="head"><p>Few-shot</p></th>
+<tr class="row-odd"><th class="head"><p><em>Evaluation Criterion</em></p></th>
+<th class="head"><p><em>Zero-Shot</em></p></th>
+<th class="head"><p><em>One-Shot</em></p></th>
+<th class="head"><p><em>Few-Shot</em></p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Task familiarity</p></td>
-<td><p>High</p></td>
+<tr class="row-even"><td><p><em>Task Familiarity</em></p></td>
+<td><p>High (Common Knowledge)</p></td>
 <td><p>Medium</p></td>
-<td><p>Low</p></td>
+<td><p>Low (Highly Specialized)</p></td>
 </tr>
-<tr class="row-odd"><td><p>Output schema complexity</p></td>
-<td><p>Simple</p></td>
-<td><p>Moderate</p></td>
-<td><p>Complex/unusual</p></td>
+<tr class="row-odd"><td><p><em>Output Schema Complexity</em></p></td>
+<td><p>Simple (Text, Sentences)</p></td>
+<td><p>Moderate (Standard JSON)</p></td>
+<td><p>Complex / Custom Syntaxes</p></td>
 </tr>
-<tr class="row-even"><td><p>Context window cost</p></td>
+<tr class="row-even"><td><p><em>Context Window Cost</em></p></td>
 <td><p>Lowest</p></td>
 <td><p>Low</p></td>
-<td><p>Moderate</p></td>
+<td><p>Moderate to High</p></td>
 </tr>
-<tr class="row-odd"><td><p>Consistency requirement</p></td>
+<tr class="row-odd"><td><p><em>Consistency Requirement</em></p></td>
 <td><p>Low</p></td>
 <td><p>Medium</p></td>
-<td><p>High</p></td>
+<td><p>High (Production Defensiveness)</p></td>
 </tr>
-<tr class="row-even"><td><p>Available examples</p></td>
+<tr class="row-even"><td><p><em>Available Exemplars</em></p></td>
 <td><p>None</p></td>
-<td><p>One</p></td>
+<td><p>Exactly One</p></td>
 <td><p>Two or more</p></td>
 </tr>
-<tr class="row-odd"><td><p>Recommended for</p></td>
-<td><p>Common NLP tasks</p></td>
-<td><p>Structured extraction</p></td>
-<td><p>Classification, specialized tasks</p></td>
+<tr class="row-odd"><td><p><em>Recommended For</em></p></td>
+<td><p>Text summarization, Q&amp;A</p></td>
+<td><p>Structured data extraction</p></td>
+<td><p>Multi-class classification, edge cases</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The decision tree:</p>
+<section id="the-engineering-decision-tree">
+<h3><span class="section-number">6.3.3.7.1. </span>The Engineering Decision Tree<a class="headerlink" href="#the-engineering-decision-tree" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>Does the task have a well-known format (Q&amp;A, summarization)? → <strong>Zero-shot</strong></p></li>
-<li><p>Does the output have a specific schema (JSON fields, classification labels)? → <strong>One-shot</strong></p></li>
-<li><p>Are outputs inconsistent across runs or edge cases problematic? → <strong>Few-shot</strong></p></li>
-<li><p>Are failures still frequent after 5 examples? → <strong>Fine-tuning</strong></p></li>
+<li><p><strong>Does the task have a well-known format or rely on general reasoning?</strong> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Start with <strong>Zero-Shot</strong>.</p></li>
+<li><p><strong>Does the output require a rigid schema (specific JSON keys or strict markdown rules)?</strong> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Upgrade to <strong>One-Shot</strong>.</p></li>
+<li><p><strong>Are outputs inconsistent across runs, or are edge cases misclassified?</strong> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Expand to <strong>Few-Shot</strong>.</p></li>
+<li><p><strong>Are validation failures still frequent after providing 5 distinct examples?</strong> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Transition to <strong>Fine-Tuning</strong>.</p></li>
 </ol>
 </section>
+</section>
 <section id="exercises-and-discussion">
-<h2><span class="section-number">6.3.3.7. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.3.3.8. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Shot comparison</strong>
 Choose a named entity recognition task and implement it with zero-shot, one-shot, and three-shot prompts. Run each on ten sentences and count schema errors (missing fields, wrong types). How much does each additional shot reduce errors?</p></li>
@@ -723,16 +772,28 @@ Compare: (a) three high-quality diverse examples vs. (b) six mediocre similar ex
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.3.1. Learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.5.1. Designing Effective Few-Shot Examples</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples">6.3.3.5.2. How Many Examples?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-in-context-learning">6.3.3.2. What Is In-Context Learning?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-icl-operates-mechanically">6.3.3.2.1. How ICL Operates Mechanically</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.6. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.7. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-prompting">6.3.3.3. Zero-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategic-applicability-of-zero-shot">6.3.3.3.1. Strategic Applicability of Zero-Shot</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompting">6.3.3.4. One-Shot Prompting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-value-of-a-structural-template">6.3.3.4.1. The Value of a Structural Template</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">6.3.3.5. Few-Shot Prompting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#designing-effective-few-shot-examples">6.3.3.6. Designing Effective Few-Shot Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-examples-are-necessary">6.3.3.6.1. How Many Examples Are Necessary?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-between-zero-shot-one-shot-and-few-shot">6.3.3.7. Choosing Between Zero-Shot, One-Shot, and Few-Shot</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-engineering-decision-tree">6.3.3.7.1. The Engineering Decision Tree</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.3.8. Exercises and discussion</a></li>
 </ul>
   </nav></div>
 

@@ -62,6 +62,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_06/Intro2LLM_C06S06';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -312,17 +314,29 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.6.1. Learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-technique-selection-framework">6.3.6.2. The Technique Selection Framework</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-examples">6.3.6.3. Applied Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1-sentiment-classification">6.3.6.3.1. Task 1: Sentiment Classification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-named-entity-extraction">6.3.6.3.2. Task 2: Named Entity Extraction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-multi-step-math">6.3.6.3.3. Task 3: Multi-Step Math</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-long-form-content-generation">6.3.6.3.4. Task 4: Long-Form Content Generation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-technique-selection-framework">6.3.6.2. The Technique Selection Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategic-deconstruction-of-the-framework">6.3.6.2.1. Strategic Deconstruction of the Framework</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-iteration-workflow">6.3.6.4. Prompt Iteration Workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting-technique-summary">6.3.6.5. Prompting Technique Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.6.6. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-examples">6.3.6.3. Applied Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1-sentiment-classification">6.3.6.4. Task 1: Sentiment Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-failure-mode-extra-conversational-prose">6.3.6.4.1. The Naive Failure Mode: Extra Conversational Prose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-precision-engineering-fix-token-locked-constraints">6.3.6.4.2. The Precision Engineering Fix: Token-Locked Constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#engineering-breakdown">6.3.6.4.3. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-named-entity-extraction">6.3.6.5. Task 2: Named Entity Extraction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">6.3.6.5.1. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-multi-step-math">6.3.6.6. Task 3: Multi-Step Math</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.3.6.6.1. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-long-form-content-generation">6.3.6.7. Task 4: Long-Form Content Generation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-iteration-workflow">6.3.6.8. Prompt Iteration Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting-technique-summary">6.3.6.9. Prompting Technique Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.6.10. Exercises and discussion</a></li>
 </ul>
             </nav>
         </div>
@@ -334,15 +348,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>  <span class="c1"># Suppresses Info and Warning logs</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="important admonition">
+  <div class="important admonition">
 <p class="admonition-title">Remark</p>
 <p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
 </div>
@@ -360,31 +366,33 @@
 </section>
 <section id="the-technique-selection-framework">
 <h2><span class="section-number">6.3.6.2. </span>The Technique Selection Framework<a class="headerlink" href="#the-technique-selection-framework" title="Link to this heading">#</a></h2>
-<p>After covering six prompting strategies — basic prompting, advanced prompt construction, zero-shot ICL, few-shot ICL, Chain-of-Thought, and structured generation — the practical challenge is: <strong>which technique should you use for a given task?</strong></p>
-<p>The following decision framework structures that choice:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>STEP 1: Is the output structured (JSON, YAML, specific format)?
-  Yes → Use one-shot + validation loop; if reliability critical, use grammar-constrained
-  No  → Continue to step 2
-
-STEP 2: Does the task require multi-step reasoning?
-  Yes → Use Chain-of-Thought (zero-shot CoT for most tasks, few-shot CoT for math/logic)
-  No  → Continue to step 3
-
-STEP 3: Is the output pattern complex or unusual?
-  Yes → Use few-shot (2–5 examples demonstrating the pattern)
-  No  → Continue to step 4
-
-STEP 4: Is output quality with a basic prompt acceptable?
-  Yes → Use zero-shot (task + format specification)
-  No  → Add role, context, constraints; re-evaluate (advanced prompt construction)
-
-STEP 5: Is the task too complex for a single prompt?
-  Yes → Use chain prompting (decompose into sequential steps)
-  No  → Optimize the single prompt further
-</pre></div>
-</div>
-<p>Before we continue, let’s load back the pip from <a class="reference internal" href="Intro2LLM_C06S01.html#foundations-prompt-eng"><span class="std std-numref">Section 6.3.1</span></a></p>
-<div class="cell docutils container">
+<p>After covering six core prompting strategies—basic prompting, advanced multi-ingredient prompt construction, zero-shot ICL, few-shot ICL, Chain-of-Thought, and grammar-constrained generation—the primary production challenge becomes tactical selection. Applying an overly complex technique introduces unnecessary latency and token costs, while under-engineering a prompt causes execution instability.</p>
+<p>The following structured decision framework guides your selection path:</p>
+<figure class="align-center" id="label">
+<a class="reference internal image-reference" href="../_images/technique_selection_framework.png"><img alt="../_images/technique_selection_framework.png" src="../_images/technique_selection_framework.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">The Prompt Technique Selection Framework: A structured four-step decision path to determine the optimal prompting strategy based on output structure, reasoning complexity, stylistic requirements, and zero-shot baseline performance.</span><a class="headerlink" href="#label" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="strategic-deconstruction-of-the-framework">
+<h3><span class="section-number">6.3.6.2.1. </span>Strategic Deconstruction of the Framework<a class="headerlink" href="#strategic-deconstruction-of-the-framework" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Structural Enforcement Layer:</strong> Always isolate structural requirements first. If your output interfaces directly with downstream code, syntactic failures ruin reliability. Address formatting boundaries before trying to optimize semantic quality.</p></li>
+<li><p><strong>Cognitive Complexity Assessment:</strong> If a task requires transforming information across several intermediate logical states, forcing the model to generate a direct conclusion causes next-token prediction failure. Activate a reasoning scratchpad immediately.</p></li>
+<li><p><strong>Data Density vs. Context Costs:</strong> Moving down the framework scales your token footprint. Zero-shot is the fastest and cheapest option (<span class="math notranslate nohighlight">\(1\times\)</span> processing pass), whereas Few-Shot and Tree-of-Thought scale context window costs and latency significantly.</p></li>
+</ol>
+</section>
+</section>
+<section id="applied-examples">
+<h2><span class="section-number">6.3.6.3. </span>Applied Examples<a class="headerlink" href="#applied-examples" title="Link to this heading">#</a></h2>
+<p>To see the framework in action, we will evaluate a series of classic NLP tasks using the <code class="docutils literal notranslate"><span class="pre">Phi-3-Mini</span></code> pipeline loaded below:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">pipeline</span>
@@ -409,18 +417,25 @@ STEP 5: Is the task too complex for a single prompt?
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "03718a306bd346d898b69bccc0c3c1fa", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ccce74379e98403ba367d84f58155277", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "720b12a33b4a4a91b842bd83e3f5e980", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "77878f5d928c4317a4c119297aecfa74", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "7d3312a6a46e4b108008dad8231f188e", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "8486ad1c4fe744bfb17164e0038180b7", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "c2954e406fe7479a8f6922f760c9fefa", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "b21b896b85a0404f8c168dd7489c19b1", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "fb0dc32b188d4582a0737718206e1574", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "e0827ad97d804f54a7f52b6fe3919fb6", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "42b5f13871764753b65535b524d85aa8", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "f4151aa0fc834986a39b16082ad0894e", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "2b15210ff54c4857baff7781feddaed0", "version_major": 2, "version_minor": 0}</script><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Device set to use cuda
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="applied-examples">
-<h2><span class="section-number">6.3.6.3. </span>Applied Examples<a class="headerlink" href="#applied-examples" title="Link to this heading">#</a></h2>
 <section id="task-1-sentiment-classification">
-<h3><span class="section-number">6.3.6.3.1. </span>Task 1: Sentiment Classification<a class="headerlink" href="#task-1-sentiment-classification" title="Link to this heading">#</a></h3>
-<p><strong>Failure mode analysis:</strong> Zero-shot works but occasionally outputs extraneous explanation text instead of the bare label.</p>
+<h2><span class="section-number">6.3.6.4. </span>Task 1: Sentiment Classification<a class="headerlink" href="#task-1-sentiment-classification" title="Link to this heading">#</a></h2>
+<p><em>Framework Analysis:</em> * Is the output a complex structured schema? No (it’s a simple, single-word string label).</p>
+<ul class="simple">
+<li><p>Does it require multi-step math or logic? No.</p></li>
+<li><p>Is the target pattern highly unusual? No, sentiment labels are standard commodities.</p></li>
+</ul>
+<p>Therefore, we select <strong>Zero-Shot with Advanced Format Specifications</strong>.</p>
+<section id="the-naive-failure-mode-extra-conversational-prose">
+<h3><span class="section-number">6.3.6.4.1. </span>The Naive Failure Mode: Extra Conversational Prose<a class="headerlink" href="#the-naive-failure-mode-extra-conversational-prose" title="Link to this heading">#</a></h3>
+<p>When prompted naively, instruction-tuned models regularly suffer from conversational spillover, wrapping the requested token inside pleasantries.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -428,23 +443,32 @@ STEP 5: Is the task too complex for a single prompt?
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Zero-shot with explicit format constraint</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">review</span> <span class="o">=</span> <span class="s2">&quot;The shipping took a week longer than promised, but the device itself works beautifully.&quot;</span>
+
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Classify sentiment. Respond with exactly one word: positive, negative, or neutral.&quot;</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;The product works as advertised, though setup took longer than expected.&quot;</span><span class="p">,</span>
-    <span class="p">},</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Is this review positive or negative? Review: &#39;</span><span class="si">{</span><span class="n">review</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Naive Output:</span><span class="se">\n</span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Naive Output:
+ This review is mixed, as it contains both a negative aspect (the shipping delay) and a positive aspect (the device&#39;s performance).
+</pre></div>
 </div>
-<p><strong>If inconsistent → upgrade to one-shot:</strong></p>
+</div>
+</div>
+</section>
+<section id="the-precision-engineering-fix-token-locked-constraints">
+<h3><span class="section-number">6.3.6.4.2. </span>The Precision Engineering Fix: Token-Locked Constraints<a class="headerlink" href="#the-precision-engineering-fix-token-locked-constraints" title="Link to this heading">#</a></h3>
+<p>To eliminate conversational prose and guarantee a single-token classification label without the overhead of a few-shot exemplar pattern, anchor the constraints using explicit role definition and strict boundaries.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -455,27 +479,46 @@ STEP 5: Is the task too complex for a single prompt?
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Classify sentiment. Respond with exactly one word: positive, negative, or neutral.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;You are an automated data classification API. &quot;</span>
+            <span class="s2">&quot;Your output must strictly consist of exactly one word: either &#39;POSITIVE&#39; or &#39;NEGATIVE&#39;. &quot;</span>
+            <span class="s2">&quot;Do not include any introductory phrases, punctuation, punctuation marks, or explanations.&quot;</span>
+        <span class="p">)</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s1">&#39;Review: &quot;Loved every bite — the chef clearly cares about quality.&quot;</span><span class="se">\n</span><span class="s1">Sentiment:&#39;</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;positive&quot;</span><span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s1">&#39;Review: &quot;The product works as advertised, though setup took longer than expected.&quot;</span><span class="se">\n</span><span class="s1">Sentiment:&#39;</span><span class="p">,</span>
-    <span class="p">},</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Classify this text: &#39;</span><span class="si">{</span><span class="n">review</span><span class="si">}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">Label:&quot;</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Engineered Output:</span><span class="se">\n</span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Engineered Output:
+NEGATIVE
+</pre></div>
+</div>
+</div>
 </div>
 </section>
+<section id="engineering-breakdown">
+<h3><span class="section-number">6.3.6.4.3. </span>Engineering Breakdown<a class="headerlink" href="#engineering-breakdown" title="Link to this heading">#</a></h3>
+<p>By combining a strict <code class="docutils literal notranslate"><span class="pre">system</span></code> persona (“data classification API”) with <strong>Greedy Decoding</strong> (<code class="docutils literal notranslate"><span class="pre">do_sample=False</span></code>), we maximize token-level compliance. The final string placeholder (<code class="docutils literal notranslate"><span class="pre">Label:</span></code>) acts as a precise generation trigger in the recency position, clearing out conversational text pathways entirely.</p>
+</section>
+</section>
 <section id="task-2-named-entity-extraction">
-<h3><span class="section-number">6.3.6.3.2. </span>Task 2: Named Entity Extraction<a class="headerlink" href="#task-2-named-entity-extraction" title="Link to this heading">#</a></h3>
-<p><strong>Decision path:</strong> Structured output (JSON) → one-shot + validation loop.</p>
+<h2><span class="section-number">6.3.6.5. </span>Task 2: Named Entity Extraction<a class="headerlink" href="#task-2-named-entity-extraction" title="Link to this heading">#</a></h2>
+<p><em>Framework Analysis:</em></p>
+<ul class="simple">
+<li><p>Is the output structured? <strong>Yes (JSON object)</strong>.</p></li>
+<li><p>Does it require complex, multi-step math or logic? <strong>No</strong>.</p></li>
+<li><p>Is the target schema complex or custom? <strong>Yes</strong>, it maps textual sentences into dedicated arrays (<code class="docutils literal notranslate"><span class="pre">people</span></code>, <code class="docutils literal notranslate"><span class="pre">organizations</span></code>, <code class="docutils literal notranslate"><span class="pre">locations</span></code>).</p></li>
+</ul>
+<p>Therefore, according to our selection framework, we implement <strong>One-Shot Prompting combined with an Explicit Schema Structural Envelope</strong>.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -488,28 +531,51 @@ STEP 5: Is the task too complex for a single prompt?
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Extract named entities as JSON. Use this schema: </span><span class="si">{</span><span class="n">schema_example</span><span class="si">}</span><span class="s2">. Return ONLY JSON.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Extract named entities as JSON. Use this exact schema: </span><span class="si">{</span><span class="n">schema_example</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Return ONLY the raw JSON block without conversational prose.&quot;</span>
+        <span class="p">),</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
         <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
             <span class="s2">&quot;Input: Amazon CEO Andy Jassy announced new AWS data centers in Dublin and Tokyo.</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s1">&#39;Output: </span><span class="se">{{</span><span class="s1">&quot;people&quot;: [&quot;Andy Jassy&quot;], &quot;organizations&quot;: [&quot;Amazon&quot;, &quot;AWS&quot;], &#39;</span>
-            <span class="s1">&#39;&quot;locations&quot;: [&quot;Dublin&quot;, &quot;Tokyo&quot;]}}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Output: </span><span class="se">{{</span><span class="s1">&quot;people&quot;: [&quot;Andy Jassy&quot;], &quot;organizations&quot;: [&quot;Amazon&quot;, &quot;AWS&quot;], &quot;locations&quot;: [&quot;Dublin&quot;, &quot;Tokyo&quot;]</span><span class="se">}}\n\n</span><span class="s1">&#39;</span>
             <span class="s2">&quot;Now extract from:</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;Tesla founder Elon Musk unveiled the new Cybertruck at a factory in Austin, Texas.&quot;</span>
+            <span class="s2">&quot;Tesla founder Elon Musk unveiled the new Cybertruck at a factory in Austin, Texas.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Output:&quot;</span>
         <span class="p">),</span>
-    <span class="p">},</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> {&quot;people&quot;: [&quot;Elon Musk&quot;], &quot;organizations&quot;: [&quot;Tesla&quot;], &quot;locations&quot;: [&quot;Austin&quot;, &quot;Texas&quot;]}
+</pre></div>
 </div>
+</div>
+</div>
+<section id="id1">
+<h3><span class="section-number">6.3.6.5.1. </span>Engineering Breakdown<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Schema Locking:</strong> By supplying the empty <code class="docutils literal notranslate"><span class="pre">schema_example</span></code> in the <code class="docutils literal notranslate"><span class="pre">system</span></code> prompt, the network allocates strong baseline attention weights to the target JSON keys before processing the variable data.</p></li>
+<li><p><strong>Structural Anchor:</strong> The <code class="docutils literal notranslate"><span class="pre">Input/Output</span></code> exemplar pair defines the formatting boundary. The model learns exactly how to enclose the extracted strings inside valid JSON array lists without introducing trailing commas or missing escape sequences.</p></li>
+</ul>
+</section>
 </section>
 <section id="task-3-multi-step-math">
-<h3><span class="section-number">6.3.6.3.3. </span>Task 3: Multi-Step Math<a class="headerlink" href="#task-3-multi-step-math" title="Link to this heading">#</a></h3>
-<p><strong>Decision path:</strong> Multi-step reasoning required → Chain-of-Thought.</p>
+<h2><span class="section-number">6.3.6.6. </span>Task 3: Multi-Step Math<a class="headerlink" href="#task-3-multi-step-math" title="Link to this heading">#</a></h2>
+<p><em>Framework Analysis:</em></p>
+<ul class="simple">
+<li><p>Is the output a complex structured schema? <strong>No</strong> (it’s a simple, short calculation text response).</p></li>
+<li><p>Does it require multi-step reasoning, arithmetic logic, or planning? <strong>Yes</strong>.</p></li>
+</ul>
+<p>Therefore, the framework dictates upgrading to a <strong>Chain-of-Thought (CoT)</strong> reasoning pattern.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -519,24 +585,56 @@ STEP 5: Is the task too complex for a single prompt?
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are an analytical tutor. Solve mathematical problems step-by-step before declaring the final answer.&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
         <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
         <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
-            <span class="s2">&quot;A data scientist earns $95,000 per year. After a 12</span><span class="si">% r</span><span class="s2">aise, &quot;</span>
-            <span class="s2">&quot;they receive a one-time bonus equal to 8</span><span class="si">% o</span><span class="s2">f their new salary. &quot;</span>
-            <span class="s2">&quot;What is the total compensation in the first year after the raise?</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Question: A cafeteria has 23 apples. If they use 20 apples to make lunch &quot;</span>
+            <span class="s2">&quot;and buy 6 more, how many apples do they have left?</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;Let&#39;s think step by step.&quot;</span>
-        <span class="p">),</span>
-    <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">250</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Step 1: Start with the initial number of apples.
+The cafeteria initially has 23 apples.
+
+Step 2: Subtract the number of apples used to make lunch.
+The cafeteria uses 20 apples for lunch. So, 23 - 20 = 3 apples left.
+
+Step 3: Add the number of apples bought.
+The cafeteria buys 6 more apples. So, 3 + 6 = 9 apples.
+
+The cafeteria has 9 apples left after making lunch and buying more apples.
+</pre></div>
 </div>
+</div>
+</div>
+<section id="id2">
+<h3><span class="section-number">6.3.6.6.1. </span>Engineering Breakdown<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>The Scratchpad Effect:</strong> Forcing the model to output intermediate mathematical states sequentially prevents the network from committing to a premature (and often statistically incorrect) token guess.</p></li>
+<li><p><strong>Self-Reference Tracking:</strong> Each step generated by the autoregressive engine is appended back to its active context window, allowing subsequent self-attention layers to perform clean mathematical transformations on accurate intermediate integers.</p></li>
+</ul>
+</section>
 </section>
 <section id="task-4-long-form-content-generation">
-<h3><span class="section-number">6.3.6.3.4. </span>Task 4: Long-Form Content Generation<a class="headerlink" href="#task-4-long-form-content-generation" title="Link to this heading">#</a></h3>
-<p><strong>Decision path:</strong> Complex task with multiple dependent outputs → chain prompting.</p>
+<h2><span class="section-number">6.3.6.7. </span>Task 4: Long-Form Content Generation<a class="headerlink" href="#task-4-long-form-content-generation" title="Link to this heading">#</a></h2>
+<p><em>Framework Analysis:</em></p>
+<ul class="simple">
+<li><p>Is the output structured? <strong>No</strong> (it’s free-form Markdown text).</p></li>
+<li><p>Does it require multi-step planning or have dependent outputs? <strong>Yes</strong>. Generating a full technical blog post directly from a raw topic often leads to unstructured, superficial text or causes the model to run out of generation tokens mid-sentence.</p></li>
+</ul>
+<p>Therefore, the framework dictates using <strong>Chain Prompting</strong> to separate macro-planning (the outline) from micro-execution (the body copy).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -546,124 +644,153 @@ STEP 5: Is the task too complex for a single prompt?
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chain: topic → outline → section drafts → final assembly</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_blog_post</span><span class="p">(</span><span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="c1"># Step 1: Generate outline</span>
+    <span class="c1"># Step 1: Generate outline (Macro-planning phase)</span>
     <span class="n">outline_messages</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a technical blog writer.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a technical blog writer.&quot;</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
             <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Create a 4-section outline for a blog post about: </span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="s2">&quot;Format: Section 1: [title]</span><span class="se">\n</span><span class="s2">Section 2: [title]</span><span class="se">\n</span><span class="s2">...&quot;</span>
-            <span class="p">),</span>
-        <span class="p">},</span>
+                <span class="s2">&quot;Format exactly as:</span><span class="se">\n</span><span class="s2">Section 1: [title]</span><span class="se">\n</span><span class="s2">Section 2: [title]</span><span class="se">\n</span><span class="s2">Section 3: [title]</span><span class="se">\n</span><span class="s2">Section 4: [title]&quot;</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
     <span class="p">]</span>
     <span class="n">outline</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="n">outline_messages</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
-
-    <span class="c1"># Step 2: Expand each section</span>
+    
+    <span class="c1"># Step 2: Expand each section using the plan as runtime context</span>
     <span class="n">draft_messages</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a technical blog writer. Write clearly for a data science audience.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a technical blog writer. Write clearly for a data science audience.&quot;</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
             <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Using this outline:</span><span class="se">\n</span><span class="si">{</span><span class="n">outline</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Using this outline: </span><span class="se">\n</span><span class="si">{</span><span class="n">outline</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;Write the full blog post about &#39;</span><span class="si">{</span><span class="n">topic</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-                <span class="s2">&quot;Each section should be 2–3 paragraphs. &quot;</span>
-                <span class="s2">&quot;Use concrete examples throughout.&quot;</span>
-            <span class="p">),</span>
-        <span class="p">},</span>
+                <span class="s2">&quot;Each section must be 2–3 paragraphs long. &quot;</span>
+                <span class="s2">&quot;Use concrete technical examples throughout.&quot;</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
     <span class="p">]</span>
     <span class="k">return</span> <span class="n">pipe</span><span class="p">(</span><span class="n">draft_messages</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">800</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;generated_text&quot;</span><span class="p">]</span>
+
+<span class="c1"># Execute the pipeline chain</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">generate_blog_post</span><span class="p">(</span><span class="s2">&quot;In-Context Learning in Small Language Models&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </details>
-</div>
-</section>
-</section>
-<section id="prompt-iteration-workflow">
-<h2><span class="section-number">6.3.6.4. </span>Prompt Iteration Workflow<a class="headerlink" href="#prompt-iteration-workflow" title="Link to this heading">#</a></h2>
-<p>When a prompt does not produce the desired output, follow this diagnostic workflow:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1. OBSERVE the failure
-   What exactly went wrong?
-   - Wrong format → add/improve format specification
-   - Off-topic → add context and constraints
-   - Hallucination → add grounding instructions, source material
-   - Inconsistent → add examples (zero→one→few-shot)
-   - Reasoning error → add Chain-of-Thought trigger
-   - Structured output broken → add one-shot example or grammar constraints
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ### Section 1: Understanding In-Context Learning in Small Language Models
 
-2. HYPOTHESIZE the cause
-   Which ingredient is missing or underspecified?
+In-context Learning (ICL) is a relatively new paradigm in the realm of machine learning, specifically within the field of natural language processing (NLP). Small language models, also known as micro-models or mini-models, are designed to have fewer parameters compared to their larger counterparts. Despite their compact size, these models can still perform remarkably well on a variety of NLP tasks, particularly when using In-context Learning.
 
-3. FIX with the minimal change
-   Add only what is needed — over-engineered prompts can degrade performance
+At its core, In-context Learning enables a small language model to understand and perform tasks based on examples provided directly within the input text, without requiring external data or sophisticated pre-training. This approach takes inspiration from the human ability to learn from context, where learning can be facilitated by examining a few relevant examples. For instance, if we want to teach a small model to identify spam emails, we can provide it with several examples of spam and non-spam emails. By analyzing these examples, the model learns to discern patterns and characteristics that distinguish spam from legitimate correspondence.
 
-4. EVALUATE on multiple inputs
-   Test on at least 10 diverse inputs before declaring success
+In-context Learning has proven to be especially beneficial for small language models due to their limited capacity. Traditional pre-training methods, which involve training on vast text corpora, are often impractical for micro-models in terms of memory and computational resources. Instead, ICL allows these compact models to leverage their few parameters and learn effectively from a small amount of data in an efficient manner.
 
-5. DOCUMENT what worked
-   Treat effective prompts as engineering artifacts — version control them
+### Section 2: Advantages of In-Context Learning for Small Language Models
+
+One of the primary advantages of In-context Learning for small language models is its efficiency in terms of data and computational resources. Since ICL does not require the extensive pre-training typically associated with larger language models, it significantly reduces the amount of data and computational power needed. This efficiency makes it an attractive option for deploying small language models in resource-constrained environments, such as mobile devices or edge computing platforms.
+
+Another advantage of In-context Learning is its ability to adapt to specific tasks without the need for task-specific fine-tuning. Small language models can be fine-tuned on a few examples of a particular task, allowing them to generalize their knowledge to other similar tasks without additional training. For example, a small language model trained on a few examples of sentiment analysis can apply the knowledge gained to perform sentiment analysis on new, unseen text data.
+
+Furthermore, In-context Learning enables small language models to benefit from transfer learning, where knowledge learned from one task can be transferred to another. This transfer learning capability allows micro-models to achieve high performance on a wide range of NLP tasks without requiring extensive pre-training on each task individually.
+
+### Section 3: Challenges and Limitations of In-Context Learning in Small Language Models
+
+Despite its numerous advantages, In-context Learning also presents several challenges and limitations that need to be addressed. One major challenge is the difficulty in choosing the right examples to provide to the model. If the examples are not representative of the task, the model may learn incorrect patterns and produce inaccurate results. This issue is particularly relevant for small language models, as their limited capacity makes them more susceptible to learning from biased or misleading examples.
+
+Another challenge with In-context Learning is the trade-off between model capacity and task complexity. Small language models have limited capacity, meaning they can only learn from a small number of examples. When dealing with complex tasks that require a deep understanding of various concepts, providing sufficient examples for the model to learn from can be challenging. In such cases, small models may struggle to perform well and may require additional techniques,
 </pre></div>
 </div>
+</div>
+</div>
+</section>
+<section id="prompt-iteration-workflow">
+<h2><span class="section-number">6.3.6.8. </span>Prompt Iteration Workflow<a class="headerlink" href="#prompt-iteration-workflow" title="Link to this heading">#</a></h2>
+<p>When an engineered prompt fails to deliver predictable production results, avoid random adjustments. Apply this systematic diagnostic loop to fix failures with minimal code perturbation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       [Observe Failure] ──► Identify the exact bug type (Prose, Drift, Logic)
+               │
+      [Hypothesize Cause] ──► Map bug to a missing prompt ingredient
+               │
+     [Apply Minimal Fix] ──► Inject targeted modification (e.g., add delimiter)
+               │
+     [Evaluate on Batch] ──► Test stability across ≥ 10 diverse test inputs
+               │
+     [Commit to Artifact] ──► Version-control the frozen template structure
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>OBSERVE the failure:</strong> Pinpoint the exact bug profile:</p></li>
+</ol>
+<ul class="simple">
+<li><p><em>Wrong format</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Enforce structural format schemas or upgrade to grammar rules.</p></li>
+<li><p><em>Off-topic / Drift</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Inject explicit background context and boundary constraints.</p></li>
+<li><p><em>Hallucinations</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Add strong grounding rules and citation mandates.</p></li>
+<li><p><em>Inconsistent formatting</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Upgrade from zero-shot to one-shot/few-shot exemplars.</p></li>
+<li><p><em>Reasoning/Logic error</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> Trigger a Chain-of-Thought scratchpad or add worked examples.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>HYPOTHESIZE the cause:</strong> Which core ingredient is missing, hidden in a low-attention position, or mathematically ambiguous to the network?</p></li>
+<li><p><strong>FIX with a minimal change:</strong> Add only the targeted constraint required to block the failure path. Avoid bloat; over-engineered prompts dilute the model’s self-attention layers.</p></li>
+<li><p><strong>EVALUATE on multiple inputs:</strong> Never declare success based on a single passing run. Validate your updated prompt against at least 10 diverse test scenarios.</p></li>
+<li><p><strong>DOCUMENT what worked:</strong> Treat production prompts like true software source code. Check them into version control and lock down generation parameters like temperature and top_p alongside the template text.</p></li>
+</ol>
 </section>
 <section id="prompting-technique-summary">
-<h2><span class="section-number">6.3.6.5. </span>Prompting Technique Summary<a class="headerlink" href="#prompting-technique-summary" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
+<h2><span class="section-number">6.3.6.9. </span>Prompting Technique Summary<a class="headerlink" href="#prompting-technique-summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="id13">
+<caption><span class="caption-number">Table 6.12 </span><span class="caption-text">Prompting Technique Summary</span><a class="headerlink" href="#id13" title="Link to this table">#</a></caption>
 <thead>
-<tr class="row-odd"><th class="head"><p>Technique</p></th>
-<th class="head"><p>When to use</p></th>
-<th class="head"><p>Key implementation</p></th>
+<tr class="row-odd"><th class="head"><p><em>Technique</em></p></th>
+<th class="head"><p><em>When to Use</em></p></th>
+<th class="head"><p><em>Key Implementation Strategy</em></p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Zero-shot <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
-<td><p>Common tasks, simple format</p></td>
-<td><p>Task + format constraint in user message</p></td>
+<tr class="row-even"><td><p><em>Zero-Shot</em> <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
+<td><p>Standard commodity tasks, high-level text translations, simple free-text formats.</p></td>
+<td><p>Pack clean task instructions and direct format limits inside the user message.</p></td>
 </tr>
-<tr class="row-odd"><td><p>One-shot <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
-<td><p>Structured output, unusual schema</p></td>
-<td><p>One example as <code class="docutils literal notranslate"><span class="pre">user</span></code>/<code class="docutils literal notranslate"><span class="pre">assistant</span></code> pair</p></td>
+<tr class="row-odd"><td><p><em>One-Shot</em> <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
+<td><p>Rigid schemas, custom key mappings, structural data extractions.</p></td>
+<td><p>Include exactly one full input-to-output template to lock in vocabulary expectations.</p></td>
 </tr>
-<tr class="row-even"><td><p>Few-shot <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
-<td><p>Classification, complex patterns</p></td>
-<td><p>3–5 diverse examples</p></td>
+<tr class="row-even"><td><p><em>Few-Shot</em> <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id501" title="Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems 33 (NeurIPS 2020). 2020. arXiv:2005.14165.">Brown <em>et al.</em>, 2020</a>]</span></p></td>
+<td><p>Multi-class text classification, unique stylistic tones, handling complex edge cases.</p></td>
+<td><p>Curate 3–5 high-quality examples; place your most representative exemplar last.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Chain-of-Thought <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id523" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi, Quoc V. Le, and Denny Zhou. Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022), 24824–24837. 2022.">Wei <em>et al.</em>, 2022</a>]</span></p></td>
-<td><p>Multi-step reasoning, math, logic</p></td>
-<td><p>“Let’s think step by step” <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id524" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large Language Models are Zero-Shot Reasoners. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022). 2022.">Kojima <em>et al.</em>, 2022</a>]</span> or worked example</p></td>
+<tr class="row-odd"><td><p><em>Chain-of-Thought</em> <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id523" title="Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi, Quoc V. Le, and Denny Zhou. Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022), 24824–24837. 2022.">Wei <em>et al.</em>, 2022</a>]</span></p></td>
+<td><p>Math calculations, multi-step logical planning, algorithmic or code reasoning.</p></td>
+<td><p>Append zero-shot triggers like “Let’s think step by step” <span class="bibtex-citation" id="id7">[<a class="reference internal" href="../References.html#id524" title="Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large Language Models are Zero-Shot Reasoners. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022). 2022.">Kojima <em>et al.</em>, 2022</a>]</span> or pass a fully worked few-shot reasoning trace.</p></td>
 </tr>
-<tr class="row-even"><td><p>Self-consistency <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id525" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V. Le, Ed H. Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-Consistency Improves Chain of Thought Reasoning in Language Models. In 11th International Conference on Learning Representations (ICLR 2023). Kigali, Rwanda, 2023.">Wang <em>et al.</em>, 2023</a>]</span></p></td>
-<td><p>High reliability on reasoning tasks</p></td>
-<td><p>5 samples + majority vote</p></td>
+<tr class="row-even"><td><p><em>Self-Consistency</em> <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id525" title="Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V. Le, Ed H. Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. Self-Consistency Improves Chain of Thought Reasoning in Language Models. In 11th International Conference on Learning Representations (ICLR 2023). Kigali, Rwanda, 2023.">Wang <em>et al.</em>, 2023</a>]</span></p></td>
+<td><p>High-reliability calculations where a single reasoning slip breaks the application.</p></td>
+<td><p>Sample multiple CoT paths at an elevated temperature (<span class="math notranslate nohighlight">\(T \approx 0.7\)</span>), then aggregate outputs via a majority vote.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Tree-of-Thought <span class="bibtex-citation" id="id7">[<a class="reference internal" href="../References.html#id526" title="Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik Narasimhan. Tree of Thoughts: Deliberate Problem Solving with Large Language Models. In Advances in Neural Information Processing Systems 36 (NeurIPS 2023). 2023.">Yao <em>et al.</em>, 2023</a>]</span></p></td>
-<td><p>Multi-path planning, exploration</p></td>
-<td><p>Multiple expert perspectives in prompt</p></td>
+<tr class="row-odd"><td><p><em>Tree-of-Thought</em> <span class="bibtex-citation" id="id9">[<a class="reference internal" href="../References.html#id526" title="Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik Narasimhan. Tree of Thoughts: Deliberate Problem Solving with Large Language Models. In Advances in Neural Information Processing Systems 36 (NeurIPS 2023). 2023.">Yao <em>et al.</em>, 2023</a>]</span></p></td>
+<td><p>Combinatorial problems, open-ended business planning, multi-path exploration tasks.</p></td>
+<td><p>Orchestrate a multi-prompt pipeline that generates discrete steps, scores their validity, and executes backtracking.</p></td>
 </tr>
-<tr class="row-even"><td><p>Chain prompting <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id521" title="Tongshuang Wu, Michael Terry, and Carrie J. Cai. AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts. In CHI Conference on Human Factors in Computing Systems (CHI '22), 1–22. New Orleans, LA, USA, 2022. ACM.">Wu <em>et al.</em>, 2022</a>]</span></p></td>
-<td><p>Complex multi-stage tasks</p></td>
-<td><p>Sequential LLM calls, output feeds next</p></td>
+<tr class="row-even"><td><p><em>Chain Prompting</em> <span class="bibtex-citation" id="id10">[<a class="reference internal" href="../References.html#id521" title="Tongshuang Wu, Michael Terry, and Carrie J. Cai. AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts. In CHI Conference on Human Factors in Computing Systems (CHI '22), 1–22. New Orleans, LA, USA, 2022. ACM.">Wu <em>et al.</em>, 2022</a>]</span></p></td>
+<td><p>Long-form generation, compound transformations, workflows with distinct processing milestones.</p></td>
+<td><p>Break monolithic tasks into sequential API requests where Step <span class="math notranslate nohighlight">\(N\)</span>’s text output is cleanly fed into Step <span class="math notranslate nohighlight">\(N + 1\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Grammar-constrained <span class="bibtex-citation" id="id9">[<a class="reference internal" href="../References.html#id527" title="Saibo Geng, Martin Josifoski, Maxime Peyrard, and Robert West. Grammar-Constrained Decoding for Structured NLP Tasks without Finetuning. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, 10932–10952. Singapore, 2023. Association for Computational Linguistics.">Geng <em>et al.</em>, 2023</a>]</span></p></td>
-<td><p>Guaranteed JSON/structured output</p></td>
-<td><p>BNF grammar + <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> <span class="bibtex-citation" id="id10">[<a class="reference internal" href="../References.html#id528" title="Georgi Gerganov and contributors. Llama.cpp: A port of Facebook's LLaMA model in C/C++. 2023. URL: https://github.com/ggerganov/llama.cpp.">Gerganov and contributors, 2023</a>]</span></p></td>
+<tr class="row-odd"><td><p><em>Grammar-Constrained</em> <span class="bibtex-citation" id="id11">[<a class="reference internal" href="../References.html#id527" title="Saibo Geng, Martin Josifoski, Maxime Peyrard, and Robert West. Grammar-Constrained Decoding for Structured NLP Tasks without Finetuning. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, 10932–10952. Singapore, 2023. Association for Computational Linguistics.">Geng <em>et al.</em>, 2023</a>]</span></p></td>
+<td><p>Strict syntax enforcement, native database integrations, mission-critical structured outputs.</p></td>
+<td><p>Intercept logits directly at runtime using a formal BNF grammar specification tied to an engine like <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> <span class="bibtex-citation" id="id12">[<a class="reference internal" href="../References.html#id528" title="Georgi Gerganov and contributors. Llama.cpp: A port of Facebook's LLaMA model in C/C++. 2023. URL: https://github.com/ggerganov/llama.cpp.">Gerganov and contributors, 2023</a>]</span>.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="tip admonition">
-<p class="admonition-title">GPU Note</p>
-<p>Labs <code class="docutils literal notranslate"><span class="pre">l601_Prompt_Engineering</span></code> and <code class="docutils literal notranslate"><span class="pre">l602_prompt_engineering_p2</span></code> run on a <strong>free Google Colab T4 GPU (~15 GB VRAM)</strong> using Phi-3-Mini-4K-Instruct. The grammar-constrained generation section in the lab uses a separate quantized GGUF model loaded via <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> after releasing the main model. Select <strong>Runtime → Change runtime type → T4 GPU</strong> before running.</p>
-</div>
 </section>
 <section id="exercises-and-discussion">
-<h2><span class="section-number">6.3.6.6. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.3.6.10. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Framework application</strong>
 Choose five tasks from different domains: (a) tweet sentiment classification, (b) medical entity extraction, (c) multi-hop question answering, (d) code generation, and (e) product description writing. For each, apply the decision framework step-by-step and justify the technique you selected before implementing and testing it.</p></li>
@@ -742,17 +869,29 @@ For what types of tasks does prompt engineering reach its ceiling — where no a
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">6.3.6.1. Learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-technique-selection-framework">6.3.6.2. The Technique Selection Framework</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-examples">6.3.6.3. Applied Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1-sentiment-classification">6.3.6.3.1. Task 1: Sentiment Classification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-named-entity-extraction">6.3.6.3.2. Task 2: Named Entity Extraction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-multi-step-math">6.3.6.3.3. Task 3: Multi-Step Math</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-long-form-content-generation">6.3.6.3.4. Task 4: Long-Form Content Generation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-technique-selection-framework">6.3.6.2. The Technique Selection Framework</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strategic-deconstruction-of-the-framework">6.3.6.2.1. Strategic Deconstruction of the Framework</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-iteration-workflow">6.3.6.4. Prompt Iteration Workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting-technique-summary">6.3.6.5. Prompting Technique Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.6.6. Exercises and discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-examples">6.3.6.3. Applied Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1-sentiment-classification">6.3.6.4. Task 1: Sentiment Classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-failure-mode-extra-conversational-prose">6.3.6.4.1. The Naive Failure Mode: Extra Conversational Prose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-precision-engineering-fix-token-locked-constraints">6.3.6.4.2. The Precision Engineering Fix: Token-Locked Constraints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#engineering-breakdown">6.3.6.4.3. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-named-entity-extraction">6.3.6.5. Task 2: Named Entity Extraction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">6.3.6.5.1. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-multi-step-math">6.3.6.6. Task 3: Multi-Step Math</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.3.6.6.1. Engineering Breakdown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-long-form-content-generation">6.3.6.7. Task 4: Long-Form Content Generation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-iteration-workflow">6.3.6.8. Prompt Iteration Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompting-technique-summary">6.3.6.9. Prompting Technique Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">6.3.6.10. Exercises and discussion</a></li>
 </ul>
   </nav></div>
 
