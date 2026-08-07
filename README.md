@@ -14,7 +14,7 @@ Personal academic website showcasing research in Geospatial AI and Environmental
 ## 👤 About
 
 **Dr. Hatef Dastour**  
-Assistant Teaching Professor of Data Science and Analytics | AI Faculty Fellow  
+Assistant Teaching Professor of Data Science and Analytics 
 University of Missouri, Columbia
 
 **Academic Background:**
