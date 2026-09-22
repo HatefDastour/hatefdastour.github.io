@@ -99,6 +99,10 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 ## Selected Presentations
 
+1. *Dastour, H.*, "The Winter Fire Paradox: Rapid Phenological Recovery Masks Invasive Dominance in Southern California Chaparral", The International Geoscience and Remote Sensing Symposium (IGARSS), Washington D.C., USA, 9-14 August 2026 (Conference Presentation).
+
+1. Alfaro, N. and *Dastour, H.*, "Multi-Sensor Snow Cover Monitoring in the Peruvian Cordillera Blanca", The International Geoscience and Remote Sensing Symposium (IGARSS), Washington D.C., USA, 9-14 August 2026 (Conference Poster Presentation).
+
 1. **Dastour, H.**  and Hassan, Q.K., 2025., ["Integrating Machine Learning and Geospatial Analysis for Land Surface Temperature Reconstruction and Climate Impact Assessment on Forest Fire Dynamics in Alberta"](/talks/MOGISCON_2025), Missouri GIS Conference, Columbia, MO, April 21 - April 24, 2025 (Conference Presentation).
 
 1. **Dastour, H.** and Hassan, Q.K., ["Modeling Forest Fire Spread in Southwestern Canada Using MODIS Remote Sensing and Integrated Data"](/talks/WFCC_2024), Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
