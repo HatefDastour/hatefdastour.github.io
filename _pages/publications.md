@@ -103,7 +103,27 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 
 1. Alfaro, N. and *Dastour, H.*, "Multi-Sensor Snow Cover Monitoring in the Peruvian Cordillera Blanca", The International Geoscience and Remote Sensing Symposium (IGARSS), Washington D.C., USA, 9-14 August 2026 (Conference Poster Presentation).
 
-1. **Dastour, H.**  and Hassan, Q.K., 2025., ["Integrating Machine Learning and Geospatial Analysis for Land Surface Temperature Reconstruction and Climate Impact Assessment on Forest Fire Dynamics in Alberta"](/talks/MOGISCON_2025), Missouri GIS Conference, Columbia, MO, April 21 - April 24, 2025 (Conference Presentation).
+1. **Dastour, H.** and Hassan, Q.K., 2025., "Integrating Machine Learning and Geospatial Analysis for Land Surface Temperature Reconstruction and Climate Impact Assessment on Forest Fire Dynamics in Alberta", Missouri GIS Conference, Columbia, MO, April 21 - April 24, 2025 (Conference Presentation).
+
+1. **Dastour, H.** and Hassan, Q.K., "Modeling Forest Fire Spread in Southwestern Canada Using MODIS Remote Sensing and Integrated Data", Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
+
+1. Bhuian, H., **Dastour, H.**, Ahmed, M.R., and Hassan, Q.K., "Evaluation of Remote Sensing-derived Active Fire Perimeter Delineation Methods for Operational Purposes", Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
+
+1. **Dastour, H.** and Hassan, Q.K., "The significance of deep learning for classifying land use and land cover images", The International Geoscience and Remote Sensing Symposium (IGARSS), Pasadena, CA, USA, 16-21 July 2023 (Accepted, but not presented).
+
+1. **Dastour, H.** and Hassan, Q.K., "A Machine-Learning Framework for Modeling and Reconstructing Historical Monthly Streamflow Time Series", Canadian Water Association (CWRA) 2023 National Conference, Halifax, NS, Canada, 18-21 June 2023 (Conference Presentation).
+
+1. **H. Dastour**, "Computational Methods for Solving Wave Equation Inverse Problem", Eric Milner Colloquium, University of Calgary, Calgary, AB, Canada, October 14, 2016 (Colloquium Presentation).
+
+1. **Dastour, H.**, "A stabilized marching scheme for solving the inverse problem of degenerate diffusion model", the Canadian Society of Applied and Industrial Mathematics (CAIMS 2016), University of Alberta, Edmonton, AB, Canada, June 28, 2016 (Conference Presentation).
+
+1. **Dastour, H.**, "A numerical estimation approach for an inverse heat conduction problem", 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 24, 2016 (Conference Presentation).
+
+1. **Dastour, H.**, "A Computational Method for Solving an Inverse Heat Conduction Problem", 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 25, 2016 (Conference Poster Presentation).
+
+1. **Dastour, H.**, "A mollified marching solution of an inverse degenerate diffusion problem in petroleum reservoir", Alberta Mathematics Dialogue 2016, Mount Royal University, Calgary, AB, Canada, April 29, 2016 (Conference Presentation).
+
+<!-- 1. **Dastour, H.**  and Hassan, Q.K., 2025., ["Integrating Machine Learning and Geospatial Analysis for Land Surface Temperature Reconstruction and Climate Impact Assessment on Forest Fire Dynamics in Alberta"](/talks/MOGISCON_2025), Missouri GIS Conference, Columbia, MO, April 21 - April 24, 2025 (Conference Presentation).
 
 1. **Dastour, H.** and Hassan, Q.K., ["Modeling Forest Fire Spread in Southwestern Canada Using MODIS Remote Sensing and Integrated Data"](/talks/WFCC_2024), Wildland Fire Canada Conference, Fredericton, NB, October 28 - November 1, 2024 (Conference Presentation).
 
@@ -122,7 +142,7 @@ in an IHCP](https://jhs.uma.ac.ir/article_2573.html){:target="_blank"}. *Journal
 1. **Dastour, H.**, ["A Computational Method for Solving an Inverse Heat Conduction Problem"](/talks/CMS_2016_Poster), 2016 CMS Summer Meeting, University of Alberta, Edmonton, AB, Canada, June 25, 2016 (Conference Poster Presentation).
 
 1. **Dastour, H.**, ["A mollified marching solution of an inverse degenerate diffusion problem in petroleum reservoir"](/talks/AMD_2016), Alberta Mathematics Dialogue 2016, Mount Royal University, Calgary, AB, Canada, April 29, 2016
-(Conference Presentation).
+(Conference Presentation). -->
 
 
 ## Graduate Theses
