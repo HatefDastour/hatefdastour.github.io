@@ -215,7 +215,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.6. Prompt Engineering in Practice</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../References.html">7. References</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/Intro2LLM_C07.html">7. Foundations and Advanced Patterns of RAG Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S01.html">7.1. LLM I/O and Local Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S02.html">7.2. Prompt Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S03.html">7.3. Chains: Building Complex Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S04.html">7.4. Retrieval-Augmented Generation: Foundations and Document Ingestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S05.html">7.5. Retrieval Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S06.html">7.6. Building and Evaluating RAG Chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S07.html">7.7. Advanced RAG Patterns</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">8. References</a></li>
 </ul>
 
     </div>
@@ -395,8 +405,8 @@
 <p>Compatibility between a query and a key (their dot product) determines how much the corresponding value is incorporated into the output.</p>
 </div>
 <p>Given the hidden state matrix <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> (sequence length <span class="math notranslate nohighlight">\(n\)</span>, hidden dimension <span class="math notranslate nohighlight">\(d\)</span>), three linear projections produce queries (Q), keys (K), and values (V):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-72b9bb17-e866-4bee-970e-8449c27bc80b">
-<span class="eqno">(5.18)<a class="headerlink" href="#equation-72b9bb17-e866-4bee-970e-8449c27bc80b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fd96ec99-75ee-423c-b785-c1e74413be11">
+<span class="eqno">(5.18)<a class="headerlink" href="#equation-fd96ec99-75ee-423c-b785-c1e74413be11" title="Permalink to this equation">#</a></span>\[\begin{equation}
 Q = X W_Q \qquad K = X W_K \qquad V = X W_V
 \end{equation}\]</div>
 <figure class="align-center" id="qkv-projects">
@@ -422,16 +432,16 @@ Q = X W_Q \qquad K = X W_K \qquad V = X W_V
 <section id="step-2-compute-attention-weights">
 <h3><span class="section-number">5.2.3.2. </span>Step 2: Compute Attention Weights<a class="headerlink" href="#step-2-compute-attention-weights" title="Link to this heading">#</a></h3>
 <p>Attention weights measure how much each token should attend to each other token. They are computed as <strong>scaled dot products</strong> between queries and keys <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id462" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is All you Need. In I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc., 2017. URL: https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf.">Vaswani <em>et al.</em>, 2017</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-da895b80-8512-4c02-a94e-d81986423e18">
-<span class="eqno">(5.19)<a class="headerlink" href="#equation-da895b80-8512-4c02-a94e-d81986423e18" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f7ebfb76-d628-405b-9427-462e04a7c893">
+<span class="eqno">(5.19)<a class="headerlink" href="#equation-f7ebfb76-d628-405b-9427-462e04a7c893" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^T}{\sqrt{d_k}}\right) V
 \end{equation}\]</div>
 <p>The scaling factor <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{d_k}}\)</span> (where <span class="math notranslate nohighlight">\(d_k\)</span> is the key dimension) prevents the dot products from growing too large in magnitude, which would cause the softmax to saturate and produce near-zero gradients.</p>
 <div class="note admonition">
 <p class="admonition-title">Definition — Softmax</p>
 <p>For a vector <span class="math notranslate nohighlight">\(z = (z_1, z_2, \ldots, z_n)\)</span>, the <strong>softmax</strong> function converts raw scores into a probability distribution:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-35f128b0-7901-4aa0-b715-8f5224dacb58">
-<span class="eqno">(5.20)<a class="headerlink" href="#equation-35f128b0-7901-4aa0-b715-8f5224dacb58" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-30f3eb2c-adfb-49e9-a573-660c6b1f2cf7">
+<span class="eqno">(5.20)<a class="headerlink" href="#equation-30f3eb2c-adfb-49e9-a573-660c6b1f2cf7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}
 \end{equation}\]</div>
 <p>In attention, softmax is applied row-wise to the scaled dot-product matrix, so each row sums to 1 and represents a probability distribution over sequence positions.</p>
@@ -495,20 +505,20 @@ Causal mask (5-token sequence):
 <div class="note admonition">
 <p class="admonition-title">Definition — Multi-Head Attention</p>
 <p><strong>Multi-head attention</strong> <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id462" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is All you Need. In I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc., 2017. URL: https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf.">Vaswani <em>et al.</em>, 2017</a>]</span> runs <span class="math notranslate nohighlight">\(h\)</span> independent attention functions (“heads”) in parallel, each operating on a lower-dimensional projection of <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span>. The outputs are concatenated and linearly projected:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e5954451-d091-431b-8973-74f081576a2d">
-<span class="eqno">(5.21)<a class="headerlink" href="#equation-e5954451-d091-431b-8973-74f081576a2d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9bf327cb-536b-45a9-8f9c-fcef5cee3cf9">
+<span class="eqno">(5.21)<a class="headerlink" href="#equation-9bf327cb-536b-45a9-8f9c-fcef5cee3cf9" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)\, W_O
 \end{equation}\]</div>
 <p>Using multiple heads allows the model to jointly attend to information from different representation subspaces — for example, one head may capture syntactic dependencies while another captures semantic similarity.</p>
 </div>
 <p>Rather than computing a single attention function over the full <span class="math notranslate nohighlight">\(d\)</span>-dimensional space, transformers split it into <span class="math notranslate nohighlight">\(h\)</span> <strong>parallel attention heads</strong>, each operating in a lower-dimensional subspace:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8e150f78-d8a1-4505-b1a9-58c5fe10a8b5">
-<span class="eqno">(5.22)<a class="headerlink" href="#equation-8e150f78-d8a1-4505-b1a9-58c5fe10a8b5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5c48e875-aea0-4439-99c0-0ee7f2ece18b">
+<span class="eqno">(5.22)<a class="headerlink" href="#equation-5c48e875-aea0-4439-99c0-0ee7f2ece18b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \, W_O
 \end{equation}\]</div>
 <p>where each head <span class="math notranslate nohighlight">\(i\)</span> computes:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0641ea1d-1c47-4c09-bb87-5c67dc00eecc">
-<span class="eqno">(5.23)<a class="headerlink" href="#equation-0641ea1d-1c47-4c09-bb87-5c67dc00eecc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5facb99b-d628-42e4-9653-2985356328a7">
+<span class="eqno">(5.23)<a class="headerlink" href="#equation-5facb99b-d628-42e4-9653-2985356328a7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{head}_i = \text{Attention}(Q W_{Q_i},\; K W_{K_i},\; V W_{V_i})
 \end{equation}\]</div>
 <p>For Phi-3-Mini:</p>
@@ -554,13 +564,13 @@ Multi-head attention in Phi-3-Mini:
 <p>This is a fundamental limitation for language, where word order is meaning-bearing. Position encoding schemes inject positional information into the computation so the model can distinguish sequences that differ only in word order.</p>
 <p>A critical problem for fully parallel attention: without positional information, the model cannot distinguish “The cat sat on the mat” from “The mat sat on the cat” — both produce identical attention-weight matrices if word order is ignored.</p>
 <p><strong>Rotary Position Encoding (RoPE)</strong> <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id500" title="Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, and Yunfeng Liu. RoFormer: Enhanced Transformer with Rotary Position Embedding. 2021. arXiv:2104.09864. URL: https://arxiv.org/abs/2104.09864.">Su <em>et al.</em>, 2021</a>]</span> encodes positional information by applying a position-dependent rotation to the query and key vectors before computing attention:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-18c3d5f4-acd7-4cd0-9d37-095e06c9e70e">
-<span class="eqno">(5.24)<a class="headerlink" href="#equation-18c3d5f4-acd7-4cd0-9d37-095e06c9e70e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-44a88da6-2137-450b-8599-c601ce0713f5">
+<span class="eqno">(5.24)<a class="headerlink" href="#equation-44a88da6-2137-450b-8599-c601ce0713f5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 Q_m = R_m Q \qquad K_n = R_n K
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(R_m\)</span> is a rotation matrix depending only on position <span class="math notranslate nohighlight">\(m\)</span>. The dot product <span class="math notranslate nohighlight">\(Q_m \cdot K_n\)</span> then depends on the <strong>relative</strong> position <span class="math notranslate nohighlight">\(m - n\)</span> rather than absolute positions:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c6e10ea4-36aa-478f-a222-48e7f50af333">
-<span class="eqno">(5.25)<a class="headerlink" href="#equation-c6e10ea4-36aa-478f-a222-48e7f50af333" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b1c67ac9-db6d-42cd-b35c-da402224e882">
+<span class="eqno">(5.25)<a class="headerlink" href="#equation-b1c67ac9-db6d-42cd-b35c-da402224e882" title="Permalink to this equation">#</a></span>\[\begin{equation}
 Q_m \cdot K_n = (R_m Q) \cdot (R_n K) = Q \cdot R_{m-n}^T K
 \end{equation}\]</div>
 <p>This has several advantages over earlier position encoding schemes:</p>
@@ -568,8 +578,8 @@ Q_m \cdot K_n = (R_m Q) \cdot (R_n K) = Q \cdot R_{m-n}^T K
 <p class="admonition-title">Definition — Rotary Position Encoding (RoPE)</p>
 <p><strong>RoPE</strong> <span class="bibtex-citation" id="id7">[<a class="reference internal" href="../References.html#id500" title="Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, and Yunfeng Liu. RoFormer: Enhanced Transformer with Rotary Position Embedding. 2021. arXiv:2104.09864. URL: https://arxiv.org/abs/2104.09864.">Su <em>et al.</em>, 2021</a>]</span> encodes position by rotating query and key vectors in 2D planes within the embedding space. The hidden dimension <span class="math notranslate nohighlight">\(d_k\)</span> is divided into <span class="math notranslate nohighlight">\(d_k / 2\)</span> pairs of dimensions; pair <span class="math notranslate nohighlight">\(i\)</span> is rotated by angle <span class="math notranslate nohighlight">\(\theta_i = m / 10000^{2i/d_k}\)</span> for a token at position <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>The rotation matrix <span class="math notranslate nohighlight">\(R_m\)</span> is block-diagonal:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-98f47368-2bb5-4b41-85d0-13567ec9e521">
-<span class="eqno">(5.26)<a class="headerlink" href="#equation-98f47368-2bb5-4b41-85d0-13567ec9e521" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-57033e2e-578c-46a9-88ee-cd393387a884">
+<span class="eqno">(5.26)<a class="headerlink" href="#equation-57033e2e-578c-46a9-88ee-cd393387a884" title="Permalink to this equation">#</a></span>\[\begin{equation}
 R_m = \text{diag}\!\left( \begin{bmatrix} \cos m\theta_1 &amp; -\sin m\theta_1 \\ \sin m\theta_1 &amp; \cos m\theta_1 \end{bmatrix}, \; \ldots,\; \begin{bmatrix} \cos m\theta_{d_k/2} &amp; -\sin m\theta_{d_k/2} \\ \sin m\theta_{d_k/2} &amp; \cos m\theta_{d_k/2} \end{bmatrix} \right)
 \end{equation}\]</div>
 <p>Because rotation is a linear operation, the dot product <span class="math notranslate nohighlight">\(Q_m \cdot K_n\)</span> depends only on the relative displacement <span class="math notranslate nohighlight">\(m - n\)</span>, not on the absolute positions. This allows RoPE to generalize to sequence lengths longer than those seen during training.</p>
@@ -616,8 +626,8 @@ R_m = \text{diag}\!\left( \begin{bmatrix} \cos m\theta_1 &amp; -\sin m\theta_1 \
 <div class="tip admonition">
 <p class="admonition-title">Reminder — SwiGLU Activation</p>
 <p><strong>SwiGLU</strong> (Swish-Gated Linear Unit) <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id498" title="Noam Shazeer. GLU Variants Improve Transformer. 2020. arXiv:2002.05202. URL: https://arxiv.org/abs/2002.05202.">Shazeer, 2020</a>]</span> is the activation function used in the Phi-3-Mini MLP block. It applies a gating mechanism:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-826ff754-a778-42b9-80f7-e09ec0bd0823">
-<span class="eqno">(5.27)<a class="headerlink" href="#equation-826ff754-a778-42b9-80f7-e09ec0bd0823" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2c49cfe9-d34f-4afd-b5b3-322826f656ca">
+<span class="eqno">(5.27)<a class="headerlink" href="#equation-2c49cfe9-d34f-4afd-b5b3-322826f656ca" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{SwiGLU}(x, W, V) = \text{SiLU}(xW) \odot (xV)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\text{SiLU}(z) = z \cdot \sigma(z)\)</span> is the Sigmoid Linear Unit <span class="bibtex-citation" id="id9">[<a class="reference internal" href="../References.html#id497" title="Stefan Elfwing, Eiji Uchibe, and Kenji Doya. Sigmoid-Weighted Linear Units for Neural Network Function Approximation in Reinforcement Learning. Neural Networks, 107:3–11, 2017. arXiv:1702.03118.">Elfwing <em>et al.</em>, 2017</a>]</span> and <span class="math notranslate nohighlight">\(\odot\)</span> is element-wise multiplication. The gate <span class="math notranslate nohighlight">\(\text{SiLU}(xW)\)</span> modulates how much of the linear projection <span class="math notranslate nohighlight">\(xV\)</span> passes through, enabling expressive non-linear transformations with smoother gradients than ReLU.</p>
@@ -649,15 +659,15 @@ MLP block (SwiGLU — Phi-3-Mini):
 <div class="tip admonition">
 <p class="admonition-title">Reminder — RMSNorm</p>
 <p><strong>Root Mean Square Layer Normalization (RMSNorm)</strong> <span class="bibtex-citation" id="id10">[<a class="reference internal" href="../References.html#id496" title="Biao Zhang and Rico Sennrich. Root Mean Square Layer Normalization. In Advances in Neural Information Processing Systems 32 (NeurIPS 2019), 12360–12371. 2019.">Zhang and Sennrich, 2019</a>]</span> normalizes a vector <span class="math notranslate nohighlight">\(x\)</span> by its root mean square rather than its mean and variance:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-15137ba7-7722-4588-98ac-b631c7f0e85f">
-<span class="eqno">(5.28)<a class="headerlink" href="#equation-15137ba7-7722-4588-98ac-b631c7f0e85f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b3b45e82-20cb-41bf-8795-90eb142d8121">
+<span class="eqno">(5.28)<a class="headerlink" href="#equation-b3b45e82-20cb-41bf-8795-90eb142d8121" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{RMSNorm}(x) = \frac{x}{\text{RMS}(x)} \cdot \gamma, \qquad \text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is a learned per-dimension scale parameter. RMSNorm is faster than standard LayerNorm (no mean subtraction) and is used in Phi-3-Mini, LLaMA, and most modern LLMs. It is applied <strong>before</strong> each sublayer in the pre-norm configuration used here.</p>
 </div>
 <p>Every sublayer (attention and MLP) is wrapped in a <strong>residual connection</strong>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e26a6b94-2459-4941-bd12-3cbd4a8aad10">
-<span class="eqno">(5.29)<a class="headerlink" href="#equation-e26a6b94-2459-4941-bd12-3cbd4a8aad10" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1d5c6ab1-d6c6-48d7-8c40-367c173c8133">
+<span class="eqno">(5.29)<a class="headerlink" href="#equation-1d5c6ab1-d6c6-48d7-8c40-367c173c8133" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{output} = \text{sublayer}(\text{input}) + \text{input}
 \end{equation}\]</div>
 <p>This addition allows gradients to flow directly through the network without passing through the sublayer — critical for training very deep networks (32+ layers).</p>
