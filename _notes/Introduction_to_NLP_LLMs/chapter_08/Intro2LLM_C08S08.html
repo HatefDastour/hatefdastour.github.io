@@ -1,0 +1,1817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8.3.8. Lightweight Local Models for Agentic AI: 7B Models, GPU Offload, and Grammar-Constrained Decoding &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_08/Intro2LLM_C08S08';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. References" href="../References.html" />
+    <link rel="prev" title="8.3.7. Agent Evaluation and Safety" href="Intro2LLM_C08S07.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S02.html">5.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S03.html">5.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S04.html">5.4. Text Classification by Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S04.html">6.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S05.html">6.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/Intro2LLM_C07.html">7. Foundations and Advanced Patterns of RAG Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S01.html">7.1. LLM I/O and Local Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S02.html">7.2. Prompt Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S03.html">7.3. Chains: Building Complex Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S04.html">7.4. Retrieval-Augmented Generation: Foundations and Document Ingestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S05.html">7.5. Retrieval Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S06.html">7.6. Building and Evaluating RAG Chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S07.html">7.7. Advanced RAG Patterns</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C08.html">8. Language Agents and Agentic AI</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S01.html">8.3.1. Agents and the ReAct Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S02.html">8.3.2. Introduction to Agentic AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S03.html">8.3.3. Building Tools for Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S04.html">8.3.4. Agent Memory Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S05.html">8.3.5. Building a ReAct Agent from Scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S06.html">8.3.6. LangChain Agent Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S07.html">8.3.7. Agent Evaluation and Safety</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.3.8. Lightweight Local Models for Agentic AI: 7B Models, GPU Offload, and Grammar-Constrained Decoding</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">9. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lightweight Local Models for Agentic AI: 7B Models, GPU Offload, and Grammar-Constrained Decoding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">8.3.8.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lightweight-local-models-for-agentic-ai">8.3.8.2. Why lightweight local models for agentic AI?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-lineup">8.3.8.3. The model lineup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-grammar-constraints-fix-and-what-they-do-not">8.3.8.4. What grammar constraints fix, and what they do not</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-agent-loop">8.3.8.5. The agent loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">8.3.8.6. Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-gpu-is-visible">8.3.8.6.1. Confirm the GPU is visible</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-models">8.3.8.7. Loading the models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-benchmark">8.3.8.8. Speed benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tool-library-and-the-hybrid-strategy">8.3.8.9. The tool library and the hybrid strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#five-practical-tools">8.3.8.9.1. Five practical tools</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-registry-and-grammar">8.3.8.10. Tool registry and grammar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-design-for-local-agents">8.3.8.11. Prompt design for local agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-and-tool-execution">8.3.8.12. Parsing and tool execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-agent-class">8.3.8.13. The agent class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walkthrough-one-question-two-models">8.3.8.14. Walkthrough: one question, two models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-agents">8.3.8.15. Evaluating the agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablation-what-does-the-grammar-actually-buy">8.3.8.16. Ablation: what does the grammar actually buy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-results">8.3.8.17. Reading the results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-which-model">8.3.8.18. When to use which model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">8.3.8.19. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">8.3.8.20. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="lightweight-local-models-for-agentic-ai-7b-models-gpu-offload-and-grammar-constrained-decoding">
+<h1><span class="section-number">8.3.8. </span>Lightweight Local Models for Agentic AI: 7B Models, GPU Offload, and Grammar-Constrained Decoding<a class="headerlink" href="#lightweight-local-models-for-agentic-ai-7b-models-gpu-offload-and-grammar-constrained-decoding" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">8.3.8.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain why quantized 7B instruction-tuned models are a practical “lightweight” choice for local agentic AI, and how they compare to 1–3B CPU-only models.</p></li>
+<li><p>Load Mistral-7B-Instruct and Qwen2.5-7B-Instruct in GGUF format with <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code>, using GPU offload with a graceful fallback.</p></li>
+<li><p>Build a complete tool-calling agent loop in plain Python, with no agent framework.</p></li>
+<li><p>Use grammar-constrained decoding (GBNF) to make malformed tool calls structurally impossible, and state precisely what it does <em>and does not</em> fix.</p></li>
+<li><p>Apply the hybrid strategy: the LLM plans and routes, deterministic Python tools do the precise work.</p></li>
+<li><p>Measure speed (tokens/second), accuracy, and failure modes, and attribute failures to the right cause (format, tool choice, or reasoning).</p></li>
+</ul>
+</section>
+<section id="why-lightweight-local-models-for-agentic-ai">
+<h2><span class="section-number">8.3.8.2. </span>Why lightweight local models for agentic AI?<a class="headerlink" href="#why-lightweight-local-models-for-agentic-ai" title="Link to this heading">#</a></h2>
+<p>Agentic systems call the model many times per task (once per reasoning step), so latency, cost, and privacy matter more than in a single-shot chatbot. Running a model locally is attractive when:</p>
+<ul class="simple">
+<li><p><strong>Privacy is critical</strong>: data must not leave local infrastructure.</p></li>
+<li><p><strong>Throughput and cost matter</strong>: an agent loop may issue 3–10 generations per question, and per-token API costs multiply.</p></li>
+<li><p><strong>Teaching and prototyping</strong>: students need models that run on hardware they control.</p></li>
+<li><p><strong>Edge deployment</strong>: laptops and workstations with a single consumer GPU.</p></li>
+</ul>
+<p>Earlier versions of this section focused on 1–3B models (TinyLlama-1.1B, Phi-2-2.7B) running on a CPU. That approach works for simple one-tool tasks, but it hits two walls: <strong>speed</strong> (a few tokens per second on CPU) and <strong>format reliability</strong> (small models frequently narrate instead of acting, echo placeholders, or invent tool names). Two engineering changes address these walls directly, and they are the subject of this section:</p>
+<ol class="arabic simple">
+<li><p><strong>GPU offload</strong> of a 4-bit quantized 7B model. Quantization shrinks a 7B model to roughly 4.5 GB, small enough for a mid-range consumer GPU, and offloading all layers to the GPU raises throughput from single-digit tokens/second (CPU) to tens of tokens/second or more, depending on hardware.</p></li>
+<li><p><strong>Grammar-constrained decoding.</strong> Instead of <em>asking</em> the model to emit a parseable format and regex-parsing whatever comes back, we <em>constrain the sampler</em> so that only format-valid tokens can be produced.</p></li>
+</ol>
+</section>
+<section id="the-model-lineup">
+<h2><span class="section-number">8.3.8.3. </span>The model lineup<a class="headerlink" href="#the-model-lineup" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-model-lineup">
+<caption><span class="caption-number">Table 8.8 </span><span class="caption-text">The model lineup</span><a class="headerlink" href="#tab-model-lineup" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Model</p></th>
+<th class="head text-left"><p>Params</p></th>
+<th class="head text-left"><p>Quantization</p></th>
+<th class="head text-left"><p>Chat format</p></th>
+<th class="head text-left"><p>Approx. VRAM</p></th>
+<th class="head text-left"><p>Role in this section</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Mistral-7B-Instruct-v0.3</strong></p></td>
+<td class="text-left"><p>7B</p></td>
+<td class="text-left"><p>Q4_K_M</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mistral-instruct</span></code></p></td>
+<td class="text-left"><p>~4.7 GB</p></td>
+<td class="text-left"><p>Main model A</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Qwen2.5-7B-Instruct</strong></p></td>
+<td class="text-left"><p>7B</p></td>
+<td class="text-left"><p>Q4_K_M</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">chatml</span></code></p></td>
+<td class="text-left"><p>~4.5 GB</p></td>
+<td class="text-left"><p>Main model B</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Two practical points about the 7B models:</p>
+<ul class="simple">
+<li><p>Both are <strong>instruction-tuned</strong>, not base/completion models, so we call them through <code class="docutils literal notranslate"><span class="pre">create_chat_completion</span></code> with the correct <code class="docutils literal notranslate"><span class="pre">chat_format</span></code>. Using the wrong template is one of the most common causes of garbled output, so we pick the right one up front rather than debugging it later.</p></li>
+<li><p>Q4_K_M is a 4-bit “k-quant” scheme that keeps quality close to the full-precision model at about a quarter of the memory footprint.</p></li>
+</ul>
+<div class="warning admonition">
+<p class="admonition-title">VRAM note</p>
+<p>Holding both 7B models in memory at once needs roughly 10 GB of VRAM. If your GPU has less, free the first model (<code class="docutils literal notranslate"><span class="pre">del</span> <span class="pre">model;</span> <span class="pre">gc.collect()</span></code>) before loading the second, or run the models one at a time.</p>
+</div>
+</section>
+<section id="what-grammar-constraints-fix-and-what-they-do-not">
+<h2><span class="section-number">8.3.8.4. </span>What grammar constraints fix, and what they do not<a class="headerlink" href="#what-grammar-constraints-fix-and-what-they-do-not" title="Link to this heading">#</a></h2>
+<p>A <strong>GBNF grammar</strong> (GGML BNF) is a formal description of the strings the model is allowed to produce. At every sampling step, <code class="docutils literal notranslate"><span class="pre">llama.cpp</span></code> masks out any token that would take the output outside the grammar. The model is not “trying” to follow the format; it <em>cannot</em> leave it.</p>
+<p><strong>Fixed (structural errors):</strong></p>
+<ul class="simple">
+<li><p>Narrated text mistaken for a tool call (for example, <em>“I will use the TOOL format to…”</em>).</p></li>
+<li><p>Placeholder text echoed verbatim (for example, <code class="docutils literal notranslate"><span class="pre">&lt;your</span> <span class="pre">answer&gt;</span></code>).</p></li>
+<li><p>Invented tool names: the <code class="docutils literal notranslate"><span class="pre">TOOL:</span></code> field can only be filled with a name in the registry.</p></li>
+</ul>
+<p><strong>Not fixed (semantic errors).</strong> The model can still reason incorrectly <em>inside</em> a valid structure:</p>
+<ul class="simple">
+<li><p>Choosing the wrong (but valid) tool for the task.</p></li>
+<li><p>Getting arithmetic or logic backwards.</p></li>
+<li><p>Misreading what a tool’s arguments mean.</p></li>
+<li><p>Failing to stop once the question has already been answered.</p></li>
+</ul>
+<p>Moving from 1–3B to 7B reduces the frequency of these semantic errors; it does not eliminate them. Keeping this division clear (format correctness is a decoding problem; reasoning correctness is a capability problem) is the main conceptual takeaway of this section.</p>
+</section>
+<section id="the-agent-loop">
+<h2><span class="section-number">8.3.8.5. </span>The agent loop<a class="headerlink" href="#the-agent-loop" title="Link to this heading">#</a></h2>
+<p>The agent in this section is a short loop. There is no framework: just a model, a tool registry, a grammar, and a parser.</p>
+<!-- ```
+question ──► [LLM + grammar] ──► THOUGHT / TOOL / INPUT
+                  ▲                         │
+                  │                         ▼
+          append RESULT              execute tool in Python
+                  │                         │
+                  └─────────────────────────┘
+        (stop when TOOL == "answer" or step limit reached)
+``` -->
+<figure class="align-center" id="fig-agent-loop">
+<a class="reference internal image-reference" href="../_images/agent_loop_flowchart.png"><img alt="../_images/agent_loop_flowchart.png" src="../_images/agent_loop_flowchart.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.9 </span><span class="caption-text">Step-by-step flowchart of the agent execution loop, illustrating the flow from user question to grammar-constrained LLM generation, Python tool execution, result appending, and final stopping conditions.</span><a class="headerlink" href="#fig-agent-loop" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="setup">
+<h2><span class="section-number">8.3.8.6. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> must be <strong>built with CUDA support</strong> for GPU offload to work. A plain <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">llama-cpp-python</span></code> gives a CPU-only build. In a CUDA-enabled environment, the install typically looks like this (run once, outside this notebook if you prefer):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CMAKE_ARGS</span><span class="o">=</span><span class="s2">&quot;-DGGML_CUDA=on&quot;</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>llama-cpp-python<span class="w"> </span>--force-reinstall<span class="w"> </span>--no-cache-dir
+</pre></div>
+</div>
+<p>The cell below installs the model downloader and imports everything. <code class="docutils literal notranslate"><span class="pre">LlamaGrammar</span></code> is imported defensively: if your <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> version does not provide it, the agent automatically falls back to ungrammared generation plus regex parsing, which lets you run the same code as an ablation later.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>huggingface_hub<span class="w"> </span>--break-system-packages
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">datetime</span><span class="o">,</span><span class="w"> </span><span class="nn">gc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llama_cpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">Llama</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">llama_cpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaGrammar</span>
+    <span class="n">GRAMMAR_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">GRAMMAR_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: LlamaGrammar not available in this llama-cpp-python version; &quot;</span>
+          <span class="s2">&quot;will fall back to ungrammared generation + regex parsing.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Imports OK. GRAMMAR_AVAILABLE =&quot;</span><span class="p">,</span> <span class="n">GRAMMAR_AVAILABLE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Imports OK. GRAMMAR_AVAILABLE = True
+</pre></div>
+</div>
+</div>
+</div>
+<section id="confirm-the-gpu-is-visible">
+<h3><span class="section-number">8.3.8.6.1. </span>Confirm the GPU is visible<a class="headerlink" href="#confirm-the-gpu-is-visible" title="Link to this heading">#</a></h3>
+<p>Check this <em>before</em> downloading multi-GB files. Note what this check does and does not prove: <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> shows that a GPU and driver exist, but not that <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> was compiled with CUDA. That is confirmed per model, in the load step below.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;nvidia-smi&quot;</span><span class="p">,</span> <span class="s2">&quot;--query-gpu=name,memory.total,driver_version&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=csv&quot;</span><span class="p">],</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nvidia-smi not found. Either no NVIDIA GPU/driver is present, or it&#39;s not on PATH.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nvidia-smi not found. Either no NVIDIA GPU/driver is present, or it&#39;s not on PATH.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="loading-the-models">
+<h2><span class="section-number">8.3.8.7. </span>Loading the models<a class="headerlink" href="#loading-the-models" title="Link to this heading">#</a></h2>
+<p>Two design decisions are worth noticing in the loader:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">chat_format</span></code> matches the fine-tuning template.</strong> Mistral-Instruct uses <code class="docutils literal notranslate"><span class="pre">[INST]</span> <span class="pre">...</span> <span class="pre">[/INST]</span></code>; Qwen2.5-Instruct uses ChatML (<code class="docutils literal notranslate"><span class="pre">&lt;|im_start|&gt;</span></code> / <code class="docutils literal notranslate"><span class="pre">&lt;|im_end|&gt;</span></code>). Both are built into <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code>.</p></li>
+<li><p><strong>Graceful degradation.</strong> <code class="docutils literal notranslate"><span class="pre">n_gpu_layers=-1</span></code> offloads every layer. If that fails (typically out of VRAM), we retry with partial offload and finally CPU-only, instead of crashing. Partial offload is a useful middle ground: layers on the GPU run fast, the rest run on the CPU.</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_with_gpu_fallback</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Try full GPU offload, then partial, then CPU-only, rather than hard-crashing</span>
+<span class="sd">    on a card with less VRAM than expected.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">n_gpu_layers</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;full GPU offload&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;partial GPU offload&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;CPU only&quot;</span><span class="p">)]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="n">Llama</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">n_gpu_layers</span><span class="o">=</span><span class="n">n_gpu_layers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded with: </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> (n_gpu_layers=</span><span class="si">{</span><span class="n">n_gpu_layers</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">llm</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> failed (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">); trying next option...&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not load model under any GPU configuration.&quot;</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading Mistral-7B-Instruct-v0.3 (Q4_K_M, ~4.4 GB)...&quot;</span><span class="p">)</span>
+<span class="n">mistral_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;bartowski/Mistral-7B-Instruct-v0.3-GGUF&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;Mistral-7B-Instruct-v0.3-Q4_K_M.gguf&quot;</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="o">=</span><span class="s2">&quot;./models&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">mistral_llm</span> <span class="o">=</span> <span class="n">load_with_gpu_fallback</span><span class="p">(</span>
+    <span class="n">mistral_path</span><span class="p">,</span> <span class="n">n_ctx</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">n_threads</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(),</span>
+    <span class="n">chat_format</span><span class="o">=</span><span class="s2">&quot;mistral-instruct&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mistral-7B-Instruct-v0.3 loaded.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading Mistral-7B-Instruct-v0.3 (Q4_K_M, ~4.4 GB)...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ad00f1f9557644ceba1c7f844420b93e", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded with: full GPU offload (n_gpu_layers=-1)
+Mistral-7B-Instruct-v0.3 loaded.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># OPTIONAL: if VRAM is tight, free Model A before loading Model B (uncomment).</span>
+<span class="c1"># del mistral_llm</span>
+<span class="c1"># gc.collect()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading Qwen2.5-7B-Instruct (Q4_K_M, ~4.7 GB)...&quot;</span><span class="p">)</span>
+<span class="n">qwen_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;bartowski/Qwen2.5-7B-Instruct-GGUF&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct-Q4_K_M.gguf&quot;</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="o">=</span><span class="s2">&quot;./models&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">qwen_llm</span> <span class="o">=</span> <span class="n">load_with_gpu_fallback</span><span class="p">(</span>
+    <span class="n">qwen_path</span><span class="p">,</span> <span class="n">n_ctx</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">n_threads</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(),</span>
+    <span class="n">chat_format</span><span class="o">=</span><span class="s2">&quot;chatml&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Qwen2.5-7B-Instruct loaded.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading Qwen2.5-7B-Instruct (Q4_K_M, ~4.7 GB)...
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "923820c9f08847e59a021e242a5f63ca", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded with: full GPU offload (n_gpu_layers=-1)
+Qwen2.5-7B-Instruct loaded.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="speed-benchmark">
+<h2><span class="section-number">8.3.8.8. </span>Speed benchmark<a class="headerlink" href="#speed-benchmark" title="Link to this heading">#</a></h2>
+<p>We measure generation throughput in tokens per second. Two details matter for a fair measurement:</p>
+<ul class="simple">
+<li><p>Use the model’s own token count (<code class="docutils literal notranslate"><span class="pre">usage.completion_tokens</span></code>), not a whitespace word count. Word counts under-count tokens (a typical English word is more than one token), which makes reported speeds look slower than they are.</p></li>
+<li><p>Run a warm-up generation first; the first call includes one-time setup costs (kernel initialization, cache allocation).</p></li>
+</ul>
+<p>The measured time includes prompt processing, so short prompts and short outputs slightly understate steady-state decode speed. That is fine for comparing configurations, as long as you hold the prompt fixed.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">measure_speed</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Explain what a tool-calling agent is in three sentences.&quot;</span><span class="p">,</span>
+                  <span class="n">max_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return average completion tokens/second over several runs (after one warm-up).&quot;&quot;&quot;</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]</span>
+    <span class="n">llm</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>   <span class="c1"># warm-up</span>
+    <span class="n">rates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+        <span class="n">rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">&quot;usage&quot;</span><span class="p">][</span><span class="s2">&quot;completion_tokens&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rates</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rates</span><span class="p">)</span>
+
+
+<span class="n">MODELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Mistral-7B-Instruct-v0.3&quot;</span><span class="p">:</span> <span class="n">mistral_llm</span><span class="p">,</span>
+    <span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">:</span>      <span class="n">qwen_llm</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">llm</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;28</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">measure_speed</span><span class="p">(</span><span class="n">llm</span><span class="p">)</span><span class="si">:</span><span class="s2">6.1f</span><span class="si">}</span><span class="s2"> tokens/sec&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mistral-7B-Instruct-v0.3        4.2 tokens/sec
+Qwen2.5-7B-Instruct             4.2 tokens/sec
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Interpreting the result.</strong> If your number is in the single digits, the model almost certainly fell back to CPU: look at the <code class="docutils literal notranslate"><span class="pre">Loaded</span> <span class="pre">with:</span></code> line printed for that model. On a CUDA GPU with full offload, expect tens of tokens/second (often 50–100+, depending on the card). Record your numbers: you will compare them with the CPU-only baseline in the exercises.</p>
+</section>
+<section id="the-tool-library-and-the-hybrid-strategy">
+<h2><span class="section-number">8.3.8.9. </span>The tool library and the hybrid strategy<a class="headerlink" href="#the-tool-library-and-the-hybrid-strategy" title="Link to this heading">#</a></h2>
+<p>Language models are good at <em>deciding what to do</em> and poor at <em>doing exact computation</em>. The hybrid strategy assigns each side the job it is good at:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-division-of-responsibilities">
+<caption><span class="caption-number">Table 8.9 </span><span class="caption-text">Division of Responsibilities</span><a class="headerlink" href="#tab-division-of-responsibilities" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Responsibility</p></th>
+<th class="head text-left"><p>Handled by</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Understanding the question, choosing a tool, reading the result</p></td>
+<td class="text-left"><p>LLM</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Arithmetic, dates, unit conversion, GPA, lookups</p></td>
+<td class="text-left"><p>Deterministic Python tools</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Even a 7B model asked to multiply two five-digit numbers in its head will sometimes get it wrong; a calculator tool never will. The cell below makes this concrete before we build the tools.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct (no tools) vs. tool-assisted arithmetic on the same question.</span>
+<span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;What is 1262 * 0.00404686? Give just the number.&quot;</span>
+<span class="n">exact</span> <span class="o">=</span> <span class="mi">1262</span> <span class="o">*</span> <span class="mf">0.00404686</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">llm</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}],</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="p">)[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;28</span><span class="si">}</span><span class="s2"> direct answer: </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Python (tool)&#39;</span><span class="si">:</span><span class="s2">&lt;28</span><span class="si">}</span><span class="s2"> exact answer : </span><span class="si">{</span><span class="n">exact</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mistral-7B-Instruct-v0.3     direct answer: The result of multiplying 1262 by 0.00404686 is approximately 5.13.
+Qwen2.5-7B-Instruct          direct answer: 5.09999924
+Python (tool)                exact answer : 5.1071373200000005
+</pre></div>
+</div>
+</div>
+</div>
+<section id="five-practical-tools">
+<h3><span class="section-number">8.3.8.9.1. </span>Five practical tools<a class="headerlink" href="#five-practical-tools" title="Link to this heading">#</a></h3>
+<p>The tools are intentionally small, but they include the defensive patterns that matter once an LLM is the caller:</p>
+<ul class="simple">
+<li><p><strong>Input sanitization.</strong> Models decorate arguments with labels, units, or restated answers (for example <code class="docutils literal notranslate"><span class="pre">650</span> <span class="pre">*</span> <span class="pre">30</span> <span class="pre">(total</span> <span class="pre">cost)</span> <span class="pre">=</span> <span class="pre">19500</span></code>). The calculator strips parenthetical labels, drops everything after <code class="docutils literal notranslate"><span class="pre">=</span></code>, and whitelists characters <em>before</em> calling <code class="docutils literal notranslate"><span class="pre">eval</span></code>.</p></li>
+<li><p><strong>Informative errors.</strong> Every failure returns a message that tells the model how to fix its call, so the agent can recover on the next step.</p></li>
+<li><p><strong>Skip-and-report.</strong> The GPA tool ignores malformed entries and reports what it skipped, rather than failing the whole call.</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tool 1: Calculator ───────────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate arithmetic. Input: Python math expression. Returns: result.&quot;&quot;&quot;</span>
+    <span class="c1"># Strip parenthetical labels that contain letters, e.g. &quot;(cost per credit hour)&quot;.</span>
+    <span class="c1"># Real numeric grouping parentheses are unaffected.</span>
+    <span class="n">expression</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\([^)]*[a-zA-Z][^)]*\)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span>
+    <span class="c1"># Models sometimes write &quot;expr = result ... narration&quot;: keep only the part before &#39;=&#39;.</span>
+    <span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Whitelist: digits, whitespace, + - * / . ( ) %</span>
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^\d\s\+\-\*\/\.\(\)\%]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">clean</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">return</span> <span class="s2">&quot;Calculator error: no expression given. Provide something like &#39;30 * 650&#39;.&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">eval</span><span class="p">(</span><span class="n">clean</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s1">&#39;__builtins__&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s1">&#39;math&#39;</span><span class="p">:</span><span class="w"> </span><span class="n">math</span><span class="p">},</span><span class="w"> </span><span class="p">{})</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="c1"># ── Tool 2: Date and time ────────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_date</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return today&#39;s date and time. No input needed.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;Today is %A, %B </span><span class="si">%d</span><span class="s2">, %Y. Time: %H:%M.&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ── Tool 3: Unit converter ───────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unit_convert</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">from_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert between km/miles, kg/lbs, celsius/fahrenheit, liters/gallons, meters/feet.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">from_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">to_unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">conversions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;km_miles&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">0.621371</span><span class="p">,</span>      <span class="s2">&quot;miles_km&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">1.60934</span><span class="p">,</span>
+            <span class="s2">&quot;kg_lbs&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">2.20462</span><span class="p">,</span>         <span class="s2">&quot;lbs_kg&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">0.453592</span><span class="p">,</span>
+            <span class="s2">&quot;celsius_fahrenheit&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="s2">&quot;fahrenheit_celsius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">9</span><span class="p">,</span>
+            <span class="s2">&quot;liters_gallons&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">0.264172</span><span class="p">,</span> <span class="s2">&quot;gallons_liters&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">3.78541</span><span class="p">,</span>
+            <span class="s2">&quot;meters_feet&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">3.28084</span><span class="p">,</span>    <span class="s2">&quot;feet_meters&quot;</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">0.3048</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">conversions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">from_unit</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">conversions</span><span class="p">[</span><span class="n">key</span><span class="p">],</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">to_unit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Unsupported conversion: </span><span class="si">{</span><span class="n">from_unit</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">to_unit</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Conversion error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="c1"># ── Tool 4: GPA calculator ───────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gpa_calculator</span><span class="p">(</span><span class="n">grades_and_credits</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Input &#39;A:3,B+:4,A-:3,C:2&#39; (grade:credit_hours pairs, comma or newline separated).&quot;&quot;&quot;</span>
+    <span class="n">grade_points</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span> <span class="s1">&#39;A-&#39;</span><span class="p">:</span> <span class="mf">3.7</span><span class="p">,</span> <span class="s1">&#39;B+&#39;</span><span class="p">:</span> <span class="mf">3.3</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;B-&#39;</span><span class="p">:</span> <span class="mf">2.7</span><span class="p">,</span>
+        <span class="s1">&#39;C+&#39;</span><span class="p">:</span> <span class="mf">2.3</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;C-&#39;</span><span class="p">:</span> <span class="mf">1.7</span><span class="p">,</span> <span class="s1">&#39;D+&#39;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;D-&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">total_points</span> <span class="o">=</span> <span class="n">total_credits</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">breakdown</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[,\n]&#39;</span><span class="p">,</span> <span class="n">grades_and_credits</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s1">&#39;:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">grade</span><span class="p">,</span> <span class="n">credits</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="n">grade</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">grade</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">grade_points</span><span class="p">:</span>
+                <span class="n">skipped</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">credits</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">credits</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">skipped</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">grade_points</span><span class="p">[</span><span class="n">grade</span><span class="p">]</span> <span class="o">*</span> <span class="n">credits</span>
+            <span class="n">total_points</span> <span class="o">+=</span> <span class="n">pts</span>
+            <span class="n">total_credits</span> <span class="o">+=</span> <span class="n">credits</span>
+            <span class="n">breakdown</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grade</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">credits</span><span class="si">}</span><span class="s2">cr)=</span><span class="si">{</span><span class="n">pts</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">pts&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_credits</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;No valid grades found. Use &#39;A:3,B+:4&#39; format (letter grade : credit hours).&quot;</span>
+        <span class="n">note</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; | Ignored: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">skipped</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">skipped</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GPA: </span><span class="si">{</span><span class="n">total_points</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total_credits</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> | Total credits: </span><span class="si">{</span><span class="n">total_credits</span><span class="si">}</span><span class="s2"> | &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Total points: </span><span class="si">{</span><span class="n">total_points</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> | Breakdown: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">breakdown</span><span class="p">)</span><span class="si">}{</span><span class="n">note</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;GPA error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="c1"># ── Tool 5: Knowledge-base lookup ────────────────────────────────────</span>
+<span class="n">KNOWLEDGE_BASE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;msds program&quot;</span><span class="p">:</span> <span class="s2">&quot;The MSDS (Master of Science in Data Science and Analytics) at University of &quot;</span>
+                    <span class="s2">&quot;Missouri requires 30 credit hours, takes 18-24 months, and includes a capstone &quot;</span>
+                    <span class="s2">&quot;project. Applications are accepted twice yearly.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;machine learning&quot;</span><span class="p">:</span> <span class="s2">&quot;Machine learning is a subset of AI where algorithms learn patterns from data &quot;</span>
+                        <span class="s2">&quot;to make predictions or decisions. Key types: supervised, unsupervised, and &quot;</span>
+                        <span class="s2">&quot;reinforcement learning.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="s2">&quot;Python is the primary programming language in data science. Key libraries: NumPy (math), &quot;</span>
+              <span class="s2">&quot;Pandas (data), Matplotlib (plots), Scikit-learn (ML), TensorFlow/PyTorch (deep learning).&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;neural network&quot;</span><span class="p">:</span> <span class="s2">&quot;A neural network is a series of connected layers of nodes (neurons). The input &quot;</span>
+                      <span class="s2">&quot;layer receives data, hidden layers learn representations, the output layer &quot;</span>
+                      <span class="s2">&quot;produces predictions. Trained via backpropagation.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nlp&quot;</span><span class="p">:</span> <span class="s2">&quot;Natural Language Processing (NLP) is AI for understanding human text/speech. Key tasks: &quot;</span>
+           <span class="s2">&quot;classification, NER, summarization, translation, Q&amp;A. Modern NLP uses transformer models.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rag&quot;</span><span class="p">:</span> <span class="s2">&quot;Retrieval-Augmented Generation (RAG) combines a retriever that finds relevant documents &quot;</span>
+           <span class="s2">&quot;with a generator LLM that synthesizes them into an answer. Reduces hallucination and &quot;</span>
+           <span class="s2">&quot;allows models to use up-to-date information.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transformer&quot;</span><span class="p">:</span> <span class="s2">&quot;Transformers are deep learning architectures using self-attention. Introduced in &quot;</span>
+                   <span class="s2">&quot;&#39;Attention Is All You Need&#39; (2017). Foundation of BERT, GPT, LLaMA, and modern LLMs.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gpa&quot;</span><span class="p">:</span> <span class="s2">&quot;Grade Point Average (GPA) at most US universities uses a 4.0 scale. A=4.0, B=3.0, C=2.0, &quot;</span>
+           <span class="s2">&quot;D=1.0, F=0. Weighted by credit hours. Graduate programs typically require GPA &gt;= 3.0.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;columbia missouri&quot;</span><span class="p">:</span> <span class="s2">&quot;Columbia, Missouri is a mid-sized city of ~130,000 people in central Missouri. &quot;</span>
+                         <span class="s2">&quot;Home to University of Missouri (Mizzou), Columbia College, and Stephens College.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;graduation requirements&quot;</span><span class="p">:</span> <span class="s2">&quot;MSDS graduation requires: 30 credit hours, minimum 3.0 GPA, completion &quot;</span>
+                               <span class="s2">&quot;of core courses, passing the capstone defense, no outstanding &quot;</span>
+                               <span class="s2">&quot;incompletes, and final approval from the graduate school.&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">knowledge_lookup</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look up a topic. Tries exact match, then substring match, then shared-word match.&quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">q</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;No topic given. Provide a keyword, e.g. &#39;nlp&#39;, &#39;rag&#39;, &#39;msds program&#39;.&quot;</span>
+    <span class="k">if</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">KNOWLEDGE_BASE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">KNOWLEDGE_BASE</span><span class="p">[</span><span class="n">q</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">KNOWLEDGE_BASE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="n">q_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">KNOWLEDGE_BASE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">q_words</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39; not found in local knowledge base. Available topics: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">KNOWLEDGE_BASE</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="c1"># ── Quick verification ───────────────────────────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tool verification:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  calculator(&#39;(48+37)-15&#39;)          -&gt;&quot;</span><span class="p">,</span> <span class="n">calculator</span><span class="p">(</span><span class="s1">&#39;(48+37)-15&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  get_date()                        -&gt;&quot;</span><span class="p">,</span> <span class="n">get_date</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  unit_convert(&#39;100&#39;,&#39;km&#39;,&#39;miles&#39;)  -&gt;&quot;</span><span class="p">,</span> <span class="n">unit_convert</span><span class="p">(</span><span class="s1">&#39;100&#39;</span><span class="p">,</span> <span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="s1">&#39;miles&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  gpa_calculator(&#39;A:3,B+:4,A-:3,C:2&#39;) -&gt;&quot;</span><span class="p">,</span> <span class="n">gpa_calculator</span><span class="p">(</span><span class="s1">&#39;A:3,B+:4,A-:3,C:2&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  knowledge_lookup(&#39;nlp&#39;)           -&gt;&quot;</span><span class="p">,</span> <span class="n">knowledge_lookup</span><span class="p">(</span><span class="s1">&#39;nlp&#39;</span><span class="p">)[:</span><span class="mi">80</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tool verification:
+  calculator(&#39;(48+37)-15&#39;)          -&gt; 70
+  get_date()                        -&gt; Today is Sunday, October 11, 2026. Time: 15:20.
+  unit_convert(&#39;100&#39;,&#39;km&#39;,&#39;miles&#39;)  -&gt; 100.0 km = 62.1371 miles
+  gpa_calculator(&#39;A:3,B+:4,A-:3,C:2&#39;) -&gt; GPA: 3.36 | Total credits: 12.0 | Total points: 40.3 | Breakdown: A(3.0cr)=12.0pts, B+(4.0cr)=13.2pts, A-(3.0cr)=11.1pts, C(2.0cr)=4.0pts
+  knowledge_lookup(&#39;nlp&#39;)           -&gt; Natural Language Processing (NLP) is AI for understanding human text/speech. Key...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tool-registry-and-grammar">
+<h2><span class="section-number">8.3.8.10. </span>Tool registry and grammar<a class="headerlink" href="#tool-registry-and-grammar" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TOOL_REGISTRY</span></code> is the <strong>single source of truth</strong> for tool names. Both the system prompt’s tool list and the GBNF grammar are <em>generated</em> from it, so they cannot drift out of sync. Adding a tool means adding one registry entry; the prompt and the grammar update themselves.</p>
+<p>The grammar forces every generation into exactly this shape:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">THOUGHT</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">free</span> <span class="n">text</span><span class="o">&gt;</span>
+<span class="n">TOOL</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">one</span> <span class="n">registered</span> <span class="n">tool</span> <span class="n">name</span><span class="p">,</span> <span class="ow">or</span> <span class="s2">&quot;answer&quot;</span><span class="o">&gt;</span>
+<span class="n">INPUT</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">free</span> <span class="n">text</span><span class="p">,</span> <span class="n">may</span> <span class="n">be</span> <span class="n">empty</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">TOOL:</span></code> line is the important one. The model does not sample free text there; it chooses among the finite set of names the grammar allows. Everything else stays free text, because we want the model to keep its flexibility where flexibility is useful (the reasoning and the tool input).</p>
+<p>Reading the GBNF rules:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-gbnf-grammar-rules">
+<caption><span class="caption-number">Table 8.10 </span><span class="caption-text">GBNF Grammar Rule Breakdown</span><a class="headerlink" href="#tab-gbnf-grammar-rules" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Rule</p></th>
+<th class="head text-left"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">root</span></code></p></td>
+<td class="text-left"><p>The whole output: three labelled lines in a fixed order</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">toolname</span></code></p></td>
+<td class="text-left"><p>An alternation of the literal tool names (plus <code class="docutils literal notranslate"><span class="pre">answer</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">line</span></code></p></td>
+<td class="text-left"><p>Any run of characters except a newline (<code class="docutils literal notranslate"><span class="pre">[^\n]*</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ws</span></code></p></td>
+<td class="text-left"><p>Zero or more spaces after a label</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Implementation detail</p>
+<p>The newline in the grammar must reach <code class="docutils literal notranslate"><span class="pre">llama.cpp</span></code> as the two-character escape <code class="docutils literal notranslate"><span class="pre">\n</span></code>, which GBNF interprets as a newline. That is why the template below is a <em>raw</em> f-string (<code class="docutils literal notranslate"><span class="pre">rf&quot;&quot;&quot;...&quot;&quot;&quot;</span></code>). In an ordinary f-string, Python would turn <code class="docutils literal notranslate"><span class="pre">\n</span></code> into a real newline character inside the quoted literal and the grammar would fail to compile.</p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TOOL_REGISTRY</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;calculator&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">calculator</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Evaluate a math expression. Input: a Python math expression, e.g. &#39;30 * 650&#39;.&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;get_date&quot;</span><span class="p">:</span>         <span class="p">{</span><span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">get_date</span><span class="p">(),</span>
+                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Get today&#39;s date and time. Input: ignored, leave blank.&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;unit_convert&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># handled in execute_tool (needs 3 arguments)</span>
+                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Convert units. Input: &#39;value, from_unit, to_unit&#39;, e.g. &#39;100, km, miles&#39;. &quot;</span>
+                                 <span class="s2">&quot;Supported: km/miles, kg/lbs, celsius/fahrenheit, liters/gallons, meters/feet.&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;gpa_calculator&quot;</span><span class="p">:</span>   <span class="p">{</span><span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">gpa_calculator</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Calculate GPA. Input: &#39;A:3,B+:4,C:2&#39; (grade:credit_hours pairs).&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;knowledge_lookup&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;func&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">knowledge_lookup</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Look up a topic in the knowledge base. Input: a keyword, e.g. &#39;rag&#39;, &#39;gpa&#39;.&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_tool_grammar</span><span class="p">(</span><span class="n">tool_names</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a GBNF grammar forcing THOUGHT:/TOOL:/INPUT: structure, with TOOL: restricted</span>
+<span class="sd">    to the given tool names plus the terminal &#39;answer&#39; action.&quot;&quot;&quot;</span>
+    <span class="n">tool_alt</span> <span class="o">=</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">tool_names</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="sa">rf</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">root     ::= &quot;THOUGHT:&quot; ws line &quot;\n&quot; &quot;TOOL:&quot; ws toolname &quot;\n&quot; &quot;INPUT:&quot; ws line</span>
+<span class="s2">toolname ::= </span><span class="si">{</span><span class="n">tool_alt</span><span class="si">}</span>
+<span class="s2">line     ::= [^\n]*</span>
+<span class="s2">ws       ::= &quot; &quot;*</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">TOOL_GRAMMAR_TEXT</span> <span class="o">=</span> <span class="n">build_tool_grammar</span><span class="p">(</span><span class="n">TOOL_REGISTRY</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="n">GRAMMAR_AVAILABLE</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">LlamaGrammar</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">TOOL_GRAMMAR_TEXT</span><span class="p">)</span>      <span class="c1"># compile once to validate</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grammar compiled. TOOL: is constrained to:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">TOOL_REGISTRY</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grammar failed to compile (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">); disabling grammar constraint.&quot;</span><span class="p">)</span>
+        <span class="n">GRAMMAR_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">TOOL_GRAMMAR_TEXT</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Grammar compiled. TOOL: is constrained to: [&#39;calculator&#39;, &#39;get_date&#39;, &#39;unit_convert&#39;, &#39;gpa_calculator&#39;, &#39;knowledge_lookup&#39;, &#39;answer&#39;]
+
+root     ::= &quot;THOUGHT:&quot; ws line &quot;\n&quot; &quot;TOOL:&quot; ws toolname &quot;\n&quot; &quot;INPUT:&quot; ws line
+toolname ::= &quot;calculator&quot; | &quot;get_date&quot; | &quot;unit_convert&quot; | &quot;gpa_calculator&quot; | &quot;knowledge_lookup&quot; | &quot;answer&quot;
+line     ::= [^\n]*
+ws       ::= &quot; &quot;*
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="prompt-design-for-local-agents">
+<h2><span class="section-number">8.3.8.11. </span>Prompt design for local agents<a class="headerlink" href="#prompt-design-for-local-agents" title="Link to this heading">#</a></h2>
+<p>Grammar handles <em>format</em>; the prompt still has to communicate the <em>task</em>. The principles from earlier versions of this section still hold, and the 7B models make them cheaper to satisfy:</p>
+<ol class="arabic simple">
+<li><p><strong>Keep the system prompt short and unambiguous.</strong> One role sentence, the tool list, the format, one example. Long prompts packed with instructions are followed unevenly, especially by smaller models.</p></li>
+<li><p><strong>Generate the tool list from the registry</strong>, as shown below, so the prompt always matches the grammar.</p></li>
+<li><p><strong>Include one format example.</strong> An example pattern is followed more reliably than an abstract format description. With a grammar the example no longer has to <em>teach the format</em>; it mainly shows <em>how to choose a tool and write its input</em>.</p></li>
+<li><p><strong>Anchor every continuation to the original question.</strong> After a tool returns, small and mid-size models are prone to treating the new <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> as a fresh task, or to continuing past a correct answer. The continuation prompt below repeats the original question and asks one explicit yes/no decision: <em>does this result already answer it?</em></p></li>
+</ol>
+<p>Item 4 is a prompt-level fix for a <em>semantic</em> failure, which is exactly the kind of failure a grammar cannot address.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">format_tools_for_prompt</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;desc&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">TOOL_REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+<span class="n">AGENT_SYSTEM_PROMPT</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;You are a task-solving agent for the MSDS (Master of Science in Data Science and Analytics) program at the University of Missouri. You answer questions by calling tools, one step at a time.</span>
+
+<span class="s2">Available tools:</span>
+<span class="si">{</span><span class="n">format_tools_for_prompt</span><span class="p">()</span><span class="si">}</span>
+
+<span class="s2">On every turn, respond with exactly three lines:</span>
+<span class="s2">THOUGHT: &lt;your reasoning for this step&gt;</span>
+<span class="s2">TOOL: &lt;the tool to call&gt;</span>
+<span class="s2">INPUT: &lt;the input to give that tool&gt;</span>
+
+<span class="s2">When you have enough information to answer the user&#39;s original question, respond with:</span>
+<span class="s2">THOUGHT: I have enough information</span>
+<span class="s2">TOOL: answer</span>
+<span class="s2">INPUT: &lt;your final answer to the user&gt;</span>
+
+<span class="s2">Example:</span>
+<span class="s2">THOUGHT: I need to compute 15% of 200</span>
+<span class="s2">TOOL: calculator</span>
+<span class="s2">INPUT: 200 * 0.15</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">CONTINUE_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Original question: </span><span class="si">{question}</span>
+
+<span class="s2">RESULT above: </span><span class="si">{result}</span>
+
+<span class="s2">Does RESULT already answer the ORIGINAL QUESTION above? If yes, respond with EXACTLY these three lines and nothing else:</span>
+<span class="s2">THOUGHT: I have enough information</span>
+<span class="s2">TOOL: answer</span>
+<span class="s2">INPUT: &lt;your answer&gt;</span>
+
+<span class="s2">If no, take exactly one more necessary step toward answering the ORIGINAL QUESTION (not a different, unrelated task).&quot;&quot;&quot;</span>
+
+<span class="n">RETRY_PROMPT</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Respond using exactly three lines: THOUGHT: ...  then  TOOL: &lt;tool_name&gt;  then  &quot;</span>
+                <span class="s2">&quot;INPUT: &lt;value&gt;. Do not explain, just give those three lines.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">AGENT_SYSTEM_PROMPT</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>You are a task-solving agent for the MSDS (Master of Science in Data Science and Analytics) program at the University of Missouri. You answer questions by calling tools, one step at a time.
+
+Available tools:
+- calculator: Evaluate a math expression. Input: a Python math expression, e.g. &#39;30 * 650&#39;.
+- get_date: Get today&#39;s date and time. Input: ignored, leave blank.
+- unit_convert: Convert units. Input: &#39;value, from_unit, to_unit&#39;, e.g. &#39;100, km, miles&#39;. Supported: km/miles, kg/lbs, celsius/fahrenheit, liters/gallons, meters/feet.
+- gpa_calculator: Calculate GPA. Input: &#39;A:3,B+:4,C:2&#39; (grade:credit_hours pairs).
+- knowledge_lookup: Look up a topic in the knowledge base. Input: a keyword, e.g. &#39;rag&#39;, &#39;gpa&#39;.
+
+On every turn, respond with exactly three lines:
+THOUGHT: &lt;your reasoning for this step&gt;
+TOOL: &lt;the tool to call&gt;
+INPUT: &lt;the input to give that tool&gt;
+
+When you have enough information to answer the user&#39;s original question, respond with:
+THOUGHT: I have enough information
+TOOL: answer
+INPUT: &lt;your final answer to the user&gt;
+
+Example:
+THOUGHT: I need to compute 15% of 200
+TOOL: calculator
+INPUT: 200 * 0.15
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="parsing-and-tool-execution">
+<h2><span class="section-number">8.3.8.12. </span>Parsing and tool execution<a class="headerlink" href="#parsing-and-tool-execution" title="Link to this heading">#</a></h2>
+<p>With the grammar active, the parser never meets narrated text or invented tool names. We still keep a defensive parser for two reasons: it is the <strong>fallback path</strong> when grammar support is unavailable, and it is the baseline for the <strong>ablation</strong> experiment later in this section.</p>
+<p>One subtle rule: the parser takes the <strong>last</strong> <code class="docutils literal notranslate"><span class="pre">TOOL:</span></code> match, not the first. In ungrammared output, a model may <em>narrate</em> the format before acting (<em>“I will use the TOOL: format…”</em>), and the first match would be the narration.</p>
+<p><code class="docutils literal notranslate"><span class="pre">execute_tool</span></code> also handles a messy-input case for <code class="docutils literal notranslate"><span class="pre">unit_convert</span></code>, the only tool with three arguments: it accepts the preferred <code class="docutils literal notranslate"><span class="pre">value,</span> <span class="pre">from,</span> <span class="pre">to</span></code> form, and falls back to labelled lines when the model writes them that way.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">parse_agent_output</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse THOUGHT:/TOOL:/INPUT: lines. Uses the LAST &#39;TOOL:&#39; occurrence as a safety net</span>
+<span class="sd">    for the no-grammar path (a model may narrate the format before acting).&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;parse_success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+    <span class="n">tool_matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;TOOL:\s*(\w+)&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">tool_matches</span><span class="p">:</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">tool_matches</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;parse_success&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">last</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;INPUT:\s*(.+?)(?:\nRESULT:|THOUGHT:|TOOL:|$)&#39;</span><span class="p">,</span> <span class="n">remainder</span><span class="p">,</span>
+                      <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">execute_tool</span><span class="p">(</span><span class="n">tool_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tool_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">tool_name</span> <span class="o">=</span> <span class="n">tool_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">tool_input</span> <span class="o">=</span> <span class="p">(</span><span class="n">tool_input</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">tool_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TOOL_REGISTRY</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Unknown tool &#39;</span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2">&#39;. Available: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TOOL_REGISTRY</span><span class="p">)</span><span class="si">}</span><span class="s2">, answer&quot;</span>
+
+    <span class="k">if</span> <span class="n">tool_name</span> <span class="o">==</span> <span class="s2">&quot;unit_convert&quot;</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tool_input</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">unit_convert</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">)</span>
+        <span class="c1"># Fallback: labelled lines, e.g. &quot;19500\nFROM_UNIT: dollars\nTO_UNIT: miles&quot;</span>
+        <span class="n">v</span>  <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[-+]?\d*\.?\d+&#39;</span><span class="p">,</span> <span class="n">tool_input</span><span class="p">)</span>
+        <span class="n">fu</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;FROM_UNIT:\s*(\S+)&#39;</span><span class="p">,</span> <span class="n">tool_input</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="n">tu</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;TO_UNIT:\s*(\S+)&#39;</span><span class="p">,</span>   <span class="n">tool_input</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">fu</span> <span class="ow">and</span> <span class="n">tu</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">unit_convert</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">fu</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">tu</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s2">&quot;Format: value, from_unit, to_unit (e.g., &#39;100, km, miles&#39;)&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TOOL_REGISTRY</span><span class="p">[</span><span class="n">tool_name</span><span class="p">][</span><span class="s2">&quot;func&quot;</span><span class="p">](</span><span class="n">tool_input</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Tool error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="c1"># Parser sanity checks (no model needed)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">parse_agent_output</span><span class="p">(</span><span class="s2">&quot;THOUGHT: need math</span><span class="se">\n</span><span class="s2">TOOL: calculator</span><span class="se">\n</span><span class="s2">INPUT: 30 * 650&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">parse_agent_output</span><span class="p">(</span><span class="s2">&quot;I will use the TOOL: format.</span><span class="se">\n</span><span class="s2">THOUGHT: x</span><span class="se">\n</span><span class="s2">TOOL: calculator</span><span class="se">\n</span><span class="s2">INPUT: 2+2&quot;</span><span class="p">)[</span><span class="s2">&quot;tool&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">execute_tool</span><span class="p">(</span><span class="s2">&quot;unit_convert&quot;</span><span class="p">,</span> <span class="s2">&quot;100, km, miles&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">execute_tool</span><span class="p">(</span><span class="s2">&quot;made_up_tool&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;tool&#39;: &#39;calculator&#39;, &#39;input&#39;: &#39;30 * 650&#39;, &#39;raw&#39;: &#39;THOUGHT: need math\nTOOL: calculator\nINPUT: 30 * 650&#39;, &#39;parse_success&#39;: True}
+calculator
+100.0 km = 62.1371 miles
+Unknown tool &#39;made_up_tool&#39;. Available: calculator, get_date, unit_convert, gpa_calculator, knowledge_lookup, answer
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-agent-class">
+<h2><span class="section-number">8.3.8.13. </span>The agent class<a class="headerlink" href="#the-agent-class" title="Link to this heading">#</a></h2>
+<p>The agent holds the conversation as a chat message list and loops until the model emits <code class="docutils literal notranslate"><span class="pre">TOOL:</span> <span class="pre">answer</span></code> or the step limit is reached. Three design points:</p>
+<ul class="simple">
+<li><p><strong>A fresh <code class="docutils literal notranslate"><span class="pre">LlamaGrammar</span></code> per call.</strong> This avoids relying on any implicit grammar state being reset between generations.</p></li>
+<li><p><strong>Stop sequences</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;\nRESULT:&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;\nOriginal</span> <span class="pre">question:&quot;</span></code>) stop the model from hallucinating the tool’s output or the next user turn.</p></li>
+<li><p><strong>Instrumentation.</strong> The agent records steps, parse failures, token counts, and elapsed time for every run. We use these statistics later to <em>diagnose</em> failures rather than guess at them. Token counts come from <code class="docutils literal notranslate"><span class="pre">usage.completion_tokens</span></code>, not word counts.</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">LightweightAgent</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">llm</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+                 <span class="n">max_tokens_per_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">use_grammar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">llm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_steps</span> <span class="o">=</span> <span class="n">max_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens_per_step</span> <span class="o">=</span> <span class="n">max_tokens_per_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_grammar</span> <span class="o">=</span> <span class="n">use_grammar</span> <span class="ow">and</span> <span class="n">GRAMMAR_AVAILABLE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_calls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">max_tokens</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_tokens_per_step</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">stop</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">RESULT:&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Original question:&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_grammar</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;grammar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LlamaGrammar</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">TOOL_GRAMMAR_TEXT</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+        <span class="n">n_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usage&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;completion_tokens&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">n_tokens</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_calls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;steps&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;parse_failures&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;tokens&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                      <span class="s2">&quot;time_s&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;finished&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">AGENT_SYSTEM_PROMPT</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>   <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">question</span><span class="p">},</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;━&quot;</span> <span class="o">*</span> <span class="mi">57</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] QUESTION: </span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;━&quot;</span> <span class="o">*</span> <span class="mi">57</span><span class="p">)</span>
+
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">generated</span><span class="p">,</span> <span class="n">n_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;steps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">step</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_tokens</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  [Step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">]</span><span class="se">\n</span><span class="s2">  Model: </span><span class="si">{</span><span class="n">generated</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_agent_output</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;parse_success&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;parse_failures&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ⚠ Could not parse tool call — asking model to retry.&quot;</span><span class="p">)</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">generated</span><span class="p">})</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">RETRY_PROMPT</span><span class="p">})</span>
+                <span class="k">continue</span>
+
+            <span class="n">tool_name</span><span class="p">,</span> <span class="n">tool_input</span> <span class="o">=</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">],</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="k">if</span> <span class="n">tool_name</span> <span class="o">==</span> <span class="s2">&quot;answer&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;time_s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;finished&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  ✓ FINAL ANSWER: </span><span class="si">{</span><span class="n">tool_input</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Steps: </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;steps&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | Tokens: </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;Time: </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;time_s&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s | Speed: </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;time_s&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> tok/s&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">tool_input</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="n">execute_tool</span><span class="p">(</span><span class="n">tool_name</span><span class="p">,</span> <span class="n">tool_input</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool_calls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="n">tool_name</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">tool_input</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  → Calling: </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">tool_input</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ← Result: </span><span class="si">{</span><span class="n">result</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">generated</span><span class="si">}</span><span class="se">\n</span><span class="s2">RESULT: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">CONTINUE_PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;time_s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;I reached my step limit. Here is what I found: &quot;</span>
+                <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_calls</span> <span class="k">else</span> <span class="s2">&quot;insufficient information.&quot;</span><span class="p">))</span>
+
+
+<span class="n">mistral_agent</span> <span class="o">=</span> <span class="n">LightweightAgent</span><span class="p">(</span><span class="n">mistral_llm</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Mistral-7B-Instruct-v0.3&quot;</span><span class="p">)</span>
+<span class="n">qwen_agent</span>    <span class="o">=</span> <span class="n">LightweightAgent</span><span class="p">(</span><span class="n">qwen_llm</span><span class="p">,</span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agents ready:&quot;</span><span class="p">,</span> <span class="n">mistral_agent</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">qwen_agent</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grammar-constrained decoding:&quot;</span><span class="p">,</span> <span class="n">mistral_agent</span><span class="o">.</span><span class="n">use_grammar</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agents ready: Mistral-7B-Instruct-v0.3 | Qwen2.5-7B-Instruct
+Grammar-constrained decoding: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="walkthrough-one-question-two-models">
+<h2><span class="section-number">8.3.8.14. </span>Walkthrough: one question, two models<a class="headerlink" href="#walkthrough-one-question-two-models" title="Link to this heading">#</a></h2>
+<p>Before running the full test suite, trace a single multi-step question end to end. Read the <code class="docutils literal notranslate"><span class="pre">THOUGHT</span></code> lines: they show <em>why</em> the model picked each tool, which is where you will find reasoning errors.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q_demo</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;The MSDS program requires 30 credit hours at $650 per credit. &quot;</span>
+          <span class="s2">&quot;If a student receives a 25</span><span class="si">% s</span><span class="s2">cholarship, what do they actually pay?&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="p">(</span><span class="n">mistral_agent</span><span class="p">,</span> <span class="n">qwen_agent</span><span class="p">):</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">q_demo</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; </span><span class="si">{</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> answer: </span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Mistral-7B-Instruct-v0.3] QUESTION: The MSDS program requires 30 credit hours at $650 per credit. If a student receives a 25% scholarship, what do they actually pay?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [Step 1]
+  Model: THOUGHT: To find the actual amount a student pays after receiving a scholarship, we first need to determine the total cost of the program without the scholarship, then subtract the scholarship amount from it.
+TOOL: calculator
+INPUT: 30 (number of credit hours) * $650 (cost per credit) = $19,500 (total cost without scholarship) and $19,500 * 0.25 (scholarship percentage) = $4,875 (scholarship amount) and $19,500 - $4,875 = $14,625 (actual cost after scholarship) OUTPUT: The student actually pays $14,625 for the MSDS program after receiving a 25% scholarship.
+  → Calling: calculator(30 (number of credit hours) * $650 (cost per credit) = $19,500 (total cost without scholarship) and $19,500 * 0.25 (scholarship percentage) = $4,875 (scholarship amount) and $19,500 - $4,875 = $14,625 (actual cost after scholarship) OUTPUT: The student actually pays $14,625 for the MSDS program after receiving a 25% scholarship.)
+  ← Result: 19500
+
+  [Step 2]
+  Model: THOUGHT: I have enough information
+TOOL: answer
+INPUT: The student actually pays $14,625 for the MSDS program after receiving a 25% scholarship.
+
+  ✓ FINAL ANSWER: The student actually pays $14,625 for the MSDS program after receiving a 25% scholarship.
+  Steps: 2 | Tokens: 221 | Time: 77.5s | Speed: 2.9 tok/s
+
+&gt;&gt;&gt; Mistral-7B-Instruct-v0.3 answer: The student actually pays $14,625 for the MSDS program after receiving a 25% scholarship.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Qwen2.5-7B-Instruct] QUESTION: The MSDS program requires 30 credit hours at $650 per credit. If a student receives a 25% scholarship, what do they actually pay?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [Step 1]
+  Model: THOUGHT: First, I need to calculate the total cost before the scholarship. Then, I will apply the 25% scholarship to find the actual cost.
+TOOL: calculator
+INPUT: 30 * 650 * 0.75
+  → Calling: calculator(30 * 650 * 0.75)
+  ← Result: 14625.0
+
+  [Step 2]
+  Model: THOUGHT: I have calculated the total cost after the scholarship, but I need to format the result as a dollar amount.
+TOOL: answer
+INPUT: $14,625.00
+
+  ✓ FINAL ANSWER: $14,625.00
+  Steps: 2 | Tokens: 98 | Time: 51.1s | Speed: 1.9 tok/s
+
+&gt;&gt;&gt; Qwen2.5-7B-Instruct answer: $14,625.00
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluating-the-agents">
+<h2><span class="section-number">8.3.8.15. </span>Evaluating the agents<a class="headerlink" href="#evaluating-the-agents" title="Link to this heading">#</a></h2>
+<p>Instead of eyeballing six transcripts, we turn the questions into a small <strong>test suite with expected answers</strong> and score every run automatically. Each test has a set of acceptable substrings; an answer is counted correct if it contains one of them after normalization (lower-casing, removing <code class="docutils literal notranslate"><span class="pre">$</span></code>, commas, and spaces).</p>
+<p>The six tests cover increasing demands:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-test-suite">
+<caption><span class="caption-number">Table 8.11 </span><span class="caption-text">Test Suite Overview</span><a class="headerlink" href="#tab-test-suite" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Test</p></th>
+<th class="head text-left"><p>Skill exercised</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Calculator</p></td>
+<td class="text-left"><p>Single tool, simple arithmetic</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Date lookup</p></td>
+<td class="text-left"><p>Single tool with an <em>ignored</em> input</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Knowledge lookup</p></td>
+<td class="text-left"><p>Retrieval, then summarization</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Multi-step</p></td>
+<td class="text-left"><p>Two operations on one chain (cost, then discount)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>GPA</p></td>
+<td class="text-left"><p>Translating prose into a tool’s structured input format</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Conversion arithmetic</p></td>
+<td class="text-left"><p>Choosing the right tool when two could apply</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A substring check is a deliberately simple scorer. It can over-count (a correct number inside a wrong sentence) or under-count (a correct answer in an unexpected format), so treat it as a first-pass filter, then read the transcripts of failures.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TEST_SUITE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Calculator&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="s2">&quot;If a student pays $650 per credit hour and takes 30 credit hours, what is the total cost?&quot;</span><span class="p">,</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;19500&quot;</span><span class="p">]),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Date lookup&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="s2">&quot;What is today&#39;s date and what day of the week is it?&quot;</span><span class="p">,</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Knowledge lookup&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="s2">&quot;What is Retrieval-Augmented Generation (RAG)?&quot;</span><span class="p">,</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;retriev&quot;</span><span class="p">]),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Multi-step&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;The MSDS program requires 30 credit hours at $650 per credit. &quot;</span>
+                   <span class="s2">&quot;If a student receives a 25</span><span class="si">% s</span><span class="s2">cholarship, what do they actually pay?&quot;</span><span class="p">),</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;14625&quot;</span><span class="p">]),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;GPA&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;I got the following grades this semester: A in Machine Learning (3 credits), &quot;</span>
+                   <span class="s2">&quot;B+ in Data Engineering (4 credits), A- in NLP (3 credits), and C in Statistics &quot;</span>
+                   <span class="s2">&quot;(2 credits). What is my GPA?&quot;</span><span class="p">),</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3.36&quot;</span><span class="p">]),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Conversion arithmetic&quot;</span><span class="p">,</span>
+         <span class="n">question</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;The Columbia, Missouri campus is about 1,262 acres. &quot;</span>
+                   <span class="s2">&quot;Convert that to square kilometers. Note: 1 acre = 0.00404686 km².&quot;</span><span class="p">),</span>
+         <span class="n">expect</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;5.1&quot;</span><span class="p">]),</span>
+<span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[,$\s]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_correct</span><span class="p">(</span><span class="n">answer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expect</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">expect</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">classify</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attribute each run to a cause. Order matters: format problems first.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;parse_failures&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;format (parse failure)&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;finished&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">&quot;loop (step limit)&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;correct&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">&quot;reasoning (wrong answer)&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;ok&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_suite</span><span class="p">(</span><span class="n">agents</span><span class="p">,</span> <span class="n">suite</span><span class="o">=</span><span class="n">TEST_SUITE</span><span class="p">):</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">suite</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">agents</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">test</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">grammar</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">use_grammar</span><span class="p">,</span>
+                       <span class="n">answer</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="n">is_correct</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">test</span><span class="p">[</span><span class="s2">&quot;expect&quot;</span><span class="p">]),</span>
+                       <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">],</span> <span class="o">**</span><span class="n">agent</span><span class="o">.</span><span class="n">stats</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cause&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rows</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_results</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Test&#39;</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="s1">&#39;Model&#39;</span><span class="si">:</span><span class="s2">&lt;27</span><span class="si">}{</span><span class="s1">&#39;OK&#39;</span><span class="si">:</span><span class="s2">&lt;5</span><span class="si">}{</span><span class="s1">&#39;Steps&#39;</span><span class="si">:</span><span class="s2">&lt;7</span><span class="si">}{</span><span class="s1">&#39;Time(s)&#39;</span><span class="si">:</span><span class="s2">&lt;9</span><span class="si">}{</span><span class="s1">&#39;Tools&#39;</span><span class="si">:</span><span class="s2">&lt;32</span><span class="si">}{</span><span class="s1">&#39;Cause&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">120</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;27</span><span class="si">}{</span><span class="s1">&#39;✓&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;correct&#39;</span><span class="p">]</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;✗&#39;</span><span class="si">:</span><span class="s2">&lt;5</span><span class="si">}</span><span class="s2">&quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;steps&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;7</span><span class="si">}{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;time_s&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;9.1f</span><span class="si">}{</span><span class="s1">&#39; &gt; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">])</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="si">:</span><span class="s2">&lt;32</span><span class="si">}{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;cause&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">):</span>
+        <span class="n">mine</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;correct&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">mine</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">mine</span><span class="p">)</span>
+        <span class="n">toks</span><span class="p">,</span> <span class="n">secs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;tokens&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">mine</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;time_s&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">mine</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;27</span><span class="si">}</span><span class="s2"> accuracy </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">5.0%</span><span class="si">}</span><span class="s2"> | parse failures </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;parse_failures&#39;</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">mine</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;| avg time </span><span class="si">{</span><span class="n">secs</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">mine</span><span class="p">)</span><span class="si">:</span><span class="s2">4.1f</span><span class="si">}</span><span class="s2">s/query | </span><span class="si">{</span><span class="n">toks</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">secs</span><span class="p">,</span><span class="w"> </span><span class="mf">1e-9</span><span class="p">)</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2"> tok/s overall&quot;</span><span class="p">)</span>
+
+<span class="n">grammar_rows</span> <span class="o">=</span> <span class="n">run_suite</span><span class="p">([</span><span class="n">mistral_agent</span><span class="p">,</span> <span class="n">qwen_agent</span><span class="p">])</span>
+<span class="n">print_results</span><span class="p">(</span><span class="n">grammar_rows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test                  Model                      OK   Steps  Time(s)  Tools                           Cause
+------------------------------------------------------------------------------------------------------------------------
+Calculator            Mistral-7B-Instruct-v0.3   ✓    2      45.4     calculator                      ok
+Calculator            Qwen2.5-7B-Instruct        ✓    2      26.8     calculator                      ok
+Date lookup           Mistral-7B-Instruct-v0.3   ✗    6      236.7    calculator &gt; calculator &gt; calculator &gt; calculator &gt; calculator &gt; calculatorloop (step limit)
+Date lookup           Qwen2.5-7B-Instruct        ✓    2      25.1     get_date                        ok
+Knowledge lookup      Mistral-7B-Instruct-v0.3   ✓    1      49.7     -                               ok
+Knowledge lookup      Qwen2.5-7B-Instruct        ✓    2      36.8     knowledge_lookup                ok
+Multi-step            Mistral-7B-Instruct-v0.3   ✗    2      74.4     calculator                      reasoning (wrong answer)
+Multi-step            Qwen2.5-7B-Instruct        ✓    2      36.6     calculator                      ok
+GPA                   Mistral-7B-Instruct-v0.3   ✗    2      86.5     calculator                      reasoning (wrong answer)
+GPA                   Qwen2.5-7B-Instruct        ✗    2      35.8     gpa_calculator                  reasoning (wrong answer)
+Conversion arithmetic Mistral-7B-Instruct-v0.3   ✓    2      58.4     calculator                      ok
+Conversion arithmetic Qwen2.5-7B-Instruct        ✓    3      48.6     unit_convert &gt; calculator       ok
+
+Mistral-7B-Instruct-v0.3    accuracy   50% | parse failures 0 | avg time 91.8s/query |   2.8 tok/s overall
+Qwen2.5-7B-Instruct         accuracy   83% | parse failures 0 | avg time 35.0s/query |   2.4 tok/s overall
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ablation-what-does-the-grammar-actually-buy">
+<h2><span class="section-number">8.3.8.16. </span>Ablation: what does the grammar actually buy?<a class="headerlink" href="#ablation-what-does-the-grammar-actually-buy" title="Link to this heading">#</a></h2>
+<p>An <strong>ablation</strong> removes one component to measure its contribution. Here we rerun the same suite with <code class="docutils literal notranslate"><span class="pre">use_grammar=False</span></code>, so the models generate freely and the regex parser has to cope. Everything else is identical: same models, prompts, tools, and tests.</p>
+<p>What to look for:</p>
+<ul class="simple">
+<li><p><strong>Parse failures</strong> should rise without the grammar. This is the effect the grammar is designed to remove.</p></li>
+<li><p><strong>Accuracy</strong> may change much less than parse failures do. If it does, that confirms the central claim of this section: the grammar fixes <em>format</em>, while remaining errors are <em>reasoning</em> errors.</p></li>
+<li><p>Instruction-tuned 7B models are already fairly good at following a three-line format, so the gap can be smaller than it was for TinyLlama and Phi-2. Report what you measure, not what you expected.</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">GRAMMAR_AVAILABLE</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NOTE: grammar is unavailable in this environment, so both runs are ungrammared &quot;</span>
+          <span class="s2">&quot;and this comparison will not show a difference.&quot;</span><span class="p">)</span>
+
+<span class="n">free_mistral</span> <span class="o">=</span> <span class="n">LightweightAgent</span><span class="p">(</span><span class="n">mistral_llm</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Mistral-7B (no grammar)&quot;</span><span class="p">,</span> <span class="n">use_grammar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">free_qwen</span>    <span class="o">=</span> <span class="n">LightweightAgent</span><span class="p">(</span><span class="n">qwen_llm</span><span class="p">,</span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B (no grammar)&quot;</span><span class="p">,</span> <span class="n">use_grammar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">free_rows</span> <span class="o">=</span> <span class="n">run_suite</span><span class="p">([</span><span class="n">free_mistral</span><span class="p">,</span> <span class="n">free_qwen</span><span class="p">])</span>
+<span class="n">print_results</span><span class="p">(</span><span class="n">free_rows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test                  Model                      OK   Steps  Time(s)  Tools                           Cause
+------------------------------------------------------------------------------------------------------------------------
+Calculator            Mistral-7B (no grammar)    ✓    3      56.0     multiplication                  format (parse failure)
+Calculator            Qwen2.5-7B (no grammar)    ✓    2      24.0     calculator                      ok
+Date lookup           Mistral-7B (no grammar)    ✗    3      33.2     calculator                      format (parse failure)
+Date lookup           Qwen2.5-7B (no grammar)    ✓    2      23.0     get_date                        ok
+Knowledge lookup      Mistral-7B (no grammar)    ✓    3      120.0    hugging                         format (parse failure)
+Knowledge lookup      Qwen2.5-7B (no grammar)    ✓    2      35.0     knowledge_lookup                ok
+Multi-step            Mistral-7B (no grammar)    ✓    3      117.4    calculator                      format (parse failure)
+Multi-step            Qwen2.5-7B (no grammar)    ✓    2      40.9     calculator                      ok
+GPA                   Mistral-7B (no grammar)    ✗    3      123.7    calculator                      format (parse failure)
+GPA                   Qwen2.5-7B (no grammar)    ✗    2      32.6     gpa_calculator                  reasoning (wrong answer)
+Conversion arithmetic Mistral-7B (no grammar)    ✓    3      67.7     calculator                      format (parse failure)
+Conversion arithmetic Qwen2.5-7B (no grammar)    ✓    1      19.7     -                               ok
+
+Mistral-7B (no grammar)     accuracy   67% | parse failures 6 | avg time 86.3s/query |   3.0 tok/s overall
+Qwen2.5-7B (no grammar)     accuracy   83% | parse failures 0 | avg time 29.2s/query |   2.9 tok/s overall
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Side-by-side: failures by cause, with and without the grammar.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cause_table</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;cause&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WITH grammar   :&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cause_table</span><span class="p">(</span><span class="n">grammar_rows</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WITHOUT grammar:&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cause_table</span><span class="p">(</span><span class="n">free_rows</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WITH grammar   : {&#39;ok&#39;: 8, &#39;loop (step limit)&#39;: 1, &#39;reasoning (wrong answer)&#39;: 3}
+WITHOUT grammar: {&#39;format (parse failure)&#39;: 6, &#39;ok&#39;: 5, &#39;reasoning (wrong answer)&#39;: 1}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-results">
+<h2><span class="section-number">8.3.8.17. </span>Reading the results<a class="headerlink" href="#reading-the-results" title="Link to this heading">#</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">Cause</span></code> column to attribute each failure. The three categories call for three different remedies:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-failure-analysis">
+<caption><span class="caption-number">Table 8.12 </span><span class="caption-text">Failure Mode Analysis and Remedies</span><a class="headerlink" href="#tab-failure-analysis" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Cause</p></th>
+<th class="head text-left"><p>What happened</p></th>
+<th class="head text-left"><p>Right fix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>format (parse failure)</p></td>
+<td class="text-left"><p>Output did not match the expected structure</p></td>
+<td class="text-left"><p>Grammar-constrained decoding; stricter retry prompt</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>loop (step limit)</p></td>
+<td class="text-left"><p>The model kept calling tools after the answer was available</p></td>
+<td class="text-left"><p>Question-anchored continuation prompt; lower step limit; stop conditions</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>reasoning (wrong answer)</p></td>
+<td class="text-left"><p>Valid structure, wrong tool, wrong arguments, or wrong interpretation</p></td>
+<td class="text-left"><p>Better tool descriptions, fewer or clearer tools, a larger model, or a verification step</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If grammar-constrained runs show zero parse failures, the constraint is working. If you still see <code class="docutils literal notranslate"><span class="pre">⚠</span> <span class="pre">Could</span> <span class="pre">not</span> <span class="pre">parse</span> <span class="pre">tool</span> <span class="pre">call</span></code>, check the printed <code class="docutils literal notranslate"><span class="pre">GRAMMAR_AVAILABLE</span></code> and <code class="docutils literal notranslate"><span class="pre">use_grammar</span></code> values first: grammar compilation may have silently fallen back.</p>
+<p>A frequent pattern in these experiments is that the multi-step and conversion questions are where models differ most, because they require choosing between plausible tools or chaining two operations. Single-tool questions are usually solved by both models.</p>
+</section>
+<section id="when-to-use-which-model">
+<h2><span class="section-number">8.3.8.18. </span>When to use which model<a class="headerlink" href="#when-to-use-which-model" title="Link to this heading">#</a></h2>
+<p>The table below summarizes the trade-offs qualitatively. Treat it as a hypothesis to test with your own measurements (see the exercises), not as a fixed result: exact rates depend on the prompt, the tools, the quantization, and the test set.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-model-comparison">
+<caption><span class="caption-number">Table 8.13 </span><span class="caption-text">Qualitative Model Comparison: 1-3B vs. 7B</span><a class="headerlink" href="#tab-model-comparison" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Task category</p></th>
+<th class="head text-left"><p>1–3B (CPU)</p></th>
+<th class="head text-left"><p>7B + grammar (GPU)</p></th>
+<th class="head text-left"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Single-tool lookup or arithmetic</p></td>
+<td class="text-left"><p>Often acceptable</p></td>
+<td class="text-left"><p>Reliable</p></td>
+<td class="text-left"><p>Small models are enough here</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Output must be machine-parseable</p></td>
+<td class="text-left"><p>Fragile without a grammar</p></td>
+<td class="text-left"><p>Grammar-guaranteed structure</p></td>
+<td class="text-left"><p>Grammar helps at <em>any</em> model size</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Multi-step (2+ tool calls)</p></td>
+<td class="text-left"><p>Degrades quickly</p></td>
+<td class="text-left"><p>Usually workable</p></td>
+<td class="text-left"><p>Main capability gap</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Choosing among 4+ tools</p></td>
+<td class="text-left"><p>High misselection risk</p></td>
+<td class="text-left"><p>Better, still imperfect</p></td>
+<td class="text-left"><p>Keep tool descriptions short and distinct</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Code generation, complex reasoning</p></td>
+<td class="text-left"><p>Limited</p></td>
+<td class="text-left"><p>Better for simple cases</p></td>
+<td class="text-left"><p>Larger models for complex work</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Latency-critical, no GPU</p></td>
+<td class="text-left"><p>Best fit</p></td>
+<td class="text-left"><p>Slow on CPU</p></td>
+<td class="text-left"><p>Quantize and offload what you can</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The key capability gap remains multi-step reasoning reliability. Grammar-constrained decoding makes the <em>form</em> of each step trustworthy; it does not make the <em>content</em> of each step correct. For agents whose mistakes are costly, combine the grammar with deterministic tools, result verification, and a human-in-the-loop check.</p>
+</section>
+<section id="key-takeaways">
+<h2><span class="section-number">8.3.8.19. </span>Key takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A 4-bit 7B model is “lightweight” in the sense that matters for deployment: it fits on one consumer GPU and runs at interactive speed.</p></li>
+<li><p>GPU offload addresses speed; grammar-constrained decoding addresses format reliability. They solve different problems.</p></li>
+<li><p>Generate the prompt’s tool list and the grammar from one registry, so they cannot disagree.</p></li>
+<li><p>Let the LLM reason and route; let Python tools compute.</p></li>
+<li><p>Instrument your agent and classify failures by cause. Treating “the agent failed” as one problem leads to the wrong fix.</p></li>
+</ul>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">8.3.8.20. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Grammar ablation, extended.</strong>
+Using <code class="docutils literal notranslate"><span class="pre">run_suite</span></code>, repeat the with/without-grammar comparison five times per condition and report the mean and range of accuracy and parse failures. How much of the variation is format versus reasoning? Is the benefit of the grammar larger for the 7B models or for TinyLlama/Phi-2 (load them via <code class="docutils literal notranslate"><span class="pre">llama-cpp-python</span></code> on CPU and reuse the same suite)?</p></li>
+<li><p><strong>GPU offload sweep.</strong>
+Reload one model with <code class="docutils literal notranslate"><span class="pre">n_gpu_layers</span></code> in <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">10,</span> <span class="pre">20,</span> <span class="pre">-1}</span></code> and call <code class="docutils literal notranslate"><span class="pre">measure_speed</span></code> for each. Plot tokens/second against the number of offloaded layers. Is the relationship linear? What does the curve suggest about the best configuration for a GPU with half the VRAM?</p></li>
+<li><p><strong>Extend the toolset and the grammar.</strong>
+Add a sixth tool (for example, <code class="docutils literal notranslate"><span class="pre">percent_change</span></code> or <code class="docutils literal notranslate"><span class="pre">date_diff</span></code>) by adding a single entry to <code class="docutils literal notranslate"><span class="pre">TOOL_REGISTRY</span></code>. Verify that the system prompt and <code class="docutils literal notranslate"><span class="pre">TOOL_GRAMMAR_TEXT</span></code> both update without any other code changes. Then add two test questions that need the new tool and measure whether tool misselection increases as the tool count grows from 5 to 6.</p></li>
+<li><p><strong>Constrain the arguments, too.</strong>
+The current grammar constrains only the <em>tool name</em>; <code class="docutils literal notranslate"><span class="pre">INPUT:</span></code> is free text. Write a stricter rule for <code class="docutils literal notranslate"><span class="pre">unit_convert</span></code> so that its input must look like <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;,</span> <span class="pre">&lt;unit&gt;,</span> <span class="pre">&lt;unit&gt;</span></code> with units drawn from the supported set. What is the trade-off between a stricter grammar and flexibility? Which failures from the results table would this remove?</p></li>
+<li><p><strong>Prompt sensitivity.</strong>
+Compare three variants on the full suite: (a) the current system prompt, (b) the system prompt <em>without</em> the example, (c) the system prompt with the <code class="docutils literal notranslate"><span class="pre">CONTINUE_PROMPT</span></code> replaced by a plain “Continue.” Which change affects <em>loop</em> failures the most? Which affects <em>format</em> failures the most (run with and without the grammar)?</p></li>
+<li><p><strong>Task routing design.</strong>
+Design a router that sends each incoming question to the cheapest adequate model: a small model for single-tool questions and a 7B model for multi-step questions. Implement the classifier as a grammar-constrained prompt (output restricted to <code class="docutils literal notranslate"><span class="pre">simple</span></code> or <code class="docutils literal notranslate"><span class="pre">complex</span></code>) and measure routing accuracy on 20 labelled questions. What does a misrouting cost: a wrong answer, or only extra latency?</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_08"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C08S07.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8.3.7. </span>Agent Evaluation and Safety</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../References.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">8.3.8.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-lightweight-local-models-for-agentic-ai">8.3.8.2. Why lightweight local models for agentic AI?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model-lineup">8.3.8.3. The model lineup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-grammar-constraints-fix-and-what-they-do-not">8.3.8.4. What grammar constraints fix, and what they do not</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-agent-loop">8.3.8.5. The agent loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">8.3.8.6. Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confirm-the-gpu-is-visible">8.3.8.6.1. Confirm the GPU is visible</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-models">8.3.8.7. Loading the models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-benchmark">8.3.8.8. Speed benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tool-library-and-the-hybrid-strategy">8.3.8.9. The tool library and the hybrid strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#five-practical-tools">8.3.8.9.1. Five practical tools</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-registry-and-grammar">8.3.8.10. Tool registry and grammar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-design-for-local-agents">8.3.8.11. Prompt design for local agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-and-tool-execution">8.3.8.12. Parsing and tool execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-agent-class">8.3.8.13. The agent class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walkthrough-one-question-two-models">8.3.8.14. Walkthrough: one question, two models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-agents">8.3.8.15. Evaluating the agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablation-what-does-the-grammar-actually-buy">8.3.8.16. Ablation: what does the grammar actually buy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-results">8.3.8.17. Reading the results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-which-model">8.3.8.18. When to use which model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">8.3.8.19. Key takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">8.3.8.20. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

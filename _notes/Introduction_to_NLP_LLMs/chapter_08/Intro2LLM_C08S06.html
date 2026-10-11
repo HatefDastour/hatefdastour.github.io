@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8.3.6. LangChain Agent Framework &#8212; Introduction to Natural Language Processing with Large Language Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/myfile.css?v=564be945" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_08/Intro2LLM_C08S06';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8.3.7. Agent Evaluation and Safety" href="Intro2LLM_C08S07.html" />
+    <link rel="prev" title="8.3.5. Building a ReAct Agent from Scratch" href="Intro2LLM_C08S05.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../Preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Introduction to Natural Language Processing with Large Language Models - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_01/Intro2LLM_C01.html">1. Introduction to Natural Language Processing and Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S01.html">1.1. What is Natural Language Processing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S02.html">1.2. Data Acquisition for NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S03.html">1.3. Text Preprocessing and Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S04.html">1.4. Advanced Linguistic Analysis and the Evolution of NLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_01/Intro2LLM_C01S05.html">1.5. Modern Modeling and Evaluation Strategies</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_02/Intro2LLM_C02.html">2. Text Representations and Vectorization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S01.html">2.1. From Tokens to Vectors: Classical Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S02.html">2.2. Bag-of-Words and TF–IDF in Practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S03.html">2.3. Word Embeddings and Distributional Semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_02/Intro2LLM_C02S04.html">2.4. Contextual Embeddings and BERT</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_03/Intro2LLM_C03.html">3. Core NLP Modeling: Classification and Embeddings</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S01.html">3.1. Text Classification: Problem Framing and Pipeline Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S02.html">3.2. One Pipeline, Many Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S03.html">3.3. Word Embeddings for Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S04.html">3.4. Document Embeddings with Doc2Vec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_03/Intro2LLM_C03S05.html">3.5. Deep Learning for Text Classification</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_04/Intro2LLM_C04.html">4. Introduction to Large Language Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S01.html">4.1. Introduction to Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S02.html">4.2. Essentials of Large Language Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S03.html">4.3. LLM Robustness and Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S04.html">4.4. Tokens and Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S05.html">4.5. Token Embeddings and the Text-to-Numbers Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S06.html">4.6. Tokenization Across Models: A Comparative Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_04/Intro2LLM_C04S07.html">4.7. Clinical NLP: Tokenization, Embeddings, and Applications</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_05/Intro2LLM_C05.html">5. Inside Transformer LLMs and Text Classification</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S01.html">5.1. Inside Transformer LLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S02.html">5.2. Parallel Token Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S03.html">5.3. Text Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S04.html">5.4. Text Classification by Leveraging Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S04.html">6.4. Reasoning with Generative Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S05.html">6.5. Output Verification and Structured Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S06.html">6.6. Prompt Engineering in Practice</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_07/Intro2LLM_C07.html">7. Foundations and Advanced Patterns of RAG Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S01.html">7.1. LLM I/O and Local Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S02.html">7.2. Prompt Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S03.html">7.3. Chains: Building Complex Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S04.html">7.4. Retrieval-Augmented Generation: Foundations and Document Ingestion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S05.html">7.5. Retrieval Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S06.html">7.6. Building and Evaluating RAG Chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_07/Intro2LLM_C07S07.html">7.7. Advanced RAG Patterns</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Intro2LLM_C08.html">8. Language Agents and Agentic AI</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S01.html">8.3.1. Agents and the ReAct Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S02.html">8.3.2. Introduction to Agentic AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S03.html">8.3.3. Building Tools for Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S04.html">8.3.4. Agent Memory Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S05.html">8.3.5. Building a ReAct Agent from Scratch</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">8.3.6. LangChain Agent Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S07.html">8.3.7. Agent Evaluation and Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C08S08.html">8.3.8. Lightweight Local Models for Agentic AI: 7B Models, GPU Offload, and Grammar-Constrained Decoding</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">9. References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>LangChain Agent Framework</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">8.3.6.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchains-agent-components">8.3.6.2. LangChain’s Agent Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-tools-with-the-tool-decorator">8.3.6.3. Defining Tools with the @tool Decorator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-and-running-the-langchain-agent">8.3.6.4. Building and Running the LangChain Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-agentexecutor-parameters">8.3.6.5. Key AgentExecutor Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-monitoring-agent-execution">8.3.6.6. Callbacks: Monitoring Agent Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-from-scratch-vs-langchain">8.3.6.7. Comparing From-Scratch vs. LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">8.3.6.8. Exercises and discussion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="important admonition">
+<p class="admonition-title">Remark</p>
+<p>These lecture notes are in <strong>early access</strong> and will continue to evolve based on classroom experience and feedback.</p>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="langchain-agent-framework">
+<h1><span class="section-number">8.3.6. </span>LangChain Agent Framework<a class="headerlink" href="#langchain-agent-framework" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2><span class="section-number">8.3.6.1. </span>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>By the end of this section, you should be able to:</p>
+<ul class="simple">
+<li><p>Rebuild a ReAct agent using LangChain’s <code class="docutils literal notranslate"><span class="pre">create_react_agent</span></code> and <code class="docutils literal notranslate"><span class="pre">AgentExecutor</span></code>.</p></li>
+<li><p>Explain what each LangChain component adds over the from-scratch implementation.</p></li>
+<li><p>Define custom tools using the <code class="docutils literal notranslate"><span class="pre">&#64;tool</span></code> decorator and explain how LangChain uses the docstring for tool description.</p></li>
+<li><p>Configure <code class="docutils literal notranslate"><span class="pre">AgentExecutor</span></code> parameters: <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>, <code class="docutils literal notranslate"><span class="pre">handle_parsing_errors</span></code>, and <code class="docutils literal notranslate"><span class="pre">verbose</span></code>.</p></li>
+<li><p>Use LangChain’s callback system to log and monitor agent execution.</p></li>
+</ul>
+</section>
+<section id="langchains-agent-components">
+<h2><span class="section-number">8.3.6.2. </span>LangChain’s Agent Components<a class="headerlink" href="#langchains-agent-components" title="Link to this heading">#</a></h2>
+<p>Having built a ReAct <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id530" title="Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. ReAct: Synergizing Reasoning and Acting in Language Models. In 11th International Conference on Learning Representations (ICLR 2023). Kigali, Rwanda, 2023.">Yao <em>et al.</em>, 2023</a>]</span> agent from scratch in Section 9, we now rebuild it using LangChain’s <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id529" title="Harrison Chase. LangChain. 2022. URL: https://github.com/langchain-ai/langchain.">Chase, 2022</a>]</span> abstractions. The mapping from scratch to framework is direct:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-from-scratch-vs-langchain1">
+<caption><span class="caption-number">Table 8.6 </span><span class="caption-text">From-scratch vs. LangChain components</span><a class="headerlink" href="#tab-from-scratch-vs-langchain1" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>From-scratch component</p></th>
+<th class="head text-left"><p>LangChain equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">REACT_TEMPLATE</span></code> string</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hub.pull(&quot;hwchase17/react&quot;)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">parse_action()</span></code> function</p></td>
+<td class="text-left"><p>Built into <code class="docutils literal notranslate"><span class="pre">create_react_agent</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">run_react_agent()</span></code> loop</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AgentExecutor.invoke()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ToolRegistry</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">List[Tool]</span></code> passed to <code class="docutils literal notranslate"><span class="pre">create_react_agent</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> print statements</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">verbose=True</span></code> in <code class="docutils literal notranslate"><span class="pre">AgentExecutor</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="defining-tools-with-the-tool-decorator">
+<h2><span class="section-number">8.3.6.3. </span>Defining Tools with the &#64;tool Decorator<a class="headerlink" href="#defining-tools-with-the-tool-decorator" title="Link to this heading">#</a></h2>
+<p>LangChain’s <code class="docutils literal notranslate"><span class="pre">&#64;tool</span></code> decorator converts a Python function into a <code class="docutils literal notranslate"><span class="pre">Tool</span></code> object, using the function’s name and docstring automatically:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">web_search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mock web search function for offline sandbox environment.&quot;&quot;&quot;</span>
+    <span class="n">query_lower</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;macbook pro&quot;</span> <span class="ow">in</span> <span class="n">query_lower</span> <span class="ow">and</span> <span class="s2">&quot;2026&quot;</span> <span class="ow">in</span> <span class="n">query_lower</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;The current price of a MacBook Pro 14-inch in 2026 is approximately $1,599 USD.&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Search result for &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39;: No live results found in sandbox.&quot;</span>
+
+
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">python_calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate a Python arithmetic expression.</span>
+<span class="sd">    Use for: arithmetic, percentages, unit conversions.</span>
+<span class="sd">    Input: a Python expression (e.g., &#39;1999 * 0.85&#39;).</span>
+<span class="sd">    Output: the computed result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;__builtins__&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;math&quot;</span><span class="p">:</span> <span class="n">math</span><span class="p">})</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Error: division by zero&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">web_search</span><span class="p">,</span> <span class="n">python_calculator</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;tool</span></code> decorator extracts:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tool.name</span></code> — the function name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tool.description</span></code> — the docstring (used in the agent’s system prompt)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tool.args_schema</span></code> — inferred from type annotations</p></li>
+</ul>
+<p>A well-written docstring is as important here as in the custom registry — the model reads it to decide when to use the tool.</p>
+</section>
+<section id="building-and-running-the-langchain-agent">
+<h2><span class="section-number">8.3.6.4. </span>Building and Running the LangChain Agent<a class="headerlink" href="#building-and-running-the-langchain-agent" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_classic.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_react_agent</span><span class="p">,</span> <span class="n">AgentExecutor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.llms.llamacpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaCpp</span>
+
+<span class="c1"># Initialize the local LLM model instance</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">LlamaCpp</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;./Phi-3-mini-4k-instruct-fp16.gguf&quot;</span><span class="p">,</span>
+    <span class="n">n_ctx</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>
+    <span class="n">n_gpu_layers</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Define the standard ReAct prompt locally to work completely offline</span>
+<span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Answer the following questions as best you can. You have access to the following tools:</span>
+
+<span class="si">{tools}</span>
+
+<span class="s2">Use the following format:</span>
+
+<span class="s2">Question: the input question you must answer</span>
+<span class="s2">Thought: you should always think about what to do</span>
+<span class="s2">Action: the action to take, should be one of [</span><span class="si">{tool_names}</span><span class="s2">]</span>
+<span class="s2">Action Input: the input to the action</span>
+<span class="s2">Observation: the result of the action</span>
+<span class="s2">... (this Thought/Action/Action Input/Observation can repeat N times)</span>
+<span class="s2">Thought: I now know the final answer</span>
+<span class="s2">Final Answer: the final answer to the original input question</span>
+
+<span class="s2">Begin!</span>
+
+<span class="s2">Question: </span><span class="si">{input}</span>
+<span class="s2">Thought:</span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+
+<span class="c1"># Create the agent</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_react_agent</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">)</span>
+
+<span class="c1"># Wrap in an executor</span>
+<span class="n">agent_executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">handle_parsing_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">return_intermediate_steps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;Find the current price of a MacBook Pro 14-inch in USD in 2026. &quot;</span>
+        <span class="s2">&quot;Then calculate its price in euros using an exchange rate of 0.89.&quot;</span>
+    <span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Final Answer ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new AgentExecutor chain...</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green"> I need to find the current price of a MacBook Pro 14-inch in USD for the base model.</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: web_search</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &quot;MacBook Pro 14-inch base model price 2023&quot;</span><span class=" -Color -Color-Bold -Color-Bold-Cyan">Search result for &#39;MacBook Pro 14-inch base model price 2023&#39;: No live results found in sandbox.</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">&lt;|assistant|&gt; Since the sandbox environment doesn&#39;t provide live results, I can&#39;t directly find the current price. However, for this exercise, let&#39;s assume a hypothetical base model price of $1200 USD in 2023 to proceed with calculations.</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Thought: Now that we have an assumed price, I need to calculate its future value in 2026 considering potential inflation or market trends, but since this is a hypothetical scenario, let&#39;s assume the price remains constant for simplicity.</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: python_calculator</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &#39;1200 * (0.89 / 1)&#39;</span><span class=" -Color -Color-Bold -Color-Bold-Yellow">Error: could not convert string to float: &#39;1200 * (0.89 / 1)&#39;</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">&lt;|assistant|&gt; My mistake, I need to perform the calculation in a way that Python can understand it as an arithmetic expression. Let&#39;s correct this by removing unnecessary parentheses and ensuring proper formatting:</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: python_calculator</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &#39;1200 * 0.89&#39;</span><span class=" -Color -Color-Bold -Color-Bold-Yellow">Error: could not convert string to float: &#39;1200 * 0.89&#39;</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">&lt;|assistant|&gt; It seems I&#39;m still facing an issue with the input format. Let me try again, ensuring that the expression is correctly formatted for Python:</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: python_calculator</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &#39;1200 * 0.89&#39;</span><span class=" -Color -Color-Bold -Color-Bold-Yellow">Error: could not convert string to float: &#39;1200 * 0.89&#39;</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">&lt;|assistant|&gt; Apologies for the repeated error. The correct input should be a string representation of the arithmetic expression without any additional characters or spaces. Let&#39;s try once more with proper formatting:</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action: python_calculator</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Action Input: &#39;1200 * 0.89&#39;</span><span class=" -Color -Color-Bold -Color-Bold-Yellow">Error: could not convert string to float: &#39;1200 * 0.89&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="key-agentexecutor-parameters">
+<h2><span class="section-number">8.3.6.5. </span>Key AgentExecutor Parameters<a class="headerlink" href="#key-agentexecutor-parameters" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_iterations</span></code></p></td>
+<td><p>15</p></td>
+<td><p>Maximum number of action steps before forced termination</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">handle_parsing_errors</span></code></p></td>
+<td><p>False</p></td>
+<td><p>If True, recovers from malformed output and re-prompts</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Prints the full reasoning trace to stdout</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">return_intermediate_steps</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">(action,</span> <span class="pre">observation)</span></code> pairs alongside the final output</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">early_stopping_method</span></code></p></td>
+<td><p>“force”</p></td>
+<td><p>What to do when max_iterations is reached: “force” returns last output</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">handle_parsing_errors=True</span></code> is strongly recommended for production agents — it prevents a single malformed model output from crashing the entire agent loop. When the parser fails, LangChain appends an error message to the context and asks the model to reformat its output.</p>
+</section>
+<section id="callbacks-monitoring-agent-execution">
+<h2><span class="section-number">8.3.6.6. </span>Callbacks: Monitoring Agent Execution<a class="headerlink" href="#callbacks-monitoring-agent-execution" title="Link to this heading">#</a></h2>
+<p>LangChain’s callback system allows logging, monitoring, and tracing without modifying agent code:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">StdOutCallbackHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomAgentLogger</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom callback for logging agent actions.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_agent_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ACTION] Tool: </span><span class="si">{</span><span class="n">action</span><span class="o">.</span><span class="n">tool</span><span class="si">}</span><span class="s2"> | Input: </span><span class="si">{</span><span class="n">action</span><span class="o">.</span><span class="n">tool_input</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_tool_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[OBSERVATION] </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="p">)[:</span><span class="mi">200</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_agent_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[FINISHED] </span><span class="si">{</span><span class="n">finish</span><span class="o">.</span><span class="n">return_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)[:</span><span class="mi">300</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Attach callback to the executor</span>
+<span class="n">agent_executor_with_logging</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">CustomAgentLogger</span><span class="p">()],</span>
+    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">handle_parsing_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Callbacks enable production monitoring without modifying the agent’s core logic. Common uses include: logging to a database, sending alerts on tool failure, tracking token usage, and building debugging dashboards.</p>
+</section>
+<section id="comparing-from-scratch-vs-langchain">
+<h2><span class="section-number">8.3.6.7. </span>Comparing From-Scratch vs. LangChain<a class="headerlink" href="#comparing-from-scratch-vs-langchain" title="Link to this heading">#</a></h2>
+<p>Having implemented both, the key lessons are:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+From-scratch</label><div class="sd-tab-content docutils">
+<ul class="simple">
+<li><p>Complete visibility into all behavior</p></li>
+<li><p>No external dependencies for the core loop</p></li>
+<li><p>Easy to customize the exact prompt format</p></li>
+</ul>
+<ul class="simple">
+<li><p>Manual error recovery</p></li>
+<li><p>No streaming or async support</p></li>
+<li><p>No standardized callback/monitoring interface</p></li>
+</ul>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+LangChain</label><div class="sd-tab-content docutils">
+<ul class="simple">
+<li><p>Robust parsing with automatic error recovery</p></li>
+<li><p>Streaming, async, batch support built-in</p></li>
+<li><p>Standardized callback and monitoring interface</p></li>
+<li><p>Rich ecosystem (memory, tools, vector stores)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Additional dependency complexity</p></li>
+<li><p>Abstractions can hide important behaviors</p></li>
+<li><p>Framework changes can break agent behavior between versions</p></li>
+</ul>
+</div>
+</div>
+<p>The recommended workflow: <strong>build from scratch first</strong> to understand what is happening, then <strong>migrate to LangChain</strong> for production deployments where robustness and ecosystem integration matter.</p>
+</section>
+<section id="exercises-and-discussion">
+<h2><span class="section-number">8.3.6.8. </span>Exercises and discussion<a class="headerlink" href="#exercises-and-discussion" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Framework vs. scratch comparison</strong>
+Run the same three questions through both your from-scratch agent (Section 9) and the LangChain agent. Compare: success rate, number of steps taken, error recovery behavior, and output quality. What failure modes does <code class="docutils literal notranslate"><span class="pre">handle_parsing_errors=True</span></code> recover from that your from-scratch agent would crash on?</p></li>
+<li><p><strong>Custom callback implementation</strong>
+Implement a callback that counts the total number of tool calls across a session and records which tool is called most frequently. Run 10 different questions through the agent and print the tool usage statistics. What does the distribution reveal about which tools are most valuable for the tested question types?</p></li>
+<li><p><strong>Prompt template customization</strong>
+Pull the <code class="docutils literal notranslate"><span class="pre">hwchase17/react</span></code> prompt and print it. Identify three components of the template. Now create a custom <code class="docutils literal notranslate"><span class="pre">PromptTemplate</span></code> that modifies the output format — for example, requiring the model to rate its confidence (1–5) in its Thought before each Action. Test whether the modified template improves or degrades agent performance on five questions.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_08"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Intro2LLM_C08S05.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8.3.5. </span>Building a ReAct Agent from Scratch</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Intro2LLM_C08S07.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8.3.7. </span>Agent Evaluation and Safety</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">8.3.6.1. Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchains-agent-components">8.3.6.2. LangChain’s Agent Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-tools-with-the-tool-decorator">8.3.6.3. Defining Tools with the @tool Decorator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-and-running-the-langchain-agent">8.3.6.4. Building and Running the LangChain Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-agentexecutor-parameters">8.3.6.5. Key AgentExecutor Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#callbacks-monitoring-agent-execution">8.3.6.6. Callbacks: Monitoring Agent Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-from-scratch-vs-langchain">8.3.6.7. Comparing From-Scratch vs. LangChain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises-and-discussion">8.3.6.8. Exercises and discussion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hatef Dastour
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
