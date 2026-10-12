@@ -508,27 +508,20 @@
 </section>
 <section id="primacy-and-recency-effects">
 <h2><span class="section-number">6.2.4. </span>Primacy and Recency Effects<a class="headerlink" href="#primacy-and-recency-effects" title="Link to this heading">#</a></h2>
-<p>Large Language Models do not treat all portions of a long prompt with equal weight. Due to attention distribution dynamics, models exhibit pronounced <strong>primacy effects</strong> (high attention allocation to the beginning of a prompt) and <strong>recency effects</strong> (high attention allocation to the end of a prompt).</p>
-<p>Conversely, tokens placed in the middle of long contexts often suffer from decreased attention weights—a structural vulnerability documented empirically as the “Lost in the Middle” phenomenon <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id519" title="Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. Lost in the Middle: How Language Models Use Long Contexts. Transactions of the Association for Computational Linguistics, 12:157–173, 2024.">Liu <em>et al.</em>, 2024</a>]</span>.</p>
+<ul class="simple">
+<li><p>Large Language Models allocate attention unevenly across long prompts due to internal attention distribution dynamics.</p></li>
+<li><p><strong>Primacy Effect</strong>: High attention weight is assigned to tokens at the very beginning of a prompt.</p></li>
+<li><p><strong>Recency Effect</strong>: High attention weight is assigned to tokens at the very end of a prompt.</p></li>
+<li><p><strong>“Lost in the Middle” Phenomenon</strong>: Tokens positioned in the middle of long contexts receive significantly lower attention weights, creating a structural vulnerability in instruction adherence <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id519" title="Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang. Lost in the Middle: How Language Models Use Long Contexts. Transactions of the Association for Computational Linguistics, 12:157–173, 2024.">Liu <em>et al.</em>, 2024</a>]</span>.</p></li>
+</ul>
 <section id="optimizing-instruction-placement">
 <h3><span class="section-number">6.2.4.1. </span>Optimizing Instruction Placement<a class="headerlink" href="#optimizing-instruction-placement" title="Link to this heading">#</a></h3>
-<p>This attention architecture dictates where critical components should be placed within a prompt for maximum execution reliability:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>▲ PRIMACY POSITION (Highest Attention Weight)
-│  └── System Message / Core Behavioral Constraints
-│      → Place your absolute rules, safety guardrails, and role definitions here.
-│
-┼ MIDDLE POSITION (Lowest Attention Weight)
-│  └── Background Data / Context Documents / Raw Text Variables
-│      → Place your long data payloads, articles to summarize, or source documents here.
-│
-▼ RECENCY POSITION (High Attention Weight)
-   └── Final Execution Call / Formatting Schema Re-enforcement
-       → Place your immediate command, final output template, and vital constraints here.
-</pre></div>
-</div>
-<blockquote>
-<div><p><strong>Engineering Rule of Thumb:</strong> If an instruction or formatting constraint is critical to your application’s stability, do not hide it in the middle of a data payload. Repeat the instruction in both the <strong>Primacy</strong> position (System message) and the <strong>Recency</strong> position (the final lines of the User message).</p>
-</div></blockquote>
+<ul class="simple">
+<li><p><strong>Primacy Position (Highest Attention Weight)</strong>: Place system messages, core behavioral constraints, role definitions, safety guardrails, and absolute rules at the beginning.</p></li>
+<li><p><strong>Middle Position (Lowest Attention Weight)</strong>: Reserve the middle section for background data, context documents, articles to summarize, and raw data payloads.</p></li>
+<li><p><strong>Recency Position (High Attention Weight)</strong>: Place immediate commands, final execution calls, output templates, and vital constraints at the end.</p></li>
+<li><p><strong>Engineering Rule of Thumb</strong>: For critical instructions or formatting constraints, repeat the directive in both the Primacy position (System message) and the Recency position (the final lines of the User message) rather than hiding it inside a middle data payload.</p></li>
+</ul>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">

@@ -351,7 +351,7 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-2-dense-embedding-networks">5.3.7. Generation 2: Dense Embedding Networks</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-mean-pooled-mlp-rotten-tomatoes">5.3.7.1. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.7.2. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.3.7.2. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-1d-cnn-yelp">5.3.7.3. GloVe + 1D CNN (Yelp)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-over-generation-1">5.3.7.4. Advantages Over Generation 1</a></li>
 </ul>
@@ -360,8 +360,8 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta-fine-tuning">5.3.8.1. RoBERTa Fine-Tuning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.3.9. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.3.9.1. RoBERTa Fine-Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.3.9. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.3.9.1. RoBERTa Fine-Tuning</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-evaluation">5.3.10. Robustness Evaluation</a><ul class="nav section-nav flex-column">
@@ -404,7 +404,8 @@
 <section id="the-text-classification-problem">
 <h2><span class="section-number">5.3.2. </span>The Text Classification Problem<a class="headerlink" href="#the-text-classification-problem" title="Link to this heading">#</a></h2>
 <p>Text classification is the task of assigning a label from a predefined set to a piece of text. It encompasses a wide range of applications:</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<div class="pst-scrollable-table-container"><table class="table" id="text-classification-tasks">
+<caption><span class="caption-number">Table 5.7 </span><span class="caption-text">Common Text Classification Tasks, Inputs, and Expected Outputs</span><a class="headerlink" href="#text-classification-tasks" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Task</p></th>
 <th class="head"><p>Input</p></th>
@@ -440,22 +441,20 @@
 <section id="three-generations-of-approaches">
 <h2><span class="section-number">5.3.3. </span>Three Generations of Approaches<a class="headerlink" href="#three-generations-of-approaches" title="Link to this heading">#</a></h2>
 <p>Text classification methods have evolved through three distinct generations, each with fundamentally different representations and models:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Generation 1 — Sparse, count-based features:
-  TF-IDF → SVM or Logistic Regression
-  TF-IDF → Naive Bayes
-  Fast to train, highly interpretable, strong on clean balanced data.
-
-Generation 2 — Dense, distributional embeddings:
-  Word2Vec / GloVe + mean pooling → MLP classifier
-  Word2Vec / GloVe + 1D CNN → CNN classifier
-  Captures semantic similarity; handles synonyms; smaller vocabulary footprint.
-
-Generation 3 — Contextualized transformer representations:
-  BERT / RoBERTa fine-tuned end-to-end
-  The same word receives different representations in different contexts.
-  State-of-the-art performance; expensive to train.
-</pre></div>
-</div>
+<ul class="simple">
+<li><p><strong>Generation 1 — Sparse, count-based features:</strong></p></li>
+<li><p>TF-IDF → SVM or Logistic Regression</p></li>
+<li><p>TF-IDF → Naive Bayes</p></li>
+<li><p>Fast to train, highly interpretable, strong on clean balanced data.</p></li>
+<li><p><strong>Generation 2 — Dense, distributional embeddings:</strong></p></li>
+<li><p>Word2Vec / GloVe + mean pooling → MLP classifier</p></li>
+<li><p>Word2Vec / GloVe + 1D CNN → CNN classifier</p></li>
+<li><p>Captures semantic similarity; handles synonyms; smaller vocabulary footprint.</p></li>
+<li><p><strong>Generation 3 — Contextualized transformer representations:</strong></p></li>
+<li><p>BERT / RoBERTa fine-tuned end-to-end</p></li>
+<li><p>The same word receives different representations in different contexts.</p></li>
+<li><p>State-of-the-art performance; expensive to train.</p></li>
+</ul>
 <p>The practices in this section implement all three generations on two benchmark datasets:</p>
 <ul class="simple">
 <li><p><strong>Rotten Tomatoes</strong> (8,530 training / 1,066 test): binary sentiment, short critic snippets.</p></li>
@@ -467,8 +466,8 @@ Generation 3 — Contextualized transformer representations:
 <section id="tf-idf-svm-rotten-tomatoes">
 <h3><span class="section-number">5.3.4.1. </span>TF-IDF + SVM (Rotten Tomatoes)<a class="headerlink" href="#tf-idf-svm-rotten-tomatoes" title="Link to this heading">#</a></h3>
 <p>TF-IDF (Term Frequency–Inverse Document Frequency) <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id471" title="Gerard Salton and Michael J. McGill. Introduction to modern information retrieval. McGraw-Hill computer science series. McGraw-Hill, New York, 1983. ISBN 978-0-07-054484-0.">Salton and McGill, 1983</a>]</span> converts each document to a sparse vector in which each dimension corresponds to a vocabulary term, weighted by how characteristic that term is of the document:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a2321d42-7bc0-4247-b055-65c43e72580a">
-<span class="eqno">(5.30)<a class="headerlink" href="#equation-a2321d42-7bc0-4247-b055-65c43e72580a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5c249c14-d3f9-4455-b42e-99be32e639ec">
+<span class="eqno">(5.30)<a class="headerlink" href="#equation-5c249c14-d3f9-4455-b42e-99be32e639ec" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\frac{N}{1 + \text{df}(t)}
 \end{equation}\]</div>
 <p>Support Vector Machines (SVMs) <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id96" title="Corinna Cortes and Vladimir Vapnik. Support-vector networks. Machine Learning, 20(3):273-297, Sep 1995. doi:10.1007/BF00994018.">Cortes and Vapnik, 1995</a>]</span> with a linear kernel find the maximum-margin hyperplane separating the two classes in this high-dimensional sparse space.</p>
@@ -491,8 +490,8 @@ Generation 3 — Contextualized transformer representations:
 <section id="tf-idf-naive-bayes-yelp">
 <h3><span class="section-number">5.3.4.2. </span>TF-IDF + Naive Bayes (Yelp)<a class="headerlink" href="#tf-idf-naive-bayes-yelp" title="Link to this heading">#</a></h3>
 <p>Multinomial Naive Bayes <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id502" title="Andrew McCallum and Kamal Nigam. A Comparison of Event Models for Naive Bayes Text Classification. In Learning for Text Categorization: Papers from the 1998 AAAI Workshop, 41–48. 1998.">McCallum and Nigam, 1998</a>]</span> applies Bayes’ theorem with a feature-independence assumption: given the label, each word’s presence is assumed independent of all other words. Despite this unrealistic assumption, it works well on text:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-06a7a6ab-eb68-45af-8811-609d89eec930">
-<span class="eqno">(5.31)<a class="headerlink" href="#equation-06a7a6ab-eb68-45af-8811-609d89eec930" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2dbace6d-4ae5-4c36-b22f-d0f607f03744">
+<span class="eqno">(5.31)<a class="headerlink" href="#equation-2dbace6d-4ae5-4c36-b22f-d0f607f03744" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(\text{label} \mid \text{document}) \propto P(\text{label}) \prod_{t \in \text{document}} P(t \mid \text{label})
 \end{equation}\]</div>
 </section>
@@ -569,8 +568,8 @@ Yelp Polarity (subset) — train: 12000, test: 2000
 <section id="id7">
 <h3><span class="section-number">5.3.6.1. </span>TF-IDF + SVM (Rotten Tomatoes)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p>TF-IDF (Term Frequency–Inverse Document Frequency) <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id471" title="Gerard Salton and Michael J. McGill. Introduction to modern information retrieval. McGraw-Hill computer science series. McGraw-Hill, New York, 1983. ISBN 978-0-07-054484-0.">Salton and McGill, 1983</a>]</span> converts each document to a sparse vector in which each dimension corresponds to a vocabulary term, weighted by how characteristic that term is of the document:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b73cba30-7da9-4b95-af19-8182229dccd5">
-<span class="eqno">(5.32)<a class="headerlink" href="#equation-b73cba30-7da9-4b95-af19-8182229dccd5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3df73b35-aef2-4897-bedb-c9ca0ada6be5">
+<span class="eqno">(5.32)<a class="headerlink" href="#equation-3df73b35-aef2-4897-bedb-c9ca0ada6be5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \log\frac{N}{1 + \text{df}(t)}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\text{TF}(t,d)\)</span> is the count of term <span class="math notranslate nohighlight">\(t\)</span> in document <span class="math notranslate nohighlight">\(d\)</span>, <span class="math notranslate nohighlight">\(N\)</span> is the total number of documents, and <span class="math notranslate nohighlight">\(\text{df}(t)\)</span> is the number of documents that contain <span class="math notranslate nohighlight">\(t\)</span>. Terms that appear in many documents receive low IDF weight; terms that are rare across the corpus but frequent in a specific document receive high weight.</p>
@@ -896,16 +895,16 @@ Yelp Polarity (subset) — train: 12000, test: 2000
 <section id="id9">
 <h3><span class="section-number">5.3.6.2. </span>TF-IDF + Naive Bayes (Yelp)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>Multinomial Naive Bayes <span class="bibtex-citation" id="id10">[<a class="reference internal" href="../References.html#id502" title="Andrew McCallum and Kamal Nigam. A Comparison of Event Models for Naive Bayes Text Classification. In Learning for Text Categorization: Papers from the 1998 AAAI Workshop, 41–48. 1998.">McCallum and Nigam, 1998</a>]</span> applies Bayes’ theorem with a feature-independence assumption: given the class label, each word’s presence is assumed to be independent of all other words. Despite this unrealistic assumption, the model works well in practice because the independence errors tend to cancel across a large vocabulary.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d8c96feb-4b93-4952-b6af-27d67d9afa51">
-<span class="eqno">(5.33)<a class="headerlink" href="#equation-d8c96feb-4b93-4952-b6af-27d67d9afa51" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ec5d85bf-2759-4c0a-80e8-189448e3825b">
+<span class="eqno">(5.33)<a class="headerlink" href="#equation-ec5d85bf-2759-4c0a-80e8-189448e3825b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(\text{label} \mid \text{document}) \propto P(\text{label}) \prod_{t \in \text{document}} P(t \mid \text{label})
 \end{equation}\]</div>
 <p>In log-space — which is how the classifier is actually computed to avoid numerical underflow — this product becomes a sum of log-probabilities, making Naive Bayes computationally equivalent to a linear classifier over log-count features.</p>
 <div class="note admonition">
 <p class="admonition-title">Key Definition — Multinomial Naive Bayes</p>
 <p><strong>Multinomial Naive Bayes</strong> <span class="bibtex-citation" id="id11">[<a class="reference internal" href="../References.html#id502" title="Andrew McCallum and Kamal Nigam. A Comparison of Event Models for Naive Bayes Text Classification. In Learning for Text Categorization: Papers from the 1998 AAAI Workshop, 41–48. 1998.">McCallum and Nigam, 1998</a>]</span> estimates the probability of each class given a document by applying Bayes’ theorem:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-74a81eb9-0b96-4e49-98f1-8e9be62976d4">
-<span class="eqno">(5.34)<a class="headerlink" href="#equation-74a81eb9-0b96-4e49-98f1-8e9be62976d4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bc533592-596e-4e3b-b64c-070ec127b553">
+<span class="eqno">(5.34)<a class="headerlink" href="#equation-bc533592-596e-4e3b-b64c-070ec127b553" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(y \mid \mathbf{x}) \propto P(y) \prod_{t=1}^{T} P(x_t \mid y)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(y\)</span> is the class label, <span class="math notranslate nohighlight">\(\mathbf{x} = (x_1, \ldots, x_T)\)</span> are the term counts in the document, and:</p>
@@ -913,8 +912,8 @@ P(y \mid \mathbf{x}) \propto P(y) \prod_{t=1}^{T} P(x_t \mid y)
 <li><p><span class="math notranslate nohighlight">\(P(y)\)</span> is the class prior (proportion of training documents in class <span class="math notranslate nohighlight">\(y\)</span>)</p></li>
 <li><p><span class="math notranslate nohighlight">\(P(x_t \mid y)\)</span> is the smoothed term likelihood, estimated with Laplace (add-<span class="math notranslate nohighlight">\(\alpha\)</span>) smoothing:</p></li>
 </ul>
-<div class="amsmath math notranslate nohighlight" id="equation-26e0e11b-bf59-4498-b6cc-55b7ee5acff4">
-<span class="eqno">(5.35)<a class="headerlink" href="#equation-26e0e11b-bf59-4498-b6cc-55b7ee5acff4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-730ffa02-8eac-4e4f-be3d-f81584b59bec">
+<span class="eqno">(5.35)<a class="headerlink" href="#equation-730ffa02-8eac-4e4f-be3d-f81584b59bec" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(t \mid y) = \frac{\text{count}(t, y) + \alpha}{\sum_{t'} \text{count}(t', y) + \alpha \cdot |V|}
 \end{equation}\]</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">alpha=0.1</span></code> parameter in the code below controls this smoothing strength.</p>
@@ -1237,10 +1236,11 @@ P(t \mid y) = \frac{\text{count}(t, y) + \alpha}{\sum_{t'} \text{count}(t', y) +
 <h3><span class="section-number">5.3.6.3. </span>What Classical Models Learn<a class="headerlink" href="#what-classical-models-learn" title="Link to this heading">#</a></h3>
 <p>Inspecting the highest-weight features reveals exactly what TF-IDF models learn:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Top</span> <span class="n">positive</span> <span class="n">features</span> <span class="p">(</span><span class="n">SVM</span> <span class="n">weights</span><span class="p">):</span>
-  <span class="s2">&quot;great&quot;</span><span class="p">,</span> <span class="s2">&quot;excellent&quot;</span><span class="p">,</span> <span class="s2">&quot;wonderful&quot;</span><span class="p">,</span> <span class="s2">&quot;outstanding&quot;</span><span class="p">,</span> <span class="s2">&quot;brilliant&quot;</span>
+  <span class="s2">&quot;still&quot;</span><span class="p">,</span> <span class="s2">&quot;works&quot;</span><span class="p">,</span> <span class="s2">&quot;hilarious&quot;</span><span class="p">,</span> <span class="s2">&quot;powerful&quot;</span><span class="p">,</span> <span class="s2">&quot;fun&quot;</span><span class="p">,</span> <span class="s2">&quot;loved&quot;</span><span class="p">,</span> <span class="s2">&quot;entertaining&quot;</span>
 
 <span class="n">Top</span> <span class="n">negative</span> <span class="n">features</span><span class="p">:</span>
-  <span class="s2">&quot;boring&quot;</span><span class="p">,</span> <span class="s2">&quot;waste&quot;</span><span class="p">,</span> <span class="s2">&quot;terrible&quot;</span><span class="p">,</span> <span class="s2">&quot;fails&quot;</span><span class="p">,</span> <span class="s2">&quot;disappointing&quot;</span>
+  <span class="s2">&quot;too&quot;</span><span class="p">,</span> <span class="s2">&quot;dull&quot;</span><span class="p">,</span> <span class="s2">&quot;boring&quot;</span><span class="p">,</span> <span class="s2">&quot;bore&quot;</span><span class="p">,</span> <span class="s2">&quot;bad&quot;</span><span class="p">,</span> <span class="s2">&quot;lacking&quot;</span><span class="p">,</span> <span class="s2">&quot;badly&quot;</span><span class="p">,</span> <span class="s2">&quot;tedious&quot;</span>
+
 </pre></div>
 </div>
 <p>These are primarily <strong>sentiment lexicon</strong> features. The model’s intelligence comes from the training labels assigning these weights, not from any semantic understanding of how words combine.</p>
@@ -1250,17 +1250,13 @@ P(t \mid y) = \frac{\text{count}(t, y) + \alpha}{\sum_{t'} \text{count}(t', y) +
 <h2><span class="section-number">5.3.7. </span>Generation 2: Dense Embedding Networks<a class="headerlink" href="#generation-2-dense-embedding-networks" title="Link to this heading">#</a></h2>
 <section id="glove-mean-pooled-mlp-rotten-tomatoes">
 <h3><span class="section-number">5.3.7.1. </span>GloVe + Mean-Pooled MLP (Rotten Tomatoes)<a class="headerlink" href="#glove-mean-pooled-mlp-rotten-tomatoes" title="Link to this heading">#</a></h3>
-<p>GloVe (Global Vectors) pre-trains word embeddings on a large corpus by factorizing a word co-occurrence matrix. Each word in the vocabulary receives a fixed 100- or 300-dimensional vector.</p>
-<p>To classify a document, we:</p>
-<ol class="arabic simple">
-<li><p>Look up the GloVe embedding for each word in the document.</p></li>
-<li><p><strong>Mean pool</strong> all word vectors to produce a single fixed-length document vector.</p></li>
-<li><p>Pass this vector to a multi-layer perceptron (MLP) classifier.</p></li>
-</ol>
+<p>GloVe (Global Vectors) <span class="bibtex-citation" id="id12">[<a class="reference internal" href="../References.html#id505" title="Jeffrey Pennington, Richard Socher, and Christopher D. Manning. GloVe: Global Vectors for Word Representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), 1532–1543. Doha, Qatar, 2014. Association for Computational Linguistics.">Pennington <em>et al.</em>, 2014</a>]</span> pre-trains word embeddings by factorizing a word co-occurrence matrix derived from a large corpus. Each word receives a fixed 100- or 300-dimensional dense vector that encodes distributional similarity: words that appear in similar contexts are placed nearby in embedding space. Unlike TF-IDF, GloVe embeddings are shared across documents and are not re-estimated from the training set.</p>
+<p>To produce a fixed-length document representation from a variable-length sequence of word vectors, we apply <strong>mean pooling</strong>: all word embeddings in the document are averaged element-wise. The resulting vector is passed through a multi-layer perceptron (MLP) to produce class logits.</p>
+<p>The code below downloads the 100-dimensional GloVe vectors (822 MB compressed), constructs document embeddings for both datasets, and trains a two-layer MLP. The GloVe file is downloaded once and cached locally.</p>
 </section>
-<section id="id12">
-<h3><span class="section-number">5.3.7.2. </span>GloVe + Mean-Pooled MLP (Rotten Tomatoes)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
-<p>GloVe (Global Vectors) <span class="bibtex-citation" id="id13">[<a class="reference internal" href="../References.html#id505" title="Jeffrey Pennington, Richard Socher, and Christopher D. Manning. GloVe: Global Vectors for Word Representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), 1532–1543. Doha, Qatar, 2014. Association for Computational Linguistics.">Pennington <em>et al.</em>, 2014</a>]</span> pre-trains word embeddings by factorizing a word co-occurrence matrix derived from a large corpus. Each word receives a fixed 100- or 300-dimensional dense vector that encodes distributional similarity: words that appear in similar contexts are placed nearby in embedding space. Unlike TF-IDF, GloVe embeddings are shared across documents and are not re-estimated from the training set.</p>
+<section id="id13">
+<h3><span class="section-number">5.3.7.2. </span>GloVe + Mean-Pooled MLP (Rotten Tomatoes)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>GloVe (Global Vectors) <span class="bibtex-citation" id="id14">[<a class="reference internal" href="../References.html#id505" title="Jeffrey Pennington, Richard Socher, and Christopher D. Manning. GloVe: Global Vectors for Word Representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), 1532–1543. Doha, Qatar, 2014. Association for Computational Linguistics.">Pennington <em>et al.</em>, 2014</a>]</span> pre-trains word embeddings by factorizing a word co-occurrence matrix derived from a large corpus. Each word receives a fixed 100- or 300-dimensional dense vector that encodes distributional similarity: words that appear in similar contexts are placed nearby in embedding space. Unlike TF-IDF, GloVe embeddings are shared across documents and are not re-estimated from the training set.</p>
 <p>To produce a fixed-length document representation from a variable-length sequence of word vectors, we apply <strong>mean pooling</strong>: all word embeddings in the document are averaged element-wise. The resulting vector is passed through a multi-layer perceptron (MLP) to produce class logits.</p>
 <p>The code below downloads the 100-dimensional GloVe vectors (822 MB compressed), constructs document embeddings for both datasets, and trains a two-layer MLP. The GloVe file is downloaded once and cached locally.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1306,8 +1302,8 @@ P(t \mid y) = \frac{\text{count}(t, y) + \alpha}{\sum_{t'} \text{count}(t', y) +
 <div class="note admonition">
 <p class="admonition-title">Key Definition — Mean Pooling</p>
 <p><strong>Mean pooling</strong> aggregates a variable-length sequence of word embeddings into a single fixed-length document vector:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a29aee26-0d42-4155-a64a-2fb6a30ea58b">
-<span class="eqno">(5.36)<a class="headerlink" href="#equation-a29aee26-0d42-4155-a64a-2fb6a30ea58b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-483e799a-128f-4af5-a95b-263e7209e629">
+<span class="eqno">(5.36)<a class="headerlink" href="#equation-483e799a-128f-4af5-a95b-263e7209e629" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{d} = \frac{1}{|\mathcal{W}|} \sum_{w \in \mathcal{W}} \mathbf{e}_w
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathcal{W}\)</span> is the set of words in the document that appear in the vocabulary and <span class="math notranslate nohighlight">\(\mathbf{e}_w \in \mathbb{R}^d\)</span> is the pre-trained embedding for word <span class="math notranslate nohighlight">\(w\)</span>. Mean pooling is order-invariant: shuffling the words in a document yields the same vector. This is both a strength (no sensitivity to minor word-order variations) and a limitation (negation and word order are invisible).</p>
@@ -1511,7 +1507,15 @@ GloVe + MLP — Rotten Tomatoes
 <section id="glove-1d-cnn-yelp">
 <h3><span class="section-number">5.3.7.3. </span>GloVe + 1D CNN (Yelp)<a class="headerlink" href="#glove-1d-cnn-yelp" title="Link to this heading">#</a></h3>
 <p>While mean pooling discards all word order information, a <strong>1D Convolutional Neural Network (CNN)</strong> applies filters of varying widths over the sequence of word embeddings, capturing local n-gram patterns:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GloVe embedding matrix: (seq_len, 100)
+<figure class="align-center" id="glove-1d-cnn-pipeline">
+<a class="reference internal image-reference" href="../_images/glove_plus_1d_cnn_yelp_pipeline.png"><img alt="../_images/glove_plus_1d_cnn_yelp_pipeline.png" src="../_images/glove_plus_1d_cnn_yelp_pipeline.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.11 </span><span class="caption-text">Architecture of the GloVe + 1D CNN text classification pipeline, illustrating token embedding lookup, parallel 1D convolutions across varying n-gram widths (kernel sizes 3, 4, and 5), max-pooling to a 384-dimensional feature vector, and final prediction via a fully connected layer[cite: 3].</span><a class="headerlink" href="#glove-1d-cnn-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<!-- ```
+GloVe embedding matrix: (seq_len, 100)
   ↓
 Conv1D(filters=128, kernel_size=3) → captures trigram patterns
 Conv1D(filters=128, kernel_size=4) → captures 4-gram patterns
@@ -1520,8 +1524,7 @@ Conv1D(filters=128, kernel_size=5) → captures 5-gram patterns
 MaxPool over each filter → (3 × 128,) = (384,) fixed-length
   ↓
 Fully connected → 2 output logits
-</pre></div>
-</div>
+``` -->
 <p>The CNN learns which short phrase patterns are predictive of each class — for example, a filter that activates strongly on “not worth” (negative) or “highly recommend” (positive). This captures phrase-level patterns that pure mean pooling misses.</p>
 </section>
 <section id="advantages-over-generation-1">
@@ -1535,7 +1538,7 @@ Fully connected → 2 output logits
 <h3><span class="section-number">5.3.8.1. </span>RoBERTa Fine-Tuning<a class="headerlink" href="#roberta-fine-tuning" title="Link to this heading">#</a></h3>
 <p>Fine-tuning a pre-trained transformer involves:</p>
 <ol class="arabic simple">
-<li><p>Loading a model pre-trained on large corpora (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code> <span class="bibtex-citation" id="id14">[<a class="reference internal" href="../References.html#id535" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. 2019. URL: https://arxiv.org/abs/1907.11692, arXiv:1907.11692.">Liu <em>et al.</em>, 2019</a>]</span>: 125M parameters, trained on 160GB of text).</p></li>
+<li><p>Loading a model pre-trained on large corpora (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code> <span class="bibtex-citation" id="id15">[<a class="reference internal" href="../References.html#id535" title="Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: a robustly optimized bert pretraining approach. 2019. URL: https://arxiv.org/abs/1907.11692, arXiv:1907.11692.">Liu <em>et al.</em>, 2019</a>]</span>: 125M parameters, trained on 160GB of text).</p></li>
 <li><p>Replacing the classification head with a task-specific linear layer.</p></li>
 <li><p>Training the entire model end-to-end on labeled data with a small learning rate.</p></li>
 </ol>
@@ -1707,27 +1710,27 @@ GloVe + 1D CNN — Yelp Polarity (Accuracy: 0.8400)
 </div>
 </section>
 </section>
-<section id="id15">
-<h2><span class="section-number">5.3.9. </span>Generation 3: Fine-Tuned Transformers<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
 <section id="id16">
-<h3><span class="section-number">5.3.9.1. </span>RoBERTa Fine-Tuning<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<h2><span class="section-number">5.3.9. </span>Generation 3: Fine-Tuned Transformers<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3><span class="section-number">5.3.9.1. </span>RoBERTa Fine-Tuning<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
 <p>Fine-tuning a pre-trained transformer involves loading a model whose weights already encode broad linguistic knowledge, attaching a task-specific classification head, and continuing gradient-based optimization on the labeled training set. The key difference from training from scratch is that the model begins with high-quality representations rather than random weights, requiring far less labeled data to reach strong performance.</p>
-<p>RoBERTa <span class="bibtex-citation" id="id17">[<a class="reference internal" href="../References.html#id506" title="Liu Zhuang, Lin Wayne, Shi Ya, and Zhao Jun. A robustly optimized BERT pre-training approach with post-training. In Sheng Li, Maosong Sun, Yang Liu, Hua Wu, Kang Liu, Wanxiang Che, Shizhu He, and Gaoqi Rao, editors, Proceedings of the 20th Chinese National Conference on Computational Linguistics, 1218–1227. Huhhot, China, August 2021. Chinese Information Processing Society of China. URL: https://aclanthology.org/2021.ccl-1.108/.">Zhuang <em>et al.</em>, 2021</a>]</span> (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code>, 125M parameters) was pre-trained on 160 GB of English text using a masked language modeling objective. When fine-tuned for classification, a linear layer is placed on top of the <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> token <span class="bibtex-citation" id="id18">[<a class="reference internal" href="../References.html#id507" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. In Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers), 4171–4186. Minneapolis, Minnesota, 2019. Association for Computational Linguistics.">Devlin <em>et al.</em>, 2019</a>]</span> representation — a single vector that the transformer has learned to aggregate sentence-level information into.</p>
+<p>RoBERTa <span class="bibtex-citation" id="id18">[<a class="reference internal" href="../References.html#id506" title="Liu Zhuang, Lin Wayne, Shi Ya, and Zhao Jun. A robustly optimized BERT pre-training approach with post-training. In Sheng Li, Maosong Sun, Yang Liu, Hua Wu, Kang Liu, Wanxiang Che, Shizhu He, and Gaoqi Rao, editors, Proceedings of the 20th Chinese National Conference on Computational Linguistics, 1218–1227. Huhhot, China, August 2021. Chinese Information Processing Society of China. URL: https://aclanthology.org/2021.ccl-1.108/.">Zhuang <em>et al.</em>, 2021</a>]</span> (<code class="docutils literal notranslate"><span class="pre">roberta-base</span></code>, 125M parameters) was pre-trained on 160 GB of English text using a masked language modeling objective. When fine-tuned for classification, a linear layer is placed on top of the <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> token <span class="bibtex-citation" id="id19">[<a class="reference internal" href="../References.html#id507" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. In Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers), 4171–4186. Minneapolis, Minnesota, 2019. Association for Computational Linguistics.">Devlin <em>et al.</em>, 2019</a>]</span> representation — a single vector that the transformer has learned to aggregate sentence-level information into.</p>
 <p>Three practical considerations govern fine-tuning:</p>
 <ol class="arabic simple">
 <li><p><strong>Learning rate.</strong> A small learning rate (<span class="math notranslate nohighlight">\(2 \times 10^{-5}\)</span>) ensures that weight updates are small relative to the pre-trained values, preserving the linguistic knowledge acquired during pre-training.</p></li>
-<li><p><strong>Weight decay.</strong> An L2 penalty on the weights (0.01), applied via the decoupled formulation used by the AdamW optimizer <span class="bibtex-citation" id="id19">[<a class="reference internal" href="../References.html#id508" title="Ilya Loshchilov and Frank Hutter. Decoupled Weight Decay Regularization. In 7th International Conference on Learning Representations (ICLR 2019). New Orleans, LA, USA, 2019.">Loshchilov and Hutter, 2019</a>]</span>, acts as a regularizer that prevents the model from overfitting to the relatively small fine-tuning dataset.</p></li>
+<li><p><strong>Weight decay.</strong> An L2 penalty on the weights (0.01), applied via the decoupled formulation used by the AdamW optimizer <span class="bibtex-citation" id="id20">[<a class="reference internal" href="../References.html#id508" title="Ilya Loshchilov and Frank Hutter. Decoupled Weight Decay Regularization. In 7th International Conference on Learning Representations (ICLR 2019). New Orleans, LA, USA, 2019.">Loshchilov and Hutter, 2019</a>]</span>, acts as a regularizer that prevents the model from overfitting to the relatively small fine-tuning dataset.</p></li>
 <li><p><strong>Batch size and epochs.</strong> Fine-tuning typically converges in 2–4 epochs; more epochs risk overfitting on small datasets.</p></li>
 </ol>
 <div class="note admonition">
 <p class="admonition-title">Key Concept — Fine-Tuning and Catastrophic Forgetting</p>
 <p><strong>Fine-tuning</strong> adapts a pre-trained model to a downstream task by continuing gradient-based optimization on labeled task data. The fine-tuning objective for binary classification is cross-entropy loss:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-90348f41-9322-4055-b019-2138273c56fe">
-<span class="eqno">(5.37)<a class="headerlink" href="#equation-90348f41-9322-4055-b019-2138273c56fe" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6469ec20-fd18-4ad1-b884-47939ea68fad">
+<span class="eqno">(5.37)<a class="headerlink" href="#equation-6469ec20-fd18-4ad1-b884-47939ea68fad" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log \hat{p}_i + (1 - y_i) \log (1 - \hat{p}_i) \right]
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(y_i \in \{0, 1\}\)</span> is the true label and <span class="math notranslate nohighlight">\(\hat{p}_i\)</span> is the model’s predicted probability for class 1.</p>
-<p><strong>Catastrophic forgetting</strong> occurs when a large learning rate causes the fine-tuned weights to drift far from their pre-trained values, erasing the general language knowledge encoded during pre-training. Using a small learning rate (<span class="math notranslate nohighlight">\(2 \times 10^{-5}\)</span>) and weight decay <span class="bibtex-citation" id="id20">[<a class="reference internal" href="../References.html#id508" title="Ilya Loshchilov and Frank Hutter. Decoupled Weight Decay Regularization. In 7th International Conference on Learning Representations (ICLR 2019). New Orleans, LA, USA, 2019.">Loshchilov and Hutter, 2019</a>]</span> constrains the update magnitude, preserving the pre-trained representations while still adapting to the task.</p>
+<p><strong>Catastrophic forgetting</strong> occurs when a large learning rate causes the fine-tuned weights to drift far from their pre-trained values, erasing the general language knowledge encoded during pre-training. Using a small learning rate (<span class="math notranslate nohighlight">\(2 \times 10^{-5}\)</span>) and weight decay <span class="bibtex-citation" id="id21">[<a class="reference internal" href="../References.html#id508" title="Ilya Loshchilov and Frank Hutter. Decoupled Weight Decay Regularization. In 7th International Conference on Learning Representations (ICLR 2019). New Orleans, LA, USA, 2019.">Loshchilov and Hutter, 2019</a>]</span> constrains the update magnitude, preserving the pre-trained representations while still adapting to the task.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -1930,8 +1933,8 @@ RoBERTa fine-tuned — Rotten Tomatoes (Accuracy: 0.8865)
 </table>
 </div>
 <p>From these, the primary per-class metrics are:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5f837d0e-84a5-4e46-b44e-5afa051a7cd0">
-<span class="eqno">(5.38)<a class="headerlink" href="#equation-5f837d0e-84a5-4e46-b44e-5afa051a7cd0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-56deb196-5a82-40e7-9bdd-1b25791466a2">
+<span class="eqno">(5.38)<a class="headerlink" href="#equation-56deb196-5a82-40e7-9bdd-1b25791466a2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \qquad \text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}, \qquad \text{F1} = \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
 \end{equation}\]</div>
 <p>Precision answers: <em>of all items predicted positive, how many actually were?</em><br />
@@ -1960,41 +1963,26 @@ Sarcasm:   &quot;An absolute masterpiece... of wasted potential.&quot; → Negat
 <section id="cross-domain-transfer">
 <h3><span class="section-number">5.3.10.3. </span>3. Cross-Domain Transfer<a class="headerlink" href="#cross-domain-transfer" title="Link to this heading">#</a></h3>
 <p>Training on Rotten Tomatoes (movie reviews) and testing on Yelp (business reviews), or vice versa, reveals how much each model’s learned features are domain-specific:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p>In-domain accuracy</p></th>
-<th class="head"><p>Cross-domain accuracy</p></th>
-<th class="head"><p>Drop</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>TF-IDF + SVM</p></td>
-<td><p>~80%</p></td>
-<td><p>~72%</p></td>
-<td><p>~8%</p></td>
-</tr>
-<tr class="row-odd"><td><p>GloVe + MLP</p></td>
-<td><p>~82%</p></td>
-<td><p>~76%</p></td>
-<td><p>~6%</p></td>
-</tr>
-<tr class="row-even"><td><p>RoBERTa fine-tuned</p></td>
-<td><p>~90%</p></td>
-<td><p>~83%</p></td>
-<td><p>~7%</p></td>
-</tr>
-</tbody>
-</table>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>```{table} Performance Degradation Under Cross-Domain Transfer
+:name: cross_domain_transfer_performance
+
+| Model | In-domain accuracy | Cross-domain accuracy | Drop |
+|-------|-------------------|-----------------------|------|
+| TF-IDF + SVM | ~80% | ~72% | ~8% |
+| GloVe + MLP | ~82% | ~76% | ~6% |
+| RoBERTa fine-tuned | ~90% | ~83% | ~7% |
+</pre></div>
 </div>
 <p>RoBERTa’s higher absolute performance persists across domains, but the relative degradation is similar — domain shift affects all approaches similarly in percentage terms. The generalization gap reflects domain-specific vocabulary: movie critics use “cinematography,” “screenplay,” and “ensemble” while Yelp users use “portion size,” “wait time,” and “ambience.”</p>
 </section>
 </section>
 <section id="full-approach-comparison">
 <h2><span class="section-number">5.3.11. </span>Full Approach Comparison<a class="headerlink" href="#full-approach-comparison" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
+<div class="pst-scrollable-table-container"><table class="table" id="classification-approaches-comparison">
+<caption><span class="caption-number">Table 5.8 </span><span class="caption-text">Comprehensive Comparison of Text Classification Approaches</span><a class="headerlink" href="#classification-approaches-comparison" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Dataset</p></th>
 <th class="head"><p>Accuracy</p></th>
 <th class="head"><p>Training</p></th>
 <th class="head"><p>Compute</p></th>
@@ -2003,31 +1991,36 @@ Sarcasm:   &quot;An absolute masterpiece... of wasted potential.&quot; → Negat
 </thead>
 <tbody>
 <tr class="row-even"><td><p>TF-IDF + Naive Bayes</p></td>
-<td><p>~78%</p></td>
+<td><p>Yelp Polarity</p></td>
+<td><p>~89%</p></td>
 <td><p>Seconds</p></td>
 <td><p>CPU</p></td>
 <td><p>✓</p></td>
 </tr>
 <tr class="row-odd"><td><p>TF-IDF + SVM</p></td>
-<td><p>~81%</p></td>
+<td><p>Rotten Tomatoes</p></td>
+<td><p>~78%</p></td>
 <td><p>Seconds</p></td>
 <td><p>CPU</p></td>
 <td><p>✓</p></td>
 </tr>
 <tr class="row-even"><td><p>GloVe + MLP</p></td>
-<td><p>~82%</p></td>
+<td><p>Rotten Tomatoes</p></td>
+<td><p>~72%</p></td>
 <td><p>Minutes</p></td>
 <td><p>GPU/CPU</p></td>
 <td><p>Partial</p></td>
 </tr>
 <tr class="row-odd"><td><p>GloVe + 1D CNN</p></td>
+<td><p>Yelp Polarity</p></td>
 <td><p>~84%</p></td>
 <td><p>Minutes</p></td>
 <td><p>GPU/CPU</p></td>
 <td><p>Partial</p></td>
 </tr>
 <tr class="row-even"><td><p>RoBERTa fine-tuned</p></td>
-<td><p>~90%</p></td>
+<td><p>Rotten Tomatoes</p></td>
+<td><p>~89%</p></td>
 <td><p>Hours</p></td>
 <td><p>GPU</p></td>
 <td><p>✗</p></td>
@@ -2047,80 +2040,6 @@ Take 10 positive reviews from the test set and prepend “It is not true that:�
 <li><p><strong>Confusion matrix analysis</strong>
 Plot the confusion matrix for RoBERTa on the test set. Identify the categories of false positives (negative reviews predicted as positive) and false negatives. What properties do the misclassified examples share?</p></li>
 </ol>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Side-by-side comparison on Rotten Tomatoes ───────────────────────────────</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Model&#39;</span><span class="si">:</span><span class="s2">&lt;30</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Accuracy&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;TF-IDF + SVM&quot;</span><span class="p">:</span>          <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_rt</span><span class="p">,</span> <span class="n">y_pred_svm</span><span class="p">),</span>
-    <span class="s2">&quot;GloVe + MLP&quot;</span><span class="p">:</span>           <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_rt</span><span class="p">,</span> <span class="n">y_pred_mlp</span><span class="p">),</span>
-    <span class="s2">&quot;RoBERTa fine-tuned&quot;</span><span class="p">:</span>    <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test_rt</span><span class="p">,</span> <span class="n">y_pred_rb</span><span class="p">),</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">acc</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;28</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
-
-<span class="c1"># ── Robustness: negation stress test ─────────────────────────────────────────</span>
-<span class="n">stress_tests</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;The film is not without its charms.&quot;</span><span class="p">,</span>      <span class="mi">1</span><span class="p">),</span>   <span class="c1"># positive despite negation</span>
-    <span class="p">(</span><span class="s2">&quot;An absolute masterpiece... of wasted potential.&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># sarcasm</span>
-    <span class="p">(</span><span class="s2">&quot;The performances are excellent but the screenplay is a disaster.&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Not bad.&quot;</span><span class="p">,</span>                                 <span class="mi">1</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;It wasn&#39;t terrible, but I wouldn&#39;t recommend it.&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Robustness — negation and sarcasm probes&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Text&#39;</span><span class="si">:</span><span class="s2">&lt;55</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;True&#39;</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">  SVM  MLP   RoBERTa&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">true_label</span> <span class="ow">in</span> <span class="n">stress_tests</span><span class="p">:</span>
-    <span class="n">pred_svm_s</span> <span class="o">=</span> <span class="n">pipeline_svm</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">text</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">emb</span> <span class="o">=</span> <span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="n">glove</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">pred_mlp_s</span> <span class="o">=</span> <span class="n">mlp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="n">enc</span> <span class="o">=</span> <span class="n">tokenizer_rb</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span>
-                       <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">pred_rb_s</span> <span class="o">=</span> <span class="n">roberta</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">enc</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="n">label_str</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="s2">&quot;Pos&quot;</span> <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;Neg&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">text</span><span class="p">[:</span><span class="mi">52</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;52</span><span class="si">}</span><span class="s2">  &quot;</span>
-          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Pos&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">true_label</span><span class="o">==</span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Neg&#39;</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">  &quot;</span>
-          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label_str</span><span class="p">(</span><span class="n">pred_svm_s</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;3</span><span class="si">}</span><span class="s2">  &quot;</span>
-          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label_str</span><span class="p">(</span><span class="n">pred_mlp_s</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;3</span><span class="si">}</span><span class="s2">  &quot;</span>
-          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label_str</span><span class="p">(</span><span class="n">pred_rb_s</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>============================================================
-Model                            Accuracy
-------------------------------------------------------------
-  TF-IDF + SVM                 0.7842
-  GloVe + MLP                  0.7233
-  RoBERTa fine-tuned           0.8865
-============================================================
-
-Robustness — negation and sarcasm probes
-Text                                                     True  SVM  MLP   RoBERTa
---------------------------------------------------------------------------------
-  The film is not without its charms.                     Pos  Neg  Neg      Pos
-  An absolute masterpiece... of wasted potential.         Neg  Pos  Pos      Neg
-  The performances are excellent but the screenplay is    Neg  Pos  Pos      Neg
-  Not bad.                                                Pos  Neg  Neg      Pos
-  It wasn&#39;t terrible, but I wouldn&#39;t recommend it.        Neg  Neg  Neg      Neg
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 
@@ -2207,7 +2126,7 @@ Text                                                     True  SVM  MLP   RoBERT
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-2-dense-embedding-networks">5.3.7. Generation 2: Dense Embedding Networks</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-mean-pooled-mlp-rotten-tomatoes">5.3.7.1. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.7.2. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.3.7.2. GloVe + Mean-Pooled MLP (Rotten Tomatoes)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glove-1d-cnn-yelp">5.3.7.3. GloVe + 1D CNN (Yelp)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-over-generation-1">5.3.7.4. Advantages Over Generation 1</a></li>
 </ul>
@@ -2216,8 +2135,8 @@ Text                                                     True  SVM  MLP   RoBERT
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roberta-fine-tuning">5.3.8.1. RoBERTa Fine-Tuning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.3.9. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.3.9.1. RoBERTa Fine-Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.3.9. Generation 3: Fine-Tuned Transformers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.3.9.1. RoBERTa Fine-Tuning</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustness-evaluation">5.3.10. Robustness Evaluation</a><ul class="nav section-nav flex-column">
