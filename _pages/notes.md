@@ -15,36 +15,6 @@ This course introduces Python and OpenCV for computer vision tasks. Learn image 
 
 <hr style="height:2px; visibility:hidden;" />
 
-<!-- <p style='text-align: justify;'>
-<font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Differential_Equations/" target="_blank" rel="noopener noreferrer">Differential Equations</a>
-</b></font>
-<br>
-Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform.
-</p> -->
-
-<!-- <hr style="height:2px; visibility:hidden;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Finite_Difference_Methods/" target="_blank" rel="noopener noreferrer">Finite Difference Methods</a>
-</b></font>
-<br>
-Finite Difference Method for solving PDEs.
-</p> -->
-
-<!-- <hr style="height:2px; visibility:hidden;" />
-
-<p style='text-align: justify;'>
-<font size="+2"><b>
-<a href="https://hatefdastour.github.io/notes/Introduction_to_Digital_Engineering/" target="_blank" rel="noopener noreferrer">Introduction to Digital Engineering</a>
-</b></font>
-<br>
-This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
-</p> -->
-
-<hr style="height:2px; visibility:hidden;" />
-
 <p style='text-align: justify;'>
 <font size="+2"><b>
 <a href="https://hatefdastour.github.io/notes/Introduction_to_Geospatial_Data_Analytics/" target="_blank" rel="noopener noreferrer">Introduction to Geospatial Data Analytics</a>
@@ -82,6 +52,47 @@ This course covers fundamental programming concepts using Python, encompassing s
 <br>
 This course teaches time series analysis and forecasting with classical and machine learning methods using real-world data.​ Students learn to identify trends, handle temporal data, and build predictive models for domains like climate, health, and finance.​ Emphasis is on hands-on implementation and practical use for analysis and decision-making.​
 </p>
+
+<hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_NLP_LLMs/" target="_blank" rel="noopener noreferrer">Introduction to Natural Language Processing with Large Language Models</a>
+</b></font>
+<br>
+This course provides a modern, practice-oriented introduction to Natural Language Processing (NLP), Large Language Models (LLMs), and Agentic AI systems. Students learn foundational text processing, classical and neural modeling, transformer architectures, prompt engineering, RAG pipelines, and tool-using agentic workflows. Emphasis is on hands-on implementation and practical application using real-world data from domains like environmental science, public health, and policy.
+</p>
+
+
+<!-- <hr style="height:2px; visibility:hidden;" /> -->
+
+<!-- <p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Differential_Equations/" target="_blank" rel="noopener noreferrer">Differential Equations</a>
+</b></font>
+<br>
+Classification of ordinary differential equations, first and second order equations with applications, series solutions about regular points and singular points, special functions, Laplace transform.
+</p> -->
+
+<!-- <hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Finite_Difference_Methods/" target="_blank" rel="noopener noreferrer">Finite Difference Methods</a>
+</b></font>
+<br>
+Finite Difference Method for solving PDEs.
+</p> -->
+
+<!-- <hr style="height:2px; visibility:hidden;" />
+
+<p style='text-align: justify;'>
+<font size="+2"><b>
+<a href="https://hatefdastour.github.io/notes/Introduction_to_Digital_Engineering/" target="_blank" rel="noopener noreferrer">Introduction to Digital Engineering</a>
+</b></font>
+<br>
+This course provides an introduction to data-driven engineering, covering essential programming elements for system implementation, programming methods aiding data analysis, data acquisition, verification, and visualization. Students will also be introduced to fundamental machine learning techniques and data-driven modeling, with practical applications across various engineering fields.
+</p> -->
 
 <!-- <hr style="height:2px; visibility:hidden;" />
 
