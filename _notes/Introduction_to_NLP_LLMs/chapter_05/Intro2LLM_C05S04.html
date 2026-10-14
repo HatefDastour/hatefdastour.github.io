@@ -206,7 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
@@ -490,8 +490,8 @@ Label distribution (train): [4265 4265]
 <section id="background-text-classification-and-semantic-embeddings">
 <h2><span class="section-number">5.4.4. </span>Background: Text Classification and Semantic Embeddings<a class="headerlink" href="#background-text-classification-and-semantic-embeddings" title="Link to this heading">#</a></h2>
 <p><strong>Text classification</strong> assigns a predefined category label to a piece of text. Formally, given a document <span class="math notranslate nohighlight">\(x\)</span> and a label set <span class="math notranslate nohighlight">\(\mathcal{Y} = \{y_1, \ldots, y_k\}\)</span>, a classifier applies a mapping:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-573e142d-6a84-4ecd-94b1-cefe79bd745f">
-<span class="eqno">(5.39)<a class="headerlink" href="#equation-573e142d-6a84-4ecd-94b1-cefe79bd745f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-21a1da4c-271d-4b92-9921-ffc3bfea071b">
+<span class="eqno">(5.39)<a class="headerlink" href="#equation-21a1da4c-271d-4b92-9921-ffc3bfea071b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 f: x \mapsto y^* \in \mathcal{Y}
 \end{equation}\]</div>
 <p>Sentiment analysis — predicting <em>positive</em> vs. <em>negative</em> — is the canonical binary case (<span class="math notranslate nohighlight">\(k = 2\)</span>).</p>
@@ -511,8 +511,8 @@ f: x \mapsto y^* \in \mathcal{Y}
 <section id="cosine-similarity">
 <h3><span class="section-number">5.4.4.2. </span>Cosine Similarity<a class="headerlink" href="#cosine-similarity" title="Link to this heading">#</a></h3>
 <p>Every embedding-based approach in this section uses <strong>cosine similarity</strong> to compare vectors. For <span class="math notranslate nohighlight">\(\mathbf{a}, \mathbf{b} \in \mathbb{R}^d\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-77060349-0f39-4c34-93b5-c55fbd53c82e">
-<span class="eqno">(5.40)<a class="headerlink" href="#equation-77060349-0f39-4c34-93b5-c55fbd53c82e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e0704812-c0be-4a3c-8faa-baab026ef30b">
+<span class="eqno">(5.40)<a class="headerlink" href="#equation-e0704812-c0be-4a3c-8faa-baab026ef30b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \, \|\mathbf{b}\|}
 \end{equation}\]</div>
 <p>Values range from <span class="math notranslate nohighlight">\(-1\)</span> (opposite directions) to <span class="math notranslate nohighlight">\(+1\)</span> (identical directions), with <span class="math notranslate nohighlight">\(0\)</span> indicating orthogonality. Cosine similarity is preferred over Euclidean distance for embeddings because it is invariant to vector magnitude: only the <em>direction</em> of the vector, which encodes semantic content, is compared. This property is what makes it possible to compare embeddings of documents of very different lengths on equal footing.</p>
@@ -563,8 +563,8 @@ f: x \mapsto y^* \in \mathcal{Y}
 <h2><span class="section-number">5.4.6. </span>Approach 2: Sentence Embeddings + Logistic Regression<a class="headerlink" href="#approach-2-sentence-embeddings-logistic-regression" title="Link to this heading">#</a></h2>
 <p>Sentence Transformers <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id509" title="Nils Reimers and Iryna Gurevych. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. In Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP), 3982–3992. Hong Kong, China, 2019. Association for Computational Linguistics.">Reimers and Gurevych, 2019</a>]</span> produce fixed-length embeddings explicitly trained to capture semantic similarity. The <code class="docutils literal notranslate"><span class="pre">all-mpnet-base-v2</span></code> model maps any input sentence to a 768-dimensional vector. This approach decomposes classification into two independent stages: an expensive, task-agnostic embedding step, followed by a cheap, task-specific linear classifier trained on top of the resulting vectors.</p>
 <p>The <strong>Logistic Regression</strong> classifier learns a linear decision boundary in the 768-dimensional embedding space. Given an embedding <span class="math notranslate nohighlight">\(\mathbf{e} \in \mathbb{R}^{768}\)</span>, the predicted probability of the positive class is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cc10e63c-31bb-402c-acff-bb62d3ee6a4e">
-<span class="eqno">(5.41)<a class="headerlink" href="#equation-cc10e63c-31bb-402c-acff-bb62d3ee6a4e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a074b425-78f7-4cdc-8b37-e4a7492215f7">
+<span class="eqno">(5.41)<a class="headerlink" href="#equation-a074b425-78f7-4cdc-8b37-e4a7492215f7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 P(y=1 \mid \mathbf{e}) = \sigma(\mathbf{w}^\top \mathbf{e} + b) = \frac{1}{1 + e^{-(\mathbf{w}^\top \mathbf{e} + b)}}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{w} \in \mathbb{R}^{768}\)</span> is a weight vector learned during training and <span class="math notranslate nohighlight">\(b\)</span> is a scalar bias term. The document is classified as positive if <span class="math notranslate nohighlight">\(P(y=1 \mid \mathbf{e}) &gt; 0.5\)</span>, which is equivalent to testing whether <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> lies on the positive side of the hyperplane defined by <span class="math notranslate nohighlight">\(\mathbf{w}^\top \mathbf{e} + b = 0\)</span>.</p>
@@ -606,13 +606,13 @@ P(y=1 \mid \mathbf{e}) = \sigma(\mathbf{w}^\top \mathbf{e} + b) = \frac{1}{1 + e
 <div class="note admonition">
 <p class="admonition-title">Definition — Centroid / Prototype</p>
 <p>The <strong>centroid</strong> of class <span class="math notranslate nohighlight">\(c\)</span> is the mean embedding of all training documents belonging to that class:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-31d28668-66ea-4490-8068-fe98d114562c">
-<span class="eqno">(5.42)<a class="headerlink" href="#equation-31d28668-66ea-4490-8068-fe98d114562c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-818a77cb-8409-4796-a3e3-253712ad5d22">
+<span class="eqno">(5.42)<a class="headerlink" href="#equation-818a77cb-8409-4796-a3e3-253712ad5d22" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{\mu}_c = \frac{1}{|\mathcal{D}_c|} \sum_{i \in \mathcal{D}_c} \mathbf{e}_i
 \end{equation}\]</div>
 <p>A new document with embedding <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> is assigned to the class whose centroid it is closest to, under cosine similarity:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dfe45154-8e88-47b5-a826-3376f22df2c6">
-<span class="eqno">(5.43)<a class="headerlink" href="#equation-dfe45154-8e88-47b5-a826-3376f22df2c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f6a68299-82bb-478d-9a4a-0ce4a0ee1485">
+<span class="eqno">(5.43)<a class="headerlink" href="#equation-f6a68299-82bb-478d-9a4a-0ce4a0ee1485" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \hat{y} = \arg\max_{c} \; \text{sim}(\mathbf{e},\, \boldsymbol{\mu}_c)
 \end{equation}\]</div>
 </div>

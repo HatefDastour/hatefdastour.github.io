@@ -206,7 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
@@ -458,21 +458,21 @@
 <h3><span class="section-number">4.7.4.1. </span>Tokenization Algorithms at a Glance<a class="headerlink" href="#tokenization-algorithms-at-a-glance" title="Link to this heading">#</a></h3>
 <p>Before running the audit it helps to recall how each algorithm builds its vocabulary, since that directly determines how clinical terms are split.</p>
 <p><strong>Byte-Pair Encoding (BPE)</strong> starts with individual characters (or bytes) and iteratively merges the most frequent adjacent pair until the target vocabulary size is reached. Formally, at each step the algorithm selects the pair <span class="math notranslate nohighlight">\((a, b)\)</span> with the highest joint frequency <span class="math notranslate nohighlight">\(f(a, b)\)</span> across the corpus and adds the merged symbol <span class="math notranslate nohighlight">\(ab\)</span> to the vocabulary:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c8dd89e8-1e44-4ec4-bffc-7ce20a96433a">
-<span class="eqno">(4.16)<a class="headerlink" href="#equation-c8dd89e8-1e44-4ec4-bffc-7ce20a96433a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0ffb7642-7077-4ea2-987f-139fd65bde04">
+<span class="eqno">(4.16)<a class="headerlink" href="#equation-0ffb7642-7077-4ea2-987f-139fd65bde04" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{merge}^* = \arg\max_{(a,, b)} f(a, b)
 \end{equation}\]</div>
 <p>Because BPE merges are driven by frequency in the training corpus, medical terms that appear rarely in web text receive few merges and are left heavily fragmented.</p>
 <p><strong>SentencePiece Unigram LM</strong> (used by Flan-T5) instead begins with a large candidate vocabulary and <em>prunes</em> it. Each token <span class="math notranslate nohighlight">\(x_i\)</span> is assigned a log-probability <span class="math notranslate nohighlight">\(\log p(x_i)\)</span>, and the tokenizer selects the segmentation <span class="math notranslate nohighlight">\(\mathbf{x}^*\)</span> that maximises the total log-likelihood:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-90014dfe-088f-40a3-8899-83d07a59b088">
-<span class="eqno">(4.17)<a class="headerlink" href="#equation-90014dfe-088f-40a3-8899-83d07a59b088" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c4f3e0bb-829a-4b91-b31d-0c76cad0771c">
+<span class="eqno">(4.17)<a class="headerlink" href="#equation-c4f3e0bb-829a-4b91-b31d-0c76cad0771c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{x}^* = \arg\max_{\mathbf{x}} \sum_{i} \log p(x_i)
 \end{equation}\]</div>
 <p>Tokens that do not improve likelihood on the training corpus are removed until the vocabulary reaches its target size. Again, rare clinical tokens are unlikely to survive.</p>
 <p><strong>Quantifying fragmentation — the Token-per-Term Ratio (TTR)</strong></p>
 <p>A simple metric for comparing tokenizers on any term set <span class="math notranslate nohighlight">\(T\)</span> is the average number of tokens per term:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d3572421-de2e-4c29-86aa-3db8c6a0d2ad">
-<span class="eqno">(4.18)<a class="headerlink" href="#equation-d3572421-de2e-4c29-86aa-3db8c6a0d2ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0706648d-9359-4bc9-9fa6-f6a699b101a7">
+<span class="eqno">(4.18)<a class="headerlink" href="#equation-0706648d-9359-4bc9-9fa6-f6a699b101a7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{TTR} = \frac{1}{|T|} \sum_{t \in T} \text{tokens}(t)
 \end{equation}\]</div>
 <p>A TTR of 1.0 means every term is represented as a single token (ideal). The audit below will let you compute a TTR across the clinical term set for each tokenizer.</p>
@@ -632,8 +632,8 @@ dyspnea:
 <section id="contextualized-vs-static-embeddings">
 <h3><span class="section-number">4.7.7.1. </span>Contextualized vs. Static Embeddings<a class="headerlink" href="#contextualized-vs-static-embeddings" title="Link to this heading">#</a></h3>
 <p>A static word embedding (e.g., Word2Vec) assigns each word type a single fixed vector regardless of context. A <strong>contextualized embedding</strong> produced by a transformer assigns each <em>token occurrence</em> a vector that depends on all surrounding tokens via self-attention. Formally, for token <span class="math notranslate nohighlight">\(t_i\)</span> in a sequence of length <span class="math notranslate nohighlight">\(n\)</span>, the embedding at layer <span class="math notranslate nohighlight">\(l\)</span> is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cf1d3af0-0310-4d7a-a995-c343c12577be">
-<span class="eqno">(4.19)<a class="headerlink" href="#equation-cf1d3af0-0310-4d7a-a995-c343c12577be" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d43dc9ca-b0d6-4ed4-8c11-cd82fb9a5e52">
+<span class="eqno">(4.19)<a class="headerlink" href="#equation-d43dc9ca-b0d6-4ed4-8c11-cd82fb9a5e52" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{h}_i^{(l)} = \text{TransformerBlock}^{(l)}!\left(\mathbf{h}_1^{(l-1)}, \ldots, \mathbf{h}_n^{(l-1)}\right)_i
 \end{equation}\]</div>
 <p>We use the <strong>last hidden state</strong> <span class="math notranslate nohighlight">\(\mathbf{h}_i^{(L)}\)</span> as the token’s contextual representation. This vector lives in a high-dimensional space (768 dimensions for RoBERTa-base).</p>
@@ -641,8 +641,8 @@ dyspnea:
 <section id="why-pca">
 <h3><span class="section-number">4.7.7.2. </span>Why PCA?<a class="headerlink" href="#why-pca" title="Link to this heading">#</a></h3>
 <p><strong>Principal Component Analysis (PCA)</strong> finds the directions of maximum variance in the data. For a matrix <span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{R}^{n \times d}\)</span> of token embeddings, PCA computes the eigendecomposition of the covariance matrix and projects the data onto the top-<span class="math notranslate nohighlight">\(k\)</span> eigenvectors:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c5cc3673-85e9-430b-8882-25e85955d180">
-<span class="eqno">(4.20)<a class="headerlink" href="#equation-c5cc3673-85e9-430b-8882-25e85955d180" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-31751f5d-f4d6-4d15-a6ba-670bda8815c6">
+<span class="eqno">(4.20)<a class="headerlink" href="#equation-31751f5d-f4d6-4d15-a6ba-670bda8815c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{Z} = \mathbf{X} \mathbf{W}_k, \quad \mathbf{W}_k \in \mathbb{R}^{d \times k}
 \end{equation}\]</div>
 <p>Setting <span class="math notranslate nohighlight">\(k = 2\)</span> allows us to plot the tokens on a 2D plane. While much information is lost, the projection preserves the <em>dominant</em> structure of the embedding space — tokens that are similar in 768D tend to appear close together in 2D.</p>
@@ -746,8 +746,8 @@ dyspnea:
 <section id="a-simple-accuracy-safety-score">
 <h3><span class="section-number">4.7.8.2. </span>A Simple Accuracy-Safety Score<a class="headerlink" href="#a-simple-accuracy-safety-score" title="Link to this heading">#</a></h3>
 <p>For a quick numerical comparison across models you can rate each output on a 1–5 scale for accuracy (<span class="math notranslate nohighlight">\(A\)</span>) and safety (<span class="math notranslate nohighlight">\(S\)</span>), then compute a combined score that weights safety more heavily — reflecting the asymmetry of clinical risk:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-81c27493-8689-4c73-ba5d-baecff4449e9">
-<span class="eqno">(4.21)<a class="headerlink" href="#equation-81c27493-8689-4c73-ba5d-baecff4449e9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c5c4b351-c905-4a03-ac12-f04bac57c528">
+<span class="eqno">(4.21)<a class="headerlink" href="#equation-c5c4b351-c905-4a03-ac12-f04bac57c528" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Score} = 0.4 \cdot A + 0.6 \cdot S
 \end{equation}\]</div>
 <p>This weighting is illustrative; real clinical NLP evaluation uses expert annotation and task-specific benchmarks (e.g., MedNLI, BioASQ, n2c2 shared tasks).</p>

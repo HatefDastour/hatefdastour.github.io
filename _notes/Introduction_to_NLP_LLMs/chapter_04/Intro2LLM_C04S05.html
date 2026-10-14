@@ -206,7 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
@@ -411,8 +411,8 @@ Layer 4: Pooling (Sentence-Level)
 <section id="layer-2-static-embedding-lookup">
 <h2><span class="section-number">4.5.3. </span>Layer 2: Static Embedding Lookup<a class="headerlink" href="#layer-2-static-embedding-lookup" title="Link to this heading">#</a></h2>
 <p>The first trainable component inside a transformer model is an <strong>embedding matrix</strong> <span class="math notranslate nohighlight">\(E \in \mathbb{R}^{V \times d}\)</span>, where <span class="math notranslate nohighlight">\(V\)</span> is the vocabulary size and <span class="math notranslate nohighlight">\(d\)</span> is the embedding dimension. Given a token ID sequence <span class="math notranslate nohighlight">\([t_1, t_2, \ldots, t_n]\)</span>, the embedding layer performs a simple row lookup:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7740ebdb-14bb-450a-928a-40051394a61e">
-<span class="eqno">(4.11)<a class="headerlink" href="#equation-7740ebdb-14bb-450a-928a-40051394a61e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b75713ac-62f2-447b-9036-f8502279c79b">
+<span class="eqno">(4.11)<a class="headerlink" href="#equation-b75713ac-62f2-447b-9036-f8502279c79b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{e}_i = E[t_i] \in \mathbb{R}^d
 \end{equation}\]</div>
 <p>Each token ID <span class="math notranslate nohighlight">\(t_i\)</span> selects the corresponding row from <span class="math notranslate nohighlight">\(E\)</span>, producing a <span class="math notranslate nohighlight">\(d\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\mathbf{e}_i\)</span>. The full input to the transformer is the matrix <span class="math notranslate nohighlight">\([\mathbf{e}_1, \mathbf{e}_2, \ldots, \mathbf{e}_n] \in \mathbb{R}^{n \times d}\)</span>.</p>
@@ -426,8 +426,8 @@ Layer 4: Pooling (Sentence-Level)
 <h2><span class="section-number">4.5.4. </span>Layer 3: Contextualized Embeddings via Transformer Layers<a class="headerlink" href="#layer-3-contextualized-embeddings-via-transformer-layers" title="Link to this heading">#</a></h2>
 <p>The transformer stack transforms the sequence of static token embeddings into <strong>contextualized embeddings</strong> — representations that encode not just the identity of each token, but its meaning given all other tokens in the sequence.</p>
 <p>Each transformer layer applies multi-head self-attention. For a single attention head, the computation for query matrix <span class="math notranslate nohighlight">\(Q\)</span>, key matrix <span class="math notranslate nohighlight">\(K\)</span>, and value matrix <span class="math notranslate nohighlight">\(V\)</span> is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b90112ff-dbe5-435a-9c49-6f0889e57ef5">
-<span class="eqno">(4.12)<a class="headerlink" href="#equation-b90112ff-dbe5-435a-9c49-6f0889e57ef5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-cb82519c-bf8c-4aad-b1fc-4bf4634f5f47">
+<span class="eqno">(4.12)<a class="headerlink" href="#equation-cb82519c-bf8c-4aad-b1fc-4bf4634f5f47" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(d_k\)</span> is the key/query dimension (used to prevent the dot products from growing too large). The output of the final transformer layer is a sequence of contextualized vectors <span class="math notranslate nohighlight">\([\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_n]\)</span>, one per input token.</p>
@@ -577,8 +577,8 @@ Notes:
 <section id="semantic-similarity-with-sentence-embeddings">
 <h2><span class="section-number">4.5.6. </span>Semantic Similarity with Sentence Embeddings<a class="headerlink" href="#semantic-similarity-with-sentence-embeddings" title="Link to this heading">#</a></h2>
 <p>Given sentence embeddings, <strong>cosine similarity</strong> measures the angle between two vectors, independent of their magnitude:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bd56e41b-8b8f-412f-aa9d-a112c148c3e2">
-<span class="eqno">(4.13)<a class="headerlink" href="#equation-bd56e41b-8b8f-412f-aa9d-a112c148c3e2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2bfc3a37-9037-41c7-a203-a3d736367607">
+<span class="eqno">(4.13)<a class="headerlink" href="#equation-2bfc3a37-9037-41c7-a203-a3d736367607" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{cosine\_similarity}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\| \cdot \|\mathbf{v}\|}
 \end{equation}\]</div>
 <p>Values range from <span class="math notranslate nohighlight">\(-1\)</span> (opposite directions) to <span class="math notranslate nohighlight">\(+1\)</span> (identical directions), with <span class="math notranslate nohighlight">\(0\)</span> indicating orthogonality. For unit-normalized embeddings, cosine similarity equals the dot product <span class="math notranslate nohighlight">\(\mathbf{u} \cdot \mathbf{v}\)</span>.</p>

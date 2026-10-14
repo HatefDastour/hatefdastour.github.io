@@ -206,7 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chapter_05/Intro2LLM_C05S05.html">5.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
@@ -391,8 +391,8 @@ a downstream classification task.</p>
 <section id="from-counts-to-bag-of-words">
 <h2><span class="section-number">2.2.2. </span>From counts to bag-of-words<a class="headerlink" href="#from-counts-to-bag-of-words" title="Link to this heading">#</a></h2>
 <p>The <strong>bag-of-words (BoW)</strong> model <span class="bibtex-citation" id="id1">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span> represents each document by the multiset of vocabulary items it contains, <em>ignoring word order</em>. Conceptually, a BoW representation is a histogram over tokens <span class="bibtex-citation" id="id2">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ba2ee760-a9e2-4452-9ccc-96aa95bbad8c">
-<span class="eqno">(2.3)<a class="headerlink" href="#equation-ba2ee760-a9e2-4452-9ccc-96aa95bbad8c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-42dac6ed-9e8b-4f1b-9446-9dda2a3d6238">
+<span class="eqno">(2.3)<a class="headerlink" href="#equation-42dac6ed-9e8b-4f1b-9446-9dda2a3d6238" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{x}_d \in \mathbb{Z}_{\geq 0}^{|V|}, \quad x_{d,t} = \text{count of term } t \text{ in document } d
 \end{equation}\]</div>
 <p>Despite its simplicity, BoW often performs surprisingly well for tasks such as topic classification and sentiment analysis, especially when combined with suitable weighting schemes.</p>
@@ -557,8 +557,8 @@ It is <strong>not suitable</strong> for tasks that require understanding word or
 <p>Raw counts treat all tokens equally — but they clearly are not equal. Consider the word “the”: it appears in virtually every English document and tells us almost nothing about the document’s topic. Conversely, a term like “inundation” is so specific that its presence in a document is highly informative.</p>
 <p><strong>TF–IDF</strong> (Term Frequency–Inverse Document Frequency) <span class="bibtex-citation" id="id3">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span> addresses this by rewarding specificity: a word that is frequent <em>in a particular document</em> but rare <em>across the corpus</em> is likely characteristic of that document and therefore receives a high score.</p>
 <p>The TF–IDF score is the product of two components <span class="bibtex-citation" id="id4">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5cd17788-7fd1-4f7b-8059-641e5d8201b8">
-<span class="eqno">(2.4)<a class="headerlink" href="#equation-5cd17788-7fd1-4f7b-8059-641e5d8201b8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d91ef61e-a8f6-458f-914b-8e169ea9c5ab">
+<span class="eqno">(2.4)<a class="headerlink" href="#equation-d91ef61e-a8f6-458f-914b-8e169ea9c5ab" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
 \end{equation}\]</div>
 <section id="term-frequency-tf">
@@ -595,16 +595,16 @@ It is <strong>not suitable</strong> for tasks that require understanding word or
 <h3><span class="section-number">2.2.3.2. </span>Inverse document frequency (IDF)<a class="headerlink" href="#inverse-document-frequency-idf" title="Link to this heading">#</a></h3>
 <p>IDF measures <em>how rare</em> term <span class="math notranslate nohighlight">\(t\)</span> is across the <span class="math notranslate nohighlight">\(N\)</span>-document corpus. A term that appears in every document is not useful for distinguishing documents, so it receives a low IDF weight. A term that appears in only one or two documents receives a high IDF weight.</p>
 <p>The classic IDF formula is <span class="bibtex-citation" id="id5">[<a class="reference internal" href="../References.html#id470" title="Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze. Introduction to information retrieval. Cambridge university press, Cambridge, 2008. ISBN 978-0-521-86571-5.">Manning <em>et al.</em>, 2008</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c99ae760-befd-41e5-be0c-14b4e119eba2">
-<span class="eqno">(2.5)<a class="headerlink" href="#equation-c99ae760-befd-41e5-be0c-14b4e119eba2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-26ac2069-05f8-459f-9c46-c7510dbf3674">
+<span class="eqno">(2.5)<a class="headerlink" href="#equation-26ac2069-05f8-459f-9c46-c7510dbf3674" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{IDF}(t) = \log \frac{N}{|\{d : t \in d\}|}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(|\{d : t \in d\}|\)</span> is the <strong>document frequency</strong> <span class="math notranslate nohighlight">\(\text{df}(t)\)</span> — the number of documents that contain term <span class="math notranslate nohighlight">\(t\)</span> at least once.</p>
 <div class="note admonition">
 <p class="admonition-title">Scikit-learn’s smoothed IDF</p>
 <p>Scikit-learn’s <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code> uses a slightly different, <strong>smoothed</strong> formula to avoid division by zero and to prevent IDF from being 0 for terms that appear in all documents <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id121" title="scikit-learn Developers. Scikit-learn user guide. https://scikit-learn.org/stable/user_guide.html, 2023. [Online; accessed 01-August-2023].">scikit-learn Developers, 2023</a>]</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bf61024e-0e66-4e31-a2a9-43eec3578333">
-<span class="eqno">(2.6)<a class="headerlink" href="#equation-bf61024e-0e66-4e31-a2a9-43eec3578333" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{IDF}(t) = \log \frac{1 + N}{1 + \text{df}(t)} + 1\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-8557ffc0-9c3d-409e-8764-132763800b0d">
+<span class="eqno">(2.6)<a class="headerlink" href="#equation-8557ffc0-9c3d-409e-8764-132763800b0d" title="Permalink to this equation">#</a></span>\[\begin{equation}\text{IDF}(t) = \log \frac{1 + N}{1 + \text{df}(t)} + 1\end{equation}\]</div>
 <p>The smoothing adds 1 to both numerator and denominator. The extra <code class="docutils literal notranslate"><span class="pre">+1</span></code> at the end ensures that terms appearing in every document still receive a positive (non-zero) IDF weight. This is why scikit-learn’s numbers will differ from the manual calculation below, which uses the unsmoothed formula.</p>
 </div>
 </section>
@@ -636,8 +636,8 @@ unsmoothed formula.</p>
 </table>
 </div>
 <p><strong>Step 1 — Compute IDF for each term:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-74115b3a-374f-47ec-861e-5c52cb6f8488">
-<span class="eqno">(2.7)<a class="headerlink" href="#equation-74115b3a-374f-47ec-861e-5c52cb6f8488" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8765e436-d4b8-4549-9d08-d77e8528b33f">
+<span class="eqno">(2.7)<a class="headerlink" href="#equation-8765e436-d4b8-4549-9d08-d77e8528b33f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{IDF(flood)}  = \log\!\left(\frac{4}{3}\right) \approx 0.288
 \qquad
 \text{IDF(drought)} = \log\!\left(\frac{4}{2}\right) \approx 0.693

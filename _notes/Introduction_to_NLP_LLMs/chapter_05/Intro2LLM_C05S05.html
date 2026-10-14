@@ -67,7 +67,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_05/Intro2LLM_C05S05';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. Prompt Engineering" href="../chapter_06/Intro2LLM_C06.html" />
+    <link rel="next" title="6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration" href="../chapter_06/Intro2LLM_C06.html" />
     <link rel="prev" title="5.4. Text Classification by Leveraging Embeddings" href="Intro2LLM_C05S04.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -206,7 +206,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">5.5. Recent Improvements to the Transformer Architecture</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Prompt Engineering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter_06/Intro2LLM_C06.html">6. Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S01.html">6.1. Foundations of Prompt Engineering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S02.html">6.2. Advanced Prompt Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../chapter_06/Intro2LLM_C06S03.html">6.3. In-Context Learning: Zero-Shot, One-Shot, and Few-Shot</a></li>
@@ -467,8 +467,8 @@
 <section id="the-original-post-norm">
 <h3><span class="section-number">5.5.4.1. </span>The Original: Post-Norm<a class="headerlink" href="#the-original-post-norm" title="Link to this heading">#</a></h3>
 <p>The original transformer architecture applied layer normalization <strong>after</strong> the residual addition at layer <span class="math notranslate nohighlight">\(l\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-433f2978-d84d-40c9-a7f8-1eee03dc787a">
-<span class="eqno">(5.44)<a class="headerlink" href="#equation-433f2978-d84d-40c9-a7f8-1eee03dc787a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3f18779e-e68a-4e22-964d-38b27531e005">
+<span class="eqno">(5.44)<a class="headerlink" href="#equation-3f18779e-e68a-4e22-964d-38b27531e005" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{l+1} = \text{LayerNorm}\Big(x_l + \text{SubLayer}(x_l)\Big)
 \end{equation}\]</div>
 <p>Because normalization is positioned on the main residual path, gradient magnitudes can grow or shrink exponentially at the beginning of training—especially in deep networks. This structural instability required careful learning rate warmup schedules and frequently caused training to diverge.</p>
@@ -476,8 +476,8 @@ x_{l+1} = \text{LayerNorm}\Big(x_l + \text{SubLayer}(x_l)\Big)
 <section id="the-solution-pre-norm">
 <h3><span class="section-number">5.5.4.2. </span>The Solution: Pre-Norm<a class="headerlink" href="#the-solution-pre-norm" title="Link to this heading">#</a></h3>
 <p>Modern LLMs (e.g., LLaMA, Mistral, Phi-3, Gemma) apply normalization <strong>before</strong> each sublayer, leaving the residual stream unnormalized:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0022e3e8-e775-4d8f-8a72-2de862b13f06">
-<span class="eqno">(5.45)<a class="headerlink" href="#equation-0022e3e8-e775-4d8f-8a72-2de862b13f06" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a787a537-c663-4db6-b24d-42eadd7f7367">
+<span class="eqno">(5.45)<a class="headerlink" href="#equation-a787a537-c663-4db6-b24d-42eadd7f7367" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 \end{equation}\]</div>
 <p>By isolating the residual stream (<span class="math notranslate nohighlight">\(x_{l+1} = x_l + \Delta x\)</span>), Pre-Norm guarantees an identity path for gradient flow during backpropagation. Each sublayer receives a normalized input regardless of the hidden state’s magnitude, which dramatically improves training stability at scale and enables higher learning rates.</p>
@@ -537,14 +537,14 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <div class="tip admonition">
 <p class="admonition-title">Key Formulas — LayerNorm vs. RMSNorm</p>
 <p><strong>Layer Normalization</strong> (original transformer):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7e4bb44f-b8fd-4edd-ac2e-ff14e55a6cbf">
-<span class="eqno">(5.46)<a class="headerlink" href="#equation-7e4bb44f-b8fd-4edd-ac2e-ff14e55a6cbf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e582a702-0d26-4ecb-8831-5b4505fd977f">
+<span class="eqno">(5.46)<a class="headerlink" href="#equation-e582a702-0d26-4ecb-8831-5b4505fd977f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{LayerNorm}(x) = \frac{x - \mu}{\sigma + \epsilon} \cdot \gamma + \beta
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu = \frac{1}{d}\sum_i x_i\)</span> is the mean, <span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation, <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are learned scale and shift parameters, and <span class="math notranslate nohighlight">\(\epsilon\)</span> is a small constant for numerical stability.</p>
 <p><strong>Root Mean Square Normalization</strong> (modern LLMs):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-98e68a76-88ca-4f3f-ae4d-4372045d0ef4">
-<span class="eqno">(5.47)<a class="headerlink" href="#equation-98e68a76-88ca-4f3f-ae4d-4372045d0ef4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e64c4cfc-62a9-4956-a243-7981b907a8d3">
+<span class="eqno">(5.47)<a class="headerlink" href="#equation-e64c4cfc-62a9-4956-a243-7981b907a8d3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{RMSNorm}(x) = \frac{x}{\text{RMS}(x) + \epsilon} \cdot \gamma, \qquad \text{RMS}(x) = \sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2}
 \end{equation}\]</div>
 <p>RMSNorm drops the mean subtraction (<span class="math notranslate nohighlight">\(\mu\)</span>) and the bias (<span class="math notranslate nohighlight">\(\beta\)</span>), reducing the computation to a single statistic. Note that <span class="math notranslate nohighlight">\(\gamma\)</span> is still a learned per-feature scale.</p>
@@ -557,8 +557,8 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <section id="original-ffn-relu">
 <h3><span class="section-number">5.5.5.1. </span>Original FFN: ReLU<a class="headerlink" href="#original-ffn-relu" title="Link to this heading">#</a></h3>
 <p>The original transformer feed-forward network (FFN) applied:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4672c94a-3b67-46f2-8556-ddf6042553c5">
-<span class="eqno">(5.48)<a class="headerlink" href="#equation-4672c94a-3b67-46f2-8556-ddf6042553c5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c22f94f7-f480-4cea-8520-831c88244065">
+<span class="eqno">(5.48)<a class="headerlink" href="#equation-c22f94f7-f480-4cea-8520-831c88244065" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{FFN}(x) = \max(0, x W_1 + b_1) W_2 + b_2
 \end{equation}\]</div>
 <p>ReLU sets all negative values to zero, discarding approximately half of the network’s capacity on any given input. GELU (Gaussian Error Linear Unit) <span class="bibtex-citation" id="id6">[<a class="reference internal" href="../References.html#id512" title="Dan Hendrycks and Kevin Gimpel. Gaussian error linear units (gelus). 2023. URL: https://arxiv.org/abs/1606.08415, arXiv:1606.08415.">Hendrycks and Gimpel, 2023</a>]</span>, used in BERT <span class="bibtex-citation" id="id7">[<a class="reference internal" href="../References.html#id507" title="Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. In Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers), 4171–4186. Minneapolis, Minnesota, 2019. Association for Computational Linguistics.">Devlin <em>et al.</em>, 2019</a>]</span> and GPT-2, introduced a smooth approximation that partially addresses this.</p>
@@ -568,8 +568,8 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <div class="tip admonition">
 <p class="admonition-title">Key Formula — SwiGLU</p>
 <p><strong>SwiGLU</strong> (Swish-Gated Linear Unit) <span class="bibtex-citation" id="id8">[<a class="reference internal" href="../References.html#id498" title="Noam Shazeer. GLU Variants Improve Transformer. 2020. arXiv:2002.05202. URL: https://arxiv.org/abs/2002.05202.">Shazeer, 2020</a>]</span> replaces the single non-linearity with a learned gating mechanism:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-751e3a00-803d-4f78-832d-ef2336d2950e">
-<span class="eqno">(5.49)<a class="headerlink" href="#equation-751e3a00-803d-4f78-832d-ef2336d2950e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-97188383-ed9e-4aed-b166-f212d017a3aa">
+<span class="eqno">(5.49)<a class="headerlink" href="#equation-97188383-ed9e-4aed-b166-f212d017a3aa" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{SwiGLU}(x) = \big(\text{SiLU}(x W_{\text{gate}}) \odot (x W_{\text{up}})\big) \, W_{\text{down}}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\text{SiLU}(x) = x \cdot \sigma(x)\)</span> (Sigmoid Linear Unit, also called Swish) <span class="bibtex-citation" id="id9">[<a class="reference internal" href="../References.html#id497" title="Stefan Elfwing, Eiji Uchibe, and Kenji Doya. Sigmoid-Weighted Linear Units for Neural Network Function Approximation in Reinforcement Learning. Neural Networks, 107:3–11, 2017. arXiv:1702.03118.">Elfwing <em>et al.</em>, 2017</a>]</span>, and <span class="math notranslate nohighlight">\(\odot\)</span> is element-wise multiplication. The network learns <strong>three</strong> projection matrices (<span class="math notranslate nohighlight">\(W_{\text{gate}}\)</span>, <span class="math notranslate nohighlight">\(W_{\text{up}}\)</span>, <span class="math notranslate nohighlight">\(W_{\text{down}}\)</span>) instead of two.</p>
@@ -611,8 +611,8 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <p><strong>Geometric compatibility.</strong> For query vector <span class="math notranslate nohighlight">\(q_i \in \mathbb{R}^{d_k}\)</span> and key vector <span class="math notranslate nohighlight">\(k_j \in \mathbb{R}^{d_k}\)</span>, the raw compatibility score <span class="math notranslate nohighlight">\(q_i \cdot k_j\)</span> measures the cosine alignment between the two vectors scaled by their norms. Tokens whose learned query and key representations point in similar directions in <span class="math notranslate nohighlight">\(\mathbb{R}^{d_k}\)</span> receive high compatibility scores and, after the softmax, contribute more of their value vector <span class="math notranslate nohighlight">\(v_j\)</span> to the output. Attention is therefore best understood as a differentiable, content-addressed lookup over the sequence, where addressing is performed by directional alignment in the query/key space rather than by fixed position.</p>
 <p><strong>The role of <span class="math notranslate nohighlight">\(1/\sqrt{d_k}\)</span>.</strong> As <span class="math notranslate nohighlight">\(d_k\)</span> grows, the dot product <span class="math notranslate nohighlight">\(q_i \cdot k_j\)</span> of two independent, zero-mean, unit-variance vectors has variance that scales linearly with <span class="math notranslate nohighlight">\(d_k\)</span>. Without correction, this pushes the pre-softmax logits into a regime where softmax gradients vanish almost everywhere except at the single largest entry. Dividing by <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> rescales the logits so that their variance stays approximately constant regardless of dimensionality, which keeps the softmax in a numerically well-conditioned regime and preserves usable gradient signal during backpropagation.</p>
 <p><strong>Causal masking with <span class="math notranslate nohighlight">\(-\infty\)</span>.</strong> Autoregressive language models must ensure that the representation at position <span class="math notranslate nohighlight">\(i\)</span> is computed only from positions <span class="math notranslate nohighlight">\(j \le i\)</span>. This is enforced by adding a mask <span class="math notranslate nohighlight">\(M\)</span> to the score matrix before the softmax, where <span class="math notranslate nohighlight">\(M_{ij} = -\infty\)</span> for <span class="math notranslate nohighlight">\(j &gt; i\)</span> and <span class="math notranslate nohighlight">\(M_{ij} = 0\)</span> otherwise:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-86d2ff81-97c8-46ac-9a98-4d17893e3ed2">
-<span class="eqno">(5.50)<a class="headerlink" href="#equation-86d2ff81-97c8-46ac-9a98-4d17893e3ed2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1843dca2-62f8-4954-9eb7-73a0d54520d7">
+<span class="eqno">(5.50)<a class="headerlink" href="#equation-1843dca2-62f8-4954-9eb7-73a0d54520d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}} + M\right) V
 \end{equation}\]</div>
 <p>Because <span class="math notranslate nohighlight">\(\lim_{z \to -\infty} e^{z} = 0\)</span>, masked positions receive exactly zero probability mass after the softmax, regardless of their raw compatibility score. This is a hard, exact constraint rather than a soft penalty — it is what allows a single forward pass over an <span class="math notranslate nohighlight">\(n\)</span>-token sequence to simultaneously produce a valid training signal for all <span class="math notranslate nohighlight">\(n\)</span> next-token predictions.</p>
@@ -655,8 +655,8 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <p class="admonition-title">Key Formula — Rotary Position Encoding (RoPE)</p>
 <p>RoPE <span class="bibtex-citation" id="id12">[<a class="reference internal" href="../References.html#id500" title="Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, and Yunfeng Liu. RoFormer: Enhanced Transformer with Rotary Position Embedding. 2021. arXiv:2104.09864. URL: https://arxiv.org/abs/2104.09864.">Su <em>et al.</em>, 2021</a>]</span> encodes positional information by rotating query and key vectors before computing attention. For token at position <span class="math notranslate nohighlight">\(m\)</span>, the rotation matrix <span class="math notranslate nohighlight">\(R_m\)</span> rotates each 2D sub-block of the query or key vector by angle <span class="math notranslate nohighlight">\(m \theta_i\)</span>, where <span class="math notranslate nohighlight">\(\theta_i = 10000^{-2i/d_k}\)</span> for dimension index <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>The attended output is computed as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-65dc1dc3-26a6-42e8-80b7-03d44a0c446e">
-<span class="eqno">(5.51)<a class="headerlink" href="#equation-65dc1dc3-26a6-42e8-80b7-03d44a0c446e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-215ca0fd-1e20-4f23-a0c1-f9b6f586a19d">
+<span class="eqno">(5.51)<a class="headerlink" href="#equation-215ca0fd-1e20-4f23-a0c1-f9b6f586a19d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{(R_m Q)(R_n K)^T}{\sqrt{d_k}}\right) V
 \end{equation}\]</div>
 <p>The key property: the dot product <span class="math notranslate nohighlight">\((R_m Q) \cdot (R_n K)\)</span> depends only on the <strong>relative offset</strong> <span class="math notranslate nohighlight">\(m - n\)</span>, not on absolute positions <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> individually. This is what enables length generalization.</p>
@@ -671,8 +671,8 @@ x_{l+1} = x_l + \text{SubLayer}\Big(\text{Norm}(x_l)\Big)
 <div class="note admonition">
 <p class="admonition-title">Definition — Weight Tying</p>
 <p>In a standard language model, the <strong>embedding matrix</strong> <span class="math notranslate nohighlight">\(E \in \mathbb{R}^{V \times d}\)</span> maps token IDs to <span class="math notranslate nohighlight">\(d\)</span>-dimensional vectors, while the <strong>LM head</strong> <span class="math notranslate nohighlight">\(W_{\text{head}} \in \mathbb{R}^{d \times V}\)</span> maps the final hidden state back to vocabulary logits. Weight tying sets <span class="math notranslate nohighlight">\(W_{\text{head}} = E^T\)</span>, so both layers share the same <span class="math notranslate nohighlight">\(V \times d\)</span> parameter matrix:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a289c686-e921-46f3-99b5-58fc4f959c79">
-<span class="eqno">(5.52)<a class="headerlink" href="#equation-a289c686-e921-46f3-99b5-58fc4f959c79" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-54b58ad7-0caa-412c-8a4f-674f3cceeead">
+<span class="eqno">(5.52)<a class="headerlink" href="#equation-54b58ad7-0caa-412c-8a4f-674f3cceeead" title="Permalink to this equation">#</a></span>\[\begin{equation}
 W_{\text{head}} = E^T
 \end{equation}\]</div>
 </div>
@@ -709,8 +709,8 @@ W_{\text{head}} = E^T
 <div class="note admonition">
 <p class="admonition-title">Definition — KV Cache</p>
 <p>During autoregressive generation, the model computes key (<span class="math notranslate nohighlight">\(K\)</span>) and value (<span class="math notranslate nohighlight">\(V\)</span>) tensors for every previously generated token. These are stored in the <strong>KV cache</strong> so they do not need to be recomputed at each new step. KV cache size scales as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c24fadcf-c25b-451c-8ae3-6fb99faa41f1">
-<span class="eqno">(5.53)<a class="headerlink" href="#equation-c24fadcf-c25b-451c-8ae3-6fb99faa41f1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3a462a67-db57-4d98-97c2-912307f76402">
+<span class="eqno">(5.53)<a class="headerlink" href="#equation-3a462a67-db57-4d98-97c2-912307f76402" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{KV cache size} = 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_{\text{head}} \times n_{\text{tokens}} \times \text{bytes per value}
 \end{equation}\]</div>
 <p>where the factor of 2 accounts for both K and V tensors.</p>
@@ -756,8 +756,8 @@ W_{\text{head}} = E^T
 </table>
 </div>
 <p>Formally, given <span class="math notranslate nohighlight">\(H_q\)</span> query heads and <span class="math notranslate nohighlight">\(H_{kv}\)</span> key-value heads, the query heads are partitioned into <span class="math notranslate nohighlight">\(H_{kv}\)</span> groups of size <span class="math notranslate nohighlight">\(G = H_q / H_{kv}\)</span>. For group index <span class="math notranslate nohighlight">\(g \in \{1, \dots, H_{kv}\}\)</span>, all <span class="math notranslate nohighlight">\(G\)</span> query heads in that group attend using the single shared key-value pair <span class="math notranslate nohighlight">\((K_g, V_g)\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8e117f75-7cae-4e2f-afdd-426ec6813f43">
-<span class="eqno">(5.54)<a class="headerlink" href="#equation-8e117f75-7cae-4e2f-afdd-426ec6813f43" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c4902ba9-63a1-43c6-a16d-8e5f9c49a904">
+<span class="eqno">(5.54)<a class="headerlink" href="#equation-c4902ba9-63a1-43c6-a16d-8e5f9c49a904" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Head}*{g, i} = \text{softmax}\left(\frac{Q*{g, i} K_g^T}{\sqrt{d_k}}\right) V_g \quad \text{for } i \in {1, \dots, G}
 \end{equation}\]</div>
 <p>GQA <span class="bibtex-citation" id="id16">[<a class="reference internal" href="../References.html#id513" title="Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebrón, and Sumit Sanghai. GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, 4895–4901. Singapore, 2023. Association for Computational Linguistics.">Ainslie <em>et al.</em>, 2023</a>]</span> is used in LLaMA-3, Mistral, Qwen2, and Phi-3.5. For Phi-3-Mini specifically, the <code class="docutils literal notranslate"><span class="pre">qkv_proj</span></code> projects to <span class="math notranslate nohighlight">\(9{,}216 = 3 \times 3{,}072\)</span> dimensions (MHA with 32 heads), whereas Phi-3.5 and larger variants adopt GQA. The cell below reads the number of query and key/value heads directly from the loaded configuration.</p>
@@ -787,8 +787,8 @@ W_{\text{head}} = E^T
 <section id="the-problem-with-standard-attention">
 <h3><span class="section-number">5.5.10.1. </span>The Problem with Standard Attention<a class="headerlink" href="#the-problem-with-standard-attention" title="Link to this heading">#</a></h3>
 <p>Standard multi-head attention materializes the full <span class="math notranslate nohighlight">\(n \times n\)</span> attention weight matrix in GPU High-Bandwidth Memory (HBM). Because the intermediate score matrix <span class="math notranslate nohighlight">\(S = Q K^T / \sqrt{d_k}\)</span> scales quadratically with sequence length <span class="math notranslate nohighlight">\(n\)</span>, memory overhead quickly becomes the primary bottleneck for long-context models:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-29cf2178-970c-43ca-8d02-5a27e541324c">
-<span class="eqno">(5.55)<a class="headerlink" href="#equation-29cf2178-970c-43ca-8d02-5a27e541324c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6011936a-f028-4cba-8dcf-89fb5b96a6b1">
+<span class="eqno">(5.55)<a class="headerlink" href="#equation-6011936a-f028-4cba-8dcf-89fb5b96a6b1" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Memory}_{\text{Attention}} = \mathcal{O}(n^2)
 \end{equation}\]</div>
 <div class="pst-scrollable-table-container"><table class="table" id="attention-matrix-memory-scaling">
@@ -831,8 +831,8 @@ W_{\text{head}} = E^T
 <p>`````{admonition} Key Idea — Flash Attention <span class="bibtex-citation" id="id17">[<a class="reference internal" href="../References.html#id515" title="Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, and Christopher Ré. FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness. In Advances in Neural Information Processing Systems 35 (NeurIPS 2022), 16344–16359. 2022.">Dao <em>et al.</em>, 2022</a>]</span>
 :class: tip</p>
 <p>Flash Attention avoids materializing the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix in main GPU memory (HBM) by loading block-wise tiles of <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(K\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> directly into fast on-chip <strong>SRAM</strong> (~256 KB per streaming multiprocessor on an NVIDIA A100). Softmax normalization statistics and output vectors are accumulated incrementally across tiles using the <strong>online softmax</strong> algorithm:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-85b025e7-5b97-4d58-98c6-38d208a453f6">
-<span class="eqno">(5.56)<a class="headerlink" href="#equation-85b025e7-5b97-4d58-98c6-38d208a453f6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8ed86493-73f1-4a6f-9099-49fcf37451b2">
+<span class="eqno">(5.56)<a class="headerlink" href="#equation-8ed86493-73f1-4a6f-9099-49fcf37451b2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 m_i = \max_j s_{ij}, \qquad \ell_i = \sum_j e^{s_{ij} - m_i}, \qquad o_i = \frac{1}{\ell_i} \sum_j e^{s_{ij} - m_i} V_j
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_{ij} = Q_i K_j^T / \sqrt{d_k}\)</span>. These running accumulators are updated block by block without writing intermediate <span class="math notranslate nohighlight">\(n \times n\)</span> attention weights to HBM.</p>
@@ -962,7 +962,7 @@ Using <code class="docutils literal notranslate"><span class="pre">layer.self_at
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Prompt Engineering</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Advanced In-Context Reasoning, Output Verification, and Pipeline Orchestration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
