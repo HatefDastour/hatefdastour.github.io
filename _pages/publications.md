@@ -43,7 +43,6 @@ author_profile: true
 Eum, H., Achari, G. and Hassan, Q.K., 2022. [Long term trend analysis of river flow and climate in Northern Canada](https://doi.org/10.3390/hydrology9110197){:target="_blank"}. *Hydrology*, 9(11), p.197.
 
 1. **Dastour, H.**, Ghaderpour, E., Zaghloul, M.S., Farjad, B., Gupta, A., Eum, H., Achari, G. and Hassan, Q.K., 2022. [Wavelet-based spatiotemporal analyses of climate and vegetation for the Athabasca river basin in Canada](https://doi.org/10.1016/j.jag.2022.103044){:target="_blank"}. *International Journal of Applied Earth Observation and Geoinformation*, 114, p.103044.
-<!-- \[IF: 8.6; IF Quartile: Q1\] -->
 
 1. **Dastour, H.**, Ghaderpour, E. and Hassan, Q.K., 2022. [A combined approach for monitoring monthly surface water/ice dynamics of Lesser Slave Lake via Earth observation data](https://doi.org/10.1109/JSTARS.2022.3196611){:target="_blank"}. *IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing*, 15, pp.6402-6417.
 
