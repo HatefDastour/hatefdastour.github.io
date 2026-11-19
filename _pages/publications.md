@@ -7,6 +7,10 @@ author_profile: true
 
 ## Peer-reviewed Journal Publications
 
+1. **Dastour, H.**, 2026. [The Winter Fire Paradox: Rapid Phenological Recovery Masks Invasive Dominance in Southern California Chaparral](https://doi.org/10.1109/IGARSS60577.2026.11730390){:target="_blank"}. In *IGARSS 2026 - 2026 IEEE International Geoscience and Remote Sensing Symposium*, pp. 1842–1845.
+
+1. Alfaro, N. and **Dastour, H.**, 2026. [Multi-Sensor Snow Cover Monitoring in the Peruvian Cordillera Blanca](https://doi.org/10.1109/IGARSS60577.2026.11730401){:target="_blank"}. In *IGARSS 2026 - 2026 IEEE International Geoscience and Remote Sensing Symposium*, pp. 2716–2720.
+
 1. **Dastour, H.**, Alam, M., Dewan, A., and Hassan, Q.K., 2025. [Spatiotemporal Analysis of Land Surface Temperature and Wind Dynamics during Winter in Bangladesh](https://doi.org/10.1016/j.rineng.2025.106498){:target="_blank"}. *Results in Engineering*, 27, p.106498. 
 <!-- \[IF: 7.9; IF Quartile: Q1\] -->
 
